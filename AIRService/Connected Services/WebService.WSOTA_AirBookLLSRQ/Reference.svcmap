@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a9e4f493-eb2c-4c9a-8a7b-872f5fed5150" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirBookLLS2.2.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="fcb86d8f-cb49-416d-abeb-3ae4128a1102" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/wsse.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="88aadf6e-4731-4155-bdb8-01c58777fbff" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="OTA_AirBookLLS2.wsdl" MetadataType="Wsdl" ID="999da593-2dd6-4f82-9daf-5a77c4c8fa20" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirBookLLS2.2.0RQ.wsdl" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="1672332c-987f-4417-b341-2bf990ad1da9" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="d8aec0c7-9bf5-4137-a78a-1af6f905d8f1" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/envelope.xsd" />
+    <MetadataFile FileName="sws_common.xsd" MetadataType="Schema" ID="7ece6e84-5c3c-4474-b7fc-c63608286135" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/sws_common.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="a0c27968-e7ca-4e90-a0cd-002e01abf17e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xml.xsd" />
+    <MetadataFile FileName="OTA_AirBookLLS2.xsd" MetadataType="Schema" ID="bc173013-946f-4cd4-9019-646c08befa35" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirBookLLS2.2.0RQRS.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="47bb3902-7097-460a-8c8a-22d1c9aaec67" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xlink.xsd" />
+    <MetadataFile FileName="OTA_AirBookLLS21.xsd" MetadataType="Schema" ID="aa1cec2d-cdfa-4e71-80c2-4d222df275c4" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirBookLLS2.2.0RS.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="34e6edc0-4b41-400d-95b4-41964c4375ee" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="OTA_AirBookLLS22.xsd" MetadataType="Schema" ID="d826dbb2-530a-4fed-8a33-0824f7d7f4b2" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirBookLLS2.2.0RQ.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="6513f895-a183-413f-ba80-5f836b88c65c" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

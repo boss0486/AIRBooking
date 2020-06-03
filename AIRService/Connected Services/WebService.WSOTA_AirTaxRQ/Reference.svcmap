@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d72056fd-f065-4832-b39a-0605d2ece77a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/OTA_AirTaxRQ_v2.0.2.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AirPricing_DiagnosticResponseElement_v1.xsd" MetadataType="Schema" ID="9ce284a9-0b8b-4411-896e-a7e7bbfa29ac" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/AirPricing_DiagnosticResponseElement_v1.0.0.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="d5830ac6-2252-4309-8ff0-b49f8a0625a4" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/msg-header-2_0.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="995a39b0-966f-4de2-887a-16370de4bd48" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/xml.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="052b2011-6d1c-4ade-90d3-f03ba6c06557" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/wsse.xsd" />
+    <MetadataFile FileName="AirPricing_DiagnosticRequestElement_v1.xsd" MetadataType="Schema" ID="284f6f24-8f1d-4076-bb83-882e13bd7aef" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/AirPricing_DiagnosticRequestElement_v1.0.0.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="1089d06d-1b76-4d3f-9326-21187733abdd" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/envelope.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="b1156aba-8ee4-4baa-b1e2-6ca9dff74396" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="OTA_AirTaxRQRS_v2.xsd" MetadataType="Schema" ID="30a22178-aae7-49a1-b7d0-e218b353dc60" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/OTA_AirTaxRQRS_v2.0.2.xsd" />
+    <MetadataFile FileName="OTA_AirTaxRQ_v2.xsd" MetadataType="Schema" ID="7e781c9b-f7b2-4214-99b4-50a1915cd441" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/OTA_AirTaxRQ_v2.0.2.xsd" />
+    <MetadataFile FileName="OTA_AirTaxRQ_v2.wsdl" MetadataType="Wsdl" ID="b43a710a-2f1a-4869-840b-6d4f035f1a88" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/OTA_AirTaxRQ_v2.0.2.wsdl" />
+    <MetadataFile FileName="OTA_AirTaxRS_v2.xsd" MetadataType="Schema" ID="597c5c0d-90f0-45df-941d-bb99710c140f" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/OTA_AirTaxRS_v2.0.2.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="db61706a-66a6-4713-82e1-19868784ce0c" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/SabreAir/xlink.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
