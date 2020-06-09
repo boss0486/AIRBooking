@@ -157,7 +157,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -195,14 +194,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="Temp\XMLFile1.xml" />
-    <Content Include="Temp\XMLFile2.xml" />
-    <Content Include="WS\Xml\ClearSession.xml" />
-    <Content Include="WS\Xml\Common.xml" />
-    <Content Include="WS\Xml\dongnt.xml" />
-    <Content Include="WS\Xml\PassengerDetails.xml" />
-    <Content Include="WS\Xml\PaymentRQ.xml" />
-    <Content Include="WS\Xml\SabreCommandLLSRQ.xml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -223,15 +214,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Temp\search.json" />
-    <Content Include="Temp\search - Copy.json" />
-    <Content Include="Temp\fare.json" />
-    <Content Include="Temp\sort.json" />
-    <Content Include="Temp\01-06-json.json" />
-    <Content Include="Temp\06-01-2-json.json" />
-    <Content Include="Temp\tax-ok.json" />
-    <Content Include="Temp\price.json" />
-    <Content Include="Temp\error-price.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,12 +249,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AIRService\AIRService.csproj">
-      <Project>{9ec20fdc-c8f6-4ef3-b105-6d365b4405f6}</Project>
-      <Name>AIRService</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

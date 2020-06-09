@@ -13,13 +13,6 @@ namespace APIBooking
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapMvcAttributeRoutes();
-            //
-            routes.MapRoute(
-                 name: "Booking",
-                 url: "Api/{controller}/{action}/{id}",
-                 defaults: new { controller = "Booking", action = "Test", id = UrlParameter.Optional }
-             );
-            //
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
