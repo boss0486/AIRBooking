@@ -12,16 +12,16 @@ namespace AIRService.WS.Service
     {
         public AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS FUNC_OTA_AirBookRS(AirBookModel model)
         {
-            SessionService sessionService = new SessionService();
-            var _session = sessionService.GetSession();
-            if (_session == null)
-                return null;
-            // get token
-            string _token = _session.Token;
-            string _conversationId = _session.ConversationID;
-            if (string.IsNullOrWhiteSpace(_token))
-                return null;
-            // handle
+            //SessionService sessionService = new SessionService();
+            //var _session = sessionService.GetSession();
+            //if (_session == null)
+            //    return null;
+            //// get token
+            string _token = model.Token;
+            string _conversationId = model.ConversationID;
+            //if (string.IsNullOrWhiteSpace(_token))
+            //    return null;
+            //handle
             try
             {
                 // header info
@@ -45,7 +45,8 @@ namespace AIRService.WS.Service
                 messageHeader.To.PartyId[0] = partyID;
 
                 WebService.WSOTA_AirBookLLSRQ.Security1 security = new WebService.WSOTA_AirBookLLSRQ.Security1();
-                security.BinarySecurityToken = _token;
+                security.BinarySecurityToken = _token
+                    ;
 
                 var oTA_AirBookRQ = new WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRQ();
                 List<WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRQFlightSegment> lstSegments = new List<WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRQFlightSegment>();
@@ -75,13 +76,13 @@ namespace AIRService.WS.Service
                 WebService.WSOTA_AirBookLLSRQ.OTA_AirBookPortTypeClient client = new WebService.WSOTA_AirBookLLSRQ.OTA_AirBookPortTypeClient();
                 var data = client.OTA_AirBookRQ(ref messageHeader, ref security, oTA_AirBookRQ);
                 // close session *******************************************************************************************************************************************
-                sessionService.CloseSession(_session);
+                //sessionService.CloseSession(_session);
                 // return data *********************************************************************************************************************************************
                 return data;
             }
             catch (Exception)
             {
-                sessionService.CloseSession(_session);
+                //sessionService.CloseSession(_session);
                 return null;
             }
         }

@@ -95,3 +95,41 @@
     "AltLangID": null
   }
 }
+
+
+
+
+{
+  "ContactEmail": "nvchung1694@gmail.com",
+  "lFlight": [
+    {
+      "DepartureDateTime": "2020/07/15 05:00:00",
+      "ArrivalDateTime": "2020/07/15 07:15:00",
+      "FlightNumber": "233",
+      "NumberInParty": 1,
+      "ResBookDesigCode": "K",
+      "AirEquipType": "321",
+      "DestinationLocation": "SGN",
+      "OriginLocation": "HAN"
+    },
+    {
+      "DepartureDateTime": "2020/07/20 06:00:00",
+      "ArrivalDateTime": "2020/07/20 08:15:00",
+      "FlightNumber": "236",
+      "NumberInParty": 1,
+      "ResBookDesigCode": "K",
+      "AirEquipType": "321",
+      "DestinationLocation": "HAN",
+      "OriginLocation": "SGN"
+    }
+  ],
+  "lPassenger": [
+    {
+      "PassengerType": "ADT",
+      "GivenName": "VAN CHUNG",
+      "Surname": "NGUYEN",
+      "Gender": "M",
+      "PhoneNumber": "84815124440"
+    }
+  ]
+}

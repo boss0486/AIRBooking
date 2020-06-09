@@ -490,7 +490,6 @@
                                   </xs:complexType>
                                 </xs:element>
                                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Qualifier" type="xs:string" />
-                                <xs:element minOccurs="0" maxOccurs="26" name="SSR_Code" type="xs:string" />
                                 <xs:element minOccurs="0" maxOccurs="unbounded" name="Ticketing">
                                   <xs:complexType>
                                     <xs:attribute name="EndNumber" type="xs:integer" use="optional" />
@@ -804,7 +803,7 @@
                             <xs:complexType>
                               <xs:attribute name="Code" type="xs:string" use="required" />
                               <xs:attribute name="Force" type="xs:boolean" use="optional" />
-                              <xs:attribute name="Quantity" type="xs:string" use="optional" />
+                              <xs:attribute name="Quantity" type="xs:string" use="required" />
                             </xs:complexType>
                           </xs:element>
                           <xs:element minOccurs="0" name="PlusUp">
@@ -832,7 +831,6 @@
                               </xs:restriction>
                             </xs:simpleType>
                           </xs:element>
-                          <xs:element minOccurs="0" name="SpanishResidentDiscount" type="xs:string" />
                           <xs:element minOccurs="0" maxOccurs="unbounded" name="SpecificFare">
                             <xs:complexType>
                               <xs:sequence>
@@ -934,7 +932,7 @@
       </xs:sequence>
       <xs:attribute name="ReturnHostCommand" type="xs:boolean" use="optional" />
       <xs:attribute name="TimeStamp" type="xs:dateTime" use="optional" />
-      <xs:attribute fixed="2.17.0" name="Version" type="xs:string" use="required" />
+      <xs:attribute fixed="2.16.0" name="Version" type="xs:string" use="required" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

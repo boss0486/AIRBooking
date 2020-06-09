@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using AIRService.Service;
+using ApiPortalBooking.Models.VNA_WS_Model;
 
 namespace AIRService.Service
 {
@@ -374,98 +375,252 @@ namespace AIRService.Service
         // book 
         public ActionResult FlightBook(BookModel model)
         {
-            // check model
-            if (model == null)
-                return Notifization.Invalid(NotifizationText.Invalid);
+            //////// check model
+            //////if (model == null)
+            //////    return Notifization.Invalid(NotifizationText.Invalid);
+            //////// 
+            ////////int _adt = model.ADT; // Adults
+            ////////int _cnn = model.CNN; // minors
+            ////////int _inf = model.INF; // Infant
+            ////////string _destinationLocation = model.DestinationLocation;
+            ////////string _originLocation = model.OriginLocation;
+            ////////DateTime _departureDateTime = model.DepartureDateTime;
+            ////////DateTime? _returnDateTime = model.ReturnDateTime;
+            //////////
+            ////////if (_adt <= 0)
+            ////////    return Notifization.Invalid("Adults must be > 0");
+            //////////
+            ////////if (_inf > _adt)
+            ////////    return Notifization.Invalid("Infant invalid");
+            //////// create session
+            //////SessionService sessionService = new SessionService();
+            //////var _session = sessionService.GetSession();
+            //////if (_session == null)
+            //////    return null;
+            //////// get token
+            //////string _token = _session.Token;
+            //////string _conversationId = _session.ConversationID;
+            //////if (string.IsNullOrWhiteSpace(_token))
+            //////    return null;
+            //////// seach data in web service
+            ////////List<AirBookModelSegment> airBookModelSegments = new List<AirBookModelSegment>();
+            ////////AirBookModelSegment airBookModelSegmen = new AirBookModelSegment();
+            ////////airBookModelSegmen.DepartureDateTime = model.
+            ////////VNAWSOTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNAWSOTA_AirBookLLSRQSevice();
+            ////////List<AirBookModelSegment> lstSegments = model.Segments;
+            ////////if (lstSegments == null || lstSegments.Count == 0)
+            ////////    return Notifization.Invalid(NotifizationText.Invalid);
+
+            ////////AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+            ////////{
+            ////////    Segments = lstSegments,
+            ////////    ConversationID = _conversationId,
+            ////////    Token = _token
+            ////////});
+            //////////
+            ////////if (oTA_AirBookRS.ApplicationResults.Success == null)
+            ////////    return Notifization.NotFound(NotifizationText.NotFound);
+            //////////
+            ////////var _originDestinationOption = oTA_AirBookRS.OriginDestinationOption.ToList();
+            ////////if (_originDestinationOption.Count == 0)
+            ////////    return Notifization.NotFound(NotifizationText.NotFound);
+            ////////// get price
+
+            //////var _airPriceModel = new AirPriceModel
+            //////{
+            //////    ConversationID = _conversationId,
+            //////    Token = _token,
+            //////    Segments = model.lFlight
+            //////};
+            //////foreach (var item in model.lPassenger)
+            //////{
+            //////    if (item.PassengerType.ToUpper() == "ADT")
+            //////    {
+            //////        _airPriceModel.ADT++;
+            //////        continue;
+            //////    }
+            //////    if (item.PassengerType.ToUpper() == "CNN")
+            //////    {
+            //////        _airPriceModel.CNN++;
+            //////        continue;
+            //////    }
+            //////    if (item.PassengerType.ToUpper() == "INF")
+            //////    {
+            //////        _airPriceModel.INF++;
+            //////        continue;
+            //////    }
+            //////}
+
+
+
+
+            //////VNAWSOTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNAWSOTA_AirPriceLLSRQService();
+            //////AIRService.WebService.WSOTA_AirPriceLLSRQ.OTA_AirPriceRS oTA_AirPriceRS = vNAWSOTA_AirPriceLLSRQService.FUNCOTA_AirPriceRQ(_airPriceModel);
+
+            ////////VNATransaction vNATransaction = new VNATransaction();
+            ////////var End = vNATransaction.EndTransaction(_session);
+            //////// End = vNATransaction.EndTransaction(_session);
+
+            ////////
+            ////return Notifization.Data("", oTA_AirPriceRS);
             // 
-            //int _adt = model.ADT; // Adults
-            //int _cnn = model.CNN; // minors
-            //int _inf = model.INF; // Infant
-            //string _destinationLocation = model.DestinationLocation;
-            //string _originLocation = model.OriginLocation;
-            //DateTime _departureDateTime = model.DepartureDateTime;
-            //DateTime? _returnDateTime = model.ReturnDateTime;
-            ////
-            //if (_adt <= 0)
-            //    return Notifization.Invalid("Adults must be > 0");
-            ////
-            //if (_inf > _adt)
-            //    return Notifization.Invalid("Infant invalid");
-            // create session
-            SessionService sessionService = new SessionService();
-            var _session = sessionService.GetSession();
-            if (_session == null)
-                return null;
-            // get token
-            string _token = _session.Token;
-            string _conversationId = _session.ConversationID;
-            if (string.IsNullOrWhiteSpace(_token))
-                return null;
-            // seach data in web service
-            //List<AirBookModelSegment> airBookModelSegments = new List<AirBookModelSegment>();
-            //AirBookModelSegment airBookModelSegmen = new AirBookModelSegment();
-            //airBookModelSegmen.DepartureDateTime = model.
-            //VNAWSOTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNAWSOTA_AirBookLLSRQSevice();
-            //List<AirBookModelSegment> lstSegments = model.Segments;
-            //if (lstSegments == null || lstSegments.Count == 0)
-            //    return Notifization.Invalid(NotifizationText.Invalid);
 
-            //AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
-            //{
-            //    Segments = lstSegments,
-            //    ConversationID = _conversationId,
-            //    Token = _token
-            //});
-            ////
-            //if (oTA_AirBookRS.ApplicationResults.Success == null)
-            //    return Notifization.NotFound(NotifizationText.NotFound);
-            ////
-            //var _originDestinationOption = oTA_AirBookRS.OriginDestinationOption.ToList();
-            //if (_originDestinationOption.Count == 0)
-            //    return Notifization.NotFound(NotifizationText.NotFound);
-            //// get price
+            return Notifization.NotService;
 
-            var _airPriceModel = new AirPriceModel();
-            _airPriceModel.ConversationID = _conversationId;
-            _airPriceModel.Token = _token;
-            _airPriceModel.Segments = model.Segments;
-
-            //foreach (var item in model.Passengers)
-            //{
-            //    if (item.PassengerType.ToUpper() == "ADT")
-            //    {
-            //        AirPriceModel.ADT++;
-            //        continue;
-            //    }
-            //    if (item.PassengerType.ToUpper() == "CNN")
-            //    {
-            //        AirPriceModel.CNN++;
-            //        continue;
-            //    }
-            //    if (item.PassengerType.ToUpper() == "INF")
-            //    {
-            //        AirPriceModel.INF++;
-            //        continue;
-            //    }
-            //}
-
-
-
-
-
-
-            VNAWSOTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNAWSOTA_AirPriceLLSRQService();
-            AIRService.WebService.WSOTA_AirPriceLLSRQ.OTA_AirPriceRS oTA_AirPriceRS = vNAWSOTA_AirPriceLLSRQService.FUNCOTA_AirPriceRQ(_airPriceModel);
-
-            VNATransaction vNATransaction = new VNATransaction();
-            var End = vNATransaction.EndTransaction(_session);
-           // End = vNATransaction.EndTransaction(_session);
-
-            //
-            return Notifization.Data("", oTA_AirPriceRS);
-            // 
         }
 
 
+        public ActionResult BookVe(BookModel model)
+        {
+            try
+            {
+                //using (var sessionService = new SessionService())
+                //{
+                var sessionService = new SessionService(); 
+                    var tokenModel = new TokenModel();
+                    var _session = sessionService.GetSession();
+                    if (_session == null)
+                        return null;
+                    // get token
+                    string _token = _session.Token;
+                    string _conversationId = _session.ConversationID;
+                    if (string.IsNullOrWhiteSpace(_token))
+                        return null;
+
+                    //tokenModel = wss.CreateSession();
+                    var airBookModel = new AirBookModel
+                    {
+                        ConversationID = _conversationId,
+                        Token = _token
+                    };
+
+                    //- SessionCreateRQ
+                    //- OTA_AirBookLLSRQ
+                    //- OTA_AirPriceLLSRQ
+                    //- PassengerDetailsRQ
+                    //- EndTransactionLLSRQ
+                    //- SessionCloseRQ
+                    //seach data in web service
+                    List<AirBookModelSegment> airBookModelSegments = new List<AirBookModelSegment>();
+                    AirBookModelSegment airBookModelSegmen = new AirBookModelSegment();
+
+                    // #1. flight information - ***********************************************************************************************************************************
+                    VNAWSOTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNAWSOTA_AirBookLLSRQSevice();
+                    List<AirBookModelSegment> lstSegments = model.lFlight;
+                    if (lstSegments == null || lstSegments.Count == 0)
+                        return Notifization.Invalid(NotifizationText.Invalid);
+                    //
+                    AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                    {
+                        Segments = lstSegments,
+                        ConversationID = _conversationId,
+                        Token = _token
+                    });
+                    //
+                    if (oTA_AirBookRS.ApplicationResults.Success == null)
+                        return Notifization.Invalid(NotifizationText.Invalid);
+                    //
+                    var _originDestinationOption = oTA_AirBookRS.OriginDestinationOption.ToList();
+                    if (_originDestinationOption.Count == 0)
+                        return Notifization.NotFound(NotifizationText.NotFound);
+                    // #2. Get price - ***************************************************************************************************************************************************
+                    airBookModel.Segments = model.lFlight;
+                    var airPriceModel = new AirPriceModel
+                    {
+                        ConversationID = _conversationId,
+                        Token = _token,
+                        lFlight = model.lFlight
+                    };
+                    foreach (var item in model.lPassenger)
+                    {
+                        if (item.PassengerType.ToUpper() == "ADT")
+                        {
+                            airPriceModel.ADT++;
+                            continue;
+                        }
+                        if (item.PassengerType.ToUpper() == "CNN")
+                        {
+                            airPriceModel.CNN++;
+                            continue;
+                        }
+                        if (item.PassengerType.ToUpper() == "INF")
+                        {
+                            airPriceModel.INF++;
+                            continue;
+                        }
+                    }
+                    VNAWSOTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNAWSOTA_AirPriceLLSRQService();
+                    var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
+                    //
+                    if (airPriceData.ApplicationResults.Success == null)
+                        return Notifization.Invalid(NotifizationText.Invalid);
+                    // #3. Get PNA code - **************************************************************************************************************************************************
+                    var result = new BookVeResult
+                    {
+                        lPricingInPNR = new List<PricingInPNR>()
+                    };
+                    foreach (var item in airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo)
+                    {
+                        foreach (var iter in model.lPassenger.Where(m => m.PassengerType.ToUpper().Equals(item.PassengerTypeQuantity.Code)))
+                        {
+                            var price = new PricingInPNR
+                            {
+                                DateOfBirth = iter.DateOfBirth,
+                                SurName = iter.Surname,
+                                GivenName = iter.GivenName,
+                                type = iter.PassengerType.ToUpper(),
+                                Fare = double.Parse(item.ItinTotalFare.BaseFare.Amount)
+                            };
+                            foreach (var tax in item.ItinTotalFare.Taxes.Tax)
+                            {
+                                if (tax.TaxCode.Equals("YRI"))
+                                {
+                                    price.ServiceFee = double.Parse(tax.Amount);
+                                }
+                                if (tax.TaxCode.Equals("UE3"))
+                                {
+                                    price.TaxFee = double.Parse(tax.Amount);
+                                }
+                                if (tax.TaxCode.Equals("AX"))
+                                {
+                                    price.VAT = double.Parse(tax.Amount);
+                                }
+                                if (tax.TaxCode.Equals("C4"))
+                                {
+                                    price.ScanFee = double.Parse(tax.Amount);
+                                }
+                            }
+                            result.lPricingInPNR.Add(price);
+                        }
+                    }
+                    result.Total = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
+                    model.lPassenger = model.lPassenger.OrderBy(m => m.PassengerType).ToList();
+                    // create model passenger details model
+                    var passengerDetailModel = new PassengerDetailsModel
+                    {
+                        ContactEmail = model.ContactEmail,
+                        ConversationID = _conversationId,
+                        Token = _token,
+                        lPassenger = model.lPassenger,
+                        AirBook = oTA_AirBookRS
+                    };
+                    // call service  passenger details in ws.service
+                    VNAWSPassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNAWSPassengerDetailsRQService();
+                   AIRService.WebService.WSPassengerDetailsRQ.PassengerDetailsRS passengerDetailsRS = vNAWSPassengerDetailsRQService.PassengerDetail(passengerDetailModel);
+                    //string a = vNAWSPassengerDetailsRQService.PassengerDetail(passengerDetailModel);
+                    // end  transaction
+                    VNATransaction vNATransaction = new VNATransaction();
+                    //vNATransaction.EndTransaction(tokenModel);
+                    var End = vNATransaction.EndTransaction(_session);
+                    End = vNATransaction.EndTransaction(_session);
+                    //  retur value
+                    return Notifization.Data("OK", passengerDetailsRS);
+                //}
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("OK" + ex);
+            }
+        }
     }
 }

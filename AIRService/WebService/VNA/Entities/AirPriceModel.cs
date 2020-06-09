@@ -12,7 +12,7 @@ namespace ApiPortalBooking.Models
         public int ADT { get; set; }
         public int CNN { get; set; }
         public int INF { get; set; }
-        public List<AirBookModelSegment> Segments { get; set; }
+        public List<AirBookModelSegment> lFlight { get; set; }
 
     }
 }

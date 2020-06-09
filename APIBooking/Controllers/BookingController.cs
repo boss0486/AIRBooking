@@ -106,8 +106,9 @@ namespace APIBooking.Controllers
         {
             try
             {
+                 
                 var vNASearchService = new VNASearchService();
-                return vNASearchService.FlightBook(model);
+                return vNASearchService.BookVe(model);
             }
             catch (Exception ex)
             {

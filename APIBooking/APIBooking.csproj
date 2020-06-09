@@ -193,6 +193,14 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Temp\XMLFile1.xml" />
+    <Content Include="Temp\XMLFile2.xml" />
+    <Content Include="WS\Xml\ClearSession.xml" />
+    <Content Include="WS\Xml\Common.xml" />
+    <Content Include="WS\Xml\dongnt.xml" />
+    <Content Include="WS\Xml\PassengerDetails.xml" />
+    <Content Include="WS\Xml\PaymentRQ.xml" />
+    <Content Include="WS\Xml\SabreCommandLLSRQ.xml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -220,6 +228,8 @@
     <Content Include="Temp\01-06-json.json" />
     <Content Include="Temp\06-01-2-json.json" />
     <Content Include="Temp\tax-ok.json" />
+    <Content Include="Temp\price.json" />
+    <Content Include="Temp\error-price.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -50,6 +50,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -134,6 +135,7 @@
     <Compile Include="WebService\Helper\Session\SabreSessionManager.cs" />
     <Compile Include="WebService\Helper\Session\SessionService.cs" />
     <Compile Include="WebService\VNA\Authen\WSAuthencation.cs" />
+    <Compile Include="WebService\VNA\Common\VNALibrary.cs" />
     <Compile Include="WebService\VNA\Entities\AirAvailLLSRQModel.cs" />
     <Compile Include="WebService\VNA\Entities\AirBookModel.cs" />
     <Compile Include="WebService\VNA\Entities\AirPriceModel.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="WebService\VNA\Service\VNAWSOTA_AirBookLLSRQSevice.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSOTA_CancelLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSOTA_AirPriceLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSPassengerDetailsRQService.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -754,18 +757,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Connected Services\WebService.WSEndTransactionLLSRQ\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -773,6 +764,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.WSEndTransactionLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

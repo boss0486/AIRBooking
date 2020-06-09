@@ -8,9 +8,9 @@ namespace ApiPortalBooking.Models
 {
     public class BookModel
     {
-        public List<PassengerData> Passengers { get; set; }
-        public List<AirBookModelSegment> Segments { get; set; }
-        public string Email { get; set; }
+        public List<PassengerDetailData> lPassenger { get; set; }
+        public List<AirBookModelSegment> lFlight { get; set; }
+        public string ContactEmail { get; set; }
 
     }
 }
