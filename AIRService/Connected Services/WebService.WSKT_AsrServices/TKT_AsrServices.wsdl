@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:TT="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" name="TKT_AsrServices" targetNamespace="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="TKT_AsrServices_v.1.2.1.xsd" namespace="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" />
+      <xsd:import schemaLocation="msg-header-2_0.xsd" namespace="http://www.ebxml.org/namespaces/messageHeader" />
+      <xsd:import schemaLocation="wsse2.xsd" namespace="http://schemas.xmlsoap.org/ws/2002/12/secext" />
+    </xsd:schema>
+  </types>
+  <message name="CachedReportInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CachedReportRQ" />
+  </message>
+  <message name="CachedReportOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CachedReportRS" />
+  </message>
+  <message name="CachedReportFault">
+    <part name="body" element="TT:CachedReportRS" />
+  </message>
+  <message name="DailySalesSummaryInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DailySalesSummaryRQ" />
+  </message>
+  <message name="DailySalesSummaryOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DailySalesSummaryRS" />
+  </message>
+  <message name="DailySalesSummaryFault">
+    <part name="body" element="TT:DailySalesSummaryRS" />
+  </message>
+  <portType name="CachedReportPortType">
+    <operation name="CachedReportRQ">
+      <input message="TT:CachedReportInput" />
+      <output message="TT:CachedReportOutput" />
+      <fault name="CachedReportSoapFault" message="TT:CachedReportFault" />
+    </operation>
+  </portType>
+  <portType name="DailySalesSummaryPortType">
+    <operation name="DailySalesSummaryRQ">
+      <input message="TT:DailySalesSummaryInput" />
+      <output message="TT:DailySalesSummaryOutput" />
+      <fault name="DailySalesSummarySoapFault" message="TT:DailySalesSummaryFault" />
+    </operation>
+  </portType>
+  <binding name="CachedReportSoapBinding" type="TT:CachedReportPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="CachedReportRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:CachedReportInput" part="header" use="literal" />
+        <soap:header message="TT:CachedReportInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:CachedReportOutput" part="header" use="literal" />
+        <soap:header message="TT:CachedReportOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="CachedReportSoapFault">
+        <soap:fault use="literal" name="CachedReportSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="DailySalesSummarySoapBinding" type="TT:DailySalesSummaryPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="DailySalesSummaryRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:DailySalesSummaryInput" part="header" use="literal" />
+        <soap:header message="TT:DailySalesSummaryInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:DailySalesSummaryOutput" part="header" use="literal" />
+        <soap:header message="TT:DailySalesSummaryOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="DailySalesSummarySoapFault">
+        <soap:fault use="literal" name="DailySalesSummarySoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="TKT_AsrServices">
+    <port name="CachedReportPortType" binding="TT:CachedReportSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="DailySalesSummaryPortType" binding="TT:DailySalesSummarySoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+  </service>
+</definitions>

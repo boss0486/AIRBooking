@@ -16,7 +16,6 @@ namespace ApiPortalBooking.Models
     public class PassengerDetailData
     {
         public string PassengerType { get; set; }
-        public bool isInfant { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -36,5 +35,14 @@ namespace ApiPortalBooking.Models
         public string GivenName { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
+    }
+
+    public class Response_PassengerDetailsModel
+    {
+        public string PNR { get; set; }
+    }
+    public class PNRModel
+    {
+        public string PNR { get; set; }
     }
 }

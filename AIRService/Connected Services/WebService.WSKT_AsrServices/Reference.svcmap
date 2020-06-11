@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2dfede85-feab-4d49-8b0a-7c86544c6d50" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/TKT_AsrServices_v.1.2.1.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TKT_AsrServices.wsdl" MetadataType="Wsdl" ID="689e191e-2524-40d9-bc95-35324c28e78d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/TKT_AsrServices_v.1.2.1.wsdl" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="ddac343f-f01b-4df7-aaa6-a7544f4682fb" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/xml.xsd" />
+    <MetadataFile FileName="SabreTypeLibrary_v.xsd" MetadataType="Schema" ID="d9e61ef1-7b58-4d56-afa8-0c565c0e232c" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/SabreTypeLibrary_v.1.1.2.xsd" />
+    <MetadataFile FileName="TKT_AsrServices_v.xsd" MetadataType="Schema" ID="f0f7d4bb-cd60-40d8-a853-4d650a2e9e96" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/TKT_AsrServices_v.1.2.1.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="c867924f-9b68-442d-bf7a-c4c77c0b3a1d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="c8dc7e0d-ae6c-4de3-bb51-3a2048c94832" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/envelope.xsd" />
+    <MetadataFile FileName="TicketingTypeLibrary_v.xsd" MetadataType="Schema" ID="b4055949-39c3-4486-9af0-3e0e4c888e13" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/TicketingTypeLibrary_v.1.2.1.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="497568d7-a381-425a-8fd1-750269bb171d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/msg-header-2_0.xsd" />
+    <MetadataFile FileName="SabreTypeLibrary_Catalog_v.xsd" MetadataType="Schema" ID="d4a01e70-35aa-469b-88c3-9ebdb0ab3b0f" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/SabreTypeLibrary_Catalog_v.1.1.2.xsd" />
+    <MetadataFile FileName="wsse2.xsd" MetadataType="Schema" ID="9dfd122b-ad13-4b8a-a59c-4385254cca39" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/wsse2.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="e762c767-8b0a-4ef5-a9fc-0896ee6ec78c" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/fulfillment/xlink.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

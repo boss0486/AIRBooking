@@ -7,43 +7,38 @@ namespace AIR.Helper.Session
 {
     public class SessionService : IDisposable
     {
+        private TokenModel _tokenModel;
+        private bool m_Disposed = false;
 
+        public SessionService()
+        {
+            _tokenModel = GetSession();
+        }
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!m_Disposed)
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+                    // các đối tượng có Dispose gọi ở đây
+                    CloseSession(_tokenModel); 
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                // giải phóng các tài nguyên không quản lý được cửa lớp
+                m_Disposed = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~SessionService()
-        // {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        ~SessionService()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            Dispose(false);
         }
-        #endregion
         // *****************************************************************************************************************************************************************************
 
         readonly WSAuthencation wSAuthencation = new WSAuthencation();

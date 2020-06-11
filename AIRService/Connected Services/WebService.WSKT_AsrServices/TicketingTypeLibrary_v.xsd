@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:STL="http://services.sabre.com/STL/v01" xmlns="http://www.sabre.com/ns/Ticketing/TTL/1.0" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="SabreTypeLibrary_v.1.1.2.xsd" namespace="http://services.sabre.com/STL/v01" />
+  <xs:simpleType name="Code.OverShortCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="over" />
+      <xs:enumeration value="short" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.ReasonForIssuanceCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.PrasCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.FopCode">
+    <xs:union memberTypes="_Code.FopCode _Misc.Any2char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.FopCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CK" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="TV" />
+      <xs:enumeration value="XX" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="NR" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="WC" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.CategoryCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cash" />
+      <xs:enumeration value="Credit" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.TicketingProviderCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.DocumentType">
+    <xs:union memberTypes="_Code.DocumentType _Misc.Any4char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.DocumentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACL" />
+      <xs:enumeration value="ADM" />
+      <xs:enumeration value="ADV" />
+      <xs:enumeration value="BAG" />
+      <xs:enumeration value="CCR" />
+      <xs:enumeration value="CRG" />
+      <xs:enumeration value="CSA" />
+      <xs:enumeration value="EMD" />
+      <xs:enumeration value="EMDE" />
+      <xs:enumeration value="EXB" />
+      <xs:enumeration value="FDP" />
+      <xs:enumeration value="FIM" />
+      <xs:enumeration value="GEN" />
+      <xs:enumeration value="MCO" />
+      <xs:enumeration value="MPD" />
+      <xs:enumeration value="MSR" />
+      <xs:enumeration value="PAS" />
+      <xs:enumeration value="PPS" />
+      <xs:enumeration value="PTA" />
+      <xs:enumeration value="REV" />
+      <xs:enumeration value="RFD" />
+      <xs:enumeration value="SCR" />
+      <xs:enumeration value="SEN" />
+      <xs:enumeration value="SMD" />
+      <xs:enumeration value="SST" />
+      <xs:enumeration value="TBR" />
+      <xs:enumeration value="TKT" />
+      <xs:enumeration value="TOR" />
+      <xs:enumeration value="TUR" />
+      <xs:enumeration value="UPG" />
+      <xs:enumeration value="VCH" />
+      <xs:enumeration value="VCHE" />
+      <xs:enumeration value="VCR" />
+      <xs:enumeration value="VOU" />
+      <xs:enumeration value="VTR" />
+      <xs:enumeration value="XXX" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.DocumentTypeForTNReports">
+    <xs:union memberTypes="_Code.DocumentTypeForTNReports _Misc.Any4char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.DocumentTypeForTNReports">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TKT" />
+      <xs:enumeration value="RFND" />
+      <xs:enumeration value="RFEMD" />
+      <xs:enumeration value="EMD" />
+      <xs:enumeration value="MCO" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.Currency">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.RemarkType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.TaxCode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([a-zA-Z0-9]){2,3}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.TicketStatusCode">
+    <xs:union memberTypes="_Code.TicketStatusCode _Misc.Any2char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.TicketStatusCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="V">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Voided.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Net Remit.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RF">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Full Refund.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RP">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Partial Refund.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RV">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Refund Voucher.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Additional Collection.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Even Exchange.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EI">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Even Exchange Ignored.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EO">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Exchange Overage.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ES">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Exchange Shortage.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OS">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Oversale Voucher.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CV">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Compensation Voucher.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.StationStatusCode">
+    <xs:union memberTypes="_Code.StationStatusCode _Misc.Any2char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.StationStatusCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OP" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="AC" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.ShiftStatusCode">
+    <xs:union memberTypes="_Code.ShiftStatusCode _Misc.Any2char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.ShiftStatusCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OP" />
+      <xs:enumeration value="CL" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.OBFee">
+    <xs:annotation>
+      <xs:documentation>IATA defined OB Fee code also indicating fee type e.g. OBT01, OBR03, OBFCA
+				Types defined by IATA:
+						OBT - Ticketing fees
+						OBR - Requested Service fees
+						OBF - Form of Payment fees
+			</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.SettlementTypeCode">
+    <xs:annotation>
+      <xs:documentation>Subscriber settlement types like TAT, TCH
+				</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="_Code.SettlementTypeCode _Misc.Any4char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.SettlementTypeCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TKT" />
+      <xs:enumeration value="TAT" />
+      <xs:enumeration value="TCH" />
+      <xs:enumeration value="STA" />
+      <xs:enumeration value="KIL" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.EmployeeNumber">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{6}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.AgentDieSine">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.AgencyId">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="7" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.DocId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{13,16}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.StationNumber">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{8}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.StationCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.PnrLocator">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-zA-Z]{6,8}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Identifier.CityAirportCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.CCExpireDate">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{4}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.EprKeyword">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.InputRemark">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="255" />
+      <xs:pattern value="[A-Z0-9 .,/-]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.Remark">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="255" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.ReasonForIssuanceDesc">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.PrasDescription">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="21" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.ExchangeDocCouponNumbers">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="19" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.BaggageAllowance">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.FareBasis">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="15" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.CouponStatus">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z]{1,2}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.ClassOfService">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z]{1,2}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.EmdReasonForIssuance">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.CreditCardExtendedPayment">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="99" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.CreditCardApprovalCode">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.MaskedCCNumber">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="19" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.StationName">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Misc.FormOfPaymentDesc">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="_Misc.Money">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="_Misc.DecimalPlace">
+    <xs:restriction base="xs:unsignedInt">
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Misc.Money">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Miscellaneous Payment Amount</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="_Misc.Money">
+        <xs:attribute name="amountText" type="STL:StringLength1to20" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Amount in Text</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="decimalPlace" type="_Misc.DecimalPlace" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Decimal Place for the Amount</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="_Misc.Any2char">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="_Misc.Any3char">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="_Misc.Any4char">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code.ItineraryTypeCode">
+    <xs:union memberTypes="_Code.ItineraryTypeCode _Misc.Any2char" />
+  </xs:simpleType>
+  <xs:simpleType name="_Code.ItineraryTypeCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Domestic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="I">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">International</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Trans-border</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="_Code.Currency">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The currency code</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="Code.Currency">
+        <xs:attribute name="decimalPlace" type="_Misc.DecimalPlace" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Decimal Place for the Currency</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

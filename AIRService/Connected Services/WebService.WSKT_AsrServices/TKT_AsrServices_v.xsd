@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:STL="http://services.sabre.com/STL/v01" xmlns="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns:TTL="http://www.sabre.com/ns/Ticketing/TTL/1.0" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="SabreTypeLibrary_v.1.1.2.xsd" namespace="http://services.sabre.com/STL/v01" />
+  <xs:import schemaLocation="TicketingTypeLibrary_v.1.2.1.xsd" namespace="http://www.sabre.com/ns/Ticketing/TTL/1.0" />
+  <xs:simpleType name="Misc.FullName">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Misc.Diagnostic">
+    <xs:annotation>
+      <xs:documentation>Used for passing diagnostic information as text</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataText" type="xs:string" />
+      <xs:element minOccurs="0" name="DataXML">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+          </xs:sequence>
+          <xs:anyAttribute namespace="##any" processContents="lax">
+            <xs:annotation>
+              <xs:documentation>Prose in the spec does not specify that attributes are allowed on the DataXML element</xs:documentation>
+            </xs:annotation>
+          </xs:anyAttribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="type" type="STL:StringLength1to128" use="required" />
+  </xs:complexType>
+  <xs:element name="CachedReportRQ" type="_CachedReportRQ">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This request is used to retrieve cached late/large reports.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="CachedReportRS" type="_CachedReportRS">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Response to a CachedReportRQ.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="_CRSelectionCriteria">
+    <xs:sequence>
+      <xs:element name="TicketingProvider" type="TTL:Code.TicketingProviderCode">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Carrier code indicating which airline cached report was generated for.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="reportId" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Unique report identifier returned in report response which was cached by the system.  This is used to identify the cached report along with the ChunkNumber.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="chunkNumber" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>If cached report was broken into pieces this is used to identify the piece.  Use 1 if the report was not broken into pieces.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_CachedReportRQ">
+    <xs:sequence>
+      <xs:element name="Header" type="STL:STL_Header.RQ">
+        <xs:annotation>
+          <xs:documentation>Standard header information that help orchestrate the requests</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SelectionCriteria" type="_CRSelectionCriteria">
+        <xs:annotation>
+          <xs:documentation>Used to define what should be included in the Cached report including optional filters. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Diagnostic" type="Misc.Diagnostic">
+        <xs:annotation>
+          <xs:documentation>Internal use ONLY</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Asr Services web service version.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="_CachedReportRS">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Since this response can carry any report all RS responses are available as a valid response to a CachedReportRQ.  The contents of the response are exactly the same as the report which was requested except for the additional attributes associated with the CachedReportRS element.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Header" type="STL:STL_Header.RS">
+        <xs:annotation>
+          <xs:documentation>Header information indicating result of the service call, errors and warnings.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="1">
+        <xs:element name="DailySalesSummaryRS" type="_DailySalesSummaryRS" />
+      </xs:choice>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Diagnostic" type="Misc.Diagnostic">
+        <xs:annotation>
+          <xs:documentation>Internal use ONLY</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Asr Services web service version.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="isReportFound" type="xs:boolean" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">False if there was no cached report found for the specified reportId and chunkNumber.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="isQueryStillRunning" type="xs:boolean" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">True if the query is still running and thus the report has not yet been cached.  Client should retry later..</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="reportId" type="xs:integer" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">ReportId of the returned report.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="chunkNumber" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Chunk number of the returned report.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maxChunks" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Total number of chunks which make up the report if the report had to be broken up into pieces.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:element name="DailySalesSummaryRQ" type="_DailySalesSummaryRQ">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The Sales Summary Report Request is used to retrieve data used to create the sales summary report which displays a Travel Agency's sales.
+            </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="DailySalesSummaryRS" type="_DailySalesSummaryRS">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Response to a DailySalesSummaryRQ</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="_DailySSSelectionCriteria">
+    <xs:annotation>
+      <xs:documentation>Used to define what should be included in the Daily Sales Summary report including optional filters. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="PseudoCityCode" type="STL:PseudoCityCode.AgencyOrAgent">
+        <xs:annotation>
+          <xs:documentation>Report data will be limited to data for this Psuedo City. This is a four digit code. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="Airline" type="_AirlineChoice">
+        <xs:annotation>
+          <xs:documentation>Arline char code and number code </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="ReportDate" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Report data will be limited to this date. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="SettlementType" type="TTL:Code.SettlementTypeCode">
+        <xs:annotation>
+          <xs:documentation>Report data will be limited to the settlement type specified. Available options for this are: TAT, TCH,TKT,STA, or KIL </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentType" type="TTL:Code.DocumentTypeForTNReports">
+        <xs:annotation>
+          <xs:documentation>Report data will be limited to the report type specified. Available options for this are: TKT,EMD,RFND,RFEMD,MCO,ALL. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DocumentNumber" type="TTL:Identifier.DocId">
+        <xs:annotation>
+          <xs:documentation>The 13 digit document number. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="isCacheLateLargeReports" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>The client can specify if it wants the system to cache a report if it is demmed too large to return in one XML document or if the report query runs too long and won't complete before the system timeout.  If this is set to true the system will cache the report and the client can retrive the report at a later time using CachedReportRQ.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="clientTimeoutSecs" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation>The client can specify a smaller timeout which the system will use to determine if a report will be returned late.  If the query won't finish in time the system will cache the report and the client can retrieve the report at a later time using CachedReportRQ.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="_DailySalesSummaryRQ">
+    <xs:sequence>
+      <xs:element name="Header" type="STL:STL_Header.RQ">
+        <xs:annotation>
+          <xs:documentation>Standard header information that help orchestrate the requests</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SelectionCriteria" type="_DailySSSelectionCriteria">
+        <xs:annotation>
+          <xs:documentation>Used to define what should be included in the Daily Sales Summary report including optional filters. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Diagnostic" type="Misc.Diagnostic">
+        <xs:annotation>
+          <xs:documentation>Internal use ONLY</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="_DSHeader">
+    <xs:annotation>
+      <xs:documentation>Describes data for the Daily Sales Summary Report</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PseudoCityCode" type="STL:PseudoCityCode">
+        <xs:annotation>
+          <xs:documentation>PCC for which the report was generated </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="AgencyName" type="STL:StringLength0to64">
+        <xs:annotation>
+          <xs:documentation>Agency name for which the report is generated </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_AirlineCode">
+    <xs:annotation>
+      <xs:documentation>Carrier code and Carrier number that the document was issued for. </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="STL:AirlineCode">
+        <xs:attribute name="AirlineNumber" type="STL:AirlineCode.OTA" use="optional">
+          <xs:annotation>
+            <xs:documentation>Numeric carrier code  number  </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="_AirlineChoice">
+    <xs:annotation>
+      <xs:documentation>Carrier code and Carrier number that the document was issued for. </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element minOccurs="0" name="AirlineCode" type="STL:AirlineCode">
+        <xs:annotation>
+          <xs:documentation>Arline Code. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="AirlineNumber" type="STL:AirlineCode.OTA">
+        <xs:annotation>
+          <xs:documentation>Airline number</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="_DSTransaction">
+    <xs:annotation>
+      <xs:documentation>List of documents which match the selection criteria.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DocumentType" type="TTL:Code.DocumentType">
+        <xs:annotation>
+          <xs:documentation>The document type. Ex: TKT, EMD,RFD, RFEMD, MCO. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" name="SettlementType" type="TTL:Code.SettlementTypeCode">
+        <xs:annotation>
+          <xs:documentation>The settlement type of the document. Ex: TAT, TCH, TKT, STA or KIL. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="PnrLocator" type="TTL:Identifier.PnrLocator">
+        <xs:annotation>
+          <xs:documentation>The Pnr the document belongs to. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PassengerName" type="Misc.FullName">
+        <xs:annotation>
+          <xs:documentation>The full name of the passenger. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="DocumentDetails" type="_DSDocumentDetails">
+        <xs:annotation>
+          <xs:documentation>Details regarding the document </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="_AirlineCode">
+        <xs:annotation>
+          <xs:documentation>Arline char code and number code </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="Commission" type="_Commision">
+        <xs:annotation>
+          <xs:documentation>Commission collected for the document </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Payments" type="_DSFop">
+        <xs:annotation>
+          <xs:documentation>Payment information </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AgentSine" type="TTL:Identifier.AgentDieSine">
+        <xs:annotation>
+          <xs:documentation>The identifying code for the agent performing the transaction. Ex: AGT </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="AgentPseudoCity" type="STL:PseudoCityCode">
+        <xs:annotation>
+          <xs:documentation>The Psuedo City that the Agent performing the transaction belongs to. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TransactionDateTime" type="STL:DateTime">
+        <xs:annotation>
+          <xs:documentation>The date time of this transaction. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="nonInteractive" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation>Indicates if the document was issued non interactive. </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="electronicDocument" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation>Indicates if the document is an electronic document or not. </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="itineraryType" type="TTL:Code.ItineraryTypeCode" use="optional">
+      <xs:annotation>
+        <xs:documentation>Indicates if the document for Domestic(D) or Internation(I) travel </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="_DSDocumentDetails">
+    <xs:annotation>
+      <xs:documentation>Details pertaining to a document. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DocumentNumber" type="TTL:Identifier.DocId">
+        <xs:annotation>
+          <xs:documentation>The 13 digit document number. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="LastConjunctiveDocumentNumber" type="TTL:Identifier.DocId">
+        <xs:annotation>
+          <xs:documentation>The 13 digit document number of the last conjunctive document. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="StockType" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The stock type of the document. Ex: 1Y or AT </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StockDetails" type="_DSStockDetails" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DocumentStatusCode" type="TTL:Code.TicketStatusCode">
+        <xs:annotation>
+          <xs:documentation>Indicates the status of the document. Ex: V (Void), N (Net remit), E (Even Exchange), A (Add Collect). This will not be populated if the document is an original issue. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="TransactionCode" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The transaction code. Ex: SALE (The original sale of a document), RFND (A refunded document), CNCL (A No-Pnr Void or System Cancel) </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSStockDetails">
+    <xs:annotation>
+      <xs:documentation>Details pertaining to the stock type and printer information. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="StockControlNumber" type="TTL:Identifier.DocId">
+        <xs:annotation>
+          <xs:documentation>The stock control number. This can be a 10 or 13 digit number. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="LastStockControlNumber" type="TTL:Identifier.DocId">
+        <xs:annotation>
+          <xs:documentation>The last conjunctive stock control number. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PrinterLniata" type="STL:Lniata">
+        <xs:annotation>
+          <xs:documentation>The Line IATA console the agent was signed into when document was issued. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="CouponType" type="TTL:Misc.CouponStatus">
+        <xs:annotation>
+          <xs:documentation>The coupon type. Ex: P (Passenger coupon), F (Flight Coupon), E (Electronic Coupon)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DailySalesSummaryRS">
+    <xs:annotation>
+      <xs:documentation>The response generated for a Daily Sales Summary Request. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Header" type="STL:STL_Header.RS">
+        <xs:annotation>
+          <xs:documentation>Header information indicating result of the service call, orchestration and transaction identifiers, errors and warnings</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="DSHeader" type="_DSHeader">
+        <xs:annotation>
+          <xs:documentation>Daily Sales Summary Header </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DailySalesReport" type="_DSReport">
+        <xs:annotation>
+          <xs:documentation>Daily Sales Report by Date</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Diagnostic" type="Misc.Diagnostic">
+        <xs:annotation>
+          <xs:documentation>Internal use ONLY</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" use="required" />
+    <xs:attribute name="isQueryStillRunning" type="xs:boolean" use="required" />
+    <xs:attribute name="reportId" type="xs:integer" />
+    <xs:attribute name="chunkNumber" type="xs:integer" />
+    <xs:attribute name="maxChunks" type="xs:integer" />
+  </xs:complexType>
+  <xs:complexType name="_DSReport">
+    <xs:annotation>
+      <xs:documentation>The response generated for a Daily Sales Summary Request. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ReportDate" type="xs:date">
+        <xs:annotation>
+          <xs:documentation>Date the report was generated for (It will mactch the request date if it was specified, or will be the current date if its not specified in request)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" type="_DSTransaction">
+        <xs:annotation>
+          <xs:documentation>Daily Sales Summary details about the document</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TotalDailySales" type="_DSTotalDailySales">
+        <xs:annotation>
+          <xs:documentation>Summary of Totals based on Transaction, Settlement and payment type</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSFop">
+    <xs:annotation>
+      <xs:documentation>Information regarding a document's financial transactions. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="1" name="CurrencyCode" type="TTL:_Code.Currency">
+        <xs:annotation>
+          <xs:documentation>The currency code used. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" name="DocumentPayment" type="_DSPayment">
+        <xs:annotation>
+          <xs:documentation>A document's payment. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Fees" type="_DSFeeDetail">
+        <xs:annotation>
+          <xs:documentation>any fees associated with the payment </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSFeeDetail">
+    <xs:annotation>
+      <xs:documentation>Information regarding a document's fees. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="FeeDetail">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="TTL:_Misc.Money">
+              <xs:attribute name="feeType" type="xs:string" use="optional">
+                <xs:annotation>
+                  <xs:documentation>The fee type. Ex: OBF (Form of Payment Fees), OBR (Requested Services Fees), OBT (Ticketing Fees)</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="cardType" type="xs:string" use="optional">
+                <xs:annotation>
+                  <xs:documentation>The Credit Card type that the fee belongs to. </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSPayment">
+    <xs:annotation>
+      <xs:documentation>Information regarding a documents payments. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PaymentTotal" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="PaymentDetail">
+        <xs:complexType>
+          <xs:complexContent mixed="false">
+            <xs:extension base="_DSPaymentDetail">
+              <xs:attribute name="fop" type="TTL:Code.FopCode" use="required" />
+              <xs:attribute name="category" type="TTL:Code.CategoryCode" use="optional">
+                <xs:annotation>
+                  <xs:documentation>The payment category. Cash and Credit. </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="cardType" type="xs:string" use="optional">
+                <xs:annotation>
+                  <xs:documentation>The Credit Card type that was used for the payment. This is a two digit code ex: VI </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSPaymentDetail">
+    <xs:annotation>
+      <xs:documentation>Information regarding a payment's amount. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PaymentAmount">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="TTL:_Misc.Money" />
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSTotalDailySales">
+    <xs:annotation>
+      <xs:documentation>The total sales for the report. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TransactionType" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The transaction code. Ex: SALE (The original sale of a document), RFND (A refunded document), CNCL (A No-Pnr Void or System Cancel) </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="SalesBySettlement" type="_DSTotalDailySalesBySettlementType">
+        <xs:annotation>
+          <xs:documentation>Sales totalled by Settlement Type for a paticular transaction </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSTotalDailySalesBySettlementType">
+    <xs:annotation>
+      <xs:documentation>Total sales by settlement type. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SettlementType" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Settlement type of the totals. Ex: TAT, TCH, TKT </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="SaleTotals" type="_DSTotalDailySalesByCurrency">
+        <xs:annotation>
+          <xs:documentation>Totals for all transactions for a currency </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_DSTotalDailySalesByCurrency">
+    <xs:annotation>
+      <xs:documentation>The total sales per currency code. </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrencyCode" type="TTL:_Code.Currency">
+        <xs:annotation>
+          <xs:documentation>The currency code of the total cash sales. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CashTotals" type="_Totals">
+        <xs:annotation>
+          <xs:documentation>The total cash sales </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreditTotals" type="_Totals">
+        <xs:annotation>
+          <xs:documentation>The total credit sales </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CommissionTotals" type="_Totals">
+        <xs:annotation>
+          <xs:documentation>The total commission  </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="_Totals">
+    <xs:annotation>
+      <xs:documentation>The total sales </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="TTL:_Misc.Money">
+        <xs:attribute name="count" type="xs:unsignedShort" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="_Commision">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Amount" type="TTL:_Misc.Money">
+        <xs:annotation>
+          <xs:documentation>The Commission amount. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="Percent" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Commission percentage. </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

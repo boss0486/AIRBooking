@@ -1,0 +1,136 @@
+//// Paramester
+////{
+////  "lPassenger": [
+////    {
+////      "PassengerType": "ADT",
+////      "GivenName": "DONG",
+////      "Surname": "NGUYEN",
+////      "DateOfBirth": "1985/05/08",
+////      "Gender": "M",
+////      "PhoneNumber": "0983498219"
+////    },
+////    {
+////      "PassengerType": "CNN",
+////      "GivenName": "VIET",
+////      "Surname": "PHUNG",
+////      "DateOfBirth": "2015/02/10",
+////      "Gender": "M",
+////      "PhoneNumber": "0983498218"
+////    },
+////    {
+////      "PassengerType": "INF",
+////      "GivenName": "BINH",
+////      "Surname": "NGUYEN",
+////      "DateOfBirth": "2019/02/11",
+////      "Gender": "M",
+////      "PhoneNumber": "0983498218"
+////    }
+////  ],
+////  "lFlight": [
+////    {
+////      "DepartureDateTime": "8/25/2020 5:00:00 AM",
+////      "ArrivalDateTime": "8/25/2020 7:15:00 AM",
+////      "FlightNumber": 233,
+////      "NumberInParty": 2,
+////      "ResBookDesigCode": "P",
+////      "AirEquipType": "321",
+////      "DestinationLocation": "SGN",
+////      "OriginLocation": "HAN"
+////    },
+////    {
+////      "DepartureDateTime": "9/25/2020 5:00:00 AM",
+////      "ArrivalDateTime": "9/25/2020 7:10:00 AM",
+////      "FlightNumber": 233,
+////      "NumberInParty": 2,
+////      "ResBookDesigCode": "E",
+////      "AirEquipType": "321",
+////      "DestinationLocation": "SGN",
+////      "OriginLocation": "HAN"
+////    }
+////  ],
+////  "ContactEmail": "vietnt.itt@gmail.com"
+////} 
+/// Result *********************************************************************************************************
+/// Note : Given Name, Surname cannot used  unicode
+////{
+////  "status": 200,
+////  "message": "OK",
+////  "data": {
+////    "PNR": "TEPCHV",
+////    "Total": 3563000,
+////    "lPricingInPNR": [
+////      {
+////        "DateOfBirth": "5/8/1985 12:00:00 AM",
+////        "SurName": "NGUYEN",
+////        "GivenName": "DONG",
+////        "type": "ADT",
+////        "ServiceFee": 700000,
+////        "ScanFee": 40000,
+////        "TaxFee": 82000,
+////        "VAT": 200000,
+////        "Fare": 818000,
+////        "TotalTax": 0
+////      },
+////      {
+////        "DateOfBirth": "2/10/2015 12:00:00 AM",
+////        "SurName": "PHUNG",
+////        "GivenName": "VIET",
+////        "type": "CNN",
+////        "ServiceFee": 700000,
+////        "ScanFee": 20000,
+////        "TaxFee": 74000,
+////        "VAT": 100000,
+////        "Fare": 738000,
+////        "TotalTax": 0
+////      },
+////      {
+////        "DateOfBirth": "2/11/2019 12:00:00 AM",
+////        "SurName": "NGUYEN",
+////        "GivenName": "BINH",
+////        "type": "INF",
+////        "ServiceFee": 0,
+////        "ScanFee": 0,
+////        "TaxFee": 9000,
+////        "VAT": 0,
+////        "Fare": 82000,
+////        "TotalTax": 0
+////      }
+////    ]
+////  }
+////}
+
+
+{
+  "ContactEmail": "nvchung1694@gmail.com",
+  "lFlight": [
+    {
+      "DepartureDateTime": "2020/07/15 05:00:00",
+      "ArrivalDateTime": "2020/07/15 07:15:00",
+      "FlightNumber": "233",
+      "NumberInParty": 1,
+      "ResBookDesigCode": "K",
+      "AirEquipType": "321",
+      "DestinationLocation": "SGN",
+      "OriginLocation": "HAN"
+    },
+    {
+      "DepartureDateTime": "2020/07/20 06:00:00",
+      "ArrivalDateTime": "2020/07/20 08:15:00",
+      "FlightNumber": "236",
+      "NumberInParty": 1,
+      "ResBookDesigCode": "K",
+      "AirEquipType": "321",
+      "DestinationLocation": "HAN",
+      "OriginLocation": "SGN"
+    }
+  ],
+  "lPassenger": [
+    {
+      "PassengerType": "ADT",
+      "GivenName": "VAN CHUNG",
+      "Surname": "NGUYEN",
+      "Gender": "M",
+      "PhoneNumber": "84815124440"
+    }
+  ]
+}

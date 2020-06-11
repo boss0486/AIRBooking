@@ -81,12 +81,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Connected Services\WebService.WSAirTicketLLSRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WebService.WSEndTransactionLLSRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Connected Services\WebService.WSFareLLSRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebService.WSGetReservationRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebService.WSKT_AsrServices\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -121,12 +141,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\WebService.WSPaymentRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WebService.WSSessionCloseRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Connected Services\WebService.WSSessionCreateRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebService.WSVoidTicketLLSRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -165,19 +195,123 @@
     <Compile Include="WebService\VNA\Enum\VNAEnum.cs" />
     <Compile Include="WebService\VNA\Service\AirAvailLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNAOTA_AirTaxRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAPaymentRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNASearchService.cs" />
     <Compile Include="WebService\VNA\Service\VNAFareLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSAirTicketLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSEndTransactionLLSRQ.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSKT_AsrServicesService.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSOTA_AirBookLLSRQSevice.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSOTA_CancelLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSOTA_AirPriceLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNAWSPassengerDetailsRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSDesignatePrinterLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSGetReservationRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNAWSVoidTicketLLSRQService.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AIRService.WebService.WSAirTicketLLSRQ.AirTicketRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AIRService.WebService.WSAirTicketLLSRQ.AirTicketRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AIRService.WebService.WSAirTicketLLSRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AIRService.WebService.WSAirTicketLLSRQ.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AirTicketLLS2.wsdl" />
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AirTicketLLS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AirTicketLLS21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AirTicketLLS22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\sws_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\AIRService.WebService.WSDesignatePrinterLLSRQ.DesignatePrinterRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\AIRService.WebService.WSDesignatePrinterLLSRQ.DesignatePrinterRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\AIRService.WebService.WSDesignatePrinterLLSRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\AIRService.WebService.WSDesignatePrinterLLSRQ.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\DesignatePrinterLLS2.wsdl" />
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\DesignatePrinterLLS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\DesignatePrinterLLS21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\DesignatePrinterLLS22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\sws_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\WebService.WSEndTransactionLLSRQ\AIRService.WebService.WSEndTransactionLLSRQ.EndTransactionRQResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -274,6 +408,110 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\WebService.WSFareLLSRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\Air.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\AIRService.WebService.WSGetReservationRQ.GetReservationOperationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\AIRService.WebService.WSGetReservationRQ.GetReservationRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\AIRService.WebService.WSGetReservationRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\AIRService.WebService.WSGetReservationRQ.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\Ancillaries.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\GetReservationSTLRQ_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\GetReservationSTLRS_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\GetReservationWSDL.wsdl" />
+    <None Include="Connected Services\WebService.WSGetReservationRQ\Lodging.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\OpenReservation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\PNRBuilderTypes_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\Pricing.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices.CachedReportRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices.DailySalesSummaryRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices._CachedReportRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\AIRService.WebService.WSKT_AsrServices._DailySalesSummaryRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\SabreTypeLibrary_Catalog_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\SabreTypeLibrary_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\TicketingTypeLibrary_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\TKT_AsrServices.wsdl" />
+    <None Include="Connected Services\WebService.WSKT_AsrServices\TKT_AsrServices_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\wsse2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\WebService.WSOTA_AirAvailLLSRQ\AIRService.WebService.WSOTA_AirAvailLLSRQ.MessageHeader.datasource">
@@ -567,6 +805,40 @@
     <None Include="Connected Services\WebService.WSPassengerDetailsRQ\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\AIRService.WebService.WSPaymentRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\AIRService.WebService.WSPaymentRQ.PaymentRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\AIRService.WebService.WSPaymentRQ.PaymentServiceRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\AIRService.WebService.WSPaymentRQ.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\OTA2003B.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\PaymentRQ_v4.wsdl" />
+    <None Include="Connected Services\WebService.WSPaymentRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSPaymentRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\WebService.WSSessionCloseRQ\AIRService.WebService.WSSessionCloseRQ.MessageHeader.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -647,19 +919,74 @@
     <None Include="Connected Services\WebService.WSSessionCreateRQ\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\AIRService.WebService.WSVoidTicketLLSRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\AIRService.WebService.WSVoidTicketLLSRQ.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\AIRService.WebService.WSVoidTicketLLSRQ.VoidTicketRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\AIRService.WebService.WSVoidTicketLLSRQ.VoidTicketRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\sws_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\VoidTicketLLS2.wsdl" />
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\VoidTicketLLS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\VoidTicketLLS21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\VoidTicketLLS22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\WebService.WSAirTicketLLSRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSEndTransactionLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSFareLLSRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.WSGetReservationRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.WSKT_AsrServices\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSOTA_AirAvailLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSOTA_AirBookLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSOTA_AirTaxRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSOTA_CancelLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSPassengerDetailsRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.WSPaymentRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSSessionCloseRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSSessionCreateRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.WSVoidTicketLLSRQ\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.WSSessionCreateRQ\configuration91.svcinfo" />
@@ -777,6 +1104,78 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.WSOTA_AirPriceLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSPaymentRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSPaymentRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSPaymentRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSGetReservationRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSAirTicketLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSVoidTicketLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.WSKT_AsrServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

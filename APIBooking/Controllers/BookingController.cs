@@ -1,6 +1,7 @@
 ﻿using AIRService.Service;
 using AIRService.WS.Entities;
 using ApiPortalBooking.Models;
+using ApiPortalBooking.Models.VNA_WS_Model;
 using Notifies.Helper;
 using System;
 using System.Web.Mvc;
@@ -38,6 +39,7 @@ namespace APIBooking.Controllers
                 //return Notifization.NotService;
             }
         }
+
         /// <summary>
         /// One way || Round trip
         /// </summary>
@@ -58,6 +60,7 @@ namespace APIBooking.Controllers
                 //return Notifization.NotService;
             }
         }
+
         /// <summary>
         /// Fee basic
         /// </summary>
@@ -77,6 +80,7 @@ namespace APIBooking.Controllers
                 //return Notifization.NotService;
             }
         }
+
         /// <summary>
         /// Internal fee
         /// </summary>
@@ -96,6 +100,7 @@ namespace APIBooking.Controllers
                 //return Notifization.NotService;
             }
         }
+
         /// <summary>
         /// book 
         /// </summary>
@@ -117,5 +122,49 @@ namespace APIBooking.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult ExTicket(BookVeResult model)
+        {
+            try
+            {
+                var vNASearchService = new VNASearchService();
+                return vNASearchService.ReleaseTicket(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult TicketInfo(PNRModel model)
+        {
+            try
+            {
+                var vNASearchService = new VNASearchService();
+                return vNASearchService.TicketInfo(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex); 
+                //return Notifization.NotService;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult TicketCancel(PNRModel model)
+        {
+            try
+            {
+                var vNASearchService = new VNASearchService();
+                return vNASearchService.VoidTicket(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex); 
+                //return Notifization.NotService;
+            }
+        } 
     }
 }

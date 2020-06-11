@@ -197,6 +197,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Temp\XMLFile1.xml" />
     <Content Include="Temp\XMLFile2.xml" />
+    <Content Include="Temp\XMLFile3.xml" />
     <Content Include="WS\Xml\ClearSession.xml" />
     <Content Include="WS\Xml\Common.xml" />
     <Content Include="WS\Xml\dongnt.xml" />
@@ -232,6 +233,8 @@
     <Content Include="Temp\tax-ok.json" />
     <Content Include="Temp\price.json" />
     <Content Include="Temp\error-price.json" />
+    <Content Include="Temp\book-ve.json" />
+    <Content Include="Temp\cancel.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

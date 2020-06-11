@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e63dc047-5dd6-4aa7-b742-b05af8e10513" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/PaymentRQ_v4.17.0.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="e2b8fdc0-58a4-4e6a-8542-6d5561441d95" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/msg-header-2_0.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="276d46ff-3094-4240-be4b-3b8a8d4c9679" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/xml.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="25f0d826-73ef-4321-aac2-ee18397b51d3" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/xlink.xsd" />
+    <MetadataFile FileName="OTA2003B.xsd" MetadataType="Schema" ID="8cda1ee7-01b2-45e2-8eb2-695329632c29" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/PaymentRQ_v4.17.0.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="865b0861-d5ed-4c45-b6fc-0bdaa29c3c70" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="PaymentRQ_v4.wsdl" MetadataType="Wsdl" ID="abe1a0d4-87fc-4652-8d4a-6cf049611907" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/PaymentRQ_v4.17.0.wsdl" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="7aeee562-6d55-4a9c-87c5-cf1f69cd95b0" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/envelope.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="19a59d6c-5755-4e1b-970a-253efa81f7cc" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/Payment/wsse.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

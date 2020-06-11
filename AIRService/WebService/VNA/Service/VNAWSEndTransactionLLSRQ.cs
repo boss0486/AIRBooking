@@ -8,13 +8,55 @@ using System.Threading.Tasks;
 
 namespace AIRService.WS.Service
 {
-    class VNATransaction
+    class VNAEndTransaction : IDisposable
     {
-        public AIRService.WebService.WSEndTransactionLLSRQ.EndTransactionRS EndTransaction(TokenModel model)
+        private TokenModel _tokenModel = null;
+        private bool m_Disposed = false;
+
+        public VNAEndTransaction()
         {
-            #region main code
+            _tokenModel = null;
+        }
+
+        // used for using 
+        public VNAEndTransaction(TokenModel tokenModel)
+        {
+            _tokenModel = tokenModel;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!m_Disposed)
+            {
+                if (disposing)
+                {
+                    // các đối tượng có Dispose gọi ở đây
+                    EndTransaction(_tokenModel);
+                }
+                // giải phóng các tài nguyên không quản lý được cửa lớp
+                m_Disposed = true;
+            }
+        }
+
+        ~VNAEndTransaction()
+        {
+            Dispose(false);
+        }
+        // *****************************************************************************************************************************************************************************
+
+        public AIRService.WebService.WSEndTransactionLLSRQ.EndTransactionRS EndTransaction(TokenModel model = null)
+        {
             try
             {
+                if (model == null)
+                    model = _tokenModel;
+                //
                 AIRService.WebService.WSEndTransactionLLSRQ.MessageHeader messageHeader = new AIRService.WebService.WSEndTransactionLLSRQ.MessageHeader();
                 messageHeader.MessageData = new AIRService.WebService.WSEndTransactionLLSRQ.MessageData();
                 messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
@@ -56,13 +98,8 @@ namespace AIRService.WS.Service
             }
             catch (Exception ex)
             {
-                throw ex;
+                return null;
             }
-            #endregion
-            #region testCode
-
-            #endregion
-            return null;
         }
     }
 }

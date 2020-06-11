@@ -33,9 +33,7 @@
     }
   ],
   "ContactEmail": "vietnt.itt@gmail.com"
-} 
-
-{
+} {
   "status": 200,
   "message": "OK",
   "data": {
@@ -94,12 +92,7 @@
     "PrimaryLangID": null,
     "AltLangID": null
   }
-}
-
-
-
-
-{
+} {
   "ContactEmail": "nvchung1694@gmail.com",
   "lFlight": [
     {
@@ -132,4 +125,4 @@
       "PhoneNumber": "84815124440"
     }
   ]
-}
+} 
