@@ -29,7 +29,7 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.FlightSearch(model);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.FlightCost(model);
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.FlightFee(model);
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.FlightFee(model);
             }
             catch (Exception ex)
@@ -111,13 +111,13 @@ namespace APIBooking.Controllers
         {
             try
             {
-                 
-                var vNASearchService = new VNASearchService();
+
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.BookVe(model);
             }
             catch (Exception ex)
             {
-                return Notifization.TEST(":::" + ex); 
+                return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
         }
@@ -127,7 +127,7 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.ReleaseTicket(model);
             }
             catch (Exception ex)
@@ -142,12 +142,12 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.TicketInfo(model);
             }
             catch (Exception ex)
             {
-                return Notifization.TEST(":::" + ex); 
+                return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
         }
@@ -157,14 +157,35 @@ namespace APIBooking.Controllers
         {
             try
             {
-                var vNASearchService = new VNASearchService();
+                var vNASearchService = new VNA_SearchService();
                 return vNASearchService.VoidTicket(model);
             }
             catch (Exception ex)
             {
-                return Notifization.TEST(":::" + ex); 
+                return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
-        } 
+        }
+
+        // API MAY BAY ********************************************************************************************************************************************
+        // API MAY BAY ********************************************************************************************************************************************
+        [HttpPost]
+        public ActionResult GdsSearch(FlightSearchModel model)
+        {
+            try
+            {
+                AIRService.WebService.Mbay.Service.GDS_WSGds_SearchFlightService gds_WSGds_SearchFlightService = new AIRService.WebService.Mbay.Service.GDS_WSGds_SearchFlightService();
+                //return gds_WSGds_SearchFlightService.FUNC_GDS_WSGds_SearchFlight(model);
+
+                return Notifization.Data("", gds_WSGds_SearchFlightService.FUNC_GDS_WSGds_SearchFlight(model));
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
+        // API MAY BAY ********************************************************************************************************************************************
+
     }
 }

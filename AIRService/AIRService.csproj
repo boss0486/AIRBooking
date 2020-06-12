@@ -80,7 +80,16 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WebService.WSAirTicketLLSRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -163,10 +172,15 @@
     </Compile>
     <Compile Include="Notification\Notifization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebService\Helper\Session\SabreSessionManager.cs" />
-    <Compile Include="WebService\Helper\Session\SessionService.cs" />
-    <Compile Include="WebService\VNA\Authen\WSAuthencation.cs" />
-    <Compile Include="WebService\VNA\Common\VNALibrary.cs" />
+    <Compile Include="WebService\Mbay\Authen\GDS_WSAuthencation.cs" />
+    <Compile Include="WebService\Helper\VNALibrary.cs" />
+    <Compile Include="WebService\Mbay\Entities\GDS_SearchFlightModel.cs" />
+    <Compile Include="WebService\Mbay\Enum\MBEnum.cs" />
+    <Compile Include="WebService\Mbay\Service\GDS_WSGds_SearchFlightService.cs" />
+    <Compile Include="WebService\Mbay\Session\GDS_SessionService.cs" />
+    <Compile Include="WebService\VNA\Session\SabreSessionManager.cs" />
+    <Compile Include="WebService\VNA\Session\VNA_SessionService.cs" />
+    <Compile Include="WebService\VNA\Authen\VNA_WSAuthencation.cs" />
     <Compile Include="WebService\VNA\Entities\AirAvailLLSRQModel.cs" />
     <Compile Include="WebService\VNA\Entities\AirBookModel.cs" />
     <Compile Include="WebService\VNA\Entities\AirPriceModel.cs" />
@@ -184,36 +198,288 @@
     <Compile Include="WebService\VNA\Entities\PaymentModel.cs" />
     <Compile Include="WebService\VNA\Entities\ReportModel.cs" />
     <Compile Include="WebService\VNA\Entities\ReservationModel.cs" />
-    <Compile Include="WebService\VNA\Entities\ReservationModel2.cs" />
     <Compile Include="WebService\VNA\Entities\RevResult.cs" />
     <Compile Include="WebService\VNA\Entities\SearchFlightModel.cs" />
     <Compile Include="WebService\VNA\Entities\TaxModel.cs" />
     <Compile Include="WebService\VNA\Entities\TaxParamModel.cs" />
     <Compile Include="WebService\VNA\Entities\TokenModel.cs" />
-    <Compile Include="WebService\VNA\Entities\VNAWSOTA_AirBookLLSRQ.cs" />
-    <Compile Include="WebService\VNA\Entities\VoidTicketModel.cs" />
+    <Compile Include="WebService\VNA\Entities\VNA_VoidTicketModel.cs" />
     <Compile Include="WebService\VNA\Enum\VNAEnum.cs" />
-    <Compile Include="WebService\VNA\Service\AirAvailLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAOTA_AirTaxRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAPaymentRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNASearchService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAFareLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSAirTicketLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSEndTransactionLLSRQ.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSKT_AsrServicesService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSOTA_AirBookLLSRQSevice.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSOTA_CancelLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSOTA_AirPriceLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSPassengerDetailsRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSDesignatePrinterLLSRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSGetReservationRQService.cs" />
-    <Compile Include="WebService\VNA\Service\VNAWSVoidTicketLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_AirAvailLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_OTA_AirTaxRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_PaymentRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_SearchService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_FareLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSAirTicketLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSEndTransactionLLSRQ.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSKT_AsrServicesService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSOTA_AirBookLLSRQSevice.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSOTA_CancelLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSOTA_AirPriceLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSPassengerDetailsRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSDesignatePrinterLLSRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSGetReservationRQService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_WSVoidTicketLLSRQService.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AirDataWS.wsdl" />
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.BaggageInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.FareData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.FlightData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Gds_GetFareRuleInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Gds_MakeReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Gds_SearchFlightResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Gds_SearchFlightV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.getPNRByMeIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.issueTicketResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.issueTicketv2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_GetBaggagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_IssueReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_IssueTicketResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_MakeReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_MakeReservationV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_MakeReservationWithMecIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_SearchFlightAllClassByAirlineResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_SearchFlightAllClassByAirlineV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_SearchFlightAllClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_SearchFlightByAirlineResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Lcc_SearchFlightResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.openPnrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.RulesGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_AddGoldenLotusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_AddInfantResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_CancelPNRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_ChangeClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_GetPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_GetSegmentsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_MakeMultiReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_openPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_RemoveSegmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_SplitPassnegerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Sab_VoidPNRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.Ticket.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VJPassenger.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VJSplitPassengerDetails.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VJ_GetPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VJ_SplitPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VJ_submitAndIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VNAPassenger.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AIRService.WebService.Mbay.WSGds_SearchFlightV2.VNASegment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AirDataWS.wsdl" />
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.BaggageInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.FareData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.FlightData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Gds_GetFareRuleInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Gds_MakeReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Gds_SearchFlightResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Gds_SearchFlightV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.getPNRByMeIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.issueTicketResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.issueTicketv2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_GetBaggagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_IssueReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_IssueTicketResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_MakeReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_MakeReservationV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_MakeReservationWithMecIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_SearchFlightAllClassByAirlineResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_SearchFlightAllClassByAirlineV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_SearchFlightAllClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_SearchFlightByAirlineResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Lcc_SearchFlightResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.openPnrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.RulesGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_AddGoldenLotusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_AddInfantResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_CancelPNRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_ChangeClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_GetPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_GetSegmentsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_MakeMultiReservationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_openPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_RemoveSegmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_SplitPassnegerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Sab_VoidPNRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.Ticket.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VJPassenger.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VJSplitPassengerDetails.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VJ_GetPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VJ_SplitPassengersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VJ_submitAndIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VNAPassenger.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VNASegment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\WebService.WSAirTicketLLSRQ\AIRService.WebService.WSAirTicketLLSRQ.AirTicketRQResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -971,6 +1237,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSAirTicketLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSDesignatePrinterLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.WSEndTransactionLLSRQ\" />
@@ -1176,6 +1444,37 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.WSKT_AsrServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AirDataWS.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AirDataWS.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

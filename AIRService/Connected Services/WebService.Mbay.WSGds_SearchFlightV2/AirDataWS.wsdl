@@ -1,0 +1,2200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Lcc_SearchFlight">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_SearchFlightResult" type="tns:ArrayOfFlightData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFlightData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FlightData" nillable="true" type="tns:FlightData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FlightData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DepartureFlights" type="tns:ArrayOfFlightFare" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReturnFlights" type="tns:ArrayOfFlightFare" />
+          <s:element minOccurs="0" maxOccurs="1" name="SessionDepart" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SessionReturn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SessionAll" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DebugId" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFlightFare">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FlightFare" nillable="true" type="tns:FlightFare" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FlightFare">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stops" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Duration" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SelectValue" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Currency" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Child" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PriceAdult" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PriceChild" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PriceInfant" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FeeAdult" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FeeChild" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FeeInfant" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAdult" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxChild" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxInfant" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListAvailFlights" type="tns:ArrayOfAvailFlight" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAvailFlight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AvailFlight" nillable="true" type="tns:AvailFlight" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AvailFlight">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FlightNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Plane" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Duration" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Class" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Part" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SeatsRemaining" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Authentication" type="tns:Authentication" />
+      <s:complexType name="Authentication">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="HeaderUser" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HeaderPassword" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="Lcc_SearchFlightByAirline">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightByAirlineResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_SearchFlightByAirlineResult" type="tns:ArrayOfFlightData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_SearchFlightAllClassResult" type="tns:ArrayOfFlightData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClassByAirline">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClassByAirlineResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_SearchFlightAllClassByAirlineResult" type="tns:ArrayOfFlightData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClassByAirlineV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PriceFilter" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_SearchFlightAllClassByAirlineV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_SearchFlightAllClassByAirlineV2Result" type="tns:ArrayOfFlightData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_GetBaggages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SessionAll" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="isDomestic" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="NumberOfAvailFlightsDepart" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="NumberOfAvailFlightsReturn" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_GetBaggagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_GetBaggagesResult" type="tns:BaggageInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BaggageInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BaggageDepart" type="tns:ArrayOfBaggage" />
+          <s:element minOccurs="0" maxOccurs="1" name="BaggageReturn" type="tns:ArrayOfBaggage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBaggage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Baggage" nillable="true" type="tns:Baggage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Baggage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Currency" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sab_MakeMultiReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="departureFlight" type="tns:ArrayOfFlightVNA" />
+            <s:element minOccurs="0" maxOccurs="1" name="returnFlight" type="tns:ArrayOfFlightVNA" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFlightVNA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FlightVNA" nillable="true" type="tns:FlightVNA" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FlightVNA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FlightNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassAdult" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPassenger">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Passenger" nillable="true" type="tns:Passenger" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Passenger">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Index" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthday" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PassportExpiryDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="PassportIssueCountry" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PassportNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BaggageDeparture" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BaggageReturn" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sab_MakeMultiReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_MakeMultiReservationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_MakeReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceDepart" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceReturn" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureFlightNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnFlightNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Contact">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Company" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Lcc_MakeReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_MakeReservationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_MakeReservationV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceDepart" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceReturn" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureFlightNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnFlightNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_MakeReservationV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_MakeReservationV2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_IssueReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceDepart" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceReturn" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureFlightNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnFlightNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_IssueReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_IssueReservationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_MakeReservationWithMecId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceDepart" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceReturn" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureFlightNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnFlightNumber" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="meId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_MakeReservationWithMecIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_MakeReservationWithMecIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_IssueTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Lcc_IssueTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Lcc_IssueTicketResult" type="tns:ArrayOfTicket" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTicket">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ticket" nillable="true" type="tns:Ticket" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Ticket">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Index" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PassengerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BookingFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="issueTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="issueTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="issueTicketResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="issueTicketv2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="issueTicketv2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="issueTicketv2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ping">
+        <s:complexType />
+      </s:element>
+      <s:element name="pingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="openPnr">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="openPnrResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="openPnrResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPNRByMeID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="meID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPNRByMeIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPNRByMeIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_VoidPNR">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_VoidPNRResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_VoidPNRResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_CancelPNR">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_CancelPNRResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_CancelPNRResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_GetPassengers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_GetPassengersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_GetPassengersResult" type="tns:ArrayOfVNAPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVNAPassenger">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VNAPassenger" nillable="true" type="tns:VNAPassenger" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VNAPassenger">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fullname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LotusNumber" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sab_AddGoldenLotus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Passengers" type="tns:ArrayOfVNAPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_AddGoldenLotusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_AddGoldenLotusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_SplitPassneger">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Passenger" type="tns:VNAPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_SplitPassnegerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_SplitPassnegerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_AddInfant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="BirthDay" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="AdtId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_AddInfantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_AddInfantResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_GetSegments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_GetSegmentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_GetSegmentsResult" type="tns:ArrayOfVNASegment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVNASegment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VNASegment" nillable="true" type="tns:VNASegment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VNASegment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FlightNumb" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FlightDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SelectClass" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sab_RemoveSegment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Segments" type="tns:ArrayOfVNASegment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_RemoveSegmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_RemoveSegmentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_ChangeClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Segments" type="tns:ArrayOfVNASegment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_ChangeClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_ChangeClassResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VJ_GetPassengers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VJ_GetPassengersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VJ_GetPassengersResult" type="tns:ArrayOfVJPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVJPassenger">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VJPassenger" nillable="true" type="tns:VJPassenger" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VJPassenger">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Index" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FullName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gender" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HoldingID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="VJ_SplitPassengers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Passengers" type="tns:ArrayOfVJPassenger" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VJ_SplitPassengersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VJ_SplitPassengersResult" type="tns:VJSplitPassengerDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VJSplitPassengerDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentPnr" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CurrentPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewPnr" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sab_openPrice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNRCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sab_openPriceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sab_openPriceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VJ_submitAndIssue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DepartureDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="ReturnDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureSelectValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnSelectValue" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceDepart" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalPriceReturn" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureFlightNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnFlightNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VJ_submitAndIssueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VJ_submitAndIssueResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_SearchFlight">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_SearchFlightResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Gds_SearchFlightResult" type="tns:ArrayOfFareData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFareData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FareData" nillable="true" type="tns:FareData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FareData">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Child" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FareAdult" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FareChild" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FareInfant" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalFare" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartureDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReturnDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastTkDt" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasChangedClass" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="PlatingCarrier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SearchParams" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FareDataId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListDepartureFlight" type="tns:ArrayOfFlight" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListReturnFlight" type="tns:ArrayOfFlight" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListDepartureRulesInfo" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListReturnRulesInfo" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFlight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Flight" nillable="true" type="tns:Flight" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Flight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Duration" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FlightId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="StopNum" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NoRefund" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListAvailFlt" type="tns:ArrayOfAvailFlt" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAvailFlt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AvailFlt" nillable="true" type="tns:AvailFlt" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AvailFlt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AirlineCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FlightNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndPoint" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AirpChg" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Equip" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumStops" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Duration" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OpAirV" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTerminal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTerminal" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FlightTime" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FrstDwnlnStp" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastDwnlnStp" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassAdult" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassChild" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassInfant" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IsLastItem" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StopTime" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Gds_SearchFlightV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ItineraryType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DestinationAirportCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartureDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Adult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Children" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Infant" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_SearchFlightV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Gds_SearchFlightV2Result" type="tns:ArrayOfFareData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_MakeReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SearchParams" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FareDataId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PlatingCarrier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalFare" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="DepartureFlightId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ReturnFlightId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListPassengers" type="tns:ArrayOfPassenger" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactInfo" type="tns:Contact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_MakeReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Gds_MakeReservationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_GetFareRuleInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SearchParams" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FareDataId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PlatingCarrier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalFare" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="FlightType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gds_GetFareRuleInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Gds_GetFareRuleInfoResult" type="tns:ArrayOfRulesGroup" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRulesGroup">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RulesGroup" nillable="true" type="tns:RulesGroup" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RulesGroup">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RulesTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ListRulesText" type="tns:ArrayOfRulesText" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRulesText">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RulesText" nillable="true" type="tns:RulesText" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RulesText">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Text" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="Lcc_SearchFlightSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlight" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightByAirlineSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightByAirline" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightByAirlineSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightByAirlineResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightByAirlineAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClass" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClassByAirline" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClassByAirlineResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineV2SoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClassByAirlineV2" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineV2SoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_SearchFlightAllClassByAirlineV2Response" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_SearchFlightAllClassByAirlineV2Authentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_GetBaggagesSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_GetBaggages" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_GetBaggagesSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_GetBaggagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_GetBaggagesAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_MakeMultiReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_MakeMultiReservation" />
+  </wsdl:message>
+  <wsdl:message name="Sab_MakeMultiReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_MakeMultiReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_MakeMultiReservationAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservation" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationV2SoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservationV2" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationV2SoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservationV2Response" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationV2Authentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_IssueReservation" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_IssueReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueReservationAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationWithMecIdSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservationWithMecId" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationWithMecIdSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_MakeReservationWithMecIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_MakeReservationWithMecIdAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:Lcc_IssueTicket" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:Lcc_IssueTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="Lcc_IssueTicketAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:issueTicket" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:issueTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketv2SoapIn">
+    <wsdl:part name="parameters" element="tns:issueTicketv2" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketv2SoapOut">
+    <wsdl:part name="parameters" element="tns:issueTicketv2Response" />
+  </wsdl:message>
+  <wsdl:message name="issueTicketv2Authentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="pingSoapIn">
+    <wsdl:part name="parameters" element="tns:ping" />
+  </wsdl:message>
+  <wsdl:message name="pingSoapOut">
+    <wsdl:part name="parameters" element="tns:pingResponse" />
+  </wsdl:message>
+  <wsdl:message name="openPnrSoapIn">
+    <wsdl:part name="parameters" element="tns:openPnr" />
+  </wsdl:message>
+  <wsdl:message name="openPnrSoapOut">
+    <wsdl:part name="parameters" element="tns:openPnrResponse" />
+  </wsdl:message>
+  <wsdl:message name="openPnrAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="getPNRByMeIDSoapIn">
+    <wsdl:part name="parameters" element="tns:getPNRByMeID" />
+  </wsdl:message>
+  <wsdl:message name="getPNRByMeIDSoapOut">
+    <wsdl:part name="parameters" element="tns:getPNRByMeIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPNRByMeIDAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_VoidPNRSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_VoidPNR" />
+  </wsdl:message>
+  <wsdl:message name="Sab_VoidPNRSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_VoidPNRResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_VoidPNRAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_CancelPNRSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_CancelPNR" />
+  </wsdl:message>
+  <wsdl:message name="Sab_CancelPNRSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_CancelPNRResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_CancelPNRAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetPassengersSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_GetPassengers" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetPassengersSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_GetPassengersResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetPassengersAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddGoldenLotusSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_AddGoldenLotus" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddGoldenLotusSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_AddGoldenLotusResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddGoldenLotusAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_SplitPassnegerSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_SplitPassneger" />
+  </wsdl:message>
+  <wsdl:message name="Sab_SplitPassnegerSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_SplitPassnegerResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_SplitPassnegerAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddInfantSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_AddInfant" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddInfantSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_AddInfantResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_AddInfantAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetSegmentsSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_GetSegments" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetSegmentsSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_GetSegmentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_GetSegmentsAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_RemoveSegmentSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_RemoveSegment" />
+  </wsdl:message>
+  <wsdl:message name="Sab_RemoveSegmentSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_RemoveSegmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_RemoveSegmentAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_ChangeClassSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_ChangeClass" />
+  </wsdl:message>
+  <wsdl:message name="Sab_ChangeClassSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_ChangeClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_ChangeClassAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="VJ_GetPassengersSoapIn">
+    <wsdl:part name="parameters" element="tns:VJ_GetPassengers" />
+  </wsdl:message>
+  <wsdl:message name="VJ_GetPassengersSoapOut">
+    <wsdl:part name="parameters" element="tns:VJ_GetPassengersResponse" />
+  </wsdl:message>
+  <wsdl:message name="VJ_GetPassengersAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="VJ_SplitPassengersSoapIn">
+    <wsdl:part name="parameters" element="tns:VJ_SplitPassengers" />
+  </wsdl:message>
+  <wsdl:message name="VJ_SplitPassengersSoapOut">
+    <wsdl:part name="parameters" element="tns:VJ_SplitPassengersResponse" />
+  </wsdl:message>
+  <wsdl:message name="VJ_SplitPassengersAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Sab_openPriceSoapIn">
+    <wsdl:part name="parameters" element="tns:Sab_openPrice" />
+  </wsdl:message>
+  <wsdl:message name="Sab_openPriceSoapOut">
+    <wsdl:part name="parameters" element="tns:Sab_openPriceResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sab_openPriceAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="VJ_submitAndIssueSoapIn">
+    <wsdl:part name="parameters" element="tns:VJ_submitAndIssue" />
+  </wsdl:message>
+  <wsdl:message name="VJ_submitAndIssueSoapOut">
+    <wsdl:part name="parameters" element="tns:VJ_submitAndIssueResponse" />
+  </wsdl:message>
+  <wsdl:message name="VJ_submitAndIssueAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightSoapIn">
+    <wsdl:part name="parameters" element="tns:Gds_SearchFlight" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightSoapOut">
+    <wsdl:part name="parameters" element="tns:Gds_SearchFlightResponse" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightV2SoapIn">
+    <wsdl:part name="parameters" element="tns:Gds_SearchFlightV2" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightV2SoapOut">
+    <wsdl:part name="parameters" element="tns:Gds_SearchFlightV2Response" />
+  </wsdl:message>
+  <wsdl:message name="Gds_SearchFlightV2Authentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Gds_MakeReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:Gds_MakeReservation" />
+  </wsdl:message>
+  <wsdl:message name="Gds_MakeReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:Gds_MakeReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="Gds_MakeReservationAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:message name="Gds_GetFareRuleInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:Gds_GetFareRuleInfo" />
+  </wsdl:message>
+  <wsdl:message name="Gds_GetFareRuleInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:Gds_GetFareRuleInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="Gds_GetFareRuleInfoAuthentication">
+    <wsdl:part name="Authentication" element="tns:Authentication" />
+  </wsdl:message>
+  <wsdl:portType name="AirDataWSSoap">
+    <wsdl:operation name="Lcc_SearchFlight">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get low cost carrier (LCC) flights</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_SearchFlightSoapIn" />
+      <wsdl:output message="tns:Lcc_SearchFlightSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightByAirline">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get low cost carrier (LCC) flights</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_SearchFlightByAirlineSoapIn" />
+      <wsdl:output message="tns:Lcc_SearchFlightByAirlineSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClass">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get low cost carrier (LCC) flights all class</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_SearchFlightAllClassSoapIn" />
+      <wsdl:output message="tns:Lcc_SearchFlightAllClassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirline">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get low cost carrier (LCC) flights all class by Airline</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_SearchFlightAllClassByAirlineSoapIn" />
+      <wsdl:output message="tns:Lcc_SearchFlightAllClassByAirlineSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirlineV2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get low cost carrier (LCC) flights all class by Airline</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_SearchFlightAllClassByAirlineV2SoapIn" />
+      <wsdl:output message="tns:Lcc_SearchFlightAllClassByAirlineV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_GetBaggages">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get baggages information</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_GetBaggagesSoapIn" />
+      <wsdl:output message="tns:Lcc_GetBaggagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_MakeMultiReservation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Sab_MakeMultiReservationSoapIn" />
+      <wsdl:output message="tns:Sab_MakeMultiReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_MakeReservationSoapIn" />
+      <wsdl:output message="tns:Lcc_MakeReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationV2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_MakeReservationV2SoapIn" />
+      <wsdl:output message="tns:Lcc_MakeReservationV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueReservation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit and issue reservation. VNA does not supported</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_IssueReservationSoapIn" />
+      <wsdl:output message="tns:Lcc_IssueReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationWithMecId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_MakeReservationWithMecIdSoapIn" />
+      <wsdl:output message="tns:Lcc_MakeReservationWithMecIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueTicket">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Lcc_IssueTicketSoapIn" />
+      <wsdl:output message="tns:Lcc_IssueTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="issueTicket">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Issue VN, VJ and JQ booking</wsdl:documentation>
+      <wsdl:input message="tns:issueTicketSoapIn" />
+      <wsdl:output message="tns:issueTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="issueTicketv2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Issue VN, VJ and JQ booking, json response</wsdl:documentation>
+      <wsdl:input message="tns:issueTicketv2SoapIn" />
+      <wsdl:output message="tns:issueTicketv2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ping">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">PING</wsdl:documentation>
+      <wsdl:input message="tns:pingSoapIn" />
+      <wsdl:output message="tns:pingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="openPnr">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Open PNR code</wsdl:documentation>
+      <wsdl:input message="tns:openPnrSoapIn" />
+      <wsdl:output message="tns:openPnrSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPNRByMeID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GET PNR code by MeID</wsdl:documentation>
+      <wsdl:input message="tns:getPNRByMeIDSoapIn" />
+      <wsdl:output message="tns:getPNRByMeIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_VoidPNR">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Void VNA booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_VoidPNRSoapIn" />
+      <wsdl:output message="tns:Sab_VoidPNRSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_CancelPNR">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Cancel VNA booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_CancelPNRSoapIn" />
+      <wsdl:output message="tns:Sab_CancelPNRSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetPassengers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get VNA booking passengers</wsdl:documentation>
+      <wsdl:input message="tns:Sab_GetPassengersSoapIn" />
+      <wsdl:output message="tns:Sab_GetPassengersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddGoldenLotus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add Golden lotus to passengers</wsdl:documentation>
+      <wsdl:input message="tns:Sab_AddGoldenLotusSoapIn" />
+      <wsdl:output message="tns:Sab_AddGoldenLotusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_SplitPassneger">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Split passenger VNA booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_SplitPassnegerSoapIn" />
+      <wsdl:output message="tns:Sab_SplitPassnegerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddInfant">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add Infant to VNA booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_AddInfantSoapIn" />
+      <wsdl:output message="tns:Sab_AddInfantSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetSegments">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Segments in VNA Booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_GetSegmentsSoapIn" />
+      <wsdl:output message="tns:Sab_GetSegmentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_RemoveSegment">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove Segment in VNA Booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_RemoveSegmentSoapIn" />
+      <wsdl:output message="tns:Sab_RemoveSegmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_ChangeClass">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change Segment class VNA Booking</wsdl:documentation>
+      <wsdl:input message="tns:Sab_ChangeClassSoapIn" />
+      <wsdl:output message="tns:Sab_ChangeClassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VJ_GetPassengers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get VietJet Air booking passengers</wsdl:documentation>
+      <wsdl:input message="tns:VJ_GetPassengersSoapIn" />
+      <wsdl:output message="tns:VJ_GetPassengersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VJ_SplitPassengers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Split VietJet Air passengers</wsdl:documentation>
+      <wsdl:input message="tns:VJ_SplitPassengersSoapIn" />
+      <wsdl:output message="tns:VJ_SplitPassengersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sab_openPrice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get fare rules information</wsdl:documentation>
+      <wsdl:input message="tns:Sab_openPriceSoapIn" />
+      <wsdl:output message="tns:Sab_openPriceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VJ_submitAndIssue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit and issue VJ</wsdl:documentation>
+      <wsdl:input message="tns:VJ_submitAndIssueSoapIn" />
+      <wsdl:output message="tns:VJ_submitAndIssueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlight">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get GDS flights</wsdl:documentation>
+      <wsdl:input message="tns:Gds_SearchFlightSoapIn" />
+      <wsdl:output message="tns:Gds_SearchFlightSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlightV2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get GDS flights</wsdl:documentation>
+      <wsdl:input message="tns:Gds_SearchFlightV2SoapIn" />
+      <wsdl:output message="tns:Gds_SearchFlightV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gds_MakeReservation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit reservation and get booking code</wsdl:documentation>
+      <wsdl:input message="tns:Gds_MakeReservationSoapIn" />
+      <wsdl:output message="tns:Gds_MakeReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gds_GetFareRuleInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get fare rules information</wsdl:documentation>
+      <wsdl:input message="tns:Gds_GetFareRuleInfoSoapIn" />
+      <wsdl:output message="tns:Gds_GetFareRuleInfoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AirDataWSSoap" type="tns:AirDataWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Lcc_SearchFlight">
+      <soap:operation soapAction="http://tempuri.org/Lcc_SearchFlight" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_SearchFlightAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightByAirline">
+      <soap:operation soapAction="http://tempuri.org/Lcc_SearchFlightByAirline" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_SearchFlightByAirlineAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClass">
+      <soap:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_SearchFlightAllClassAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirline">
+      <soap:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClassByAirline" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_SearchFlightAllClassByAirlineAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirlineV2">
+      <soap:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClassByAirlineV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_SearchFlightAllClassByAirlineV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_GetBaggages">
+      <soap:operation soapAction="http://tempuri.org/Lcc_GetBaggages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_GetBaggagesAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_MakeMultiReservation">
+      <soap:operation soapAction="http://tempuri.org/Sab_MakeMultiReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_MakeMultiReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservation">
+      <soap:operation soapAction="http://tempuri.org/Lcc_MakeReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_MakeReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationV2">
+      <soap:operation soapAction="http://tempuri.org/Lcc_MakeReservationV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_MakeReservationV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueReservation">
+      <soap:operation soapAction="http://tempuri.org/Lcc_IssueReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_IssueReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationWithMecId">
+      <soap:operation soapAction="http://tempuri.org/Lcc_MakeReservationWithMecId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_MakeReservationWithMecIdAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueTicket">
+      <soap:operation soapAction="http://tempuri.org/Lcc_IssueTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Lcc_IssueTicketAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="issueTicket">
+      <soap:operation soapAction="http://tempuri.org/issueTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:issueTicketAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="issueTicketv2">
+      <soap:operation soapAction="http://tempuri.org/issueTicketv2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:issueTicketv2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ping">
+      <soap:operation soapAction="http://tempuri.org/ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="openPnr">
+      <soap:operation soapAction="http://tempuri.org/openPnr" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:openPnrAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPNRByMeID">
+      <soap:operation soapAction="http://tempuri.org/getPNRByMeID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:getPNRByMeIDAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_VoidPNR">
+      <soap:operation soapAction="http://tempuri.org/Sab_VoidPNR" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_VoidPNRAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_CancelPNR">
+      <soap:operation soapAction="http://tempuri.org/Sab_CancelPNR" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_CancelPNRAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetPassengers">
+      <soap:operation soapAction="http://tempuri.org/Sab_GetPassengers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_GetPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddGoldenLotus">
+      <soap:operation soapAction="http://tempuri.org/Sab_AddGoldenLotus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_AddGoldenLotusAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_SplitPassneger">
+      <soap:operation soapAction="http://tempuri.org/Sab_SplitPassneger" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_SplitPassnegerAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddInfant">
+      <soap:operation soapAction="http://tempuri.org/Sab_AddInfant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_AddInfantAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetSegments">
+      <soap:operation soapAction="http://tempuri.org/Sab_GetSegments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_GetSegmentsAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_RemoveSegment">
+      <soap:operation soapAction="http://tempuri.org/Sab_RemoveSegment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_RemoveSegmentAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_ChangeClass">
+      <soap:operation soapAction="http://tempuri.org/Sab_ChangeClass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_ChangeClassAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_GetPassengers">
+      <soap:operation soapAction="http://tempuri.org/VJ_GetPassengers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VJ_GetPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_SplitPassengers">
+      <soap:operation soapAction="http://tempuri.org/VJ_SplitPassengers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VJ_SplitPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_openPrice">
+      <soap:operation soapAction="http://tempuri.org/Sab_openPrice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Sab_openPriceAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_submitAndIssue">
+      <soap:operation soapAction="http://tempuri.org/VJ_submitAndIssue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VJ_submitAndIssueAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlight">
+      <soap:operation soapAction="http://tempuri.org/Gds_SearchFlight" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Gds_SearchFlightAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlightV2">
+      <soap:operation soapAction="http://tempuri.org/Gds_SearchFlightV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Gds_SearchFlightV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_MakeReservation">
+      <soap:operation soapAction="http://tempuri.org/Gds_MakeReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Gds_MakeReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_GetFareRuleInfo">
+      <soap:operation soapAction="http://tempuri.org/Gds_GetFareRuleInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:Gds_GetFareRuleInfoAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AirDataWSSoap12" type="tns:AirDataWSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Lcc_SearchFlight">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_SearchFlight" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_SearchFlightAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightByAirline">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_SearchFlightByAirline" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_SearchFlightByAirlineAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClass">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_SearchFlightAllClassAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirline">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClassByAirline" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_SearchFlightAllClassByAirlineAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_SearchFlightAllClassByAirlineV2">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_SearchFlightAllClassByAirlineV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_SearchFlightAllClassByAirlineV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_GetBaggages">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_GetBaggages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_GetBaggagesAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_MakeMultiReservation">
+      <soap12:operation soapAction="http://tempuri.org/Sab_MakeMultiReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_MakeMultiReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservation">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_MakeReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_MakeReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationV2">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_MakeReservationV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_MakeReservationV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueReservation">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_IssueReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_IssueReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_MakeReservationWithMecId">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_MakeReservationWithMecId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_MakeReservationWithMecIdAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lcc_IssueTicket">
+      <soap12:operation soapAction="http://tempuri.org/Lcc_IssueTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Lcc_IssueTicketAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="issueTicket">
+      <soap12:operation soapAction="http://tempuri.org/issueTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:issueTicketAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="issueTicketv2">
+      <soap12:operation soapAction="http://tempuri.org/issueTicketv2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:issueTicketv2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ping">
+      <soap12:operation soapAction="http://tempuri.org/ping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="openPnr">
+      <soap12:operation soapAction="http://tempuri.org/openPnr" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:openPnrAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPNRByMeID">
+      <soap12:operation soapAction="http://tempuri.org/getPNRByMeID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:getPNRByMeIDAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_VoidPNR">
+      <soap12:operation soapAction="http://tempuri.org/Sab_VoidPNR" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_VoidPNRAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_CancelPNR">
+      <soap12:operation soapAction="http://tempuri.org/Sab_CancelPNR" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_CancelPNRAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetPassengers">
+      <soap12:operation soapAction="http://tempuri.org/Sab_GetPassengers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_GetPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddGoldenLotus">
+      <soap12:operation soapAction="http://tempuri.org/Sab_AddGoldenLotus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_AddGoldenLotusAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_SplitPassneger">
+      <soap12:operation soapAction="http://tempuri.org/Sab_SplitPassneger" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_SplitPassnegerAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_AddInfant">
+      <soap12:operation soapAction="http://tempuri.org/Sab_AddInfant" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_AddInfantAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_GetSegments">
+      <soap12:operation soapAction="http://tempuri.org/Sab_GetSegments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_GetSegmentsAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_RemoveSegment">
+      <soap12:operation soapAction="http://tempuri.org/Sab_RemoveSegment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_RemoveSegmentAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_ChangeClass">
+      <soap12:operation soapAction="http://tempuri.org/Sab_ChangeClass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_ChangeClassAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_GetPassengers">
+      <soap12:operation soapAction="http://tempuri.org/VJ_GetPassengers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VJ_GetPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_SplitPassengers">
+      <soap12:operation soapAction="http://tempuri.org/VJ_SplitPassengers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VJ_SplitPassengersAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sab_openPrice">
+      <soap12:operation soapAction="http://tempuri.org/Sab_openPrice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Sab_openPriceAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VJ_submitAndIssue">
+      <soap12:operation soapAction="http://tempuri.org/VJ_submitAndIssue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VJ_submitAndIssueAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlight">
+      <soap12:operation soapAction="http://tempuri.org/Gds_SearchFlight" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Gds_SearchFlightAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_SearchFlightV2">
+      <soap12:operation soapAction="http://tempuri.org/Gds_SearchFlightV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Gds_SearchFlightV2Authentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_MakeReservation">
+      <soap12:operation soapAction="http://tempuri.org/Gds_MakeReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Gds_MakeReservationAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gds_GetFareRuleInfo">
+      <soap12:operation soapAction="http://tempuri.org/Gds_GetFareRuleInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:Gds_GetFareRuleInfoAuthentication" part="Authentication" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AirDataWS">
+    <wsdl:port name="AirDataWSSoap" binding="tns:AirDataWSSoap">
+      <soap:address location="http://data.maybay.net/AirDataWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AirDataWSSoap12" binding="tns:AirDataWSSoap12">
+      <soap12:address location="http://data.maybay.net/AirDataWS.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
