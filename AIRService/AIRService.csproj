@@ -35,6 +35,12 @@
     <Reference Include="AL.Web">
       <HintPath>..\..\..\..\..\WORK\Framework\NetFramework\CMSCore\bin\Debug\AL.Web.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.SimpleCRUD, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.SimpleCRUD.2.2.0.1\lib\netstandard2.0\Dapper.SimpleCRUD.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
@@ -48,8 +54,11 @@
       <HintPath>..\packages\SoapHttpClient.1.4.3\lib\net45\SoapHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -80,6 +89,8 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppService\Module\Flight\Entities\AppFlight.cs" />
+    <Compile Include="AppService\Module\Flight\Services\FlightSegmentService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1448,7 +1459,12 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AppService\Module\Booking\Entities\" />
+    <Folder Include="AppService\Module\Booking\Enum\" />
+    <Folder Include="AppService\Module\Booking\Services\" />
+    <Folder Include="AppService\Module\Flight\Enum\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AirDataWS.disco" />
   </ItemGroup>
