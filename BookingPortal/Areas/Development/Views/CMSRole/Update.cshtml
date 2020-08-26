@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.Model.Enum;
+@model WebCore.Entities.CMSRole
+
+@{
+    string id = string.Empty;
+    string areaId = string.Empty;
+    string title = string.Empty;
+    string level = string.Empty;
+    string summary = string.Empty;
+    string enable = string.Empty;
+    try
+    {
+        if (Model != null)
+        {
+            id = Model.ID;
+            areaId = Model.AreaID;
+            title = Model.Title;
+            summary = Model.Summary;
+            level = Model.Level.ToString();
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enable = "checked";
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+
+@Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="form-group ">
+            <label class="form-label">Phân vùng:</label>
+            <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText" disabled>
+                <option value="">-Lựa chọn-</option>
+                @Html.Raw(AreaApplicationService.DropdowList(areaId))
+            </select>
+            <span id="lblArea" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <label class="form-label">Tên nhóm quyền:</label>
+            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <label class="form-label">Mô tả:</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control default">@Html.Raw(summary)</textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <label class="form-label">Cấp độ:</label>
+            <input id="txtLevel" name="txtLevel" maxlength="50" type="text" class="form-control" value="@level" />
+            <span id="lblLevel" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-10">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enable />
+            <label for="cbxActive">Cho phép hiển thị</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+ 
+
+<input id="txtID" type="hidden" value="@id" />
+@section scripts{
+    <script src="~/Areas/Development/_script/cms-role.js"></script>
+}
+
+
+

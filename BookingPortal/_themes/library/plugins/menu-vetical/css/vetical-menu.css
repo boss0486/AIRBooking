@@ -1,0 +1,55 @@
+
+.vatical-menu {
+    display: block;
+    width: 100%;
+    padding: 10px 0px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #DDD;
+    height: 450px;
+    overflow: auto;
+}
+    .vatical-menu ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        padding-left:26px;
+    }
+        .vatical-menu ul li {
+            position: relative;
+            display: block;
+            padding: .45rem 0rem;
+            margin-bottom: -1px;
+            background-color: #fff;
+        }
+            .vatical-menu ul li:before {
+                content: "";
+                border-left: dotted 1px #CCC;
+                position: absolute;
+                left: 6px;
+                bottom: 10px;
+                top: 23px;
+                z-index: 0;
+            }
+            .vatical-menu ul li:after {
+                content: "";
+                border-bottom: dotted 1px #CCC;
+                position: absolute;
+                left: -20px;
+                top: 12px;
+                z-index: 2;
+                width: 20px;
+            }
+
+            
+
+        .vatical-menu ul li label {
+             margin-bottom:0px;
+
+        }

@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@model WebCore.Entities.AirAirport
+@{
+    string id = string.Empty;
+    string title = string.Empty;
+    string summary = string.Empty;
+    string iataCode = string.Empty;
+    string areaId = string.Empty;
+    string enabled = string.Empty;
+
+    if (Model != null)
+    {
+        id = Model.ID;
+        title = Model.Title;
+        summary = Model.Summary;
+        iataCode = Model.IATACode;
+        areaId = Model.AreaID;
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "checked";
+        }
+    }
+
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group ">
+            <div class="form-line selecter">
+                <label class="form-label">Vùng/Miền:</label>
+            </div>
+            <select id="ddlAreaID" name="ddlAreaID" class="form-control show-tick" data-live-search="true">
+                <option value="-">@Helper.Language.Resource.Label.Option</option>
+                @Html.Raw(AreaGeographicalService.AreaDropdownList(areaId))
+            </select>
+            <span id="lblAreaID" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <div class="form-line">
+                <label class="form-label">Tiêu đề</label>
+                <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+            </div>
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <div class="form-line">
+                <label class="form-label">Mã IATA</label>
+                <input id="txtIataCode" name="txtIataCode" maxlength="5" type="text" class="form-control" value="@iataCode" />
+            </div>
+            <span id="lblIataCode" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <div class="form-line">
+                <label class="form-label">Mô tả</label>
+                <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
+            </div>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group  text-right ">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<input id="txtID" type="hidden" value="@id" />
+@section scripts{
+    <script src="~/Areas/Management/_script/app-flight.js"></script>
+}
+
+

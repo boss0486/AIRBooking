@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@{
+    string id = string.Empty;
+    string loginId = string.Empty;
+    string tokenId = string.Empty;
+    string otpCode = string.Empty;
+    string roleGroupID = string.Empty;
+    string roleGroupName = string.Empty;
+    string identifierID = string.Empty;
+    string imageFile = string.Empty;
+    string firstName = string.Empty;
+    string lastName = string.Empty;
+    string nickname = string.Empty;
+    string birthday = string.Empty;
+    string email = string.Empty;
+    string phone = string.Empty;
+    string address = string.Empty;
+    string departmentId = string.Empty;
+    string departmentName = string.Empty;
+    string departmentpartId = string.Empty;
+    string departmentPartName = string.Empty;
+    string workShiName = string.Empty;
+
+    string machineid = string.Empty;
+    string languageId = string.Empty;
+    bool isBlock = false;
+    string siteId = string.Empty;
+    string createdby = string.Empty;
+    string roleId = string.Empty;
+    string active = "";
+    string imgFile = "";
+    string createdDate = string.Empty;
+    string wordShiftName = string.Empty;
+    string bankId = string.Empty;
+    string bankName = string.Empty;
+    string accountNumber = string.Empty;
+    //DateTime createdDate =  ;
+
+    using (var loginService = new UserLoginService())
+    {
+        try
+        {
+            id = Helper.Current.IdentifierID;
+            var user = loginService.GetUserModel(id);
+            if (user == null)
+            {
+                Helper.Navigate.PageNotFound();
+            }
+            else
+            {
+                id = user.ID;
+                loginId = user.LoginID;
+                tokenId = user.TokenID;
+                otpCode = user.OTPCode;
+                identifierID = user.IdentifierID;
+                imageFile = user.ImageFile;
+                firstName = user.FirstName;
+                lastName = user.LastName;
+                nickname = user.Nickname;
+                birthday = Helper.Library.ConvertDateVN(user.Birthday);
+                email = user.Email;
+                phone = user.Phone;
+                address = user.Address;
+                departmentName = user.DepartmentName;
+                departmentPartName = user.DepartmentPartName;
+                wordShiftName = user.WorkShiftName;
+                machineid = string.Empty;
+                languageId = string.Empty;
+                isBlock = false;
+                siteId = string.Empty;
+                createdby = user.CreatedBy;
+                if (user.Enabled == (int)ModelEnum.Enabled.ENABLED)
+                {
+                    active = "checked";
+                }
+                createdDate = Helper.Library.FormatDate(user.CreatedDate);
+                imgFile = WebCore.AttachmentFile.GetFile(imageFile);
+            }
+        }
+        catch (Exception)
+        {
+            Helper.Navigate.PageNotFound();
+        }
+    }
+}
+<div class="card">
+    <div class="body">
+        <div class="row">
+            <div class="col-md-4 profile">
+                <div class="profile-card">
+                    <div class="profile-header">&nbsp;</div>
+                    <div class="profile-body">
+                        <div class="image-area">
+                            <img src="@imgFile" />
+                        </div>
+                        <div class="content-area">
+                            <h3>@firstName. @lastName</h3>
+                            <p>Web Software Developer</p>
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                    <div class="profile-footer">
+                        <ul>
+                            <li>
+                                <span>Biệt danh:</span>
+                                <span>@firstName @nickname</span>
+                            </li>
+                            <li>
+                                <span>Họ Tên:</span>
+                                <span>@firstName</span>
+                            </li>
+                            <li>
+                                <span>Tên:</span>
+                                <span>@lastName</span>
+                            </li>
+                            <li>
+                                <span>Ngày sinh:</span>
+                                <span>@birthday</span>
+                            </li>
+                            <li>
+                                <span>ID nhân viên:</span>
+                                <span style="color:#F00">@identifierID</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-about">
+                    <div class="header">
+                        <h2>Hoạt động</h2>
+                    </div>
+                    <div class="body">
+
+                        <ul>
+                            <li>
+                                <div class="title">
+                                    <label class="form-label">Ngày bắt đầu:</label>
+                                </div>
+                                <div class="content">
+                                    <span>01/01/2019</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="title">
+                                    <label class="form-label">Ngày kết thúc:</label>
+                                </div>
+                                <div class="content">
+                                    <span>01/01/2019</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="title">
+                                    <label class="form-label"> Trạng thái:</label>
+                                </div>
+                                <div class="content">
+                                    <span class="label bg-red">UI Design</span>
+                                    <span class="label bg-teal">JavaScript</span>
+                                    <span class="label bg-blue">PHP</span>
+                                    <span class="label bg-amber">Node.js</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Chức vụ:</label>
+                </div>
+                <section class="inf-container">
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Phòng ban: <span>Kỹ thuật</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Team/nhóm: <span>.Net </span></label>
+                        </div>
+                    </div>
+                </section>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin liên hệ:</label>
+                </div>
+                <section class="inf-container">
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Địa chỉ email: <span>@email</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Số điện thoại: <span>@phone </span></label>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Địa chỉ: <span>@address</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Ngày tạo hồ sơ: <b style="color:#F00">@createdDate</b></label>
+                        </div>
+                    </div>
+                </section>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin thanh toán:</label>
+                </div>
+                <section class="inf-container">
+
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Ngân hàng: <span> @bankName</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="form-line">
+                            <label class="form-label">Số tài khoản: <b style="color:#F00">@accountNumber</b></label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

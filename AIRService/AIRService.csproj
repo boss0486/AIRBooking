@@ -32,14 +32,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AL.Web">
-      <HintPath>..\..\..\..\..\WORK\Framework\NetFramework\CMSCore\bin\Debug\AL.Web.dll</HintPath>
+    <Reference Include="AL.NetFrame, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\dll\AL.NetFrame.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Dapper.SimpleCRUD, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.SimpleCRUD.2.2.0.1\lib\netstandard2.0\Dapper.SimpleCRUD.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.7.1\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.7.1\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.7.1\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -50,6 +60,14 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.3.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.9\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="SoapHttpClient, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SoapHttpClient.1.4.3\lib\net45\SoapHttpClient.dll</HintPath>
     </Reference>
@@ -57,6 +75,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.7.1\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -87,10 +108,37 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppService\Module\Flight\Entities\AppFlight.cs" />
-    <Compile Include="AppService\Module\Flight\Services\FlightSegmentService.cs" />
+    <Compile Include="Application\Area\Entities\AreaGeographical.cs" />
+    <Compile Include="Application\Area\Services\AreaGeographicalService.cs" />
+    <Compile Include="Application\AirOrder\Entities\OrderTax.cs" />
+    <Compile Include="Application\AirOrder\Entities\OrderCode.cs" />
+    <Compile Include="Application\AirOrder\Entities\OrderPrice.cs" />
+    <Compile Include="Application\AirOrder\Entities\OrderTicket.cs" />
+    <Compile Include="Application\AirOrder\Enum\BookTicket.cs" />
+    <Compile Include="Application\AirOrder\Services\OrderTaxService.cs" />
+    <Compile Include="Application\AirOrder\Services\OrderCodeService.cs" />
+    <Compile Include="Application\AirOrder\Services\OrderPriceService.cs" />
+    <Compile Include="Application\AirOrder\Services\OrderTicketService.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookEmail.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookContact.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookPrice.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookTax.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookPassenger.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookTicket.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookPNRCode.cs" />
+    <Compile Include="Application\AirTicket\Enum\BookTicket.cs" />
+    <Compile Include="Application\AirTicket\Services\BookEmailService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookContactService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookPriceService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookTaxService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookPassengerService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookTicketService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
+    <Compile Include="Application\AirFilght\Entities\AirAirport.cs" />
+    <Compile Include="Application\AirFilght\Services\AirportService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -181,10 +229,162 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Notification\Notifization.cs" />
+    <Compile Include="Core\AreaApplication\Entities\AreaApplication.cs" />
+    <Compile Include="Core\AreaApplication\Enum\AreaApplicationEnum.cs" />
+    <Compile Include="Core\AreaApplication\Services\AreaApplicationService.cs" />
+    <Compile Include="Core\Database\DbConnect.cs" />
+    <Compile Include="Core\Database\DbConnectModel.cs" />
+    <Compile Include="Core\MenuItem\Entities\MenuAction.cs" />
+    <Compile Include="Core\MenuItem\Entities\MenuCategory.cs" />
+    <Compile Include="Core\MenuItem\Entities\MenuController.cs" />
+    <Compile Include="Core\MenuItem\Entities\MenuItem.cs" />
+    <Compile Include="Core\MenuItem\Enum\MenuItemEnum.cs" />
+    <Compile Include="Core\MenuItem\Services\MenuActionService.cs" />
+    <Compile Include="Core\MenuItem\Services\MenuCategoryService.cs" />
+    <Compile Include="Core\MenuItem\Services\MenuControllerService.cs" />
+    <Compile Include="Core\MenuItem\Services\MenuItemService.cs" />
+    <Compile Include="Core\Model\Entities\Model.cs" />
+    <Compile Include="Core\Model\Enum\ModelEnum.cs" />
+    <Compile Include="Core\Model\Services\ModelService.cs" />
+    <Compile Include="Core\Role\Entities\CMSRole.cs" />
+    <Compile Include="Core\Role\Enum\CMSRoleEnum.cs" />
+    <Compile Include="Core\Role\Services\CMSRoleService.cs" />
+    <Compile Include="Core\UserClient\Entities\UserClient.cs" />
+    <Compile Include="Core\UserClient\Services\UserClientService.cs" />
+    <Compile Include="Core\User\Entities\CMSUserInfo.cs" />
+    <Compile Include="Core\User\Entities\CMSUserLogin.cs" />
+    <Compile Include="Core\User\Entities\CMSUserRole.cs" />
+    <Compile Include="Core\User\Entities\CMSUserSetting.cs" />
+    <Compile Include="Core\User\Entities\User.cs" />
+    <Compile Include="Core\User\Entities\UserInfo.cs" />
+    <Compile Include="Core\User\Entities\UserLogin.cs" />
+    <Compile Include="Core\User\Entities\UserRole.cs" />
+    <Compile Include="Core\User\Entities\UserSetting.cs" />
+    <Compile Include="Core\User\Services\CMSUserInfoService.cs" />
+    <Compile Include="Core\User\Services\CMSUserLoginService.cs" />
+    <Compile Include="Core\User\Services\CMSUserRoleService.cs" />
+    <Compile Include="Core\User\Services\CMSUserService.cs" />
+    <Compile Include="Core\User\Services\CMSUserSettingService.cs" />
+    <Compile Include="Core\User\Services\UserInfoService.cs" />
+    <Compile Include="Core\User\Services\UserLoginService.cs" />
+    <Compile Include="Core\User\Services\UserRoleService.cs" />
+    <Compile Include="Core\User\Services\UserService.cs" />
+    <Compile Include="Core\User\Services\UserSettingService.cs" />
+    <Compile Include="Core\User\_Model\UserModel.cs" />
+    <Compile Include="Helper\AttachmentFile.cs" />
+    <Compile Include="Helper\CMSController.cs" />
+    <Compile Include="Helper\Contant.cs" />
+    <Compile Include="Helper\HelperCurrent.cs" />
+    <Compile Include="Helper\HelperLanguage.cs" />
+    <Compile Include="Helper\HelperMail.cs" />
+    <Compile Include="Helper\HelperModel.cs" />
+    <Compile Include="Helper\HelperPage.cs" />
+    <Compile Include="Helper\HelperPaging.cs" />
+    <Compile Include="Helper\HelperPermission.cs" />
+    <Compile Include="Helper\HelperSecurity.cs" />
+    <Compile Include="Helper\HelperUser.cs" />
+    <Compile Include="Helper\Notifization.cs" />
+    <Compile Include="Helper\ValidData.cs" />
+    <Compile Include="Module\Account\Entities\Account.cs" />
+    <Compile Include="Module\Account\Services\AccountService.cs" />
+    <Compile Include="Module\Article\Entities\Article.cs" />
+    <Compile Include="Module\Article\Entities\ArticleCategory.cs" />
+    <Compile Include="Module\Article\Services\ArticleCategoryService.cs" />
+    <Compile Include="Module\Article\Services\ArticleService.cs" />
+    <Compile Include="Module\Attachment\Entities\Attachment.cs" />
+    <Compile Include="Module\Attachment\Entities\AttachmentCategory.cs" />
+    <Compile Include="Module\Attachment\Entities\AttachmentIngredient.cs" />
+    <Compile Include="Module\Attachment\Services\AttachmentCategoryService.cs" />
+    <Compile Include="Module\Attachment\Services\AttachmentIngredientService.cs" />
+    <Compile Include="Module\Attachment\Services\AttachmentService.cs" />
+    <Compile Include="Module\Bank\Entities\Bank.cs" />
+    <Compile Include="Module\Bank\Entities\CardCredit.cs" />
+    <Compile Include="Module\Bank\Services\BankService.cs" />
+    <Compile Include="Module\Bank\Services\CardCreditService.cs" />
+    <Compile Include="Module\Banner\Entities\Banner.cs" />
+    <Compile Include="Module\Banner\Enum\BannerEnum.cs" />
+    <Compile Include="Module\Banner\Services\BannerService.cs" />
+    <Compile Include="Module\Contact\Entities\Contact.cs" />
+    <Compile Include="Module\Contact\Entities\MYRegularExpressionAttribute.cs" />
+    <Compile Include="Module\Contact\Services\ContactService.cs" />
+    <Compile Include="Application\Customer\Entities\Customer.cs" />
+    <Compile Include="Application\Customer\Entities\CustomerType.cs" />
+    <Compile Include="Application\Customer\Enum\CustomerTypeEnum.cs" />
+    <Compile Include="Application\Customer\Services\CustomerService.cs" />
+    <Compile Include="Application\Customer\Services\CustomerTypeService.cs" />
+    <Compile Include="Application\History\Entities\TransactionDepositHistory.cs" />
+    <Compile Include="Application\History\Entities\TransactionHistory.cs" />
+    <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
+    <Compile Include="Application\History\Entities\WalletCustomerDepositHistory.cs" />
+    <Compile Include="Application\History\Entities\WalletCustomerSpendingHistory.cs" />
+    <Compile Include="Application\History\Entities\WalletHistory.cs" />
+    <Compile Include="Application\History\Entities\WalletUserHistory.cs" />
+    <Compile Include="Application\History\Enum\WalletHistoryEnum.cs" />
+    <Compile Include="Application\History\Services\TransactionDepositHistoryService.cs" />
+    <Compile Include="Application\History\Services\TransactionHistoryService.cs" />
+    <Compile Include="Application\History\Services\TransactionPaymentHistoryService.cs" />
+    <Compile Include="Application\History\Services\WalletCustomerDepositHistoryService.cs" />
+    <Compile Include="Application\History\Services\WalletCustomerSpendingHistoryService.cs" />
+    <Compile Include="Application\History\Services\WalletHistoryService.cs" />
+    <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />
+    <Compile Include="Module\Language\Entities\Language.cs" />
+    <Compile Include="Module\Language\Services\LanguageService.cs" />
+    <Compile Include="Module\Menu\Entities\Menu.cs" />
+    <Compile Include="Module\Menu\Enum\MenuEnum.cs" />
+    <Compile Include="Module\Menu\Services\MenuService.cs" />
+    <Compile Include="Module\Meta\Entities\Meta.cs" />
+    <Compile Include="Module\Meta\Entities\MetaGroup.cs" />
+    <Compile Include="Module\Meta\Services\MetaGroupService.cs" />
+    <Compile Include="Module\Meta\Services\MetaService.cs" />
+    <Compile Include="Module\Permission\Entities\Permission.cs" />
+    <Compile Include="Module\Permission\Entities\Role.cs" />
+    <Compile Include="Module\Permission\Entities\RoleActionSetting.cs" />
+    <Compile Include="Module\Permission\Entities\RoleControllerSetting.cs" />
+    <Compile Include="Module\Permission\Enum\RoleEnum.cs" />
+    <Compile Include="Module\Permission\Services\PermissionService.cs" />
+    <Compile Include="Module\Permission\Services\RoleActionSettingService.cs" />
+    <Compile Include="Module\Permission\Services\RoleControllerSettingService.cs" />
+    <Compile Include="Module\Permission\Services\RoleService.cs" />
+    <Compile Include="Module\Product\Entities\Product.cs" />
+    <Compile Include="Module\Product\Entities\ProductCategory.cs" />
+    <Compile Include="Module\Product\Entities\ProductProvider.cs" />
+    <Compile Include="Module\Product\Entities\ProductType.cs" />
+    <Compile Include="Module\Product\Entities\ProductWarranty.cs" />
+    <Compile Include="Module\Product\Enum\ProductEnum.cs" />
+    <Compile Include="Module\Product\Services\ProductCategoryService.cs" />
+    <Compile Include="Module\Product\Services\ProductProviderService.cs" />
+    <Compile Include="Module\Product\Services\ProductService.cs" />
+    <Compile Include="Module\Product\Services\ProductTypeService.cs" />
+    <Compile Include="Module\Product\Services\ProductWarrantyService.cs" />
+    <Compile Include="Application\Report\Entities\Report.cs" />
+    <Compile Include="Application\Report\Enum\ReportEnum.cs" />
+    <Compile Include="Application\Report\Services\ReportService.cs" />
+    <Compile Include="Module\Service\Entities\AppService.cs" />
+    <Compile Include="Module\Service\Entities\AppServiceCategory.cs" />
+    <Compile Include="Module\Service\Services\AppServiceCategoryService.cs" />
+    <Compile Include="Module\Service\Services\AppServiceService.cs" />
+    <Compile Include="Application\Supplier\Entities\Supplier.cs" />
+    <Compile Include="Application\Supplier\Enum\SupplierEnum.cs" />
+    <Compile Include="Application\Supplier\Services\SupplierService.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionDeposit.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionSpending.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionUserSpending.cs" />
+    <Compile Include="Application\Transaction\Enum\TransactionEnum.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionDepositService.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionSpendingService.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionUserSpendingService.cs" />
+    <Compile Include="Application\UserClient\Entities\ClientLogin.cs" />
+    <Compile Include="Application\UserClient\Enum\ClientLoginEnum.cs" />
+    <Compile Include="Application\UserClient\Services\ClientLoginService.cs" />
+    <Compile Include="Application\Wallet\Entities\Wallet.cs" />
+    <Compile Include="Application\Wallet\Entities\WalletCustomer.cs" />
+    <Compile Include="Application\Wallet\Entities\WalletUser.cs" />
+    <Compile Include="Application\Wallet\Services\WalletCustomerService.cs" />
+    <Compile Include="Application\Wallet\Services\WalletService.cs" />
+    <Compile Include="Application\Wallet\Services\WalletUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebService\Mbay\Authen\GDS_WSAuthencation.cs" />
-    <Compile Include="WebService\Helper\VNALibrary.cs" />
+    <Compile Include="WebService\VNAHelper\VNALibrary.cs" />
     <Compile Include="WebService\Mbay\Entities\GDS_SearchFlightModel.cs" />
     <Compile Include="WebService\Mbay\Enum\MBEnum.cs" />
     <Compile Include="WebService\Mbay\Service\GDS_WSGds_SearchFlightService.cs" />
@@ -198,7 +398,6 @@
     <Compile Include="WebService\VNA\Entities\AirTaxModel.cs" />
     <Compile Include="WebService\VNA\Entities\AirTicketLLSRQModel.cs" />
     <Compile Include="WebService\VNA\Entities\BaseFareModel.cs" />
-    <Compile Include="WebService\VNA\Entities\BookModel.cs" />
     <Compile Include="WebService\VNA\Entities\BookVeResult.cs" />
     <Compile Include="WebService\VNA\Entities\DataSearchFlight.cs" />
     <Compile Include="WebService\VNA\Entities\DesignatePrinterLLSModel.cs" />
@@ -1460,10 +1659,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppService\Module\Booking\Entities\" />
-    <Folder Include="AppService\Module\Booking\Enum\" />
-    <Folder Include="AppService\Module\Booking\Services\" />
-    <Folder Include="AppService\Module\Flight\Enum\" />
+    <Folder Include="Application\AirFilght\Enum\" />
+    <Folder Include="Application\Area\Enum\" />
+    <Folder Include="Application\Wallet\Enum\" />
+    <Folder Include="Core\Authorization\Entities\" />
+    <Folder Include="Core\Authorization\Enum\" />
+    <Folder Include="Core\Authorization\Services\" />
+    <Folder Include="Module\Account\_Model\" />
+    <Folder Include="Module\Service\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AirDataWS.disco" />
@@ -1494,6 +1697,11 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="File\no-img.gif" />
+    <Content Include="Application\Customer\Entities\CustomerType-csdl.txt" />
+    <Content Include="Application\Customer\Services\CustomerTypeService-csdl.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

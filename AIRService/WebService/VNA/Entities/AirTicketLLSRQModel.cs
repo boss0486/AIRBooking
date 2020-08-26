@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebCore.Entities;
 
 namespace ApiPortalBooking.Models
 {
@@ -12,6 +13,6 @@ namespace ApiPortalBooking.Models
     {
         public string PNR { get; set; }
         public string approveCode { get; set; }
-        public List<PricingInPNR> lPricingInPNR { get; set; }
+        public List<ExTitketPassengerFareModel> lPricingInPNR { get; set; }
     }
 }

@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+@using Webcore.Services;
+@{
+    string id = string.Empty;
+    string title = string.Empty;
+    string summary = string.Empty;
+    string enable = string.Empty;
+    string clsEnable = string.Empty;
+    try
+    {
+        id = this.Url.RequestContext.RouteData.Values["id"].ToString();
+        var productCategoryService = new ProductCategoryService();
+        var productCategory = productCategoryService.UpdateForm(id);
+
+        if (productCategory == null)
+        {
+            Response.Redirect("/not-found");
+        }
+        else
+        {
+            title = productCategory.Title;
+            summary = productCategory.Summary;
+            string cls = "fa-square";
+            int value = 0;
+            if (productCategory.Enabled)
+            {
+                cls = "fa-check-square";
+                value = 1;
+                clsEnable = "actived";
+            }
+            enable = "<i class='far " + cls + "' data-val='" + value + "'></i>";
+        }
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/not-found");
+    }
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Hình ảnh:</label>
+            </div>
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+            </div>
+            <div class="form-line">
+                <label class="form-label">Tiêu đề:</label>
+                <div>@title</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-line">
+                <label class="form-label">Mô tả:</label>
+                <div>@summary</div>
+            </div>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin SEO:</label>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Development/_script/menu-item-category.js"></script>
+}

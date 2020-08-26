@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.TransactionDeposit
+
+@{
+    string id = "";
+    string customerId = "";
+    string title = "";
+    string alias = "";
+    string summary = "";
+    string transactionId = "";
+    string bankSent = "";
+    string bankIDSent = "";
+    string bankReceived = "";
+    string bankIDReceived = "";
+    DateTime receivedDate = new DateTime();
+    double amount = 0;
+    int status = 0;
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string enabled = "None";
+    string transactionType = string.Empty;
+
+    try
+    {
+        if (Model != null)
+        {
+            id = Model.ID;
+
+            customerId = Model.CustomerID;
+            title = Model.Title;
+            alias = Model.Alias;
+            summary = Model.Summary;
+            transactionId = Model.TransactionID;
+            bankSent = Model.BankSent;
+            bankIDSent = Model.BankIDSent;
+            bankReceived = Model.BankReceived;
+            bankIDReceived = Model.BankIDReceived;
+            receivedDate = Model.ReceivedDate;
+            amount = Model.Amount;
+            status = Model.Status;
+            //
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
+            enabled = "None";
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "ENABLED";
+            }
+            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
+            {
+                enabled = "DISABLE";
+            }
+
+
+            if (status == 1)
+            {
+                transactionType = "Nhận";
+            }
+            else
+            {
+                transactionType = "Chuyển";
+            }
+
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @transactionId</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: @transactionType</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng chuyển: @bankSent , số tài khoản: @bankIDSent</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng nhận: @bankReceived , số tài khoản: @bankIDReceived</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @Helper.Page.Library.FormatToDateVN(receivedDate)</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

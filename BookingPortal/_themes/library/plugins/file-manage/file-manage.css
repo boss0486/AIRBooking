@@ -1,0 +1,214 @@
+﻿.file-modal .modal-header {
+    padding: 30px 0px 5px 0px;
+}
+
+    .file-modal .modal-header .modal-title {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+.file-modal .modal-content {
+    border-radius: 0px;
+    position: relative;
+    background-color: #FFF;
+    border: 5px solid #F44336;
+    outline: 0;
+    overflow: hidden;
+}
+
+
+.file-modal .modal-container-layout {
+    border-radius: 0px;
+    position: relative;
+    background-color: #FFF;
+    border: none;
+    outline: 0;
+    overflow: hidden;
+}
+    .file-modal .modal-container-layout .row {
+        margin-right: -5px;
+        margin-left: -5px;
+    }
+.file-modal .col-xs-1, .file-modal .col-sm-1, .file-modal .col-md-1, .file-modal .col-lg-1,
+.file-modal .col-xs-2, .file-modal .col-sm-2, .file-modal .col-md-2, .file-modal .col-lg-2,
+.file-modal .col-xs-3, .file-modal .col-sm-3, .file-modal .col-md-3, .file-modal .col-lg-3,
+.file-modal .col-xs-4, .file-modal .col-sm-4, .file-modal .col-md-4, .file-modal .col-lg-4,
+.file-modal .col-xs-5, .file-modal .col-sm-5, .file-modal .col-md-5, .file-modal .col-lg-5,
+.file-modal .col-xs-6, .file-modal .col-sm-6, .file-modal .col-md-6, .file-modal .col-lg-6,
+.file-modal .col-xs-7, .file-modal .col-sm-7, .file-modal .col-md-7, .file-modal .col-lg-7,
+.file-modal .col-xs-8, .file-modal .col-sm-8, .file-modal .col-md-8, .file-modal .col-lg-8,
+.file-modal .col-xs-9, .file-modal .col-sm-9, .file-modal .col-md-9, .file-modal .col-lg-9,
+.file-modal .col-xs-10, .file-modal .col-sm-10, .file-modal .col-md-10, .file-modal .col-lg-10,
+.file-modal .col-xs-11, .file-modal .col-sm-11, .file-modal .col-md-11, .file-modal .col-lg-11,
+.file-modal .col-xs-12, .file-modal .col-sm-12, .file-modal .col-md-12, .file-modal .col-lg-12 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+    .file-modal .modal-container-layout .modal-body {
+        padding-top: 5px;
+        padding-bottom: 20px;
+    }
+
+    .file-modal .modal-container-layout .item-image {
+        height: 215px;
+        border: dotted 1px #9FCCC9;
+        margin-top: 15px;
+    }
+
+        .file-modal .modal-container-layout .item-image.actived {
+            background: #cbf5ce;
+        }
+
+    .file-modal .modal-container-layout .image-box {
+        height: 140px;
+        border-bottom: dotted 1px #c5c5c5;
+        background: #F9F9F9;
+        padding: 5px;
+        position: relative;
+    }
+
+        .file-modal .modal-container-layout .image-box img {
+            max-height: 120px;
+            margin: auto;
+            padding: 0px;
+        }
+    .file-modal .modal-container-layout .note-box  {
+        text-align: center;
+    }
+    .file-modal .modal-container-layout .note-box span {
+        height: 40px;
+        color: #7F8677;
+        font-size: 10px;
+        text-align: center;
+        padding: 5px 5px;
+    }
+
+    .file-modal .modal-container-layout .note-box .size-info {
+        color: #C79F2E;
+    }
+
+    .file-modal .modal-container-layout .action-box {
+        height: 30px;
+        font-size: 10px;
+        padding: 8px 5px;
+        text-align: right;
+    }
+
+        .file-modal .modal-container-layout .action-box i {
+            margin: auto 5px;
+            cursor: pointer;
+        }
+
+    .file-modal .modal-container-layout .list-group .list-group-item i {
+        color: #FFC107;
+    }
+
+    .file-modal .modal-container-layout .input-group i.fa-upload, i.fa-folder {
+        color: #FFC107;
+    }
+
+    .file-modal .modal-container-layout .modal-header .btn-close {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        cursor: pointer;
+    }
+.file-preview {
+    border: 1px solid #ddd;
+    width: 100%;
+    margin-bottom: 5px;
+    min-height: 260px;
+    background:#FFF;
+}
+.file-preview .modal-content {
+    border-radius: 0px;
+    position: relative;
+    background-color: #FFF;
+    border: 5px solid #F44336;
+    outline: 0;
+    overflow: hidden;
+}
+    .file-preview .modal-container-layout {
+        border-radius: 0px;
+        position: relative;
+        outline: 0;
+        overflow: hidden;
+        padding-bottom: 15px;
+    }
+
+    .file-preview .modal-container-layout .modal-body {
+        padding-top: 5px;
+        padding-bottom: 20px;
+    }
+
+    .file-preview .modal-container-layout .item-image {
+        height: 215px;
+        border: dotted 1px #9FCCC9;
+        margin-top: 15px;
+        background:#FFF;
+    }
+
+        .file-preview .modal-container-layout .item-image.actived {
+            background: #cbf5ce;
+        }
+
+    .file-preview .modal-container-layout .image-box {
+        height: 140px;
+        border-bottom: dotted 1px #c5c5c5;
+        background: #F9F9F9;
+        padding: 5px;
+        position: relative;
+    }
+
+        .file-preview .modal-container-layout .image-box img {
+            max-height: 120px;
+            margin: auto;
+            padding: 0px;
+        }
+
+        .file-preview .modal-container-layout .image-box .icon-delete {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding: 5px;
+            cursor: pointer;
+            background: rgba(255, 7, 7, 0.2196078431372549);
+        }
+
+    .file-preview .modal-container-layout .note-box {
+        height: 45px;
+        color: #A8B797;
+        font-size: 10px;
+        text-align: center;
+        padding: 5px 5px;
+    }
+
+
+
+    .file-preview .modal-container-layout .file-info {
+        height: 25px;
+        color: #c79f2e;
+        font-size: 10px;
+        text-align: center;
+        padding: 5px 5px;
+    }
+
+    .file-preview .modal-container-layout .action-box {
+        height: 30px;
+        font-size: 10px;
+        padding: 8px 5px;
+        text-align: right;
+    }
+
+        .file-preview .modal-container-layout .action-box i {
+            margin: auto 5px;
+            cursor: pointer;
+        }
+
+.file-preview-footer {
+    padding: 10px;
+    border-bottom: solid 1px #ddd;
+}

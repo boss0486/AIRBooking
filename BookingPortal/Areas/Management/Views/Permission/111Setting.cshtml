@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+<div class="col-md-4">
+    <div class="form-group form-float">
+        <div class="form-line selecter">
+            <label class="form-label">Tài khoản:</label>
+        </div>
+        <select id="ddlUser" name="ddlUser" class="form-control show-tick" data-live-search="true">
+            <option value="">-Lựa chọn-</option>
+            @Html.Raw(WebCore.Services.UserSettingService.DDLUser(string.Empty))
+        </select>
+        <span id="lblWorkShift" class="message msg-box"></span>
+    </div>
+    <div class="form-group">
+        <label for="">Nhóm người dùng:<span id="LblUserGroup" class="notify exmg"></span></label>
+        <div class="all-list-group list-group" style="margin-bottom: 0px;">
+            <div class="list-group-item">
+                <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn nhóm</span>
+            </div>
+        </div>
+        <ul id="Role" class='role list-group'></ul>
+    </div>
+    <div class="form-group text-right">
+        <button id="btnReset" class="btn btn-danger" type="reset">Làm mới</button>
+        <button id="btnSaveUserRole" class="btn btn-primary" type="button" onclick="btnSaveUserRoleClick()">Lưu lại</button>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Areas/Management/_script/permission.js"></script>
+    <script type="text/javascript">
+        var _val = $("#ddlUser option:nth-child(2)").val();
+        $(function () {
+            $("#ddlUser").val(_val).change();
+            $('#ddlUser').selectpicker('refresh');
+        });
+    </script>
+
+}
+
+

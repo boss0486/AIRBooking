@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+@using Webcore.Services;
+@using Webcore.Model.Services;
+<div class="row clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>@Helper.MetaSEO.ControllerText | @Helper.MetaSEO.ActionText</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <div class="row clearfix align-right" data-keyenter="#btnSearch">
+                    <div class="col-xs-12 col-sm-2" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <select id="ddlStatus" name="ddlStatus" class="form-control show-tick" data-live-search="true">
+                                <option value="-1">-@Resource.Label.Status-</option>
+                                @Html.Raw(ModelService.DDLStatus(-1))
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <div class="ctrl-search-bar">
+                                <div id="btnSearch" class="search-icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                                <input id="txtQuery" class="form-control" type="text" placeholder="Nhập từ khóa..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-2" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <a href="@Helper.Navigate.Manager.URLCreate" class="btn btn-primary">
+                                Thêm mới
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-y:hidden !important; overflow-x:auto !important;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="tbcol-id">#&nbsp;</th>
+                                <th class="tbcol-none">Tiêu đề</th>
+                                <th class="tbcol-date">Sắp xếp</th>
+                                <th class="tbcol-status">T.Thái</th>
+                                <th class="tbcol-date">Ngày tạo</th>
+                                <th class="tbcol-action">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblData"></tbody>
+                    </table>
+                </div>
+                <div id="Pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Adm/script/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            menuController.DataList(1);
+            $(document).on("click", "#btnSearch", function (e) {
+                Confirm.ShowConfirm({
+                    Title: 'Xác nhận!',
+                    Message: "This is a confirm with custom button text and color! Do you like it?",
+                    Modalc: 'modal-col-pink',
+                    YesEvent: function () { alert('ok') },
+                    NoEvent: null,
+                    Callback: null,
+                });
+            });
+        })
+    </script>
+}

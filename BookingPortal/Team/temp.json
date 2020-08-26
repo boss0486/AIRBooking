@@ -1,0 +1,4684 @@
+{
+  "ApplicationResults": {
+    "Success": [
+      {
+        "SystemSpecificResults": [
+          {
+            "HostCommand": {
+              "LNIATA": "222222",
+              "Value": "WPP2ADT/1CNN/1INF¥RQ"
+            },
+            "Message": null,
+            "ShortText": null,
+            "Element": null,
+            "RecordID": null,
+            "DocURL": null,
+            "timeStampSpecified": false
+          }
+        ],
+        "typeSpecified": false,
+        "timeStamp": "2020-07-09T15:58:54+07:00",
+        "timeStampSpecified": true
+      }
+    ],
+    "Error": null,
+    "Warning": null,
+    "status": 0
+  },
+  "PriceQuote": {
+    "MiscInformation": {
+      "BaggageInfo": [
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": null,
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXCESS PIECE 10KG158CM",
+          "DescriptionOne": {
+            "Text": "UP TO 22 POUNDS/10 KILOGRAMS",
+            "Code": "10"
+          },
+          "DescriptionTwo": {
+            "Text": "OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "Code": "6X"
+          },
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "02SACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": {
+            "MaximumSizeInAlternate": null,
+            "MaximumSize": null,
+            "MaximumWeightInAlternate": {
+              "Units": "K",
+              "Value": "10"
+            },
+            "MaximumWeight": {
+              "Units": "L",
+              "Value": "22"
+            },
+            "MinimumSizeInAlternate": {
+              "Units": "C",
+              "Value": "158"
+            },
+            "MinimumSize": {
+              "Units": "I",
+              "Value": "62"
+            },
+            "MinimumWeightInAlternate": null,
+            "MinimumWeight": null
+          },
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "1"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "CARRY ON UPTO 3KG 7LB",
+          "DescriptionOne": {
+            "Text": "UP TO 7 POUNDS/3 KILOGRAMS",
+            "Code": "03"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "4",
+          "ExtendedSubCodeKey": "077ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": {
+            "MaximumSizeInAlternate": null,
+            "MaximumSize": null,
+            "MaximumWeightInAlternate": {
+              "Units": "L",
+              "Value": "7"
+            },
+            "MaximumWeight": {
+              "Units": "K",
+              "Value": "3"
+            },
+            "MinimumSizeInAlternate": null,
+            "MinimumSize": null,
+            "MinimumWeightInAlternate": null,
+            "MinimumWeight": null
+          },
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "2"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": null,
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "FREE BAGGAGE ALLOWANCE",
+          "DescriptionOne": null,
+          "DescriptionTwo": null,
+          "EMD_Type": "4",
+          "ExtendedSubCodeKey": "0DFAAVN",
+          "RFIC": null,
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "3"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": null,
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "UPTO 22LB 10KG AND45LI 115LCM",
+          "DescriptionOne": {
+            "Text": "UP TO 22 POUNDS/10 KILOGRAMS",
+            "Code": "10"
+          },
+          "DescriptionTwo": {
+            "Text": "UP TO 45 LINEAR INCHES/115 LINEAR CENTIMETERS",
+            "Code": "4U"
+          },
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "0E3ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": {
+            "MaximumSizeInAlternate": {
+              "Units": "C",
+              "Value": "115"
+            },
+            "MaximumSize": {
+              "Units": "I",
+              "Value": "45"
+            },
+            "MaximumWeightInAlternate": {
+              "Units": "K",
+              "Value": "10"
+            },
+            "MaximumWeight": {
+              "Units": "L",
+              "Value": "22"
+            },
+            "MinimumSizeInAlternate": null,
+            "MinimumSize": null,
+            "MinimumWeightInAlternate": null,
+            "MinimumWeight": null
+          },
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "4"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "INFANT BAGGAGE",
+            "SubGroupCode": "IN"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "STROLLER OR PUSHCHAIR",
+          "DescriptionOne": {
+            "Text": "STROLLER/PUSHCHAIR",
+            "Code": "ST"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "4",
+          "ExtendedSubCodeKey": "0F4ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "5"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": null,
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXCESS STANDARD PIECE",
+          "DescriptionOne": {
+            "Text": "UP TO 50 POUNDS/23 KILOGRAMS",
+            "Code": "23"
+          },
+          "DescriptionTwo": {
+            "Text": "UP TO 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "Code": "6U"
+          },
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "0GOACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": {
+            "MaximumSizeInAlternate": {
+              "Units": "C",
+              "Value": "158"
+            },
+            "MaximumSize": {
+              "Units": "I",
+              "Value": "62"
+            },
+            "MaximumWeightInAlternate": {
+              "Units": "K",
+              "Value": "23"
+            },
+            "MaximumWeight": {
+              "Units": "L",
+              "Value": "50"
+            },
+            "MinimumSizeInAlternate": null,
+            "MinimumSize": null,
+            "MinimumWeightInAlternate": null,
+            "MinimumWeight": null
+          },
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "6"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "CARRYON HAND BAGGAGE ALLOWANCE",
+          "DescriptionOne": null,
+          "DescriptionTwo": null,
+          "EMD_Type": "4",
+          "ExtendedSubCodeKey": "0LNABVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "7"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "CARRY10KG 22LBUPTO 45LI 115LCM",
+          "DescriptionOne": {
+            "Text": "UP TO 22 POUNDS/10 KILOGRAMS",
+            "Code": "10"
+          },
+          "DescriptionTwo": {
+            "Text": "UP TO 45 LINEAR INCHES/115 LINEAR CENTIMETERS",
+            "Code": "4U"
+          },
+          "EMD_Type": "4",
+          "ExtendedSubCodeKey": "0MJACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": {
+            "MaximumSizeInAlternate": {
+              "Units": "C",
+              "Value": "115"
+            },
+            "MaximumSize": {
+              "Units": "I",
+              "Value": "45"
+            },
+            "MaximumWeightInAlternate": {
+              "Units": "K",
+              "Value": "10"
+            },
+            "MaximumWeight": {
+              "Units": "L",
+              "Value": "22"
+            },
+            "MinimumSizeInAlternate": null,
+            "MinimumSize": null,
+            "MinimumWeightInAlternate": null,
+            "MinimumWeight": null
+          },
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "8"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXCESS PIECE DOM SEG",
+          "DescriptionOne": {
+            "Text": "SPECIAL CABIN BAGGAGE",
+            "Code": "CB"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "ES1ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "9"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXCESS WEIGHT DOM SEG",
+          "DescriptionOne": {
+            "Text": "SPECIAL CABIN BAGGAGE",
+            "Code": "CB"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "ES2ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "10"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXCESS SIZE DOM SEG",
+          "DescriptionOne": {
+            "Text": "SPECIAL CABIN BAGGAGE",
+            "Code": "CB"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "ES3ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "11"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXS PC 10KG158CM DOM",
+          "DescriptionOne": {
+            "Text": "SPECIAL CABIN BAGGAGE",
+            "Code": "CB"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "ES4ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "12"
+        },
+        {
+          "AncillaryFeeGroupCode": "BG",
+          "AncillaryService": {
+            "Text": "CARRY ON HAND BAGGAGE",
+            "SubGroupCode": "CY"
+          },
+          "BookingMethod": null,
+          "CommercialNameofBaggageItemType": "AIRPORT EXS WEIGHT10KG23KG DOM",
+          "DescriptionOne": {
+            "Text": "SPECIAL CABIN BAGGAGE",
+            "Code": "CB"
+          },
+          "DescriptionTwo": null,
+          "EMD_Type": "2",
+          "ExtendedSubCodeKey": "ES5ACVN",
+          "RFIC": "C",
+          "SizeWeightInfo": null,
+          "SSR_Code": null,
+          "SolutionSequenceNmbr": "1",
+          "RPH": "13"
+        }
+      ],
+      "HeaderInformation": [
+        {
+          "BargainFinder": null,
+          "DepartureDate": "2020-09-05T00:00:00",
+          "DepartureDateSpecified": true,
+          "DivideParty": null,
+          "LastTicketingDate": "07-09T21:58",
+          "Text": [
+            "PRIVATE FARE APPLIED - CHECK RULES FOR CORRECT TICKETING",
+            "VALIDATING CARRIER SPECIFIED - VN",
+            "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 50 POUNDS/23",
+            "KILOGRAMS AND UP TO 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+            "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "CARRY ON ALLOWANCE",
+            "HANSGN SGNHAN-01P/VN",
+            "01/UP TO 22 POUNDS/10 KILOGRAMS AND UP TO 45 LINEAR INCHES/115",
+            "LINEAR CENTIMETERS",
+            "CARRY ON CHARGES",
+            "HANSGN SGNHAN-VN",
+            "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+            "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+            "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./",
+            "EACH CNN REQUIRES ACCOMPANYING SAME CABIN ADT",
+            "PRIVATE FARE APPLIED - CHECK RULES FOR CORRECT TICKETING",
+            "VALIDATING CARRIER SPECIFIED - VN",
+            "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 50 POUNDS/23",
+            "KILOGRAMS AND UP TO 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+            "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "CARRY ON ALLOWANCE",
+            "HANSGN SGNHAN-01P/VN",
+            "01/UP TO 22 POUNDS/10 KILOGRAMS AND UP TO 45 LINEAR INCHES/115",
+            "LINEAR CENTIMETERS",
+            "CARRY ON CHARGES",
+            "HANSGN SGNHAN-VN",
+            "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+            "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+            "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./",
+            "REQUIRES ACCOMPANYING ADT PASSENGER",
+            "PRIVATE FARE APPLIED - CHECK RULES FOR CORRECT TICKETING",
+            "EACH INF REQUIRES ACCOMPANYING ADT PASSENGER",
+            "VALIDATING CARRIER SPECIFIED - VN",
+            "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 22 POUNDS/10",
+            "KILOGRAMS AND UP TO 45 LINEAR INCHES/115 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+            "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+            "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+            "CARRY ON ALLOWANCE",
+            "HANSGN SGNHAN-01P/VN",
+            "01/UP TO 7 POUNDS/3 KILOGRAMS",
+            "01/INFANT BAGGAGE/STROLLER/PUSHCHAIR",
+            "CARRY ON CHARGES",
+            "HANSGN SGNHAN-VN",
+            "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+            "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+            "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+            "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./",
+            "05SEP DEPARTURE DATE-----LAST DAY TO PURCHASE 09JUL/2158",
+            "ELECTRONIC TICKETING ELIGIBLE"
+          ],
+          "ValidatingCarrier": {
+            "Code": "VN"
+          },
+          "SolutionSequenceNmbr": "1"
+        }
+      ],
+      "SolutionInformation": [
+        {
+          "BaseFareCurrencyCode": "VND",
+          "CurrencyCode": "VND",
+          "GrandTotalBaseFareAmount": null,
+          "GrandTotalEquivFareAmount": "2456000",
+          "GrandTotalTaxes": "2947000",
+          "RequiresRebook": "false",
+          "SegmentNumber": null,
+          "ServiceFeeCurrency": null,
+          "Text": null,
+          "TicketNumber": "0",
+          "TotalAmount": "5403000",
+          "TotalServiceFeeAmount": null,
+          "TotalServiceTax": null,
+          "SolutionSequenceNmbr": "1"
+        }
+      ],
+      "OptionalCharges": null,
+      "ValidatingCarrier": null
+    },
+    "PricedItinerary": {
+      "AirItineraryPricingInfo": [
+        {
+          "AgencyCommission": null,
+          "AncillaryFees": null,
+          "BaggageProvisions": [
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "0GOACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "1"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "2"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "0",
+              "NumPiecesITR": null,
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "3"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "4"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "5"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "B",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "0MJACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0LNABVN"
+              },
+              "WeightLimit": null,
+              "RPH": "6"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": "4",
+              "FeeNotGuaranteedIndicator": "N",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": "Y",
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "550000"
+              },
+              "ProvisionType": "CC",
+              "RefundForm": "1",
+              "RefundReissue": "Y",
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES1ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "7"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES2ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "8"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES3ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "9"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES4ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "10"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "ADT"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES5ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "11"
+            }
+          ],
+          "FareCalculation": {
+            "Text": "HAN VN SGN509000EAPVNF VN HAN309000PAP1VNF6 VND818000END"
+          },
+          "FareCalculationBreakdown": [
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "HAN",
+                "AirportCode": "HAN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "SGN",
+                "ArrivalAirportCode": "SGN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "EAPVNF",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "509000",
+                "FarePassengerType": "ADT",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": null,
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            },
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "SGN",
+                "AirportCode": "SGN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "HAN",
+                "ArrivalAirportCode": "HAN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "PAP1VNF6",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "309000",
+                "FarePassengerType": "ADT",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": null,
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            }
+          ],
+          "ItinTotalFare": {
+            "BaggageInfo": {
+              "NonUS_DOT_Disclosure": [
+                "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 50 POUNDS/23",
+                "KILOGRAMS AND UP TO 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+                "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "CARRY ON ALLOWANCE",
+                "HANSGN SGNHAN-01P/VN",
+                "01/UP TO 22 POUNDS/10 KILOGRAMS AND UP TO 45 LINEAR INCHES/115",
+                "LINEAR CENTIMETERS",
+                "CARRY ON CHARGES",
+                "HANSGN SGNHAN-VN",
+                "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+                "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+                "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./"
+              ],
+              "US_DOT_Disclosure": null
+            },
+            "BaseFare": {
+              "Amount": "818000",
+              "CurrencyCode": "VND"
+            },
+            "Commission": null,
+            "DiscountTypeMessage": null,
+            "Endorsements": [
+              "NON-END.RESTRICT MAY APPLY/CONTACT B4 DEPT FOR CHANGE"
+            ],
+            "EquivFare": null,
+            "PrivateFare": null,
+            "Taxes": {
+              "Tax": [
+                {
+                  "Amount": "700000",
+                  "TaxCode": "YRI",
+                  "TaxName": "SERVICE FEE - CARRIER-IMPOSED",
+                  "TicketingTaxCode": "YR"
+                },
+                {
+                  "Amount": "82000",
+                  "TaxCode": "UE3",
+                  "TaxName": "VALUE ADDED TAX DOMESTIC",
+                  "TicketingTaxCode": "UE"
+                },
+                {
+                  "Amount": "200000",
+                  "TaxCode": "AX",
+                  "TaxName": "PASSENGER SERVICE CHARGE DOMES",
+                  "TicketingTaxCode": "AX"
+                },
+                {
+                  "Amount": "40000",
+                  "TaxCode": "C4",
+                  "TaxName": "PASSENGER AND BAGGAGE SECURITY",
+                  "TicketingTaxCode": "C4"
+                }
+              ],
+              "TotalAmount": "1022000"
+            },
+            "TotalFare": {
+              "Amount": "1840000",
+              "CurrencyCode": "VND"
+            },
+            "Warnings": [
+              {
+                "ShortText": "MIXED PASSENGER TYPES - VERIFY RESTRICTIONS"
+              }
+            ],
+            "SellingFareData": null,
+            "NonRefundableInd": "N"
+          },
+          "PassengerTypeQuantity": {
+            "Code": "ADT",
+            "Quantity": "2"
+          },
+          "PTC_FareBreakdown": [
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "EAPVNF",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "509000",
+                "FarePassengerType": "ADT",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": null
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Surcharges": null
+            },
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "PAP1VNF6",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "309000",
+                "FarePassengerType": "ADT",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": null
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Surcharges": null
+            }
+          ],
+          "RetailerRules": null,
+          "SpecificPenalty": null,
+          "TicketingFees": null,
+          "SolutionSequenceNmbr": "1"
+        },
+        {
+          "AgencyCommission": null,
+          "AncillaryFees": null,
+          "BaggageProvisions": [
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "0GOACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "1"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "2"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "0",
+              "NumPiecesITR": null,
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "3"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "4"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "5"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "B",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "0MJACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0LNABVN"
+              },
+              "WeightLimit": null,
+              "RPH": "6"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": "4",
+              "FeeNotGuaranteedIndicator": "N",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": "Y",
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "550000"
+              },
+              "ProvisionType": "CC",
+              "RefundForm": "1",
+              "RefundReissue": "Y",
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES1ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "7"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES2ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "8"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES3ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "9"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES4ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "10"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "CNN"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES5ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "11"
+            }
+          ],
+          "FareCalculation": {
+            "Text": "HAN VN SGN459000EAPVNF/CH10 VN HAN279000PAP1VNF6/CH10 VND738000END"
+          },
+          "FareCalculationBreakdown": [
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "HAN",
+                "AirportCode": "HAN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "SGN",
+                "ArrivalAirportCode": "SGN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "EAPVNF/CH10",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "459000",
+                "FarePassengerType": "CNN",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "CH10",
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18",
+                "19"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            },
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "SGN",
+                "AirportCode": "SGN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "HAN",
+                "ArrivalAirportCode": "HAN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "PAP1VNF6/CH10",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "279000",
+                "FarePassengerType": "CNN",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "CH10",
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18",
+                "19"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            }
+          ],
+          "ItinTotalFare": {
+            "BaggageInfo": {
+              "NonUS_DOT_Disclosure": [
+                "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 50 POUNDS/23",
+                "KILOGRAMS AND UP TO 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+                "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "CARRY ON ALLOWANCE",
+                "HANSGN SGNHAN-01P/VN",
+                "01/UP TO 22 POUNDS/10 KILOGRAMS AND UP TO 45 LINEAR INCHES/115",
+                "LINEAR CENTIMETERS",
+                "CARRY ON CHARGES",
+                "HANSGN SGNHAN-VN",
+                "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+                "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+                "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./"
+              ],
+              "US_DOT_Disclosure": null
+            },
+            "BaseFare": {
+              "Amount": "738000",
+              "CurrencyCode": "VND"
+            },
+            "Commission": null,
+            "DiscountTypeMessage": null,
+            "Endorsements": [
+              "NON-END.RESTRICT MAY APPLY/CONTACT B4 DEPT FOR CHANGE"
+            ],
+            "EquivFare": null,
+            "PrivateFare": null,
+            "Taxes": {
+              "Tax": [
+                {
+                  "Amount": "700000",
+                  "TaxCode": "YRI",
+                  "TaxName": "SERVICE FEE - CARRIER-IMPOSED",
+                  "TicketingTaxCode": "YR"
+                },
+                {
+                  "Amount": "74000",
+                  "TaxCode": "UE3",
+                  "TaxName": "VALUE ADDED TAX DOMESTIC",
+                  "TicketingTaxCode": "UE"
+                },
+                {
+                  "Amount": "100000",
+                  "TaxCode": "AX",
+                  "TaxName": "PASSENGER SERVICE CHARGE DOMES",
+                  "TicketingTaxCode": "AX"
+                },
+                {
+                  "Amount": "20000",
+                  "TaxCode": "C4",
+                  "TaxName": "PASSENGER AND BAGGAGE SECURITY",
+                  "TicketingTaxCode": "C4"
+                }
+              ],
+              "TotalAmount": "894000"
+            },
+            "TotalFare": {
+              "Amount": "1632000",
+              "CurrencyCode": "VND"
+            },
+            "Warnings": [
+              {
+                "ShortText": "MIXED PASSENGER TYPES - VERIFY RESTRICTIONS"
+              }
+            ],
+            "SellingFareData": null,
+            "NonRefundableInd": "N"
+          },
+          "PassengerTypeQuantity": {
+            "Code": "CNN",
+            "Quantity": "1"
+          },
+          "PTC_FareBreakdown": [
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "EAPVNF/CH10",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "459000",
+                "FarePassengerType": "CNN",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "CH10"
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Surcharges": null
+            },
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "PAP1VNF6/CH10",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "279000",
+                "FarePassengerType": "CNN",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "CH10"
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Surcharges": null
+            }
+          ],
+          "RetailerRules": null,
+          "SpecificPenalty": null,
+          "TicketingFees": null,
+          "SolutionSequenceNmbr": "1"
+        },
+        {
+          "AgencyCommission": null,
+          "AncillaryFees": null,
+          "BaggageProvisions": [
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "0E3ACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "1"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "2"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "0",
+              "NumPiecesITR": null,
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "A",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "0DFAAVN"
+              },
+              "WeightLimit": null,
+              "RPH": "3"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "4"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "1",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "0",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "0"
+              },
+              "ProvisionType": "C",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "02SACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "5"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": null,
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": null,
+              "FirstOccurrence": null,
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": "1",
+              "NumPiecesITR": [
+                "1",
+                "1"
+              ],
+              "PassengerType": null,
+              "PriceInformation": null,
+              "ProvisionType": "B",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": [
+                  {
+                    "RPH": "1",
+                    "Value": "077ACVN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "0F4ACVN"
+                  }
+                ],
+                "SubCodeForChargesOthers": "0LNABVN"
+              },
+              "WeightLimit": null,
+              "RPH": "6"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": "4",
+              "FeeNotGuaranteedIndicator": "N",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": "Y",
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": null,
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "Equiv": {
+                  "Amount": "500000",
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": "550000"
+              },
+              "ProvisionType": "CC",
+              "RefundForm": "1",
+              "RefundReissue": "Y",
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES1ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "7"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES2ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "8"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES3ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "9"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES4ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "10"
+            },
+            {
+              "Associations": {
+                "CarrierCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "VN"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "VN"
+                  }
+                ],
+                "CountForSegmentAssociatedID": "2",
+                "DepartureDate": [
+                  {
+                    "RPH": "1",
+                    "Value": "2020-09-05"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "2020-11-30"
+                  }
+                ],
+                "DestinationLocation": [
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "2"
+                  }
+                ],
+                "FlightNumber": [
+                  {
+                    "RPH": "1",
+                    "Value": "237"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "230"
+                  }
+                ],
+                "OriginLocation": [
+                  {
+                    "LocationCode": "HAN",
+                    "RPH": "1"
+                  },
+                  {
+                    "LocationCode": "SGN",
+                    "RPH": "2"
+                  }
+                ],
+                "PNR_Segment": [
+                  {
+                    "RPH": "1",
+                    "Value": "2"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "3"
+                  }
+                ],
+                "ResBookDesigCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "E"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "P"
+                  }
+                ],
+                "StatusCode": [
+                  {
+                    "RPH": "1",
+                    "Value": "SS"
+                  },
+                  {
+                    "RPH": "2",
+                    "Value": "SS"
+                  }
+                ]
+              },
+              "CarrierWhoseBaggageProvisionsApply": "VN",
+              "Commissionable": "N",
+              "FeeApplicationIndicator": null,
+              "FeeNotGuaranteedIndicator": "Y",
+              "FirstOccurrence": "1",
+              "FQTV_CarrierFiledTierLevel": null,
+              "Interlineable": null,
+              "LastOccurrence": null,
+              "NoChargeNotAvailableIndicator": "X",
+              "NumPiecesBDI": null,
+              "NumPiecesITR": null,
+              "PassengerType": {
+                "Code": "INF"
+              },
+              "PriceInformation": {
+                "Base": {
+                  "Amount": "0",
+                  "CurrencyCode": null
+                },
+                "Equiv": {
+                  "Amount": null,
+                  "CurrencyCode": "VND"
+                },
+                "TaxIndicator": null,
+                "Total": null
+              },
+              "ProvisionType": "CC",
+              "RefundForm": null,
+              "RefundReissue": null,
+              "SimultaneousTicketIndicator": null,
+              "SubCodeInfo": {
+                "SubCodeForAllowance": null,
+                "SubCodeForChargesOthers": "ES5ACVN"
+              },
+              "WeightLimit": null,
+              "RPH": "11"
+            }
+          ],
+          "FareCalculation": {
+            "Text": "HAN VN SGN51000EAPVNF/IN90 VN HAN31000PAP1VNF6/IN90 VND82000END"
+          },
+          "FareCalculationBreakdown": [
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "HAN",
+                "AirportCode": "HAN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "SGN",
+                "ArrivalAirportCode": "SGN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "EAPVNF/IN90",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "51000",
+                "FarePassengerType": "INF",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "IN90",
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18",
+                "19"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            },
+            {
+              "Branch": {
+                "PCC": "LZJ",
+                "CountryOfShipRegistry": null,
+                "FirstJointCarrier": "VN",
+                "SecondJointCarrier": null,
+                "IATAAuthorizedCarrier": null
+              },
+              "Departure": {
+                "CityCode": "SGN",
+                "AirportCode": "SGN",
+                "SideTripIndicator": null,
+                "AirlineCode": "VN",
+                "GenericInd": "O",
+                "GlobalInd": null,
+                "ArrivalCityCode": "HAN",
+                "ArrivalAirportCode": "HAN",
+                "InfantFareConstructionCity": null
+              },
+              "FareBasis": {
+                "Code": "PAP1VNF6/IN90",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "InclusiveTour": null,
+                "FareAmount": "31000",
+                "FarePassengerType": "INF",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "TripTypeInd": "R",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "IN90",
+                "Cabin": "Y"
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Mileage": null,
+              "RuleCategoryIndicator": [
+                "4",
+                "5",
+                "8",
+                "9",
+                "10",
+                "11",
+                "15",
+                "16",
+                "18",
+                "19"
+              ],
+              "Surcharges": null,
+              "StopoverCharge": null
+            }
+          ],
+          "ItinTotalFare": {
+            "BaggageInfo": {
+              "NonUS_DOT_Disclosure": [
+                "BAG ALLOWANCE     -HANSGN-01P/VN/EACH PIECE UP TO 22 POUNDS/10",
+                "KILOGRAMS AND UP TO 45 LINEAR INCHES/115 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-HANSGN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "BAG ALLOWANCE     -SGNHAN-NIL/VN",
+                "1STCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "2NDCHECKED BAG FEE-SGNHAN-NOT PERMITTED/VN/UP TO 22 POUNDS/10 K",
+                "ILOGRAMS AND OVER 62 LINEAR INCHES/158 LINEAR CENTIMETERS",
+                "CARRY ON ALLOWANCE",
+                "HANSGN SGNHAN-01P/VN",
+                "01/UP TO 7 POUNDS/3 KILOGRAMS",
+                "01/INFANT BAGGAGE/STROLLER/PUSHCHAIR",
+                "CARRY ON CHARGES",
+                "HANSGN SGNHAN-VN",
+                "1ST AND EACH ABOVE 1ST SPECIAL CABIN BAGGAGE-VND550000",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "SPECIAL CABIN BAGGAGE-NOT PERMITTED",
+                "ADDITIONAL ALLOWANCES AND/OR DISCOUNTS MAY APPLY DEPENDING ON",
+                "FLYER-SPECIFIC FACTORS /E.G. FREQUENT FLYER STATUS/MILITARY/",
+                "CREDIT CARD FORM OF PAYMENT/EARLY PURCHASE OVER INTERNET,ETC./"
+              ],
+              "US_DOT_Disclosure": null
+            },
+            "BaseFare": {
+              "Amount": "82000",
+              "CurrencyCode": "VND"
+            },
+            "Commission": null,
+            "DiscountTypeMessage": null,
+            "Endorsements": [
+              "NON-END.RESTRICT MAY APPLY/CONTACT B4 DEPT FOR CHANGE"
+            ],
+            "EquivFare": null,
+            "PrivateFare": null,
+            "Taxes": {
+              "Tax": [
+                {
+                  "Amount": "9000",
+                  "TaxCode": "UE3",
+                  "TaxName": "VALUE ADDED TAX DOMESTIC",
+                  "TicketingTaxCode": "UE"
+                }
+              ],
+              "TotalAmount": "9000"
+            },
+            "TotalFare": {
+              "Amount": "91000",
+              "CurrencyCode": "VND"
+            },
+            "Warnings": [
+              {
+                "ShortText": "MIXED PASSENGER TYPES - VERIFY RESTRICTIONS"
+              }
+            ],
+            "SellingFareData": null,
+            "NonRefundableInd": "N"
+          },
+          "PassengerTypeQuantity": {
+            "Code": "INF",
+            "Quantity": "1"
+          },
+          "PTC_FareBreakdown": [
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "EAPVNF/IN90",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "51000",
+                "FarePassengerType": "INF",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "IN90"
+              },
+              "FreeBaggageAllowance": "PC001",
+              "Surcharges": null
+            },
+            {
+              "BrandedFareInformation": null,
+              "Cabin": "Y",
+              "FareBasis": {
+                "Code": "PAP1VNF6/IN90",
+                "ContractNumber": null,
+                "CorporateID": null,
+                "FareAmount": "31000",
+                "FarePassengerType": "INF",
+                "FareType": "P",
+                "FilingCarrier": "VN",
+                "GlobalInd": "EH",
+                "Market": "HANSGN",
+                "SurfaceSegment": null,
+                "TicketDesignator": "IN90"
+              },
+              "FreeBaggageAllowance": "NONIL",
+              "Surcharges": null
+            }
+          ],
+          "RetailerRules": null,
+          "SpecificPenalty": null,
+          "TicketingFees": null,
+          "SolutionSequenceNmbr": "1"
+        }
+      ],
+      "AlternativePricing": "false",
+      "CurrencyCode": "VND",
+      "MultiTicket": false,
+      "MultiTicketSpecified": true,
+      "MultiTicketShortText": null,
+      "ServiceFeeAmount": null,
+      "ServiceFeeCurrencyCode": null,
+      "ServiceFeeTax": null,
+      "TotalAmount": "5403000"
+    }
+  },
+  "Version": "2.16.0"
+}

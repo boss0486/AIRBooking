@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+<div class="main">
+    <div class="login-form" data-keyenter="#btnLogin">
+        <h2>ĐĂNG NHẬP</h2>
+        <div class="form-group">
+            <input id="txtLoginID" name="txtLoginID" type="text" class="form-control" placeholder="Username" value="@ViewBag.UId" tabindex="1" />
+            <span id="lblLoginID" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <input id="txtPassID" name="txtPassID" type="password" class="form-control" placeholder="Password" value="@ViewBag.PId" tabindex="2" />
+            <span id="lblPassID" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <button id="btnLogin" class="btn bg-pink waves-effect" type="button" tabindex="3">Đăng nhập</button>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <div class="checkbox checkbox-primary">
+                    <input id="reMemberPassword" type="checkbox" @ViewBag.Rmb />
+                    <label for="reMemberPassword" tabindex="4">
+                        Ghi nhớ mật khẩu.
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="checkbox checkbox-primary">
+                    <a href="/Authentication/sendotp" tabindex="5"><i class="fa fa-lock"></i> Lấy lại mật khẩu?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Areas/Authentication/Scripts/login.js"></script>
+}
+

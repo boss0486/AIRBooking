@@ -1,0 +1,493 @@
+﻿var pageIndex = 1;
+var URLC = "/Management/AirFlight/Action";
+var URLA = "/Management/AirFlight";
+var arrFile = [];
+var flightController = {
+    init: function () {
+        flightController.registerEvent();
+    },
+    registerEvent: function () {
+        $(document).ready(function () {
+            $('[data-date="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
+        });
+        $('#btnCreate').off('click').on('click', function () {
+            var flg = true;
+            // Area
+            var ddlArea = $('#ddlAreaID').val();
+            if (ddlArea === "-" || ddlArea === '') {
+                $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+                flg = false;
+            }
+            else {
+                $('#lblAreaID').html('');
+            }
+            // Iata code
+            var iataCode = $('#txtIataCode').val();
+            if (iataCode === '') {
+                $('#lblIataCode').html('Không được để trống mã chuyến bay');
+                flg = false;
+            }
+            else if (iataCode.length < 1 || iataCode.length > 5) {
+                $('#lblIataCode').html('Mã chuyến bay giới hạn từ 5 characters');
+                flg = false;
+            }
+            else if (!FormatKeyId.test(iataCode)) {
+                $('#lblIataCode').html('Mã chuyến bay không hợp lệ');
+                flg = false;
+            }
+            else {
+                $('#lblIataCode').html('');
+            }
+            // title
+            var title = $('#txtTitle').val();
+            if (title === '') {
+                $('#lblTitle').html('Không được để trống tiêu đề');
+                flg = false;
+            }
+            else if (title.length < 1 || title.length > 80) {
+                $('#lblTitle').html('Tiêu đề giới hạn từ 1-> 80 characters');
+                flg = false;
+            }
+            else if (!FormatKeyword.test(title)) {
+                $('#lblTitle').html('Tiêu đề không hợp lệ');
+                flg = false;
+            }
+            else {
+                $('#lblTitle').html('');
+            }
+            // summary
+            var summary = $('#txtSummary').val();
+            if (summary !== '') {
+                if (summary.length < 1 || summary.length > 120) {
+                    $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
+                    flg = false;
+                }
+                else if (!FormatKeyword.test(summary)) {
+                    $('#lblSummary').html('Mô tả không hợp lệ');
+                    flg = false;
+                }
+                else {
+                    $('#lblSummary').html('');
+                }
+            }
+            else {
+                $('#lblSummary').html('');
+            }
+            // submit form
+            if (flg)
+                flightController.Create();
+            else
+                Notifization.Error(MessageText.DATAMISSING);
+        });
+        $('#btnSearch').off('click').on('click', function () {
+            flightController.DataList(1);
+        });
+        $('#btnUpdate').off('click').on('click', function () {
+            var flg = true;
+            // Area
+            var ddlArea = $('#ddlAreaID').val();
+            if (ddlArea === "-" || ddlArea === '') {
+                $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+                flg = false;
+            }
+            else {
+                $('#lblAreaID').html('');
+            }
+            // Iata code
+            var iataCode = $('#txtIataCode').val();
+            if (iataCode === '') {
+                $('#lblIataCode').html('Không được để trống mã chuyến bay');
+                flg = false;
+            }
+            else if (iataCode.length < 1 || iataCode.length > 5) {
+                $('#lblIataCode').html('Mã chuyến bay giới hạn từ 5 characters');
+                flg = false;
+            }
+            else if (!FormatKeyId.test(iataCode)) {
+                $('#lblIataCode').html('Mã chuyến bay không hợp lệ');
+                flg = false;
+            }
+            else {
+                $('#lblIataCode').html('');
+            }
+            // title
+            var title = $('#txtTitle').val();
+            if (title === '') {
+                $('#lblTitle').html('Không được để trống tiêu đề');
+                flg = false;
+            }
+            else if (title.length < 1 || title.length > 80) {
+                $('#lblTitle').html('Tiêu đề giới hạn từ 1-> 80 characters');
+                flg = false;
+            }
+            else if (!FormatKeyword.test(title)) {
+                $('#lblTitle').html('Tiêu đề không hợp lệ');
+                flg = false;
+            }
+            else {
+                $('#lblTitle').html('');
+            }
+            // summary
+            var summary = $('#txtSummary').val();
+            if (summary !== '') {
+                if (summary.length < 1 || summary.length > 120) {
+                    $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
+                    flg = false;
+                }
+                else if (!FormatKeyword.test(summary)) {
+                    $('#lblSummary').html('Mô tả không hợp lệ');
+                    flg = false;
+                }
+                else {
+                    $('#lblSummary').html('');
+                }
+            }
+            else {
+                $('#lblSummary').html('');
+            }
+            // submit form
+            if (flg) {
+                flightController.Update();
+            }
+            else {
+                Notifization.Error(MessageText.DATAMISSING);
+            }
+        });
+    },
+    Create: function () {
+        var iataCode = $('#txtIataCode').val();
+        var title = $('#txtTitle').val();
+        var summary = $('#txtSummary').val();
+        var ddlArea = $('#ddlAreaID').val();
+        var enabled = 0;
+        if ($('input[name="cbxActive"]').is(":checked"))
+            enabled = 1;
+        //
+        var model = {
+            CategoryID: ddlArea,
+            Title: title,
+            IataCode: iataCode,
+            Summary: summary,
+            Enabled: enabled
+        };
+        AjaxFrom.POST({
+            url: URLC + '/Create',
+            data: model,
+            success: function (response) {
+                if (response === null || response.status === undefined) {
+                    Notifization.Error(MessageText.NOTSERVICES);
+                    return;
+                }
+                if (response.status === 200) {
+                    Notifization.Success(response.message);
+                    FData.ResetForm();
+                    return;
+                }
+                Notifization.Error(response.message);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+
+    },
+    Update: function () {
+        var id = $('#txtID').val();
+        var iataCode = $('#txtIataCode').val();
+        var title = $('#txtTitle').val();
+        var summary = $('#txtSummary').val();
+        var ddlArea = $('#ddlAreaID').val();
+        var enabled = 0;
+        if ($('#cbxActive').hasClass('actived'))
+            enabled = 1;
+        //
+        var model = {
+            ID: id,
+            AreaID: ddlArea,
+            Title: title,
+            IataCode: iataCode,
+            Summary: summary,
+            Enabled: enabled
+        };
+        AjaxFrom.POST({
+            url: URLC + '/Update',
+            data: model,
+            success: function (response) {
+                if (response === null || response.status === undefined) {
+                    Notifization.Error(MessageText.NOTSERVICES);
+                    return;
+                }
+                if (response.status === 200) {
+                    Notifization.Success(response.message);
+                    return;
+                }
+                Notifization.Error(response.message);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+    },
+    DataList: function (page) {
+        var _query = $('#txtQuery').val();
+        var _ariaId = $('#ddlAreaID').val();
+        var _province = $('#ddlProvince').val();
+        var model = {
+            Query: _query,
+            Page: page,
+            AreaID: _ariaId,
+            ProviceID: _province,
+            Status: 0
+        };
+        AjaxFrom.POST({
+            url: URLC + '/DataList',
+            data: model,
+            success: function (result) {
+                $('tbody#TblData').html('');
+                $('#Pagination').html('');
+                if (result !== null) {
+                    if (result.status === 200) {
+                        var currentPage = 1;
+                        var pagination = result.paging;
+                        if (pagination !== null) {
+                            totalPage = pagination.TotalPage;
+                            currentPage = pagination.Page;
+                            pageSize = pagination.PageSize;
+                            pageIndex = pagination.Page;
+                        }
+                        var rowData = '';
+                        $.each(result.data, function (index, item) {
+                            index = index + 1;
+                            var id = item.ID;
+                            if (id.length > 0)
+                                id = id.trim();
+                            //  role
+                            var role = result.role;
+                            var action = "";
+                            if (role !== undefined && role !== null) {
+                                action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
+                                              <div class='ddl-action-content'>`;
+                                if (role.Update)
+                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
+                                if (role.Delete)
+                                    action += `<a onclick="flightController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
+                                if (role.Details)
+                                    action += `<a href='${URLA}/Details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Details</a>`;
+                                action += `</div>
+                                           </div>`;
+                            }
+
+                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                            var _unit = 'vnd';
+                            var _title = SubStringText.SubTitle(item.Title);
+                            var _summary = SubStringText.SubSummary(item.Summary);
+                            var _iatacode = item.IATACode;
+                            var _area = item.AreaName;
+                            rowData += `
+                            <tr>
+                                 <td class="text-right">${rowNum}&nbsp;</td>  
+                                 <td class='tbcol-photo'>${_area}</td>  
+                                 <td class='tbcol-photo'>${_iatacode}</td>  
+                                 <td class='text-left'>${_title}</td>                                                                                                                                                                                                                                                                         
+                                 <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
+                                 <td class="tbcol-action">${action}</td>
+                            </tr>`;
+                        });
+                        $('tbody#TblData').html(rowData);
+                        if (parseInt(totalPage) > 1) {
+                            Paging.Pagination("#Pagination", totalPage, currentPage, flightController.DataList);
+                        }
+                        return;
+                    }
+                    else {
+                        //Notifization.Error(result.message);
+                        console.log('::' + result.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NOTSERVICES);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+    },
+    Delete: function (id) {
+        var model = {
+            Id: id
+        };
+        AjaxFrom.POST({
+            url: URLC + '/Delete',
+            data: model,
+            success: function (response) {
+                if (response === null || response.status === undefined) {
+                    Notifization.Error(MessageText.NOTSERVICES);
+                    return;
+                }
+                if (response.status === 200) {
+                    Notifization.Success(response.message);
+                    flightController.DataList(pageIndex);
+                    return;
+                }
+                Notifization.Error(response.message);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+    },
+    ConfirmDelete: function (id) {
+        flightController.Delete(id);
+    }
+};
+//
+flightController.init();
+//
+$(document).on('keyup', '#txtTitle', function () {
+    var title = $(this).val();
+    if (title === '') {
+        $('#lblTitle').html('Không được để trống tiêu đề');
+    }
+    else if (title.length < 1 || title.length > 80) {
+        $('#lblTitle').html('Tiêu đề giới hạn từ 1-> 80 characters');
+    }
+    else if (!FormatKeyword.test(title)) {
+        $('#lblTitle').html('Tiêu đề không hợp lệ');
+    }
+    else {
+        $('#lblTitle').html('');
+    }
+});
+//
+$(document).on('keyup', '#txtIataCode', function () {
+    var iataCode = $(this).val();
+    if (iataCode === '') {
+        $('#lblIataCode').html('Không được để trống mã chuyến bay');
+    }
+    else if (iataCode.length < 1 || iataCode.length > 5) {
+        $('#lblIataCode').html('Mã chuyến bay giới hạn từ 5 characters');
+    }
+    else if (!FormatKeyId.test(iataCode)) {
+        $('#lblIataCode').html('Mã chuyến bay không hợp lệ');
+    }
+    else {
+        $('#lblIataCode').html('');
+    }
+});
+$(document).on('keyup', '#txtSummary', function () {
+    var summary = $(this).val();
+    if (summary !== '') {
+        if (summary.length < 1 || summary.length > 120) {
+            $('#lblSummary').html('Tiêu đề giới hạn từ 1-> 80 characters');
+        }
+        else if (!FormatKeyword.test(summary)) {
+            $('#lblSummary').html('Mô tả không hợp lệ');
+        }
+        else {
+            $('#lblSummary').html('');
+        }
+    }
+    else {
+        $('#lblSummary').html('');
+    }
+});
+$(document).on('keyup', '#txtAlias', function () {
+    var alias = $('#txtAlias').val();
+    if (alias !== '') {
+        if (alias.length > 80) {
+            $('#lblAlias').html('Đường dẫn giới hạn từ 0-> 80 ký tự');
+        }
+        else if (!FormatUnicode.test(alias)) {
+            $('#lblAlias').html('Đường dẫn không hợp lệ');
+        }
+        else {
+            $('#lblAlias').html('');
+        }
+    } else {
+        $('#lblAlias').html('');
+    }
+});
+// ViewTotal
+$(document).on('keyup', '#txtViewTotal', function () {
+    var viewTotal = $(this).val();
+    if (viewTotal !== "") {
+        if (!FormatNumber.test(viewTotal)) {
+            $('#lblViewTotal').html('Số lượt xem chuyến bay không hợp lệ');
+        }
+        else {
+            $('#lblViewTotal').html('');
+        }
+    }
+});
+// view date
+$(document).on('keyup', '#txtViewDate', function () {
+    var viewDate = $(this).val();
+    if (viewDate !== '') {
+        if (!FormatDateVN.test(viewDate)) {
+            $('#lblViewDate').html('Ngày hiển thị không hợp lệ');
+        }
+        else {
+            $('#lblViewDate').html('');
+        }
+    } else {
+        $('#lblViewDate').html('');
+    }
+});
+// price
+$(document).on('keyup', '#txtPrice', function () {
+    var price = $(this).val();
+
+    if (price === "") {
+        $('#lblPrice').html('Không được để trống giá chuyến bay');
+    }
+    else if (!FormatCurrency.test(price)) {
+        $('#lblPrice').html('Giá chuyến bay không hợp lệ');
+    }
+    else {
+        $('#lblPrice').html('');
+    }
+});
+//PriceListed
+$(document).on('keyup', '#txtPriceListed', function () {
+    var priceListed = $(this).val();
+    if (priceListed === "") {
+        $('#lblPriceListed').html('Không được để trống giá khuyến mại');
+    }
+    else if (!FormatCurrency.test(priceListed)) {
+        $('#lblPriceListed').html('Giá khuyến mại không hợp lệ');
+    }
+    else {
+        $('#lblPriceListed').html('');
+    }
+});
+$(document).on("change", "#ddlAreaID", function () {
+    var txtCtl = $(this).val();
+    if (txtCtl === "-" || txtCtl === "") {
+        $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+    }
+    else {
+        $('#lblAreaID').html('');
+    }
+});
+ //
+$(document).on('click', '#cbxActive', function () {
+    if ($(this).hasClass('actived')) {
+        // remove
+        $(this).children('i').removeClass('fa-check-square');
+        $(this).children('i').addClass('fa-square');
+        $(this).removeClass('actived');
+    }
+    else {
+        $(this).children('i').addClass('fa-check-square');
+        $(this).children('i').removeClass('fa-square');
+        $(this).addClass('actived');
+    }
+});
+ //
+$(document).on('', '.img-caption-text', function () {
+    $('.new-box-preview img').click();
+});

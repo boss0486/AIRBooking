@@ -15,9 +15,9 @@ namespace ApiPortalBooking.Models
         public string AirlineCode { get; set; }
         
     }
-    public class FareDetailsModel
+    public class FareItemModel
     {
-        public string RBH { get; set; }
+        public string RPH { get; set; }
         public string PassengerType { get; set; }
         //public double Total { get; set; }
         //public double ServiceFee { get; set; }

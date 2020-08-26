@@ -1,0 +1,203 @@
+﻿@using WebCore.Services;
+@using WebCore.Model.Services
+@model List<ApiPortalBooking.Models.FlightPassengerTypeInfo>
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+<section  book-in"> 
+    <div id="BookingForm">
+        <div class="top-pic special">
+            <label><i class="fas fa-info-circle" aria-hidden="true"></i>&nbsp;<span>Thông tin hành trình:</span></label>
+        </div>
+        <div class="table-responsive mgt-40">
+            <table id="TblFlight" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Hãng</th>
+                        <th>Số hiệu</th>
+                        <th>Hành trình</th>
+                        <th>Lịch trình</th>
+                        <th>Hạng</th>
+                        <th>Bảng Giá thành phần bao gồm thuế/ hành khách </th>
+                        <th>Tổng Giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="TblRowGo">
+                        <td>
+                            <label class="lblTrademark"></label>
+                        </td>
+                        <td>
+                            <label class="lblFlightNo"></label>
+                        </td>
+                        <td>
+                            <label class="lblItinerary"></label>
+                        </td>
+                        <td>
+                            <span class="lblItineraryTime"></span>
+                        </td>
+                        <td class="text-center">
+                            <label class="lblResbookdesigcode"></label>
+                        </td>
+                        <td class="td-inf-price">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tbody id="TblGoPriceInfo">
+                                    <tr><td class="error-priceinfo"></td></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="td-faretotal text-right">
+                            <label class="depart-price"></label>
+                        </td>
+                    </tr>
+                    <tr id="TblRowGo">
+                        <td>
+                            <label class="lblTrademark"></label>
+                        </td>
+                        <td>
+                            <label class="lblFlightNo"></label>
+                        </td>
+                        <td>
+                            <label class="lblItinerary"></label>
+                        </td>
+                        <td>
+                            <span class="lblItineraryTime"></span>
+                        </td>
+                        <td class="text-center">
+                            <label class="lblResbookdesigcode"></label>
+                        </td>
+                        <td class="td-inf-price">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tbody id="TblGoPriceInfo">
+                                    <tr><td class="error-priceinfo"></td></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="td-faretotal text-right">
+                            <label class="depart-price"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price">Đang cập nhật...</label></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="top-pic special">
+            <label><i class="fas fa-info-circle" aria-hidden="true"></i>&nbsp;<span>Thông tin hành khách:</span></label>
+        </div>
+
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="row">
+                    <div class="container-fluid" data-PassengerType="@item.PassengerType">
+                        <div class="row mgb-15">
+                            <div class="col-md-12">
+                                <label style="font-size:18px">@item.PassengerName</label>
+                            </div>
+                        </div>
+                        @for (int i = 0; item.Quantity > 0 && i < item.Quantity; i++)
+                        {
+                            <div class="row" data-PassengerInf="@item.PassengerType">
+                                <div class="col-md-3">
+                                    <div class="form-group ">
+                                        <label class="form-label">Họ và tên (@Html.Raw(i + 1)):</label>
+                                        <input name="txtFullName" maxlength="50" type="text" class="form-control" value="Nguyen Van A" />
+                                        <span name="lblFullName" class="message msg-box"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group ">
+                                        <label class="form-label">Giới tính:</label>
+                                        <select name="ddlGender" class="form-control show-tick" data-live-search="true">
+                                            <option value="1">Nam</option>
+                                            <option value="2">Nữ</option>
+                                        </select>
+                                        <span id="lblReturnDateTime" class="message msg-box"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group ">
+                                        <label class="form-label">Ng.Sinh: dd-mm-yyyy </label>
+                                        <input name="txtBirthDay" data-name="txtBirthDay" maxlength="10" type="text" class="form-control" placeholder="dd-mm-yyyy" value="22-11-1995" />
+                                        <span name="lblBirthDay" class="message msg-box"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="top-pic special">
+                <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Thông tin liên hệ:</span></label>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label class="form-label">Số đ.thoại:</label>
+                        <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
+                        <span id="lblName" class="message msg-box"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label class="form-label">Số đ.thoại:</label>
+                        <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
+                        <span id="lblPhone" class="message msg-box"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label class="form-label">Địa chỉ email:</label>
+                        <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
+                        <span id="lblEmail" class="message msg-box"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra thông tin khách hàng.</p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Đặt vé" để thực hiện lệnh đặt vé.</p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "đặt vé" hoàn tất.</p>
+            </div>
+            <div class="form-group text-right">
+                <a href="/Management/AirBook/Search" class="btn btn-danger -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+                <button id="btnBooking" class="btn btn-success -w-100" type="button"><i class="fas fa-arrow-circle-right"></i> Đặt vé</button>
+            </div>
+
+        }
+        else
+        {
+            <div class="row mgt-20 mgb-25">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Lỗi hiển thị thông tin khách hàng.</p>
+                        <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Vui lòng thông báo cho quản trị viên.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <a href="/Management/AirBook/Search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+            </div>
+        }
+    </div>
+</section>
+
+
+@section scripts{
+    <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BookingOrderLoad();
+        });
+    </script>
+}
+

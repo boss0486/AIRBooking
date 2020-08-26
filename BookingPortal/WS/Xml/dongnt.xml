@@ -1,0 +1,96 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sec="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:mes="http://www.ebxml.org/namespaces/messageHeader" xmlns:v3="http://services.sabre.com/sp/pd/v3_4">
+  <soapenv:Header>
+    <sec:Security>
+      <sec:BinarySecurityToken>Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/ACPCRTC!ICESMSLB\/CRT.LB!-2977968162932009076!1270218!0</sec:BinarySecurityToken>
+    </sec:Security>
+    <mes:MessageHeader mes:id="?" mes:version="?">
+      <mes:From>
+        <mes:PartyId mes:type="?">WebServiceClient</mes:PartyId>
+      </mes:From>
+      <mes:To>
+        <mes:PartyId mes:type="?">WebServiceSupplier</mes:PartyId>
+      </mes:To>
+      <mes:CPAId>VN</mes:CPAId>
+      <mes:ConversationId>fOV1LWT3EJIUnGC0Yh1</mes:ConversationId>
+      <mes:Service mes:type="?">PassengerDetailsRQ</mes:Service>
+      <mes:Action>PassengerDetailsRQ</mes:Action>
+      <mes:MessageData>
+        <mes:MessageId>mid:20001209-133003-2333@clientofsabre.com1</mes:MessageId>
+        <mes:Timestamp>2017-11-10</mes:Timestamp>
+      </mes:MessageData>
+    </mes:MessageHeader>
+  </soapenv:Header>
+  <soapenv:Body>
+    <v3:PassengerDetailsRQ version="3.4.0">
+      <v3:PriceQuoteInfo>
+        <!--1 to 98 repetitions:-->
+        <v3:Link hostedCarrier="true" nameNumber="1.1" record="1"/>
+        <v3:Link hostedCarrier="true" nameNumber="2.1" record="2"/>
+        <v3:Link hostedCarrier="true" nameNumber="3.1" record="3"/>
+      </v3:PriceQuoteInfo>
+      <v3:SpecialReqDetails>
+        <v3:SpecialServiceRQ>
+          <v3:SpecialServiceInfo>
+            <v3:SecureFlight SegmentNumber="1">
+              <v3:PersonName DateOfBirth="2016-04-30" Gender="F" NameNumber="2.1">
+                <v3:GivenName>KHANH NGAN</v3:GivenName>
+                <v3:Surname>NGUYEN</v3:Surname>
+              </v3:PersonName>
+            </v3:SecureFlight>
+            <v3:SecureFlight SegmentNumber="1">
+              <v3:PersonName DateOfBirth="2018-05-19" Gender="F" NameNumber="3.1">
+                <v3:GivenName>KHANH AN</v3:GivenName>
+                <v3:Surname>NGUYEN</v3:Surname>
+              </v3:PersonName>
+            </v3:SecureFlight>
+            <v3:Service SegmentNumber="1" SSR_Code="CHLD">
+              <v3:PersonName NameNumber="2.1"/>
+              <v3:Text>30APR16</v3:Text>
+            </v3:Service>
+            <v3:Service SegmentNumber="1" SSR_Code="INFT">
+              <v3:PersonName NameNumber="1.1"/>
+              <v3:Text>NGUYEN/KHANH AN/19MAY18</v3:Text>
+              <v3:VendorPrefs>
+                <v3:Airline Hosted="true"/>
+              </v3:VendorPrefs>
+            </v3:Service>
+          </v3:SpecialServiceInfo>
+        </v3:SpecialServiceRQ>
+      </v3:SpecialReqDetails>
+      <v3:TravelItineraryAddInfoRQ>
+        <v3:AgencyInfo>
+          <v3:Address>
+            <v3:AddressLine>FOCUS AGENCY</v3:AddressLine>
+            <v3:CityName>HOCHIMINH CITY</v3:CityName>
+            <v3:CountryCode>VN</v3:CountryCode>
+            <v3:VendorPrefs>
+              <v3:Airline Hosted="true"/>
+            </v3:VendorPrefs>
+          </v3:Address>
+          <v3:Ticketing PseudoCityCode="KXV" TicketType="8TL30"/>
+        </v3:AgencyInfo>
+        <v3:CustomerInfo>
+          <v3:ContactNumbers>
+            <!--1 or more repetitions:-->
+            <v3:ContactNumber NameNumber="1.1" Phone="0987654321" PhoneUseType="H"/>
+          </v3:ContactNumbers>
+          <!--Zero or more repetitions:-->
+          <v3:Email Address="huuquynh@gmail.com" NameNumber="1"/>
+          <!--Zero or more repetitions:-->
+          <v3:PersonName Infant="false" NameNumber="1.1" PassengerType="ADT">
+            <v3:GivenName>HUU QUYNH</v3:GivenName>
+            <v3:Surname>NGUYEN</v3:Surname>
+          </v3:PersonName>
+          <v3:PersonName Infant="false" NameNumber="2.1" PassengerType="CNN">
+            <v3:GivenName>KHANH NGAN</v3:GivenName>
+            <v3:Surname>NGUYEN</v3:Surname>
+          </v3:PersonName>
+          <v3:PersonName Infant="true" NameNumber="3.1" PassengerType="INF">
+            <v3:GivenName>KHANH AN</v3:GivenName>
+            <v3:Surname>NGUYEN</v3:Surname>
+            </v3:PersonName>
+        </v3:CustomerInfo>
+      </v3:TravelItineraryAddInfoRQ>
+    </v3:PassengerDetailsRQ>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,238 @@
+﻿@using WebCore.Services;
+@using WebCore.Model.Services
+@model ApiPortalBooking.Models.Request_FlightSearchModel
+
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@section styles{
+    <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
+}
+
+<div class="form-group text-right">
+    <a id="btnSearchTab" class="nav-link active" data-toggle="tab" href="#searchTab">Tìm kiếm</a> | <a id="btnDataTab" class="nav-link" data-toggle="tab" href="#dataTab">Danh sách</a>
+</div>
+
+<div class="tab-content flight">
+    <div id="searchTab" class="tab-pane active">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <label class="form-label">Nơi đi:</label>
+                            <select id="ddlOriginLocation" name="ddlOriginLocation" class="form-control show-tick" data-live-search="true">
+                                <option value="-">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(WebCore.Services.AirportService.DropdownList(Model.OriginLocation))
+                            </select>
+                            <span id="lblOriginLocation" class="message msg-box"></span>
+                        </div>
+                        <div class="form-group form-float">
+                            <label class="form-label">Ngày đi:</label>
+                            <input id="DepartureDateTime" name="DepartureDateTime" data-date="true" data-dateDefault="true" maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
+                            <span id="lblDepartureDateTime" class="message msg-box"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-float">
+                                    <label class="form-label">ADT:</label>
+                                    <select id="ddlAdt" name="ddlAdt" class="form-control show-tick" data-live-search="true">
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.ADT.ToString()))
+                                    </select>
+                                    <span id="lblAdt" class="message msg-box"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-float">
+                                    <label class="form-label">CHD</label>
+                                    <select id="ddlChd" name="ddlChd" class="form-control show-tick" data-live-search="true">
+                                        <option value="0">00</option>
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.CNN.ToString()))
+                                    </select>
+                                    <span id="lblChd" class="message msg-box"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <label class="form-label">Nơi đến:</label>
+                            <select id="ddlDestinationLocation" name="ddlDestinationLocation" class="form-control show-tick" data-live-search="true">
+                                <option value="-">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(WebCore.Services.AirportService.DropdownList(Model.DestinationLocation))
+                            </select>
+                            <span id="lblDestinationLocation" class="message msg-box"></span>
+                        </div>
+                        <div class="form-group form-float">
+                            <label class="form-label">Ngày về:</label>
+                            <input id="ReturnDateTime" name="ReturnDateTime" data-date="true" maxlength="10" type="text" class="form-control" value="@Model.ReturnDateTime" />
+                            <span id="lblReturnDateTime" class="message msg-box"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-float">
+                                    <label class="form-label">INF:</label>
+                                    <select id="ddlInf" name="ddlInf" class="form-control show-tick" data-live-search="true">
+                                        <option value="0">00</option>
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.INF.ToString()))
+                                    </select>
+                                    <span id="lblTitle" class="message msg-box"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-float">
+                                    <label class="form-label">Loại vé:</label>
+                                    <select id="ddlFlightType" name="ddlFlightType" class="form-control show-tick" data-live-search="true">
+                                        <option value="1">Một chiều</option>
+                                        <option value="2" selected>Khứ hồi</option>
+                                    </select>
+                                    <span id="lblTitle" class="message msg-box"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label m-b-10">Lưu ý:</div>
+                    <p>
+                        <i class="fas fa-check-circle"></i> ADT: > 12 tuổi | CHD: 2 tuổi - 12 tuổi | INF: < 2 tuổi
+                    </p>
+                    <p>
+                        <i class="fas fa-check-circle"></i> Sô người lớn giới hạn [1-7] người
+                    </p>
+                    <p>
+                        <i class="fas fa-check-circle"></i> Mỗi người lớn chỉ được đính kèm một trẻ em
+                    </p>
+                </div>
+                <div class="form-group text-right">
+                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset q</button>
+                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dataTab" class="tab-pane fade">
+        <div class="row">
+            <div class="container-fluid mgt-40 mgb-15 flight-wcontent flight-wcontent-go ">
+                <h5 class="flight-title-top flight-go">Chuyến Đi: <b class="flight-name"></b> - <span class="flight-date"></span> - Người lớn: <span class="flight-adt-total"></span></h5>
+                <div class="responsive-table">
+                    <table id="TblFlightGo" class="table  table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Hãng</th>
+                                <th>Số hiệu</th>
+                                <th>Hành trình</th>
+                                <th>Khởi hành</th>
+                                <th style="width: 500px;">Hạng Giá vé</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblGoData">
+                            <tr>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="PaginationGo"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-fluid flight-wcontent flight-wcontent-return mgt-50">
+                <div class="flight-title-top flight-to m-t-40">Chuyến về: <b class="flight-name"></b> - <span class="flight-date"></span> - Người lớn: <span class="flight-adt-total"></span></div>
+                <div class="responsive-table">
+                    <table id="TblFlightReturn" class="table  table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Hãng</th>
+                                <th>Số hiệu</th>
+                                <th>Hành trình</th>
+                                <th>Khởi hành</th>
+                                <th style="width: 500px;">Hạng Giá vé</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblReturnData">
+                            <tr>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="PaginationReturm"></div>
+                <div class="form-group">
+                    <div class="container-fluid mgb-15" id="InforCustomerError"></div>
+                </div>
+                <div class="form-group">
+                    <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
+                    <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
+                    <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra giá vé chiều đi, chiều về.</p>
+                    <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Chọn chuyến bay chiều đi, chiều về.</p>
+                </div>
+                <div class="form-group text-right">
+                    <a href="/Management/AirBook/Search" class="btn btn-danger -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+                    <button id="btnNextToInf" class="btn btn-success" type="button"><i class="fas fa-arrow-circle-right"></i> Tiếp tục</button>
+                </div> 
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
+    <script type="text/javascript">
+        Cookies.DelCookie("FlightOrder");
+        $(function () {
+            var d = new Date();
+            d.setDate(d.getDate() - 0);
+            var today = d;
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = dd + "-" + mm + "-" + yyyy;
+
+            $('#DepartureDateTime').val(today);
+            $('#DepartureDateTime').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: '01-07-2020',
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                /// $('#selectDate').datepicker('hide');
+                $("#ReturnDateTime").datepicker("refresh");
+                console.log('ok:::' + $('#DepartureDateTime').val());
+
+
+
+            });
+            $('#ReturnDateTime').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: $('#DepartureDateTime').val(),
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                //$('#ddlTimeExpress').datepicker('hide');
+            });
+        });
+
+
+        $(document).on('click', '#btnDataTab', function () {
+            console.log('ok');
+        });
+    </script>
+}

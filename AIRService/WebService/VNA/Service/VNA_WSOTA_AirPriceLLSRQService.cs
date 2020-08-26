@@ -95,7 +95,7 @@ namespace AIRService.WS.Service
                     {
                         ArrivalDateTime = item.ArrivalDateTime.ToString("yyyy-MM-dd'T'HH:mm"),
                         DepartureDateTime = item.DepartureDateTime.ToString("yyyy-MM-dd'T'HH:mm"),
-                        FlightNumber = item.FlightNumber,
+                        FlightNumber = Convert.ToString(item.FlightNumber),
                         ResBookDesigCode = item.ResBookDesigCode,
                         RPH = rph.ToString(),
                         DestinationLocation = new WebService.WSOTA_AirPriceLLSRQ.OTA_AirPriceRQFlightSegmentDestinationLocation()
@@ -109,7 +109,7 @@ namespace AIRService.WS.Service
                         MarketingCarrier = new WebService.WSOTA_AirPriceLLSRQ.OTA_AirPriceRQFlightSegmentMarketingCarrier()
                         {
                             Code = "VN",
-                            FlightNumber = item.FlightNumber
+                            FlightNumber = Convert.ToString(item.FlightNumber)
                         },
                         ConnectionInd = "O"
                     };
@@ -124,8 +124,9 @@ namespace AIRService.WS.Service
                 var result = client.OTA_AirPriceRQ(ref messageHeader, ref security, oTA_AirPriceRQ);
                 return result;
             }
-            catch (Exception)
+            catch (Exception xx)
             {
+                throw xx;
                 return null;
             }
         }

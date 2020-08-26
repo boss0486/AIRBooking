@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+<div class="row clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-8">
+                        <h2>Danh sách</h2>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 align-right"  data-keyenter="#btnSearch">  
+                        <div class="form-group">
+                            <div class="ctrl-search-bar">
+                                <div id="btnSearch" class="search-icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                                <input id="txtQuery" class="form-control" type="text" placeholder="Nhập từ khóa..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-1 align-right">
+                        <div class="icon-add">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <div class="table-responsive" style="overflow-y:hidden !important; overflow-x:auto !important;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="tbcol-title" style="width:150px">Tiêu đề</th>
+                                <th class="tbcol-none" style="width:450px">Path Action</th>
+                                <th class="tbcol-none">Controller</th>
+                                <th class="tbcol-none">Action</th>
+                                <th class="tbcol-date">Permission</th>
+                                <th class="tbcol-active">Enabled</th>
+                                <th class="tbcol-date">Sắp xếp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblData"></tbody>
+                    </table>
+                </div>
+                <div id="Pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Adm/script/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            menuController.InLineList(1);
+            $(document).on('blur', '#TblData input[type="text"]', function () {
+                var _id = $(this).data('id');
+                var _column = $(this).data('column');
+                var _val = $(this).val();
+                var _oldval = $(this).data('oldval');
+
+               
+
+                var model = {
+                    ID: _id,
+                    Val: _val,
+                    Field: _column
+                };
+                if (_val !== _oldval) {
+
+
+                    $.ajax({
+                        url: '/MenuItem/UpdateInLine',
+                        data: model,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response !== null) {
+                                if (response.status === 200) {
+                                    Notifization.Success(response.message);
+                                    return;
+                                }
+                                else {
+                                    Notifization.Error(response.message);
+                                    return;
+                                }
+                            }
+                            Notifization.Error(MessageText.NOTSERVICES);
+                            return;
+                        },
+                        error: function (response) {
+                            console.log('::' + MessageText.NOTSERVICES);
+                        }
+                    });
+
+                }
+            });
+
+
+        })
+    </script>
+}

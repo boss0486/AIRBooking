@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@{
+    string id = string.Empty;
+    string loginId = string.Empty;
+    string tokenId = string.Empty;
+    string otpCode = string.Empty;
+    string roleGroupID = string.Empty;
+    string roleGroupName = string.Empty;
+    string identifierID = string.Empty;
+    string imageFile = string.Empty;
+    string firstName = string.Empty;
+    string lastName = string.Empty;
+    string nickname = string.Empty;
+    string birthday = string.Empty;
+    string email = string.Empty;
+    string phone = string.Empty;
+    string address = string.Empty;
+    string departmentId = string.Empty;
+    string departmentName = string.Empty;
+    string departmentpartId = string.Empty;
+    string departmentPartName = string.Empty;
+    string machineid = string.Empty;
+    string languageId = string.Empty;
+    string siteId = string.Empty;
+    string createdby = string.Empty;
+    string roleId = string.Empty;
+    bool isBlock = false;
+    string active = "";
+    string imgFile = "";
+    string createdDate = string.Empty;
+    string wordshift = string.Empty;
+    //DateTime createdDate =  ;
+
+    using (var loginService = new UserLoginService())
+    {
+        try
+        {
+            //id = this.Url.RequestContext.RouteData.Values["id"].ToString();
+            id = Helper.Current.UserLogin.IdentifierID;
+            var model = loginService.GetUserModel(id);
+
+
+            if (model == null)
+            {
+                Response.Redirect("/adm/user/index");
+            }
+            else
+            {
+                id = model.ID;
+                loginId = model.LoginID;
+                tokenId = model.TokenID;
+                otpCode = model.OTPCode;
+                identifierID = model.IdentifierID;
+                imageFile = model.ImageFile;
+                firstName = model.FirstName;
+                lastName = model.LastName;
+                nickname = model.Nickname;
+
+                if (model.Birthday != null)
+                {
+                    birthday = Helper.Page.Library.FormatToDateVN(model.Birthday);
+                }
+                email = model.Email;
+                phone = model.Phone;
+                address = model.Address;
+                departmentPartName = model.DepartmentPartName;
+                machineid = string.Empty;
+                languageId = string.Empty;
+                isBlock = false;
+                siteId = string.Empty;
+                createdby = model.CreatedBy;
+                if (model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+                {
+                    active = "checked";
+                }
+                if (!string.IsNullOrEmpty(model.WorkShiftID))
+                {
+                    wordshift = model.WorkShiftID;
+                }
+                if (!string.IsNullOrEmpty(model.DepartmentID))
+                {
+                    departmentId = model.DepartmentID;
+                }
+                if (!string.IsNullOrEmpty(model.DepartmentPartID))
+                {
+                    departmentpartId = model.DepartmentPartID;
+                }
+
+                createdDate = Helper.Page.Library.FormatToDateVN(model.CreatedDate);
+
+                imgFile = Helper.File.AttachmentFile.GetFile(imageFile);
+
+
+
+            }
+
+        }
+        catch (Exception)
+        {
+            Helper.Page.Navigate.RedirectToNotFound();
+        }
+    }
+}
+<div class="card">
+    <div class="body">
+        <div class="row">
+            <div class="col-md-7 infor">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Đăng nhập: </label>
+                </div>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td style="width:200px">Tài khoản</td>
+                            <td>@loginId</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ E-mail</td>
+                            <td>@email</td>
+                        </tr>
+                        <tr>
+                            <td>Ngày tạo hồ sơ</td>
+                            <td>@createdDate</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin Card/ID:</label>
+                </div>
+                <div class="inf-container">
+
+                    <div class="form-group">
+                        <div style="padding:10px 0px;">
+                            <img src="@Helper.Page.Default.FileUserImange" class="img-responsive" style="width: 220px;height: 220px;border: solid 10px #d9e4d6;color: #F00;background: #F00;" />
+                        </div>
+                        <br />
+                        <label class="form-label">ID: <b style="color:#F00; text-transform:uppercase;">@id</b></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

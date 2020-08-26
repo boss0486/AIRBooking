@@ -1,9 +1,12 @@
 ﻿using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace AIRService.WS.Service
 {
@@ -99,6 +102,7 @@ namespace AIRService.WS.Service
                 {
                     LocationCode = model.DestinationLocation
                 };
+                //
                 var data = client.FareRQ(ref messageHeader, ref security, fareRQ);
                 if (data.FareBasis == null || data.FareBasis.Count() == 0)
                     return null;
@@ -168,11 +172,32 @@ namespace AIRService.WS.Service
             }
             catch (Exception ex)
             {
-                throw ex;
-
-
                 return null;
             }
+        }
+        public static string GetXMLFromObject(object o)
+        {
+            StringWriter sw = new StringWriter();
+            XmlTextWriter tw = null;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(o.GetType());
+                tw = new XmlTextWriter(sw);
+                serializer.Serialize(tw, o);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                sw.Close();
+                if (tw != null)
+                {
+                    tw.Close();
+                }
+            }
+            return sw.ToString();
         }
     }
 }

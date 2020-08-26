@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.ENM;
+@using WebCore.Model.Enum;
+@{
+    string id = string.Empty;
+    string intId = string.Empty;
+    string parentId = string.Empty;
+    string title = string.Empty;
+    string summary = string.Empty;
+    string alias = string.Empty;
+    string iconFront = string.Empty;
+    string path = string.Empty;
+    string isPermission = string.Empty;
+    string languageId = string.Empty;
+    string enable = string.Empty;
+    string isEnable = string.Empty;
+    string createdDate = string.Empty;
+
+    string areaKey = string.Empty;
+    string routeArea = string.Empty;
+    string controllerId = string.Empty;
+    string actionId = string.Empty;
+
+
+    try
+    {
+        string clsPesmission = string.Empty;
+        id = this.Url.RequestContext.RouteData.Values["id"].ToString();
+        MenuItemService menuItemService = new MenuItemService();
+        var model = menuItemService.UpdateForm(id);
+        areaKey = AreaApplicationService.GetAreaKeyByID(model.RouteArea);
+        routeArea = model.RouteArea;
+        parentId = model.ParentID;
+        title = model.Title;
+        summary = model.Summary;
+        alias = model.Alias;
+        iconFront = model.IconFont;
+        path = model.Path;
+        languageId = model.LanguageID;
+        createdDate = model.CreatedDate;
+        controllerId = model.MvcController;
+        actionId = model.MvcAction;
+        if (model.IsPermission == 1)
+        {
+            isPermission = "checked";
+        }
+        if (model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            isEnable = "checked";
+        }
+    }
+    catch (Exception)
+    {
+
+        Helper.Page.Navigate.RedirectToNotFound();
+    }
+}
+@section styles
+{
+    <link href="~/_themes/library/plugins/menu-vetical/css/vetical-menu.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-7">
+        <div class="form-group">
+            <label class="form-label">Phân vùng</label>
+            <input id="ddlArea" name="ddlArea" maxlength="50" type="text" class="form-control" value="@areaKey" data-Id="@routeArea" disabled />
+            <span id="lblArea" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tiêu đề</label>
+            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Mô tả</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Vị trí:</label>
+                    <select id="ddlOrder" name="ddlOrder" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(ModelService.DDLMenuSort(-1))
+                    </select>
+                    <span id="lblOrder" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Font icon: </label>
+                    <input id="txtIconFont" name="txtIconFont" maxlength="255" type="text" class="form-control" value="@iconFront" />
+                    <span id="lblIconFont" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Controller: </label>
+                    <select id="ddlController" name="ddlController" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(MenuControllerService.DropdownList(controllerId, routeArea))
+                    </select>
+                    <span id="lblController" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Action:</label>
+                    <select id="ddlAction" name="ddlAction" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(MenuActionService.DropdownList(actionId,controllerId))
+                    </select>
+                    <span id="lblAction" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label">&nbsp;</label>
+                <div class="form-group">
+                    <input id="cbxPermission" type="checkbox" class="filled-in" @isPermission />
+                    <label for="cbxPermission">Phân quyền</label>
+                    <span id="lblPermission" class="message msg-box"></span>
+                </div>
+                <div class="form-group">
+                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @isEnable />
+                    <label for="cbxActive">Kích hoạt</label>
+                    <span id="lblActive" class="message msg-box"></span>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label class="form-label">Danh mục</label>
+            <div class="vatical-menu"><ul id="MenuItemCategory" class="menu-cate"></ul></div>
+        </div>
+    </div>
+</div>
+<div class="form-group pull-right">
+    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+</div>
+<div class="form-group text-right att-data-list">
+    <a href="@Helper.Page.Navigate.PathDataList()">
+        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>
+<input id="txtID" value="@id" type="hidden" />
+@section scripts{
+    <script src="~/Areas/Development/_script/menu.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var id = $('#txtID').val();
+            var parentId = `@parentId`;
+            var controllerId = `@controllerId`;
+            var actionId = `@actionId`;
+            var routeArea = `@routeArea`;
+            // function
+            menuController.GetMenuCategory(routeArea, parentId);
+        });
+        $(document).on('change', '.vatical-menu input[type="checkbox"]', function () {
+            $('.vatical-menu input[type="checkbox"]').not(this).prop('checked', false);
+        });
+    </script>
+}
+

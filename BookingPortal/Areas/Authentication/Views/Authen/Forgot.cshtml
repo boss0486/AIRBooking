@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+<div class="main">
+    <div class="login-form" data-keyenter="#btnLogin">
+        <h2>Xác thực OTP</h2>
+        <div class="form-group">
+            <input id="txtOTP" name="txtOTP" type="text" class="form-control" placeholder="OTP code..." />
+            <span id="lblOtp" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <input id="txtPassword" name="txtPassword" type="password" class="form-control" placeholder="Mật khẩu" />
+            <span id="lblPassword" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <input id="txtRePassword" name="txtRePassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" />
+            <span id="lblRePassword" class="message msg-box"></span>
+        </div>
+
+        <div class="form-group">
+            <button id="btnResetPassword" class="btn bg-pink waves-effect" type="button">Lưu lại</button>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <div class="checkbox checkbox-primary">
+                    <a href="/Authentication/sendotp"><i class="fas fa-qrcode"></i> Nhận OTP</a>
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="checkbox checkbox-primary">
+                    <a href="/Authentication/sendotp"><i class="fa fa-lock"></i> Lấy lại mật khẩu?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="txtToken" value="@ViewBag.Token" type="hidden" />
+@section scripts{
+    <script src="~/Areas/Authentication/Scripts/reset-password.js"></script>
+}

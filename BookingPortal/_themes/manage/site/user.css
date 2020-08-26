@@ -1,0 +1,94 @@
+﻿
+
+.profile {
+}
+
+    .profile .user-wimg {
+        background: #FFF;
+        height: 260px;
+        border: dotted 1px #CCC;
+        position: relative;
+        overflow:hidden;
+
+    }
+
+        .profile .user-wimg img {
+            margin: auto;
+            padding:10px;
+            max-height:100%;
+        }
+
+
+    .profile .profile-card {
+        background: #FFF;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+        .profile .profile-card .profile-header {
+            background-color: #ad1455;
+            padding: 42px 0;
+        }
+
+        .profile .profile-card .profile-body {
+        }
+
+            .profile .profile-card .profile-body .image-area {
+                text-align: center;
+                margin-top: -64px;
+            }
+
+                .profile .profile-card .profile-body .image-area img {
+                    border: 2px solid #ad1455;
+                    padding: 2px;
+                    margin: 2px;
+                    -webkit-border-radius: 50%;
+                    -moz-border-radius: 50%;
+                    -ms-border-radius: 50%;
+                    border-radius: 50%;
+                    width: 128px;
+                    height: 128px;
+                }
+
+            .profile .profile-card .profile-body .content-area {
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 15px;
+            }
+
+                .profile .profile-card .profile-body .content-area p {
+                    margin-bottom: 0;
+                }
+
+                    .profile .profile-card .profile-body .content-area p:last-child {
+                        font-weight: 600;
+                        color: #ad1455;
+                        margin-top: 5px;
+                    }
+
+        .profile .profile-card .profile-footer {
+            padding: 15px;
+        }
+
+            .profile
+            .profile-card .profile-footer ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+                .profile
+                .profile-card .profile-footer ul li {
+                    border-bottom: 1px solid #eee;
+                    padding: 10px 0;
+                }
+
+                    .profile
+                    .profile-card .profile-footer ul li span:first-child {
+                        font-weight: 400;
+                    }
+
+                    .profile
+                    .profile-card .profile-footer ul li span:last-child {
+                        float: right;
+                    }

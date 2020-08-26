@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.UserModel
+
+@{
+    string id = "";
+    string areaId = "";
+    string loginId = "";
+    string imageFile = "";
+    string fullName = "";
+    string nickname = "";
+    string birthday = "";
+    string email = "";
+    string phone = "";
+    string address = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string isBlock = "Hoạt động";
+    string enabled = "None";
+    try
+    {
+        if (Model != null)
+        {
+            id = Model.ID;
+            areaId = Model.AreaID;
+            loginId = Model.LoginID;
+            fullName = Model.FullName;
+            nickname = Model.Nickname;
+            if (!string.IsNullOrWhiteSpace(Model.Birthday))
+            {
+                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
+            }
+            email = Model.Email;
+            phone = Model.Phone;
+            address = Model.Address;
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
+            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+            //
+            if (Model.IsBlock)
+            {
+                isBlock = "Đang khóa";
+            }
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "Kích hoạt";
+            }
+            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
+            {
+                enabled = "Không được kích hoạt";
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+<div class="row profile">
+    <div class="col-md-4 ">
+        <div class="profile-card">
+            <div class="profile-header">&nbsp;</div>
+            <div class="profile-body">
+                <div class="image-area">
+                    <img src="@imageFile" />
+                </div>
+                <div class="content-area">
+                    <h3>@fullName</h3>
+                    <p>*******</p>
+                    <p>@birthday</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Mã ID: <span class="account-id">@id</span></label>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tình trạng: @isBlock</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        <div class="form-group text-right">
+            <a href="#">
+                Danh sách <i class="fas fa-arrow-circle-right"></i>
+            </a>
+            <hr />
+        </div>
+    </div>
+
+</div>

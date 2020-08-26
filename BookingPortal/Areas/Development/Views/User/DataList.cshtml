@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+<div class="row" data-keyenter="#btnSearch">
+    <div class="col-md-4" data-keyenter="#btnSearch">
+        <div class="input-group">
+            <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+            <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+    <div class="col-md-8 text-right">
+        <div class="form-group">
+            <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary">
+                @Helper.Language.Resource.Label.BtnCreate
+            </a>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-title">Tài khoản</th>
+                <th class="tbcol-none">Họ tên</th>
+                <th class="tbcol-status">T.Trạng</th>
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-action">
+                    ACT &nbsp;
+                    <a href="@Helper.Page.Navigate.PathCreate()">
+                        <i class="fa fa-plus-square" title="create"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+
+@section scripts{
+    <script src="~/Areas/Development/_script/user.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            UserController.DataList(1);
+        });
+    </script>
+}

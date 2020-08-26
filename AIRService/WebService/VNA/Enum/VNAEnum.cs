@@ -18,7 +18,7 @@ namespace AIRService.WebService.VNA.Enum
         {
             None = 0,
             FlightGo = 1,
-            FlightTo = 2
+            FlightReturn = 2
         }
     }
 }

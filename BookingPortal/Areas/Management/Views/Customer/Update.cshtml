@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.Customer
+@{
+    string id = "";
+    string supplierId = "";
+    string customerType = "";
+    string customerCode = "";
+    string parentID = "";
+    string title = "";
+    string alias = "";
+    string summary = "";
+    string address = "";
+    string taxCode = "";
+    string contactName = "";
+    string contactEmail = "";
+    string contactPhone = "";
+    double depositAmount = 0;
+    double spendingLimit = 0;
+    int termPayment = 0;
+    string path = "";
+    string accountId = "";
+    string compPhone = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string enabled = "None";
+    //
+    string _loginId = "";
+    try
+    {
+        if (Model != null)
+        {
+
+            id = Model.ID;
+            supplierId = Model.SupplierID;
+            customerType = Model.TypeID;
+            customerCode = Model.CodeID;
+            parentID = Model.ParentID;
+            title = Model.Title;
+            alias = Model.Alias;
+            summary = Model.Summary;
+            address = Model.Address;
+            taxCode = Model.TaxCode;
+            contactName = Model.ContactName;
+            contactEmail = Model.ContactEmail;
+            contactPhone = Model.ContactPhone;
+            depositAmount = Model.DepositAmount;
+            spendingLimit = Model.SpendingLimit;
+            termPayment = Model.TermPayment;
+            path = Model.Path;
+            accountId = Model.RegisterID;
+            compPhone = Model.CompanyPhone;
+            //
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "checked";
+            }
+            _loginId = UserService.GetLoginIDByID(accountId);
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+<div class="row">
+    <div class="col-md-7">
+        @if (Helper.Current.UserLogin.IsAdministratorInApplication)
+        {
+            <div class="top-pic special">
+                <label><i class="fas fa-building"></i>&nbsp;<span>Nhà cung cấp dịch vụ:</span></label>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="form-label">Nhà cung cấp:</label>
+                        <select id="ddlSupplier" name="ddlSupplier" class="form-control show-tick" data-live-search="true" disabled>
+                            <option value="">-Lựa chọn-</option>
+                            @Html.Raw(SupplierService.DropdownList(supplierId))
+                        </select>
+                        <span id="lblSupplier" class="message msg-box"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Mã nhà cung cấp:</label> #
+                        <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">---</label></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="top-pic special">
+            <label><i class="fas fa-building"></i>&nbsp;<span>Doanh nghiệp/ Đại lý:</span></label>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label">Loại khách hàng:</label>
+                    <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText" disabled>
+                        <option value="">-Lựa chọn-</option>
+                        @Html.Raw(CustomerTypeService.DropdownList(customerType))
+                    </select>
+                    <span id="lblCustomer" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Mã khách hàng:</label>
+                    <input id="txtCodeID" name="txtCodeID" maxlength="3" type="text" class="form-control" style="background: #CCFFCD" value="@customerCode" disabled />
+                    <span id="lblCodeID" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tên khách hàng:</label>
+            <input id="txtTitle" name="txtTitle" maxlength="80" type="text" class="form-control" value="@title" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Mô tả:</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control default">@summary</textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Mã số thuế:</label>
+                    <input id="txtTaxCode" name="txtTaxCode" maxlength="20" type="text" class="form-control" value="@taxCode" />
+                    <span id="lblTaxCode" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại:</label>
+                    <input id="txtCompanyPhone" name="txtCompanyPhone" maxlength="20" type="text" class="form-control" value="@compPhone" />
+                    <span id="lblCompanyPhone" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Địa chỉ:</label>
+            <input id="txtAddress" name="txtAddress" maxlength="255" type="text" class="form-control" value="@address" />
+            <span id="lblAddress" class="message msg-box"></span>
+        </div>
+        <div class="top-pic special">
+            <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Tên liên hệ:</label>
+            <input id="txtContactName" name="txtContactName" maxlength="50" type="text" class="form-control" value="@contactName" />
+            <span id="lblContactName" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">E-mail:</label>
+                    <input id="txtContactEmail" name="txtContactEmail" maxlength="20" type="text" class="form-control" value="@contactEmail" />
+                    <span id="lblContactEmail" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Đ.thoại:</label>
+                    <input id="txtContactPhone" name="txtContactPhone" maxlength="50" type="text" class="form-control" value="@contactPhone" />
+                    <span id="lblContactPhone" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="top-pic special">
+            <label><i class="fas fa-server"></i>&nbsp;<span>Dịch vụ:</span></label>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Đặt cọc:</label>
+            <input id="txtDeposit" name="txtDeposit" maxlength="15" type="text" class="form-control" value="@depositAmount" />
+            <span id="lblDeposit" class="message msg-box"></span>
+        </div> 
+        <div class="form-group">
+            <label class="form-label">Thời hạn TT(ngày):</label>
+            <input id="txtTermPayment" name="txtTermPayment" maxlength="3" type="text" class="form-control" value="@termPayment" />
+            <span id="lblTermPayment" class="message msg-box"></span>
+        </div>
+    </div>
+</div>
+
+<div class="form-group text-right">
+    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+</div>
+<div class="form-group text-right att-data-list">
+    <a href="@Helper.Page.Navigate.PathDataList()">
+        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>
+<input id="txtID" type="hidden" value="@id" />
+@section scripts{
+    <script src="~/Areas/Management/_script/customer.js"></script>
+    <script type="text/javascript">
+        $("select#ddlSupplier").change();
+    </script>
+}
+
+

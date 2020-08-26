@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.UserModel
+
+@{
+    string id = "";
+    string areaId = "";
+    string loginId = "";
+    string imageFile = "";
+    string fullName = "";
+    string nickname = "";
+    string birthday = "";
+    string email = "";
+    string phone = "";
+    string address = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string isBlock = "Hoạt động";
+    string enabled = "Không xác định";
+    try
+    {
+        if (Model != null)
+        {
+            id = Model.ID;
+            areaId = Model.AreaID;
+            loginId = Model.LoginID;
+            fullName = Model.FullName;
+            nickname = Model.Nickname;
+            if (!string.IsNullOrWhiteSpace(Model.Birthday))
+            {
+                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
+            }
+            email = Model.Email;
+            phone = Model.Phone;
+            address = Model.Address;
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
+            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+            //
+            if (Model.IsBlock)
+            {
+                isBlock = "Đang bị khóa";
+            }
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "Kicsk hoạt";
+            }
+            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
+            {
+                enabled = "chưa kích hoạt";
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+<div class="row">
+    <div class="col-md-4 profile">
+        <div class="profile-card">
+            <div class="profile-header">&nbsp;</div>
+            <div class="profile-body">
+                <div class="image-area">
+                    <img src="@imageFile" />
+                </div>
+                <div class="content-area">
+                    <h3>@fullName</h3>
+                    <p>*******</p>
+                    <p>@birthday</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label"><i class="fas fa-check-circle"></i> Quản trị viên:</label>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin liên hệ:</label>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ email:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <label class="form-label">@email</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="form-label"><i class="fas fa-check-circle"></i> Số điện thoại</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <label class="form-label">@phone</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <label class="form-label">@address</label>
+                </div>
+            </div>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Tình trạng:</div></div>
+            <div class="col-md-8"><div class="form-group">@isBlock</div></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái:</div></div>
+            <div class="col-md-8"><div class="form-group">@enabled</div></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo hồ sơ:</div></div>
+            <div class="col-md-8"><div class="form-group">@createdDate</div></div>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>

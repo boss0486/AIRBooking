@@ -1,0 +1,255 @@
+﻿
+.flight {
+}
+
+    .flight table thead th {
+        background: #8bc34a;
+        padding: 8px 5px;
+    }
+
+    .flight table tr th, .flight table tr td {
+        vertical-align: middle;
+    }
+
+    .flight .flight-title-top {
+        font-size: 14px;
+    }
+
+        .flight .flight-title-top .flight-name {
+            color: #0026ff;
+            font-weight: bold;
+        }
+
+        .flight .flight-title-top .flight-date {
+            color: #ff6a00;
+            font-weight: bold;
+        }
+
+        .flight .flight-title-top .flight-adt-total {
+            color: #0026ff;
+            font-weight: bold;
+        }
+
+
+    .flight .flight-wcontent-go, .flight .flight-wcontent-return {
+        display: none;
+    }
+
+
+        .flight .flight-wcontent-go.active, .flight .flight-wcontent-return.active {
+            display: block;
+        }
+
+
+
+    .flight table .td-firm {
+        font-weight: 400;
+    }
+
+
+    .flight table .td-flightNo b {
+        font-weight: 400;
+    }
+
+    .flight table .td-flightNo span {
+        font-weight: 400;
+        font-size: 13.5px;
+        color: #ff6a00;
+    }
+
+    .flight table .td-itinerary {
+    }
+
+    .flight table .td-price {
+        font-weight: 400;
+        text-align: right;
+    }
+
+    .flight table .td-action {
+        font-weight: 400;
+        text-align: center;
+        cursor: pointer;
+    }
+
+
+        .flight table .td-action i {
+            font-weight: 400;
+            font-size: 21px;
+            color: #eee;
+            cursor: pointer;
+        }
+
+        .flight table .td-action.active {
+            background: rgba(172, 255, 76, 0.32);
+        }
+
+
+            .flight table .td-action.active i {
+                color: #3BDE86;
+            }
+
+    .flight #TblGoData .td-firm i {
+        transform: rotate(-45deg);
+    }
+
+    .flight #TblReturnData .td-firm i {
+        transform: rotate(45deg);
+    }
+
+    
+
+    .flight #InfCustomer .-warning {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #eea236;
+        display: inline-block;
+        padding: 6px 12px;
+        width: 100%;
+        min-height: 34px;
+    }
+
+    .flight #InforCustomerError {
+        min-height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+    }
+
+        .flight #InforCustomerError.on {
+            background: hsla(0, 96%, 60%, 0.66);
+            color: #FFF;
+        }
+
+    .flight table .td-price .lbl-list .resbook {
+        cursor: pointer;
+        padding: 3px 4px;
+    }
+
+    .flight table .td-price .resbook:hover {
+        color: #F00;
+    }
+
+    .flight table .td-price .resbook.on {
+        color: #f44336;
+        font-weight: bold;
+    }
+
+
+
+    .flight table .td-price [data-adtprice].on {
+        display: inline-block;
+        background: #10ff00;
+        border: solid 1px #00ff5a;
+        border-radius: 20px;
+        padding: 0px 10px;
+    }
+
+    .flight table .td-price .lbl-special {
+        float: left;
+        display: inline-block;
+    }
+
+        .flight table .td-price .lbl-special .resbook {
+            font-weight: 500;
+            width: 14px;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .flight table .td-price .lbl-special span.fare {
+            display: inline-block;
+            background: #009688;
+            border: solid 1px #009688;
+            border-radius: 20px;
+            padding: 0px 10px;
+            color: #FFF;
+            min-width: 120px;
+            width: 120px;
+        }
+
+
+/**/
+
+
+.book-in table {
+    background: #a2d5d0;
+}
+
+    .book-in table.table-bordered tr td, .book-in table.table-bordered tr th {
+        border-color: #c7e2e0;
+    }
+
+    .book-in table th {
+        background: #a2d5d0;
+    }
+
+    .book-in table .td-inf-price table, .book-in table .td-inf-price table th, .book-in table .td-inf-price table td {
+        border: none;
+    }
+
+    .book-in table .td-inf-price {
+        width: 380px;
+        height: 70px;
+        padding: 0px;
+    }
+
+        .book-in table .td-inf-price th, .book-in table .td-inf-price td {
+            padding: 2px 5px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(1) {
+            width: 40px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(2) {
+            width: 10px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(3) {
+            width: 40px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(4) {
+            width: 10px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(5) {
+            width: 30%;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(6) {
+            width: 10px;
+        }
+
+        .book-in table .td-inf-price table tr td:nth-child(7) {
+            width: auto;
+        }
+
+
+
+.book-in .book-flight-title {
+    color: #009688;
+    border-bottom: solid 1px #ddd;
+    padding-bottom: 10px;
+}
+
+    .book-in .book-flight-title i {
+        color: #009688;
+        font-size: 17px;
+    }
+
+.book-in .-warning {
+    color: #FF9800;
+    display: inline-block;
+    padding: 3px 0px;
+    width: 100%;
+}
+
+
+
+.book-in table.table-bordered tr .total-itinerary label {
+    font-size: 18px;
+}
+
+    .book-in table.table-bordered tr .total-itinerary .total-itinerary-price {
+        color: #F00;
+    }

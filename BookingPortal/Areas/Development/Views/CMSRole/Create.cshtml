@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Services;
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group ">
+            <label class="form-label">Phân vùng:</label>
+            <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
+                <option value="">-Lựa chọn-</option>
+                @Html.Raw(AreaApplicationService.DropdowList(""))
+            </select>
+            <span id="lblArea" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tên nhóm quyền:</label>
+            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Mô tả:</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control default"></textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Cấp độ:</label>
+            <input id="txtLevel" name="txtLevel" maxlength="50" type="text" class="form-control" />
+            <span id="lblLevel" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-10">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" />
+            <label for="cbxActive">Cho phép hiển thị</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Areas/Development/_script/role.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Role_AreaOption("", false);
+        })
+    </script>
+}
+

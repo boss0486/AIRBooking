@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@section styles
+{
+    <link href="~/_themes/library/plugins/menu-vetical/css/vetical-menu.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-7">
+        <div class="form-group">
+            <label class="form-label">@Helper.Language.Resource.Label.Area:</label>
+            <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
+                <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+            </select>
+            <span id="lblArea" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Tiêu đề</label>
+            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Mô tả</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control"></textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Vị trí:</label>
+                    <select id="ddlOrder" name="ddlOrder" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(ModelService.DDLMenuSort(-1))
+                    </select>
+                    <span id="lblOrder" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label">Font icon: </label>
+                    <input id="txtIconFont" name="txtIconFont" maxlength="255" type="text" class="form-control" value="fas fa-circle" />
+                    <span id="lblIconFont" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label">Controller: </label>
+                    <select id="ddlController" name="ddlController" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblController" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label">Action: </label>
+                    <select id="ddlAction" name="ddlAction" class="form-control show-tick" data-live-search="true">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblAction" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label">&nbsp;</label>
+                <div class="form-group ">
+                    <input id="cbxPermission" name="cbxPermission" type="checkbox" class="filled-in" />
+                    <label for="cbxPermission">Phân quyền</label>
+                    <span id="lblPermission" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" />
+                    <label for="cbxActive">Kích hoạt</label>
+                    <span id="lblActive" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label class="form-label">Danh mục</label>
+            <div class="vatical-menu"><ul id="MenuItemCategory" class="menu-cate"></ul></div>
+        </div>
+    </div>
+</div>
+<div class="form-group text-right">
+    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+    <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+</div>
+<div class="form-group text-right att-data-list">
+    <a href="@Helper.Page.Navigate.PathDataList()">
+        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>
+@section scripts{
+    <script src="~/Areas/Development/_script/menu.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GetMenuArea("", true)
+        });
+
+        $(document).on('change', '.vatical-menu input[type="checkbox"]', function () {
+            $('.vatical-menu input[type="checkbox"]').not(this).prop('checked', false);
+        });
+    </script>
+}

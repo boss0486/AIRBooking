@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.Customer
+@{
+    string id = "";
+    string customerType = "";
+    string customerCode = "";
+    string parentID = "";
+    string title = "";
+    string alias = "";
+    string summary = "";
+    string address = "";
+    string phone = "";
+    string taxCode = "";
+    string contactName = "";
+    string contactEmail = "";
+    string contactPhone = "";
+    double depositAmount = 0;
+    double spendingLimit = 0;
+    int termPayment = 0;
+    string path = "";
+    string accountId = "";
+    string phoneOfOTP = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string enabled = "None";
+    //
+    string loginId = "";
+    try
+    {
+        if (Model != null)
+        {
+
+            id = Model.ID;
+            customerType = Model.TypeID;
+            customerCode = Model.CodeID;
+            parentID = Model.ParentID;
+            title = Model.Title;
+            alias = Model.Alias;
+            summary = Model.Summary;
+            address = Model.Address;
+            taxCode = Model.TaxCode;
+            contactName = Model.ContactName;
+            contactEmail = Model.ContactEmail;
+            contactPhone = Model.ContactPhone;
+            depositAmount = Model.DepositAmount;
+            spendingLimit = Model.SpendingLimit;
+            termPayment = Model.TermPayment;
+            path = Model.Path;
+            //
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "checked";
+            }
+            loginId = UserService.GetLoginIDByID(accountId);
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+
+<div class="row">
+    
+    <div class="col-md-4">
+        <div class="top-pic special">
+            <label><i class="fas fa-user"></i>&nbsp;<span>Thông tin truy cập:</span></label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tài khoản: @loginId</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại nhận OTP: @phoneOfOTP</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+    </div>
+    <div class="col-md-4">
+        <div class="top-pic special">
+            <i class="fas fa-server"></i>&nbsp;<label>Dịch vụ:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Đặt cọc: @Helper.Page.Library.FormatThousands(depositAmount) vnd</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Hạn mức: @Helper.Page.Library.FormatThousands(spendingLimit) vnd</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Thời hạn TT(ngày): @termPayment</div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin hồ sơ:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Loại đại lý: @customerType</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mã khách hàng: <b style="color:#F00;">@customerCode</b></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tên khách hàng: @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @phone</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Địa chỉ: @address</div>
+        <div class="top-pic special">
+            <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Người liên hệ: @contactName</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> E-mail: @contactEmail</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @contactPhone</div>
+
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

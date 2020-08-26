@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="form-label">Tiêu đề</label>
+            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Mô tả</label>
+            <textarea id="txtSummary" name="txtSummary" class="form-control default"></textarea>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Management/_script/card-credit.js"></script>
+}
+

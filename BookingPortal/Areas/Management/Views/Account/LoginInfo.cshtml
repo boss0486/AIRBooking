@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.UserModel
+
+@{
+    string id = "";
+    string areaId = "";
+    string loginId = "";
+    string imageFile = "";
+    string fullName = "";
+    string nickname = "";
+    string birthday = "";
+    string email = "";
+    string phone = "";
+    string address = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string isBlock = "Hoạt động";
+    string enabled = "None";
+
+    if (Model != null)
+    {
+        id = Model.ID;
+        areaId = Model.AreaID;
+        loginId = Model.LoginID;
+        fullName = Model.FullName;
+        nickname = Model.Nickname;
+        if (!string.IsNullOrWhiteSpace(Model.Birthday))
+        {
+            birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
+        }
+        email = Model.Email;
+        phone = Model.Phone;
+        address = Model.Address;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = Convert.ToString(Model.CreatedDate);
+        imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+        //
+        if (Model.IsBlock)
+        {
+            isBlock = "Tài khoản bị khóa";
+        }
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "ENABLED";
+        }
+        else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
+        {
+            enabled = "DISABLE";
+        }
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin truy cập: </label>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td style="width:200px">Tài khoản</td>
+                    <td>@loginId</td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ E-mail</td>
+                    <td>@email</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin Card/ID:</label>
+        </div>
+        <div class="form-group">
+            <div style="padding:10px 0px;">
+                <img src="@imageFile" class="img-responsive" style="width: 220px;height: 220px;border: solid 10px #d9e4d6;color: #F00;background: #F00;" />
+            </div>
+            <br />
+            <label class="form-label">ID: <b style="color:#F00; text-transform:uppercase;">@id</b></label>
+            <div class="alert alert-warning" role="alert">
+                Vui lòng không chia sẻ mã này cho bất kì ai.
+            </div>
+        </div>
+    </div>
+</div>

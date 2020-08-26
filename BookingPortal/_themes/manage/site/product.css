@@ -1,0 +1,52 @@
+﻿
+.table tbody tr td, .table tbody tr th {
+    padding: 2px 5px;
+}
+
+table .tbcol-photo {
+    width: 50px;
+    background: #F7F7F7;
+}
+
+    table .tbcol-photo img {
+        max-height: 38px;
+    }
+
+table td p {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+    table td p.title {
+        color: #00A9C1;
+        white-space: nowrap;
+        font-weight: 400;
+        min-height: 30px;
+    }
+
+    table td p.content {
+        color: #676262;
+        font-size: 12px;
+        height: 38px;
+        line-height: 1.35;
+    }
+
+    table td p.date {
+        color: #676262;
+        font-size: 12.5px;
+    }
+
+        table td p.date i {
+            color: #FF006E;
+            font-size: 12px;
+        }
+
+    /*table td p.price {
+        color: #FF006E;
+        font-size: 12.5px;
+    }
+
+    table td p.price-listed {
+        color: #3BDE86;
+        font-size: 12.5px;
+    }*/

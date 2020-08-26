@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authencation @ViewBag.Title</title>
+    @Styles.Render("~/authen/css")
+    @Styles.Render("~/library/css")
+    @Scripts.Render("~/library/jquery")
+    <link href="~/_themes/authenzition/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/library/js")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

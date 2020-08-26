@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group role-group">
+            <label for="">Nhóm người dùng:</label>
+            <div  class="all-list-group list-group check-option" style="margin-bottom: 0px;">
+                <div class="list-group-item">
+                    <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span><a href="/management/role/create" class="badge badge-primary badge-pill active">Tạo mới</a></label>
+                </div>
+            </div>
+            <ul id="Role" class='role list-group check-option list-group-customize'></ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="form-group func-group">
+            <label for="">Chức năng/hành động:<span id="lblMessage" class="message"></span></label>
+            <div class="table-responsive">
+                <table id="TblFunction" class="table table-bordered" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <td>
+                                <input id="FuncCheckAll" data-categoryid="All" type="checkbox" class="filled-in" />
+                                <label style="margin:0px;" for="FuncCheckAll">Chọn tất cả</label>
+                            </td>
+                            <td>Hành động</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group text-right">
+    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+</div>
+@section scripts{
+    <script src="~/Areas/Management/_script/permission.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _PermissionController.RoleOptionList();
+        });
+
+        $(document).on('change', '#Role input[type="checkbox"]', function (index, item) {
+            // remove other option
+            $('#Role input[type="checkbox"]').not(this).prop('checked', false);
+            //
+            var roleId = $(this).val();
+            _PermissionController.FuncGroup(roleId, null);
+        });
+        // contrller ckeck
+        $(document).on('change', '#TblFunction tr .inp-controler', function () {
+            var trControl = $(this).closest("tr");
+            if ($(this).is(":checked")) {
+                $(trControl).find('input.all-action,input.inp-action').not(this).removeAttr("disabled");
+            }
+            else {
+                $(trControl).find('input[type="checkbox"]').not(this).prop('checked', false);
+                $(trControl).find('input.all-action,input.inp-action').not(this).attr("disabled", "disabled");
+            }
+            CheckAllForFunction();
+        });
+        // ckeck all action
+        $(document).on('change', '#TblFunction tr .all-action', function () {
+            var trControl = $(this).closest("tr");
+            if ($(this).is(":checked")) {
+                $(trControl).find('input.inp-action').not(this).prop('checked', true);
+            }
+            else {
+                $(trControl).find('input.inp-action').not(this).prop('checked', false);
+            } 
+        });
+        // ckeck item action
+        $(document).on('change', '#TblFunction tr .inp-action', function () {
+            var trControl = $(this).closest("tr");
+            var inpController = $(trControl).find('.inp-controler');
+            $('#lblMessage').html('');
+            if (!$(inpController).is(":checked")) {
+                $(trControl).find('input.all-action,input.inp-action').prop('checked', false).attr("disabled", "disabled");
+                return;
+            }
+            $(trControl).find('input.all-action').removeAttr("disabled");
+            // check all
+            var notcheck = $(trControl).find('input.inp-action:checkbox:not(:checked)');
+            if (notcheck.length == 0)
+                $(trControl).find('input.all-action').not(this).prop('checked', true);
+            else {
+                $(trControl).find('input.all-action').not(this).prop('checked', false);
+            }
+        });
+        // check all controler
+        $(document).on('change', '#TblFunction > thead tr input[type="checkbox"]', function () {
+            if ($(this).is(":checked")) {
+                $('#TblFunction > tbody tr input[type="checkbox"].inp-controler').not(this).prop('checked', true);
+                $('#TblFunction > tbody').find('input.all-action,input.inp-action').removeAttr("disabled");
+
+            }
+            else {
+                $('#TblFunction > tbody input[type="checkbox"]').prop('checked', false);
+                $('#TblFunction > tbody').find('input.all-action,input.inp-action').attr("disabled", "disabled");
+            }
+        });
+    </script>
+}

@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+    <div class="row align-right" data-keyenter="#btnSearch">
+        <div class="col-md-3">
+            <div class="form-group">
+                <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
+                    <option value="-1">-@Helper.Language.Resource.Label.Area-</option>
+                </select>
+                <span id="lblArea" class="message msg-box"></span>
+            </div>
+        </div>
+                <div class="col-md-3">
+            <div class="form-group">
+                <select id="ddlStatus" name="ddlStatus" class="form-control show-tick" data-live-search="true">
+                    <option value="-1">-@Helper.Language.Resource.Label.Status-</option>
+                    @Html.Raw(WebCore.Model.Services.ModelService.DDLStatus(-1))
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4" data-keyenter="#btnSearch">
+            <div class="input-group">
+                <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+                <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+            </div>
+        </div>
+        <div class="col-md-2 text-right">
+            <div class="form-group">
+                <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary">
+                    @Helper.Language.Resource.Label.BtnCreate
+                </a>
+            </div>
+        </div>
+    </div>
+<div class="table-responsive" style="overflow-y:hidden !important; overflow-x:auto !important;">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-none">Tiêu đề</th>
+                <th class="tbcol-none" style="width:200px">Phân vùng</th>
+                <th class="tbcol-action">Cấp menu</th>
+                <th class="tbcol-action">Vị trí</th>
+                <th class="tbcol-active">Sắp xếp</th>
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-action">
+                    ACT &nbsp;
+                    <a href="@Helper.Page.Navigate.PathCreate()">
+                        <i class="fa fa-plus-square" title="create"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+
+@section scripts{
+    <script src="~/Areas/Development/_script/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            GetMenuArea("", true);
+        });
+    </script>
+}

@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Entities;
+@using WebCore.Model.Enum;
+@{
+    string id = string.Empty;
+    string loginId = string.Empty;
+    string tokenId = string.Empty;
+    string otpCode = string.Empty;
+    string roleGroupID = string.Empty;
+    string roleGroupName = string.Empty;
+    string identifierID = string.Empty;
+    string imageFile = string.Empty;
+    string firstName = string.Empty;
+    string lastName = string.Empty;
+    string nickname = string.Empty;
+    DateTime birthday = DateTime.Now;
+    string email = string.Empty;
+    string phone = string.Empty;
+    string address = string.Empty;
+    string departmentId = string.Empty;
+    string departmentName = string.Empty;
+    string departmentpartId = string.Empty;
+    string departmentPartName = string.Empty;
+    string workShiName = string.Empty;
+
+    string machineid = string.Empty;
+    string languageId = string.Empty;
+    bool isBlock = false;
+    string siteId = string.Empty;
+    string createdby = string.Empty;
+    string roleId = string.Empty;
+    string active = "";
+    string imgFile = "";
+    string createdDate = string.Empty;
+    string wordShiftName = string.Empty;
+    string bankId = string.Empty;
+    string accountNumber = string.Empty;
+    //DateTime createdDate =  ;
+
+    using (var loginService = new UserLoginService())
+    {
+        try
+        {
+            id = Helper.Current.IdentifierID;
+            var user = loginService.GetUserModel(id);
+
+            if (user == null)
+            {
+                Helper.Navigate.PageNotFound();
+            }
+            else
+            {
+                loginId = user.LoginID;
+                tokenId = user.TokenID;
+                otpCode = user.OTPCode;
+                identifierID = user.LoginID;
+                imageFile = user.ImageFile;
+                firstName = user.FirstName;
+                lastName = user.LastName;
+                nickname = user.Nickname;
+                birthday = user.Birthday;
+                email = user.Email;
+                phone = user.Phone;
+                address = user.Address;
+                departmentName = user.DepartmentName;
+                departmentPartName = user.DepartmentPartName;
+                wordShiftName = user.WorkShiftName;
+                machineid = string.Empty;
+                languageId = string.Empty;
+                isBlock = false;
+                siteId = string.Empty;
+                createdby = user.CreatedBy;
+                if (user.Enabled == (int)ModelEnum.Enabled.ENABLED)
+                {
+                    active = "checked";
+                }
+                createdDate = Helper.Library.FormatDate(user.CreatedDate);
+                imgFile = "<img class='img-responsive' src='" + WebCore.AttachmentFile.GetFile(imageFile) + "' data-id='" + imageFile + "'>";
+            }
+        }
+        catch (Exception)
+        {
+            Helper.Navigate.PageNotFound();
+        }
+    }
+}
+<div class="card">
+    <div class="body profile">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Mã nhân viên:</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">IDNo.:</label>
+                    <div class="form-control disabled">@identifierID</div>
+                    <span id="lblBirthday" class="message msg-box"></span>
+                </div>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Họ/tên đệm:</label>
+                    <input id="txtFirstName" name="txtFirstName" maxlength="50" type="text" class="form-control" value="@firstName" />
+                    <span id="lblFirstName" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Tên:</label>
+                    <input id="txtLastName" name="txtLastName" maxlength="50" type="text" class="form-control" value="@lastName" />
+                    <span id="lblLastName" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Biệt danh:</label>
+                    <input id="txtNickname" name="txtNickname" maxlength="50" type="text" class="form-control" value="@nickname" />
+                    <span id="lblNickname" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Ngày sinh:</label>
+                    <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value='@String.Format("{0:dd-MM-yyyy}", birthday)' />
+                    <span id="lblBirthday" class="message msg-box"></span>
+                </div>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Liên hệ:</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="form-label">Địa chỉ email:</label>
+                            <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="@email" />
+                        </div>
+                        <span id="lblEmail" class="message msg-box"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="form-label">Số điện thoại:</label>
+                            <input id="txtPhone" name="txtPhone" maxlength="50" type="text" class="form-control" value="@phone" />
+                        </div>
+                        <span id="lblPhone" class="message msg-box"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <label class="form-label">Địa chỉ:</label>
+                            <input id="txtAddress" name="txtAddress" maxlength="250" type="text" class="form-control" value="@address" />
+                            <span id="lblAddress" class="message msg-box"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hình ảnh:</label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ảnh đại diện:</label>
+                    <div data-fileprevew="true" class=" text-center new-box-preview">@Html.Raw(imgFile)</div>
+                    <span class="message msg-box">
+                        <i class="far fa-folder"></i> <span class="img-caption-text">&nbsp;... chọn file</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <section class="inf-container text-right">
+            <button id="btnUpdate" class="btn btn-primary" type="button">Cập nhật</button>
+            <button id="btnReset" class="btn btn-danger" type="reset">Làm mới</button>
+        </section>
+    </div>
+</div>
+<input id="txtID" type="hidden" value="@id" />
+@section scripts{
+    <script src="~/Areas/BackEnd/_script/account.js"></script>
+    <script type="text/javascript">
+        $(document).on('click', '[data-fileprevew="true"]', function () {
+            FileManager.FileManager(null, '[data-fileprevew="true"]', '.img-caption-text', FileManager.FileEnum.ALONE);
+        });
+    </script>
+}

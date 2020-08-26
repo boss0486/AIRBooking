@@ -98,8 +98,8 @@ namespace AIR.Helper.Session
 
         public TokenModel GetSession()
         {
-            try
-            {
+            //try
+            //{
                 AIRService.WebService.WSSessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.WSSessionCreateRQ.MessageHeader
                 {
                     MessageData = new AIRService.WebService.WSSessionCreateRQ.MessageData()
@@ -152,11 +152,11 @@ namespace AIR.Helper.Session
                     Token = security.BinarySecurityToken
                 };
                 return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return null;
+            //}
         }
 
 

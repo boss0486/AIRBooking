@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Services; 
+    <div class="row" data-keyenter="#btnSearch">
+        <div class="col-md-3">
+            <div class="form-group ">
+                <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
+                    <option value="">-Loại khách hàng-</option>
+                    @Html.Raw(CustomerTypeService.DropdownList(""))
+                </select>
+                <span id="lblCustomer" class="message msg-box"></span>
+            </div>
+        </div>
+        <div class="col-md-3" data-keyenter="#btnSearch">
+            <div class="input-group">
+                <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+                <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+            </div>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <div class="form-group">
+                <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary">
+                    @Helper.Language.Resource.Label.BtnCreate
+                </a>
+            </div>
+        </div>
+    </div>
+<div class="table-responsive" style="overflow-y:hidden !important; overflow-x:auto !important;">
+    <table class="table table-bordered table-inline">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-title">Mã K.Hàng</th>
+                <th class="tbcol-none">Mã số thuế</th>
+                <th class="tbcol-none">Tên khách hàng</th>
+                <th class="tbcol-none">Loại K.Hàng</th>
+                <th class="tbcol-none">Liên hệ</th>
+                <th class="tbcol-none">Địa chỉ</th>
+                <th class="tbcol-none">Số tiền đặt cọc</th>
+                <th class="tbcol-none">Hạn mức</th>
+                <th class="tbcol-none">Kỳ hạn TT</th>
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-action">
+                    ACT &nbsp;
+                    <a href="@Helper.Page.Navigate.PathCreate()">
+                        <i class="fa fa-plus-square" title="create"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+@section scripts{
+    <script src="~/Areas/Management/_script/customer.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            CustomerController.DataList(1);
+        });
+    </script>
+}
