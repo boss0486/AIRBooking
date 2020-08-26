@@ -486,7 +486,6 @@ var CustomerController = {
                             var _contactEmail = item.ContactEmail;
                             var _contactPhone = item.ContactPhone;
                             var _depositAmount = item.DepositAmount;
-                            var _spendingLimit = item.SpendingLimit;
                             var _termPayment = item.TermPayment;
                             var _path = item.Path;
                             var _accountID = item.AccountID;
@@ -522,7 +521,6 @@ var CustomerController = {
                                  <td>${_contactName}</td>
                                  <td>${_address}</td>
                                  <td class="text-right">${LibCurrencies.FormatThousands(_depositAmount)} vnd</td>
-                                 <td class="text-right">${LibCurrencies.FormatThousands(_spendingLimit)} vnd</td>
                                  <td class="text-right">${_termPayment}</td>                                                                                       
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>

@@ -14,6 +14,17 @@
             <div class="col-md-7">
                 @if (!Helper.Current.UserLogin.IsCustomerLogged())
                 {
+                    <div class="form-group">
+                        <label class="form-label">Khách hàng:</label>
+                        <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
+                            <option value="">-Lựa chọn-</option>
+                            @Html.Raw(CustomerService.DropdownList(""))
+                        </select>
+                        <span id="lblCustomer" class="message msg-box"></span>
+                    </div>
+                }
+                else
+                {
                     CustomerService customerService = new CustomerService();
                     var customer = customerService.GetCustomerModel(Helper.Current.UserLogin.IdentifierID);
                     if (customer != null)
@@ -25,17 +36,7 @@
                             <span id="lblCustomer" class="message msg-box"></span>
                         </div>
                     }
-                }
-                else
-                {
-                    <div class="form-group">
-                        <label class="form-label">Khách hàng:</label>
-                        <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
-                            <option value="">-Lựa chọn-</option>
-                            @Html.Raw(CustomerService.DropdownList(""))
-                        </select>
-                        <span id="lblCustomer" class="message msg-box"></span>
-                    </div>
+
                 }
 
             </div>

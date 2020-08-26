@@ -1,9 +1,8 @@
 ﻿* {
     /*font-family: Menlo, Monaco, Consolas, "Courier New", monospace;*/
-    font-family: 'Roboto', sans-serif;
-    /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    font-size: 13.8px;
-    color: #1a1a1a;
+    font-family: 'Roboto', sans-serif, monospace;
+    font-size: 13.5px;
+    color: #040404;
     font-weight: 300;
     letter-spacing: 0;
 }
@@ -27,9 +26,13 @@ span {
 }
 
 
-table tr th, table tr td {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace !important;
+/*table tr th, table tr td {
+    font-family:   'Segoe UI', Tahoma, Geneva, Verdana, sans-serif monospace !important;
 }
+*/
+/*    table tr th:nth-child(2n+1), table tr td:nth-child(2n+1) {
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace !important;
+    }*/
 /* Navbar ====================================== */
 .navbar {
     border-radius: 0;
@@ -5517,33 +5520,27 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
 }
 
 .table thead tr th {
-    padding: 10px;
-    border-bottom: none;
-    font-weight: 400;
-}
-
-.table thead tr th {
     padding: 4px 8px;
     border-bottom: none;
     font-weight: 400;
+    padding: 8px 8px;
+    border-bottom: none;
+    font-weight: 400;
+    background: #D9F1EC;
+    border: 1px solid #ABDED4;
 }
 
 .table-bordered {
-    border-color: #eee;
+    border-color: #ABDED4;
 }
 
-    .table-bordered tbody tr td, .table-bordered tbody tr th {
-        border-color: #eee;
+    .table-bordered tbody tr td {
         white-space: nowrap;
-    }
-
-    .table-bordered thead tr th {
-        border-color: #eee;
-        white-space: nowrap;
+        border-color: #ABDED4;
     }
 
 .table-inline tr td, .table-inline tr th {
-    white-space: nowrap;
+    white-space: nowrap; 
 }
 
 .table tbody label {
@@ -8512,7 +8509,7 @@ textarea.form-control {
         padding: 13px 15px 12px 15px;
         white-space: nowrap;
         position: relative;
-        background: rgba(115, 124, 140 ,0.3);
+        background: rgba(115, 124, 140,0.3);
         display: inline-block;
         width: 100%;
         cursor: default;
@@ -8564,7 +8561,7 @@ textarea.form-control {
                 font-weight: 400;
                 text-transform: capitalize;
                 font-size: 13px;
-                color:#FFF;
+                color: #FFF;
             }
 
         .sidebar .user-info .btn-group {
@@ -8572,7 +8569,7 @@ textarea.form-control {
             bottom: 3px;
             right: 8px;
             cursor: pointer;
-            color:#FFF;
+            color: #FFF;
         }
 
         .sidebar .user-info .dropdown-menu {
@@ -8581,7 +8578,7 @@ textarea.form-control {
             right: -9px;
             box-shadow: none !important;
             padding: 0px;
-            border-radius:0;
+            border-radius: 0;
         }
 
 

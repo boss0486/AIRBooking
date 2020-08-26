@@ -438,7 +438,6 @@ $(document).on('click', '#btnSyncControl', function () {
             if (result !== null) {
                 if (result.status === 200) {
                     Notifization.Success(result.message);
-                    Loading.PageLoad();
                     // get menu
                     GetMenuArea("", true);
                     return;

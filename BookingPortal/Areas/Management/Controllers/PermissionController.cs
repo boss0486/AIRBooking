@@ -13,6 +13,7 @@ namespace WebApplication.Management.Controllers
     public class PermissionController : CMSController
     {
         // GET: Adm/Permission
+        [IsManage(true, "Setting")]
         public ActionResult Setting()
         {
             return View();
