@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://webservices.sabre.com/sabreXML/2003/07" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" elementFormDefault="qualified" targetNamespace="http://webservices.sabre.com/sabreXML/2003/07" version="1.0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation xml:lang="en" />
+  </xs:annotation>
+  <xs:element name="Diagnostic">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="2" name="ForceRouting">
+          <xs:complexType>
+            <xs:attribute name="Value1" type="xs:string" />
+            <xs:attribute name="Value2" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RequestedDiagnostic">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Parameters">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="Parameter">
+                      <xs:annotation>
+                        <xs:documentation />
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attribute name="Value" type="xs:string" use="required">
+                          <xs:annotation>
+                            <xs:documentation />
+                          </xs:annotation>
+                        </xs:attribute>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Number" type="xs:int" use="required">
+              <xs:annotation>
+                <xs:documentation />
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

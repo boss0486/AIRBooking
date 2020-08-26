@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="baad5d55-8c32-4954-9333-ca0b3e0a495f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/tpfc/FareLLS2.9.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FareLLS2.xsd" MetadataType="Schema" ID="07246369-5e84-4dd4-b6ec-705f3517cf0a" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/FareLLS2.9.0RS.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="d6471a4f-f4eb-4774-83fa-8d9f3b01dc09" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/wsse.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="20718fe7-1e13-4822-b6a7-46704aa388d8" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="FareLLS21.xsd" MetadataType="Schema" ID="27dd8a05-b908-4aec-ac1c-779a81ac9b80" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/FareLLS2.9.0RQRS.xsd" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="372fecf3-c3a2-4bcb-b894-79c72a94393d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="1723a943-9d3f-42ef-8e40-e90e82261dab" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/envelope.xsd" />
+    <MetadataFile FileName="FareLLS22.xsd" MetadataType="Schema" ID="c8e6fee9-b5a4-4c6b-8f73-801f10f73ea9" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/FareLLS2.9.0RQ.xsd" />
+    <MetadataFile FileName="sws_common.xsd" MetadataType="Schema" ID="e48c3396-95fd-4709-9e59-b80b141ba6d1" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/sws_common.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="e90bb60d-51bd-416a-95c6-e69da2f63b4f" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xml.xsd" />
+    <MetadataFile FileName="FareLLS2.wsdl" MetadataType="Wsdl" ID="2fed587e-9b8c-4a7d-a5a3-8894cb5b41f7" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/FareLLS2.9.0RQ.wsdl" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="2cc0c241-6fd9-4773-b039-2b789d8378e0" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xlink.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="99a49e50-5f31-422a-9882-6b8f98cafa6a" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="d6610937-6a63-48f0-9173-cee29ee6f952" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,5 +1,4 @@
 ﻿using AIRService.Models;
-using AIRService.WebService.WSOTA_AirBookLLSRQ;
 using AIRService.WS.Entities;
 using AL.NetFrame.Attributes;
 using AL.NetFrame.Interfaces;

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0e54fed3-4d97-49a4-98eb-8a403e680f12" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/PassengerDetails3.4.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SpCommonSimpleTypes_v3.xsd" MetadataType="Schema" ID="8367f215-61ee-44cc-b3c3-4b917fba3a10" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/SpCommonSimpleTypes_v3.xsd" />
+    <MetadataFile FileName="STL2_Payload_v02_01.xsd" MetadataType="Schema" ID="04df6ca4-5e3e-4123-8b33-35dae24d6754" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/STL2_Payload_v02_01.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="0279e233-c43f-4fc1-b5e3-cd98a5f49a96" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/xlink.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="f7d6c019-f658-4054-a031-a35a327ced25" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/xml.xsd" />
+    <MetadataFile FileName="PassengerDetails3.xsd" MetadataType="Schema" ID="e823bde0-d523-463d-90f8-bd7939e831c8" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/PassengerDetails3.4.0RS.xsd" />
+    <MetadataFile FileName="STL2_MsgCommon_v02_01.xsd" MetadataType="Schema" ID="f58a7379-cad7-46ee-a19f-4d2dc049ab42" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/STL2_MsgCommon_v02_01.xsd" />
+    <MetadataFile FileName="PassengerDetails31.xsd" MetadataType="Schema" ID="38afd590-f9d8-4f93-95da-bd0496d682a8" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/PassengerDetails3.4.0RQ.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="584541a3-fa15-44a8-a976-0808b6d34793" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/msg-header-2_0.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="9bbe45f0-2a2f-45fd-8810-156667127b57" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="f95ec009-ebb1-4e89-80b3-d710d30a935e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/envelope.xsd" />
+    <MetadataFile FileName="PassengerDetails32.xsd" MetadataType="Schema" ID="c8d3523e-2036-4245-b0b1-11d3b0d6ad38" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/PassengerDetails3.4.0RQRS.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="72e78def-cc9c-4a13-82d7-e8071e630283" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/built-ins/wsse.xsd" />
+    <MetadataFile FileName="PassengerDetails3.wsdl" MetadataType="Wsdl" ID="2c8308c5-7df5-44df-a0e5-97d953f9137d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/ServicesPlatform/PassengerDetails3.4.0RQ.wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

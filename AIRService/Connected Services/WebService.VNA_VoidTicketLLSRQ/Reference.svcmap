@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="24546f0d-64d3-4449-a7b9-3bd183dd40cb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/tpfc/VoidTicketLLS2.1.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="VoidTicketLLS2.xsd" MetadataType="Schema" ID="d99f38a4-6d61-4130-a837-c922f5e13c30" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/VoidTicketLLS2.1.0RQRS.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="3345b775-b849-47cc-9853-a2afb5c9c14e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/envelope.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="6cc22885-64bf-4ebb-9a8b-436637102f7d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/wsse.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="86b32609-b5a0-4ffb-92d9-22f657451a50" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="VoidTicketLLS21.xsd" MetadataType="Schema" ID="21672c6a-0421-4310-9fc8-25d7203d7769" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/VoidTicketLLS2.1.0RQ.xsd" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="faf63358-8f34-4bf1-bf92-b7daff0437b5" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="4d9da839-caf8-447a-a85c-a60e4d21ca1d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="sws_common.xsd" MetadataType="Schema" ID="136cbeb5-0052-4d9f-8317-37dfe857139f" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/sws_common.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="0a742490-267c-4e25-b01c-f9162b1eab8e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xml.xsd" />
+    <MetadataFile FileName="VoidTicketLLS22.xsd" MetadataType="Schema" ID="8d650c26-fde7-4724-82af-45d0e65cf139" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/VoidTicketLLS2.1.0RS.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="b075692a-b596-4ac6-827a-eed8e8b17733" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xlink.xsd" />
+    <MetadataFile FileName="VoidTicketLLS2.wsdl" MetadataType="Wsdl" ID="a13edfbb-9eab-46b9-83bc-e7dad955dbf4" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/VoidTicketLLS2.1.0RQ.wsdl" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="7b8b6c4a-e4fb-4afb-9dad-6bc94cb57158" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

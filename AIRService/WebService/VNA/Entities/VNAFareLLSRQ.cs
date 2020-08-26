@@ -12,6 +12,6 @@ namespace AIRService.WS.Entities
         public string ResBookDesigCode { get; set; }
         public string CurrencyCode { get; set; }
         public FareLLSModel FareLLS { get; set; }
-        public AIRService.WebService.WSFareLLSRQ.FareRS FareRSData { get; set; }
+        public AIRService.WebService.VNA_FareLLSRQ.FareRS FareRSData { get; set; }
     }
 }

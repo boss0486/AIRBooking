@@ -17,8 +17,7 @@ using WebCore.Services;
 using Helper.Page;
 using WebCore.Model.Entities;
 using WebCore.ENM;
-using System.Data;
-using AIRService.WebService.WSGetReservationRQ;
+using System.Data; 
 
 namespace WebCore.Services
 {

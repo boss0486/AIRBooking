@@ -14,62 +14,62 @@ using System.Xml;
 
 namespace AIRService.Service
 {
-    class VNAOTA_AirTaxRQService
+    class VNA_OTA_AirTaxRQService
     {
-        public AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS AirTax(TokenModel token, Resquet_WsTaxModel model)
+        public AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS AirTax(TokenModel token, Resquet_WsTaxModel model)
         {
-            WebService.WSOTA_AirTaxRQ.MessageHeader messageHeader = new WebService.WSOTA_AirTaxRQ.MessageHeader
+            WebService.VNA_OTA_AirTaxRQ.MessageHeader messageHeader = new WebService.VNA_OTA_AirTaxRQ.MessageHeader
             {
-                MessageData = new WebService.WSOTA_AirTaxRQ.MessageData()
+                MessageData = new WebService.VNA_OTA_AirTaxRQ.MessageData()
             };
             messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
             messageHeader.ConversationId = token.ConversationID;
-            messageHeader.Service = new WebService.WSOTA_AirTaxRQ.Service();
+            messageHeader.Service = new WebService.VNA_OTA_AirTaxRQ.Service();
             messageHeader.Action = "OTA_AirTaxRQ";
-            messageHeader.From = new WebService.WSOTA_AirTaxRQ.From
+            messageHeader.From = new WebService.VNA_OTA_AirTaxRQ.From
             {
-                PartyId = new WebService.WSOTA_AirTaxRQ.PartyId[1]
+                PartyId = new WebService.VNA_OTA_AirTaxRQ.PartyId[1]
             };
-            var partyID = new WebService.WSOTA_AirTaxRQ.PartyId
+            var partyID = new WebService.VNA_OTA_AirTaxRQ.PartyId
             {
                 Value = "WebServiceClient"
             };
             messageHeader.From.PartyId[0] = partyID;
 
-            messageHeader.To = new WebService.WSOTA_AirTaxRQ.To
+            messageHeader.To = new WebService.VNA_OTA_AirTaxRQ.To
             {
-                PartyId = new WebService.WSOTA_AirTaxRQ.PartyId[1]
+                PartyId = new WebService.VNA_OTA_AirTaxRQ.PartyId[1]
             };
-            partyID = new WebService.WSOTA_AirTaxRQ.PartyId
+            partyID = new WebService.VNA_OTA_AirTaxRQ.PartyId
             {
                 Value = "WebServiceSupplier"
             };
             messageHeader.To.PartyId[0] = partyID;
             //  header info
-            WebService.WSOTA_AirTaxRQ.Security security = new WebService.WSOTA_AirTaxRQ.Security
+            WebService.VNA_OTA_AirTaxRQ.Security security = new WebService.VNA_OTA_AirTaxRQ.Security
             {
                 BinarySecurityToken = token.Token
             };
-            AIRService.WebService.WSOTA_AirTaxRQ.TaxPortTypeClient taxPortTypeClient = new AIRService.WebService.WSOTA_AirTaxRQ.TaxPortTypeClient();
+            AIRService.WebService.VNA_OTA_AirTaxRQ.TaxPortTypeClient taxPortTypeClient = new AIRService.WebService.VNA_OTA_AirTaxRQ.TaxPortTypeClient();
             ////////  
-            AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQ _airTaxRQ = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQ();
-            _airTaxRQ.ItineraryInfos = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfo[1];
+            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQ _airTaxRQ = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQ();
+            _airTaxRQ.ItineraryInfos = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo[1];
             //
-            var _itineraryInfo = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfo();
-            _itineraryInfo.ReservationItems = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItems();
-            _itineraryInfo.ReservationItems.Item = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItem();
+            var _itineraryInfo = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo();
+            _itineraryInfo.ReservationItems = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItems();
+            _itineraryInfo.ReservationItems.Item = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItem();
             _itineraryInfo.ReservationItems.Item.RPH = (Int16)model.BaseFare.RPH;
             _itineraryInfo.ReservationItems.Item.SalePseudoCityCode = "LZJ";
             _itineraryInfo.ReservationItems.Item.TicketingCarrier = "VN";
             _itineraryInfo.ReservationItems.Item.ValidatingCarrier = "VN";
             //
-            _airTaxRQ.POS = new WebService.WSOTA_AirTaxRQ.AirTaxRQPOS();
-            _airTaxRQ.POS.Source = new WebService.WSOTA_AirTaxRQ.AirTaxRQPOSSource();
+            _airTaxRQ.POS = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQPOS();
+            _airTaxRQ.POS.Source = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQPOSSource();
             _airTaxRQ.POS.Source.PseudoCityCode = "LZJ";
             //
-            _itineraryInfo.ReservationItems.Item.FlightSegment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment[1];
+            _itineraryInfo.ReservationItems.Item.FlightSegment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment[1];
             //
-            var flightSegment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment();
+            var flightSegment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment();
             flightSegment.DepartureDateTime = model.DepartureDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
             flightSegment.ArrivalDateTime = model.ArrivalDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
             //
@@ -78,30 +78,30 @@ namespace AIRService.Service
             flightSegment.ForceConnectionInd = true;
             flightSegment.ForceStopOverInd = true;
             //
-            flightSegment.DepartureAirport = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport();
+            flightSegment.DepartureAirport = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport();
             flightSegment.DepartureAirport.CodeContext = "IATA";
             flightSegment.DepartureAirport.LocationCode = model.OriginLocation;
             //
-            flightSegment.ArrivalAirport = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport();
+            flightSegment.ArrivalAirport = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport();
             flightSegment.ArrivalAirport.CodeContext = "IATA";
             flightSegment.ArrivalAirport.LocationCode = model.DestinationLocation;
             //
-            flightSegment.Equipment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentEquipment();
+            flightSegment.Equipment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentEquipment();
             flightSegment.Equipment.AirEquipType = Convert.ToString(model.AirEquipType);
-            flightSegment.MarketingAirline = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline();
+            flightSegment.MarketingAirline = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline();
             flightSegment.MarketingAirline.Code = "VN";
             _itineraryInfo.ReservationItems.Item.FlightSegment[0] = flightSegment;
             //
-            _itineraryInfo.ReservationItems.Item.AirFareInfo = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfo();
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
+            _itineraryInfo.ReservationItems.Item.AirFareInfo = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfo();
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
             //
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.PassengerType;
             //
             //_itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.FareBasisCode = model.FareBasisCode;
             //
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = model.BaseFare.Amount;
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.CurrencyCode = model.BaseFare.CurrencyCode;
             //
@@ -111,51 +111,51 @@ namespace AIRService.Service
 
         }
         // ######################################################################################################################################################################
-        public List<AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS> AirTaxList(TokenModel token, List<Resquet_WsTaxModel> models)
+        public List<AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS> AirTaxList(TokenModel token, List<Resquet_WsTaxModel> models)
         {
-            WebService.WSOTA_AirTaxRQ.MessageHeader messageHeader = new WebService.WSOTA_AirTaxRQ.MessageHeader
+            WebService.VNA_OTA_AirTaxRQ.MessageHeader messageHeader = new WebService.VNA_OTA_AirTaxRQ.MessageHeader
             {
-                MessageData = new WebService.WSOTA_AirTaxRQ.MessageData()
+                MessageData = new WebService.VNA_OTA_AirTaxRQ.MessageData()
             };
             messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
             messageHeader.ConversationId = token.ConversationID;
-            messageHeader.Service = new WebService.WSOTA_AirTaxRQ.Service();
+            messageHeader.Service = new WebService.VNA_OTA_AirTaxRQ.Service();
             messageHeader.Action = "OTA_AirTaxRQ";
-            messageHeader.From = new WebService.WSOTA_AirTaxRQ.From
+            messageHeader.From = new WebService.VNA_OTA_AirTaxRQ.From
             {
-                PartyId = new WebService.WSOTA_AirTaxRQ.PartyId[1]
+                PartyId = new WebService.VNA_OTA_AirTaxRQ.PartyId[1]
             };
-            var partyID = new WebService.WSOTA_AirTaxRQ.PartyId
+            var partyID = new WebService.VNA_OTA_AirTaxRQ.PartyId
             {
                 Value = "WebServiceClient"
             };
             messageHeader.From.PartyId[0] = partyID;
 
-            messageHeader.To = new WebService.WSOTA_AirTaxRQ.To
+            messageHeader.To = new WebService.VNA_OTA_AirTaxRQ.To
             {
-                PartyId = new WebService.WSOTA_AirTaxRQ.PartyId[1]
+                PartyId = new WebService.VNA_OTA_AirTaxRQ.PartyId[1]
             };
-            partyID = new WebService.WSOTA_AirTaxRQ.PartyId
+            partyID = new WebService.VNA_OTA_AirTaxRQ.PartyId
             {
                 Value = "WebServiceSupplier"
             };
             messageHeader.To.PartyId[0] = partyID;
             //  header info
-            WebService.WSOTA_AirTaxRQ.Security security = new WebService.WSOTA_AirTaxRQ.Security
+            WebService.VNA_OTA_AirTaxRQ.Security security = new WebService.VNA_OTA_AirTaxRQ.Security
             {
                 BinarySecurityToken = token.Token
             };
-            AIRService.WebService.WSOTA_AirTaxRQ.TaxPortTypeClient taxPortTypeClient = new AIRService.WebService.WSOTA_AirTaxRQ.TaxPortTypeClient();
+            AIRService.WebService.VNA_OTA_AirTaxRQ.TaxPortTypeClient taxPortTypeClient = new AIRService.WebService.VNA_OTA_AirTaxRQ.TaxPortTypeClient();
             ////////  
-            AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQ _airTaxRQ = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQ();
-            _airTaxRQ.ItineraryInfos = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfo[models.Count];
+            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQ _airTaxRQ = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQ();
+            _airTaxRQ.ItineraryInfos = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo[models.Count];
             int cnt = 0;
 
-            List<AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS> airTaxRS = new List<WebService.WSOTA_AirTaxRQ.AirTaxRS>();
-            var _itineraryInfo = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfo();
-            _itineraryInfo.ReservationItems = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItems();
-            _itineraryInfo.ReservationItems.Item = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItem();
-            _itineraryInfo.ReservationItems.Item.FlightSegment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment[models.Count];
+            List<AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS> airTaxRS = new List<WebService.VNA_OTA_AirTaxRQ.AirTaxRS>();
+            var _itineraryInfo = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo();
+            _itineraryInfo.ReservationItems = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItems();
+            _itineraryInfo.ReservationItems.Item = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItem();
+            _itineraryInfo.ReservationItems.Item.FlightSegment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment[models.Count];
             foreach (var model in models)
             {
 
@@ -163,13 +163,13 @@ namespace AIRService.Service
                 _itineraryInfo.ReservationItems.Item.TicketingCarrier = "VN";
                 _itineraryInfo.ReservationItems.Item.ValidatingCarrier = "VN";
                 //
-                _airTaxRQ.POS = new WebService.WSOTA_AirTaxRQ.AirTaxRQPOS();
-                _airTaxRQ.POS.Source = new WebService.WSOTA_AirTaxRQ.AirTaxRQPOSSource();
+                _airTaxRQ.POS = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQPOS();
+                _airTaxRQ.POS.Source = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQPOSSource();
                 _airTaxRQ.POS.Source.PseudoCityCode = "LZJ";
                 // 
                 //
                 _itineraryInfo.ReservationItems.Item.RPH = (Int16)model.RPH;
-                var flightSegment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment();
+                var flightSegment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegment();
                 flightSegment.DepartureDateTime = model.DepartureDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
                 flightSegment.ArrivalDateTime = model.ArrivalDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
                 //
@@ -178,30 +178,30 @@ namespace AIRService.Service
                 flightSegment.ForceConnectionInd = true;
                 flightSegment.ForceStopOverInd = true;
                 //
-                flightSegment.DepartureAirport = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport();
+                flightSegment.DepartureAirport = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport();
                 flightSegment.DepartureAirport.CodeContext = "IATA";
                 flightSegment.DepartureAirport.LocationCode = model.OriginLocation;
                 //
-                flightSegment.ArrivalAirport = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport();
+                flightSegment.ArrivalAirport = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport();
                 flightSegment.ArrivalAirport.CodeContext = "IATA";
                 flightSegment.ArrivalAirport.LocationCode = model.DestinationLocation;
                 //
-                flightSegment.Equipment = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentEquipment();
+                flightSegment.Equipment = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentEquipment();
                 flightSegment.Equipment.AirEquipType = Convert.ToString(model.AirEquipType);
-                flightSegment.MarketingAirline = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline();
+                flightSegment.MarketingAirline = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline();
                 flightSegment.MarketingAirline.Code = "VN";
                 _itineraryInfo.ReservationItems.Item.FlightSegment[cnt] = flightSegment;
                 //
-                _itineraryInfo.ReservationItems.Item.AirFareInfo = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfo();
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
+                _itineraryInfo.ReservationItems.Item.AirFareInfo = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfo();
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
                 //
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.PassengerType;
                 //
                 //_itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.FareBasisCode = model.FareBasisCode;
                 //
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = model.BaseFare.Amount;
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.CurrencyCode = model.BaseFare.CurrencyCode;
                 //
@@ -215,7 +215,7 @@ namespace AIRService.Service
         // ######################################################################################################################################################################
 
 
-        public TaxModel AirTax(TokenModel model, WebService.WSOTA_AirTaxRQ.AirTaxRQItineraryInfo AirTaxRQItineraryInfo)
+        public TaxModel AirTax(TokenModel model, WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo AirTaxRQItineraryInfo)
         {
 
             #region xml request

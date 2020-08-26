@@ -1,11 +1,6 @@
 ﻿
 .flight {
-}
-
-    .flight table thead th {
-        background: #8bc34a;
-        padding: 8px 5px;
-    }
+} 
 
     .flight table tr th, .flight table tr td {
         vertical-align: middle;

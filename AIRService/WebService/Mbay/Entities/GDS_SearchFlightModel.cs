@@ -1,5 +1,4 @@
-﻿using AIRService.Models;
-using AIRService.WebService.WSOTA_AirTaxRQ;
+﻿using AIRService.Models; 
 using System;
 using System.Collections.Generic;
 using System.Linq;

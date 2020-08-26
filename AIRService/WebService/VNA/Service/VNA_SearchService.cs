@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using AIRService.WebService.VNA.Enum;
 using AIRService.WS.Entities;
 using System.Linq;
-using AIRService.WebService.WSOTA_AirTaxRQ;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,6 +23,7 @@ using System.Web;
 using WebCore.ENM;
 using Helper;
 using Helper.Page;
+using AIRService.WebService.VNA_OTA_AirTaxRQ;
 
 namespace AIRService.Service
 {
@@ -113,7 +113,7 @@ namespace AIRService.Service
                 if (model.INF > 0)
                     fareLLSModel.PassengerType.Add("INF");
                 //
-                List<AIRService.WebService.WSFareLLSRQ.FareRS> fareRs = new List<WebService.WSFareLLSRQ.FareRS>();
+                List<AIRService.WebService.VNA_FareLLSRQ.FareRS> fareRs = new List<WebService.VNA_FareLLSRQ.FareRS>();
 
 
 
@@ -320,7 +320,7 @@ namespace AIRService.Service
         }
 
         // Get list ResBookDesigCode is valid
-        public List<FlightSegment_ResBookDesigCode> GetFlightFares(int _availabilityTotal, List<WebService.WSOTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOptionFlightSegmentBookingClassAvail> _lstBookingClassAvail, FareLLSModel fareLLSModel, AIRService.WebService.WSFareLLSRQ.FareRS fareRS, string currencyCode)
+        public List<FlightSegment_ResBookDesigCode> GetFlightFares(int _availabilityTotal, List<WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOptionFlightSegmentBookingClassAvail> _lstBookingClassAvail, FareLLSModel fareLLSModel, AIRService.WebService.VNA_FareLLSRQ.FareRS fareRS, string currencyCode)
         {
             List<FlightSegment_ResBookDesigCode> result = new List<FlightSegment_ResBookDesigCode>();
             foreach (var bookingClassAvail in _lstBookingClassAvail)
@@ -414,7 +414,7 @@ namespace AIRService.Service
         public List<FareItemModel> GetFareDetails(VNAFareLLSRQModel model)
         {
             var dataFareLLS = model.FareRSData;
-            List<WebService.WSFareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
+            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
             if (fareRSFareBases == null || fareRSFareBases.Count == 0)
                 return null;
             //
@@ -472,7 +472,7 @@ namespace AIRService.Service
         public List<FareDetailsModel1> GetFareDetails2(VNAFareLLSRQModel model)
         {
             var dataFareLLS = model.FareRSData;
-            List<WebService.WSFareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
+            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
             if (fareRSFareBases == null || fareRSFareBases.Count == 0)
                 return null;
             //
@@ -549,7 +549,7 @@ namespace AIRService.Service
         ////            return Notifization.NotService;
         ////        // seach data in web service
         ////        VNAOTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNAOTA_AirTaxRQService();
-        ////        AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(_session, new Resquet_WsTaxModel
+        ////        AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(_session, new Resquet_WsTaxModel
         ////        {
         ////            RPH = model.RPH,
         ////            OriginLocation = _originLocation,
@@ -602,7 +602,7 @@ namespace AIRService.Service
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
                 // seach data in web service
-                VNAOTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNAOTA_AirTaxRQService();
+                VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
 
                 List<Resquet_WsTaxModel> resquet_WsTaxes = new List<Resquet_WsTaxModel>();
                 foreach (var item in models)
@@ -625,7 +625,7 @@ namespace AIRService.Service
                         }
                     });
                 }
-                List<AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS> airTaxRS = vNAOTA_AirTaxRQService.AirTaxList(_session, resquet_WsTaxes);
+                List<AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS> airTaxRS = vNAOTA_AirTaxRQService.AirTaxList(_session, resquet_WsTaxes);
 
                 return Notifization.Data(":::::::::::::::::", airTaxRS);
                 ////
@@ -670,7 +670,7 @@ namespace AIRService.Service
                     return Notifization.NotService;
                 // seach data in web service
 
-                VNAOTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNAOTA_AirTaxRQService();
+                VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
 
                 var ListTax = new List<TaxModel>();
                 foreach (var item in models)
@@ -678,7 +678,7 @@ namespace AIRService.Service
                     string _destinationLocation = item.DestinationLocation;
                     string _originLocation = item.OriginLocation;
                     DateTime _departureDateTime = item.DepartureDateTime;
-                    var ItineraryInfo = new AirTaxRQItineraryInfo();
+                    var ItineraryInfo = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo();
                     ItineraryInfo.ReservationItems = new AirTaxRQItineraryInfoReservationItems();
                     ItineraryInfo.ReservationItems.Item = new AirTaxRQItineraryInfoReservationItemsItem();
                     ItineraryInfo.ReservationItems.Item.RPH = 1;
@@ -782,7 +782,7 @@ namespace AIRService.Service
         //            float _amount = item.Amount;
         //            string _fareBasisCode = item.FareBasisCode;
         //            string _rph = model.RPH;
-        //            AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.GetTaxByFilght(new Resquet_WsTaxModel
+        //            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.GetTaxByFilght(new Resquet_WsTaxModel
         //            {
         //                ConversationID = _conversationId,
         //                Token = _token,
@@ -829,7 +829,7 @@ namespace AIRService.Service
             if (models.Count == 0)
                 return Notifization.Invalid(MessageText.Invalid);
             // 
-            VNAOTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNAOTA_AirTaxRQService();
+            VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
 
 
             using (var sessionService = new VNA_SessionService())
@@ -868,7 +868,7 @@ namespace AIRService.Service
                             string _passengerType = item.PassengerType;
                             float _amount = item.Amount;
                             string _fareBasisCode = item.FareBaseCode;
-                            AIRService.WebService.WSOTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(_session, new Resquet_WsTaxModel
+                            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(_session, new Resquet_WsTaxModel
                             {
                                 RPH = _rph,
                                 OriginLocation = originLocation,
@@ -941,7 +941,7 @@ namespace AIRService.Service
                 if (model == null)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-               // return Notifization.TEST("ok" + model.Passengers.Count);
+                // return Notifization.TEST("ok" + model.Passengers.Count);
 
                 foreach (var item in model.Passengers)
                 {
@@ -952,7 +952,7 @@ namespace AIRService.Service
                 // check blance of user booker
 
                 var currentUserId = Helper.Current.UserLogin.IdentifierID;
-                 
+
                 WalletUserService walletUserService = new WalletUserService();
 
                 WalletUserMessageModel walletMessageModel = walletUserService.GetBalanceByUserID(currentUserId);
@@ -993,12 +993,12 @@ namespace AIRService.Service
                         //seach data in web service
 
                         // #1. flight information - ***********************************************************************************************************************************
-                        VNA_WSOTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_WSOTA_AirBookLLSRQSevice();
+                        VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
                         List<BookSegmentModel> lstSegments = model.Flights;
                         if (lstSegments == null || lstSegments.Count == 0)
                             return Notifization.Invalid("Segments information invalid");
                         //
-                        AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                        AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                         {
                             Segments = lstSegments,
                             ConversationID = _conversationId,
@@ -1129,7 +1129,7 @@ namespace AIRService.Service
                             AirBook = oTA_AirBookRS
                         };
                         //call service  passenger details in ws.service
-                        VNA_WSPassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_WSPassengerDetailsRQService();
+                        VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
                         // string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
                         //End transaction 
                         var pnrCode = "PNR-00001";
@@ -1567,7 +1567,7 @@ namespace AIRService.Service
                         };
                         paymentModel.PaymentOrderDetail.Add(paymentOrderDetail);
                     }
-                    VNAPaymentRQService vNAPaymentRQService = new VNAPaymentRQService();
+                    VNA_PaymentRQService vNAPaymentRQService = new VNA_PaymentRQService();
                     var paymentData = vNAPaymentRQService.Payment(paymentModel);
                     sessionService.CloseSession(tokenAppro);
                     //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
@@ -1578,9 +1578,9 @@ namespace AIRService.Service
                     designatePrinter.ConversationID = tokenModel.ConversationID;
                     designatePrinter.Token = tokenModel.Token;
                     //
-                    VNA_WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_WSDesignatePrinterLLSRQService();
+                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    if (printer.ApplicationResults.status != AIRService.WebService.WSDesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                         return Notifization.Error("Server not responding from designate printer");
                     //
                     var jjson = new JavaScriptSerializer().Serialize(printer);
@@ -1597,7 +1597,7 @@ namespace AIRService.Service
                         if (paymentData.Items.Count() == 0)
                             return Notifization.Error("Server not responding from getreservation");
                         //
-                        var data = (WebService.WSPaymentRQ.AuthorizationResultType)paymentData.Items[0];
+                        var data = (WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
                         if (string.IsNullOrWhiteSpace(data.ApprovalCode))
                             return Notifization.NotFound("ApprovalCode is null");
                         //
@@ -1697,9 +1697,9 @@ namespace AIRService.Service
                     designatePrinter.ConversationID = tokenModel.ConversationID;
                     designatePrinter.Token = tokenModel.Token;
                     VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    VNA_WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_WSDesignatePrinterLLSRQService();
+                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    if (printer.ApplicationResults.status != AIRService.WebService.WSDesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
                     var getReservationModel = new GetReservationModel();
@@ -1708,10 +1708,10 @@ namespace AIRService.Service
                     getReservationModel.PNR = pnr;
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
                     var dataPnr = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                    var ldata = new List<WebService.WSVoidTicketLLSRQ.VoidTicketRS>();
+                    var ldata = new List<WebService.VNA_VoidTicketLLSRQ.VoidTicketRS>();
                     if (dataPnr.TicketDetails != null && dataPnr.TicketDetails.Count > 0)
                     {
-                        VNA_WSVoidTicketLLSRQService vNAWSVoidTicketLLSRQService = new VNA_WSVoidTicketLLSRQService();
+                        VNA_VoidTicketLLSRQService vNAWSVoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
                         foreach (var item in dataPnr.TicketDetails.Where(m => m.TransactionIndicator.Equals("TE")))
                         {
                             var data = vNAWSVoidTicketLLSRQService.VoidETicket(tokenModel, item.TicketNumber);
@@ -1731,7 +1731,7 @@ namespace AIRService.Service
                         getReservationModel.Token = tokenModel.Token;
                         getReservationModel.PNR = pnr;
                         var dataPnr2 = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                        VNA_WSOTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_WSOTA_CancelLLSRQService();
+                        VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
                         var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
                         var end = vNATransaction.EndTransaction(tokenModel);
                         voidTicketModel.JsonResultOTA_Cancel = end;
@@ -1754,14 +1754,14 @@ namespace AIRService.Service
                     DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
                     designatePrinter.ConversationID = tokenModel.ConversationID;
                     designatePrinter.Token = tokenModel.Token;
-                    VNA_WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_WSDesignatePrinterLLSRQService();
+                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                     var reportModel = new ReportModel();
                     reportModel.Token = tokenModel.Token;
                     reportModel.ConversationID = tokenModel.ConversationID;
                     reportModel.ReportDate = date;
                     //
-                    VNA_WSKT_AsrServicesService vNAWSKT_AsrServicesService = new VNA_WSKT_AsrServicesService();
+                    VNA_KT_AsrServicesService vNAWSKT_AsrServicesService = new VNA_KT_AsrServicesService();
                     var data = vNAWSKT_AsrServicesService.AsrServices(reportModel);
                     return Notifization.Data("OK", data);
                 }
@@ -1778,13 +1778,13 @@ namespace AIRService.Service
                 using (var sessionService = new VNA_SessionService())
                 {
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    VNA_WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_WSDesignatePrinterLLSRQService();
+                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var tokenModel = sessionService.GetSession();
                     DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
                     designatePrinter.ConversationID = tokenModel.ConversationID;
                     designatePrinter.Token = tokenModel.Token;
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    if (printer.ApplicationResults.status != AIRService.WebService.WSDesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
                     var getReservationModel = new GetReservationModel();

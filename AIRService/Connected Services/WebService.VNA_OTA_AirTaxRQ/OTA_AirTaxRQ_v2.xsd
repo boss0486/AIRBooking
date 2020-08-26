@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://webservices.sabre.com/sabreXML/2003/07" elementFormDefault="qualified" targetNamespace="http://webservices.sabre.com/sabreXML/2003/07" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="AirPricing_DiagnosticRequestElement_v1.0.0.xsd" />
+  <xs:element name="AirTaxRQ">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Diagnostic" />
+        <xs:element minOccurs="0" name="POS">
+          <xs:annotation>
+            <xs:documentation />
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Source">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" name="TPA_Extensions">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="UserInfo">
+                            <xs:annotation>
+                              <xs:documentation />
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element minOccurs="0" name="Station">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" type="xs:short" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="Branch">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" type="xs:short" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Partition">
+                                  <xs:complexType>
+                                    <xs:attribute name="ID" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value=".{0}" />
+                                          <xs:pattern value="[0-9A-Z]{2,4}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="SetAddress">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:pattern value=".{0}" />
+                                      <xs:pattern value="[0-9A-F]{6}" />
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                                <xs:element name="Service">
+                                  <xs:complexType>
+                                    <xs:attribute name="Name" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value=".{0}" />
+                                          <xs:pattern value="[0-9a-zA-Z,]{1,8}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="AAACity">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value=".{0}" />
+                                          <xs:pattern value="[A-Z]{3,5}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="AgentSine">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:maxLength value="3" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="Action">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:minLength value="1" />
+                                          <xs:maxLength value="5" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="Transaction">
+                                  <xs:complexType>
+                                    <xs:attribute name="ID" type="xs:long" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="PseudoCityCode" use="optional">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:pattern value=".{0}" />
+                        <xs:pattern value="[0-9A-Z]{3,4}" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ItineraryInfos">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>
+              ItineraryInfo
+          </xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element maxOccurs="50" name="ItineraryInfo">
+                <xs:complexType>
+                  <xs:annotation>
+                    <xs:documentation>
+              ReservationItems
+          </xs:documentation>
+                  </xs:annotation>
+                  <xs:sequence>
+                    <xs:element name="ReservationItems">
+                      <xs:complexType>
+                        <xs:annotation>
+                          <xs:documentation>
+              Item
+          </xs:documentation>
+                        </xs:annotation>
+                        <xs:sequence>
+                          <xs:element name="Item">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="FlightSegment">
+                                  <xs:annotation>
+                                    <xs:documentation />
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="DepartureAirport">
+                                        <xs:complexType>
+                                          <xs:attribute name="LocationCode" use="required">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:pattern value=".{0}" />
+                                                <xs:pattern value="[A-Z]{3,5}" />
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:attribute>
+                                          <xs:attribute name="CodeContext" type="xs:string" use="optional" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="ArrivalAirport">
+                                        <xs:complexType>
+                                          <xs:attribute name="LocationCode" use="required">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:pattern value=".{0}" />
+                                                <xs:pattern value="[A-Z]{3,5}" />
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:attribute>
+                                          <xs:attribute name="CodeContext" type="xs:string" use="optional" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="Equipment">
+                                        <xs:complexType>
+                                          <xs:attribute name="AirEquipType" type="xs:string" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="MarketingAirline">
+                                        <xs:complexType>
+                                          <xs:attribute name="Code" use="required">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:pattern value=" " />
+                                                <xs:pattern value="[A-Z][A-Z0-9]{1,2}" />
+                                                <xs:pattern value="[A-Z0-9][A-Z][A-Z0-9]?" />
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:attribute>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element minOccurs="0" name="OperatingAirline">
+                                        <xs:complexType>
+                                          <xs:attribute name="Code" use="required">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:pattern value=" " />
+                                                <xs:pattern value="[A-Z][A-Z0-9]{1,2}" />
+                                                <xs:pattern value="[A-Z0-9][A-Z][A-Z0-9]?" />
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:attribute>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element minOccurs="0" name="HiddenStops">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="HiddenStop">
+                                              <xs:complexType>
+                                                <xs:attribute name="LocationCode" use="required">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                      <xs:pattern value=".{0}" />
+                                                      <xs:pattern value="[A-Z]{3,5}" />
+                                                    </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element minOccurs="0" name="FareBreakInfo">
+                                        <xs:complexType>
+                                          <xs:sequence minOccurs="0">
+                                            <xs:element minOccurs="0" name="FareBasisCode">
+                                              <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:minLength value="1" />
+                                                  <xs:maxLength value="15" />
+                                                  <xs:pattern value="[A-Z0-9]+(/[A-Z0-9]+)?" />
+                                                </xs:restriction>
+                                              </xs:simpleType>
+                                            </xs:element>
+                                            <xs:element minOccurs="0" name="BaseFare">
+                                              <xs:complexType>
+                                                <xs:attribute name="Amount" use="required">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:float" />
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="CurrencyCode">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                      <xs:pattern value=" " />
+                                                      <xs:pattern value="[A-Z]{3}" />
+                                                    </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element minOccurs="0" name="EquivFare">
+                                              <xs:complexType>
+                                                <xs:attribute name="Amount" use="optional">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:float" />
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="CurrencyCode" use="optional">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                      <xs:pattern value=" " />
+                                                      <xs:pattern value="[A-Z]{3}" />
+                                                    </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="FareComponentNumber" type="xs:short" use="required" />
+                                          <xs:attribute name="SideTripNumber" type="xs:short" />
+                                          <xs:attribute name="SideTripStartInd" type="xs:boolean" />
+                                          <xs:attribute name="SideTripEndInd" type="xs:boolean" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="DepartureDateTime" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value="[2][0-9]{3}-[0-1][0-9]-[0-3][0-9][T][0-9]{2}:[0-9]{2}:[0-9]{2}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="ArrivalDateTime" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value="[2][0-9]{3}-[0-1][0-9]-[0-3][0-9][T][0-9]{2}:[0-9]{2}:[0-9]{2}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="FlightNumber" type="xs:short" use="required" />
+                                    <xs:attribute name="ResBookDesigCode" use="required">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:pattern value=" " />
+                                          <xs:pattern value="[A-Z]{1,2}" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="ForceConnectionInd" type="xs:boolean" />
+                                    <xs:attribute name="ForceStopOverInd" type="xs:boolean" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="AirFareInfo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PTC_FareBreakdown">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="PassengerType">
+                                              <xs:complexType>
+                                                <xs:attribute default="1" name="Quantity" type="xs:short" use="optional" />
+                                                <xs:attribute name="Code" use="required">
+                                                  <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                      <xs:pattern value=" " />
+                                                      <xs:pattern value="[A-Z][A-Z0-9]{1,2}" />
+                                                    </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="Age" type="xs:short" use="optional" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element minOccurs="0" name="FareBasisCode">
+                                              <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:minLength value="1" />
+                                                  <xs:maxLength value="15" />
+                                                  <xs:pattern value="[A-Z0-9]+(/[A-Z0-9]+)?" />
+                                                </xs:restriction>
+                                              </xs:simpleType>
+                                            </xs:element>
+                                            <xs:element name="PassengerFare">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="BaseFare">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="Amount" use="required">
+                                                        <xs:simpleType>
+                                                          <xs:restriction base="xs:float" />
+                                                        </xs:simpleType>
+                                                      </xs:attribute>
+                                                      <xs:attribute name="CurrencyCode">
+                                                        <xs:simpleType>
+                                                          <xs:restriction base="xs:string">
+                                                            <xs:pattern value=" " />
+                                                            <xs:pattern value="[A-Z]{3}" />
+                                                          </xs:restriction>
+                                                        </xs:simpleType>
+                                                      </xs:attribute>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element minOccurs="0" name="EquivFare">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="Amount" use="optional">
+                                                        <xs:simpleType>
+                                                          <xs:restriction base="xs:float" />
+                                                        </xs:simpleType>
+                                                      </xs:attribute>
+                                                      <xs:attribute name="CurrencyCode" use="optional">
+                                                        <xs:simpleType>
+                                                          <xs:restriction base="xs:string">
+                                                            <xs:pattern value=" " />
+                                                            <xs:pattern value="[A-Z]{3}" />
+                                                          </xs:restriction>
+                                                        </xs:simpleType>
+                                                      </xs:attribute>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="AncillaryServiceCode" type="xs:string" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="RPH" type="xs:short" use="required" />
+                              <xs:attribute name="TicketingCarrier" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:pattern value=" " />
+                                    <xs:pattern value="[A-Z][A-Z0-9]{1,2}" />
+                                    <xs:pattern value="[A-Z0-9][A-Z][A-Z0-9]?" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="ValidatingCarrier" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:pattern value=" " />
+                                    <xs:pattern value="[A-Z][A-Z0-9]{1,2}" />
+                                    <xs:pattern value="[A-Z0-9][A-Z][A-Z0-9]?" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="SalePseudoCityCode" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:pattern value=".{0}" />
+                                    <xs:pattern value="[0-9A-Z]{3,4}" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="ProcessingOptions">
+          <xs:complexType>
+            <xs:attribute name="SM0" use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:length value="3" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="EchoToken" use="optional">
+        <xs:annotation>
+          <xs:documentation>A sequence number for additional message identification, assigned by the requesting host system. When a request 										message includes an echo token the corresponding response message MUST include an echo token with an identical value.											</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Used for Character Strings, length 1 to 64</xs:documentation>
+          </xs:annotation>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+            <xs:maxLength value="64" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="TimeStamp" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Indicates the creation date and time of the message in UTC using the following format specified by ISO 8601; YYYY-	MM-					DDThh:mm:ssZ with time values using the 24 hour clock (e.g. 20 November 2003, 1:59:38 pm UTC becomes 2003-11-20T13:59:38Z).						</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="Production" name="Target" use="optional">
+        <xs:annotation>
+          <xs:documentation>Used to indicate whether the request is for the Test or Production system.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Test" />
+            <xs:enumeration value="Production" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="Version" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>For all OTA versioned messages, the version of the message is indicated by a decimal value.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="SequenceNmbr" type="xs:nonNegativeInteger" use="optional">
+        <xs:annotation>
+          <xs:documentation>Used to identify the sequence number of the transaction as assigned by the sending system; allows for an application to process messages in a certain order or to request a resynchronization of messages in the event that a system has been off-line and needs to retrieve messages that were missed. </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="PrimaryLangID" type="xs:language" use="optional">
+        <xs:annotation>
+          <xs:documentation>Identifes the primary language preference for the form of travel represented in a collection.
+					 The human language is identified by ISO 639 codes.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="AltLangID" type="xs:language" use="optional">
+        <xs:annotation>
+          <xs:documentation>Identifes the primary language preference for the form of travel represented in a collection.
+					 The human language is identified by ISO 639 codes.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

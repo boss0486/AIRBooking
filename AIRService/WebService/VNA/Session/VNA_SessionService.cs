@@ -46,37 +46,37 @@ namespace AIR.Helper.Session
         public TokenModel Create()
         {
             TokenModel tokenModel = new TokenModel();
-            AIRService.WebService.WSSessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.WSSessionCreateRQ.MessageHeader
+            AIRService.WebService.VNA_SessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_SessionCreateRQ.MessageHeader
             {
-                MessageData = new AIRService.WebService.WSSessionCreateRQ.MessageData
+                MessageData = new AIRService.WebService.VNA_SessionCreateRQ.MessageData
                 {
                     Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z"
                 },
                 ConversationId = "fOV1LWT3EJIUnGC0Yh1",
-                Service = new AIRService.WebService.WSSessionCreateRQ.Service(),
+                Service = new AIRService.WebService.VNA_SessionCreateRQ.Service(),
                 Action = "SessionCreateRQ",
-                From = new AIRService.WebService.WSSessionCreateRQ.From
+                From = new AIRService.WebService.VNA_SessionCreateRQ.From
                 {
-                    PartyId = new AIRService.WebService.WSSessionCreateRQ.PartyId[1]
+                    PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
                 }
             };
-            var partyID = new AIRService.WebService.WSSessionCreateRQ.PartyId
+            var partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
             {
                 Value = "WebServiceClient"
             };
             messageHeader.From.PartyId[0] = partyID;
-            messageHeader.To = new AIRService.WebService.WSSessionCreateRQ.To
+            messageHeader.To = new AIRService.WebService.VNA_SessionCreateRQ.To
             {
-                PartyId = new AIRService.WebService.WSSessionCreateRQ.PartyId[1]
+                PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
             };
-            partyID = new AIRService.WebService.WSSessionCreateRQ.PartyId
+            partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
             {
                 Value = "WebServiceSupplier"
             };
             messageHeader.To.PartyId[0] = partyID;
-            AIRService.WebService.WSSessionCreateRQ.Security security = new AIRService.WebService.WSSessionCreateRQ.Security
+            AIRService.WebService.VNA_SessionCreateRQ.Security security = new AIRService.WebService.VNA_SessionCreateRQ.Security
             {
-                UsernameToken = new AIRService.WebService.WSSessionCreateRQ.SecurityUsernameToken
+                UsernameToken = new AIRService.WebService.VNA_SessionCreateRQ.SecurityUsernameToken
                 {
                     Organization = wSAuthencation.ORGANIZATION,
                     Username = wSAuthencation.USERNAME,
@@ -84,12 +84,12 @@ namespace AIR.Helper.Session
                     Domain = wSAuthencation.DOMAIN
                 }
             };
-            AIRService.WebService.WSSessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.WSSessionCreateRQ.SessionCreateRQ
+            AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ
             {
                 returnContextID = true,
                 returnContextIDSpecified = true
             };
-            AIRService.WebService.WSSessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.WSSessionCreateRQ.SessionCreatePortTypeClient();
+            AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient();
             client.SessionCreateRQ(ref messageHeader, ref security, sessionCreateRQ);
             tokenModel.ConversationID = messageHeader.ConversationId;
             tokenModel.Token = security.BinarySecurityToken;
@@ -100,35 +100,35 @@ namespace AIR.Helper.Session
         {
             //try
             //{
-                AIRService.WebService.WSSessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.WSSessionCreateRQ.MessageHeader
+                AIRService.WebService.VNA_SessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_SessionCreateRQ.MessageHeader
                 {
-                    MessageData = new AIRService.WebService.WSSessionCreateRQ.MessageData()
+                    MessageData = new AIRService.WebService.VNA_SessionCreateRQ.MessageData()
                 };
                 messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
                 messageHeader.ConversationId = "fOV1LWT3EJIUnGC0Yh1";// Guid.NewGuid().ToString(); // "fOV1LWT3EJIUnGC0Yh1";
-                messageHeader.Service = new AIRService.WebService.WSSessionCreateRQ.Service();
+                messageHeader.Service = new AIRService.WebService.VNA_SessionCreateRQ.Service();
                 messageHeader.Action = "SessionCreateRQ";
-                messageHeader.From = new AIRService.WebService.WSSessionCreateRQ.From
+                messageHeader.From = new AIRService.WebService.VNA_SessionCreateRQ.From
                 {
-                    PartyId = new AIRService.WebService.WSSessionCreateRQ.PartyId[1]
+                    PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
                 };
-                var partyID = new AIRService.WebService.WSSessionCreateRQ.PartyId
+                var partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
                 {
                     Value = "WebServiceClient"
                 };
                 messageHeader.From.PartyId[0] = partyID;
-                messageHeader.To = new AIRService.WebService.WSSessionCreateRQ.To
+                messageHeader.To = new AIRService.WebService.VNA_SessionCreateRQ.To
                 {
-                    PartyId = new AIRService.WebService.WSSessionCreateRQ.PartyId[1]
+                    PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
                 };
-                partyID = new AIRService.WebService.WSSessionCreateRQ.PartyId
+                partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
                 {
                     Value = "WebServiceSupplier"
                 };
                 messageHeader.To.PartyId[0] = partyID;
-                AIRService.WebService.WSSessionCreateRQ.Security security = new AIRService.WebService.WSSessionCreateRQ.Security
+                AIRService.WebService.VNA_SessionCreateRQ.Security security = new AIRService.WebService.VNA_SessionCreateRQ.Security
                 {
-                    UsernameToken = new AIRService.WebService.WSSessionCreateRQ.SecurityUsernameToken
+                    UsernameToken = new AIRService.WebService.VNA_SessionCreateRQ.SecurityUsernameToken
                     {
                         Organization = wSAuthencation.ORGANIZATION,
                         Username = wSAuthencation.USERNAME,
@@ -136,12 +136,12 @@ namespace AIR.Helper.Session
                         Domain = wSAuthencation.DOMAIN
                     }
                 };
-                AIRService.WebService.WSSessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.WSSessionCreateRQ.SessionCreateRQ
+                AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ
                 {
                     returnContextID = true,
                     returnContextIDSpecified = true
                 };
-                AIRService.WebService.WSSessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.WSSessionCreateRQ.SessionCreatePortTypeClient();
+                AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient();
                 var data = client.SessionCreateRQ(ref messageHeader, ref security, sessionCreateRQ);
                 if (data == null)
                     return null;
@@ -169,41 +169,41 @@ namespace AIR.Helper.Session
         {
             try
             {
-                AIRService.WebService.WSSessionCloseRQ.MessageHeader messageHeader = new AIRService.WebService.WSSessionCloseRQ.MessageHeader
+                AIRService.WebService.VNA_SessionCloseRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_SessionCloseRQ.MessageHeader
                 {
-                    MessageData = new AIRService.WebService.WSSessionCloseRQ.MessageData
+                    MessageData = new AIRService.WebService.VNA_SessionCloseRQ.MessageData
                     {
                         Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z"
                     },
                     ConversationId = model.ConversationID,
-                    Service = new AIRService.WebService.WSSessionCloseRQ.Service(),
+                    Service = new AIRService.WebService.VNA_SessionCloseRQ.Service(),
                     Action = "SessionCloseRQ",
-                    From = new AIRService.WebService.WSSessionCloseRQ.From
+                    From = new AIRService.WebService.VNA_SessionCloseRQ.From
                     {
-                        PartyId = new AIRService.WebService.WSSessionCloseRQ.PartyId[1]
+                        PartyId = new AIRService.WebService.VNA_SessionCloseRQ.PartyId[1]
                     }
                 };
-                var partyID = new AIRService.WebService.WSSessionCloseRQ.PartyId
+                var partyID = new AIRService.WebService.VNA_SessionCloseRQ.PartyId
                 {
                     Value = "WebServiceClient"
                 };
                 messageHeader.From.PartyId[0] = partyID;
-                messageHeader.To = new AIRService.WebService.WSSessionCloseRQ.To
+                messageHeader.To = new AIRService.WebService.VNA_SessionCloseRQ.To
                 {
-                    PartyId = new AIRService.WebService.WSSessionCloseRQ.PartyId[1]
+                    PartyId = new AIRService.WebService.VNA_SessionCloseRQ.PartyId[1]
                 };
-                partyID = new AIRService.WebService.WSSessionCloseRQ.PartyId
+                partyID = new AIRService.WebService.VNA_SessionCloseRQ.PartyId
                 {
                     Value = "WebServiceSupplier"
                 };
                 messageHeader.To.PartyId[0] = partyID;
-                AIRService.WebService.WSSessionCloseRQ.Security security = new AIRService.WebService.WSSessionCloseRQ.Security
+                AIRService.WebService.VNA_SessionCloseRQ.Security security = new AIRService.WebService.VNA_SessionCloseRQ.Security
                 {
                     BinarySecurityToken = model.Token
                 };
                 //
-                AIRService.WebService.WSSessionCloseRQ.SessionCloseRQ sessionCloseRQ = new AIRService.WebService.WSSessionCloseRQ.SessionCloseRQ();
-                AIRService.WebService.WSSessionCloseRQ.SessionClosePortTypeClient client = new AIRService.WebService.WSSessionCloseRQ.SessionClosePortTypeClient();
+                AIRService.WebService.VNA_SessionCloseRQ.SessionCloseRQ sessionCloseRQ = new AIRService.WebService.VNA_SessionCloseRQ.SessionCloseRQ();
+                AIRService.WebService.VNA_SessionCloseRQ.SessionClosePortTypeClient client = new AIRService.WebService.VNA_SessionCloseRQ.SessionClosePortTypeClient();
                 var data = client.SessionCloseRQ(ref messageHeader, ref security, sessionCloseRQ);
                 if (data == null)
                     return false;

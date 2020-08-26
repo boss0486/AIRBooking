@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7b403740-9b61-43af-bcc7-d64fedb4c759" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirPriceLLS2.16.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OTA_AirPriceLLS2.wsdl" MetadataType="Wsdl" ID="51d8e03d-eb40-41c4-94de-572abf0a045f" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirPriceLLS2.16.0RQ.wsdl" />
+    <MetadataFile FileName="OTA_AirPriceLLS2.xsd" MetadataType="Schema" ID="1cd0ec12-0961-4bfd-98d9-e9d123affc4e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirPriceLLS2.16.0RQ.xsd" />
+    <MetadataFile FileName="OTA_AirPriceLLS21.xsd" MetadataType="Schema" ID="2134d0b3-d591-41d4-988e-720c470f73c7" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirPriceLLS2.16.0RS.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="728bd16f-970a-430b-819f-b279346d1a3d" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/wsse.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="df47b11c-6105-41b7-bff4-653e981ee513" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="OTA_AirPriceLLS22.xsd" MetadataType="Schema" ID="b1614b37-6069-43e1-b202-b48a628e46f0" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirPriceLLS2.16.0RQRS.xsd" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="79231c14-4274-401f-8b80-1ed6d380ef7e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="0fa7c4a8-0c77-4708-a422-cf6cfe1b6365" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/envelope.xsd" />
+    <MetadataFile FileName="sws_common.xsd" MetadataType="Schema" ID="cdef4dc8-703e-4674-bfbf-d2d252e4e750" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/sws_common.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="4fd425ed-c39b-40db-b739-27682e8b5489" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xml.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="53d0c3d3-2574-4b96-93f0-b7d9c8f01900" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xlink.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="a6b84122-561d-4d05-b734-7854a79b0831" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="5968e1f1-7160-4a85-bac6-b73eeec86ca3" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -43,8 +43,8 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
 
     public class PricingInPNR_Test
     {
-        public AIRService.WebService.WSOTA_AirPriceLLSRQ.OTA_AirPriceRSPriceQuote PriceQuote { get; set; }
-        public AIRService.WebService.WSOTA_AirPriceLLSRQ.ApplicationResults ApplicationResults { get; set; }
+        public AIRService.WebService.VNA_OTA_AirPriceLLSRQ.OTA_AirPriceRSPriceQuote PriceQuote { get; set; }
+        public AIRService.WebService.VNA_OTA_AirPriceLLSRQ.ApplicationResults ApplicationResults { get; set; }
 
     }
 }

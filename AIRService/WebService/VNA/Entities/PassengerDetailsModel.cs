@@ -1,5 +1,5 @@
 ﻿using AIRService.Models;
-using AIRService.WebService.WSOTA_AirBookLLSRQ;
+using AIRService.WebService.VNA_OTA_AirBookLLSRQ;
 using System;
 using System.Collections.Generic;
 using System.Linq;

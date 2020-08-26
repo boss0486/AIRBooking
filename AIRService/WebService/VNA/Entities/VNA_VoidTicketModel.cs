@@ -7,8 +7,8 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
 {
     public class VNA_VoidTicketModel
     {
-        public AIRService.WebService.WSEndTransactionLLSRQ.EndTransactionRS JsonResultVoidTicket { get; set; }
-        public AIRService.WebService.WSEndTransactionLLSRQ.EndTransactionRS JsonResultOTA_Cancel { get; set; }
+        public AIRService.WebService.VNA_EndTransactionLLSRQ.EndTransactionRS JsonResultVoidTicket { get; set; }
+        public AIRService.WebService.VNA_EndTransactionLLSRQ.EndTransactionRS JsonResultOTA_Cancel { get; set; }
         public string Message { get; set; }
         public string Exception { get; set; }
     }

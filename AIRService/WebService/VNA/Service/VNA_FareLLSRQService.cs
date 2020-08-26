@@ -12,76 +12,76 @@ namespace AIRService.WS.Service
 {
     class VNAFareLLSRQService
     {
-        public AIRService.WebService.WSFareLLSRQ.FareRS FareLLS(FareLLSModel model)
+        public AIRService.WebService.VNA_FareLLSRQ.FareRS FareLLS(FareLLSModel model)
         {
             try
             {
                 #region wsdl
-                AIRService.WebService.WSFareLLSRQ.MessageHeader messageHeader = new AIRService.WebService.WSFareLLSRQ.MessageHeader
+                AIRService.WebService.VNA_FareLLSRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_FareLLSRQ.MessageHeader
                 {
-                    MessageData = new AIRService.WebService.WSFareLLSRQ.MessageData
+                    MessageData = new AIRService.WebService.VNA_FareLLSRQ.MessageData
                     {
                         Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z"
                     },
                     ConversationId = model.ConversationID,
-                    Service = new AIRService.WebService.WSFareLLSRQ.Service(),
+                    Service = new AIRService.WebService.VNA_FareLLSRQ.Service(),
                     Action = "FareLLSRQ",
-                    From = new AIRService.WebService.WSFareLLSRQ.From()
+                    From = new AIRService.WebService.VNA_FareLLSRQ.From()
                 };
 
-                messageHeader.From.PartyId = new AIRService.WebService.WSFareLLSRQ.PartyId[1];
-                var partyID = new AIRService.WebService.WSFareLLSRQ.PartyId
+                messageHeader.From.PartyId = new AIRService.WebService.VNA_FareLLSRQ.PartyId[1];
+                var partyID = new AIRService.WebService.VNA_FareLLSRQ.PartyId
                 {
                     Value = "WebServiceClient"
                 };
                 messageHeader.From.PartyId[0] = partyID;
 
-                messageHeader.To = new AIRService.WebService.WSFareLLSRQ.To
+                messageHeader.To = new AIRService.WebService.VNA_FareLLSRQ.To
                 {
-                    PartyId = new AIRService.WebService.WSFareLLSRQ.PartyId[1]
+                    PartyId = new AIRService.WebService.VNA_FareLLSRQ.PartyId[1]
                 };
-                partyID = new AIRService.WebService.WSFareLLSRQ.PartyId
+                partyID = new AIRService.WebService.VNA_FareLLSRQ.PartyId
                 {
                     Value = "WebServiceSupplier"
                 };
                 messageHeader.To.PartyId[0] = partyID;
 
-                AIRService.WebService.WSFareLLSRQ.Security1 security = new AIRService.WebService.WSFareLLSRQ.Security1
+                AIRService.WebService.VNA_FareLLSRQ.Security1 security = new AIRService.WebService.VNA_FareLLSRQ.Security1
                 {
                     BinarySecurityToken = model.Token
                 };
-                AIRService.WebService.WSFareLLSRQ.FarePortTypeClient client = new AIRService.WebService.WSFareLLSRQ.FarePortTypeClient();
-                AIRService.WebService.WSFareLLSRQ.FareRQ fareRQ = new AIRService.WebService.WSFareLLSRQ.FareRQ
+                AIRService.WebService.VNA_FareLLSRQ.FarePortTypeClient client = new AIRService.WebService.VNA_FareLLSRQ.FarePortTypeClient();
+                AIRService.WebService.VNA_FareLLSRQ.FareRQ fareRQ = new AIRService.WebService.VNA_FareLLSRQ.FareRQ
                 {
-                    OptionalQualifiers = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiers()
+                    OptionalQualifiers = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiers()
                 };
 
-                fareRQ.OptionalQualifiers.FlightQualifiers = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersFlightQualifiers
+                fareRQ.OptionalQualifiers.FlightQualifiers = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersFlightQualifiers
                 {
-                    VendorPrefs = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersFlightQualifiersAirline[1]
+                    VendorPrefs = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersFlightQualifiersAirline[1]
                 };
-                var VendorPrefs = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersFlightQualifiersAirline
+                var VendorPrefs = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersFlightQualifiersAirline
                 {
                     Code = model.AirlineCode
                 };
                 fareRQ.OptionalQualifiers.FlightQualifiers.VendorPrefs[0] = VendorPrefs;
-                fareRQ.OptionalQualifiers.TimeQualifiers = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersTimeQualifiers
+                fareRQ.OptionalQualifiers.TimeQualifiers = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersTimeQualifiers
                 {
-                    TravelDateOptions = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersTimeQualifiersTravelDateOptions()
+                    TravelDateOptions = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersTimeQualifiersTravelDateOptions()
                 };
                 fareRQ.OptionalQualifiers.TimeQualifiers.TravelDateOptions.Start = model.DepartureDateTime.ToString("MM-dd");
-                fareRQ.OptionalQualifiers.PricingQualifiers = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersPricingQualifiers
+                fareRQ.OptionalQualifiers.PricingQualifiers = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersPricingQualifiers
                 {
-                    PassengerType = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersPricingQualifiersPassengerType[model.PassengerType.Count]
+                    PassengerType = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersPricingQualifiersPassengerType[model.PassengerType.Count]
                 };
                 var index = 0;
-                fareRQ.OptionalQualifiers.PricingQualifiers.FareOptions = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersPricingQualifiersFareOptions
+                fareRQ.OptionalQualifiers.PricingQualifiers.FareOptions = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersPricingQualifiersFareOptions
                 {
                     Private = true
                 };
                 foreach (var item in model.PassengerType)
                 {
-                    var type = new AIRService.WebService.WSFareLLSRQ.FareRQOptionalQualifiersPricingQualifiersPassengerType
+                    var type = new AIRService.WebService.VNA_FareLLSRQ.FareRQOptionalQualifiersPricingQualifiersPassengerType
                     {
                         Code = item
                     };
@@ -89,16 +89,16 @@ namespace AIRService.WS.Service
                     index++;
                 }
 
-                fareRQ.OriginDestinationInformation = new AIRService.WebService.WSFareLLSRQ.FareRQOriginDestinationInformation
+                fareRQ.OriginDestinationInformation = new AIRService.WebService.VNA_FareLLSRQ.FareRQOriginDestinationInformation
                 {
-                    FlightSegment = new AIRService.WebService.WSFareLLSRQ.FareRQOriginDestinationInformationFlightSegment()
+                    FlightSegment = new AIRService.WebService.VNA_FareLLSRQ.FareRQOriginDestinationInformationFlightSegment()
                 };
-                fareRQ.OriginDestinationInformation.FlightSegment.OriginLocation = new AIRService.WebService.WSFareLLSRQ.FareRQOriginDestinationInformationFlightSegmentOriginLocation
+                fareRQ.OriginDestinationInformation.FlightSegment.OriginLocation = new AIRService.WebService.VNA_FareLLSRQ.FareRQOriginDestinationInformationFlightSegmentOriginLocation
                 {
                     LocationCode = model.OriginLocation
                 };
 
-                fareRQ.OriginDestinationInformation.FlightSegment.DestinationLocation = new AIRService.WebService.WSFareLLSRQ.FareRQOriginDestinationInformationFlightSegmentDestinationLocation
+                fareRQ.OriginDestinationInformation.FlightSegment.DestinationLocation = new AIRService.WebService.VNA_FareLLSRQ.FareRQOriginDestinationInformationFlightSegmentDestinationLocation
                 {
                     LocationCode = model.DestinationLocation
                 };
