@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AIRService.WS.Service
 {
-    class VNA_DesignatePrinterLLSRQService
+    public class VNA_DesignatePrinterLLSRQService
     {
         public WebService.VNA_DesignatePrinterLLSRQ.DesignatePrinterRS DesignatePrinterLLS(DesignatePrinterLLSModel model)
         {

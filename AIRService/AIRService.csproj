@@ -139,6 +139,12 @@
     <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
     <Compile Include="Application\AirFilght\Entities\AirAirport.cs" />
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
+    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryClose.cs" />
+    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryDetails.cs" />
+    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummarySSFop.cs" />
+    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryDetailsService.cs" />
+    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryCloseService.cs" />
+    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummarySSFopService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -329,6 +335,8 @@
     <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />
     <Compile Include="Module\Language\Entities\Language.cs" />
     <Compile Include="Module\Language\Services\LanguageService.cs" />
+    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummary.cs" />
+    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryService.cs" />
     <Compile Include="Module\Menu\Entities\Menu.cs" />
     <Compile Include="Module\Menu\Enum\MenuEnum.cs" />
     <Compile Include="Module\Menu\Services\MenuService.cs" />
@@ -422,7 +430,7 @@
     <Compile Include="WebService\VNA\Service\VNA_FareLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNA_AirTicketLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNA_EndTransactionLLSRQ.cs" />
-    <Compile Include="WebService\VNA\Service\VNA_TKT_AsrServicesService.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_TKT_AsrService.cs" />
     <Compile Include="WebService\VNA\Service\VNA_OTA_AirBookLLSRQSevice.cs" />
     <Compile Include="WebService\VNA\Service\VNA_OTA_CancelLLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNA_OTA_AirPriceLLSRQService.cs" />
@@ -1661,6 +1669,7 @@
   <ItemGroup>
     <Folder Include="Application\AirFilght\Enum\" />
     <Folder Include="Application\Area\Enum\" />
+    <Folder Include="Application\ReportTransaction\Enum\" />
     <Folder Include="Application\Wallet\Enum\" />
     <Folder Include="Core\Authorization\Entities\" />
     <Folder Include="Core\Authorization\Enum\" />

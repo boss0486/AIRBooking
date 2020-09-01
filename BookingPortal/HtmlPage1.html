@@ -1,0 +1,70 @@
+﻿<StationManagerRQ version='1.2.1' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>
+    <Header />
+    <SelectionCriteria>
+        <TicketingProvider>VN</TicketingProvider>
+        <DocumentNumber>2452104442772</DocumentNumber>
+        <ReportDate>2020-04-27</ReportDate>
+    </SelectionCriteria>
+</StationManagerRQ>
+
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+  
+<ns:DetailRQ version="1.2.2" xmlns:ns="http://www.sabre.com/ns/Ticketing/AsrServices/1.0"
+             xmlns:v01="http://services.sabre.com/STL/v01">
+    <!--    Sabre Standard Payload Header. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header (SOAP or JMS header). This data is intended for use with content-based routing and other tasks associated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents
+      messageID: mandatory, The MessageId element is a globally unique identifier for each message [see RFC2822]. It is an unique message identifier that refers to a particular version of a particular message.  The uniqueness of the message identifier should be guaranteed by the host that generates it.  This message identifier is intended to be machine readable and not necessarily meaningful to humans.  A message identifier pertains to exactly one instantiation of a particular message; subsequent revisions to the message each receive new message identifiers
+      version: version string
+      timestamp: Date and time when the result record was created
+      customerID: Identification value assigned to the service customer or consumer
+      diagnosticLevel: Mock - Return a sample message without invoking service logic
+      ttl: Time-To-Live (TTL) is the number of seconds a system is requested wait after receipt of the message for a response before forcing the transaction to be over.
+      -->
+    <Header messageID="abc" version="1.0" timeStamp="2019-12-17T09:30:47Z" customerID="customerID"
+            diagnosticLevel="Mock" ttl="10">
+        <!--Optional:-->
+        <!--The ConversationId element is a string identifying the set of related messages that make up a conversation between two Parties. The Party initiating a conversation determines the value of the ConversationId element that shall be reflected in all messages pertaining to that conversation. It remains constant for all messages within a conversation-->
+        <!--seq: integer-->
+        <v01:ConversationID seq="0">abcd-def</v01:ConversationID>
+        <!--Optional:-->
+        <!--The orchestration ID may be used to track a set of service invocations and the sequence in which they are invoked. To track an orchestration, the orchestrator assigns a unique value to the identifier and sets the sequence number to 0.  Service providers are expected to increment the OrchestrationID@seq value if it exists-->
+        <!--seq: integer-->
+        <v01:OrchestrationID seq="0">xyz-abc</v01:OrchestrationID>
+        <!--Optional:-->
+        <!--Operation is the action verb applied to the Service-->
+        <v01:Operation>operation</v01:Operation>
+        <!--Optional:-->
+        <!--The name of the service being requested. Typically the message subject noun.  Service frameworks may use the abstract service name to lookup the actual service provider instance to invoke-->
+        <v01:Service>service</v01:Service>
+        <!--Optional:-->
+        <v01:Security>
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <!--    Either UsernameToken or SecurityToken is needed-->
+            <v01:UsernameToken>
+                <v01:Username>username</v01:Username>
+                <v01:Password>strongpassword</v01:Password>
+                <v01:Organization>ORF</v01:Organization>
+                <!--Optional:-->
+                <v01:Domain>DOMAIN</v01:Domain>
+                <!--Optional:-->
+                <v01:Lniata>LNIATA</v01:Lniata>
+                <!--Optional:-->
+                <v01:Locid>LOCID</v01:Locid>
+            </v01:UsernameToken>
+            <!--    Text token -->
+            <v01:SecurityToken>Averystrongsecuritytoken</v01:SecurityToken>
+        </v01:Security>
+    </Header>
+    <!--  Selection Criteria
+           isCacheLateLargeReports: The client can specify if it wants the system to cache a report if it is demmed too large to return in one XML document or if the report query runs too long and won't complete before the system timeout.  If this is set to true the system will cache the report and the client can retrive the report at a later time using CachedReportRQ
+           clientTimeoutSecs: The client can specify a smaller timeout which the system will use to determine if a report will be returned late.  If the query won't finish in time the system will cache the report and the client can retrieve the report at a later time using CachedReportRQ
+           isElectronicTicket: Only electronic documents will be returned
+    -->
+    <ns:SelectionCriteria isCacheLateLargeReports="true" clientTimeoutSecs="100" isElectronicTicket="false">
+        <!--Carrier code airline cached report was generated for.  This must match security settings in Sabre system so agent must have access to specified carrier-->
+        <ns:TicketingProvider>NN</ns:TicketingProvider>
+        <!--Only documents issued at this station will be returned-->
+        <ns:DocumentNumber>1234567890123</ns:DocumentNumber>
+    </ns:SelectionCriteria>
+</ns:DetailRQ>

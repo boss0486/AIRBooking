@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<ns:DetailRQ version='1.2.2' xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0' xmlns:v01='http://services.sabre.com/STL/v01'>
+  <Header version='1.0' messageID='mid:20001209-133003-2333@clientofsabre.com'  timeStamp='2017-11-27T10:28:30Z' diagnosticLevel='Mock' ttl='10'>
+    <v01:ConversationID seq='0'>V1@280b16ec-5eac-46c0-893f-c88f8e8cb632@310b16ec-5dad-46c0-893f-c88f8e8cb643@780b16ec-5eac-46c0-893f-c88f8e8cb699</v01:ConversationID>
+    <v01:Operation>TKT_AsrServicesRQ</v01:Operation>
+    <v01:Service>TKT_AsrServicesRQ</v01:Service>
+    <v01:Security>
+            <!--<v01:UsernameToken>
+                <v01:Username>username</v01:Username>
+                <v01:Password>strongpassword</v01:Password>
+                <v01:Organization>ORF</v01:Organization>
+            </v01:UsernameToken>-->
+      <v01:SecurityToken>Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/CERTG!ICESMSLB\/CRT.LB!-3206393158292768888!455926!0</v01:SecurityToken>
+    </v01:Security>
+  </Header>
+  <ns:SelectionCriteria isCacheLateLargeReports='true' clientTimeoutSecs='100' isElectronicTicket='false'>
+  </ns:SelectionCriteria>
+</ns:DetailRQ>

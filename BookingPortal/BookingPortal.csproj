@@ -157,7 +157,7 @@
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Template\TemplateAreaRegistration.cs" />
-    <Compile Include="Controllers\ApiBookingController.cs" />
+    <Compile Include="Controllers\ApiReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -250,20 +250,25 @@
     <Content Include="Files\upload\2019\9\fc29b1ff-ed90-47bf-96df-0d389a116001.jpg" />
     <Content Include="Files\upload\2019\9\ff4bab54-c41f-490a-9fe5-5066102eb9d3.png" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Library\Script\model-form.js" />
     <Content Include="Pages\forbidden.html" />
     <Content Include="Pages\mail.html" />
     <Content Include="Pages\not-found.html" />
     <Content Include="Pages\not-service.html" />
+    <Content Include="Team\DetailRS.xml" />
     <Content Include="Team\XMLFile1.xml" />
     <Content Include="Team\XMLFile2.xml" />
     <Content Include="Team\XMLFile3.xml" />
     <Content Include="WS\Xml\ClearSession.xml" />
+    <Content Include="WS\Xml\DetailsRQ.xml" />
     <Content Include="WS\Xml\Common.xml" />
     <Content Include="WS\Xml\dongnt.xml" />
+    <Content Include="WS\Xml\Report-get-employee-number.xml" />
     <Content Include="WS\Xml\PassengerDetails.xml" />
     <Content Include="WS\Xml\PaymentRQ.xml" />
     <Content Include="WS\Xml\SabreCommandLLSRQ.xml" />
+    <Content Include="Team\SalesSummaryRS.xml" />
     <Content Include="_themes\authenzition\css\style.css" />
     <Content Include="_themes\authenzition\images\banner.jpg" />
     <Content Include="_themes\authenzition\images\tick.png" />

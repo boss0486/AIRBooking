@@ -11,18 +11,13 @@ using AIRService.WS.Entities;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using AIRService.Service;
 using ApiPortalBooking.Models.VNA_WS_Model;
 using WebCore.Services;
-using static AIRService.WebService.VNA.Enum.VNAEnum;
 using WebCore.Entities;
-using System.Globalization;
 using System.IO;
 using System.Web;
 using WebCore.ENM;
 using Helper;
-using Helper.Page;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
 
 namespace AIRService.Service
@@ -1737,33 +1732,6 @@ namespace AIRService.Service
                         voidTicketModel.JsonResultOTA_Cancel = end;
                     }
                     return Notifization.Data("OK", voidTicketModel);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
-            }
-        }
-        public ActionResult SalesReport(DateTime date)
-        {
-            try
-            {
-                using (var sessionService = new VNA_SessionService())
-                {
-                    TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    var reportModel = new ReportModel();
-                    reportModel.Token = tokenModel.Token;
-                    reportModel.ConversationID = tokenModel.ConversationID;
-                    reportModel.ReportDate = date;
-                    //
-                    VNA_KT_AsrServicesService vNAWSKT_AsrServicesService = new VNA_KT_AsrServicesService();
-                    var data = vNAWSKT_AsrServicesService.AsrServices(reportModel);
-                    return Notifization.Data("OK", data);
                 }
             }
             catch (Exception ex)

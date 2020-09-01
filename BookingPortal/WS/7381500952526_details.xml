@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>TKT_AsrServicesRQ</eb:Service>
+      <eb:Action>TKT_AsrServicesRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>1050327560634950611</eb:MessageId>
+        <eb:Timestamp>2020-08-29T15:34:23</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESC!ICESMSLB\/RES.LB!1598715258232!4395!21!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <StationManagerRS xmlns="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" isQueryStillRunning="false" version="1.2.1">
+      <Header messageID="TKTHLP725-58979-396916577-1598715263731-2896364-asrws" timeStamp="2020-08-29T10:34:23">
+        <STL:OrchestrationID xmlns:STL="http://services.sabre.com/STL/v01" seq="0">TKTHLP725-58979-396916577-1598715263731-2896364-asrws</STL:OrchestrationID>
+        <STL:Results xmlns:STL="http://services.sabre.com/STL/v01">
+          <STL:Error status="Incomplete" timeStamp="2020-08-29T10:34:23" type="Validation">
+            <STL:Source>ASR WS</STL:Source>
+            <STL:System>TKT-WS</STL:System>
+            <STL:SystemSpecificResults>
+              <STL:ErrorMessage code="21208">XML request schema validation failed: Unexpected element DocumentNumber was found, one of: StationNumber, IssuingCityCode was expected. Please amend your request and try again.</STL:ErrorMessage>
+              <STL:ShortText>XML request schema validation failed</STL:ShortText>
+            </STL:SystemSpecificResults>
+          </STL:Error>
+        </STL:Results>
+      </Header>
+    </StationManagerRS>
+  </soap-env:Body>
+</soap-env:Envelope>
