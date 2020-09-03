@@ -41,39 +41,60 @@ namespace WebCore.Services
             int timeExpress = model.TimeExpress;
             string startDate = model.StartDate;
             string endDate = model.EndDate;
-            string clientTime = model.ClientTime;
+            string clientTime = model.TimeZoneLocal;
             //
             if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
             {
                 DateTime dateClient = Convert.ToDateTime(clientTime);
+                // today
                 if (timeExpress == 1)
                 {
-                    string strDate = Helper.Page.Library.FormatToDateSQL(dateClient, "-");
+                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(dateClient);
                     DateTime dtime = Convert.ToDateTime(strDate);
-                    whereCondition = " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) = '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
                 }
-                //
+                // Yesterday
                 if (timeExpress == 2)
                 {
-                    DateTime dtime = dateClient.AddDays(-3);
-                    whereCondition = " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) >= '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    DateTime dtime = dateClient.AddDays(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
                 }
-                //
+                // ThreeDayAgo
                 if (timeExpress == 3)
                 {
-                    DateTime dtime = dateClient.AddDays(-7);
-                    whereCondition = " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) >= '" + Helper.Page.Library.FormatToDateSQL(dtime, " - ") + "'";
+                    DateTime dtime = dateClient.AddDays(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
                 }
-                //
+                // SevenDayAgo
                 if (timeExpress == 4)
                 {
-                    DateTime dtime = dateClient.AddDays(-15);
-                    whereCondition = " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) >= '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    DateTime dtime = dateClient.AddDays(-7);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
                 }
+                // OneMonthAgo
                 if (timeExpress == 5)
                 {
-                    DateTime dtime = dateClient.AddDays(-30);
-                    whereCondition = " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) >= '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    DateTime dtime = dateClient.AddMonths(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+
+                // ThreeMonthAgo
+                if (timeExpress == 6)
+                {
+                    DateTime dtime = dateClient.AddMonths(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // SixMonthAgo
+                if (timeExpress == 7)
+                {
+                    DateTime dtime = dateClient.AddMonths(-6);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // OneYearAgo
+                if (timeExpress == 8)
+                {
+                    DateTime dtime = dateClient.AddYears(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
                 }
             }
             else
@@ -81,7 +102,7 @@ namespace WebCore.Services
                 if (!string.IsNullOrWhiteSpace(startDate))
                 {
                     DateTime dtime = Convert.ToDateTime(startDate);
-                    whereCondition += " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) >= '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
                 }
                 //
                 if (!string.IsNullOrWhiteSpace(endDate))
@@ -90,7 +111,7 @@ namespace WebCore.Services
                         return Notifization.NotFound("Thời gian kết thúc không hợp lệ");
                     //
                     DateTime dtime = Convert.ToDateTime(endDate);
-                    whereCondition += " AND CONVERT(DateTime,Convert(nvarchar(10),CreatedDate, 120), 120) <= '" + Helper.Page.Library.FormatToDateSQL(dtime, "-") + "'";
+                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
                 }
             }
             //

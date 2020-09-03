@@ -1310,6 +1310,7 @@
     <Content Include="Areas\Management\Views\AirFlight\DataList.cshtml" />
     <Content Include="Areas\Management\Views\AirFlight\Update.cshtml" />
     <Content Include="Areas\Management\Views\WalletUserSpendingHistory\DataList.cshtml" />
+    <Content Include="Library\Script\timezones.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

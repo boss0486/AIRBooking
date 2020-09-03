@@ -258,7 +258,7 @@ namespace WebCore.Services
                         FullName = item.FullName,
                         PassengerType = item.PassengerType,
                         Gender = item.Gender,
-                        DateOfBirth = Helper.Page.Library.FormatToDateVN(item.DateOfBirth)
+                        DateOfBirth = Helper.Time.TimeHelper.FormatToDate(item.DateOfBirth, languageCode: Helper.Language.LanguageCode.Vietnamese.ID)
                     });
                 }
 

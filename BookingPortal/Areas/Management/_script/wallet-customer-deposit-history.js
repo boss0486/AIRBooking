@@ -11,11 +11,6 @@ var WalletCustomerDepositHistoryController = {
         });
     },
     DataList: function (page) {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        today = yyyy + "-" + mm + "-" + dd;
         //
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
@@ -26,7 +21,7 @@ var WalletCustomerDepositHistoryController = {
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: LibDateTime.FormatToServerDate(txtStartDate),
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-            ClientTime: today
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
         //
         AjaxFrom.POST({

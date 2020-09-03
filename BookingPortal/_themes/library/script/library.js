@@ -133,9 +133,123 @@ class LibDateTime {
         var res = _date.split("-");
         return res[2] + "-" + res[1] + "-" + res[0];
     }
+
+    //
+
+    //
+    static GetTimeZoneByLocal2(callback) {
+        // timezone local
+        var utcLocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        //
+        if (utcLocal == undefined || utcLocal == "") {
+            return "";
+        }
+        var file = "/library/script/timezones.json";
+        var result = "";
+        var rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                $.each(JSON.parse(rawFile.response), function (key, val) {
+                    if (val.utc != undefined && val.utc != null) {
+                        $.each(val.utc, function (utcKey, utcVal) {
+                            if (utcVal == utcLocal) {
+                                callback(val.value);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        rawFile.send(null);
+
+        //var a = "";
+        //const result = await $.ajax({
+        //    url: "/library/script/timezones.json",
+        //    dataType: 'json',
+        //    async: true,
+        //    data: '',
+        //    success: function (data) {
+        //        $.each(data, function (key, val) {
+        //            console.log("------------------------------------------:" + JSON.stringify(val.value));
+
+        //            if (val.utc != undefined && val.utc != null) {
+        //                $.each(val.utc, function (utcKey, utcVal) {
+        //                    console.log(JSON.stringify(utcVal));
+        //                    if (utcVal == utcLocal) {
+        //                        console.log("------------------------------------------:ok" + val.value);
+        //                        a = val.value;
+        //                    }
+        //                });
+        //            }
+        //        });
+
+        //    }
+        //});
+
+        //return JSON.stringify(a);
+
+    }
+
+    static GetTimeZoneByLocal() {
+        // timezone local
+        var utcLocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        //
+        if (utcLocal == undefined || utcLocal == "") {
+            return "";
+        }
+
+        var result = "";
+        $.ajax({
+            url: "/library/script/timezones.json",
+            async: false,
+            success: function (data) {
+                $.each(data, function (key, val) {
+                    var _val = val.value;
+                    if (val.utc != undefined && val.utc != null) {
+                        $.each(val.utc, function (utcKey, utcVal) {
+                            if (utcVal == utcLocal) {
+                                result = _val; 
+                               // return _val;
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+        return result;
+        //var a = "";
+        //const result = await $.ajax({
+        //    url: "/library/script/timezones.json",
+        //    dataType: 'json',
+        //    async: true,
+        //    data: '',
+        //    success: function (data) {
+        //        $.each(data, function (key, val) {
+        //            console.log("------------------------------------------:" + JSON.stringify(val.value));
+
+        //            if (val.utc != undefined && val.utc != null) {
+        //                $.each(val.utc, function (utcKey, utcVal) {
+        //                    console.log(JSON.stringify(utcVal));
+        //                    if (utcVal == utcLocal) {
+        //                        console.log("------------------------------------------:ok" + val.value);
+        //                        a = val.value;
+        //                    }
+        //                });
+        //            }
+        //        });
+
+        //    }
+        //});
+
+        //return JSON.stringify(a);
+
+    }
 }
 
- 
+
 class LibCurrencies {
     static FormatThousands(n, dp) {
         var s = '' + (Math.floor(n)), d = n % 1, i = s.length, r = '';

@@ -93,7 +93,7 @@ namespace Helper.Page
                 return true;
             else
                 return false;
-        }       
+        }
         public static bool TestPassword(string param)
         {
             var reg = new System.Text.RegularExpressions.Regex(RegexPassword);
@@ -302,6 +302,9 @@ namespace Helper.Page
         }
     }
     //###CLASS###################################################################################################################################################################################
+    
+    
+    
     public class Library
     {
         // format text 
@@ -354,7 +357,7 @@ namespace Helper.Page
             {
                 return "0.00";
             }
-        } 
+        }
         public static string FormatToUni2NONE(string text)
         {
             string[] arr1 = new string[] { "/", "\",", ",", "&", "$", "~", "*", ")", "{", "}", "|", "'", " ", "?", "%", "á", "à", "ả", "ã", "ạ", "â", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ă", "ắ", "ằ", "ẳ", "ẵ", "ặ", "đ", "é", "è", "ẻ", "ẽ", "ẹ", "ê", "ế", "ề", "ể", "ễ", "ệ", "í", "ì", "ỉ", "ĩ", "ị", "ó", "ò", "ỏ", "õ", "ọ", "ô", "ố", "ồ", "ổ", "ỗ", "ộ", "ơ", "ớ", "ờ", "ở", "ỡ", "ợ", "ú", "ù", "ủ", "ũ", "ụ", "ư", "ứ", "ừ", "ử", "ữ", "ự", "ý", "ỳ", "ỷ", "ỹ", "ỵ", };
@@ -386,305 +389,6 @@ namespace Helper.Page
             }
             return result.Trim();
         }
-
-        // date time
-        public static string FormatToDateVN(DateTime dateTime, string ext = null)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(ext))
-                    ext = "-";
-                //
-                if (dateTime == null)
-                    return ".." + ext + ".." + ext + "..";
-                //DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                string _month = Convert.ToString(dateTime.Month);
-                string _day = Convert.ToString(dateTime.Day);
-                string _hour = Convert.ToString(dateTime.Hour);
-                string _minute = Convert.ToString(dateTime.Minute);
-                string _second = Convert.ToString(dateTime.Second);
-                string _millisecond = Convert.ToString(dateTime.Millisecond);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                if (_hour.Length == 1)
-                    _hour = "0" + _hour;
-                if (_minute.Length == 1)
-                    _minute = "0" + _minute;
-                if (_second.Length == 1)
-                    _second = "0" + _second;
-                return _day + ext + _month + ext + dateTime.Year;
-            }
-            catch (Exception)
-            {
-                return ".." + ext + ".." + ext + "..";
-            }
-        }
-        public static string FormatTo_VNDateTime(DateTime dtime, string ext = null)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(ext))
-                    ext = "-";
-                //
-
-                //DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                string _hour = Convert.ToString(dtime.Hour);
-                string _minute = Convert.ToString(dtime.Minute);
-                string _second = Convert.ToString(dtime.Second);
-                string _millisecond = Convert.ToString(dtime.Millisecond);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                if (_hour.Length == 1)
-                    _hour = "0" + _hour;
-                if (_minute.Length == 1)
-                    _minute = "0" + _minute;
-                if (_second.Length == 1)
-                    _second = "0" + _second;
-                return _day + ext + _month + ext + dtime.Year + " " + _hour + ":" + _minute + ":" + _second;
-            }
-            catch (Exception)
-            {
-                string _month = "00";
-                string _day = "00";
-                string _hour = "00";
-                string _minute = "00";
-                string _second = "00";
-                return _day + ext + _month + ext + dtime.Year + " " + _hour + ":" + _minute + ":" + _second;
-
-            }
-        }
-        public static string FormatToDate(DateTime dtime)
-        {
-            try
-            {
-                //DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                return _day + "/" + _month + "/" + dtime.Year;
-            }
-            catch (Exception)
-            {
-                dtime = DateTime.Now;
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                if (_month.Length == 1)
-                    _month += "0" + _month;
-                if (_day.Length == 1)
-                    _day += "0" + _day;
-                return _day + "/" + _month + "/" + dtime.Year;
-
-            }
-        }
-        public static string FormatToDate(string _strDate)
-        {
-            try
-            {
-                // Check for empty string.
-                if (string.IsNullOrEmpty(_strDate))
-                    return string.Empty;
-
-                bool isDateTime = DateTime.TryParse(_strDate, out _);
-                if (isDateTime)
-                {
-                    DateTime dateTime = Convert.ToDateTime(_strDate);
-                    string _month = Convert.ToString(dateTime.Month);
-                    string _day = Convert.ToString(dateTime.Day);
-                    if (_month.Length == 1)
-                        _month = "0" + _month;
-                    if (_day.Length == 1)
-                        _day = "0" + _day;
-                    return _day + "/" + _month + "/" + dateTime.Year;
-                }
-                return "00/00/0000";
-            }
-            catch (Exception)
-            {
-                return "00/00/0000";
-            }
-        }
-        public static string FormatToNewsDate(DateTime dtime)
-        {
-            try
-            {
-                DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                return String.Format("{0:MMMM dd, yyyy}", dt);
-            }
-            catch (Exception)
-            {
-                dtime = DateTime.Now;
-                DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                return String.Format("{0:MMMM dd, yyyy}", dt);
-
-            }
-        }
-        public static string FormatToDateTimeSQL(DateTime dtime, string ext = null)
-        {
-            try
-            {
-                //DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                string _hour = Convert.ToString(dtime.Hour);
-                string _minute = Convert.ToString(dtime.Minute);
-                string _second = Convert.ToString(dtime.Second);
-                string _millisecond = Convert.ToString(dtime.Millisecond);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                if (_hour.Length == 1)
-                    _hour = "0" + _hour;
-                if (_minute.Length == 1)
-                    _minute = "0" + _minute;
-                if (_second.Length == 1)
-                    _second = "0" + _second;
-                return dtime.Year + ext + _month + ext + _day + " " + _hour + ":" + _minute + ":" + _second;
-            }
-            catch (Exception)
-            {
-                dtime = DateTime.Now;
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                string _hour = Convert.ToString(dtime.Hour);
-                string _minute = Convert.ToString(dtime.Minute);
-                string _second = Convert.ToString(dtime.Second);
-                string _millisecond = Convert.ToString(dtime.Millisecond);
-                if (_month.Length == 1)
-                    _month += "0" + _month;
-                if (_day.Length == 1)
-                    _day += "0" + _day;
-                if (_hour.Length == 1)
-                    _hour += "0" + _hour;
-                if (_minute.Length == 1)
-                    _minute += "0" + _minute;
-                if (_second.Length == 1)
-                    _second += "0" + _second;
-                return dtime.Year + ext + _month + ext + _day + " " + _hour + ":" + _minute + ":" + _second;
-            }
-        }
-        public static string FormatToDateSQL(DateTime dtime, string ext = null)
-        {
-            try
-            {
-                if (ext == null)
-                    ext = "-";
-                //
-                //DateTime dt = new DateTime(dtime.Year, dtime.Month, dtime.Day, dtime.Hour, dtime.Minute, dtime.Second, dtime.Millisecond);
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                string _hour = Convert.ToString(dtime.Hour);
-                string _minute = Convert.ToString(dtime.Minute);
-                string _second = Convert.ToString(dtime.Second);
-                string _millisecond = Convert.ToString(dtime.Millisecond);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                return dtime.Year + ext + _month + ext + _day;
-            }
-            catch (Exception)
-            {
-                dtime = DateTime.Now;
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                if (_month.Length == 1)
-                    _month += "0" + _month;
-                if (_day.Length == 1)
-                    _day += "0" + _day;
-                return dtime.Year + ext + _month + ext + _day;
-
-            }
-        }
-        public static DateTime FormatToDateSQL(string dtime)
-        {
-            if (!string.IsNullOrWhiteSpace(dtime))
-            {
-                dtime = dtime.Trim();
-                if (dtime.Contains('-'))
-                {
-                    string[] arrtime = dtime.Split('-');
-                    string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                    return Convert.ToDateTime(date);
-                }
-                if (dtime.Contains('/'))
-                {
-                    dtime = dtime.Replace("/", "-");
-                    string[] arrtime = dtime.Split('-');
-                    string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                    return Convert.ToDateTime(date);
-                }
-            }
-            // 19-05-2019
-            return DateTime.Now;
-        }
-        public static string FormatToUTCDateTime(DateTime dtime, string ext = "-")
-        {
-            try
-            {
-                string _month = Convert.ToString(dtime.Month);
-                string _day = Convert.ToString(dtime.Day);
-                string _hour = Convert.ToString(dtime.Hour);
-                string _minute = Convert.ToString(dtime.Minute);
-                string _second = Convert.ToString(dtime.Second);
-                string _millisecond = Convert.ToString(dtime.Millisecond);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                if (_day.Length == 1)
-                    _day = "0" + _day;
-                if (_hour.Length == 1)
-                    _hour = "0" + _hour;
-                if (_minute.Length == 1)
-                    _minute = "0" + _minute;
-                if (_second.Length == 1)
-                    _second = "0" + _second;
-                return dtime.Year + ext + _month + ext + _day + " " + _hour + ":" + _minute + ":" + _second;
-            }
-            catch (Exception)
-            {
-                return "0000" + ext + "00" + ext + "" + "00" + "00" + ":" + "00" + ":" + "00";
-            }
-        }
-        public static string FormatToUTCDateTimeToMMYY(DateTime dtime)
-        {
-            try
-            {
-                string _month = Convert.ToString(dtime.Month);
-                if (_month.Length == 1)
-                    _month = "0" + _month;
-                return dtime.Year + "-" + _month;
-            }
-            catch (Exception)
-            {
-                return "0000" + "-" + "00";
-            }
-        }
-        // get data
-        public static DateTime TimeNow(IDbTransaction transaction = null)
-        {
-            try
-            {
-                using (var _connectDb = DbConnect.Connection.CMS)
-                {
-                    string sqlQuery = "SELECT GETDATE() AS [DTime]";
-                    var data = _connectDb.Query<string>(sqlQuery, transaction: transaction).FirstOrDefault();
-                    return Convert.ToDateTime(data);
-                }
-            }
-            catch (Exception)
-            {
-                return DateTime.Now;
-            }
-        }
         public static string FormatThousands(double _amount)
         {
             try
@@ -700,7 +404,6 @@ namespace Helper.Page
             //
 
         }
-
     }
     //###CLASS###################################################################################################################################################################################
     public class Default

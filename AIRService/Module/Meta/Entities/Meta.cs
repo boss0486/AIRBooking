@@ -43,28 +43,14 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsMeta : WEBModelResult
+    public class MetaResult : WEBModelResult
     {
         public string ID { get; set; }
         public string Alias { get; set; }
         public int GroupID { get; set; }
         public string MetaTitle { get; set; }
         public string MetaDescription { get; set; }
-        public string MetaKeyword { get; set; }
-        public RsMeta(string id, string alias, int groupId, string metaTitle, string metaDescription, string metaKeyword, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Alias = alias;
-            GroupID = groupId;
-            MetaTitle = metaTitle;
-            MetaDescription = metaDescription;
-            MetaKeyword = metaKeyword;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
+        public string MetaKeyword { get; set; } 
     }
     public class MetaOption
     {

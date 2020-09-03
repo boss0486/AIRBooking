@@ -48,7 +48,7 @@ namespace WebCore.Model.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(_createdDate));
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), "vi-vn");
             }
             set
             {
@@ -62,7 +62,7 @@ namespace WebCore.Model.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return Helper.Page.Library.FormatTo_VNDateTime(Convert.ToDateTime(_createdDate));
+                return Helper.Time.TimeHelper.FormatToDateTime(Convert.ToDateTime(_createdDate),  Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
@@ -85,7 +85,7 @@ namespace WebCore.Model.Entities
         public int TimeExpress { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
-        public string ClientTime { get; set; }
+        public string TimeZoneLocal { get; set; }
         public string AreaID { get; set; }
     }
     public class SearchExpressOption

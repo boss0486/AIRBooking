@@ -42,25 +42,14 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsMetaGroup : WEBModelResult
+    public class MetaGroupResult : WEBModelResult
     {
 
         public string ID { get; set; }
         public string Alias { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public RsMetaGroup(string id, string alias, string title, string summary, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Alias = alias;
-            Title = title;
-            Summary = summary;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
+ 
     }
     public class MetaGroupOption
     {

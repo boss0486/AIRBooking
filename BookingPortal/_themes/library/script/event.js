@@ -21,6 +21,32 @@ $(function () {
             }
         }
     });
+    //
+    //$('#txtStartDate').val(today);
+    $("[data-datesearch='true'] #txtStartDate").datepicker({
+        format: 'dd-mm-yyyy',
+        startDate: '01-07-2020',
+        todayHighlight: true
+
+    }).on('changeDate', function (index, item) {
+        $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
+        $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
+       
+    });
+    $("[data-datesearch='true'] #txtEndDate").datepicker({
+        format: 'dd-mm-yyyy',
+        startDate: $("[data-datesearch='true'] #txtStartDate").val(),
+        todayHighlight: true
+
+    }).on('changeDate', function (index, item) {
+        $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
+        $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
+    });
+    //
+    $(document).on('change', "[data-datesearch='true'] #ddlTimeExpress", function () {
+        $("[data-datesearch='true'] #txtStartDate").val('');
+        $("[data-datesearch='true'] #txtEndDate").val('');
+    });
 });
 
 function EventCopy(elm, eclick) {

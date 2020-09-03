@@ -29,20 +29,15 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM View_App_ArticleCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
                                     ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ArticleCategory>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<ArticleCategoryResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
-            var resultData = new List<RsArticleCategory>();
-            foreach (var item in dtList)
-            {
-                resultData.Add(new RsArticleCategory(item.ID, item.Title, item.Summary, item.Alias, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate));
-            }
-            var result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count <= 0 && page > 1)
             {
                 page -= 1;
-                result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
             if (result.Count <= 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -187,11 +182,10 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM View_App_ArticleCategory WHERE ID = @ID";
-                var item = _connection.Query<ArticleCategory>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                var item = _connection.Query<ArticleCategoryResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
-                RsArticleCategory result = new RsArticleCategory(item.ID, item.Title, item.Summary, item.Alias, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate);
-                return Notifization.Data(MessageText.Success, data: result, role: null, paging: null);
+                 return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
             catch
             {

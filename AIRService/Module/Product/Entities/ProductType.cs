@@ -40,26 +40,13 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsProductType : WEBModelResult
+    public class ProductTypeResult : WEBModelResult
     {
 
         public string ID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string Alias { get; set; }
-
-        public RsProductType(string id, string title, string summary, string alias, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Title = title;
-            Alias = alias;
-            Summary = summary;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
+        public string Alias { get; set; } 
     }
     public class ProductTypeOption
     {

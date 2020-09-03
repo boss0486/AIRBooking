@@ -34,17 +34,12 @@ namespace WebCore.Services
                 var dtList = _connection.Query<Meta>(sqlQuery, new { Query = query }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
-
-                var resultData = new List<RsMeta>();
-                foreach (var item in dtList)
-                {
-                    resultData.Add(new RsMeta(item.ID, item.Alias, item.GroupID, item.MetaTitle, item.MetaDescription, item.MetaKeyword, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate));
-                }
-                var result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+//                
+                var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
                 if (result.Count <= 0 && page > 1)
                 {
                     page -= 1;
-                    result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+                    result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
                 }
                 if (result.Count <= 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -206,7 +201,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
+        public ActionResult Details(string Id)
         {
             try
             {
@@ -214,11 +209,11 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM View_App_Meta WHERE ID = @ID";
-                var item = _connection.Query<Meta>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                var item = _connection.Query<MetaResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
-                var result = new RsMeta(item.ID, item.Alias, item.GroupID, item.MetaTitle, item.MetaDescription, item.MetaKeyword, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate);
-                return Notifization.Data(MessageText.Success, data: result, role: null, paging: null);
+                //
+                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
             catch
             {

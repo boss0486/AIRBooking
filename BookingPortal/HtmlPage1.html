@@ -1,70 +1,190 @@
-﻿<StationManagerRQ version='1.2.1' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>
-    <Header />
-    <SelectionCriteria>
-        <TicketingProvider>VN</TicketingProvider>
-        <DocumentNumber>2452104442772</DocumentNumber>
-        <ReportDate>2020-04-27</ReportDate>
-    </SelectionCriteria>
-</StationManagerRQ>
-
-
-
-<?xml version="1.0" encoding="UTF-8" ?>
-  
-<ns:DetailRQ version="1.2.2" xmlns:ns="http://www.sabre.com/ns/Ticketing/AsrServices/1.0"
-             xmlns:v01="http://services.sabre.com/STL/v01">
-    <!--    Sabre Standard Payload Header. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header (SOAP or JMS header). This data is intended for use with content-based routing and other tasks associated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents
-      messageID: mandatory, The MessageId element is a globally unique identifier for each message [see RFC2822]. It is an unique message identifier that refers to a particular version of a particular message.  The uniqueness of the message identifier should be guaranteed by the host that generates it.  This message identifier is intended to be machine readable and not necessarily meaningful to humans.  A message identifier pertains to exactly one instantiation of a particular message; subsequent revisions to the message each receive new message identifiers
-      version: version string
-      timestamp: Date and time when the result record was created
-      customerID: Identification value assigned to the service customer or consumer
-      diagnosticLevel: Mock - Return a sample message without invoking service logic
-      ttl: Time-To-Live (TTL) is the number of seconds a system is requested wait after receipt of the message for a response before forcing the transaction to be over.
-      -->
-    <Header messageID="abc" version="1.0" timeStamp="2019-12-17T09:30:47Z" customerID="customerID"
-            diagnosticLevel="Mock" ttl="10">
-        <!--Optional:-->
-        <!--The ConversationId element is a string identifying the set of related messages that make up a conversation between two Parties. The Party initiating a conversation determines the value of the ConversationId element that shall be reflected in all messages pertaining to that conversation. It remains constant for all messages within a conversation-->
-        <!--seq: integer-->
-        <v01:ConversationID seq="0">abcd-def</v01:ConversationID>
-        <!--Optional:-->
-        <!--The orchestration ID may be used to track a set of service invocations and the sequence in which they are invoked. To track an orchestration, the orchestrator assigns a unique value to the identifier and sets the sequence number to 0.  Service providers are expected to increment the OrchestrationID@seq value if it exists-->
-        <!--seq: integer-->
-        <v01:OrchestrationID seq="0">xyz-abc</v01:OrchestrationID>
-        <!--Optional:-->
-        <!--Operation is the action verb applied to the Service-->
-        <v01:Operation>operation</v01:Operation>
-        <!--Optional:-->
-        <!--The name of the service being requested. Typically the message subject noun.  Service frameworks may use the abstract service name to lookup the actual service provider instance to invoke-->
-        <v01:Service>service</v01:Service>
-        <!--Optional:-->
-        <v01:Security>
-            <!--You have a CHOICE of the next 2 items at this level-->
-            <!--    Either UsernameToken or SecurityToken is needed-->
-            <v01:UsernameToken>
-                <v01:Username>username</v01:Username>
-                <v01:Password>strongpassword</v01:Password>
-                <v01:Organization>ORF</v01:Organization>
-                <!--Optional:-->
-                <v01:Domain>DOMAIN</v01:Domain>
-                <!--Optional:-->
-                <v01:Lniata>LNIATA</v01:Lniata>
-                <!--Optional:-->
-                <v01:Locid>LOCID</v01:Locid>
-            </v01:UsernameToken>
-            <!--    Text token -->
-            <v01:SecurityToken>Averystrongsecuritytoken</v01:SecurityToken>
-        </v01:Security>
-    </Header>
-    <!--  Selection Criteria
-           isCacheLateLargeReports: The client can specify if it wants the system to cache a report if it is demmed too large to return in one XML document or if the report query runs too long and won't complete before the system timeout.  If this is set to true the system will cache the report and the client can retrive the report at a later time using CachedReportRQ
-           clientTimeoutSecs: The client can specify a smaller timeout which the system will use to determine if a report will be returned late.  If the query won't finish in time the system will cache the report and the client can retrieve the report at a later time using CachedReportRQ
-           isElectronicTicket: Only electronic documents will be returned
-    -->
-    <ns:SelectionCriteria isCacheLateLargeReports="true" clientTimeoutSecs="100" isElectronicTicket="false">
-        <!--Carrier code airline cached report was generated for.  This must match security settings in Sabre system so agent must have access to specified carrier-->
-        <ns:TicketingProvider>NN</ns:TicketingProvider>
-        <!--Only documents issued at this station will be returned-->
-        <ns:DocumentNumber>1234567890123</ns:DocumentNumber>
-    </ns:SelectionCriteria>
-</ns:DetailRQ>
+﻿public static Language.LanguageCodeOption   Abkhazian	                        = New LanguageCodeOption{ Title = "Abkhazian"", CodeID="ab" };
+public static Language.LanguageCodeOption   Afrikaans	                        = New LanguageCodeOption{ Title = "Afrikaans", CodeID="af" };
+public static Language.LanguageCodeOption   Akan	                            = New LanguageCodeOption{ Title = "Akan"    , CodeID="ak" };
+public static Language.LanguageCodeOption   Albanian	                        = New LanguageCodeOption{ Title = "Albanian", CodeID="sq" };
+public static Language.LanguageCodeOption   Amharic	                            = New LanguageCodeOption{ Title = "Amharic", CodeID="am" };
+public static Language.LanguageCodeOption   Arabic	                            = New LanguageCodeOption{ Title = "Arabic"    , CodeID="ar" };
+public static Language.LanguageCodeOption   Aragonese	                        = New LanguageCodeOption{ Title = "Aragonese", CodeID="an" };
+public static Language.LanguageCodeOption   Armenian	                        = New LanguageCodeOption{ Title = "Armenian", CodeID="hy" };
+public static Language.LanguageCodeOption   Assamese	                        = New LanguageCodeOption{ Title = "Assamese", CodeID="as" };
+public static Language.LanguageCodeOption   Avaric	                            = New LanguageCodeOption{ Title = "Avaric"    , CodeID="av" };
+public static Language.LanguageCodeOption   Avestan	                            = New LanguageCodeOption{ Title = "Avestan", CodeID="ae" };
+public static Language.LanguageCodeOption   Aymara	                            = New LanguageCodeOption{ Title = "Aymara"    , CodeID="ay" };
+public static Language.LanguageCodeOption   Azerbaijani	                        = New LanguageCodeOption{ Title = "Azerbaijani", CodeID="az" };
+public static Language.LanguageCodeOption   Bambara	                            = New LanguageCodeOption{ Title = "Bambara", CodeID="bm" };
+public static Language.LanguageCodeOption   Bashkir	                            = New LanguageCodeOption{ Title = "Bashkir", CodeID="ba" };
+public static Language.LanguageCodeOption   Basque	                            = New LanguageCodeOption{ Title = "Basque"    , CodeID="eu" };
+public static Language.LanguageCodeOption   Belarusian	                        = New LanguageCodeOption{ Title = "Belarusian", CodeID="be" };
+public static Language.LanguageCodeOption   Bengali (Bangla)	                = New LanguageCodeOption{ Title = "Bengali (Bangla)"        , CodeID="bn" };
+public static Language.LanguageCodeOption   Bihari	                            = New LanguageCodeOption{ Title = "Bihari"    , CodeID="bh" };
+public static Language.LanguageCodeOption   Bislama	                            = New LanguageCodeOption{ Title = "Bislama", CodeID="bi" };
+public static Language.LanguageCodeOption   Bosnian	                            = New LanguageCodeOption{ Title = "Bosnian", CodeID="bs" };
+public static Language.LanguageCodeOption   Breton	                            = New LanguageCodeOption{ Title = "Breton"    , CodeID="br" };
+public static Language.LanguageCodeOption   Bulgarian	                        = New LanguageCodeOption{ Title = "Bulgarian", CodeID="bg" };
+public static Language.LanguageCodeOption   Burmese	                            = New LanguageCodeOption{ Title = "Burmese", CodeID="my" };
+public static Language.LanguageCodeOption   Catalan	                            = New LanguageCodeOption{ Title = "Catalan", CodeID="ca" };
+public static Language.LanguageCodeOption   Chamorro	                        = New LanguageCodeOption{ Title = "Chamorro", CodeID="ch" };
+public static Language.LanguageCodeOption   Chechen	                            = New LanguageCodeOption{ Title = "Chechen", CodeID="ce" };
+public static Language.LanguageCodeOption   Chichewa, Chewa, Nyanja	            = New LanguageCodeOption{ Title = "Chichewa, Chewa, Nyanja", CodeID="ny" };
+public static Language.LanguageCodeOption   Chinese	                            = New LanguageCodeOption{ Title = "Chinese", CodeID="zh" };
+public static Language.LanguageCodeOption   Chinese (Simplified)	            = New LanguageCodeOption{ Title = "Chinese (Simplified)"    , CodeID="zh-Hans" };
+public static Language.LanguageCodeOption   Chinese (Traditional)	            = New LanguageCodeOption{ Title = "Chinese (Traditional)"    , CodeID="zh-Hant" };
+public static Language.LanguageCodeOption   Chuvash	                            = New LanguageCodeOption{ Title = "Chuvash", CodeID="cv" };
+public static Language.LanguageCodeOption   Cornish	                            = New LanguageCodeOption{ Title = "Cornish", CodeID="kw" };
+public static Language.LanguageCodeOption   Corsican	                        = New LanguageCodeOption{ Title = "Corsican", CodeID="co" };
+public static Language.LanguageCodeOption   Cree	                            = New LanguageCodeOption{ Title = "Cree"    , CodeID="cr" };
+public static Language.LanguageCodeOption   Croatian	                        = New LanguageCodeOption{ Title = "Croatian", CodeID="hr" };
+public static Language.LanguageCodeOption   Czech	                            = New LanguageCodeOption{ Title = "Czech"    , CodeID="cs" };
+public static Language.LanguageCodeOption   Danish	                            = New LanguageCodeOption{ Title = "Danish"    , CodeID="da" };
+public static Language.LanguageCodeOption   Divehi, Dhivehi, Maldivian	        = New LanguageCodeOption{ Title = "Divehi, Dhivehi, Maldivian", CodeID="dv" };
+public static Language.LanguageCodeOption   Dutch	                            = New LanguageCodeOption{ Title = "Dutch"    , CodeID="nl" };
+public static Language.LanguageCodeOption   Dzongkha	                        = New LanguageCodeOption{ Title = "Dzongkha", CodeID="dz" };
+public static Language.LanguageCodeOption   English	                            = New LanguageCodeOption{ Title = "English", CodeID="en" };
+public static Language.LanguageCodeOption   Esperanto	                        = New LanguageCodeOption{ Title = "Esperanto", CodeID="eo" };
+public static Language.LanguageCodeOption   Estonian	                        = New LanguageCodeOption{ Title = "Estonian", CodeID="et" };
+public static Language.LanguageCodeOption   Ewe	                                = New LanguageCodeOption{ Title = "Ewe"    , CodeID="ee" };
+public static Language.LanguageCodeOption   Faroese	                            = New LanguageCodeOption{ Title = "Faroese", CodeID="fo" };
+public static Language.LanguageCodeOption   Fijian	                            = New LanguageCodeOption{ Title = "Fijian"    , CodeID="fj" };
+public static Language.LanguageCodeOption   Finnish	                            = New LanguageCodeOption{ Title = "Finnish", CodeID="fi" };
+public static Language.LanguageCodeOption   French	                            = New LanguageCodeOption{ Title = "French"    , CodeID="fr" };
+public static Language.LanguageCodeOption   Fula, Fulah, Pulaar, Pular	        = New LanguageCodeOption{ Title = "Fula, Fulah, Pulaar, Pular", CodeID="ff" };
+public static Language.LanguageCodeOption   Galician	                        = New LanguageCodeOption{ Title = "Galician", CodeID="gl" };
+public static Language.LanguageCodeOption   Gaelic (Scottish)	                = New LanguageCodeOption{ Title = "Gaelic (Scottish)"        , CodeID="gd" };
+public static Language.LanguageCodeOption   Gaelic (Manx)	                    = New LanguageCodeOption{ Title = "Gaelic (Manx)", CodeID="gv" };
+public static Language.LanguageCodeOption   Georgian	                        = New LanguageCodeOption{ Title = "Georgian", CodeID="ka" };
+public static Language.LanguageCodeOption   German	                            = New LanguageCodeOption{ Title = "German"    , CodeID="de" };
+public static Language.LanguageCodeOption   Greek	                            = New LanguageCodeOption{ Title = "Greek"    , CodeID="el" };
+public static Language.LanguageCodeOption   Greenlandic	                        = New LanguageCodeOption{ Title = "Greenlandic", CodeID="kl" };
+public static Language.LanguageCodeOption   Guarani	                            = New LanguageCodeOption{ Title = "Guarani", CodeID="gn" };
+public static Language.LanguageCodeOption   Gujarati	                        = New LanguageCodeOption{ Title = "Gujarati", CodeID="gu" };
+public static Language.LanguageCodeOption   Haitian Creole	                    = New LanguageCodeOption{ Title = "Haitian Creole", CodeID="ht" };
+public static Language.LanguageCodeOption   Hausa	                            = New LanguageCodeOption{ Title = "Hausa"    , CodeID="ha" };
+public static Language.LanguageCodeOption   Hebrew	                            = New LanguageCodeOption{ Title = "Hebrew"    , CodeID="he" };
+public static Language.LanguageCodeOption   Herero	                            = New LanguageCodeOption{ Title = "Herero"    , CodeID="hz" };
+public static Language.LanguageCodeOption   Hindi	                            = New LanguageCodeOption{ Title = "Hindi"    , CodeID="hi" };
+public static Language.LanguageCodeOption   Hiri Motu	                        = New LanguageCodeOption{ Title = "Hiri Motu", CodeID="ho" };
+public static Language.LanguageCodeOption   Hungarian	                        = New LanguageCodeOption{ Title = "Hungarian", CodeID="hu" };
+public static Language.LanguageCodeOption   Icelandic	                        = New LanguageCodeOption{ Title = "Icelandic", CodeID="is" };
+public static Language.LanguageCodeOption   Ido	                                = New LanguageCodeOption{ Title = "Ido"    , CodeID="io" };
+public static Language.LanguageCodeOption   Igbo	                            = New LanguageCodeOption{ Title = "Igbo"    , CodeID="ig" };
+public static Language.LanguageCodeOption   Indonesian	                        = New LanguageCodeOption{ Title = "Indonesian", CodeID="id" }; //id, in
+public static Language.LanguageCodeOption   Interlingua	                        = New LanguageCodeOption{ Title = "Interlingua", CodeID="ia" };
+public static Language.LanguageCodeOption   Interlingue	                        = New LanguageCodeOption{ Title = "Interlingue", CodeID="ie" };
+public static Language.LanguageCodeOption   Inuktitut	                        = New LanguageCodeOption{ Title = "Inuktitut", CodeID="iu" };
+public static Language.LanguageCodeOption   Inupiak	                            = New LanguageCodeOption{ Title = "Inupiak", CodeID="ik" };
+public static Language.LanguageCodeOption   Irish	                            = New LanguageCodeOption{ Title = "Irish"    , CodeID="ga" };
+public static Language.LanguageCodeOption   Italian	                            = New LanguageCodeOption{ Title = "Italian", CodeID="it" };
+public static Language.LanguageCodeOption   Japanese	                        = New LanguageCodeOption{ Title = "Japanese", CodeID="ja" };
+public static Language.LanguageCodeOption   Javanese	                        = New LanguageCodeOption{ Title = "Javanese", CodeID="jv" };
+public static Language.LanguageCodeOption   Kalaallisut, Greenlandic	        = New LanguageCodeOption{ Title = "Kalaallisut, Greenlandic", CodeID="kl" };
+public static Language.LanguageCodeOption   Kannada	                            = New LanguageCodeOption{ Title = "Kannada", CodeID="kn" };
+public static Language.LanguageCodeOption   Kanuri	                            = New LanguageCodeOption{ Title = "Kanuri"    , CodeID="kr" };
+public static Language.LanguageCodeOption   Kashmiri	                        = New LanguageCodeOption{ Title = "Kashmiri", CodeID="ks" };
+public static Language.LanguageCodeOption   Kazakh	                            = New LanguageCodeOption{ Title = "Kazakh"    , CodeID="kk" };
+public static Language.LanguageCodeOption   Khmer	                            = New LanguageCodeOption{ Title = "Khmer"    , CodeID="km" };
+public static Language.LanguageCodeOption   Kikuyu	                            = New LanguageCodeOption{ Title = "Kikuyu"    , CodeID="ki" };
+public static Language.LanguageCodeOption   Kinyarwanda (Rwanda)	            = New LanguageCodeOption{ Title = "Kinyarwanda (Rwanda)"    , CodeID="rw" };
+public static Language.LanguageCodeOption   Kirundi	                            = New LanguageCodeOption{ Title = "Kirundi", CodeID="rn" };
+public static Language.LanguageCodeOption   Kyrgyz	                            = New LanguageCodeOption{ Title = "Kyrgyz"    , CodeID="ky" };
+public static Language.LanguageCodeOption   Komi	                            = New LanguageCodeOption{ Title = "Komi"    , CodeID="kv" };
+public static Language.LanguageCodeOption   Kongo	                            = New LanguageCodeOption{ Title = "Kongo"    , CodeID="kg" };
+public static Language.LanguageCodeOption   Korean	                            = New LanguageCodeOption{ Title = "Korean"    , CodeID="ko" };
+public static Language.LanguageCodeOption   Kurdish	                            = New LanguageCodeOption{ Title = "Kurdish", CodeID="ku" };
+public static Language.LanguageCodeOption   Kwanyama	                        = New LanguageCodeOption{ Title = "Kwanyama", CodeID="kj" };
+public static Language.LanguageCodeOption   Lao	                                = New LanguageCodeOption{ Title = "Lao"    , CodeID="lo" };
+public static Language.LanguageCodeOption   Latin	                            = New LanguageCodeOption{ Title = "Latin"    , CodeID="la" };
+public static Language.LanguageCodeOption   Latvian (Lettish)	                = New LanguageCodeOption{ Title = "Latvian (Lettish)"        , CodeID="lv" };
+public static Language.LanguageCodeOption   Limburgish ( Limburger)	            = New LanguageCodeOption{ Title = "Limburgish ( Limburger)", CodeID="li" };
+public static Language.LanguageCodeOption   Lingala	                            = New LanguageCodeOption{ Title = "Lingala", CodeID="ln" };
+public static Language.LanguageCodeOption   Lithuanian	                        = New LanguageCodeOption{ Title = "Lithuanian", CodeID="lt" };
+public static Language.LanguageCodeOption   Luga-Katanga	                    = New LanguageCodeOption{ Title = "Luga-Katanga", CodeID="lu" };
+public static Language.LanguageCodeOption   Luganda, Ganda	                    = New LanguageCodeOption{ Title = "Luganda, Ganda", CodeID="lg" };
+public static Language.LanguageCodeOption   Luxembourgish	                    = New LanguageCodeOption{ Title = "Luxembourgish", CodeID="lb" };
+public static Language.LanguageCodeOption   Manx	                            = New LanguageCodeOption{ Title = "Manx"    , CodeID="gv" };
+public static Language.LanguageCodeOption   Macedonian	                        = New LanguageCodeOption{ Title = "Macedonian", CodeID="mk" };
+public static Language.LanguageCodeOption   Malagasy	                        = New LanguageCodeOption{ Title = "Malagasy", CodeID="mg" };
+public static Language.LanguageCodeOption   Malay	                            = New LanguageCodeOption{ Title = "Malay"    , CodeID="ms" };
+public static Language.LanguageCodeOption   Malayalam	                        = New LanguageCodeOption{ Title = "Malayalam", CodeID="ml" };
+public static Language.LanguageCodeOption   Maltese	                            = New LanguageCodeOption{ Title = "Maltese", CodeID="mt" };
+public static Language.LanguageCodeOption   Maori	                            = New LanguageCodeOption{ Title = "Maori"    , CodeID="mi" };
+public static Language.LanguageCodeOption   Marathi	                            = New LanguageCodeOption{ Title = "Marathi", CodeID="mr" };
+public static Language.LanguageCodeOption   Marshallese	                        = New LanguageCodeOption{ Title = "Marshallese", CodeID="mh" };
+public static Language.LanguageCodeOption   Moldavian	                        = New LanguageCodeOption{ Title = "Moldavian", CodeID="mo" };
+public static Language.LanguageCodeOption   Mongolian	                        = New LanguageCodeOption{ Title = "Mongolian", CodeID="mn" };
+public static Language.LanguageCodeOption   Nauru	                            = New LanguageCodeOption{ Title = "Nauru"    , CodeID="na" };
+public static Language.LanguageCodeOption   Navajo	                            = New LanguageCodeOption{ Title = "Navajo"    , CodeID="nv" };
+public static Language.LanguageCodeOption   Ndonga	                            = New LanguageCodeOption{ Title = "Ndonga"    , CodeID="ng" };
+public static Language.LanguageCodeOption   Northern Ndebele	                = New LanguageCodeOption{ Title = "Northern Ndebele"        , CodeID="nd" };
+public static Language.LanguageCodeOption   Nepali	                            = New LanguageCodeOption{ Title = "Nepali"    , CodeID="ne" };
+public static Language.LanguageCodeOption   Norwegian	                        = New LanguageCodeOption{ Title = "Norwegian", CodeID="no" };
+public static Language.LanguageCodeOption   Norwegian bokmål	                = New LanguageCodeOption{ Title = "Norwegian bokmål"        , CodeID="nb" };
+public static Language.LanguageCodeOption   Norwegian nynorsk	                = New LanguageCodeOption{ Title = "Norwegian nynorsk"        , CodeID="nn" };
+public static Language.LanguageCodeOption   Nuosu	                            = New LanguageCodeOption{ Title = "Nuosu"    , CodeID="ii" };
+public static Language.LanguageCodeOption   Occitan	                            = New LanguageCodeOption{ Title = "Occitan", CodeID="oc" };
+public static Language.LanguageCodeOption   Ojibwe	                            = New LanguageCodeOption{ Title = "Ojibwe"    , CodeID="oj" };
+public static Language.LanguageCodeOption   Old Church Slavonic, Old Bulgarian  = New LanguageCodeOption{ Title = "Old Church Slavonic, Old Bulgarian", CodeID="cu" };
+public static Language.LanguageCodeOption   Oriya	                            = New LanguageCodeOption{ Title = "Oriya"    , CodeID="or" };
+public static Language.LanguageCodeOption   Oromo (Afaan Oromo)	                = New LanguageCodeOption{ Title = "Oromo (Afaan Oromo)"    , CodeID="om" };
+public static Language.LanguageCodeOption   Ossetian	                        = New LanguageCodeOption{ Title = "Ossetian", CodeID="os" };
+public static Language.LanguageCodeOption   Pāli	                            = New LanguageCodeOption{ Title = "Pāli"    , CodeID="pi" };
+public static Language.LanguageCodeOption   Pashto, Pushto	                    = New LanguageCodeOption{ Title = "Pashto, Pushto", CodeID="ps" };
+public static Language.LanguageCodeOption   Persian (Farsi)	                    = New LanguageCodeOption{ Title = "Persian (Farsi)"        , CodeID="fa" };
+public static Language.LanguageCodeOption   Polish	                            = New LanguageCodeOption{ Title = "Polish"    , CodeID="pl" };
+public static Language.LanguageCodeOption   Portuguese	                        = New LanguageCodeOption{ Title = "Portuguese", CodeID="pt" };
+public static Language.LanguageCodeOption   Punjabi (Eastern)	                = New LanguageCodeOption{ Title = "Punjabi (Eastern)"        , CodeID="pa" };
+public static Language.LanguageCodeOption   Quechua	                            = New LanguageCodeOption{ Title = "Quechua", CodeID="qu" };
+public static Language.LanguageCodeOption   Romansh	                            = New LanguageCodeOption{ Title = "Romansh", CodeID="rm" };
+public static Language.LanguageCodeOption   Romanian	                        = New LanguageCodeOption{ Title = "Romanian", CodeID="ro" };
+public static Language.LanguageCodeOption   Russian	                            = New LanguageCodeOption{ Title = "Russian", CodeID="ru" };
+public static Language.LanguageCodeOption   Sami	                            = New LanguageCodeOption{ Title = "Sami"    , CodeID="se" };
+public static Language.LanguageCodeOption   Samoan	                            = New LanguageCodeOption{ Title = "Samoan"    , CodeID="sm" };
+public static Language.LanguageCodeOption   Sango	                            = New LanguageCodeOption{ Title = "Sango"    , CodeID="sg" };
+public static Language.LanguageCodeOption   Sanskrit	                        = New LanguageCodeOption{ Title = "Sanskrit", CodeID="sa" };
+public static Language.LanguageCodeOption   Serbian	                            = New LanguageCodeOption{ Title = "Serbian", CodeID="sr" };
+public static Language.LanguageCodeOption   Serbo-Croatian	                    = New LanguageCodeOption{ Title = "Serbo-Croatian", CodeID="sh" };
+public static Language.LanguageCodeOption   Sesotho 	                        = New LanguageCodeOption{ Title = "Sesotho ", CodeID="st" };
+public static Language.LanguageCodeOption   Setswana	                        = New LanguageCodeOption{ Title = "Setswana", CodeID="tn" };
+public static Language.LanguageCodeOption   Shona	                            = New LanguageCodeOption{ Title = "Shona"    , CodeID="sn" };
+public static Language.LanguageCodeOption   Sichuan Yi	                        = New LanguageCodeOption{ Title = "Sichuan Yi", CodeID="ii" };
+public static Language.LanguageCodeOption   Sindhi	                            = New LanguageCodeOption{ Title = "Sindhi"    , CodeID="sd" };
+public static Language.LanguageCodeOption   Sinhalese	                        = New LanguageCodeOption{ Title = "Sinhalese", CodeID="si" };
+public static Language.LanguageCodeOption   Siswati	                            = New LanguageCodeOption{ Title = "Siswati", CodeID="ss" };
+public static Language.LanguageCodeOption   Slovak	                            = New LanguageCodeOption{ Title = "Slovak"    , CodeID="sk" };
+public static Language.LanguageCodeOption   Slovenian	                        = New LanguageCodeOption{ Title = "Slovenian", CodeID="sl" };
+public static Language.LanguageCodeOption   Somali	                            = New LanguageCodeOption{ Title = "Somali"    , CodeID="so" };
+public static Language.LanguageCodeOption   Southern Ndebele	                = New LanguageCodeOption{ Title = "Southern Ndebele"        , CodeID="nr" };
+public static Language.LanguageCodeOption   Spanish	                            = New LanguageCodeOption{ Title = "Spanish", CodeID="es" };
+public static Language.LanguageCodeOption   Sundanese	                        = New LanguageCodeOption{ Title = "Sundanese", CodeID="su" };
+public static Language.LanguageCodeOption   Swahili (Kiswahili)	                = New LanguageCodeOption{ Title = "Swahili (Kiswahili)"    , CodeID="sw" };
+public static Language.LanguageCodeOption   Swati	                            = New LanguageCodeOption{ Title = "Swati"    , CodeID="ss" };
+public static Language.LanguageCodeOption   Swedish	                            = New LanguageCodeOption{ Title = "Swedish", CodeID="sv" };
+public static Language.LanguageCodeOption   Tagalog	                            = New LanguageCodeOption{ Title = "Tagalog", CodeID="tl" };
+public static Language.LanguageCodeOption   Tahitian	                        = New LanguageCodeOption{ Title = "Tahitian", CodeID="ty" };
+public static Language.LanguageCodeOption   Tajik	                            = New LanguageCodeOption{ Title = "Tajik"    , CodeID="tg" };
+public static Language.LanguageCodeOption   Tamil	                            = New LanguageCodeOption{ Title = "Tamil"    , CodeID="ta" };
+public static Language.LanguageCodeOption   Tatar	                            = New LanguageCodeOption{ Title = "Tatar"    , CodeID="tt" };
+public static Language.LanguageCodeOption   Telugu	                            = New LanguageCodeOption{ Title = "Telugu"    , CodeID="te" };
+public static Language.LanguageCodeOption   Thai	                            = New LanguageCodeOption{ Title = "Thai"    , CodeID="th" };
+public static Language.LanguageCodeOption   Tibetan	                            = New LanguageCodeOption{ Title = "Tibetan", CodeID="bo" };
+public static Language.LanguageCodeOption   Tigrinya	                        = New LanguageCodeOption{ Title = "Tigrinya", CodeID="ti" };
+public static Language.LanguageCodeOption   Tonga	                            = New LanguageCodeOption{ Title = "Tonga"    , CodeID="to" };
+public static Language.LanguageCodeOption   Tsonga	                            = New LanguageCodeOption{ Title = "Tsonga"    , CodeID="ts" };
+public static Language.LanguageCodeOption   Turkish	                            = New LanguageCodeOption{ Title = "Turkish", CodeID="tr" };
+public static Language.LanguageCodeOption   Turkmen	                            = New LanguageCodeOption{ Title = "Turkmen", CodeID="tk" };
+public static Language.LanguageCodeOption   Twi	                                = New LanguageCodeOption{ Title = "Twi"    , CodeID="tw" };
+public static Language.LanguageCodeOption   Uyghur	                            = New LanguageCodeOption{ Title = "Uyghur"    , CodeID="ug" };
+public static Language.LanguageCodeOption   Ukrainian	                        = New LanguageCodeOption{ Title = "Ukrainian", CodeID="uk" };
+public static Language.LanguageCodeOption   Urdu	                            = New LanguageCodeOption{ Title = "Urdu"    , CodeID="ur" };
+public static Language.LanguageCodeOption   Uzbek	                            = New LanguageCodeOption{ Title = "Uzbek"    , CodeID="uz" };
+public static Language.LanguageCodeOption   Venda	                            = New LanguageCodeOption{ Title = "Venda"    , CodeID="ve" };
+public static Language.LanguageCodeOption   Vietnamese	                        = New LanguageCodeOption{ Title = "Vietnamese"", CodeID="vi" };
+public static Language.LanguageCodeOption   Volapük	                            = New LanguageCodeOption{ Title = "Volapük"", CodeID="vo" };
+public static Language.LanguageCodeOption   Wallon	                            = New LanguageCodeOption{ Title = "Wallon""    , CodeID="wa" };
+public static Language.LanguageCodeOption   Welsh	                            = New LanguageCodeOption{ Title = "Welsh""    , CodeID="cy" };
+public static Language.LanguageCodeOption   Wolof	                            = New LanguageCodeOption{ Title = "Wolof""    , CodeID="wo" };
+public static Language.LanguageCodeOption   Western Frisian	                    = New LanguageCodeOption{ Title = "Western Frisian""        , CodeID="fy" };
+public static Language.LanguageCodeOption   Xhosa	                            = New LanguageCodeOption{ Title = "Xhosa""""        , CodeID="xh" };
+public static Language.LanguageCodeOption   Yiddish	                            = New LanguageCodeOption{ Title = "Yiddish"", CodeID="yi" }; //yi, ji
+public static Language.LanguageCodeOption   Yoruba	                            = New LanguageCodeOption{ Title = "Yoruba""    , CodeID="yo" };
+public static Language.LanguageCodeOption   Zhuang, Chuang	                    = New LanguageCodeOption{ Title = "Zhuang, Chuang"", CodeID="za" };
+public static Language.LanguageCodeOption   Zulu	                            = New LanguageCodeOption{ Title = "Zulu""    , CodeID="zu" };

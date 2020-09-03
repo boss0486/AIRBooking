@@ -33,10 +33,90 @@ namespace WebCore.Services
                 query = "";
             //
             int page = model.Page;
+            //
+            string whereCondition = string.Empty;
+            int timeExpress = model.TimeExpress;
+            string startDate = model.StartDate;
+            string endDate = model.EndDate;
+            string timeZoneLocal = model.TimeZoneLocal;
+            //
+            string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
+            //
+            if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
+            {
+                // client time
+                DateTime today = Convert.ToDateTime(clientTime);
+                if (timeExpress == 1)
+                {
+                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
+                    DateTime dtime = Convert.ToDateTime(strDate);
+                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
+                }
+                // Yesterday
+                if (timeExpress == 2)
+                {
+                    DateTime dtime = today.AddDays(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date) AND cast(CreatedDate as Date) <= cast('" + today + "' as Date)";
+                }
+                // ThreeDayAgo
+                if (timeExpress == 3)
+                {
+                    DateTime dtime = today.AddDays(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // SevenDayAgo
+                if (timeExpress == 4)
+                {
+                    DateTime dtime = today.AddDays(-7);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // OneMonthAgo
+                if (timeExpress == 5)
+                {
+                    DateTime dtime = today.AddMonths(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
 
+                // ThreeMonthAgo
+                if (timeExpress == 6)
+                {
+                    DateTime dtime = today.AddMonths(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // SixMonthAgo
+                if (timeExpress == 7)
+                {
+                    DateTime dtime = today.AddMonths(-6);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // OneYearAgo
+                if (timeExpress == 8)
+                {
+                    DateTime dtime = today.AddYears(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(startDate))
+                {
+                    DateTime dtime = Convert.ToDateTime(startDate);
+                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                //
+                if (!string.IsNullOrWhiteSpace(endDate))
+                {
+                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
+                        return Notifization.NotFound("Thời gian kết thúc không hợp lệ");
+                    //
+                    DateTime dtime = Convert.ToDateTime(endDate);
+                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
+                }
+            }
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_TransactionDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            //
             var dtList = _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -78,7 +158,7 @@ namespace WebCore.Services
                         return Notifization.Invalid();
                     //
                     string customerId = model.CustomerID;
-                    string title ="Giao dịch nạp tiền";
+                    string title = "Giao dịch nạp tiền";
                     string summary = model.Summary;
                     string transactionId = model.TransactionID;
                     string bankSent = model.BankSent;
@@ -171,7 +251,7 @@ namespace WebCore.Services
                         BankIDSent = bankIDSent,
                         BankReceived = bankNameReceived,
                         BankIDReceived = bankIDReceived,
-                        ReceivedDate = Helper.Page.Library.FormatToDateSQL(receivedDate),
+                        ReceivedDate = Helper.Time.TimeHelper.FormatToDateSQL(receivedDate),
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -336,7 +416,7 @@ namespace WebCore.Services
                     transactionDeposit.BankIDSent = bankIDSent;
                     transactionDeposit.BankReceived = bankNameReceived;
                     transactionDeposit.BankIDReceived = bankIDReceived;
-                    transactionDeposit.ReceivedDate = Helper.Page.Library.FormatToDateSQL(receivedDate);
+                    transactionDeposit.ReceivedDate = Helper.Time.TimeHelper.FormatToDateSQL(receivedDate);
                     transactionDeposit.Status = (int)TransactionEnum.TransactionType.IN;
                     transactionDeposit.Amount = amount;
                     transactionDeposit.Enabled = enabled;

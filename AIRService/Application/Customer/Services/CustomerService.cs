@@ -705,7 +705,7 @@ namespace WebCore.Services
                         }
                         return result;
                     }
-                    else  
+                    else
                     {
                         string sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID IS NULL AND Enabled = 1 ORDER BY Title ASC";
                         var customer = service.Query<CustomerOption>(sqlQuery, new { }).ToList();
@@ -727,6 +727,25 @@ namespace WebCore.Services
             {
                 return string.Empty;
             }
+        }
+
+        //##############################################################################################################################################################################################################################################################
+        public static string GetCustomerCode(string id)
+        {
+            
+                if (string.IsNullOrWhiteSpace(id))
+                    return string.Empty;
+                //
+                using (var service = new CustomerService())
+                {
+                    var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                    if (customer == null)
+                        return string.Empty;
+                    //
+                    return customer.CodeID;
+
+                }
+            
         }
 
         //##############################################################################################################################################################################################################################################################

@@ -14,6 +14,7 @@ class AjaxFrom {
         ajaxStatus++;
         _form.method = "POST";
         _form.dataType = 'json';
+        _form.async = false;
         $.ajax(_form).done(function () {
             ajaxStatus--;
             if (ajaxStatus === 0) {
@@ -115,3 +116,4 @@ class HelperModel {
         return result;
     }
 }
+

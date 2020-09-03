@@ -44,7 +44,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsAttachmentCategory : WEBModelResult
+    public class AttachmentCategoryResult : WEBModelResult
     {
 
         public string ID { get; set; }
@@ -52,20 +52,6 @@ namespace WebCore.Entities
         public string Summary { get; set; }
         public string Alias { get; set; }
         public string ControllerID { get; set; }
-
-        public RsAttachmentCategory(string id, string title, string summary, string alias, string controllerId, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Title = title;
-            Alias = alias;
-            Summary = summary;
-            ControllerID = controllerId;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
     }
     public class AttachmentCategoryOption
     {

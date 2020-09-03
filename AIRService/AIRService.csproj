@@ -281,6 +281,7 @@
     <Compile Include="Helper\CMSController.cs" />
     <Compile Include="Helper\Contant.cs" />
     <Compile Include="Helper\HelperCurrent.cs" />
+    <Compile Include="Helper\HelperDateTime.cs" />
     <Compile Include="Helper\HelperLanguage.cs" />
     <Compile Include="Helper\HelperMail.cs" />
     <Compile Include="Helper\HelperModel.cs" />
@@ -1711,6 +1712,7 @@
     <Content Include="File\no-img.gif" />
     <Content Include="Application\Customer\Entities\CustomerType-csdl.txt" />
     <Content Include="Application\Customer\Services\CustomerTypeService-csdl.txt" />
+    <Content Include="Libraries\dll\AL.NetFrame.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

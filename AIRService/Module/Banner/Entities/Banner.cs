@@ -53,7 +53,6 @@ namespace WebCore.Entities
 
     public class ViewBanner : WEBModelResult
     {
-
         public string ID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
@@ -63,26 +62,7 @@ namespace WebCore.Entities
         public string BackLink { get; set; }
 
         [NotMapped]
-        public List<ViewAttachment> Photos { get; set; }
-        public ViewBanner(string id, string title, string summary, string alias, int locactionId, string imageFile, string backLink, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Title = title;
-            Alias = alias;
-            Summary = summary;
-            LocationID = locactionId;
-            ImageFile = imageFile;
-            BackLink = backLink;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
-
-        public ViewBanner()
-        {
-        }
+        public List<ViewAttachment> Photos { get; set; } 
     }
     public class BannerOption
     {

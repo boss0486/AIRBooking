@@ -65,10 +65,19 @@ var TransactionSpendingController = {
         });
     },
     DataList: function (page) {
+        //
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
-            Page: page
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,

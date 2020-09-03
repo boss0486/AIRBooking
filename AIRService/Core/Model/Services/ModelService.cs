@@ -8,7 +8,7 @@ namespace WebCore.Model.Services
 {
     public class ModelService
     {
-        public static string DDLSearchExp(int Id)
+        public static string DropdownListSearchExpress(int id)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace WebCore.Model.Services
                 foreach (var item in searchExpOptions)
                 {
                     string selected = string.Empty;
-                    if (item.ID == Id)
+                    if (item.ID == id)
                         selected = "selected";
                     result += "<option value='" + item.ID + "' " + selected + ">" + item.Title + "</option>";
                 }
@@ -87,15 +87,15 @@ namespace WebCore.Model.Services
             try
             {
                 List<OptionListModel> optionListModels = new List<OptionListModel>{
-                    new OptionListModel{ ID = 1, Title =  "Tháng 01" },
-                    new OptionListModel{ ID = 2, Title =  "Tháng 02" },
-                    new OptionListModel{ ID = 3, Title =  "Tháng 03" },
-                    new OptionListModel{ ID = 4, Title =  "Tháng 04" },
-                    new OptionListModel{ ID = 5, Title =  "Tháng 05" },
-                    new OptionListModel{ ID = 6, Title =  "Tháng 06" },
-                    new OptionListModel{ ID = 7, Title =  "Tháng 07" },
-                    new OptionListModel{ ID = 8, Title =  "Tháng 08" },
-                    new OptionListModel{ ID = 9, Title =  "Tháng 09" },
+                    new OptionListModel{ ID = 01, Title =  "Tháng 01" },
+                    new OptionListModel{ ID = 02, Title =  "Tháng 02" },
+                    new OptionListModel{ ID = 03, Title =  "Tháng 03" },
+                    new OptionListModel{ ID = 04, Title =  "Tháng 04" },
+                    new OptionListModel{ ID = 05, Title =  "Tháng 05" },
+                    new OptionListModel{ ID = 06, Title =  "Tháng 06" },
+                    new OptionListModel{ ID = 07, Title =  "Tháng 07" },
+                    new OptionListModel{ ID = 08, Title =  "Tháng 08" },
+                    new OptionListModel{ ID = 09, Title =  "Tháng 09" },
                     new OptionListModel{ ID = 10, Title =  "Tháng 10" },
                     new OptionListModel{ ID = 11, Title =  "Tháng 11" },
                     new OptionListModel{ ID = 12, Title =  "Tháng 12" }

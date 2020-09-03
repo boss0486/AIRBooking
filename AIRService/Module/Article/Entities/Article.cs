@@ -128,7 +128,7 @@ namespace WebCore.Entities
         public List<ViewAttachment> Photos { get; set; }
 
     }
-    public class RsArticle : WEBModelResult
+    public class ArticleResult : WEBModelResult
     {
 
         public string ID { get; set; }
@@ -144,26 +144,7 @@ namespace WebCore.Entities
         public string ViewTotal { get; set; }
         public string ViewDate { get; set; }
 
-        public RsArticle(string Id, string categoryId, string title, string alias, string textId, string imageFile, string summary, string htmlNote, string htmlText, string tag, string viewTotal, string viewDate, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = Id;
-            CategoryID = categoryId;
-            Title = title;
-            Alias = alias;
-            TextID = textId;
-            ImageFile = imageFile;
-            Summary = summary;
-            HtmlNote = htmlNote;
-            HtmlText = htmlText;
-            Tag = tag;
-            ViewTotal = viewTotal;
-            ViewDate = viewDate;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
+         
     }
     public class ArticleOption
     {

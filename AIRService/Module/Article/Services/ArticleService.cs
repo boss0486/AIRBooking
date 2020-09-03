@@ -302,7 +302,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
+        public ActionResult Details (string Id)
         {
             try
             {
@@ -312,9 +312,9 @@ namespace WebCore.Services
                 string sqlQuery = @"SELECT * FROM View_App_Article WHERE ID = @ID";
                 var item = _connection.Query<Article>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                var result = new RsArticle(item.ID, item.CategoryID, item.Title, item.Alias, item.TextID, item.ImageFile, item.Summary, item.HtmlNote, item.HtmlText, item.Tag, item.ViewTotal, item.ViewDate, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate);
-                return Notifization.Data(MessageText.Success, data: result, role: null, paging: null);
+                    return Notifization.NotFound(MessageText.NotFound); 
+
+                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
             catch
             {

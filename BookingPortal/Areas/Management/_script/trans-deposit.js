@@ -301,10 +301,19 @@ var _TransactionDepositController = {
         });
     },
     DataList: function (page) {
+        //
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
-            Page: page
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -344,6 +353,7 @@ var _TransactionDepositController = {
                             var customerId = item.CustomerID;
                             var title = item.Title;
                             var summary = item.Summary;
+                            var customerId = item.CustomerID;
                             var transactionId = item.TransactionID;
                             var bankSent = item.BankSent;
                             var bankIDSent = item.BankIDSent;
@@ -354,23 +364,15 @@ var _TransactionDepositController = {
                             var status = item.Status;
                             var enabled = item.Enabled;
 
-                            if (parseInt(status) == 1) {
-                                title += `. GD + ${LibCurrencies.FormatThousands(amount)} đ`
-                            } else {
-                                title += `. GD - ${LibCurrencies.FormatThousands(amount)} đ`
-                            }
-                            if (summary != null) {
-                                summary = ", " + summary;
-                            }
-                            else {
-                                summary = "";
-                            }
                             // <td>${transactionId}, giao dịch từ N.Hàng ${bankSent} đến N.Hàng ${bankReceived} ${summary}</td>          
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${title}</td>                                    
+                                 <td>${customerId}</td>                                    
+                                 <td class="text-right"> ${LibCurrencies.FormatThousands(amount)} đ</td>                                    
+                                 <td>${summary}</td>                                    
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>

@@ -40,7 +40,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsProductProvider : WEBModelResult
+    public class ProductProviderResult : WEBModelResult
     {
 
         public string ID { get; set; }
@@ -48,18 +48,7 @@ namespace WebCore.Entities
         public string Summary { get; set; }
         public string Alias { get; set; }
 
-        public RsProductProvider(string id, string title, string summary, string alias, string languageId, int enabled, string siteId, string createdBy, DateTime createdDate)
-        {
-            ID = id;
-            Title = title;
-            Alias = alias;
-            Summary = summary;
-            LanguageID = languageId;
-            Enabled = enabled;
-            SiteID = siteId;
-            CreatedBy = createdBy;
-            CreatedDate = Helper.Page.Library.FormatToDate(createdDate);
-        }
+         
     }
     public class ProductProviderOption
     {

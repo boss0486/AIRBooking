@@ -32,17 +32,12 @@ namespace WebCore.Services
             var dtList = _connection.Query<MetaGroup>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
-            var resultData = new List<RsMetaGroup>();
-            foreach (var item in dtList)
-            {
-                resultData.Add(new RsMetaGroup(item.ID, item.Alias, item.Title, item.Summary, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate));
-            }
-            var result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count <= 0 && page > 1)
             {
                 page -= 1;
-                result = resultData.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
             if (result.Count <= 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -93,7 +88,7 @@ namespace WebCore.Services
                     transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
-                catch  
+                catch
                 {
                     transaction.Rollback();
                     return Notifization.NotService;
@@ -127,7 +122,7 @@ namespace WebCore.Services
                     transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
-                catch  
+                catch
                 {
                     transaction.Rollback();
                     return Notifization.NotService;
@@ -185,11 +180,11 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM View_App_MetaGroup WHERE ID = @ID";
-                var item = _connection.Query<MetaGroup>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                var item = _connection.Query<MetaGroupResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
-                var result = new RsMetaGroup(item.ID, item.Alias, item.Title, item.Summary, item.LanguageID, item.Enabled, item.SiteID, item.CreatedBy, item.CreatedDate);
-                return Notifization.Data(MessageText.Success, data: result, role: null, paging: null);
+                //
+                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
             catch
             {
