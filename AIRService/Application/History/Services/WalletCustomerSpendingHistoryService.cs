@@ -31,88 +31,33 @@ namespace WebCore.Services
 
         public ActionResult DataList(SearchModel model)
         {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-            //
             string whereCondition = string.Empty;
-            int timeExpress = model.TimeExpress;
-            string startDate = model.StartDate;
-            string endDate = model.EndDate;
-            string clientTime = model.TimeZoneLocal;
             //
-            if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
             {
-                DateTime dateClient = Convert.ToDateTime(clientTime);
-                // today
-                if (timeExpress == 1)
-                {
-                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(dateClient);
-                    DateTime dtime = Convert.ToDateTime(strDate);
-                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
-                }
-                // Yesterday
-                if (timeExpress == 2)
-                {
-                    DateTime dtime = dateClient.AddDays(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // ThreeDayAgo
-                if (timeExpress == 3)
-                {
-                    DateTime dtime = dateClient.AddDays(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // SevenDayAgo
-                if (timeExpress == 4)
-                {
-                    DateTime dtime = dateClient.AddDays(-7);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // OneMonthAgo
-                if (timeExpress == 5)
-                {
-                    DateTime dtime = dateClient.AddMonths(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-
-                // ThreeMonthAgo
-                if (timeExpress == 6)
-                {
-                    DateTime dtime = dateClient.AddMonths(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // SixMonthAgo
-                if (timeExpress == 7)
-                {
-                    DateTime dtime = dateClient.AddMonths(-6);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // OneYearAgo
-                if (timeExpress == 8)
-                {
-                    DateTime dtime = dateClient.AddYears(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-            }
-            else
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
             {
-                if (!string.IsNullOrWhiteSpace(startDate))
-                {
-                    DateTime dtime = Convert.ToDateTime(startDate);
-                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                //
-                if (!string.IsNullOrWhiteSpace(endDate))
-                {
-                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
-                        return Notifization.NotFound("Thời gian kết thúc không hợp lệ");
-                    //
-                    DateTime dtime = Convert.ToDateTime(endDate);
-                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
-                }
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
             }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
@@ -136,14 +81,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         public WalletHistoryMessageModel WalletCustomerSpendingHistoryCreate(WalletCustomerSpendingHistoryCreateModel model,IDbConnection dbConnection, IDbTransaction dbTransaction = null)
         {

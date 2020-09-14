@@ -12,27 +12,32 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Transaction-Deposit")]
-    [IsManage(act: false)]
     public class TransactionDepositController : CMSController
     {
         // GET: BackEnd/bank
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
-
+        public ActionResult Details(string id)
+        {
+            TransactionDepositService service = new TransactionDepositService();
+            TransactionDepositResult model = service.TransactionDepositModel(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
+        }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
@@ -50,7 +55,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(TransactionDepositCreateModel model)
         {

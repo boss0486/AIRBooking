@@ -21,7 +21,8 @@ var WalletUserSpendingHistoryController = {
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: LibDateTime.FormatToServerDate(txtStartDate),
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
         //
         AjaxFrom.POST({
@@ -51,6 +52,7 @@ var WalletUserSpendingHistoryController = {
                             var amount = item.Amount;
                             title += ` thời gian: ${item.CreatedFullDate} `;      
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>

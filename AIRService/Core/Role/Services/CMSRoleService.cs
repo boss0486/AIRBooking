@@ -38,7 +38,7 @@ namespace WebCore.Services
                 whereCondition += " AND Enabled = @Enabled";
             //
             string langID = Helper.Page.Default.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_CMSRole WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [Level] ASC";
+            string sqlQuery = @"SELECT * FROM CMSRole WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [Level] ASC";
             var dtList = _connection.Query<CMSRoleResult>(sqlQuery, new { Query = query, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -185,7 +185,7 @@ namespace WebCore.Services
                 string langId = Helper.Page.Default.LanguageID;
                 string query = string.Empty;
                 string langID = langId;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_CMSRole WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM CMSRole WHERE ID = @Query";
                 return _connection.Query<CMSRole>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
@@ -228,7 +228,7 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_CMSRole WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM CMSRole WHERE ID = @ID";
                 var item = _connection.Query<CMSRole>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -325,7 +325,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_CMSRole ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM CMSRole ORDER BY Title ASC";
                 return _connection.Query<CMSRoleOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

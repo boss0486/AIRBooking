@@ -5,7 +5,7 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.CMSRole
+@model WebCore.Entities.CMSRoleResult
 
 @{
     string id = "";
@@ -29,7 +29,7 @@
             Level = Model.Level;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
+            createdDate = Model.CreatedDate;
             imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
             enabled = "None";
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)

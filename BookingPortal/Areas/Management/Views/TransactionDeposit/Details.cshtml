@@ -5,7 +5,7 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.TransactionDeposit
+@model WebCore.Entities.TransactionDepositResult
 
 @{
     string id = "";
@@ -18,7 +18,7 @@
     string bankIDSent = "";
     string bankReceived = "";
     string bankIDReceived = "";
-    DateTime receivedDate = new DateTime();
+    string receivedDate = "";
     double amount = 0;
     int status = 0;
     string languageId = "";
@@ -48,7 +48,7 @@
             //
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
+            createdDate = Model.CreatedDate;
             enabled = "None";
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
@@ -90,7 +90,7 @@
         <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: @transactionType</div>
         <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng chuyển: @bankSent , số tài khoản: @bankIDSent</div>
         <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng nhận: @bankReceived , số tài khoản: @bankIDReceived</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @Helper.Page.Library.FormatToDateVN(receivedDate)</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @receivedDate</div>
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>

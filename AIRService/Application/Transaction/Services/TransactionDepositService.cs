@@ -28,96 +28,42 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-            //
             string whereCondition = string.Empty;
-            int timeExpress = model.TimeExpress;
-            string startDate = model.StartDate;
-            string endDate = model.EndDate;
-            string timeZoneLocal = model.TimeZoneLocal;
             //
-            string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
-            //
-            if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
             {
-                // client time
-                DateTime today = Convert.ToDateTime(clientTime);
-                if (timeExpress == 1)
-                {
-                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
-                    DateTime dtime = Convert.ToDateTime(strDate);
-                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
-                }
-                // Yesterday
-                if (timeExpress == 2)
-                {
-                    DateTime dtime = today.AddDays(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date) AND cast(CreatedDate as Date) <= cast('" + today + "' as Date)";
-                }
-                // ThreeDayAgo
-                if (timeExpress == 3)
-                {
-                    DateTime dtime = today.AddDays(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // SevenDayAgo
-                if (timeExpress == 4)
-                {
-                    DateTime dtime = today.AddDays(-7);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // OneMonthAgo
-                if (timeExpress == 5)
-                {
-                    DateTime dtime = today.AddMonths(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-
-                // ThreeMonthAgo
-                if (timeExpress == 6)
-                {
-                    DateTime dtime = today.AddMonths(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // SixMonthAgo
-                if (timeExpress == 7)
-                {
-                    DateTime dtime = today.AddMonths(-6);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                // OneYearAgo
-                if (timeExpress == 8)
-                {
-                    DateTime dtime = today.AddYears(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-            }
-            else
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
             {
-                if (!string.IsNullOrWhiteSpace(startDate))
-                {
-                    DateTime dtime = Convert.ToDateTime(startDate);
-                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
-                }
-                //
-                if (!string.IsNullOrWhiteSpace(endDate))
-                {
-                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
-                        return Notifization.NotFound("Thời gian kết thúc không hợp lệ");
-                    //
-                    DateTime dtime = Convert.ToDateTime(endDate);
-                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
-                }
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
             }
+            #endregion
             //
+            string areaId = model.AreaID;
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
             //
-            var dtList = _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -136,14 +82,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -431,16 +371,17 @@ namespace WebCore.Services
                 }
             }
         }
-        public TransactionDeposit TransactionDepositModel(string Id)
+        public TransactionDepositResult TransactionDepositModel(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
+                //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_TransactionDeposit WHERE ID = @Query";
-                return _connection.Query<TransactionDeposit>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionDeposit WHERE ID = @Query";
+                return _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -526,7 +467,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_TransactionDeposit WHERE Enabled = 1 ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE Enabled = 1 ORDER BY Title ASC";
                 return _connection.Query<TransactionDepositOption>(sqlQuery, new { LangID = languageId }).ToList();
             }
             catch

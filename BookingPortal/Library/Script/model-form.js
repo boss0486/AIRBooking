@@ -1,33 +1,38 @@
 ﻿var ajaxStatus = 0;
-//$(document).ajaxStart(function () {
-//    ajaxStatus++;  
-//    console.log("ajaxStatus:" + ajaxStatus);
 
-//}).ajaxComplete(function () {
-//    ajaxStatus--;  
-//    console.log("ajaxStatus:" + ajaxStatus);
-//});
+
+$(document).ajaxStart(function () {
+    Loading.ShowLoading();
+    ajaxStatus++;  
+    console.log("ajaxStatus:" + ajaxStatus);
+
+}).ajaxComplete(function () {
+    ajaxStatus--;  
+    console.log("ajaxStatus:" + ajaxStatus);
+});
 
 class AjaxFrom {
     static POST(_form) {
         Loading.ShowLoading();
-        ajaxStatus++;
         _form.method = "POST";
         _form.dataType = 'json';
         _form.async = false;
         $.ajax(_form).done(function () {
-            ajaxStatus--;
-            if (ajaxStatus === 0) {
-                setTimeout(function () {
-                    console.log("o11k");
-                    Loading.HideLoading();
-                }, 1500);
-            }
+            console.log("o111111331k");
+            setTimeout(function () {
+                Loading.HideLoading();
+            }, 1500);
+            //if (ajaxStatus == 0) {
+            //    setTimeout(function () {
+            //        console.log("o11k");
+            //        Loading.HideLoading();
+            //    }, 1500);
+            //}
         });
     }
     static POSTFILE(_form) {
-        Loading.ShowLoading();
-        ajaxStatus++;
+        //Loading.ShowLoading();
+        //ajaxStatus++;
         _form.method = "POST";
         _form.dataType = 'json';
         _form.contentType = false;
@@ -114,6 +119,38 @@ class HelperModel {
                 break;
         }
         return result;
+    }
+    static RolePermission(role, _controlInit, id) {
+        if (role !== undefined && role !== null) {
+            var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;
+            $.each(role, function (index, item) {
+
+                //if (role.Block) {
+                //    if (item.IsBlock)
+                //        action += `<a onclick="AccountController.Unlock('${id}')"><i class='far fa-dot-circle'></i>&nbsp;Unlock</a>`;
+                //    else
+                //        action += `<a onclick="AccountController.Block('${id}')"><i class='fas fa-ban'></i>&nbsp;Block</a>`;
+                //}
+                //if (role.Active) {
+                //    if (item.Enabled)
+                //        action += `<a onclick="AccountController.UnActive('${id}')"><i class='fas fa-toggle-off'></i>&nbsp;UnActive</a>`;
+                //    else
+                //        action += `<a onclick="AccountController.Active('${id}')"><i class='fas fa-toggle-on'></i>&nbsp;Active</a>`;
+                //}
+
+
+                if (item.KeyID == "Update")
+                    action += `<a href='${URLA}/Update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;${item.Title}</a>`;
+                if (item.KeyID == "Delete")
+                    action += `<a onclick="${_controlInit}.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;${item.Title}</a>`;
+                if (item.KeyID == "Details")
+                    action += `<a href='${URLA}/Details/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
+                //
+            });
+            action += `</div></div>`;
+            return action;
+        }
+        return "";
     }
 }
 

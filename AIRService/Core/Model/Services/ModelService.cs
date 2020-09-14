@@ -8,6 +8,117 @@ namespace WebCore.Model.Services
 {
     public class ModelService
     {
+        public static SearchResult SearchDefault(SearchModel model)
+        {
+            string whereCondition = string.Empty;
+            int status = model.Status;
+            int timeExpress = model.TimeExpress;
+            string startDate = model.StartDate;
+            string endDate = model.EndDate;
+            string timeZoneLocal = model.TimeZoneLocal;
+            //
+            string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
+            //
+            if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
+            {
+                // client time
+                DateTime today = Convert.ToDateTime(clientTime);
+                if (timeExpress == 1)
+                {
+                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
+                    DateTime dtime = Convert.ToDateTime(strDate);
+                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
+                }
+                // Yesterday
+                if (timeExpress == 2)
+                {
+                    DateTime dtime = today.AddDays(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date) AND cast(CreatedDate as Date) <= cast('" + today + "' as Date)";
+                }
+                // ThreeDayAgo
+                if (timeExpress == 3)
+                {
+                    DateTime dtime = today.AddDays(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // SevenDayAgo
+                if (timeExpress == 4)
+                {
+                    DateTime dtime = today.AddDays(-7);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // OneMonthAgo
+                if (timeExpress == 5)
+                {
+                    DateTime dtime = today.AddMonths(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+
+                // ThreeMonthAgo
+                if (timeExpress == 6)
+                {
+                    DateTime dtime = today.AddMonths(-3);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // SixMonthAgo
+                if (timeExpress == 7)
+                {
+                    DateTime dtime = today.AddMonths(-6);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                // OneYearAgo
+                if (timeExpress == 8)
+                {
+                    DateTime dtime = today.AddYears(-1);
+                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+
+                if (status == (int)ModelEnum.Enabled.ENABLED)
+                    whereCondition += " AND Enabled = 1 ";
+                else if (status == (int)ModelEnum.Enabled.DISABLE)
+                    whereCondition += " AND Enabled = 0 ";
+
+
+                return new SearchResult()
+                {
+                    Status = 1,
+                    Message = whereCondition
+                };
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(startDate))
+                {
+                    DateTime dtime = Convert.ToDateTime(startDate);
+                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                }
+                //
+                if (!string.IsNullOrWhiteSpace(endDate))
+                {
+                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
+                        return new SearchResult()
+                        {
+                            Status = -1,
+                            Message = "Thời gian kết thúc không hợp lệ"
+                        };
+                    //
+                    DateTime dtime = Convert.ToDateTime(endDate);
+                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
+                }
+                //
+                if (status == (int)ModelEnum.Enabled.ENABLED)
+                    whereCondition += " AND Enabled = 1 ";
+                else if (status == (int)ModelEnum.Enabled.DISABLE)
+                    whereCondition += " AND Enabled = 0 ";
+
+                //
+                return new SearchResult()
+                {
+                    Status = 1,
+                    Message = whereCondition
+                };
+            }
+        }
         public static string DropdownListSearchExpress(int id)
         {
             try
@@ -37,13 +148,13 @@ namespace WebCore.Model.Services
             }
 
         }
-        public static string DDLStatus(int Id)
+        public static string DropdownListStatus(int Id)
         {
             try
             {
                 var productStatusModels = new List<StatusModel>{
                     new StatusModel(1, "Hiển thị"),
-                    new StatusModel(2, "Ẩn")
+                    new StatusModel(0, "Ẩn")
                 };
                 string result = string.Empty;
                 foreach (var item in productStatusModels)
@@ -119,5 +230,7 @@ namespace WebCore.Model.Services
                 throw;
             }
         }
+
+
     }
 }

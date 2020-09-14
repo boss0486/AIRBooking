@@ -25,4 +25,9 @@ namespace WebCore.Entities
         public string ControllerID { get; set; }
         public string ActionID { get; set; }
     }
+    public partial class RoleForUser  
+    {
+        public string KeyID { get; set; }
+        public string Title { get; set; }
+    }
 }

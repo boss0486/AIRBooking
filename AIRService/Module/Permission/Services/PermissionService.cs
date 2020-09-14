@@ -159,46 +159,7 @@ namespace WebCore.Services
             }
         }
 
-        public static bool CheckPermission(string routeArea, string controllerText, string actionText)
-        {
-            try
-            {
-                if (Helper.Current.UserLogin.IsAdministratorInApplication)
-                    return true;
-                //
-                if (string.IsNullOrWhiteSpace(controllerText) || string.IsNullOrWhiteSpace(actionText))
-                    return false;
-
-                controllerText = controllerText.Replace("Controller", "");
-                //
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                //#1. Get role of user
-                UserRoleService userRoleService = new UserRoleService();
-                var userRole = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
-                if (userRole == null)
-                    return false;
-                //
-                string roleId = userRole.RoleID;
-                string controllerId = Helper.Security.Library.FakeGuidID(routeArea + controllerText);
-                string actionId = Helper.Security.Library.FakeGuidID(controllerId + actionText);
-                string apiActionId = Helper.Security.Library.FakeGuidID(controllerId + "-Api-" + actionText);
-                //#2. check  
-                using (PermissionService service = new PermissionService())
-                {
-                    string sqlQuery = @" SELECT c.ID FROM RoleControllerSetting as c INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID
-                                         WHERE c.RoleID = @RoleID AND c.ControllerID = @ControllerID AND (a.ActionID = @ActionID OR a.ActionID = @ApiActionID) ";
-                    var role = service.Query<PermissionIDModel>(sqlQuery, new { RoleID = roleId, ControllerID = controllerId, ActionID = actionId, ApiActionID = apiActionId }).FirstOrDefault();
-                    if (role != null)
-                        return true;
-                    //
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+        
 
         //##############################################################################################################################################################################################################################################################
    

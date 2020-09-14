@@ -7,13 +7,11 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Permission")]
-    [IsManage(act: false)]
     public class PermissionController : CMSController
     {
-        // GET: Adm/Permission
-        [IsManage(true, "Setting")]
         public ActionResult Setting()
         {
             return View();
@@ -45,7 +43,6 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Setting")]
-        [IsManage(true, "Setting")]
         public ActionResult Setting(RoleSettingRequest model)
         {
             try

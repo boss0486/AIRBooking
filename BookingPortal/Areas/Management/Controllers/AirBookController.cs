@@ -18,7 +18,7 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("AirBook")]
     public class AirBookController : CMSController
@@ -52,6 +52,7 @@ namespace WebApplication.Management.Controllers
             }
             return View(model);
         }
+
         public ActionResult Booking()
         {
             List<FlightPassengerTypeInfo> flightPassengerTypeInfos = new List<FlightPassengerTypeInfo>();
@@ -60,7 +61,7 @@ namespace WebApplication.Management.Controllers
                 //do something
                 HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
                 var dataSearch = flightSearch.Value;
-                var model = JsonConvert.DeserializeObject<Request_FlightSearchModel>(dataSearch); 
+                var model = JsonConvert.DeserializeObject<Request_FlightSearchModel>(dataSearch);
                 if (model != null)
                 {
                     if (model.ADT > 0)
@@ -98,6 +99,7 @@ namespace WebApplication.Management.Controllers
             }
             return View(flightPassengerTypeInfos);
         }
+
         public ActionResult Details()
         {
             BookTicketOrderDetails model = null;
@@ -131,7 +133,6 @@ namespace WebApplication.Management.Controllers
         /// <returns></returns>
         /// 
         [HttpPost]
-        [IsManage(act: true, text: "Search")]
         [Route("Action/Search")]
         public ActionResult Search(Request_FlightSearchModel model)
         {
@@ -197,7 +198,6 @@ namespace WebApplication.Management.Controllers
         /// <param name="model">FlightSearchModel</param>
         /// <returns></returns>
         [HttpPost]
-        [IsManage(act: true, text: "Cost")]
         [Route("Action/Cost")]
         public ActionResult Cost(FlightSearchModel model)
         {
@@ -220,7 +220,6 @@ namespace WebApplication.Management.Controllers
         /// <param name="model">FlightFareModel</param>
         /// <returns></returns>
         [HttpPost]
-        [IsManage(act: true, text: "FeeBase")]
         [Route("Action/FeeBase")]
         public ActionResult FeeBase(List<FlightFareModel> models)
         {
@@ -253,7 +252,6 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
-        [IsManage(act: true, text: "GetFeeBasic")]
         [Route("Action/GetFeeBasic")]
         public ActionResult GetFeeBasic(List<FeeTaxBasicModel> models)
         {
@@ -270,18 +268,11 @@ namespace WebApplication.Management.Controllers
         }
 
         /// <summary>
-        /// Internal fee
-        /// </summary>
-        /// <param name="model">FlightSearchModel</param>
-        /// <returns></returns>
-
-        /// <summary>
         /// book 
         /// </summary>
         /// <param name="model">FlightSearchModel</param>
         /// <returns></returns>
         [HttpPost]
-        [IsManage(act: true, text: "Book")]
         [Route("Action/Book")]
         public ActionResult Book(Request_BookModel model)
         {
@@ -298,7 +289,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "ExTicket")]
         [Route("Action/ExTicket")]
         public ActionResult ExTicket(PNRModel model)
         {
@@ -315,6 +305,7 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
+        [Route("Action/TicketInfo")]
         public ActionResult TicketInfo(PNRModel model)
         {
             try
@@ -330,7 +321,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "TicketCancel")]
         [Route("Action/TicketCancel")]
         public ActionResult TicketCancel(PNRModel model)
         {

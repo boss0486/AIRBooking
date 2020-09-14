@@ -307,20 +307,20 @@ namespace AIRService.WS.Service
                 soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
                 var stringXML = "";
-                stringXML += "<StationManagerRQ version='1.2.1' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
-                stringXML += "    <Header />";
-                stringXML += "    <SelectionCriteria>";
-                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
-                stringXML += "        <DocumentNumber>" + model.DocumentNumber + "</DocumentNumber>";
-                stringXML += "        <ReportDate>" + model.ReportDate.ToString("yyyy-MM-dd") + "</ReportDate>";
-                stringXML += "    </SelectionCriteria>";
-                stringXML += "</StationManagerRQ>";
+                stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
+                stringXML += "            <Header />";
+                stringXML += "            <SelectionCriteria>";
+                stringXML += "                <TicketingProvider>VN</TicketingProvider>";
+                stringXML += "                <DocumentNumber>" + model.DocumentNumber + "</DocumentNumber>";
+                stringXML += "            </SelectionCriteria>";
+                stringXML += "        </DetailRQ>";
                 child.InnerXml = stringXML;
                 soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
                 using (Stream stream = request.GetRequestStream())
                 {
                     soapEnvelopeXml.Save(stream);
                 }
+                //
                 using (WebResponse response = request.GetResponse())
                 {
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
@@ -723,73 +723,26 @@ namespace AIRService.WS.Service
         {
             try
             {
-                ////////HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
-                ////////XmlDocument soapEnvelopeXml = new XmlDocument();
-                //////////var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/common.xml");
-                //////////soapEnvelopeXml.Load(path);
-                //////////soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                //////////soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TKT_AsrServicesRQ";
-                //////////soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TKT_AsrServicesRQ";
-                //////////soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
-                //////////soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
-                //////////XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
-                ////////var stringXML = "";
-                //////////stringXML += "<dc:GetTicketingDocumentRQ Version='3.12.0' xmlns:dc='http://www.sabre.com/ns/Ticketing/DC' />";
-                //////////stringXML += "<STL:STL_Header.RQ  xmlns:STL='http://services.sabre.com/STL/v01' />";
-                //////////stringXML += "<STL:POS  xmlns:STL='http://services.sabre.com/STL/v01' />";
-                //////////stringXML += "<dc:SearchParameters xmlns:dc='http://www.sabre.com/ns/Ticketing/DC'>";
-                //////////stringXML += "<dc:TicketingProvider xmlns:dc='http://www.sabre.com/ns/Ticketing/DC'>VN</dc:TicketingProvider>";
-                //////////stringXML += "<dc:DocumentNumber xmlns:dc='http://www.sabre.com/ns/Ticketing/DC'>7382444368772</dc:DocumentNumber>";
-                //////////stringXML += "</dc:SearchParameters>";
-                //////////ns:DetailRQ xmlns:v01="http://services.sabre.com/STL/v01" xmlns:ns="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" version="1.2.2">
-                //////////stringXML += "<ns:SelectionCriteria xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0' isElectronicTicket='false' clientTimeoutSecs='100' isCacheLateLargeReports='true'>";
-                //////////stringXML += "<ns:TicketingProvider  xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>VN</ns:TicketingProvider>";
-                //////////stringXML += "<ns:DocumentNumber  xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>7382444368772</ns:DocumentNumber>";
-                //////////stringXML += "</ns:SelectionCriteria>";
-
-                //////////stringXML += "<StationManagerRQ version='1.2.1' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0' >";
-                //////////stringXML += "    <Header />";
-                //////////stringXML += "    <SelectionCriteria>";
-                //////////stringXML += "        <TicketingProvider>VN</TicketingProvider>";
-                //////////stringXML += "        <DocumentNumber>7382444398531</DocumentNumber>";
-                //////////stringXML += "        <ReportDate>2020-08-31</ReportDate>";
-                //////////stringXML += "    </SelectionCriteria>";
-                //////////stringXML += "</StationManagerRQ>";
-                ////////stringXML += " <?xml version='1.0' encoding='UTF-8' ?>";
-                ////////stringXML += " <ns:DetailRQ version='1.2.2' xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0' xmlns:v01='http://services.sabre.com/STL/v01'>";
-                ////////stringXML += "     <Header messageID='mid:20001209-133003-2333@clientofsabre.com' version='1.0' timeStamp='" + DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss") + "' customerID='' diagnosticLevel='Mock' ttl='10'>";
-                ////////stringXML += "         <v01:ConversationID seq='0'>" + model.ConversationID + "</v01:ConversationID>";
-                ////////stringXML += "         <v01:Operation>TKT_AsrServicesRQ</v01:Operation>";
-                ////////stringXML += "         <v01:Service>TKT_AsrServicesRQ</v01:Service>";
-                ////////stringXML += "         <v01:Security>";
-                ////////stringXML += "             <v01:SecurityToken>" + model.Token + "</v01:SecurityToken>";
-                ////////stringXML += "         </v01:Security>";
-                ////////stringXML += "     </Header>";
-                ////////stringXML += "     <ns:SelectionCriteria isCacheLateLargeReports='true' clientTimeoutSecs='100' isElectronicTicket='false'>";
-                ////////stringXML += "         <ns:TicketingProvider>VN</ns:TicketingProvider>";
-                ////////stringXML += "         <ns:DocumentNumber>7382444398531</ns:DocumentNumber>";
-                ////////stringXML += "     </ns:SelectionCriteria>";
-                ////////stringXML += " </ns:DetailRQ>";
-                ////////soapEnvelopeXml.LoadXml(stringXML);
-
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 XmlDocument soapEnvelopeXml = new XmlDocument();
-                var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/DetailsRQ.xml");
+                var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
                 soapEnvelopeXml.Load(path);
-                XmlNode xmlNode = soapEnvelopeXml.GetElementsByTagName("Header")[0]; 
-                xmlNode.Attributes["timeStamp"].Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                //
-                soapEnvelopeXml.GetElementsByTagName("v01:Service")[0].InnerText = "TKT_AsrServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("v01:Operation")[0].InnerText = "TKT_AsrServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("v01:SecurityToken")[0].InnerText = model.Token;
-                soapEnvelopeXml.GetElementsByTagName("v01:ConversationID")[0].InnerText = model.ConversationID;
+                soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TKT_AsrServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TKT_AsrServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
+                soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
                 var stringXML = "";
-                stringXML += "<ns:TicketingProvider xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>VN</ns:TicketingProvider>";
-                stringXML += "<ns:DocumentNumber xmlns:ns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>7382444368772</ns:DocumentNumber>";
+                stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
+                stringXML += "            <Header />";
+                stringXML += "            <SelectionCriteria>";
+                stringXML += "                <TicketingProvider>VN</TicketingProvider>";
+                stringXML += "                <DocumentNumber>7382444368772</DocumentNumber>";
+                stringXML += "            </SelectionCriteria>";
+                stringXML += "        </DetailRQ>";
                 child.InnerXml = stringXML;
-                soapEnvelopeXml.GetElementsByTagName("ns:SelectionCriteria")[0].AppendChild(child);
-
+                soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
                 using (Stream stream = request.GetRequestStream())
                 {
                     soapEnvelopeXml.Save(stream);
@@ -801,7 +754,8 @@ namespace AIRService.WS.Service
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
-                        return "Ok";
+
+                        return "Error: " + soapResult;
                     }
                 }
             }

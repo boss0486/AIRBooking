@@ -11,9 +11,20 @@ var _PermissionController = {
         });
     },
     PermissionList: function () {
+        //
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
-            RoleID: 0
+            Query: $('#txtQuery').val(),
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -29,20 +40,8 @@ var _PermissionController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLC}/Update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="_PermissionController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Detail)
-                                    action += `<a href='${URLC}/Details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
-
+                            var action = HelperModel.RolePermission(result.role, "_PermissionController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
@@ -191,7 +190,7 @@ var _PermissionController = {
                             var staController = "";
 
                             var actionState = 'disabled';
-                            if (totalCtrl > 0) {
+                            if (item.Status) {
                                 staController = "checked";
                                   actionState = '';
                             }
@@ -200,14 +199,13 @@ var _PermissionController = {
                                     var actId = actItem.ID;
                                     var actTitle = actItem.Title;
                                     var staAction = "";
-                                    var totalAction = actItem.Total;
-                                    if (totalAction > 0) {
+                                    if (actItem.Status) {
                                         staAction = "checked";
                                         cntActionActive++;
                                     }
                                     actionTemp += `<div style='width:120px;display: inline-block;'> 
                                                         <input id="cbx${actId}" data-val="${actId}" type="checkbox" class="filled-in inp-action" ${staAction} ${actionState} />
-                                                        <label for="cbx${actId}">${actTitle} ${totalAction}</label>
+                                                        <label for="cbx${actId}">${actTitle}</label>
                                                    </div>`;
                                 });
                                 //
@@ -227,7 +225,7 @@ var _PermissionController = {
                             <tr data-rowid='w-${id}'> 
                                 <td class='text-left'>
                                     <input id="cbx${id}" data-val="${id}" type="checkbox" class="filled-in inp-controler" ${staController} />
-                                    <label for="cbx${id}">${rowNum}. ${_title} ${actionData.length}</label>
+                                    <label for="cbx${id}">${rowNum}. ${_title}</label>
                                 </td>
                                 <td class='text-left'>${actionHtml}</td>     
                             </tr>`;

@@ -44,32 +44,34 @@
         </div>
         <div class="form-group ">
             <label class="form-label">Tài khoản:</label>
-            <input id="txtLoginID" name="txtLoginID" maxlength="50" type="text" class="form-control" value="VTest09001" />
+            <input id="txtLoginID" name="txtLoginID" maxlength="50" type="text" class="form-control" value="" />
             <span id="lblLoginID" class="message msg-box"></span>
         </div>
         <div class="form-group ">
             <label class="form-label">Mật khẩu:</label>
-            <input id="txtPassword" name="txtPassword" maxlength="50" type="password" class="form-control" value="Viet@112233" />
+            <input id="txtPassword" name="txtPassword" maxlength="50" type="password" class="form-control" value="" />
             <span id="lblPassword" class="message msg-box"></span>
         </div>
         <div class="form-group ">
             <label class="form-label">XN-Mật khẩu:</label>
-            <input id="txtRePassword" name="txtRePassword" maxlength="50" type="password" class="form-control" value="Viet@112233" />
+            <input id="txtRePassword" name="txtRePassword" maxlength="50" type="password" class="form-control" value="" />
             <span id="lblRePassword" class="message msg-box"></span>
         </div>
     </div>
     <div class="col-md-4">
         <div class="top-pic special">
-            <label><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;<span>Quyền hạn:</span></label>
+            <label><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;<span>Nhóm người dùng:</span></label>
         </div>
-        <div class="form-group role-group">
-            <label for="">Nhóm người dùng:</label>
-            <div class="all-list-group list-group check-option" style="margin-bottom: 0px;">
+        <div class="form-group role-group list-select">
+            <label for="">Lựa chọn</label>
+            <div class="list-group item-title" style="margin-bottom: 0px;">
                 <div class="list-group-item">
                     <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
                 </div>
             </div>
-            <div id="ddlRole" class="role list-group check-option list-group-customize" style="height: 329px;overflow:auto;margin-bottom: 0;"></div>
+            <div id="ddlRole" class="role list-group data-group" style="height: 329px;overflow:auto;margin-bottom: 0;">
+                @Html.Raw(WebCore.Services.RoleService.DDLListRoleMultiSelect(null))
+            </div>
         </div>
     </div>
 </div>
@@ -91,29 +93,29 @@
             <div class="col-md-8">
                 <div class="form-group ">
                     <label class="form-label">Họ/Tên:</label>
-                    <input id="txtFullName" name="txtFullName" maxlength="50" type="text" class="form-control" value="Test002 022" />
+                    <input id="txtFullName" name="txtFullName" maxlength="50" type="text" class="form-control" value="" />
                     <span id="lblFullName" class="message msg-box"></span>
                 </div>
                 <div class="form-group ">
                     <label class="form-label">Ngày sinh:</label>
-                    <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value="22/11/2020" />
+                    <input id="txtBirthday" name="txtBirthday" data-date="true" maxlength="10" type="text" class="form-control" value="" />
                     <span id="lblBirthday" class="message msg-box"></span>
                 </div>
                 <div class="form-group ">
                     <label class="form-label">Địa chỉ email:</label>
-                    <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="test_vsss_01@gmail.com" />
+                    <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="" />
                     <span id="lblEmail" class="message msg-box"></span>
                 </div>
             </div>
         </div>
         <div class="form-group ">
             <label class="form-label">Số điện thoại:</label>
-            <input id="txtPhone" name="txtPhone" maxlength="50" type="text" class="form-control" value="0983498218" />
+            <input id="txtPhone" name="txtPhone" maxlength="50" type="text" class="form-control" value="" />
             <span id="lblPhone" class="message msg-box"></span>
         </div>
         <div class="form-group ">
             <label class="form-label">Địa chỉ:</label>
-            <input id="txtAddress" name="txtAddress" maxlength="250" type="text" class="form-control" value="Hà nội- hà nội ha noam" />
+            <input id="txtAddress" name="txtAddress" maxlength="250" type="text" class="form-control" value="" />
             <span id="lblAddress" class="message msg-box"></span>
         </div>
         <div class="row">
@@ -128,6 +130,7 @@
                     <input id="cbxBlock" name="cbxBlock" type="checkbox" class="filled-in" />
                     <label for="cbxBlock">Khóa</label>
                     <span id="lblBlock" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
             <div class="col-md-6">
@@ -136,10 +139,10 @@
                     <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" />
                     <label for="cbxActive">Kích hoạt</label>
                     <span id="lblActive" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
         </div>
-        <hr />
         <div class="form-group text-right">
             <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
             <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
@@ -163,8 +166,6 @@
                 $('#ddlClient').html(`<option value="">-Lựa chọn-</option>`);
                 $(".client-group input[name='rdoClientType']:first").change();
             }
-            //
-            AppUserController.GetRoleByUser("");
         });
     </script>
 }

@@ -1,0 +1,570 @@
+﻿[
+  {
+    "KeyID": "Account",
+    "Title": "Tài khoản",
+    "OrderID": 1,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      },
+      {
+        "OrderID": 6,
+        "KeyID": "Profiles",
+        "Method": "Profile",
+        "APIRouter": "Action/Profile",
+        "Title": "Hồ sơ"
+      },
+      {
+        "OrderID": 7,
+        "KeyID": "LoginInfo",
+        "Method": "LoginInfo",
+        "APIRouter": "Action/LoginInfo",
+        "Title": "Truy cập"
+      },
+      {
+        "OrderID": 8,
+        "KeyID": "ChangePassword",
+        "Method": "ChangePassword",
+        "APIRouter": "Action/ChangePassword",
+        "Title": "Đổi mật khẩu"
+      }
+    ]
+  },
+  {
+    "KeyID": "AirBook",
+    "Title": "Dịch vụ booking",
+    "OrderID": 2,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "Search",
+        "Method": "Search",
+        "APIRouter": "Action/Search",
+        "Title": "Tìm kiếm"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Booking",
+        "Method": "Booking",
+        "APIRouter": "Action/Booking",
+        "Title": "Đặt vé"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "AirFlight",
+    "Title": "Sân bay",
+    "OrderID": 3,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "Bank",
+    "Title": "Ngân hàng",
+    "OrderID": 4,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "CardCredit",
+    "Title": "Thẻ tín dụng",
+    "OrderID": 5,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "Customer",
+    "Title": "Khách hàng",
+    "OrderID": 6,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "Permission",
+    "Title": "Phân quyền",
+    "OrderID": 7,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "Setting",
+        "Method": "Setting",
+        "APIRouter": "Action/Setting",
+        "Title": "Thiết lập"
+      }
+    ]
+  },
+  {
+    "KeyID": "Report",
+    "Title": "Báo cáo",
+    "OrderID": 8,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "Role",
+    "Title": "Nhóm quyền",
+    "OrderID": 9,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "Supplier",
+    "Title": "Nhà cung cấp",
+    "OrderID": 10,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "TransactionDeposit",
+    "Title": "G.D Nạp tiền",
+    "OrderID": 11,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "TransactionSpending",
+    "Title": "G.D hạn mức(Khách hàng)",
+    "OrderID": 12,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "TransactionUserSpending",
+    "Title": "G.D hạn mức(Người dùng)",
+    "OrderID": 13,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+
+  },
+  {
+    "KeyID": "User",
+    "Title": "Người dùng",
+    "OrderID": 14,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "WalletCustomerDepositHistory",
+    "Title": "Lịch sử nạp tiền",
+    "OrderID": 15,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      }
+    ]
+  },
+  {
+    "KeyID": "WalletCustomerSpendingHistory",
+    "Title": "Lịch sử hạn mức (KH)",
+    "OrderID": 16,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      }
+    ]
+  },
+  {
+    "KeyID": "WalletUserSpendingHistory",
+    "Title": "Lịch sử hạn mức (Người dùng)",
+    "OrderID": 17,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      }
+    ]
+  }
+]

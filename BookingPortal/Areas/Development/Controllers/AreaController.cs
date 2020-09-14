@@ -12,6 +12,7 @@ using Helper.Page;
 
 namespace WebApplication.Development.Controllers
 {
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("Area")]
     public class AreaController : CMSController

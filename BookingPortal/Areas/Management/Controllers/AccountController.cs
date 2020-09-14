@@ -12,59 +12,54 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Account")]
     public class AccountController : CMSController
     {
-        [IsManage(act: true, text: "Create")]
         public ActionResult LoginInfo()
         {
             string id = Helper.Current.UserLogin.IdentifierID;
             AccountService service = new AccountService();
-            UserModel model = service.GetUserModel(id);
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
 
-        [IsManage(act: false, text: "DataList")]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Update")]
         public ActionResult Update(string id)
         {
             AccountService service = new AccountService();
-            UserModel model = service.GetUserModel(id);
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
-        [IsManage(act: true, text: "Profile")]
+
         public new ActionResult Profile()
         {
             string id = Helper.Current.UserLogin.IdentifierID;
             AccountService service = new AccountService();
-            UserModel model = service.GetUserModel(id);
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
         //
-        [IsManage(act: false, text: "Change-Password")]
-        public ActionResult Password()
+        public ActionResult ChangePassword()
         {
             return View();
         }
@@ -72,7 +67,6 @@ namespace WebApplication.Management.Controllers
 
         // API ********************************************************************************************************
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
@@ -88,7 +82,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(UserCreateModel model)
         {
@@ -104,7 +97,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(UserUpdateModel model)
         {
@@ -120,7 +112,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(UserIDModel model)
         {
@@ -135,7 +126,6 @@ namespace WebApplication.Management.Controllers
             }
         }
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/ChangePassword")]
         public ActionResult ChangePassword(UserChangePasswordModel model)
         {

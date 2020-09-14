@@ -8,7 +8,7 @@ namespace Helper
     {
         // for errors
         public const string Duplicate = "Dữ liệu đã tồn tại.";
-        public const string Forbidden = "Bạn không có quyền truy cập chức năng này.";
+        public const string Forbidden = "Bạn không có quyền truy cập";
         public const string AccessDenied = "Từ chối truy cập";
         public const string Unknown = "Không xác định";
         public const string NotFound = "Không tìm thấy dữ liệu.";
@@ -23,6 +23,9 @@ namespace Helper
         public const string CancelSuccess = "Đã hủy";
         public const string AsyncSuccess = "Đã đồng bộ";
         public const string Success = "Ok";
+
+        //
+
     }
     public class Notifization
     {
@@ -44,15 +47,18 @@ namespace Helper
         }
 
         // ERROR NOTIFIZATION  ###############################################################################################################################################################
-        public static ActionResult Error(string message = null)
-        {
-            InternalNotifization notifization = new InternalNotifization();
-            return notifization.ErrorResult(message);
-        }
-        public static ActionResult Error(string message, string data)
+        public static ActionResult Error(string message, string data = null)
         {
             InternalNotifization notifization = new InternalNotifization();
             return notifization.ErrorResult(message, data);
+        }
+
+        // INVALID NOTIFIZATION  #############################################################################################################################################################
+
+        public static ActionResult AccessDenied(string message, string data = null)
+        {
+            InternalNotifization notifization = new InternalNotifization();
+            return notifization.AccessResult(message, data);
         }
 
         // INVALID NOTIFIZATION  #############################################################################################################################################################
@@ -63,12 +69,7 @@ namespace Helper
         }
 
         // SUCCESS NOTIFIZATION  #############################################################################################################################################################
-        public static ActionResult Success(string message = null)
-        {
-            InternalNotifization notifization = new InternalNotifization();
-            return notifization.SuccessResult(message);
-        }
-        public static ActionResult Success(string message, string data)
+        public static ActionResult Success(string message, string data = null)
         {
             InternalNotifization notifization = new InternalNotifization();
             return notifization.SuccessResult(message, data);
@@ -200,12 +201,23 @@ namespace Helper
             }, JsonRequestBehavior.AllowGet);
 
         }
+         public ActionResult AccessResult(string message, string data)
+        {
+
+            return Json(new
+            {
+                status = (int)HttpStatusCode.Forbidden,
+                message,
+                data
+            }, JsonRequestBehavior.AllowGet);
+
+        }
 
         public ActionResult InvalidResult(string message = null)
         {
             return Json(new
             {
-                status = 000,
+                status = (int)HttpStatusCode.BadRequest,
                 message
             }, JsonRequestBehavior.AllowGet);
         }
@@ -282,76 +294,5 @@ namespace Helper
             }, JsonRequestBehavior.AllowGet);
         }
     }
-    public class Option
-    {
-        public static MotifizationOption Data(string message = null, object data = null, int selected = 0)
-        {
-            return new MotifizationOption { Status = (int)HttpStatusCode.OK, Message = message, Data = data, Selected = selected };
-        }
-        public static MotifizationOption Error(string message = null)
-        {
-            return new MotifizationOption { Status = (int)HttpStatusCode.ServiceUnavailable, Message = message };
-        }
-        public static MotifizationOption Success(string message = null)
-        {
-            return new MotifizationOption { Status = (int)HttpStatusCode.OK, Message = message };
-        }
-        public static MotifizationOption OptionVal(string message = null, object data = null, int selected = 0)
-        {
-            return new MotifizationOption { Status = (int)HttpStatusCode.OK, Message = message, Data = data, Selected = selected };
-        }
-        // static
-        public static MotifizationOption NotFound
-        {
-            get
-            {
-                return new MotifizationOption { Status = (int)HttpStatusCode.NotFound, Message = MessageText.NotFound };
-            }
-        }
-        public static MotifizationOption NotService
-        {
-            get
-            {
-                return new MotifizationOption { Status = (int)HttpStatusCode.ServiceUnavailable, Message = MessageText.NotService };
-            }
-        }
-        public static MotifizationOption TEST(string mesage)
-        {
 
-            return new MotifizationOption { Status = (int)HttpStatusCode.ServiceUnavailable, Message = mesage };
-
-        }
-    }
-    //public class MotifizationModel
-    //{
-    //    public int Status { get; set; }
-    //    public string Message { get; set; }
-    //    public object Data { get; set; }
-    //    public object Paging { get; set; }
-    //}
-    //public class ModelMessageAttachment
-    //{
-    //    public int Status { get; set; }
-    //    public string Message { get; set; }
-    //    public object Data { get; set; }
-    //    public object Attachment { get; set; }
-    //    public object Paging { get; set; }
-    //}
-    public class MotifizationOption
-    {
-        public int Status { get; set; }
-        public string Message { get; set; }
-        public object Data { get; set; }
-        public int Selected { get; set; }
-    }
-    //public class ModelMotifizationData
-    //{
-    //    public int Status { get; set; }
-    //    public string Message { get; set; }
-    //    public object Data { get; set; }
-    //}
-    //public class ModelData
-    //{
-    //    public object Data { get; set; }
-    //}
 }

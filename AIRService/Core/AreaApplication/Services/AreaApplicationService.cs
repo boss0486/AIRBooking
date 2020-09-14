@@ -29,6 +29,8 @@ namespace WebCore.Services
                 //
                 var service = new AreaApplicationService();
                 var data = service.DataOption().Where(m => m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                if (data== null)
+                    return string.Empty;
                 return data.KeyID;
             }
             catch
@@ -45,7 +47,7 @@ namespace WebCore.Services
                     return (int)AreaApplicationEnum.AreaType.NONE;
                 //
                 var service = new AreaApplicationService();
-                var data = service.DataOption().Where(m => m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                var data = service.DataOption().Where(m => m.ID.Equals(id.ToLower())).FirstOrDefault();
                 return data.Type;
             }
             catch
@@ -126,17 +128,17 @@ namespace WebCore.Services
                     new AreaOption()
                     {
                         ID = "Development",
-                        Alias = "58c2d3c0-5f95-42cc-942e-1d1b014d30a4",
+                        Alias = "df490f33-4382-6a75-8a4d-c7f7f7ee6dfe", //old:58c2d3c0-5f95-42cc-942e-1d1b014d30a4
                         KeyID = "Development",
-                        Title = "Development",
+                        Title = "Nhà phát triển",
                         Type =  1,
                     },
                     new AreaOption()
                     {
                         ID = "Management",
-                        Alias = "0d854581-edf9-49c0-8e3d-3d427a203c1b",
+                        Alias = "abbc4dfe-919b-7705-e503-5e97ac068dae",//old:58c2d3c0-5f95-42cc-942e-1d1b014d30a4
                         KeyID = "Management",
-                        Title = "Management",
+                        Title = "Ứng dụng",
                         Type =  2,
                     }
                 };

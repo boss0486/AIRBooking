@@ -47,7 +47,18 @@ namespace WebCore.Entities
     public class CustomerResultModel : WEBModelResult
     {
         public string ID { get; set; }
-        public string SupplierID { get; set; }
+        private string _supplierId;
+        public string SupplierID
+        {
+            get
+            {
+                return SupplierService.GetSupplierName(_supplierId);
+            }
+            set
+            {
+                _supplierId = value;
+            }
+        }
         private string _typeId;
         public string TypeID
         {
@@ -60,6 +71,14 @@ namespace WebCore.Entities
                 _typeId = value;
             }
         }
+        //[NotMapped]
+        //public int TypeLevel
+        //{
+        //    get
+        //    {
+        //        return CustomerService.GetLevelByPath(Path);
+        //    }
+        //}
         public string CodeID { get; set; }
         public string NotationID { get; set; }
         public string ParentID { get; set; }
@@ -71,12 +90,11 @@ namespace WebCore.Entities
         public string TaxCode { get; set; }
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; }
-        public string Path { get; set; }
+        public string ContactPhone { get; set; } 
         public double DepositAmount { get; set; }
         public double SpendingLimit { get; set; }
         public int TermPayment { get; set; }
-        
+
     }
 
     public class CustomerCreateModel

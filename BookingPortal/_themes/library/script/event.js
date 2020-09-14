@@ -8,11 +8,9 @@
 //});
 
 $(function () {
+    //
     $('body').on('keypress', '[data-keyenter], input[type=text], input[type=password]', function (e) {
-
         console.log('ok');
-
-
         if (e.keyCode === 13) {
             var $action = $($(this).parents('[data-keyenter]').data('keyenter'));
             if ($action.length > 0) {
@@ -31,7 +29,7 @@ $(function () {
     }).on('changeDate', function (index, item) {
         $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
         $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
-       
+        $('.datepicker').hide();
     });
     $("[data-datesearch='true'] #txtEndDate").datepicker({
         format: 'dd-mm-yyyy',
@@ -41,12 +39,37 @@ $(function () {
     }).on('changeDate', function (index, item) {
         $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
         $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
+        $('.datepicker').hide();
     });
     //
     $(document).on('change', "[data-datesearch='true'] #ddlTimeExpress", function () {
         $("[data-datesearch='true'] #txtStartDate").val('');
         $("[data-datesearch='true'] #txtEndDate").val('');
     });
+
+    //
+    $("[data-date='true']").datepicker({
+        format: 'dd-mm-yyyy',
+        startDate: '01-07-2020',
+        todayHighlight: true
+    }).on('changeDate', function (index, item) {
+        $('.datepicker').hide();
+    });
+    // scroll 
+
+
+    if ($('.scroll-height') != undefined) {
+        $.each($('.scroll-height'), function (index, item) {
+            var _height = $(this).outerHeight();
+            $(item).slimScroll({
+                height: _height,
+                size: '8px',
+                color: "#000",
+                railBorderRadius: '2px;',
+                borderRadius: '2px;'
+            });
+        });
+    }
 });
 
 function EventCopy(elm, eclick) {

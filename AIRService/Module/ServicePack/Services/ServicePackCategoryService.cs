@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Helper;
 using System.Web;
 using WebCore.Entities;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -19,52 +20,60 @@ namespace WebCore.Services
         public AppServiceCategoryService() : base() { }
         public AppServiceCategoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult DataList(SearchModel model)
         {
-            try
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
             {
-                string query = string.Empty;
-                if (string.IsNullOrEmpty(strQuery))
-                    query = "";
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
                 else
-                    query = strQuery;
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_ServiceCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
-                var dtList = _connection.Query<AppServiceCategory>(sqlQuery, new { Query = query }).ToList();
-                if (dtList.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                if (result.Count <= 0 && page > 1)
-                {
-                    page -= 1;
-                    result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                }
-                if (result.Count <= 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-
-                Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
-                {
-                    PageSize = Helper.Pagination.Paging.PAGESIZE,
-                    Total = dtList.Count,
-                    Page = page
-                };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+                    return Notifization.Invalid(searchResult.Message);
             }
-            catch
+            //
+            string langID = Helper.Current.UserLogin.LanguageID;
+            string sqlQuery = @"SELECT * FROM App_ServiceCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<AppServiceCategory>(sqlQuery, new { Query = query }).ToList();
+            if (dtList.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            if (result.Count == 0 && page > 1)
             {
-                return Notifization.NotService;
+                page -= 1;
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
+            if (result.Count <= 0)
+                return Notifization.NotFound(MessageText.NotFound);
+
+            Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
+            {
+                PageSize = Helper.Pagination.Paging.PAGESIZE,
+                Total = dtList.Count,
+                Page = page
+            };
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -157,7 +166,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_ServiceCategory WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ServiceCategory WHERE ID = @Query";
                 return _connection.Query<AppServiceCategory>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
@@ -206,7 +215,7 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_ServiceCategory WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM App_ServiceCategory WHERE ID = @ID";
                 var item = _connection.Query<AppServiceCategory>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -249,7 +258,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_ServiceCategory ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_ServiceCategory ORDER BY Title ASC";
                 return _connection.Query<AppServiceCategoryOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

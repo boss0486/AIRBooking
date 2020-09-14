@@ -137,7 +137,7 @@
     <Compile Include="Application\AirTicket\Services\BookPassengerService.cs" />
     <Compile Include="Application\AirTicket\Services\BookTicketService.cs" />
     <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
-    <Compile Include="Application\AirFilght\Entities\AirAirport.cs" />
+    <Compile Include="Application\AirFilght\Entities\Airport.cs" />
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
     <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryClose.cs" />
     <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryDetails.cs" />
@@ -241,12 +241,10 @@
     <Compile Include="Core\Database\DbConnect.cs" />
     <Compile Include="Core\Database\DbConnectModel.cs" />
     <Compile Include="Core\MenuItem\Entities\MenuAction.cs" />
-    <Compile Include="Core\MenuItem\Entities\MenuCategory.cs" />
     <Compile Include="Core\MenuItem\Entities\MenuController.cs" />
     <Compile Include="Core\MenuItem\Entities\MenuItem.cs" />
     <Compile Include="Core\MenuItem\Enum\MenuItemEnum.cs" />
     <Compile Include="Core\MenuItem\Services\MenuActionService.cs" />
-    <Compile Include="Core\MenuItem\Services\MenuCategoryService.cs" />
     <Compile Include="Core\MenuItem\Services\MenuControllerService.cs" />
     <Compile Include="Core\MenuItem\Services\MenuItemService.cs" />
     <Compile Include="Core\Model\Entities\Model.cs" />
@@ -287,7 +285,6 @@
     <Compile Include="Helper\HelperModel.cs" />
     <Compile Include="Helper\HelperPage.cs" />
     <Compile Include="Helper\HelperPaging.cs" />
-    <Compile Include="Helper\HelperPermission.cs" />
     <Compile Include="Helper\HelperSecurity.cs" />
     <Compile Include="Helper\HelperUser.cs" />
     <Compile Include="Helper\Notifization.cs" />
@@ -338,9 +335,6 @@
     <Compile Include="Module\Language\Services\LanguageService.cs" />
     <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummary.cs" />
     <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryService.cs" />
-    <Compile Include="Module\Menu\Entities\Menu.cs" />
-    <Compile Include="Module\Menu\Enum\MenuEnum.cs" />
-    <Compile Include="Module\Menu\Services\MenuService.cs" />
     <Compile Include="Module\Meta\Entities\Meta.cs" />
     <Compile Include="Module\Meta\Entities\MetaGroup.cs" />
     <Compile Include="Module\Meta\Services\MetaGroupService.cs" />
@@ -368,19 +362,19 @@
     <Compile Include="Application\Report\Entities\Report.cs" />
     <Compile Include="Application\Report\Enum\ReportEnum.cs" />
     <Compile Include="Application\Report\Services\ReportService.cs" />
-    <Compile Include="Module\Service\Entities\AppService.cs" />
-    <Compile Include="Module\Service\Entities\AppServiceCategory.cs" />
-    <Compile Include="Module\Service\Services\AppServiceCategoryService.cs" />
-    <Compile Include="Module\Service\Services\AppServiceService.cs" />
+    <Compile Include="Module\ServicePack\Entities\ServicePack.cs" />
+    <Compile Include="Module\ServicePack\Entities\ServicePackCategory.cs" />
+    <Compile Include="Module\ServicePack\Services\ServicePackCategoryService.cs" />
+    <Compile Include="Module\ServicePack\Services\ServicePackService.cs" />
     <Compile Include="Application\Supplier\Entities\Supplier.cs" />
     <Compile Include="Application\Supplier\Enum\SupplierEnum.cs" />
     <Compile Include="Application\Supplier\Services\SupplierService.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionDeposit.cs" />
-    <Compile Include="Application\Transaction\Entities\TransactionSpending.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionCustomerSpending.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionUserSpending.cs" />
     <Compile Include="Application\Transaction\Enum\TransactionEnum.cs" />
     <Compile Include="Application\Transaction\Services\TransactionDepositService.cs" />
-    <Compile Include="Application\Transaction\Services\TransactionSpendingService.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionCustomerSpendingService.cs" />
     <Compile Include="Application\Transaction\Services\TransactionUserSpendingService.cs" />
     <Compile Include="Application\UserClient\Entities\ClientLogin.cs" />
     <Compile Include="Application\UserClient\Enum\ClientLoginEnum.cs" />
@@ -1676,7 +1670,7 @@
     <Folder Include="Core\Authorization\Enum\" />
     <Folder Include="Core\Authorization\Services\" />
     <Folder Include="Module\Account\_Model\" />
-    <Folder Include="Module\Service\Enum\" />
+    <Folder Include="Module\ServicePack\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\AirDataWS.disco" />

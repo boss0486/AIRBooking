@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Helper;
 using System.Web;
 using WebCore.Entities;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -19,45 +20,62 @@ namespace WebCore.Services
         public MetaGroupService() : base() { }
         public MetaGroupService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult Datalist(SearchModel model)
         {
-            string query = string.Empty;
-            if (string.IsNullOrEmpty(strQuery))
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
                 query = "";
-            else
-                query = strQuery;
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_MetaGroup WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<MetaGroup>(sqlQuery, new { Query = query }).ToList();
+            string sqlQuery = @"SELECT * FROM App_MetaGroup WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<MetaGroup>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-            if (result.Count <= 0 && page > 1)
+            if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
             if (result.Count <= 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
+            //
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {
                 PageSize = Helper.Pagination.Paging.PAGESIZE,
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -70,7 +88,7 @@ namespace WebCore.Services
                 {
                     MetaGroupService MetaGroupService = new MetaGroupService(_connection);
                     string title = model.Title;
-                    var MetaGroups = MetaGroupService.GetAlls(m => m.Title.ToLower() == title.ToLower(), transaction: transaction);
+                    var MetaGroups = MetaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower() == title.ToLower(), transaction: transaction);
                     if (MetaGroups.Count > 0)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
@@ -105,12 +123,12 @@ namespace WebCore.Services
                 {
                     var MetaGroupService = new MetaGroupService(_connection);
                     string Id = model.ID.ToLower();
-                    var MetaGroup = MetaGroupService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    var MetaGroup = MetaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
                     if (MetaGroup == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = MetaGroupService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !MetaGroup.ID.ToLower().Equals(Id), transaction: transaction).ToList();
+                    var dpm = MetaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower().Equals(title.ToLower()) && !MetaGroup.ID.ToLower().Equals(Id), transaction: transaction).ToList();
                     if (dpm.Count > 0)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
@@ -129,16 +147,16 @@ namespace WebCore.Services
                 }
             }
         }
-        public MetaGroup UpdateForm(string Id)
+        public MetaGroup UpdateForm(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrEmpty(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_MetaGroup WHERE ID = @Query";
-                return _connection.Query<MetaGroup>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_MetaGroup WHERE ID = @Query";
+                return _connection.Query<MetaGroup>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -146,20 +164,22 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid();
+            //
             _connection.Open();
             using (var transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var MetaGroupService = new MetaGroupService(_connection);
-                    var MetaGroup = MetaGroupService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                    if (MetaGroup == null)
+                    MetaGroupService metaGroupService = new MetaGroupService(_connection);
+                    MetaGroup metaGroup = metaGroupService.GetAlls(m => m.ID.Equals(id.ToLower()), transaction: transaction).FirstOrDefault();
+                    if (metaGroup == null)
                         return Notifization.NotFound();
-                    MetaGroupService.Remove(MetaGroup.ID, transaction: transaction);
+                    //
+                    metaGroupService.Remove(metaGroup.ID, transaction: transaction);
                     // remover seo
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -172,19 +192,20 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
+        public ActionResult Details(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
+                if (string.IsNullOrWhiteSpace(id))
+                    return Notifization.Invalid();
+                //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_MetaGroup WHERE ID = @ID";
-                var item = _connection.Query<MetaGroupResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT * FROM App_MetaGroup WHERE ID = @ID";
+                var item = _connection.Query<MetaGroupResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
-                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
+                return Notifization.Data(MessageText.Success, data: item);
             }
             catch
             {
@@ -192,7 +213,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DDLMetaGroup(string id)
+        public static string DropDownListMetaGroup(string id)
         {
             try
             {
@@ -222,7 +243,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_MetaGroup ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_MetaGroup ORDER BY Title ASC";
                 return _connection.Query<MetaGroupOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

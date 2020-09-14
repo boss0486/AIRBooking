@@ -13,7 +13,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    
+
     public class RoleSettingRequest
     {
         public string RouteArea { get; set; }
@@ -25,5 +25,21 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public List<string> Action { get; set; }
     }
+    //
+    public class PerissionControllerModel
+    {
+        public string KeyID { get; set; }
+        public string Title { get; set; }
+        public int OrderID { get; set; }
 
+        public List<PerissionActionModel> Action { get; set; }
+    }
+    public class PerissionActionModel
+    {
+        public int OrderID { get; set; }
+        public string KeyID { get; set; }
+        public string Method { get; set; }
+        public string APIRouter { get; set; }
+        public string Title { get; set; }
+    }
 }

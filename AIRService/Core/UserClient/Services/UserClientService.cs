@@ -36,23 +36,64 @@ namespace WebCore.Services
         public ActionResult DataList(SearchModel model)
         {
 
+            #region
             if (model == null)
-                return Notifization.Invalid();
-            //
-            string query = string.Empty;
-            if (string.IsNullOrWhiteSpace(model.Query))
-                query = "";
-            else
-                query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
             int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            // 
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            //
+            if (Helper.Current.UserLogin.IsClientInApplication())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                // show all with admin application
+                if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsAdminCustomerLogged())
+                {
+                    whereCondition += " AND ClientID = '" + clientId + "'";
+                }
+                else
+                {
+                    whereCondition += " AND ClientID = '" + clientId + "' AND  UserId = '" + userId + "'";
+                }
+            }
+            else
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication)
+            {
+                return Notifization.AccessDenied(MessageText.AccessDenied);
+            }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserClientService())
             {
                 string sqlQuery = @"SELECT vu.*, c.ClientID, c.ClientType FROM View_User as vu LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
-                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' ORDER BY vu.FullName,vu.CreatedDate ";
-                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = query }).ToList();
+                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.FullName,vu.CreatedDate ";
+                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
@@ -71,16 +112,8 @@ namespace WebCore.Services
                     Total = dtList.Count,
                     Page = page
                 };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: roleAccountModel, paging: pagingModel);
+                //
+                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
         }
 
@@ -266,7 +299,7 @@ namespace WebCore.Services
                         //
                         string userId = userLoginService.Create<string>(new UserLogin()
                         {
-                            LoginID = loginId,
+                            LoginID = loginId.ToLower(),
                             Password = Helper.Security.Library.Encryption256(model.Password),
                             PinCode = null,
                             TokenID = null,
@@ -499,7 +532,7 @@ namespace WebCore.Services
             }
         }
 
-        public UserClientModel GetUserModel(string id)
+        public UserClientResult GetUserModel(string id)
         {
             try
             {
@@ -511,7 +544,7 @@ namespace WebCore.Services
                         return null;
                     //
                     string sqlQuery = @"SELECT TOP (1) * FROM View_User WHERE ID = @ID";
-                    var data = _connection.Query<UserClientModel>(sqlQuery, new { ID = id }).FirstOrDefault();
+                    var data = _connection.Query<UserClientResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                     if (data == null)
                         return null;
                     //
@@ -548,40 +581,11 @@ namespace WebCore.Services
                 return Notifization.Data(MessageText.Success, data);
             }
         }
+
         //##############################################################################################################################################################################################################################################################
-        public ActionResult ChangePassword(UserChangePasswordModel model)
-        {
-            string loginId = Helper.Current.UserLogin.IdentifierID;
-            if (string.IsNullOrWhiteSpace(loginId))
-                return Notifization.Error("Bạn cần đăng nhập trước");
-            //
-            if (model == null)
-                return Notifization.Invalid();
-            //
-            string loginID = model.Password;
-            string passID = model.NewPassword;
-            string rePass = model.ReNewPassword;
-            //
-            if (string.IsNullOrEmpty(passID))
-                return Notifization.Invalid("Không được để trống mật khẩu");
-            if (!Validate.TestPassword(passID))
-                return Notifization.Invalid("Yêu cầu mật khẩu bảo mật hơn");
-            if (passID.Length < 2 || passID.Length > 30)
-                return Notifization.Invalid("Mật khẩu giới hạn [2-30] ký tự");
-            string passId = Helper.Security.Library.Encryption256(model.Password);
-            // check account system
-            UserLoginService userLoginService = new UserLoginService();
-            var userLogin = userLoginService.GetAlls(m => m.ID.Equals(loginId)).FirstOrDefault();
-            if (userLogin == null)
-                return Notifization.NotFound(MessageText.NotFound);
-            //
-            if (!userLogin.Password.Equals(passId))
-                return Notifization.NotFound("Mật khẩu cũ chưa đúng");
-            // update
-            userLogin.Password = Helper.Security.Library.Encryption256(model.NewPassword);
-            userLoginService.Update(userLogin);
-            return Notifization.Success(MessageText.UpdateSuccess);
-        }
+
+
         //##############################################################################################################################################################################################################################################################
+
     }
 }

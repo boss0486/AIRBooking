@@ -14,8 +14,8 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAirportService : IEntityService<Entities.AirAirport> { }
-    public class AirportService : EntityService<Entities.AirAirport>, IAirportService
+    public interface IAirportService : IEntityService<Entities.Airport> { }
+    public class AirportService : EntityService<Entities.Airport>, IAirportService
     {
         public AirportService() : base() { }
         public AirportService(System.Data.IDbConnection db) : base(db) { }
@@ -26,22 +26,38 @@ namespace WebCore.Services
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
-            string query = string.Empty;
-            if (string.IsNullOrWhiteSpace(model.Query))
-                query = "";
-            else
-                query = model.Query;
-            //
             int page = model.Page;
-
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            //
             string areaId = model.AreaID;
-            string _whereCondition = string.Empty;
-
             if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
-                _whereCondition += " AND AreaID = @AreaID ";
-
-            string sqlQuery = @"SELECT * FROM App_AirAirport WHERE Title LIKE N'%'+ @Query +'%'" + _whereCondition + "ORDER BY [Title] ASC";
-            var dtList = _connection.Query<AirportResult>(sqlQuery, new { Query = query, AreaID = areaId }).ToList();
+                whereCondition += " AND AreaID = @AreaID ";
+            // query
+            string sqlQuery = @"SELECT * FROM App_Airport WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            var dtList = _connection.Query<AirportResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -52,22 +68,15 @@ namespace WebCore.Services
             }
             if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
+            // Pagination
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {
                 PageSize = Helper.Pagination.Paging.PAGESIZE,
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-            };
-
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            // reusult
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -82,7 +91,7 @@ namespace WebCore.Services
             if (flight != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
             //
-            flightService.Create<string>(new Entities.AirAirport()
+            flightService.Create<string>(new Entities.Airport()
             {
                 Title = model.Title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
@@ -124,13 +133,13 @@ namespace WebCore.Services
             //
             return Notifization.Success(MessageText.UpdateSuccess);
         }
-        public AirAirport GetAirAportModel(string id)
+        public AirportResult GetAirAportModel(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_AirAirport WHERE ID = @Query";
-            AirAirport airAirport = _connection.Query<AirAirport>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Airport WHERE ID = @Query";
+            AirportResult airAirport = _connection.Query<AirportResult>(sqlQuery, new { Query = id }).FirstOrDefault();
             //
             if (airAirport == null)
                 return null;
@@ -167,7 +176,7 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################   
         public List<AirportOption> DataOption()
         {
-            string sqlQuery = @"SELECT * FROM App_AirAirport ORDER BY Title ASC";
+            string sqlQuery = @"SELECT * FROM App_Airport ORDER BY Title ASC";
             List<AirportOption> flightOptions = _connection.Query<AirportOption>(sqlQuery).ToList();
             if (flightOptions.Count == 0)
                 return new List<AirportOption>();

@@ -291,10 +291,20 @@ var AppUserController = {
         });
     },
     DataList: function (page) {
+        //
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
-            Page: page
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -318,33 +328,8 @@ var AppUserController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="AppUserController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-
-                                if (role.Block) {
-                                    if (item.IsBlock)
-                                        action += `<a onclick="AppUserController.Unlock('${id}')"><i class='far fa-dot-circle'></i>&nbsp;Unlock</a>`;
-                                    else
-                                        action += `<a onclick="AppUserController.Block('${id}')"><i class='fas fa-ban'></i>&nbsp;Block</a>`;
-                                }
-                                if (role.Active) {
-                                    if (item.Enabled)
-                                        action += `<a onclick="AppUserController.UnActive('${id}')"><i class='fas fa-toggle-off'></i>&nbsp;UnActive</a>`;
-                                    else
-                                        action += `<a onclick="AppUserController.Active('${id}')"><i class='fas fa-toggle-on'></i>&nbsp;Active</a>`;
-                                }
-                                action += `</div>
-                                           </div>`;
-                            }
-
+                            var action = HelperModel.RolePermission(result.role, "AppUserController", id);
+                            //
                             var clientName = '';
                             var clientType = item.ClientType;
                             if (parseInt(clientType) == 1) {
@@ -682,94 +667,6 @@ var AppUserController = {
                 console.log('::' + MessageText.NotService);
             }
         });
-    },
-    ChangePassword: function () {
-        var txtOldPassword = $('#txtOldPassword').val();
-        var txtNewPassword = $('#txtNewPassword').val();
-        var txtReNewPassword = $('#txtReNewPassword').val();
-        var model = {
-            Password: txtOldPassword,
-            NewPassword: txtNewPassword,
-            ReNewPassword: txtReNewPassword
-        };
-        AjaxFrom.POST({
-            url: URLC + '/changepassword',
-            data: model,
-            success: function (response) {
-                if (response !== null) {
-                    if (response.status === 200) {
-                        Notifization.Success(response.message);
-                        FData.ResetForm();
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (response) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
-    },
-    GetRoleByUser: function (id) {
-        var model = {
-            ID: id
-        };
-        AjaxFrom.POST({
-            url: '/Management/Role/Action/GetRoleByUser',
-            data: model,
-            success: function (response) {
-                $('#ddlRole').html('');
-                if (response !== null) {
-                    if (response.status === 200) {
-                        var rowData = '';
-                        $.each(response.data, function (index, item) {
-                            index = index + 1;
-                            //
-                            var strIndex = index;
-                            if (index < 10)
-                                strIndex = "0" + index;
-                            //
-                            var level = parseInt(item.Level);
-                            var strLevel = level;
-                            if (level < 10)
-                                strLevel = "0" + level;
-                            //
-                            var active = '';
-                            if (id != undefined && id == item.ID) {
-                                active = 'active';
-                            }
-                            var id = item.ID;
-                            var isAllow = item.IsAllow;
-                            var _allow = '';
-                            if (isAllow) {
-                                _allow = 'checked';
-                            }
-                            rowData += `                
-                              <a class="list-group-item">                                     
-                                    <input id="${id}" data-CategoryID='${id}' type="checkbox" class="filled-in action-item-input  " value="${id}" ${_allow} />
-                                    <label style="margin:0px;" for="${id}">${strIndex}. ${item.Title} <span class="badge badge-primary badge-pill ${active}">Cấp: ${strLevel}</span></label>
-                              </a>`;
-                        });
-                        $('#ddlRole').html(rowData);
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (result) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
     }
 };
 AppUserController.init();
@@ -938,6 +835,8 @@ $(document).on("change", "#ddlClient", function () {
 });
 //
 $(document).on("change", "input[name='rdoClientType']", function () {
+    $("#lblClient").html("");
+    console.log("ok");
     var ddlClientType = $(this).val();
     // change text
     var text = $(this).data('text');

@@ -208,7 +208,113 @@ namespace WebCore.Services
             }
         }
 
+        public ActionResult ForgotPassword(UserEmailModel model)
+        {
 
+            string strEmail = model.Email.ToLower();
+            string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE Email = @Email 
+                                 UNION 
+                                 SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE Email = @Email";
+            var user = _connection.Query<Logged>(sqlQuerry, new { Email = model.Email }).FirstOrDefault();
+            //
+            if (user == null)
+                return Notifization.NotFound("Dữ liệu không hợp lệ");
+            // send mail
+            string strOTP = Helper.Security.Library.OTPCode;
+            string strGuid = new Guid().ToString();
+            string strToken = Helper.Security.Token.Create(user.LoginID);
+            //  send otp for reset password 
+            string subject = "HRM-XÁC THỰC OTP";
+            int status = Helper.Email.EMailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
+            if (status != 1)
+                return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
+            //
+            if (user.IsCMSUser)
+            {
+                CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);
+                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(user.ID.ToLower())).FirstOrDefault();
+                cmsUserLogin.OTPCode = strOTP;
+                cmsUserLogin.TokenID = strToken;
+                cmsUserLoginService.Update(cmsUserLogin);
+            }
+            else
+            {
+                UserLoginService userLoginService = new UserLoginService(_connection);
+                UserLogin userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(user.ID.ToLower())).FirstOrDefault();
+                userLogin.OTPCode = strOTP;
+                userLogin.TokenID = strToken;
+                userLoginService.Update(userLogin);
+            }
+            return Notifization.Success("Mã OTP đã được gửi tới email của bạn", "/Authentication/ResetPassword?token=" + strToken);
+        }
+        public ActionResult ResetPassword(UserResetPasswordModel model)
+        {
+            if (model == null)
+                return Notifization.Invalid();
+
+            string otp = model.OTPCode;
+            string password = model.Password;
+
+            // password
+            if (string.IsNullOrWhiteSpace(password))
+                return Notifization.Invalid("Không được để trống mật khẩu");
+            if (!Validate.TestPassword(password))
+                return Notifization.Invalid("Yêu cầu mật khẩu bảo mật hơn");
+            if (password.Length < 4 || password.Length > 16)
+                return Notifization.Invalid("Mật khẩu giới hạn [4-16] ký tự");
+            //
+            if (string.IsNullOrWhiteSpace(model.TokenID))
+                return Notifization.Invalid("Dữ liệu không hợp lệ");
+            // a sample jwt encoded token string which is supposed to be extracted from 'Authorization' HTTP header in your Web Api controller
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(model.TokenID);
+            var token = handler.ReadToken(model.TokenID) as JwtSecurityToken;
+            string loginId = token.Claims.First(c => c.Type == "TokenID").Value;
+            string tokenKey = token.Claims.First(c => c.Type == "TokenKey").Value;
+            string tokenTime = token.Claims.First(c => c.Type == "TokenTime").Value;
+            if (string.IsNullOrWhiteSpace(loginId))
+                return Notifization.UnAuthorized;
+            //
+            string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE LoginID = @LoginID
+                                 UNION 
+                                 SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE LoginID = @LoginID";
+            var user = _connection.Query<Logged>(sqlQuerry, new { LoginID = loginId }).FirstOrDefault();
+            //
+            if (user == null)
+                return Notifization.NotFound();
+            //
+            if (user.IsCMSUser)
+            {
+                CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);
+                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower().Equals(loginId.ToLower())).FirstOrDefault();
+                if (cmsUserLogin == null)
+                    return Notifization.Invalid("Dữ liệu không hợp lệ");
+                //
+                if (!cmsUserLogin.OTPCode.Equals(otp))
+                    return Notifization.Invalid("Sai mã OTP");
+                //
+                cmsUserLogin.OTPCode = string.Empty;
+                cmsUserLogin.TokenID = string.Empty;
+                cmsUserLogin.Password = Helper.Security.Library.Encryption256(password);
+                cmsUserLoginService.Update(cmsUserLogin);
+            }
+            else
+            {
+                UserLoginService userLoginService = new UserLoginService(_connection);
+                UserLogin userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower().Equals(loginId.ToLower())).FirstOrDefault();
+                if (userLogin == null)
+                    return Notifization.Invalid("Dữ liệu không hợp lệ");
+                //
+                if (!userLogin.OTPCode.Equals(otp))
+                    return Notifization.Invalid("Sai mã OTP");
+                //
+                userLogin.OTPCode = string.Empty;
+                userLogin.TokenID = string.Empty;
+                userLogin.Password = Helper.Security.Library.Encryption256(password);
+                userLoginService.Update(userLogin);
+            }
+            return Notifization.Success(MessageText.UpdateSuccess, "/Authentication");
+        }
 
 
         //###############################################################################################################################
@@ -392,7 +498,7 @@ namespace WebCore.Services
                         LanguageService languageService = new LanguageService(_connection);
                         string userId = userLoginService.Create<string>(new UserLogin()
                         {
-                            LoginID = loginId,
+                            LoginID = loginId.ToLower(),
                             Password = Helper.Security.Library.Encryption256(model.Password),
                             PinCode = null,
                             TokenID = null,
@@ -770,7 +876,7 @@ namespace WebCore.Services
             }
         }
 
-        public bool IsSuperCustomerLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public bool IsAdminCustomerLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
@@ -782,6 +888,31 @@ namespace WebCore.Services
                     return false;
                 //
                 var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
+                if (client == null)
+                    return false;
+
+                if (client.IsSuper)
+                    return true;
+                //
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool IsAdminSupplierLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        {
+            try
+            {
+                if (dbConnection == null)
+                    dbConnection = this._connection;
+                //
+                var service = new ClientLoginService(dbConnection);
+                if (string.IsNullOrWhiteSpace(userId))
+                    return false;
+                //
+                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
 

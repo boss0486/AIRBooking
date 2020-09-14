@@ -76,6 +76,6 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public int Level { get; set; }
-        public bool IsAllow { get; set; }
+        public int IsAllow { get; set; }
     }
 }

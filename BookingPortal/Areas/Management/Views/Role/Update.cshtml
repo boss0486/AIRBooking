@@ -39,6 +39,8 @@
                 enabled = "checked";
             }
         }
+        List<string> a = new List<string>();
+        a.Add(id);
     }
     catch (Exception)
     {
@@ -47,17 +49,21 @@
 }
 <div class="row">
     <div class="col-md-4">
-        <label for="">Nhóm người dùng:</label>
-        <div class="all-list-group list-group check-option" style="margin-bottom: 0px;">
-            <div class="list-group-item">
-                <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
+        <div class="form-group role-group list-select">
+            <label for="">Nhóm người dùng:</label>
+            <div class="list-group item-title" style="margin-bottom: 0px;">
+                <div class="list-group-item">
+                    <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
+                </div>
+            </div>
+            <div id="ddlRole" class="role list-group data-group scroll-height" style="height: 257px; margin-bottom: 0;">
+                @Html.Raw(WebCore.Services.RoleService.DDLListRoleMultiSelect(new List<string> { id }, true))
             </div>
         </div>
-        <div id="ListGroup" class="list-group list-group-customize" style="height: 335px;overflow:auto;margin-bottom: 0;"></div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            <label class="form-label">Tiêu đề @Model.IsAllowSpend</label>
+            <label class="form-label">Tiêu đề</label>
             <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
             <span id="lblTitle" class="message msg-box"></span>
         </div>
@@ -76,6 +82,8 @@
                 <div class="form-group m-t-5">
                     <input id="cbxIsAllowSpend" name="cbxIsAllowSpend" type="checkbox" class="filled-in" @strIsAllowSpend />
                     <label for="cbxIsAllowSpend">Được phép chi tiêu</label>
+                    <span id="lblIsAllowSpend" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
             <div class="col-md-6">
@@ -83,9 +91,9 @@
                     <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
                     <label for="cbxActive">Kích hoạt</label>
                     <span id="lblActive" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
-            <div class="col-md-12"><hr /></div>
         </div>
 
     </div>
@@ -101,14 +109,9 @@
         </div>
     </div>
 </div>
-
 <input id="txtID" type="hidden" value="@id" />
 @section scripts{
     <script src="~/Areas/Management/_script/user-group.js"></script>
-    <script type="text/javascript">
-        var id = '@id';
-        UserGroupController.ViewLevel(id,1);
-    </script>
 }
 
 

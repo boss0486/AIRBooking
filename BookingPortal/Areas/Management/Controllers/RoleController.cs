@@ -12,25 +12,22 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Role")]
-    [IsManage(act: false)]
     public class RoleController : CMSController
     {
         // GET: Adm/UserGroup
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             RoleService service = new RoleService();
@@ -41,7 +38,6 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        [IsManage(act: true)]
         public ActionResult Details(string id)
         {
             RoleService service = new RoleService();
@@ -51,16 +47,15 @@ namespace WebApplication.Management.Controllers
             //
             return View();
         }
-        //##########################################################################################################################################################################################################################################################
+        //API ##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try
             {
                 using (var userGroupService = new RoleService())
-                    return userGroupService.Datalist(model);
+                    return userGroupService.DataList(model);
             }
             catch (Exception ex)
             {
@@ -69,7 +64,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Create")]
         public ActionResult Create(RoleCreateModel model)
         {
@@ -109,7 +103,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Update")]
         public ActionResult Update(RoleUpdateModel model)
         {
@@ -125,8 +118,8 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
+
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Delete")]
         public ActionResult Delete(RoleIDModel model)
         {
@@ -144,9 +137,10 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
-
+        //##############################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DropDownList")]
+        [IsManage(skip: true)]
         public ActionResult DropDownList()
         {
             try
@@ -165,30 +159,6 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST(">>" + ex);
             }
         }
-
-
-        [HttpPost]
-        [Route("Action/GetRoleByUser")]
-        public ActionResult GetRoleByUser()
-        {
-            try
-            {
-                using (var service = new RoleService())
-                {
-                    string userId = Helper.Current.UserLogin.IdentifierID;
-                    var dtList = service.DataOptionByUser(userId);
-                    if (dtList == null || dtList.Count == 0)
-                        return Notifization.NotFound(MessageText.NotFound);
-                    //
-                    return Notifization.Data(MessageText.Success, dtList);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(">>" + ex);
-            }
-        }
-        //##############################################################################################################################################################################################################################################################
 
     }
 }

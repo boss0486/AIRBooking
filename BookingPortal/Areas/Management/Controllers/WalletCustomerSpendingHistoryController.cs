@@ -12,9 +12,9 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Wallet-Customer-Spending-History")]
-    [IsManage(act: false)]
     public class WalletCustomerSpendingHistoryController : CMSController
     {
         // GET: Management/WalletHistory
@@ -24,7 +24,6 @@ namespace WebApplication.Management.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {

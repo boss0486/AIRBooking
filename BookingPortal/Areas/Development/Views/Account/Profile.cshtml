@@ -5,7 +5,7 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.UserModel
+@model WebCore.Entities.UserResult
 
 @{
     string id = "";
@@ -32,16 +32,13 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            if (!string.IsNullOrWhiteSpace(Model.Birthday))
-            {
-                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
-            }
+            birthday = Model.Birthday;
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
+            createdDate = Model.CreatedDate;
             imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
             //
             if (Model.IsBlock)
@@ -62,14 +59,15 @@
     {
 
     }
-}
+} 
+
 <div class="row profile">
     <div class="col-md-4 ">
         <div class="profile-card">
             <div class="profile-header">&nbsp;</div>
             <div class="profile-body">
                 <div class="image-area">
-                    <img src="@imageFile" />
+                    <img src="@imageFile"  alt="cxzc" />
                 </div>
                 <div class="content-area">
                     <h3>@fullName</h3>
@@ -102,5 +100,4 @@
             <hr />
         </div>
     </div>
-
 </div>

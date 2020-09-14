@@ -11,10 +11,10 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Dapper.Table("App_AirAirport")]
-    public class AirAirport : WEBModel
+    [Dapper.Table("App_Airport")]
+    public class Airport : WEBModel
     {
-        public AirAirport()
+        public Airport()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -54,25 +54,14 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public string Summary { get; set; }
         public string IATACode { get; set; }
-        //
-        private string _areaId;
-        public string AreaID
-        {
-            get
-            {
-                return _areaId;
-            }
-            set
-            {
-                _areaId = value;
-            }
-        }
+        public string AreaID { get; set; }
+
         [NotMapped]
         public string AreaName
         {
             get
             {
-                return AreaGeographicalService.GetAreaName(_areaId); ;
+                return AreaGeographicalService.GetAreaName(AreaID); ;
             }
         }
     }

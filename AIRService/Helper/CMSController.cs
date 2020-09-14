@@ -16,11 +16,6 @@ namespace WebCore.Core
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string _url = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
-            bool IsHasManageController = filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(IsManage), false);
-            bool IsHasManageAction = filterContext.ActionDescriptor.IsDefined(typeof(IsManage), false);
-            // API method
-            string _controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            string _actionName = filterContext.ActionDescriptor.ActionName;
             if (HttpContext.Request.IsAjaxRequest())
             {
                 // da login
@@ -32,13 +27,9 @@ namespace WebCore.Core
                     {
                         filterContext.Result = Helper.Notifization.Error("Phiên làm việc đã hết hạn");
                     }
-                    else if (IsHasManageController)
+                    else if (!CheckPermission(filterContext))
                     {
-                        if (IsHasManageAction)
-                        {
-                            if (!CheckPermission(filterContext))
-                                filterContext.Result = Helper.Notifization.Error(MessageText.AccessDenied);
-                        }      
+                        filterContext.Result = Helper.Notifization.Error(MessageText.AccessDenied);
                     }
                 }
                 else // chua login
@@ -50,20 +41,16 @@ namespace WebCore.Core
             // Page
             else if (Helper.User.Access.IsLogin())
             {
+
                 // kiem tra hien tai con session login hay ko
                 var sessionLogin = Helper.Current.UserLogin.IdentifierID;
                 if (string.IsNullOrWhiteSpace(sessionLogin))
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { Controller = "Authen", Action = "Login", Area = "Authentication", r = _url }));
                 }
-                else if (IsHasManageController)
+                else if (!CheckPermission(filterContext))
                 {
-                    if (IsHasManageAction)
-                    {
-                        if (!CheckPermission(filterContext))
-                            filterContext.Result = new RedirectResult(Helper.Page.Navigate.PathForbidden);
-
-                    }
+                    filterContext.Result = new RedirectResult(Helper.Page.Navigate.PathForbidden);
                 }
             }
             else // chua login
@@ -76,7 +63,7 @@ namespace WebCore.Core
 
 
         // ###########################################################################################################################################################################################
-        public bool CheckAPIAction(ActionExecutingContext filterContext)
+        public bool CheckSkipAction(ActionExecutingContext filterContext)
         {
             try
             {
@@ -89,7 +76,7 @@ namespace WebCore.Core
                 MemberInfo method = type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).Where(m => m.IsDefined(typeof(IsManage), true) && m.Name.Equals(actionName)).FirstOrDefault();
                 var manage = (IsManage)Attribute.GetCustomAttribute(method, typeof(IsManage));
                 // return for api then -> return action result
-                if (manage != null && manage.Action)
+                if (manage != null && manage.Skip)
                     return true;
                 //
                 return false;
@@ -102,81 +89,70 @@ namespace WebCore.Core
 
         public bool CheckPermission(ActionExecutingContext filterContext)
         {
-
+            if (Helper.Current.UserLogin.IsCMSUser)
+                return true;
+            // IsManage is not found in controller and method
+            if (CheckSkipAction(filterContext))
+                return true;
+            //
             // RouteArea in controller is required
             var routeAreaCheck = filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(RouteAreaAttribute), true);
             if (!routeAreaCheck)
                 return false;
             //
             var controller = filterContext.Controller.GetType();
-            string actionName = filterContext.ActionDescriptor.ActionName;
             RouteAreaAttribute routeAreaAttribute = (RouteAreaAttribute)Attribute.GetCustomAttribute(controller, typeof(RouteAreaAttribute));
-            var routerArea = routeAreaAttribute.AreaName;
+            string routerArea = routeAreaAttribute.AreaName;
+            string controllerText = controller.Name;
+            string actionText = filterContext.ActionDescriptor.ActionName;
+
             //
-            if (PermissionService.CheckPermission(routerArea, controller.Name, actionName))
+            if (Helper.Current.UserLogin.IsAdministratorInApplication)
                 return true;
             //
-            return false;
+            if (string.IsNullOrWhiteSpace(controllerText) || string.IsNullOrWhiteSpace(actionText))
+                return false;
+            //
+            controllerText = controllerText.Replace("Controller", "");
+            actionText = Helper.Page.Library.FirstCharToUpper(actionText);
 
+            //
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            //#1. Get role of user
+            UserRoleService userRoleService = new UserRoleService();
+            var userRole = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+            if (userRole == null)
+                return false;
+            //
+            string roleId = userRole.RoleID;
+            string controllerId = Helper.Security.Library.FakeGuidID(routerArea + controllerText);
+            string actionId = Helper.Security.Library.FakeGuidID(controllerId + actionText);
+            //#2. check  
+            using (PermissionService service = new PermissionService())
+            {
+                string sqlQuery = @" SELECT c.ID FROM RoleControllerSetting as c INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID
+                                     WHERE c.RoleID = @RoleID AND c.ControllerID = @ControllerID AND a.ActionID = @ActionID ";
+                var role = service.Query<PermissionIDModel>(sqlQuery, new { RoleID = roleId, ControllerID = controllerId, ActionID = actionId }).FirstOrDefault();
+                if (role != null)
+                    return true;
+                //
+                return false;
+            }
         }
         // ###########################################################################################################################################################################################
     }
     // 
     public class IsManage : Attribute
     {
-        public bool Action { get; set; }
-        public bool Login { get; set; }
-        public string Text { get; set; }
+        public bool Skip { get; set; }
         public IsManage()
         {
-            // something
-            this.Action = false;
-            this.Login = false;
-            this.Text = string.Empty;
+
+            this.Skip = false;
         }
-        public IsManage(bool act, string text = null)
+        public IsManage(bool skip = false)
         {
-            this.Action = act;
-            this.Login = false;
-            this.Text = text;
-        }
-        public IsManage(bool act, bool login, string text = null)
-        {
-            this.Action = act;
-            this.Login = login;
-            this.Text = text;
+            this.Skip = skip;
         }
     }
-    //public class Authorized : Attribute
-    //{
-    //    public bool Allow { get; set; }
-    //    public Authorized()
-    //    {
-    //        // something
-    //        this.Allow = false;
-    //    }
-    //    public Authorized(bool allow)
-    //    {
-    //        this.Allow = allow;
-    //    }
-    //}
-
-
-    //[AttributeUsage(AttributeTargets.All)]
-    //public class Authorized : Attribute
-    //{
-    //    public bool Allow { get; set; }
-    //    public Authorized(bool _val)
-    //    {
-    //        this.Allow = _val;
-    //    }
-    //}
-    //public class APIAuthorization : Attribute
-    //{
-    //    public bool Allow { get; set; }
-    //    public APIAuthorization(bool _val)
-    //    {
-    //        this.Allow = _val;
-    //    }
-    //}
 }

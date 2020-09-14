@@ -7,7 +7,7 @@ using WebCore.Core;
 
 namespace WebApplication.Development.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("Home")]
     public class HomeController : CMSController

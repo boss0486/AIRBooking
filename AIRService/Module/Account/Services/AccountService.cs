@@ -31,21 +31,41 @@ namespace WebCore.Services
         //###############################################################################################################################
         public ActionResult Datalist(SearchModel model)
         {
+            #region
             if (model == null)
-                return Notifization.Invalid();
-            //
-            string query = string.Empty;
-            if (string.IsNullOrWhiteSpace(model.Query))
-                query = "";
-            else
-                query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
             int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                Status = model.Status,
+                TimeExpress = model.TimeExpress,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new AccountService())
             {
-                string sqlQuery = @"SELECT * FROM View_User WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' ORDER BY FullName,CreatedDate";
+                string sqlQuery = @"SELECT * FROM View_User WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' "+ whereCondition + " ORDER BY FullName,CreatedDate";
                 var dtList = service.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -65,16 +85,8 @@ namespace WebCore.Services
                     Total = dtList.Count,
                     Page = page
                 };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+                //
+                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
         }
 
@@ -221,7 +233,7 @@ namespace WebCore.Services
                         LanguageService languageService = new LanguageService(_connection);
                         string userId = userLoginService.Create<string>(new UserLogin()
                         {
-                            LoginID = loginId,
+                            LoginID = loginId.ToLower(),
                             Password = Helper.Security.Library.Encryption256(model.Password),
                             PinCode = null,
                             TokenID = null,
@@ -446,7 +458,7 @@ namespace WebCore.Services
             }
         }
 
-        public UserModel GetUserModel(string id)
+        public UserResult GetUserModel(string id)
         {
             try
             {
@@ -457,7 +469,7 @@ namespace WebCore.Services
                         return null;
                     //
                     string sqlQuery = @"SELECT TOP (1) * FROM View_User WHERE ID = @ID";
-                    var data = _connection.Query<UserModel>(sqlQuery, new { ID = id }).FirstOrDefault();
+                    var data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                     if (data == null)
                         return null;
                     //

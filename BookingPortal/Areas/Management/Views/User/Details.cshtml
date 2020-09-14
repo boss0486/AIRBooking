@@ -34,14 +34,14 @@
             nickname = Model.Nickname;
             if (!string.IsNullOrWhiteSpace(Model.Birthday))
             {
-                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
+                birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.Birthday), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
+            createdDate = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.CreatedDate), Helper.Language.LanguageCode.Vietnamese.ID);
             imageFile = Helper.File.AttachmentFile.GetFile(Model.ImageFile);
             //
             if (Model.IsBlock)

@@ -12,25 +12,22 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Customer")]
-    [IsManage(act: false)]
     public class CustomerController : CMSController
     {
         // GET: BackEnd/Customer
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             CustomerService service = new CustomerService();
@@ -41,7 +38,6 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
             CustomerService service = new CustomerService();
@@ -54,7 +50,6 @@ namespace WebApplication.Management.Controllers
 
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(CustomerSearchModel model)
         {
@@ -72,7 +67,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(CustomerCreateModel model)
         {
@@ -90,7 +84,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(CustomerUpdateModel model)
         {
@@ -108,7 +101,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(CustomerIDModel model)
         {
@@ -122,24 +114,10 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
-
-        [HttpPost]
-        [IsManage(act: true, text: "Details")]
-        [Route("Action/Details")]
-        public ActionResult Details(CustomerIDModel model)
-        {
-            try
-            {
-                return Notifization.NotService;
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
         //OPTION ##########################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DropdownList")]
+        [IsManage(skip: true)]
         public ActionResult DropdownList()
         {
             try

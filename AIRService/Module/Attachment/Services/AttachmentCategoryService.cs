@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Helper;
 using System.Web;
 using WebCore.Entities;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -19,24 +20,49 @@ namespace WebCore.Services
         public AttachmentCategoryService() : base() { }
         public AttachmentCategoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult DataList(SearchModel model)
         {
             try
             {
-                string query = string.Empty;
-                if (string.IsNullOrEmpty(strQuery))
+                #region
+                if (model == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                int page = model.Page;
+                string query = model.Query;
+                if (string.IsNullOrWhiteSpace(query))
                     query = "";
-                else
-                    query = strQuery;
+                //
+                string whereCondition = string.Empty;
+                //
+                SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+                {
+                    Query = model.Query,
+                    Status = model.Status,
+                    TimeExpress = model.TimeExpress,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Page = model.Page,
+                    AreaID = model.AreaID,
+                    TimeZoneLocal = model.TimeZoneLocal
+                });
+                if (searchResult != null)
+                {
+                    if (searchResult.Status == 1)
+                        whereCondition = searchResult.Message;
+                    else
+                        return Notifization.Invalid(searchResult.Message);
+                }
+                #endregion
+                //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_AttachmentCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
-                var dtList = _connection.Query<AttachmentCategoryResult>(sqlQuery, new { Query = query }).ToList();
+                string sqlQuery = @"SELECT * FROM AttachmentCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'  ORDER BY [CreatedDate]";
+                var dtList = _connection.Query<AttachmentCategoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
                 var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                if (result.Count <= 0 && page > 1)
+                if (result.Count == 0 && page > 1)
                 {
                     page -= 1;
                     result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -50,16 +76,8 @@ namespace WebCore.Services
                     Total = dtList.Count,
                     Page = page
                 };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+                //
+                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
             catch
             {
@@ -147,7 +165,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_AttachmentCategory WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM AttachmentCategory WHERE ID = @Query";
                 return _connection.Query<AttachmentCategory>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
@@ -189,26 +207,6 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string Id)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_AttachmentCategory WHERE ID = @ID";
-                var item = _connection.Query<AttachmentCategoryResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
-                if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
-            }
-            catch
-            {
-                return Notifization.NotService;
-            }
-        }
-        //##############################################################################################################################################################################################################################################################
         public static string DDLAttachmentCategory(string id)
         {
             try
@@ -239,7 +237,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_AttachmentCategory ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM AttachmentCategory ORDER BY Title ASC";
                 return _connection.Query<AttachmentCategoryOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

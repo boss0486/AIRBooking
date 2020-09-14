@@ -21,7 +21,8 @@ var WalletCustomerSpendingHistoryController = {
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: LibDateTime.FormatToServerDate(txtStartDate),
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
         //
         AjaxFrom.POST({

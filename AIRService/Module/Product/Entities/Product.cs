@@ -123,8 +123,9 @@ namespace WebCore.Entities
         public string HtmlNote { get; set; }
         public string HtmlText { get; set; }
         public string Tag { get; set; }
-        public string ImageFile{get; set;}
-        public string ImagePath {
+        public string ImageFile { get; set; }
+        public string ImagePath
+        {
             get => AttachmentFile.GetFile(ImageFile);
             set
             {
@@ -226,13 +227,10 @@ namespace WebCore.Entities
             Title = title;
         }
     }
-    
-    public class ProductSearchModel
+
+    public class ProductSearchModel : SearchModel
     {
-        public string Query { get; set; }
         public string CategoryID { get; set; }
         public int State { get; set; }
-        public int Status { get; set; }
-        public int Page { get; set; }
     }
 }

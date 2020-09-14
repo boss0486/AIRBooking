@@ -12,13 +12,12 @@ using WebCore.Services;
 
 namespace WebApplication.Development.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("Menu-Controller")]
     public class MenuControllerController : Controller
     {
         // GET: BackEnd/MenuControllers
-        [IsManage(act: false, text: "List")]
         public ActionResult DataList()
         {
             return View();

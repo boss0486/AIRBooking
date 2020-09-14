@@ -12,40 +12,37 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Bank")]
-    [IsManage(act: false)]
     public class BankController : CMSController
     {
         // GET: BackEnd/bank
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             BankService service = new BankService();
-            var model = service.UpdateForm(id);
+            var model = service.GetBankByID(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
 
-        [IsManage(act: false)]
+        [Route("Action/DataList")]
         public ActionResult Details(string id)
         {
             BankService service = new BankService();
-            var model = service.UpdateForm(id);
+            var model = service.GetBankByID(id);
             if (model != null)
                 return View(model);
             //
@@ -53,7 +50,6 @@ namespace WebApplication.Management.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
@@ -71,7 +67,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(BankCreateModel model)
         {
@@ -87,7 +82,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(BankUpdateModel model)
         {
@@ -103,7 +97,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(BankIDModel model)
         {
@@ -113,6 +106,7 @@ namespace WebApplication.Management.Controllers
                 {
                     if (model == null)
                         return Notifization.Invalid();
+                    //
                     return service.Delete(model.ID);
                 }
             }
@@ -121,26 +115,5 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
-
-        [HttpPost]
-        [IsManage(act: true, text: "Details")]
-        [Route("Action/Details")]
-        public ActionResult Details(BankIDModel model)
-        {
-            try
-            {
-                using (var service = new BankService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid();
-                    return service.Detail(model.ID);
-                }
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
-
     }
 }

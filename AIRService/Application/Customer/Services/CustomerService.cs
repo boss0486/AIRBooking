@@ -29,22 +29,59 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(CustomerSearchModel model)
         {
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-            string typeId = model.TypeID;
-            string langID = Helper.Current.UserLogin.LanguageID;
             string whereCondition = string.Empty;
-
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
+            string typeId = model.TypeID;
             if (!string.IsNullOrWhiteSpace(typeId))
             {
                 whereCondition += " AND TypeID = @TypeID";
             }
+            //
+            if (Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                // get customerid
+                string clientId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                whereCondition += " AND Path LIKE N'" + clientId + "%'";
+            }
+            else
+            if (Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                // get customerid
+                string clientId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                whereCondition += " AND SupplierID = '" + clientId + "'";
+            }
 
-            string sqlQuery = @"SELECT * FROM View_App_Customer WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' OR CodeID LIKE N'%'+ dbo.Uni2NONE(@Query) +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<CustomerResultModel>(sqlQuery, new { Query = query, TypeID = typeId }).ToList();
+            string sqlQuery = @"SELECT * FROM App_Customer WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<CustomerResultModel>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -63,14 +100,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(CustomerCreateModel model)
@@ -165,13 +196,14 @@ namespace WebCore.Services
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 06");
                         //
                     }
+                    // CHECK CREATE AGENT *************************************************************
+                    // 1.neu phai admin, admin app, nha cung cap, khach hang se ko dc tao khach hang
+                    // 1.neu la khach hang ko dc tao them dai ly, chỉ dc tạo comp
+                    if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
+                        return Notifization.Invalid("Không thể tạo khách hàng");
                     //
-                    if (!string.IsNullOrWhiteSpace(path))
-                    {
-                        string[] subPath = path.Split('/');
-                        if (subPath.Length > 1)
-                            return Notifization.Invalid("Không thể tạo thêm đại lý");
-                    }
+                    if (Helper.Current.UserLogin.IsCustomerLogged() && CustomerTypeService.GetCustomerType(typeId) == (int)CustomerEnum.CustomerType.AGENT)
+                        return Notifization.Invalid("Không thể tạo đại lý");
                     //
                     if (string.IsNullOrWhiteSpace(typeId))
                         return Notifization.Invalid("Vui lòng chọn loại khách hàng");
@@ -315,11 +347,11 @@ namespace WebCore.Services
                     UserRoleService userRoleService = new UserRoleService(_connection);
                     WalletCustomerService balanceCustomerService = new WalletCustomerService(_connection);
                     LanguageService languageService = new LanguageService(_connection);
-                    //
+                    // *******  account login
                     string languageId = Helper.Page.Default.LanguageID;
                     string userId = userLoginService.Create<string>(new UserLogin()
                     {
-                        LoginID = accountId,
+                        LoginID = accountId.ToLower(),
                         Password = Helper.Security.Library.Encryption256(model.Password),
                         TokenID = null,
                         OTPCode = null
@@ -373,8 +405,8 @@ namespace WebCore.Services
                         //
                         Enabled = enabled,
                     }, transaction: _transaction);
-                    //
-                    // create balance 
+
+                    //******* create balance 
                     var balanceCustomer = balanceCustomerService.Create<string>(new WalletCustomer()
                     {
                         CustomerID = customerId,
@@ -578,7 +610,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_Customer WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Customer WHERE ID = @Query";
                 var model = _connection.Query<Customer>(sqlQuery, new { Query = Id }).FirstOrDefault();
                 return model;
             }
@@ -669,9 +701,45 @@ namespace WebCore.Services
         }
         public List<CustomerOption> DataOption()
         {
-            string sqlQuery = @"SELECT * FROM View_App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
+            string sqlQuery = @"SELECT * FROM App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
             return _connection.Query<CustomerOption>(sqlQuery, new { }).ToList();
         }
+
+        public static string DropdownListWithTypeID(int typeEnum, string id)
+        {
+            string result = string.Empty;
+            using (var service = new CustomerService())
+            {
+                string typeId = CustomerTypeService.GetCustomerTypeIDByType(typeEnum);
+                if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+                    return result;
+                //
+                // limit by user login
+                string whereCondition = string.Empty;
+                if (Helper.Current.UserLogin.IsSupplierLogged())
+                {
+                    string userId = Helper.Current.UserLogin.IdentifierID;
+                    string supplierId = ClientLoginService.GetClientIDByUserID(userId);
+                    whereCondition += " AND SupplierID = '" + supplierId + "'";
+                }
+                //
+                string sqlQuery = @"SELECT * FROM App_Customer WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
+                var dtList = service.Query<CustomerOption>(sqlQuery, new { TypeID = typeId }).ToList();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+            }
+
+        }
+
 
         //##############################################################################################################################################################################################################################################################
         public static string DropdownListCustomerChildByLogin(string id)
@@ -732,22 +800,74 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public static string GetCustomerCode(string id)
         {
-            
-                if (string.IsNullOrWhiteSpace(id))
+
+            if (string.IsNullOrWhiteSpace(id))
+                return string.Empty;
+            //
+            using (var service = new CustomerService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                if (customer == null)
                     return string.Empty;
                 //
-                using (var service = new CustomerService())
-                {
-                    var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
-                    if (customer == null)
-                        return string.Empty;
-                    //
-                    return customer.CodeID;
+                return customer.CodeID;
 
+            }
+
+        }
+        public static string GetInforType(string typeId, string path)
+        {
+            try
+            {
+                var service = new CustomerTypeService();
+                string typeName = CustomerTypeService.GetNameByID(typeId);
+                if (CustomerTypeService.GetCustomerType(typeId) == (int)CustomerEnum.CustomerType.AGENT)
+                {
+                    int level = CustomerService.GetLevelByPath(path);
+                    string strLevel = level + "";
+                    if (level < 10)
+                        strLevel = "0" + level;
+                    //
+                    return typeName + " cấp: " + strLevel;
                 }
-            
+                return typeName;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        public static int GetLevelByPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return 0;
+            //
+            if (path.Contains("/"))
+            {
+                string[] arrPath = path.Split('/');
+                return arrPath.Length;
+            }
+            //
+            return 1;
         }
 
+        public static string GetCustomerIDByUserID(string userId)
+        {
+
+            if (string.IsNullOrWhiteSpace(userId))
+                return string.Empty;
+            //
+            using (var service = new ClientLoginService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+                if (customer == null)
+                    return string.Empty;
+                //
+                return customer.ClientID;
+
+            }
+
+        }
         //##############################################################################################################################################################################################################################################################
 
     }

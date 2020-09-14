@@ -12,9 +12,9 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Report")]
-    [IsManage(act: false)]
     public class ReportController : CMSController
     {
          

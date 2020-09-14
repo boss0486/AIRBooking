@@ -20,25 +20,49 @@ using WebCore.ENM;
 
 namespace WebCore.Services
 {
-    public interface ITransactionSpendingService : IEntityService<TransactionSpending> { }
-    public class TransactionSpendingService : EntityService<TransactionSpending>, ITransactionSpendingService
+    public interface ITransactionCustomerSpendingService : IEntityService<TransactionCustomerSpending> { }
+    public class TransactionCustomerSpendingService : EntityService<TransactionCustomerSpending>, ITransactionCustomerSpendingService
     {
-        public TransactionSpendingService() : base() { }
-        public TransactionSpendingService(System.Data.IDbConnection db) : base(db) { }
+        public TransactionCustomerSpendingService() : base() { }
+        public TransactionCustomerSpendingService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-
-            string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                ORDER BY [CreatedDate]";
+            string whereCondition = string.Empty;
             //
-            var dtList = _connection.Query<TransactionSpendingResult>(sqlQuery, new { Query = query }).ToList();
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
+            string langID = Helper.Current.UserLogin.LanguageID;
+            string sqlQuery = @"SELECT * FROM App_TransactionSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
+            //
+            var dtList = _connection.Query<TransactionCustomerSpendingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
 
@@ -58,18 +82,12 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
 
-        public ActionResult Create(TransactionSpendingCreateModel model)
+        public ActionResult Create(TransactionCustomerSpendingCreateModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -110,8 +128,8 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     //
-                    TransactionSpendingService transactionSpendingService = new TransactionSpendingService(_connection);
-                    var transactionSpendingId = transactionSpendingService.Create<string>(new TransactionSpending()
+                    TransactionCustomerSpendingService transactionSpendingService = new TransactionCustomerSpendingService(_connection);
+                    var transactionSpendingId = transactionSpendingService.Create<string>(new TransactionCustomerSpending()
                     {
                         CustomerID = customerId,
                         Title = title,
@@ -157,7 +175,7 @@ namespace WebCore.Services
             }
         }
 
-        public TransactionSpending GetTransactionSpendingModel(string Id)
+        public TransactionCustomerSpending GetTransactionSpendingModel(string Id)
         {
             try
             {
@@ -166,7 +184,7 @@ namespace WebCore.Services
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionSpending WHERE ID = @Query";
-                return _connection.Query<TransactionSpending>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<TransactionCustomerSpending>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
             {
@@ -185,7 +203,7 @@ namespace WebCore.Services
                 {
                     try
                     {
-                        TransactionSpendingService TransactionSpendingService = new TransactionSpendingService(_connectDb);
+                        TransactionCustomerSpendingService TransactionSpendingService = new TransactionCustomerSpendingService(_connectDb);
                         var TransactionSpending = TransactionSpendingService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
                         if (TransactionSpending == null)
                             return Notifization.NotFound();
@@ -211,7 +229,7 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM App_TransactionSpending WHERE ID = @ID";
-                var item = _connection.Query<TransactionSpendingResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                var item = _connection.Query<TransactionCustomerSpendingResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 //

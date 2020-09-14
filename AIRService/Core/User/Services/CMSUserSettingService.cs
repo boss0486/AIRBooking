@@ -113,30 +113,7 @@ namespace WebCore.Services
         }
         //##############################################################################################################################################################################################################################################################
 
-        public ActionResult SendOtp(UserEmailModel model)
-        {
-            string strEmail = model.Email.ToLower();
-            CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);
-            CMSUserInfoService cmsUserInfoService = new CMSUserInfoService(_connection);
-            var cmsUserInfo = cmsUserInfoService.GetAlls(m => m.Email.ToLower().Equals(model.Email.ToLower())).FirstOrDefault();
-            if (cmsUserInfo == null)
-                return Notifization.NotFound("Dữ liệu không hợp lệ");
-            // send mail
-            string strOTP = Helper.Security.Library.OTPCode;
-            string strGuid = new Guid().ToString();
-            string strToken = Helper.Security.Token.Create(cmsUserInfo.UserID);
-            //  send otp for reset password 
-            string subject = "HRM-XÁC THỰC OTP";
-            int status = Helper.Email.EMailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
-            if (status != 1)
-                return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
-            //
-            var cmsUserLogin = cmsUserLoginService.GetAlls(m => m.ID.Equals(cmsUserInfo.UserID.ToLower())).FirstOrDefault();
-            cmsUserLogin.OTPCode = strOTP;
-            cmsUserLogin.TokenID = strToken;
-            cmsUserLoginService.Update(cmsUserLogin);
-            return Notifization.Success("Mã OTP đã được gửi tới email của bạn", "/Authentication/login/forgot?token=" + strToken);
-        }
+
         public ActionResult ResetPassword(UserResetPasswordModel model)
         {
             CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);

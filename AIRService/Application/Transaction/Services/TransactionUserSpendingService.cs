@@ -29,17 +29,41 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-
-            string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionUserSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                ORDER BY [CreatedDate]";
+            string whereCondition = string.Empty;
             //
-            var dtList = _connection.Query<TransactionUserSpendingResult>(sqlQuery, new { Query = query }).ToList();
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
+            string langID = Helper.Current.UserLogin.LanguageID;
+            string sqlQuery = @"SELECT * FROM App_TransactionUserSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
+            //
+            var dtList = _connection.Query<TransactionUserSpendingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
 
@@ -59,14 +83,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(TransactionUserSpendingCreateModel model)

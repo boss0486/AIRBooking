@@ -49,5 +49,3 @@ $('#btnReset').click(function () {
     location.reload();
 });
 
-
-

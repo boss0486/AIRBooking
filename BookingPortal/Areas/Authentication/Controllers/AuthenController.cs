@@ -7,9 +7,11 @@ using WebCore.Core;
 using WebCore.Services;
 using WebCore.Entities;
 using Helper.User;
+using System;
 
 namespace WebApplication.Authentication.Controllers
 {
+    [IsManage]
     [RouteArea("Authentication")]
     //[RoutePrefix("Authen")]
     public class AuthenController : Controller
@@ -17,7 +19,7 @@ namespace WebApplication.Authentication.Controllers
         // GET: Authentication/Login
         [Route("")]
         [Route("Login")]
-        [IsManage(false, "Login")]
+        [Route("Authen/Login")]
         public ActionResult Login()
         {
             ViewBag.UId = string.Empty;
@@ -47,40 +49,30 @@ namespace WebApplication.Authentication.Controllers
             return View();
         }
 
-        [Route("QrLogin")]
-        [IsManage(false, "QrLogin")]
-        public ActionResult QrLogin()
-        {
-            return View();
-        }
-
-
         [Route("OTPAuthen")]
-        [IsManage(false, "OTPAuthen")]
         public ActionResult OTPAuthen()
         {
             return View();
         }
 
         [Route("Forgot")]
-        [IsManage(false, "Forgot")]
         public ActionResult Forgot()
         {
             ViewBag.Token = Request.QueryString["token"];
             return View();
         }
 
-        [Route("SendOtp")]
-        [IsManage(false, "SendOtp")]
-        public ActionResult SendOtp()
+        [Route("ResetPassword")]
+        public ActionResult ResetPassword()
         {
+            ViewBag.Token = Request.QueryString["token"];
             return View();
         }
 
         // API ********************************************************************************************************
         [HttpPost]
-        [IsManage(true, "Login")]
         [Route("Action/Login")]
+        [IsManage(skip: true)]
         public ActionResult Login(LoginReqestModel model)
         {
             try
@@ -96,17 +88,8 @@ namespace WebApplication.Authentication.Controllers
         }
 
         [HttpPost]
-        [IsManage(true, "PinCode")]
-        [Route("Action/PinCode")]
-        public ActionResult PinCode(LoginQRReqestModel model)
-        {
-            var service = new UserService();
-            return service.LoginQR(model);
-        }
-
-
-        [HttpPost]
         [Route("Action/Logout")]
+        [IsManage(skip: true)]
         public ActionResult Logout()
         {
             try
@@ -119,46 +102,39 @@ namespace WebApplication.Authentication.Controllers
                 return Notifization.NotService;
             }
         }
-        //[HttpPost]
-        //[IsManage]
-        //[Route("Action/SendOtp")]
-        //public ActionResult SendOtp(EmailModel model)
-        //{
-        //    // call service
-        //    using (var service = new UserLoginService())
-        //        return service.SendOtp(new
-        //        {
 
-        //        });
-        //}
+        [HttpPost]
+        [Route("Action/Forgot")]
+        [IsManage(skip: true)]
+        public ActionResult Forgot(UserEmailModel model)
+        {
+            try
+            {
+                var service = new UserService();
+                return service.ForgotPassword(model);
+            }
+            catch(Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+        //
 
-
-        //[HttpPost]
-        //[IsManage]
-        //[Route("Action/Password")]
-        //public ActionResult Password(UserResetPasswordModel model)
-        //{
-        //    if (model == null)
-        //        return Notifization.Invalid();
-        //    if (string.IsNullOrEmpty(model.OTPCode))
-        //        return Notifization.Error("Không được để trống mã OTP");
-        //    //
-        //    if (string.IsNullOrEmpty(model.Password))
-        //        return Notifization.Error("Không được để trống mật khẩu");
-        //    //
-        //    if (string.IsNullOrEmpty(model.RePassword))
-        //        return Notifization.Error("Vui lòng nhập lại mật khẩu");
-        //    //
-        //    if (!Helper.Page.Validate.TestPassword(model.Password))
-        //        return Notifization.Invalid("Yêu cầu mật khẩu bảo mật hơn");
-        //    if (model.Password.Length < 4 || model.Password.Length > 16)
-        //        return Notifization.Invalid("Mật khẩu giới hạn [4-16] ký tự");
-        //    //
-        //    if (!model.Password.Equals(model.RePassword))
-        //        return Notifization.Error("Xác nhận mật khẩu chưa đúng");
-        //    // call service
-        //    using (var userSettingService = new UserSettingService())
-        //        return userSettingService.ResetPassword(model);
-        //}
+        [HttpPost]
+        [Route("Action/ResetPassword")]
+        [IsManage(skip: true)]
+        public ActionResult ResetPassword(UserResetPasswordModel model)
+        {
+            try
+            {
+                var service = new UserService();
+                return service.ResetPassword(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+        //
     }
 }

@@ -7,24 +7,24 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using WebCore.Core;
+using WebCore.ENM;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 using WebCore.Services;
 
 namespace WebApplication.Development.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("Menu-Item")]
     public class MenuItemController : CMSController
     {
         // GET: BackEnd/MenuItem
-        [IsManage(act: false, text: "List")]
         public ActionResult DataList()
         {
             return View();
         }
-        [IsManage(act: false, text: "Create")]
+
         public ActionResult Create()
         {
             return View();
@@ -33,6 +33,12 @@ namespace WebApplication.Development.Controllers
         {
             return View();
         }
+
+        public ActionResult Setting()
+        {
+            return View();
+        }
+
         //
         [HttpPost]
         [Route("Action/Create")]
@@ -154,20 +160,6 @@ namespace WebApplication.Development.Controllers
             }
         }
         //
-        //[HttpPost]
-        //public ActionResult UpdateInLine(MenuItemEditModel model)
-        //{
-        //    try
-        //    {
-        //        using (var menuItemService = new MenuItemService())
-        //            return menuItemService.UpdateInline(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Notifization.TEST("::" + ex);
-        //    }
-        //}
-        //
         [HttpPost]
         [Route("Action/SortUp")]
         public ActionResult SortUp(MenuItemIDModel model)
@@ -202,47 +194,19 @@ namespace WebApplication.Development.Controllers
         // ###########################################################################################################################################33
 
 
-
-
-
-
-        [IsManage(act: false, text: "Setting")]
-        public ActionResult Setting()
-        {
-            return View();
-        }
-
-        [IsManage(act: false, text: "Keyword-List")]
-        public ActionResult Keyword()
-        {
-            return View();
-        }
-
-        [IsManage(act: false, text: "Permission")]
-        public ActionResult Permission()
-        {
-            return View();
-        }
-
-
-        // ********************************************************************************************************
         [HttpPost]
-        [IsManage(act: true, text: "Sync")]
         [Route("Action/Menu-Sync")]
         public ActionResult MenuControlSync()
         {
             try
             {
-                //Assembly asm = Assembly.GetExecutingAssembly();
-                ////var types = AppDomain.CurrentDomain.GetAssemblies().Get);
-                ////var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
-                //
-                //var types = asm.GetType();
                 MenuControllerService menuControllerService = new MenuControllerService();
-                //
-                Assembly asm = Assembly.GetExecutingAssembly();
-                var model = asm.GetTypes();
-                return menuControllerService.MenuControlSync(model);
+                ////
+                //Assembly asm = Assembly.GetExecutingAssembly();
+                //var model = asm.GetTypes();
+
+                string routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
+                return menuControllerService.MenuControlSync(routeArea);
 
             }
             catch (Exception ex)
@@ -252,10 +216,7 @@ namespace WebApplication.Development.Controllers
             }
         }
 
-
-        // ********************************************************************************************************
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Menu-Sync-List")]
         public ActionResult MenuSyncControl(MvcControllerSetting model)
         {

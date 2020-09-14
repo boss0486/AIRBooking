@@ -19,7 +19,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; } 
+        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
@@ -36,7 +36,7 @@ namespace WebCore.Entities
     // model
     public class TransactionDepositCreateModel
     {
-        public string CustomerID { get; set; } 
+        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string TransactionID { get; set; }
@@ -62,7 +62,8 @@ namespace WebCore.Entities
 
         public string ID { get; set; }
         private string _customerId;
-        public string CustomerID {
+        public string CustomerID
+        {
             get
             {
                 return CustomerService.GetCustomerCode(_customerId);
@@ -80,7 +81,18 @@ namespace WebCore.Entities
         public string BankIDSent { get; set; }
         public string BankReceived { get; set; }
         public string BankIDReceived { get; set; }
-        public string ReceivedDate { get; set; }
+        private string _receivedDate;
+        public string ReceivedDate
+        {
+            get
+            {
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_receivedDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _receivedDate = value;
+            }
+        }
         public double Amount { get; set; }
         public int Status { get; set; }
     }

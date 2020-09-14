@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Helper;
 using System.Web;
 using WebCore.Entities;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -19,22 +20,45 @@ namespace WebCore.Services
         public ProductCategoryService() : base() { }
         public ProductCategoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult DataList(SearchModel model)
         {
-            string query = string.Empty;
-            if (string.IsNullOrEmpty(strQuery))
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
                 query = "";
-            else
-                query = strQuery;
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_ProductCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_ProductCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
             var dtList = _connection.Query<ProductCategoryResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
- //
+            //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-            if (result.Count <= 0 && page > 1)
+            if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -48,16 +72,7 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -68,12 +83,12 @@ namespace WebCore.Services
             {
                 try
                 {
-                    ProductCategoryService ProductCategoryService = new ProductCategoryService(_connection);
-                    var ProductCategorys = ProductCategoryService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
-                    if (ProductCategorys.Count > 0)
+                    ProductCategoryService productCategoryService = new ProductCategoryService(_connection);
+                    ProductCategory productCategorys = productCategoryService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction).FirstOrDefault();
+                    if (productCategorys != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
-
-                    var Id = ProductCategoryService.Create<string>(new ProductCategory()
+                    //
+                    var Id = productCategoryService.Create<string>(new ProductCategory()
                     {
                         Title = model.Title,
                         Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
@@ -103,14 +118,14 @@ namespace WebCore.Services
                 try
                 {
                     var productCategoryService = new ProductCategoryService(_connection);
-                    string Id = model.ID.ToLower();
-                    var productCategory = productCategoryService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var productCategory = productCategoryService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id), transaction: transaction).FirstOrDefault();
                     if (productCategory == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = productCategoryService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !productCategory.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    productCategory = productCategoryService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower().Equals(title.ToLower()) && !productCategory.ID.ToLower().Equals(id), transaction: transaction).FirstOrDefault();
+                    if (productCategory != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
                     productCategory.Title = title;
@@ -128,7 +143,7 @@ namespace WebCore.Services
                 }
             }
         }
-        public ProductCategory UpdateForm(string Id)
+        public ProductCategoryResult ProductCategoryByID(string Id)
         {
             try
             {
@@ -136,8 +151,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_ProductCategory WHERE ID = @Query";
-                return _connection.Query<ProductCategory>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ProductCategory WHERE ID = @Query";
+                return _connection.Query<ProductCategoryResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
             {
@@ -178,7 +193,7 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_ProductCategory WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM App_ProductCategory WHERE ID = @ID";
                 var item = _connection.Query<ProductCategoryResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -221,7 +236,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_ProductCategory ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_ProductCategory ORDER BY Title ASC";
                 return _connection.Query<ProductCategoryOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

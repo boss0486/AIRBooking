@@ -5,7 +5,7 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.UserClientModel
+@model WebCore.Entities.UserClientResult
 
 @{
     string id = "";
@@ -24,6 +24,7 @@
     string createdDate = "";
     string isBlock = "";
     string enabled = "";
+    List<string> lstRole = new List<string>();
     try
     {
         if (Model != null)
@@ -32,14 +33,10 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            if (!string.IsNullOrWhiteSpace(Model.Birthday))
-            {
-                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
-            }
+            birthday = Model.Birthday;
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
-            roleId = Model.RoleID;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
             createdDate = Convert.ToString(Model.CreatedDate);
@@ -53,6 +50,9 @@
             {
                 enabled = "checked";
             }
+
+            lstRole = WebCore.Services.RoleService.GetRoleForUser(id);
+
         }
     }
     catch (Exception)
@@ -70,14 +70,16 @@
             <div class="form-control" disabled>@loginId</div>
             <span id="lblLoginID" class="message msg-box"></span>
         </div>
-        <div class="form-group role-group">
+        <div class="form-group role-group list-select">
             <label for="">Nhóm người dùng:</label>
-            <div id="AllUserGroup" class="all-list-group list-group check-option" style="margin-bottom: 0px;">
+            <div class="list-group item-title" style="margin-bottom: 0px;">
                 <div class="list-group-item">
                     <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
                 </div>
             </div>
-            <div id="ddlRole" class="role list-group check-option list-group-customize" style="height: 329px;overflow:auto;margin-bottom: 0;"></div>
+            <div id="ddlRole" class="role list-group data-group" style="height: 329px;overflow:auto;margin-bottom: 0;">
+                @Html.Raw(WebCore.Services.RoleService.DDLListRoleMultiSelect(lstRole))
+            </div>
         </div>
     </div>
 
@@ -105,7 +107,7 @@
                 </div>
                 <div class="form-group ">
                     <label class="form-label">Ngày sinh:</label>
-                    <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value="@birthday" />
+                    <input id="txtBirthday" name="txtBirthday" data-date="true" maxlength="10" type="text" class="form-control" value="@birthday" />
                     <span id="lblBirthday" class="message msg-box"></span>
                 </div>
                 <div class="form-group ">
@@ -137,6 +139,7 @@
                     <input id="cbxBlock" name="cbxBlock" type="checkbox" class="filled-in" @isBlock />
                     <label for="cbxBlock">Khóa</label>
                     <span id="lblBlock" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
             <div class="col-md-6">
@@ -145,6 +148,7 @@
                     <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
                     <label for="cbxActive">Kích hoạt</label>
                     <span id="lblActive" class="message msg-box"></span>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -162,10 +166,4 @@
 <input id="txtID" type="hidden" value="@id" />
 @section scripts{
     <script src="~/Areas/Management/_script/app-user.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var userId = $('#txtID').val();
-            AppUserController.GetRoleByUser(userId);
-        });
-    </script>
 }

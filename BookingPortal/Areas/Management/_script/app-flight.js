@@ -154,6 +154,87 @@ var flightController = {
             }
         });
     },
+    DataList: function (page) {
+        //       
+        var _ariaId = $('#ddlAreaID').val();
+        var _province = $('#ddlProvince').val();
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
+        var model = {
+            Query: $('#txtQuery').val(),
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val()),
+            AreaID: _ariaId,
+            ProviceID: _province,
+        };
+        //
+        AjaxFrom.POST({
+            url: URLC + '/DataList',
+            data: model,
+            success: function (result) {
+                $('tbody#TblData').html('');
+                $('#Pagination').html('');
+                if (result !== null) {
+                    if (result.status === 200) {
+                        var currentPage = 1;
+                        var pagination = result.paging;
+                        if (pagination !== null) {
+                            totalPage = pagination.TotalPage;
+                            currentPage = pagination.Page;
+                            pageSize = pagination.PageSize;
+                            pageIndex = pagination.Page;
+                        }
+                        var rowData = '';
+                        $.each(result.data, function (index, item) {
+                            index = index + 1;
+                            var id = item.ID;
+                            if (id.length > 0)
+                                id = id.trim();
+                            //
+                            var _unit = 'vnd';
+                            var _title = SubStringText.SubTitle(item.Title);
+                            var _summary = SubStringText.SubSummary(item.Summary);
+                            var _iatacode = item.IATACode;
+                            var _area = item.AreaName;
+                            //  role
+                            var action = HelperModel.RolePermission(result.role, "CustomerController", id);
+                            //
+                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                            rowData += `
+                            <tr>
+                                 <td class="text-right">${rowNum}&nbsp;</td>  
+                                 <td class='tbcol-photo'>${_area}</td>  
+                                 <td class='tbcol-photo'>${_iatacode}</td>  
+                                 <td class='text-left'>${_title}</td>                                                                                                                                                                                                                                                                         
+                                 <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
+                                 <td class="tbcol-action">${action}</td>
+                            </tr>`;
+                        });
+                        $('tbody#TblData').html(rowData);
+                        if (parseInt(totalPage) > 1) {
+                            Paging.Pagination("#Pagination", totalPage, currentPage, flightController.DataList);
+                        }
+                        return;
+                    }
+                    else {
+                        //Notifization.Error(result.message);
+                        console.log('::' + result.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NOTSERVICES);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+    },
     Create: function () {
         var iataCode = $('#txtIataCode').val();
         var title = $('#txtTitle').val();
@@ -226,91 +307,6 @@ var flightController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
-            }
-        });
-    },
-    DataList: function (page) {
-        var _query = $('#txtQuery').val();
-        var _ariaId = $('#ddlAreaID').val();
-        var _province = $('#ddlProvince').val();
-        var model = {
-            Query: _query,
-            Page: page,
-            AreaID: _ariaId,
-            ProviceID: _province,
-            Status: 0
-        };
-        AjaxFrom.POST({
-            url: URLC + '/DataList',
-            data: model,
-            success: function (result) {
-                $('tbody#TblData').html('');
-                $('#Pagination').html('');
-                if (result !== null) {
-                    if (result.status === 200) {
-                        var currentPage = 1;
-                        var pagination = result.paging;
-                        if (pagination !== null) {
-                            totalPage = pagination.TotalPage;
-                            currentPage = pagination.Page;
-                            pageSize = pagination.PageSize;
-                            pageIndex = pagination.Page;
-                        }
-                        var rowData = '';
-                        $.each(result.data, function (index, item) {
-                            index = index + 1;
-                            var id = item.ID;
-                            if (id.length > 0)
-                                id = id.trim();
-                            //  role
-                            var role = result.role;
-                            var action = "";
-                            if (role !== undefined && role !== null) {
-                                action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="flightController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/Details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Details</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
-
-                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
-                            var _unit = 'vnd';
-                            var _title = SubStringText.SubTitle(item.Title);
-                            var _summary = SubStringText.SubSummary(item.Summary);
-                            var _iatacode = item.IATACode;
-                            var _area = item.AreaName;
-                            rowData += `
-                            <tr>
-                                 <td class="text-right">${rowNum}&nbsp;</td>  
-                                 <td class='tbcol-photo'>${_area}</td>  
-                                 <td class='tbcol-photo'>${_iatacode}</td>  
-                                 <td class='text-left'>${_title}</td>                                                                                                                                                                                                                                                                         
-                                 <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
-                                 <td class="tbcol-action">${action}</td>
-                            </tr>`;
-                        });
-                        $('tbody#TblData').html(rowData);
-                        if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, flightController.DataList);
-                        }
-                        return;
-                    }
-                    else {
-                        //Notifization.Error(result.message);
-                        console.log('::' + result.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NOTSERVICES);
-                return;
-            },
-            error: function (result) {
                 console.log('::' + MessageText.NOTSERVICES);
             }
         });
@@ -473,7 +469,7 @@ $(document).on("change", "#ddlAreaID", function () {
         $('#lblAreaID').html('');
     }
 });
- //
+//
 $(document).on('click', '#cbxActive', function () {
     if ($(this).hasClass('actived')) {
         // remove
@@ -487,7 +483,7 @@ $(document).on('click', '#cbxActive', function () {
         $(this).addClass('actived');
     }
 });
- //
+//
 $(document).on('', '.img-caption-text', function () {
     $('.new-box-preview img').click();
 });

@@ -20,5 +20,25 @@ namespace WebCore.Services
     {
         public ClientLoginService() : base() { }
         public ClientLoginService(System.Data.IDbConnection db) : base(db) { }
+
+        public static string GetClientIDByUserID(string userId)
+        {
+
+            if (string.IsNullOrWhiteSpace(userId))
+                return string.Empty;
+            //
+            using (var service = new ClientLoginService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+                if (customer == null)
+                    return string.Empty;
+                //
+                return customer.ClientID;
+
+            }
+
+        }
     }
+
+
 }

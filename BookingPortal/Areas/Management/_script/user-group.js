@@ -128,11 +128,20 @@ var UserGroupController = {
         });
     },
     DataList: function (page) {
+        //
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
-            Status: $('#ddlStatus').val()
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -156,20 +165,8 @@ var UserGroupController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="UserGroupController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Detail)
-                                    action += `<a href='${URLA}/details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
-
+                            var action = HelperModel.RolePermission(result.role, "UserGroupController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
@@ -390,12 +387,12 @@ var UserGroupController = {
                             //
                             var strIndex = index;
                             if (index < 10)
-                                strIndex = "0" + index; 
+                                strIndex = "0" + index;
                             //
                             var level = parseInt(item.Level);
                             var strLevel = level;
                             if (level < 10)
-                                strLevel = "0" + level; 
+                                strLevel = "0" + level;
                             //
                             var active = '';
                             if (id != undefined && id == item.ID) {

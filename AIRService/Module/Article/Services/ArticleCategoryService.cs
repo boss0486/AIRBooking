@@ -27,7 +27,7 @@ namespace WebCore.Services
             else
                 query = strQuery;
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_ArticleCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
+            string sqlQuery = @"SELECT * FROM App_ArticleCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
                                     ORDER BY [CreatedDate]";
             var dtList = _connection.Query<ArticleCategoryResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
@@ -139,7 +139,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_ArticleCategory WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ArticleCategory WHERE ID = @Query";
                 return _connection.Query<ArticleCategory>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
@@ -181,7 +181,7 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_ArticleCategory WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM App_ArticleCategory WHERE ID = @ID";
                 var item = _connection.Query<ArticleCategoryResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -223,7 +223,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_ArticleCategory ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_ArticleCategory ORDER BY Title ASC";
                 return _connection.Query<ArticleCategoryOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

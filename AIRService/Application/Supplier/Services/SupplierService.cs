@@ -29,22 +29,51 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
             string query = model.Query;
             if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
-            int page = model.Page;
-            string typeId = "";
-            string langID = Helper.Current.UserLogin.LanguageID;
             string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
 
-            //if (!string.IsNullOrWhiteSpace(typeId))
-            //{
-            //    whereCondition += " AND TypeID = @TypeID";
-            //}
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+                return Notifization.AccessDenied(MessageText.AccessDenied);
+            //
+            if (Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                string supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
 
-            string sqlQuery = @"SELECT * FROM View_App_Supplier WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' OR CodeID LIKE N'%'+ dbo.Uni2NONE(@Query) +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<SupplierResultModel>(sqlQuery, new { Query = query, TypeID = typeId }).ToList();
+                whereCondition += " AND ID = '" + supplierId + "'";
+            }
+            //
+            string typeId = "";
+            string sqlQuery = @"SELECT * FROM App_Supplier WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<SupplierResultModel>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -63,14 +92,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleDefaultModel roleDefault = new Helper.Model.RoleDefaultModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleDefault, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(SupplierCreateModel model)
@@ -241,7 +264,7 @@ namespace WebCore.Services
                     string languageId = Helper.Page.Default.LanguageID;
                     string userId = userLoginService.Create<string>(new UserLogin()
                     {
-                        LoginID = accountId,
+                        LoginID = accountId.ToLower(),
                         Password = Helper.Security.Library.Encryption256(model.Password),
                         TokenID = null,
                         OTPCode = null
@@ -462,7 +485,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_Supplier WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Supplier WHERE ID = @Query";
                 var model = _connection.Query<Supplier>(sqlQuery, new { Query = Id }).FirstOrDefault();
                 return model;
             }
@@ -471,7 +494,7 @@ namespace WebCore.Services
                 return null;
             }
         }
-        //########################################################################tttt######################################################################################################################################################################################
+        //##############################################################################################################################################################################################################################################################
         public ActionResult Delete(SupplierIDModel model)
         {
             _connection.Open();
@@ -539,6 +562,25 @@ namespace WebCore.Services
             }
         }
 
+        //##############################################################################################################################################################################################################################################################
+        public static string GetSupplierName(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return string.Empty;
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Supplier WHERE ID = @Query";
+                SupplierService supplierService = new SupplierService();
+                var model = supplierService.Query<Supplier>(sqlQuery, new { Query = id }).FirstOrDefault();
+                return model.CodeID;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
 
         //##############################################################################################################################################################################################################################################################
 
@@ -565,10 +607,13 @@ namespace WebCore.Services
         public List<SupplierOption> DataOption()
         {
 
-            string sqlQuery = @"SELECT * FROM View_App_Supplier WHERE Enabled = 1 ORDER BY Title ASC";
+            string sqlQuery = @"SELECT * FROM App_Supplier WHERE Enabled = 1 ORDER BY Title ASC";
             return _connection.Query<SupplierOption>(sqlQuery, new { }).ToList();
 
         }
+        //##############################################################################################################################################################################################################################################################
+
+
         //##############################################################################################################################################################################################################################################################
 
     }

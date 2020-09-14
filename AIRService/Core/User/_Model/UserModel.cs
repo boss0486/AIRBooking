@@ -49,7 +49,18 @@ namespace WebCore.Entities
         public string ImageFile { get; set; }
         public string FullName { get; set; }
         public string Nickname { get; set; }
-        public string Birthday { get; set; }
+        private string _birthday;
+        public string Birthday
+        {
+            get
+            {
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_birthday), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _birthday = value;
+            }
+        }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
@@ -74,12 +85,7 @@ namespace WebCore.Entities
         public string RoleID { get; set; }
         public bool IsBlock { get; set; }
         public int Enabled { get; set; }
-    }
-    public class UserClient
-    {
-        public int ClientType { get; set; }
-        public string ClientID { get; set; }
-    }
+    } 
     //
     public class UserUpdateModel : UserCreateModel
     {
@@ -129,7 +135,7 @@ namespace WebCore.Entities
         public string NewPinCode { get; set; }
         public string ReNewPinCode { get; set; }
     }
-    
+
     public class UserIsHasRoleBookerModel
     {
         public string UserID { get; set; }

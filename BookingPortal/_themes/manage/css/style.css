@@ -1,8 +1,19 @@
-﻿* {
+﻿
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../fonts/glyphicons-halflings-regular.eot');
+    src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.slimScrollDiv
+{
+    cursor:pointer;
+}
+* {
     /*font-family: Menlo, Monaco, Consolas, "Courier New", monospace;*/
     font-family: 'Roboto', sans-serif, monospace;
     font-size: 13.5px;
-    color: #040404;
+    color: #033248;
     font-weight: 300;
     letter-spacing: 0;
 }
@@ -89,7 +100,6 @@ span {
 @media (min-width: 768px) {
     .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
         width: 300px;
-        background: #1870b5;
     }
 }
 
@@ -5537,14 +5547,23 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     .table-bordered tbody tr td {
         white-space: nowrap;
         border-color: #ABDED4;
+        padding: 6px 8px;
     }
 
 .table-inline tr td, .table-inline tr th {
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 .table tbody label {
     margin-bottom: 0px;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 1px solid #ABDED4;
 }
 
 /* Panel ======================================= */
@@ -6106,6 +6125,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     position: relative;
     height: 32px;
     border: 1px solid #DDD;
+    padding: 6px 8px;
 }
 
     .form-control.disabled {
@@ -6744,13 +6764,37 @@ textarea.form-control {
         }
 
 /* Badge | List Group Item ===================== */
-
-.list-group.list-group-customize {
-    overflow: auto;
-    background: #ddd;
-    border-bottom: solid 1px #ddd;
+.list-select {
 }
 
+    .list-select .item-title {
+        overflow: auto;
+        background: #FCFFE1;
+        border: none;
+    }
+
+    .list-select .data-group {
+        overflow: auto;
+        background: #FCFFE1;
+        border: solid 1px #ddd;
+        border-top: none;
+        padding-bottom: 15px;
+    }
+
+        .list-select .data-group .list-group-item:hover, .list-select .data-group .list-group-item:active {
+            background: #FBE4A1;
+        }
+
+        
+        .list-select .data-group .list-group-item {
+            border: none;
+        }
+
+
+            .list-select .data-group .list-group-item .badge {
+                font-size: 10px;
+                font-weight: normal;
+            }
 
 .list-group-item {
     border-radius: 0;
@@ -6761,19 +6805,7 @@ textarea.form-control {
     .list-group-item .form-group {
         padding-bottom: 10px;
     }
-
-
-
-.list-group .active {
-    background-color: #2196F3;
-    border-color: #2196F3;
-}
-
-    .list-group .active:hover, .list-group .active:focus, .list-group .active:active {
-        background-color: #2196F3;
-        border-color: #2196F3;
-    }
-
+ 
     .list-group .active .list-group-item-text {
         color: #dfe9f1;
         font-size: 13px;
@@ -8591,6 +8623,7 @@ textarea.form-control {
         .sidebar .menu .list {
             list-style: none;
             padding-left: 0;
+            padding-bottom: 50px;
         }
 
             .sidebar .menu .list li.open .ml-menu {
@@ -8664,12 +8697,12 @@ textarea.form-control {
             }
 
             .sidebar .menu .list a {
-                color: #e4e4e4;
+                color: #FFF;
                 position: relative;
                 display: inline-flex;
                 vertical-align: middle;
                 width: 100%;
-                padding: 10px 13px;
+                padding: 8px 12px;
             }
 
                 .sidebar .menu .list a:hover, .sidebar .menu .list a:active, .sidebar .menu .list a:focus {
@@ -8683,7 +8716,7 @@ textarea.form-control {
                 }
 
                 .sidebar .menu .list a span {
-                    margin: 7px 0 7px 12px;
+                    margin: 5px 0 5px 12px;
                     color: inherit;
                     font-weight: 300;
                     font-size: 13.5px;
@@ -8983,6 +9016,7 @@ textarea.form-control {
             border-radius: 50%;
             width: 150px;
             height: 150px;
+            display: inline-block;
         }
 
     .profile-card .profile-body .content-area {
@@ -9476,30 +9510,11 @@ html.ie11 .bs-searchbox .form-control {
 
 /*Details*/
 .details .top-pic {
-    padding: 8px 0px 2px 0px;
+    padding: 8px 0px 20px 0px;
     position: relative;
     margin-bottom: 10px;
     border-bottom: solid 0px #009688;
 }
-
-    .details .top-pic label {
-        margin: 0;
-        font-weight: 400;
-        color: #555;
-    }
-
-
-    .details .top-pic label {
-        margin: 0;
-        font-weight: 400;
-        color: #555;
-    }
-
-    .details .top-pic label, .details .top-pic i {
-        color: #009688;
-        font-size: 18px;
-    }
-
 
 .details .img-avata {
     background: rgba(231, 225, 225, 0.38) no-repeat center;
@@ -9781,3 +9796,46 @@ th, td .none {
             color: #fff;
             background-color: #007bff;
         }
+
+
+.main-content [class*="col-"] {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+
+.main-content .row {
+    margin-right: -10px;
+    margin-left: -10px;
+}
+
+.main-content .container-fluid {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content [class*="col-"] button, .main-content [class*="col-"] .btn {
+        width: 100%;
+    }
+}
+
+.btn:active, .btn.active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/*select*/
+
+.bootstrap-select .dropdown-toggle:focus {
+    outline: thin dotted #333 !important;
+    outline: 0px auto -webkit-focus-ring-color !important;
+    outline-offset: 0px;
+}

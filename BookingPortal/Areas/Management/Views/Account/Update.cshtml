@@ -34,7 +34,7 @@
             nickname = Model.Nickname;
             if (!string.IsNullOrWhiteSpace(Model.Birthday))
             {
-                birthday = Helper.Page.Library.FormatToDateVN(Convert.ToDateTime(Model.Birthday));
+                birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.CreatedDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             email = Model.Email;
             phone = Model.Phone;
@@ -81,7 +81,7 @@
         </div>
         <div class="form-group role-group">
             <label for="">Nhóm người dùng:</label>
-            <div  class="all-list-group list-group check-option" style="margin-bottom: 0px;">
+            <div class="all-list-group list-group check-option" style="margin-bottom: 0px;">
                 <div class="list-group-item">
                     <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
                 </div>

@@ -74,11 +74,7 @@ namespace WebApplication
                 "~/_themes/library/plugins/file-manage/file-manage.js",
                  "~/Library/Script/model-form.js"
             ));
-            bundles.Add(new ScriptBundle("~/backend/js").Include(
-                "~/_themes/backend/js/admin.js",
-                "~/_themes/backend/js/pages/index.js",
-                "~/_themes/backend/js/demo.js"
-            ));
+            
 
             bundles.Add(new ScriptBundle("~/manage/js").Include(
 
@@ -111,10 +107,10 @@ namespace WebApplication
             //<script src="~/_themes/backend/js/admin.js"></script>
             "~/_themes/manage/js/admin.js",
             //<script src="~/_themes/backend/js/pages/index.js"></script>
-            "~/_themes/manage/js/pages/index.js",
+            "~/_themes/manage/js/pages/index.js"
             //<!-- Demo Js -->
             //<script src="~/_themes/backend/js/demo.js"></script>
-             "~/_themes/manage/js/demo.js"
+             //"~/_themes/manage/js/demo.js"
             //<!--library-->
             //<script src="~/Areas/Backend/_script/layout.js"></script> 
             ));

@@ -12,25 +12,22 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("TransactionUserSpending")]
-    [IsManage(act: false)]
     public class TransactionUserSpendingController : CMSController
     {
         // GET: BackEnd/bank
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
             TransactionUserSpendingService service = new TransactionUserSpendingService();
@@ -42,14 +39,13 @@ namespace WebApplication.Management.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try
             {
                 using (var service = new TransactionUserSpendingService())
-                { 
+                {
                     return service.DataList(model);
                 }
             }
@@ -60,7 +56,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(TransactionUserSpendingCreateModel model)
         {
@@ -76,7 +71,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(TransactionUserSpendingIDModel model)
         {
@@ -94,26 +88,5 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
-
-        [HttpPost]
-        [IsManage(act: true, text: "Details")]
-        [Route("Action/Details")]
-        public ActionResult Details(TransactionUserSpendingIDModel model)
-        {
-            try
-            {
-                using (var service = new TransactionUserSpendingService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid();
-                    return service.Details(model.ID);
-                }
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
-
     }
 }

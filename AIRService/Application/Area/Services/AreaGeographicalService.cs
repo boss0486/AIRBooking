@@ -26,7 +26,7 @@ namespace WebCore.Services
                 query = "";
             else
                 query = strQuery;
-            string sqlQuery = @"SELECT * FROM View_App_Area WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
+            string sqlQuery = @"SELECT * FROM App_Geographical WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
                                     ORDER BY [CreatedDate]";
             var dtList = _connection.Query<ResultAreaGeographical>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count <= 0)
@@ -131,7 +131,7 @@ namespace WebCore.Services
             if (string.IsNullOrEmpty(Id))
                 return null;
             string query = string.Empty;
-            string sqlQuery = @"SELECT TOP (1) * FROM View_App_Area WHERE ID = @Query";
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
             return _connection.Query<AreaGeographical>(sqlQuery, new { Query = Id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
@@ -176,7 +176,7 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
             //
-            string sqlQuery = @"SELECT * FROM View_App_Area WHERE ID = @ID";
+            string sqlQuery = @"SELECT * FROM App_Geographical WHERE ID = @ID";
             var result = _connection.Query<ResultAreaGeographical>(sqlQuery, new { ID = id }).FirstOrDefault();
             if (result == null)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -214,7 +214,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_Area ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_Geographical ORDER BY Title ASC";
                 return _connection.Query<AreaGeographicalOptionModel>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

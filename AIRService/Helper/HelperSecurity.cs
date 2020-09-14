@@ -87,8 +87,8 @@ namespace Helper.Security
             }
             catch (Exception)
             {
-                return  null;
-            }         
+                return null;
+            }
         }
         //
 
@@ -126,11 +126,12 @@ namespace Helper.Security
         //
         public static string FakeGuidID(string str)
         {
+            str = str.ToLower();
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
             {
                 byte[] hash = md5.ComputeHash(System.Text.Encoding.Default.GetBytes(str));
                 Guid result = new Guid(hash);
-                return result.ToString();
+                return result.ToString().ToLower();
             }
         }
     }

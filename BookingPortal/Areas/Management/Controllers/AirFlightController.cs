@@ -11,8 +11,7 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
-
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("AirFlight")]
     public class AirFlightController : CMSController
@@ -28,7 +27,7 @@ namespace WebApplication.Management.Controllers
         }
         public ActionResult Update(string id)
         {
-            AirAirport airAirport = new AirAirport();
+            AirportResult airAirport = new AirportResult();
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AirportService airportService = new AirportService();
@@ -36,9 +35,10 @@ namespace WebApplication.Management.Controllers
             }
             return View(airAirport);
         }
+
         public ActionResult Details(string id)
         {
-            AirAirport airAirport = new AirAirport();
+            AirportResult airAirport = new AirportResult();
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AirportService airportService = new AirportService();
@@ -50,7 +50,6 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(AirportSearch model)
         {
@@ -68,8 +67,6 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
-        [Route("Action/Create")]
         public ActionResult Create(AirportCreateModel model)
         {
             try
@@ -85,7 +82,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(AirportUpdateModel model)
         {
@@ -99,6 +95,22 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
 
+        }
+
+
+        [HttpPost]
+        [Route("Action/Delete")]
+        public ActionResult Delete(AirportIDModel model)
+        {
+            try
+            {
+                using (var flightService = new AirportService())
+                    return flightService.Delete(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
         }
     }
 }

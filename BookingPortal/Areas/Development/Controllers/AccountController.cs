@@ -12,65 +12,42 @@ using WebCore.Services;
 
 namespace WebApplication.Development.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("Account")]
     public class AccountController : CMSController
     {
         // GET: BackEnd/Account
-        [IsManage(act: false, text: "DataList")]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Update")]
         public ActionResult Update(string id)
         {
             CMSUserService service = new CMSUserService();
-            UserModel model = service.GetUserModel(id);
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
-
-        [IsManage(act: false, text: "Profile")]
         public new ActionResult Profile()
         {
             string id = Helper.Current.UserLogin.IdentifierID;
             CMSUserService service = new CMSUserService();
-            UserModel model = service.GetUserModel(id);
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
 
-        [IsManage(act: false, text: "Details")]
-        public ActionResult Details(string id)
-        {
-            CMSUserService service = new CMSUserService();
-            UserModel model = service.GetUserModel(id);
-            if (model != null)
-                return View(model);
-            //
-            return View();
-        }
-
-        [IsManage(act: false, text: "Setting")]
-        public ActionResult Setting()
-        {
-            return View();
-        }
-
-        [IsManage(act: false, text: "Change-Password")]
         public ActionResult Password()
         {
             return View();
@@ -83,7 +60,6 @@ namespace WebApplication.Development.Controllers
 
         // API ********************************************************************************************************
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/ChangePassword")]
         public ActionResult ChangePassword(UserChangePasswordModel model)
         {
@@ -98,48 +74,15 @@ namespace WebApplication.Development.Controllers
                 return Notifization.NotService;
             }
         }
-
+ 
         [HttpPost]
-        //[IsManage(api: true)]
-        [Route("Action/ChangePinCode")]
-        public ActionResult ChangePinCode(UserChangePinCodeModel model)
-        {
-            try
-            {
-                if (model == null)
-                    return Notifization.Invalid();
-                //
-                string pinCode = model.PinCode;
-                string newPinCode = model.NewPinCode;
-                string reNewPinCode = model.ReNewPinCode;
-                //
-                if (string.IsNullOrEmpty(newPinCode))
-                    return Notifization.Invalid("Không được để trống mã pin");
-                if (!Validate.TestPinCode(newPinCode))
-                    return Notifization.Invalid("Mã pin giới hạn [0-9]");
-                if (newPinCode.Length != 8)
-                    return Notifization.Invalid("Mã pin giới hạn [8] ký tự");
-                // call service
-                using (var userLoginService = new UserLoginService())
-                    return userLoginService.ChangePinCode(model);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.NotService;
-            }
-        }
-
-        // API ********************************************************************************************************
-
-        [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try
             {
                 CMSUserService service = new CMSUserService();
-                return service.Datalist(model);
+                return service.DataList(model);
             }
             catch (Exception ex)
             {
@@ -148,7 +91,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(UserCreateModel model)
         {
@@ -165,7 +107,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(UserUpdateModel model)
         {
@@ -181,7 +122,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(UserIDModel model)
         {
@@ -219,7 +159,7 @@ namespace WebApplication.Development.Controllers
         //}
 
         [HttpPost]
-        [IsManage(act: true, text: "Block")]
+        [Route("Action/Block")]
         public ActionResult Block(string id)
         {
             try
@@ -238,7 +178,7 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Unlock")]
+        [Route("Action/Unlock")]
         public ActionResult Unlock(string id)
         {
             try
@@ -258,7 +198,7 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Active")]
+        [Route("Action/Active")]
         public ActionResult Active(string id)
         {
             try
@@ -277,7 +217,7 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "UnActive")]
+        [Route("Action/UnActive")]
         public ActionResult UnActive(string id)
         {
             try
@@ -294,6 +234,8 @@ namespace WebApplication.Development.Controllers
                 return Notifization.NotService;
             }
         }
+
+
         //public ActionResult GENID(SearchModel model)
         //{
         //    try
@@ -317,6 +259,6 @@ namespace WebApplication.Development.Controllers
         //        return Notifization.NotService;
         //    }
         //}
-
+        // For permission ##################################################################################################################################################################
     }
 }

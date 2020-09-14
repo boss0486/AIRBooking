@@ -23,16 +23,12 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string RouteArea { get; set; }
         public string CategoryID { get; set; }
+        public string Method { get; set; }
         public string KeyID { get; set; }
         public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Alias { get; set; }
-        public string IconFont { get; set; }
-        public string Path { get; set; }
-        public bool APIAction { get; set; }
+        public string APIRouter { get; set; }
+        public int OrderID { get; set; }
     }
-
-
 
     public partial class ActionByCategoryModel
     {
@@ -46,7 +42,7 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string KeyID { get; set; }
         public string Title { get; set; }
-        public int Total { get; set; }
+        public bool Status { get; set; }
         public bool APIAction { get; set; }
     }
     // for auto
@@ -61,13 +57,13 @@ namespace WebCore.Entities
     }
     public partial class MvcActionModel
     {
+        public int OrderID { get; set; }
         public string RouteArea { get; set; }
         public string ControllerID { get; set; }
-        public string Text { get; set; }
-        public string Router { get; set; }
-        public string Attributes { get; set; }
-        public bool APIAction { get; set; }
-
+        public string KeyID { get; set; }
+        public string Method { get; set; }
+        public string APIRouter { get; set; }
+        public string Title { get; set; }
     }
 
 }

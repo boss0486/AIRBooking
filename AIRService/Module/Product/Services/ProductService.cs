@@ -13,6 +13,7 @@ using WebCore.Entities;
 using WebCore.ENM;
 using WebCore.Model.Enum;
 using Helper.File;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -25,15 +26,34 @@ namespace WebCore.Services
         public ActionResult Datalist(ProductSearchModel model)
         {
             if (model == null)
-                return Notifization.Invalid();
-            string query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
-            if (!string.IsNullOrEmpty(query))
-                query = query.Trim();
-            else
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
                 query = "";
             //
             string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            //
             string categoryId = model.CategoryID;
             if (!string.IsNullOrEmpty(categoryId))
             {
@@ -50,15 +70,15 @@ namespace WebCore.Services
             {
                 whereCondition += " AND Enabled = @Enabled";
             }
-            int page = model.Page;
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_Product 
-                WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'" + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ViewProduct>(sqlQuery, new { Query = query, CategoryId = categoryId, State = state, Enabled = status }).ToList();
+            string sqlQuery = @"SELECT * FROM App_Product 
+                WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<ViewProduct>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound + sqlQuery);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-            if (result.Count <= 0 && page > 1)
+            if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -72,16 +92,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -286,7 +298,7 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_Product WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Product WHERE ID = @Query";
                 var item = _connection.Query<ViewProduct>(sqlQuery, new { Query = id }).FirstOrDefault();
                 // get attachment
                 var attachmentService = new AttachmentService(_connection);
@@ -336,7 +348,7 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_Product WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM App_Product WHERE ID = @ID";
                 var item = _connection.Query<ViewProduct>(sqlQuery, new { ID = id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -383,7 +395,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_Product ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM App_Product ORDER BY Title ASC";
                 return _connection.Query<ProductOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

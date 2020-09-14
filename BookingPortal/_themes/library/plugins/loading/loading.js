@@ -1,18 +1,7 @@
-﻿
- 
-var _cnt = 1;
+﻿var _cnt = 1;
 class Loading {
     static PageLoad() {
         $(document).find("body").prepend("<div id='spinner' class='spinner'></div>");
-        //$(document).ajaxStart(function () {
-        //    Loading.ShowLoading();
-
-        //}).ajaxComplete(function () {
-        //    Loading.HideLoading();
-        //});
-        //$(document).ajaxError(function () {
-        //    Loading.HideLoading();
-        //});
     }
     static ShowLoading() {
         $('#spinner').html("<div class='spinner-block'><div class='spinner spinner-1'></div></div>");

@@ -12,25 +12,21 @@ using WebCore.Services;
 
 namespace WebApplication.Development.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Development")]
     [RoutePrefix("CMSRole")]
     public class CMSRoleController : CMSController
     {
-        // GET: Adm/UserGroup
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             CMSRoleService service = new CMSRoleService();
@@ -41,7 +37,6 @@ namespace WebApplication.Development.Controllers
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
             CMSRoleService service = new CMSRoleService();
@@ -53,7 +48,6 @@ namespace WebApplication.Development.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
@@ -69,7 +63,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Create")]
         public ActionResult Create(CMSRoleCreateModel model)
         {
@@ -99,7 +92,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Update")]
         public ActionResult Update(CMSRoleUpdateModel model)
         {
@@ -129,7 +121,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Delete")]
         public ActionResult Delete(RoleIDModel model)
         {
@@ -149,7 +140,6 @@ namespace WebApplication.Development.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/Details")]
         public ActionResult Details(CMSRoleIDModel model)
         {
@@ -171,7 +161,6 @@ namespace WebApplication.Development.Controllers
         //##############################################################################################################################################################################################################################################################
 
         [HttpPost]
-        [IsManage(act: true)]
         [Route("Action/DropdownList")]
         public ActionResult DropdownList(CMSRoleAreaIDModel model)
         {

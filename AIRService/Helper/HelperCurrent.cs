@@ -76,7 +76,7 @@ namespace Helper.Current
             {
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 var service = new UserService();
-                return service.IsSuperCustomerLogged(userId);
+                return service.IsAdminCustomerLogged(userId);
             }
             catch (Exception)
             {
@@ -90,6 +90,20 @@ namespace Helper.Current
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 var service = new UserService();
                 return service.IsCustomerLogged(userId);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool IsAdminSupplierLogged()
+        {
+            try
+            {
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                var service = new UserService();
+                return service.IsAdminSupplierLogged(userId);
             }
             catch (Exception)
             {

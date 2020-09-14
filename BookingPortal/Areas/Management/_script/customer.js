@@ -443,12 +443,20 @@ var CustomerController = {
         });
     },
     DataList: function (page) {
-        var ddlCustomer = $('#ddlCustomer').val();
+        //       
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
-            TypeID: ddlCustomer
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -472,56 +480,44 @@ var CustomerController = {
                             if (id.length > 0)
                                 id = id.trim();
 
-                            var _id = item.ID;
+                            //var _id = item.ID;
                             var _customerType = item.TypeID;
                             var _customerCode = item.CodeID;
-                            var _parentID = item.ParentID;
+                            var _supplierCode = item.SupplierID;
+                            //var _parentID = item.ParentID;
                             var _title = item.Title;
-                            var _alias = item.Alias;
-                            var _summary = item.Summary;
-                            var _address = item.Address;
-                            var _phone = item.Phone;
-                            var _taxCode = item.TaxCode;
+                            //var _alias = item.Alias;
+                            //var _summary = item.Summary;
+                            //var _address = item.Address;
+                            //var _phone = item.Phone;
+                            //var _taxCode = item.TaxCode;
                             var _contactName = item.ContactName;
-                            var _contactEmail = item.ContactEmail;
-                            var _contactPhone = item.ContactPhone;
+                            //var _contactEmail = item.ContactEmail;
+                            //var _contactPhone = item.ContactPhone;
                             var _depositAmount = item.DepositAmount;
-                            var _termPayment = item.TermPayment;
-                            var _path = item.Path;
-                            var _accountID = item.AccountID;
-                            var _phoneOfOTP = item.PhoneOfOTP;
+                            //var _termPayment = item.TermPayment;
+                            //var _path = item.Path;
+                            //var _accountID = item.AccountID;
+                            //var _phoneOfOTP = item.PhoneOfOTP;
+                            //var _typeLevel = item.TypeLevel;
 
-
-
-
-
+                            //var strlevel = " - cấp: " + _typeLevel;
+                            //if (_typeLevel < 10) {
+                            //    strlevel = " - cấp: " + "0" + _typeLevel;
+                            //}
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/Update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="CustomerController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/Details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
-
+                            var action = HelperModel.RolePermission(result.role, "CustomerController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${_customerCode}</td>
-                                 <td>${_taxCode}</td>
+                                 <td>${_supplierCode}</td>
                                  <td>${_title}</td>                    
                                  <td>${_customerType}</td>
                                  <td>${_contactName}</td>
-                                 <td>${_address}</td>
-                                 <td class="text-right">${LibCurrencies.FormatThousands(_depositAmount)} vnd</td>
-                                 <td class="text-right">${_termPayment}</td>                                                                                       
+                                 <td class="text-right">${LibCurrencies.FormatThousands(_depositAmount)} đ</td>                                                                            
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
@@ -787,6 +783,7 @@ $(document).on("change", "#ddlSupplier", function () {
 });
 
 $(document).on("change", "#ddlCustomerType", function () {
+    $('#lblDeposit').html('');
     var ddlCustomerType = $(this).val();
     if (ddlCustomerType === "") {
         $('#lblCustomerType').html('Vui lòng chọn loại khách hàng');

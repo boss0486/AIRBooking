@@ -13,29 +13,49 @@ using WebCore.Entities;
 using WebCore.ENM;
 using WebCore.Model.Enum;
 using Helper.File;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAppServiceService : IEntityService<AppService> { }
-    public class AppServiceService : EntityService<AppService>, IAppServiceService
+    public interface IAppServiceService : IEntityService<ServicePack> { }
+    public class AppServiceService : EntityService<ServicePack>, IAppServiceService
     {
         public AppServiceService() : base() { }
         public AppServiceService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(AppServiceSearchModel model)
+        public ActionResult DataList(ServicePackSearchModel model)
         {
             try
             {
                 if (model == null)
-                    return Notifization.Invalid();
+                    return Notifization.Invalid(MessageText.Invalid);
                 //
+                int page = model.Page;
                 string query = model.Query;
-                if (!string.IsNullOrEmpty(query))
-                    query = query.Trim();
-                else
+                if (string.IsNullOrWhiteSpace(query))
                     query = "";
                 //
                 string whereCondition = string.Empty;
+                //
+                SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+                {
+                    Query = model.Query,
+                    TimeExpress = model.TimeExpress,
+                    Status = model.Status,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Page = model.Page,
+                    AreaID = model.AreaID,
+                    TimeZoneLocal = model.TimeZoneLocal
+                });
+                if (searchResult != null)
+                {
+                    if (searchResult.Status == 1)
+                        whereCondition = searchResult.Message;
+                    else
+                        return Notifization.Invalid(searchResult.Message);
+                }
+                //
                 string categoryId = model.CategoryID;
                 if (!string.IsNullOrEmpty(categoryId))
                 {
@@ -47,11 +67,9 @@ namespace WebCore.Services
                 {
                     whereCondition += " AND Enabled = @Enabled";
                 }
-                int page = model.Page;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_Service 
-                WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'" + whereCondition + " ORDER BY [CreatedDate]";
-                var dtList = _connection.Query<ViewAppService>(sqlQuery, new { Query = query, CategoryId = categoryId, Enabled = status }).ToList();
+                string sqlQuery = @"SELECT * FROM App_ServicePack WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'" + whereCondition + " ORDER BY [CreatedDate]";
+                var dtList = _connection.Query<ServicePackResult>(sqlQuery, new { Query = query, CategoryId = categoryId, Enabled = status }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound + sqlQuery);
                 var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -87,7 +105,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(AppServiceCreateModel model)
+        public ActionResult Create(ServicePackCreateModel model)
         {
             try
             {
@@ -116,7 +134,7 @@ namespace WebCore.Services
                             return Notifization.Invalid("Đường dẫn đã được sử dụng");
                         //
                         string imgFile = model.ImageFile;
-                        var Id = AppServiceService.Create<string>(new AppService()
+                        var Id = AppServiceService.Create<string>(new ServicePack()
                         {
                             CategoryID = model.CategoryID,
                             TextID = model.TextID,
@@ -180,7 +198,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Update(AppServiceUpdateModel model)
+        public ActionResult Update(ServicePackUpdateModel model)
         {
             try
             {
@@ -287,7 +305,7 @@ namespace WebCore.Services
                 return Notifization.TEST("::" + ex.ToString());
             }
         }
-        public ViewAppService UpdateForm(string id)
+        public ServicePackResult UpdateForm(string id)
         {
             try
             {
@@ -295,8 +313,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_Service WHERE ID = @Query";
-                var item = _connection.Query<ViewAppService>(sqlQuery, new { Query = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ServicePack WHERE ID = @Query";
+                var item = _connection.Query<ServicePackResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 // get attachment
                 var attachmentService = new AttachmentService(_connection);
                 List<ViewAttachment> lstPhoto = attachmentService.AttachmentrListByForID(id);
@@ -355,8 +373,8 @@ namespace WebCore.Services
                 if (string.IsNullOrEmpty(id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_Service WHERE ID = @ID";
-                var item = _connection.Query<ViewAppService>(sqlQuery, new { ID = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT * FROM App_ServicePack WHERE ID = @ID";
+                var item = _connection.Query<ServicePackResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 // get attachment
@@ -398,16 +416,16 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<AppServiceOption> DataOption(string langID)
+        public List<ServicePackOption> DataOption(string langID)
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_Service ORDER BY Title ASC";
-                return _connection.Query<AppServiceOption>(sqlQuery, new { LangID = langID }).ToList();
+                string sqlQuery = @"SELECT * FROM App_ServicePack ORDER BY Title ASC";
+                return _connection.Query<ServicePackOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch
             {
-                return new List<AppServiceOption>();
+                return new List<ServicePackOption>();
             }
         }
         //##############################################################################################################################################################################################################################################################
@@ -415,9 +433,9 @@ namespace WebCore.Services
         {
             try
             {
-                var AppServiceStateModels = new List<AppServiceStateModel>{
-                    new AppServiceStateModel(1, "Còn hàng"),
-                    new AppServiceStateModel(2, "Hết hàng")
+                var AppServiceStateModels = new List<ServicePackStateModel>{
+                    new ServicePackStateModel(1, "Còn hàng"),
+                    new ServicePackStateModel(2, "Hết hàng")
                 };
                 string result = string.Empty;
                 foreach (var item in AppServiceStateModels)

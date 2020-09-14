@@ -12,6 +12,7 @@ using System.Web;
 using WebCore.Entities;
 using WebCore.Model.Enum;
 using Helper.Page;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -21,26 +22,51 @@ namespace WebCore.Services
         public BannerService() : base() { }
         public BannerService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult Datalist(SearchModel model)
         {
-            string query = string.Empty;
-            if (string.IsNullOrEmpty(strQuery))
+            #region
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
                 query = "";
-            else
-                query = strQuery;
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                Status = model.Status,
+                TimeExpress = model.TimeExpress,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM View_App_Banner WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ViewBanner>(sqlQuery, new { Query = query }).ToList();
+            string sqlQuery = @"SELECT * FROM App_Banner WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<ViewBanner>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-            if (result.Count <= 0 && page > 1)
+            if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
-            if (result.Count <= 0)
+            if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
 
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
@@ -49,16 +75,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -70,7 +88,7 @@ namespace WebCore.Services
                 try
                 {
                     var bannerService = new BannerService(_connection);
-                    var banners = bannerService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
+                    var banners = bannerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
                     if (banners.Count > 0)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
@@ -122,17 +140,17 @@ namespace WebCore.Services
             {
                 try
                 {
-                    string Id = model.ID;
-                    if (string.IsNullOrEmpty(Id))
+                    string id = model.ID;
+                    if (string.IsNullOrEmpty(id))
                         return Notifization.NotFound(MessageText.NotFound);
-                    Id = Id.ToLower();
+                    id = id.ToLower();
                     var bannerService = new BannerService(_connection);
-                    var banner = bannerService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    var banner = bannerService.GetAlls(m => m.ID.Equals(id), transaction: transaction).FirstOrDefault();
                     if (banner == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = bannerService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !banner.ID.ToLower().Equals(Id), transaction: transaction).ToList();
+                    var dpm = bannerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower().Equals(title.ToLower()) && !banner.ID.ToLower().Equals(id), transaction: transaction).ToList();
                     if (dpm.Count > 0)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
@@ -147,7 +165,7 @@ namespace WebCore.Services
                     var attachmentIngredientService = new AttachmentIngredientService(_connection);
                     var _controllerText = MetaSEO.ControllerText.ToLower();
                     // get all frorm db
-                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
+                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
                     // add new
                     var lstAddNewFile = photos;
                     if (lstPhotoDb != null && lstPhotoDb.Count > 0)
@@ -156,12 +174,12 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstAddNewFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
                             if (attachmentIngredient == null)
                             {
                                 string guid = attachmentIngredientService.Create<string>(new Entities.AttachmentIngredient()
                                 {
-                                    ForID = Id,
+                                    ForID = id,
                                     FileID = item,
                                     CategoryID = _controllerText,
                                     TypeID = (int)ModelEnum.FileType.MULTI
@@ -177,7 +195,7 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstDeleteFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
                             if (attachmentIngredient != null)
                             {
                                 attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: transaction);
@@ -199,11 +217,11 @@ namespace WebCore.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_App_Banner WHERE ID = @Query";
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Banner WHERE ID = @Query";
                 var dtItem = _connection.Query<ViewBanner>(sqlQuery, new { Query = id }).FirstOrDefault();
                 // get attachment
                 var attachmentService = new AttachmentService(_connection);
@@ -244,25 +262,6 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM View_App_Banner WHERE ID = @ID";
-                var dtItem = _connection.Query<ViewBanner>(sqlQuery, new { ID = Id }).FirstOrDefault();
-                if (dtItem == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                return Notifization.Data(MessageText.Success, data: dtItem, role: null, paging: null);
-            }
-            catch
-            {
-                return Notifization.NotService;
-            }
-        }
-        //##############################################################################################################################################################################################################################################################
         public static string DDLBanner(string id)
         {
             try
@@ -270,7 +269,7 @@ namespace WebCore.Services
                 string result = string.Empty;
                 using (var BannerService = new BannerService())
                 {
-                    var dtList = BannerService.DataOption(id);
+                    var dtList = BannerService.DataOption();
                     if (dtList.Count > 0)
                     {
                         foreach (var item in dtList)
@@ -289,12 +288,12 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<BannerOption> DataOption(string langID)
+        public List<BannerOption> DataOption()
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_App_Banner ORDER BY Title ASC";
-                return _connection.Query<BannerOption>(sqlQuery, new { LangID = langID }).ToList();
+                string sqlQuery = @"SELECT * FROM App_Banner ORDER BY Title ASC";
+                return _connection.Query<BannerOption>(sqlQuery, new {   }).ToList();
             }
             catch
             {

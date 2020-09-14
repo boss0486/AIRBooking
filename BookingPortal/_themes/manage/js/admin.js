@@ -28,8 +28,8 @@ $.AdminBSB.options = {
         white: '#ffffff'
     },
     leftSideBar: {
-        scrollColor: 'rgba(0,0,0,0.5)',
-        scrollWidth: '4px',
+        scrollColor: 'rgba(33, 150, 243, 0.6)',
+        scrollWidth: '8px',
         scrollAlwaysVisible: false,
         scrollBorderRadius: '0',
         scrollRailBorderRadius: '0',
@@ -49,7 +49,7 @@ $.AdminBSB.options = {
 $.AdminBSB.leftSideBar = {
     activate: function () {
         var _this = this;
-        var $body = $('body');
+        var $body = $('.sidebar');
         var $overlay = $('.overlay');
 
         //Close sidebar
@@ -103,7 +103,7 @@ $.AdminBSB.leftSideBar = {
             _this.checkStatusForResize(false);
         });
 
-        //Set Waves
+        ////Set Waves
         Waves.attach('.menu .list a', ['waves-block']);
         Waves.init();
     },
@@ -111,7 +111,7 @@ $.AdminBSB.leftSideBar = {
         if (typeof $.fn.slimScroll != 'undefined') {
             var configs = $.AdminBSB.options.leftSideBar;
             var height = ($(window).height() - ($('.legal').outerHeight() + $('.user-info').outerHeight() + $('.navbar').innerHeight()));
-            var $el = $('.list');
+            var $el = $('.menu');
 
             if (!isFirstTime) {
                 $el.slimscroll({
@@ -265,41 +265,7 @@ $.AdminBSB.navbar = {
 
 /* Input - Function ========================================================================================================
 *  You can manage the inputs(also textareas) with name of class 'form-control'
-*  
-*/
-$.AdminBSB.input = {
-    activate: function ($parentSelector) {
-        $parentSelector = $parentSelector || $('body');
 
-        //On focus event
-        $parentSelector.find('.form-control').focus(function () {
-            $(this).closest('.form-line').addClass('focused');
-        });
-
-        //On focusout event
-        $parentSelector.find('.form-control').focusout(function () {
-            var $this = $(this);
-            if ($this.parents('.form-group').hasClass('form-float')) {
-                if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }
-            }
-            else {
-                $this.parents('.form-line').removeClass('focused');
-            }
-        });
-
-        //On label click
-        $parentSelector.on('click', '.form-float .form-line .form-label', function () {
-            $(this).parent().find('input').focus();
-        });
-
-        //Not blank form
-        $parentSelector.find('.form-control').each(function () {
-            if ($(this).val() !== '') {
-                $(this).parents('.form-line').addClass('focused');
-            }
-        });
-    }
-}
 //==========================================================================================================================
 
 /* Form - Select - Function ================================================================================================
@@ -461,7 +427,7 @@ $(function () {
     $.AdminBSB.rightSideBar.activate();
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
-    $.AdminBSB.input.activate();
+    //$.AdminBSB.input.activate();
     $.AdminBSB.select.activate();
     $.AdminBSB.search.activate();
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);

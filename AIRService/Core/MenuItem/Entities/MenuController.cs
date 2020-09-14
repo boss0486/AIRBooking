@@ -11,7 +11,7 @@ namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
     [Table("MenuController")]
-    public class MenuController : WEBModel
+    public class MenuController 
     {
         //public MenuController()
         //{
@@ -24,8 +24,7 @@ namespace WebCore.Entities
         public string RouteArea { get; set; }
         public string RoutePrefix { get; set; }
         public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Path { get; set; }
+        public int OrderID { get; set; }
     }
 
     public class MenuControllerCreateModel
@@ -35,7 +34,6 @@ namespace WebCore.Entities
         public string RoutePrefix { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string Path { get; set; }
         public int Enabled { get; set; }
 
     }
@@ -50,8 +48,6 @@ namespace WebCore.Entities
         public string RouteArea { get; set; }
         public string RoutePrefix { get; set; }
         public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Path { get; set; }
         public int OrderID { get; set; }
         public string ActionCount { get; set; }
 
@@ -61,7 +57,7 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string KeyID { get; set; }
         public string Title { get; set; }
-        public int Total { get; set; }
+        public bool Status { get; set; }
         public List<MvcActionForPermision> Actions { get; set; }
     }
     public class MvcControllerRoleIDModel
@@ -87,7 +83,9 @@ namespace WebCore.Entities
     {
         public string RouteArea { get; set; }
         public string RoutePrefix { get; set; }
-        public string Text { get; set; }
+        public string KeyID { get; set; }
+        public string Title { get; set; }
+        public int OrderID { get; set; }
         public List<MvcActionModel> Actions { get; set; }
     }
     public class MvcControllerSetting

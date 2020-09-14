@@ -30,7 +30,7 @@ namespace WebCore.Services
         //    string langID = Current.LanguageID;
         //    string whereCondition = string.Empty;
 
-        //    string sqlQuery = @"SELECT * FROM View_App_BookTicket WHERE ID != '' " + whereCondition + " ORDER BY [CreatedDate]";
+        //    string sqlQuery = @"SELECT * FROM App_BookTicket WHERE ID != '' " + whereCondition + " ORDER BY [CreatedDate]";
         //    var dtList = _connection.Query<AppBookTicket>(sqlQuery, new { Query = query }).ToList();
         //    if (dtList.Count <= 0)
         //        return Notifization.NotFound(NotifizationText.NotFound);

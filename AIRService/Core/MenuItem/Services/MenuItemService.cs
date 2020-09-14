@@ -98,10 +98,10 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(routeArea))
                 whereCondition = "AND RouteArea = @RouteArea";
             //
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
                                     AND ParentID ='' " + whereCondition + " ORDER BY RouteArea, OrderID ASC ";
-            var menuService = new MenuService(_connection);
-            var dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, Enabled = status }).ToList();
+ 
+            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -139,10 +139,9 @@ namespace WebCore.Services
                 if (!string.IsNullOrWhiteSpace(routeArea))
                     whereCondition = "AND RouteArea = @RouteArea";
                 //
-                string sqlQuery = @"SELECT * FROM View_MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
+                string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
                 AND ParentID = @ParentID " + whereCondition + " ORDER BY RouteArea, OrderID ASC";
-                var menuService = new MenuService(_connection);
-                List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, ParentID = parentId }).ToList();
+                List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, ParentID = parentId }).ToList();
                 if (dtList.Count == 0)
                     return new List<ViewMenuItemLevelResult>();
                 foreach (var item in dtList)
@@ -173,9 +172,8 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(routeArea))
                 return Notifization.NotFound();
             //
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
-            var menuService = new MenuService(_connection);
-            var allData = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
+            var allData = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
 
             var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
             if (dtList.Count == 0)
@@ -191,7 +189,7 @@ namespace WebCore.Services
         }
         public List<ViewMenuItemLevelResult> SubMenuItemByLevel(string parentId, List<ViewMenuItemLevelResult> allData)
         {
-            //string sqlQuery = @"SELECT * FROM View_MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
+            //string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
             //var menuService = new MenuService(_connection);
             //List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
 
@@ -214,9 +212,8 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(routeArea))
                 return Notifization.NotFound();
             //
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE RouteArea = @RouteArea AND ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
-            var menuService = new MenuService(_connection);
-            var dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
+            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -231,9 +228,8 @@ namespace WebCore.Services
         }
         public List<ViewMenuItemLevelResult> SubMenuItemCategory(string parentId)
         {
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
-            var menuService = new MenuService(_connection);
-            List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
+            List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
             if (dtList.Count == 0)
                 return new List<ViewMenuItemLevelResult>();
             foreach (var item in dtList)
@@ -413,7 +409,7 @@ namespace WebCore.Services
                         pathAction =  _connection.Query<string>(sqlPath, new { RouteArea = routeArea, ControllerID = controllerId, ActionID = actionId }, transaction: _transaction).FirstOrDefault();
                     }
 
-                    string _sqlTitle = @"SELECT ID FROM View_MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title";
+                    string _sqlTitle = @"SELECT ID FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title";
                     var modelTitle = _connection.Query<MenuItemIDModel>(_sqlTitle, new { RouteArea = routeArea, ParentID = parentId, Title = title }, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng" + _sqlTitle);
@@ -532,7 +528,7 @@ namespace WebCore.Services
                         pathAction = _connection.Query<string>(sqlPath, new { RouteArea = routeArea, ControllerID = controllerId, ActionID = actionId }, transaction: _transaction).FirstOrDefault();
                     }
                     //
-                    string _sqlTitle = @"SELECT ID FROM View_MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title AND ID != @ID ";
+                    string _sqlTitle = @"SELECT ID FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title AND ID != @ID ";
                     var modelTitle = menuItemService.Query<MenuItemIDModel>(_sqlTitle, new { RouteArea = routeArea, ParentID = parentId, Title = title, ID = id }, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
@@ -644,16 +640,17 @@ namespace WebCore.Services
                 }
             }
         }
-        public MenuItemResult UpdateForm(string Id)
+        public MenuItemResult GetMenuItemByID(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
+                //
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM View_MenuItem WHERE ID = @Query";
-                var model = _connection.Query<MenuItemResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM MenuItem WHERE ID = @Query";
+                var model = _connection.Query<MenuItemResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch
@@ -689,9 +686,8 @@ namespace WebCore.Services
         // show category
         public ActionResult LeftMenuItemOption(MenuItemIDModel model)
         {
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
-            var menuService = new MenuService(_connection);
-            var dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
+            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -705,9 +701,8 @@ namespace WebCore.Services
         }
         public List<ViewMenuItemLevelResult> LeftSubMenuItemOption(string parentId)
         {
-            string sqlQuery = @"SELECT * FROM View_MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
-            var menuService = new MenuService(_connection);
-            List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
+            List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
             if (dtList.Count == 0)
                 return new List<ViewMenuItemLevelResult>();
             foreach (var item in dtList)
@@ -729,7 +724,7 @@ namespace WebCore.Services
         //        string pathAction = menuItemService.GetMenuAction(locationId, null);
         //        result += @"<li></li>";
         //        //
-        //        string sqlQuery = "SELECT * FROM View_MenuItem WHERE ParentID ='' AND [Enabled] = 1 ORDER BY OrderID ASC ";
+        //        string sqlQuery = "SELECT * FROM MenuItem WHERE ParentID ='' AND [Enabled] = 1 ORDER BY OrderID ASC ";
 
         //        var dtList = menuItemService.Query<MenuItemOptionModel>(sqlQuery, new { LocationID = locationId }).ToList();
         //        if (dtList.Count == 0)
@@ -754,7 +749,7 @@ namespace WebCore.Services
         //public static string GetCMSSubMenu(string parentId, string Id = null)
         //{
         //    string result = string.Empty;
-        //    string sqlQuery = "SELECT * FROM View_MenuItem WHERE ParentID = @ParentID AND [Enabled] = 1  ORDER BY OrderID ASC";
+        //    string sqlQuery = "SELECT * FROM MenuItem WHERE ParentID = @ParentID AND [Enabled] = 1  ORDER BY OrderID ASC";
         //    MenuItemService menuItemService = new MenuItemService();
         //    var dtList = menuItemService.Query<MenuItemOptionModel>(sqlQuery, new { ParentID = parentId }).ToList();
         //    if (dtList.Count == 0)
@@ -1193,7 +1188,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_MenuItem ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM MenuItem ORDER BY Title ASC";
                 return _connection.Query<MenuItemOption>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch

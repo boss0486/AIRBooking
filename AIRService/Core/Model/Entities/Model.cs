@@ -48,7 +48,7 @@ namespace WebCore.Model.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), "vi-vn");
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
@@ -99,7 +99,12 @@ namespace WebCore.Model.Entities
             Title = title;
         }
     }
-
+    public class SearchResult
+    {
+        public int Status { get; set; }
+        public string Message { get; set; }
+        
+    }
     public class StatusModel
     {
         public int ID { get; set; }
@@ -124,18 +129,5 @@ namespace WebCore.Model.Entities
             ID = Id;
             Title = title;
         }
-    }
-    // 
-
-    public class WebIDModel
-    {
-        public string ID { get; set; }
-    }
-    public class WebAreaIDModel
-    {
-        public string AreaID { get; set; }
-        public List<Type> Types { get; set; }
-
-
     }
 }

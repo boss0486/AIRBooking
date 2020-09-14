@@ -12,25 +12,22 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Supplier")]
-    [IsManage(act: false)]
     public class SupplierController : CMSController
     {
         // GET: BackEnd/Supplier
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)] 
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             SupplierService service = new SupplierService();
@@ -41,7 +38,6 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
             SupplierService service = new SupplierService();
@@ -51,9 +47,8 @@ namespace WebApplication.Management.Controllers
             //
             return View();
         }
-        //##########################################################################################################################################################################################################################################################
+        //API ##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SupplierSearchModel model)
         {
@@ -71,7 +66,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(SupplierCreateModel model)
         {
@@ -89,7 +83,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(SupplierUpdateModel model)
         {
@@ -107,7 +100,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(SupplierIDModel model)
         {
@@ -122,25 +114,10 @@ namespace WebApplication.Management.Controllers
             }
         }
 
-        [HttpPost]
-        [IsManage(act: true, text: "Details")]
-        [Route("Action/Details")]
-        public ActionResult Details(SupplierIDModel model)
-        {
-            try
-            {
-                using (var service = new SupplierService())
-                    return Notifization.NotService;
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
-
         //OPTION ##########################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DropdownList")]
+        [IsManage(skip: true)]
         public ActionResult DropdownList()
         {
             try

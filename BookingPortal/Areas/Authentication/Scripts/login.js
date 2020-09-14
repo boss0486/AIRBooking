@@ -39,7 +39,7 @@ var loginController = {
         //    event.stopPropagation();         
 
         //});
-        $('#btnSendOtp').off('click').on('click', function (event) {
+        $('#btnForgotPassword').off('click').on('click', function (event) {
             var flg = true;
             var email = $('#txtEmail').val();
             if (email === "") {
@@ -71,7 +71,7 @@ var loginController = {
                 $('#lblEmail').html('');
             }
             if (flg)
-                loginController.SendOTP();
+                loginController.ResetPassword();
             else
                 Notifization.Error(MessageText.Datamissing);
         });
@@ -123,7 +123,7 @@ var loginController = {
             Email: email
         };
         AjaxFrom.POST({
-            url: _urlAction + '/SendOtp',
+            url: _urlAction + '/Forgot',
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -148,11 +148,6 @@ var loginController = {
                 console.log('::' + MessageText.NotService);
             }
         });
-
-
-    },
-    ResetPassword: function () {
-
     }
 };
 loginController.init();

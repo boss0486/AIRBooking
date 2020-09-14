@@ -9,7 +9,6 @@ namespace WebApplication.Management.Controllers
 {
     [RouteArea("Management")]
     [RoutePrefix("Home-Page")]
-    [IsManage(act:false)]
     public class HomeController : Controller
     {
         // GET: Management/Home

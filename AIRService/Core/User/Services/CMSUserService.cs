@@ -61,53 +61,60 @@ namespace WebCore.Services
         }
 
         //###############################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             if (model == null)
-                return Notifization.Invalid();
-            //
-            string query = string.Empty;
-            if (string.IsNullOrWhiteSpace(model.Query))
-                query = "";
-            else
-                query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
             int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
-            using (var service = new CMSUserService())
+            string sqlQuery = @"SELECT * FROM View_CMSUser WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
+            var dtList = _connecion.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
+            if (dtList.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            if (result.Count == 0 && page > 1)
             {
-                string sqlQuery = @"SELECT * FROM View_CMSUser WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' ORDER BY FullName,CreatedDate";
-                var dtList = service._connecion.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
-                if (dtList.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                if (result.Count <= 0 && page > 1)
-                {
-                    page -= 1;
-                    result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                }
-                if (result.Count <= 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
-                {
-                    PageSize = Helper.Pagination.Paging.PAGESIZE,
-                    Total = dtList.Count,
-                    Page = page
-                };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+                page -= 1;
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
+            if (result.Count <= 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
+            {
+                PageSize = Helper.Pagination.Paging.PAGESIZE,
+                Total = dtList.Count,
+                Page = page
+            };
+            // ressult data
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
 
@@ -450,7 +457,7 @@ namespace WebCore.Services
         }
 
 
-        public UserModel GetUserModel(string id)
+        public UserResult GetUserModel(string id)
         {
             try
             {
@@ -461,7 +468,7 @@ namespace WebCore.Services
                         return null;
                     //
                     string sqlQuery = @"SELECT TOP (1) * FROM View_CMSUser WHERE ID = @ID";
-                    var data = _connection.Query<UserModel>(sqlQuery, new { ID = id }).FirstOrDefault();
+                    var data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                     if (data == null)
                         return null;
                     //

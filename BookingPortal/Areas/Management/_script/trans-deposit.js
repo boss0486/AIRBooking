@@ -311,7 +311,8 @@ var _TransactionDepositController = {
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: LibDateTime.FormatToServerDate(txtStartDate),
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
         //
         AjaxFrom.POST({
@@ -336,20 +337,7 @@ var _TransactionDepositController = {
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
-                            //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="TransactionDepositController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
+                            //
                             var customerId = item.CustomerID;
                             var title = item.Title;
                             var summary = item.Summary;
@@ -364,7 +352,9 @@ var _TransactionDepositController = {
                             var status = item.Status;
                             var enabled = item.Enabled;
 
-                            // <td>${transactionId}, giao dịch từ N.Hàng ${bankSent} đến N.Hàng ${bankReceived} ${summary}</td>          
+                            //  role
+                            var action = HelperModel.RolePermission(result.role, "_TransactionDepositController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>

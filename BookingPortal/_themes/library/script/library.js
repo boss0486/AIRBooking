@@ -249,7 +249,6 @@ class LibDateTime {
     }
 }
 
-
 class LibCurrencies {
     static FormatThousands(n, dp) {
         var s = '' + (Math.floor(n)), d = n % 1, i = s.length, r = '';
@@ -366,5 +365,4 @@ class Confirm {
         });
     }
 }
-
 

@@ -210,11 +210,11 @@ var AccountController = {
                     $('#lblAddress').html('');
                 }
             }
-            var ddlRole = $('#ddlRole').val();
-            if (ddlRole === "") {
-                $('#ddlRole').html('Vui lòng chọn nhóm quyền');
-                flg = false;
-            }
+            //var ddlRole = $('#ddlRole').val();
+            //if (ddlRole === "") {
+            //    $('#lblRole').html('Vui lòng chọn nhóm quyền');
+            //    flg = false;
+            //}
             // bank
             //var ddlLanguage = $('#ddlLanguage').val();
             //if (ddlLanguage === "") {
@@ -224,11 +224,11 @@ var AccountController = {
             //else {
             //    $('#lblLanguage').html('');
             //}
-
-            if (flg)
+            if (flg) {
                 AccountController.Update();
+            }
             else
-                Notifization.Error(MessageText.Datamissing);
+                Notifization.Error(MessageText.Datamissing + "11");
         });
         $('#btnChangePassword').off('click').on('click', function () {
             var flg = true;
@@ -310,12 +310,13 @@ var AccountController = {
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
+                            //
                             //  role
                             var role = result.role;
                             if (role !== undefined && role !== null) {
                                 var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
                                               <div class='ddl-action-content'>`;
-                                if (role.Update)
+                                if (role)
                                     action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
                                 if (role.Delete)
                                     action += `<a onclick="AccountController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
@@ -362,56 +363,6 @@ var AccountController = {
                     }
                 }
                 //Message.Error(MessageText.NOTSERVICES);
-                return;
-            },
-            error: function (result) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
-    },
-    Details: function () {
-        var id = $('#txtID').val();
-        if (id.length <= 0) {
-            Notifization.Error(MessageText.NotService);
-            return;
-        }
-        var fData = {
-            Id: $('#txtID').val()
-        };
-        $.ajax({
-            url: '/user/detail',
-            data: {
-                strData: JSON.stringify(fData)
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (result) {
-                if (result !== null) {
-                    if (result.status === 200) {
-                        var item = result.data;
-                        $('#LblAccount').html(item.LoginID);
-                        $('#LblDate').html(item.CreatedDate);
-                        var action = '';
-                        if (item.Enabled)
-                            action += `<i class='fa fa-toggle-on'></i> actived`;
-                        else
-                            action += `<i class='fa fa-toggle-off'></i>not active`;
-
-                        $('#LblActive').html(action);
-                        $('#lblFullName').html(item.FullName);
-                        $('#LblEmail').html(item.Email);
-                        $('#LblPhone').html(item.Phone);
-                        $('#LblLanguage').html(item.LanguageID);
-                        $('#lblRoleGroup').html(item.RoleGroup);
-
-                        return;
-                    }
-                    else {
-                        Notifization.Error(result.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

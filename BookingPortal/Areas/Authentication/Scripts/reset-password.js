@@ -1,4 +1,4 @@
-﻿var _urlAction = "/api/authen";
+﻿var _urlAction = "/Authentication/Action";
 var resetController = {
     init: function () {
         resetController.registerEvent();
@@ -64,9 +64,9 @@ var resetController = {
             RePassword: rePassword,
             TokenID: token
         };
-
+        alert('radsad');
         AjaxFrom.POST({
-            url: _urlAction + '/Password',
+            url: _urlAction + '/ResetPassword',
             data: model,
             success: function (response) {
                 if (response !== null) {

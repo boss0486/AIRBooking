@@ -119,5 +119,36 @@ namespace WebCore.Services
             }
         }
 
+        public static string GetCustomerTypeIDByType(int _typeEnum)
+        {
+            try
+            {
+                var service = new CustomerTypeService();
+                var data = service.DataOption().Where(m => m.Type == _typeEnum).FirstOrDefault();
+
+                return data.ID;
+            }
+            catch
+            {
+                return  string.Empty;
+            }
+        }
+        public static List<CustomerTypeOption> GetCustomerTypeByTypeID(int typeId)
+        {
+            try
+            {
+                CustomerTypeService service = new CustomerTypeService();
+                List<CustomerTypeOption> data = service.DataOption().Where(m => m.Type == typeId).ToList();
+                if (data.Count == 0)
+                    return new List<CustomerTypeOption>();
+                //
+                return data;
+            }
+            catch
+            {
+                return new List<CustomerTypeOption>();
+            }
+        }
+
     }
 }

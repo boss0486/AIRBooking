@@ -12,40 +12,36 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
-    [IsManage(act: false)]
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("User")]
     public class UserController : CMSController
     {
         // GET: BackEnd/User
-        [IsManage(act: false, text: "DataList")]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false, text: "Update")]
         public ActionResult Update(string id)
         {
             UserClientService service = new UserClientService();
-            UserClientModel model = service.GetUserModel(id);
+            UserClientResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
 
-        [IsManage(act: false, text: "Details")]
         public ActionResult Details(string id)
         {
             UserClientService service = new UserClientService();
-            UserClientModel model = service.GetUserModel(id);
+            UserClientResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //
@@ -54,8 +50,7 @@ namespace WebApplication.Management.Controllers
 
         // #######################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
-        [Route("Action/DataList")]
+        [Route("Action/DataList")] 
         public ActionResult DataList(SearchModel model)
         {
             try
@@ -70,7 +65,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(UserClientCreateModel model)
         {
@@ -86,7 +80,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(UserClientUpdateModel model)
         {
@@ -102,7 +95,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(UserIDModel model)
         {
@@ -121,6 +113,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/GetUserIsHasRoleBooker")]
+        [IsManage(skip: true)]
         public ActionResult GetUserIsHasRoleBooker(UserIDModel model)
         {
             try

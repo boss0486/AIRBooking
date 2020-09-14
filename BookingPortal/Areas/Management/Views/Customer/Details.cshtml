@@ -29,17 +29,18 @@
     string languageId = "";
     string createdBy = "";
     string createdDate = "";
-    string enabled = "None";
+    string enabled = "...";
     //
     string loginId = "";
     try
     {
         if (Model != null)
         {
-
             id = Model.ID;
-            customerType = Model.TypeID;
+            customerType = CustomerService.GetInforType(Model.TypeID, Model.Path);
             customerCode = Model.CodeID;
+
+
             parentID = Model.ParentID;
             title = Model.Title;
             alias = Model.Alias;
@@ -59,7 +60,11 @@
             createdDate = Convert.ToString(Model.CreatedDate);
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
-                enabled = "checked";
+                enabled = "Đang hoạt động";
+            }
+            else
+            {
+                enabled = "Không hoạt động";
             }
             loginId = UserService.GetLoginIDByID(accountId);
         }
@@ -70,49 +75,35 @@
     }
 }
 
-<div class="row">
-    
-    <div class="col-md-4">
-        <div class="top-pic special">
-            <label><i class="fas fa-user"></i>&nbsp;<span>Thông tin truy cập:</span></label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tài khoản: @loginId</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại nhận OTP: @phoneOfOTP</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
-    </div>
-    <div class="col-md-4">
-        <div class="top-pic special">
-            <i class="fas fa-server"></i>&nbsp;<label>Dịch vụ:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đặt cọc: @Helper.Page.Library.FormatThousands(depositAmount) vnd</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Hạn mức: @Helper.Page.Library.FormatThousands(spendingLimit) vnd</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Thời hạn TT(ngày): @termPayment</div>
-
-    </div>
-</div>
-<div class="row">
+<div class="row details">
     <div class="col-md-8">
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin hồ sơ:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Loại đại lý: @customerType</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mã khách hàng: <b style="color:#F00;">@customerCode</b></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tên khách hàng: @title</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @phone</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Địa chỉ: @address</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Loại khách hàng:</label>&nbsp;<span>@customerType</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Mã khách hàng:</label>&nbsp;<b style="color:#F00;">@customerCode</b></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Tên khách hàng:</label>&nbsp;<span>@title</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Mô tả:</label>&nbsp;<span>@summary</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đ.thoại:</label>&nbsp;<span>@phone</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Địa chỉ:</label>&nbsp;<span> @address</span></div>
+
+        <div class="top-pic special">
+            <i class="fas fa-server"></i>&nbsp;<label>Dịch vụ:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đặt cọc:</label>&nbsp;<b class="text-dark">@Helper.Page.Library.FormatThousands(depositAmount) đ</b></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Thời hạn TT(ngày):</label>&nbsp;<span>@termPayment</span></div>
         <div class="top-pic special">
             <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Người liên hệ: @contactName</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> E-mail: @contactEmail</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @contactPhone</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Người liên hệ:</label>&nbsp;<span>@contactName</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">E-mail:</label>&nbsp;<span>@contactEmail</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đ.thoại:</label>&nbsp;<span>@contactPhone</span></div>
 
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Trạng thái:</label>&nbsp;<span>@enabled</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Ngày tạo:</label>&nbsp;<span>@createdDate</span></div>
         <div class="form-group text-right att-data-list">
             <a href="@Helper.Page.Navigate.PathDataList()">
                 @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>

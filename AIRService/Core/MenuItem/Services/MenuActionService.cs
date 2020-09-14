@@ -32,11 +32,10 @@ namespace WebCore.Services
                 using (var service = new MenuActionService())
                 {
                     var dtList = service.DataOption(categoryId);
-                    if (string.IsNullOrWhiteSpace(categoryId))
+                    if (!string.IsNullOrWhiteSpace(categoryId))
                     {
                         dtList = dtList.Where(m => m.CategoryID == categoryId).ToList();
                     }
-
                     if (dtList.Count > 0)
                     {
                         int cnt = 0;
@@ -63,7 +62,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM View_MenuAction WHERE CategoryID = @categoryId ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM MenuAction WHERE CategoryID = @categoryId AND DATALENGTH(Method) > 0 ORDER BY Title ASC";
                 return _connection.Query<MvcActionOption>(sqlQuery, new { CategoryID = categoryId }).ToList();
             }
             catch
@@ -71,7 +70,6 @@ namespace WebCore.Services
                 return new List<MvcActionOption>();
             }
         }
-
         //#######################################################################################################################################################################################
         public List<MenuAction> GetActionPageByCategoryID(ActionByCategoryModel model)
         {
@@ -82,7 +80,7 @@ namespace WebCore.Services
                 string result = string.Empty;
                 using (var service = new MenuActionService())
                 {
-                    string sqlQuery = @"SELECT * FROM View_MenuAction WHERE CategoryID = @CategoryID AND APIAction = 1  ORDER BY Title ASC";
+                    string sqlQuery = @"SELECT * FROM MenuAction WHERE CategoryID = @CategoryID AND DATALENGTH(Method) > 0 ORDER BY Title ASC";
                     var dtList = service.Query<MenuAction>(sqlQuery, new { CategoryID = categoryId }).ToList();
                     if (dtList.Count == 0)
                         return new List<MenuAction>();

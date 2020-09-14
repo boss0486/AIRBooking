@@ -12,40 +12,36 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Card-Credit")]
-    [IsManage(act: false)]
     public class CardCreditController : CMSController
     {
         // GET: BackEnd/CardCredit
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Update(string id)
         {
             CardCreditService service = new CardCreditService();
-            var model = service.UpdateForm(id);
+            var model = service.GetCreditByID(id);
             if (model != null)
                 return View(model);
             //
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
             CardCreditService service = new CardCreditService();
-            var model = service.UpdateForm(id);
+            var model = service.GetCreditByID(id);
             if (model != null)
                 return View(model);
             //
@@ -53,7 +49,6 @@ namespace WebApplication.Management.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
@@ -71,7 +66,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
         public ActionResult Create(CardCreditCreateModel model)
         {
@@ -87,7 +81,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Update")]
         [Route("Action/Update")]
         public ActionResult Update(CardCreditUpdateModel model)
         {
@@ -103,7 +96,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(CardCreditIDModel model)
         {
@@ -123,7 +115,6 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Details")]
         [Route("Action/Details")]
         public ActionResult Details(CardCreditIDModel model)
         {

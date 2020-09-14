@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
+@using WebCore.Entities;
 @using WebCore.Services;
 <div class="row">
     <div class="col-md-7">
@@ -29,7 +30,7 @@
             </div>
         }
         <div class="top-pic special">
-            <label><i class="fas fa-building"></i>&nbsp;<span>Doanh nghiệp/ Đại lý:</span></label>
+            <label><i class="fas fa-building"></i>&nbsp;<span>Thông tin khách hàng:</span></label>
         </div>
         <div class="row">
             <div class="col-md-8">
@@ -149,9 +150,24 @@
         </div>
         <div class="form-group ">
             <label class="form-label">Loại khách hàng:</label>
+
             <select id="ddlCustomerType" name="ddlCustomerType" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
                 <option value="">-Lựa chọn-</option>
-                @Html.Raw(CustomerTypeService.DropdownList(""))
+                @if (Helper.Current.UserLogin.IsAdminCustomerLogged() || Helper.Current.UserLogin.IsCustomerLogged())
+                {
+                    List<CustomerTypeOption> customerTypeOptions = CustomerTypeService.GetCustomerTypeByTypeID((int)WebCore.ENM.CustomerEnum.CustomerType.COMP);
+                    if (customerTypeOptions.Count > 0)
+                    {
+                        foreach (var item in customerTypeOptions)
+                        {
+                            <option value="@item.ID">@item.Title</option>
+                        }
+                    }
+                }
+                else
+                {
+                    @Html.Raw(CustomerTypeService.DropdownList(""))
+                }
             </select>
             <span id="lblCustomerType" class="message msg-box"></span>
         </div>

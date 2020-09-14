@@ -10,7 +10,7 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_Area")]
+    [Table("App_Geographical")]
     public partial class AreaGeographical : WEBModel
     {
         public AreaGeographical()

@@ -58,8 +58,7 @@ var layoutController = {
                             }
                             rowData += '</li>';
                         });
-                        $('ul#LeftMenu').html(rowData);
-                        $.AdminBSB.leftSideBar.activate();
+                        $('ul#LeftMenu').html(rowData); 
                         return;
                     }
                 }

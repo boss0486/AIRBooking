@@ -10,7 +10,7 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_ServiceCategory")]
+    [Table("App_ServicePackCategory")]
     public partial class AppServiceCategory : WEBModel
     {
         public AppServiceCategory()

@@ -3,50 +3,61 @@ using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using Dapper;
 using System;
-using System.Collections.Generic;
 using WebCore.Model.Entities;
 
 namespace WebCore.Entities
-{ 
+{
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("MenuCategory")]
-    public partial class MenuCategory : WEBModel
+    [Table("App_TransactionCustomerSpending")]
+    public partial class TransactionCustomerSpending : WEBModel
     {
-        public MenuCategory()
+        public TransactionCustomerSpending()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
+        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string UserIDSend { get; set; }
+        public double Amount { get; set; }
+        public int Status { get; set; }
     }
 
     // model
-    public class MenuCategoryCreateModel
+    public class TransactionCustomerSpendingCreateModel
     {
-        public string Title { get; set; }   
-        public string Summary { get; set; }
-        public int Enabled { get; set; }
-    }
-    public class MenuCategoryUpdateModel : MenuCategoryCreateModel
-    {
-        public string ID { get; set; }
-    }
-    public class MenuCategoryIDModel
-    {
-        public string ID { get; set; }
-    }
-    public class MenuCategoryResult : WEBModelResult
-    {
-        public string ID { get; set; }
+        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string Alias { get; set; } 
+        public double Amount { get; set; }
+        public int Enabled { get; set; }
+
     }
-    public class MenuCategoryOption
+    public class TransactionCustomerSpendingUpdateModel : TransactionCustomerSpendingCreateModel
+    {
+        public string ID { get; set; }
+    }
+    public class TransactionSpendingIDModel
+    {
+        public string ID { get; set; }
+    }
+    public class TransactionCustomerSpendingResult : WEBModelResult
+    {
+
+        public string ID { get; set; }
+        public string CustomerID { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Alias { get; set; }
+        public string UserIDSend { get; set; }
+        public double Amount { get; set; }
+        public bool Status { get; set; }
+    }
+    public class TransactionCustomerSpendingOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

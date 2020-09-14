@@ -201,11 +201,11 @@ var menuController = {
                                 var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
                                               <div class='ddl-action-content'>`;
                                 if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
+                                    action += `<a href='${URLA}/update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
                                 if (role.Delete)
-                                    action += `<a onclick="menuController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
+                                    action += `<a onclick="menuController.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
                                 if (role.Details)
-                                    action += `<a href='${URLA}/detail/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
+                                    action += `<a href='${URLA}/detail/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
                                 action += `</div>
                                            </div>`;
                             }
@@ -265,11 +265,11 @@ var menuController = {
                 if (role !== undefined && role !== null) {
                     action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;
                     if (role.Update)
-                        action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
+                        action += `<a href='${URLA}/update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
                     if (role.Delete)
-                        action += `<a onclick="menuController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
+                        action += `<a onclick="menuController.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
                     if (role.Details)
-                        action += `<a href='${URLA}/detail/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
+                        action += `<a href='${URLA}/detail/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
                     action += `</div></div>`;
                 }
                 // icon sort

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using WebCore.Services;
 
 namespace WebCore.Entities
 {
-    public partial class UserClientModel : WEBModel
+    public partial class UserClient : WEBModel
     {
         public string ID { get; set; }
         public string AreaID { get; set; }
@@ -27,14 +28,25 @@ namespace WebCore.Entities
     }
     public partial class UserClientResult : WEBModelResult
     {
-        public string ID { get; set; } 
+        public string ID { get; set; }
         public string LoginID { get; set; }
         public string TokenID { get; set; }
         public string OTPCode { get; set; }
         public string ImageFile { get; set; }
         public string FullName { get; set; }
         public string Nickname { get; set; }
-        public string Birthday { get; set; }
+        private string _birthday;
+        public string Birthday
+        {
+            get
+            {
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_birthday), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _birthday = value;
+            }
+        }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }

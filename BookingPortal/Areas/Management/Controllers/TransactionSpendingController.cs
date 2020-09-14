@@ -12,28 +12,25 @@ using WebCore.Services;
 
 namespace WebApplication.Management.Controllers
 {
+    [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("TransactionSpending")]
-    [IsManage(act: false)]
     public class TransactionSpendingController : CMSController
     {
         // GET: BackEnd/bank
-        [IsManage(act: false)]
         public ActionResult DataList()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Create()
         {
             return View();
         }
 
-        [IsManage(act: false)]
         public ActionResult Details(string id)
         {
-            TransactionSpendingService service = new TransactionSpendingService();
+            TransactionCustomerSpendingService service = new TransactionCustomerSpendingService();
             var model = service.GetTransactionSpendingModel(id);
             if (model != null)
                 return View(model);
@@ -42,13 +39,12 @@ namespace WebApplication.Management.Controllers
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
-        [IsManage(act: true, text: "DataList")]
         [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try
             {
-                using (var service = new TransactionSpendingService())
+                using (var service = new TransactionCustomerSpendingService())
                 { 
                     return service.DataList(model);
                 }
@@ -60,13 +56,12 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Create")]
         [Route("Action/Create")]
-        public ActionResult Create(TransactionSpendingCreateModel model)
+        public ActionResult Create(TransactionCustomerSpendingCreateModel model)
         {
             try
             {
-                using (var service = new TransactionSpendingService())
+                using (var service = new TransactionCustomerSpendingService())
                     return service.Create(model);
             }
             catch (Exception ex)
@@ -76,13 +71,12 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [IsManage(act: true, text: "Delete")]
         [Route("Action/Delete")]
         public ActionResult Delete(TransactionSpendingIDModel model)
         {
             try
             {
-                using (var service = new TransactionSpendingService())
+                using (var service = new TransactionCustomerSpendingService())
                 {
                     if (model == null)
                         return Notifization.Invalid();
@@ -94,26 +88,5 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
-
-        [HttpPost]
-        [IsManage(act: true, text: "Details")]
-        [Route("Action/Details")]
-        public ActionResult Details(TransactionSpendingIDModel model)
-        {
-            try
-            {
-                using (var service = new TransactionSpendingService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid();
-                    return service.Details(model.ID);
-                }
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
-
     }
 }

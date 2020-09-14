@@ -21,35 +21,55 @@ namespace WebCore.Services
         public RoleService() : base() { }
         public RoleService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
+            #region
             if (model == null)
-                return Notifization.Invalid();
-            string query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
-            if (!string.IsNullOrEmpty(query))
-                query = query.Trim();
-            else
-                query = "";
             int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
             //
             string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            #endregion
+
             int status = model.Status;
             if (status > 0)
                 whereCondition += " AND Enabled = @Enabled";
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM Role WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [Level] ASC";
-            var dtList = _connection.Query<RoleResult>(sqlQuery, new { Query = query, Enabled = status }).ToList();
+            string sqlQuery = @"SELECT * FROM Role WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [Level] ASC";
+            var dtList = _connection.Query<RoleResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-            if (result.Count <= 0 && page > 1)
+            if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
-            if (result.Count <= 0)
+            if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
 
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
@@ -58,16 +78,8 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            //
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -273,53 +285,77 @@ namespace WebCore.Services
             }
         }
 
-        public List<RoleOptionByUser> DataOptionByUser(string userId)
+        public static List<string> GetRoleForUser(string userId)
         {
-
-            if (string.IsNullOrWhiteSpace(userId))
-                return null;
-            //
-            string sqlQuery = @"SELECT r.ID, r.Title, r.Level, (SELECT CASE WHEN EXISTS (SELECT ID FROM UserRole as s WHERE s.RoleID = r.ID AND  s.UserID = @UserID ) THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END ) as IsAllow 
-                                    FROM Role as r WHERE r.Enabled = 1 ORDER BY r.Level, r.Title";
-            return _connection.Query<RoleOptionByUser>(sqlQuery, new { UserID = userId }).ToList();
+            using (var service = new RoleService())
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                    return null;
+                //
+                string sqlQuery = @"SELECT RoleID FROM UserRole WHERE UserID = @UserID";
+                return service.Query<string>(sqlQuery, new { UserID = userId }).ToList();
+            }
         }
 
-        public static string DDLListRoleMultiSelect(string arrData)
+        public static string DDLListRoleMultiSelect(List<string> arrData = null, bool isNotcheck = false)
         {
             try
             {
                 string result = string.Empty;
 
-                using (var departmentService = new RoleService())
+                using (var service = new RoleService())
                 {
-                    var dtList = departmentService.DataOption();
+                    var dtList = service.DataOption();
                     if (dtList.Count > 0)
                     {
+                        int cnt = 1;
                         foreach (var item in dtList)
                         {
-                            string select = string.Empty;
-                            if (arrData.Contains(","))
+                            string strIndex = cnt + "";
+                            if (cnt < 10)
+                                strIndex = "0" + cnt;
+                            //
+                            string strLevel = item.Level + "";
+                            if (item.Level < 10)
+                                strLevel = "0" + item.Level;
+                            //
+
+                            string active = string.Empty;
+                            if (arrData != null && arrData.Count() > 0)
                             {
-                                string[] idList = arrData.Split(',');
-                                foreach (var _item in idList)
-                                {
-                                    if (item.ID.Equals(_item.ToLower()))
-                                        select = "selected";
-                                }
+                                if (arrData.Contains(item.ID))
+                                    active = "checked";
                             }
-                            result += "<a class='list-group-item list-group-item-action'" + select + " data-val='" + item.ID + "'><i class='far fa-square'></i> " + item.Title + "</a>";
+                            //
+                            if (!isNotcheck)
+                            {
+                                result += "<a class='list-group-item'>";
+                                result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + " />";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "</a>";
+                            }
+                            else
+                            {
+
+                                result += "<a class='list-group-item "+ active + "'>";
+                                result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + "  disabled />";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "</a>";
+                            }
+                            cnt++;
                         }
                     }
                 }
-
                 return result;
-
             }
             catch
             {
                 return string.Empty;
             }
         }
+
+
+
         //##############################################################################################################################################################################################################################################################
 
 

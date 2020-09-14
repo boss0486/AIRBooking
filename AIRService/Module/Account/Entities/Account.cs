@@ -29,21 +29,6 @@ namespace WebCore.Entities
     public partial class AccountResult : WEBModelResult
     {
         public string ID { get; set; }
-
-        private string _areaId;
-        public string AreaID
-        {
-
-            get
-            {
-                return AreaApplicationService.GetAreaKeyByID(_areaId);
-            }
-            set
-            {
-                _areaId = value;
-            }
-        }
-
         public string LoginID { get; set; }
         public string TokenID { get; set; }
         public string OTPCode { get; set; }
