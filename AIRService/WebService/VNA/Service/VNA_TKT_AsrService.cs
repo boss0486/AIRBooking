@@ -728,19 +728,34 @@ namespace AIRService.WS.Service
                 var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
                 soapEnvelopeXml.Load(path);
                 soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TKT_AsrServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TKT_AsrServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
                 soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
                 soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
                 var stringXML = "";
-                stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
-                stringXML += "            <Header />";
-                stringXML += "            <SelectionCriteria>";
-                stringXML += "                <TicketingProvider>VN</TicketingProvider>";
-                stringXML += "                <DocumentNumber>7382444368772</DocumentNumber>";
-                stringXML += "            </SelectionCriteria>";
-                stringXML += "        </DetailRQ>";
+
+                stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+                stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <SearchParameters>";
+                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+                stringXML += "        <DocumentNumber>7382444368772</DocumentNumber>";
+                stringXML += "    </SearchParameters>";
+                stringXML += "</GetTicketingDocumentRQ>";
+
+
+
+                //stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
+                //stringXML += "            <Header />";
+                //stringXML += "            <SelectionCriteria>";
+                //stringXML += "                <TicketingProvider>VN</TicketingProvider>";
+                //stringXML += "                <DocumentNumber>7382444368772</DocumentNumber>";
+                //stringXML += "            </SelectionCriteria>";
+                //stringXML += "        </DetailRQ>";
+
+
+
                 child.InnerXml = stringXML;
                 soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
                 using (Stream stream = request.GetRequestStream())
