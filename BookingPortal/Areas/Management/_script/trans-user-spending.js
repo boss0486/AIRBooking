@@ -125,9 +125,9 @@ var TransactionSpendingController = {
                             var enabled = item.Enabled;
 
                             if (parseInt(status) == 1) {
-                                title += `. + ${LibCurrencies.FormatThousands(amount)} đ`
+                                title += `. + ${LibCurrencies.FormatToCurrency(amount)} đ`
                             } else {
-                                title += `. - ${LibCurrencies.FormatThousands(amount)} đ`
+                                title += `. - ${LibCurrencies.FormatToCurrency(amount)} đ`
                             }
                             if (summary != null) {
                                 summary = ", " + summary;

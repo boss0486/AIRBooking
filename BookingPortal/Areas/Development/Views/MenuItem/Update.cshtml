@@ -59,10 +59,22 @@
 }
 <div class="row">
     <div class="col-md-7">
-        <div class="form-group">
-            <label class="form-label">Phân vùng</label>
-            <input id="ddlArea" name="ddlArea" maxlength="50" type="text" class="form-control" value="@areaKey" data-Id="@routeArea" disabled />
-            <span id="lblArea" class="message msg-box"></span>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Dữ liệu:</label>
+                    <button id="btnSync" type="button" class="btn btn-primary w-100" style="width:100%">
+                        Đồng bộ
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label class="form-label">Phân vùng</label>
+                    <input id="ddlArea" name="ddlArea" maxlength="50" type="text" class="form-control" value="@areaKey" data-Id="@routeArea" disabled />
+                    <span id="lblArea" class="message msg-box"></span>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-label">Tiêu đề</label>
@@ -109,7 +121,7 @@
                     <label class="form-label">Action:</label>
                     <select id="ddlAction" name="ddlAction" class="form-control show-tick" data-live-search="true">
                         <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
-                        @Html.Raw(MenuActionService.DropdownList(actionId,controllerId))
+                        @Html.Raw(MenuActionService.DropdownList(actionId, controllerId))
                     </select>
                     <span id="lblAction" class="message msg-box"></span>
                 </div>

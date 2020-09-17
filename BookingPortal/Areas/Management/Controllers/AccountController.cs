@@ -48,9 +48,12 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public new ActionResult Profile()
+        public new ActionResult Profile(string id = null)
         {
-            string id = Helper.Current.UserLogin.IdentifierID;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                id = Helper.Current.UserLogin.IdentifierID;
+            }
             AccountService service = new AccountService();
             UserResult model = service.GetUserModel(id);
             if (model != null)

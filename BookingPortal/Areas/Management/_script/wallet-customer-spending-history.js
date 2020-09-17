@@ -56,7 +56,7 @@ var WalletCustomerSpendingHistoryController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${title}</td>                                    
-                                 <td class='text-right'>${LibCurrencies.FormatThousands(amount)} đ</td>                                    
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
                                  <td class="text-center">${item.CreatedDate}</td>
                             </tr>`;
                         });

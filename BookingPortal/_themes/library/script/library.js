@@ -210,8 +210,8 @@ class LibDateTime {
                     if (val.utc != undefined && val.utc != null) {
                         $.each(val.utc, function (utcKey, utcVal) {
                             if (utcVal == utcLocal) {
-                                result = _val; 
-                               // return _val;
+                                result = _val;
+                                // return _val;
                             }
                         });
                     }
@@ -250,10 +250,18 @@ class LibDateTime {
 }
 
 class LibCurrencies {
-    static FormatThousands(n, dp) {
+    static FormatToCurrency(n, dp) {
         var s = '' + (Math.floor(n)), d = n % 1, i = s.length, r = '';
         while ((i -= 3) > 0) { r = ' ' + s.substr(i, 3) + r; }
         return s.substr(0, i + 3) + r + (d ? '.' + Math.round(d * Math.pow(10, dp || 2)) : '');
+    }
+
+    static ConvertToCurrency(_val) {
+        //
+        if (_val != undefined && _val != '')
+            return _val.replace(/\s/g, "");
+        else
+            return 0;
     }
 }
 class SubStringText {

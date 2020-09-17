@@ -28,24 +28,7 @@ namespace WebCore.Entities
     public partial class UserResult : WEBModelResult
     {
         public string ID { get; set; }
-
-        private string _areaId;
-        public string AreaID
-        {
-
-            get
-            {
-                return AreaApplicationService.GetAreaKeyByID(_areaId);
-            }
-            set
-            {
-                _areaId = value;
-            }
-        }
-
         public string LoginID { get; set; }
-        public string TokenID { get; set; }
-        public string OTPCode { get; set; }
         public string ImageFile { get; set; }
         public string FullName { get; set; }
         public string Nickname { get; set; }
@@ -65,6 +48,7 @@ namespace WebCore.Entities
         public string Phone { get; set; }
         public string Address { get; set; }
         public bool IsBlock { get; set; }
+        public bool IsAdministrator { get; set; }
     }
     public class UserCreateModel
     {

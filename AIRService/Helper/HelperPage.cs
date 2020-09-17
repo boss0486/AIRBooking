@@ -302,9 +302,9 @@ namespace Helper.Page
         }
     }
     //###CLASS###################################################################################################################################################################################
-    
-    
-    
+
+
+
     public class Library
     {
         // format text 
@@ -392,12 +392,15 @@ namespace Helper.Page
             }
             return result.Trim();
         }
-        public static string FormatThousands(double _amount)
+        public static string FormatCurrency(double _amount, bool isText = true)
         {
             try
             {
                 string result = String.Format("{0:#,##0.##}", _amount);
                 result = result.Replace(",", " ");
+                if (!isText)
+                    return result.Trim();
+                //
                 return result.Trim() + ".0";
             }
             catch (Exception)

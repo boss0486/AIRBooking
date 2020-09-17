@@ -361,7 +361,7 @@ var _TransactionDepositController = {
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${title}</td>                                    
                                  <td>${customerId}</td>                                    
-                                 <td class="text-right"> ${LibCurrencies.FormatThousands(amount)} đ</td>                                    
+                                 <td class="text-right"> ${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
                                  <td>${summary}</td>                                    
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>

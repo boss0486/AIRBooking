@@ -109,7 +109,7 @@
                                                         <td>:</td>
                                                         <td class="text-right">@_quantity</td>
                                                         <td>x</td>
-                                                        <td class="text-right">@Helper.Library.FormatThousands(fareOfType)</td>
+                                                        <td class="text-right">@Helper.Library.FormatToCurrency(fareOfType)</td>
                                                         <td class="text-center">=</td>
                                                         <td class="text-right">@(Helper.Library.FormatThousands(flightTotal)) đ</td>
                                                     </tr>

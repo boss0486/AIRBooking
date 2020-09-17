@@ -227,18 +227,25 @@ var CustomerController = {
             }
             // deposit **********************************************************************************
 
-            if (ddlCustomerType != "COMP") {
+            if (ddlCustomerType != "comp") {
 
                 if (txtDeposit === '') {
                     $('#lblDeposit').html('Không được để trống số tiền đặt cọc');
                     flg = false;
                 }
-                else if (!FormatNumberFloat.test(txtDeposit)) {
-                    $('#lblDeposit').html('Số tiền đặt cọc không hợp lệ');
-                    flg = false;
-                }
                 else {
-                    $('#lblDeposit').html('');
+                    txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
+                    if (!FormatCurrency.test(txtDeposit)) {
+                        $('#lblDeposit').html('Số tiền đặt cọc không hợp lệ');
+                        flg = false;
+                    }
+                    else if (parseFloat(txtDeposit) <= 0) {
+                        $('#lblDeposit').html('Số tiền đặt cọc phải > 0');
+                        flg = false;
+                    }
+                    else {
+                        $('#lblDeposit').html('');
+                    }
                 }
             }
             //
@@ -271,7 +278,7 @@ var CustomerController = {
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
             var ddlSupplier = $('#ddlSupplier').val();
-            var ddlCustomerType = $('#ddlCustomerType').val();
+            //var ddlCustomerType = $('#ddlCustomerType').val();
             //
             var txtCodeID = $('#txtCodeID').val();
             var txtTitle = $('#txtTitle').val();
@@ -300,13 +307,13 @@ var CustomerController = {
                 $('#lblSupplier').html('');
             }
 
-            if (ddlCustomerType === "") {
-                $('#lblCustomerType').html('Vui lòng chọn loại khách hàng');
-                flg = false;
-            }
-            else {
-                $('#lblCustomerType').html('');
-            }
+            //if (ddlCustomerType === "") {
+            //    $('#lblCustomerType').html('Vui lòng chọn loại khách hàng');
+            //    flg = false;
+            //}
+            //else {
+            //    $('#lblCustomerType').html('');
+            //}
             //
             //
             if (txtCodeID === '') {
@@ -433,6 +440,46 @@ var CustomerController = {
                 $('#lblContactPhone').html('');
             }
             // account **********************************************************************************
+            // deposit **********************************************************************************
+
+            if (ddlCustomerType != "comp") {
+
+                if (txtDeposit === '') {
+                    $('#lblDeposit').html('Không được để trống số tiền đặt cọc');
+                    flg = false;
+                }
+                else {
+                    txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
+                    if (!FormatCurrency.test(txtDeposit)) {
+                        $('#lblDeposit').html('Số tiền đặt cọc không hợp lệ');
+                        flg = false;
+                    }
+                    else if (parseFloat(txtDeposit) <= 0) {
+                        $('#lblDeposit').html('Số tiền đặt cọc phải > 0');
+                        flg = false;
+                    }
+                    else {
+                        $('#lblDeposit').html('');
+                    }
+                }
+            }
+            //
+            if (txtTermPayment === '') {
+                $('#lblTermPayment').html('Không được để trống kỳ hạn thanh toán');
+                flg = false;
+            }
+            else if (!FormatNumber.test(txtTermPayment)) {
+                $('#lblTermPayment').html('Kỳ hạn thanh toán không hợp lệ');
+                flg = false;
+            }
+            else if (parseInt(txtTermPayment) <= 0) {
+                $('#lblTermPayment').html('Kỳ hạn thanh toán phải > 0');
+                flg = false;
+            }
+            else {
+                $('#lblTermPayment').html('');
+            }
+
             // submit **********************************************************************************
             if (flg) {
                 CustomerController.Update();
@@ -517,7 +564,7 @@ var CustomerController = {
                                  <td>${_title}</td>                    
                                  <td>${_customerType}</td>
                                  <td>${_contactName}</td>
-                                 <td class="text-right">${LibCurrencies.FormatThousands(_depositAmount)} đ</td>                                                                            
+                                 <td class="text-right">${LibCurrencies.FormatToCurrency(_depositAmount)} đ</td>                                                                            
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
@@ -566,7 +613,7 @@ var CustomerController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         //
-        var txtDeposit = $('#txtDeposit').val();
+        var txtDeposit = LibCurrencies.ConvertToCurrency($('#txtDeposit').val());
         var txtTermPayment = $('#txtTermPayment').val();
         //
         var enabled = 0;
@@ -624,7 +671,7 @@ var CustomerController = {
     },
     Update: function () {
         var id = $('#txtID').val();
-        var ddlCustomerType = $('#ddlCustomerType').val();
+        //var ddlCustomerType = $('#ddlCustomerType').val();
         var txtCodeID = $('#txtCodeID').val();
         var txtTitle = $('#txtTitle').val();
         var txtSummary = $('#txtSummary').val();
@@ -636,7 +683,8 @@ var CustomerController = {
         var txtContactEmail = $('#txtContactEmail').val();
         var txtContactPhone = $('#txtContactPhone').val();
         //
-        var txtDeposit = $('#txtDeposit').val();
+        var txtDeposit = LibCurrencies.ConvertToCurrency($('#txtDeposit').val());
+
         var txtTermPayment = $('#txtTermPayment').val();
         //
         var enabled = 0;
@@ -646,7 +694,7 @@ var CustomerController = {
         //
         var model = {
             ID: id,
-            TypeID: ddlCustomerType,
+            //TypeID: ddlCustomerType,
             CodeID: txtCodeID,
             ParentID: '',
             Title: txtTitle,
@@ -790,15 +838,13 @@ $(document).on("change", "#ddlCustomerType", function () {
     }
     else {
         $('#lblCustomerType').html('');
-        if (ddlCustomerType == "COMP") {
+        if (ddlCustomerType == "comp") {
             $('#txtDeposit').attr('disabled', 'disabled');
             $('#txtDeposit').val(0);
         }
         else {
             $('#txtDeposit').removeAttr('disabled');
         }
-
-
     }
 });
 //
@@ -989,19 +1035,25 @@ $(document).on("keyup", "#txtPhone", function () {
 });
 // deposit
 $(document).on("keyup", "#txtDeposit", function () {
-    if (ddlCustomerType != "COMP") {
+    var ddlCustomerType = $("#ddlCustomerType").val();
+
+    if (ddlCustomerType != "comp") {
         var txtDeposit = $(this).val();
         if (txtDeposit === '') {
             $('#lblDeposit').html('Không được để trống số tiền đặt cọc');
         }
-        else if (!FormatNumberFloat.test(txtDeposit)) {
-            $('#lblDeposit').html('Số tiền đặt cọc không hợp lệ');
-        }
-        else if (parseInt(txtDeposit) <= 0) {
-            $('#lblDeposit').html('Số tiền đặt cọc phải > 0');
-        }
         else {
-            $('#lblDeposit').html('');
+            txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
+
+            if (!FormatCurrency.test(txtDeposit)) {
+                $('#lblDeposit').html('Số tiền đặt cọc không hợp lệ');
+            }
+            else if (parseFloat(txtDeposit) <= 0) {
+                $('#lblDeposit').html('Số tiền đặt cọc phải > 0');
+            }
+            else {
+                $('#lblDeposit').html('');
+            }
         }
     }
 });

@@ -55,6 +55,17 @@ $(function () {
     }).on('changeDate', function (index, item) {
         $('.datepicker').hide();
     });
+    //
+    $(document).on("blur", "input[data-currency='true']", function () {
+        var _crrVal = $(this).val();
+        var _val = LibCurrencies.ConvertToCurrency(_crrVal);
+        if (!FormatCurrency.test(_val)) {
+            $(this).val(_crrVal);
+        } else {
+            $(this).val(LibCurrencies.FormatToCurrency(_val));
+        }
+        $(this).keypress();
+    });
     // scroll 
 
 

@@ -195,6 +195,7 @@
     <Content Include="Areas\Management\_script\trans-spending.js" />
     <Content Include="Areas\Management\_script\trans-user-spending.js" />
     <Content Include="Areas\Management\_script\user-group.js" />
+    <Content Include="Areas\Management\_script\vna-report.js" />
     <Content Include="Areas\Management\_script\wallet-customer-deposit-history.js" />
     <Content Include="Areas\Management\_script\wallet-user-spending.js" />
     <Content Include="Areas\Management\_script\wallet-customer-spending-history.js" />
@@ -902,7 +903,6 @@
     <Content Include="Areas\Development\Views\User\Infor.cshtml" />
     <Content Include="Areas\Development\Views\User\Password.cshtml" />
     <Content Include="Areas\Development\Views\User\Pincode.cshtml" />
-    <Content Include="Areas\Development\Views\User\Setting.cshtml" />
     <Content Include="Areas\Development\Views\User\Update.cshtml" />
     <Content Include="Areas\Development\Views\web.config" />
     <Content Include="Areas\Development\Views\_ViewStart.cshtml" />
@@ -1113,7 +1113,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Development\Views\Test\" />
     <Folder Include="Areas\Management\Data\" />
-    <Folder Include="Areas\Management\Views\VNAReport\" />
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
     <Folder Include="Files\export\" />
@@ -1302,6 +1301,7 @@
     <Content Include="Areas\Development\Views\Account\Details.cshtml" />
     <Content Include="Areas\Management\Views\Account\Details.cshtml" />
     <Content Include="Areas\Development\Views\User\Profile.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\DataList.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

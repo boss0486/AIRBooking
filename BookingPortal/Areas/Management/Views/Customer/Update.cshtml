@@ -32,6 +32,7 @@
     string enabled = "None";
     //
     string _loginId = "";
+    string stateDeposit = "";
     try
     {
         if (Model != null)
@@ -74,7 +75,7 @@
 }
 <div class="row">
     <div class="col-md-7">
-        @if (Helper.Current.UserLogin.IsAdministratorInApplication)
+        @if (Helper.Current.UserLogin.IsAdminInApplication)
         {
             <div class="top-pic special">
                 <label><i class="fas fa-building"></i>&nbsp;<span>Nhà cung cấp dịch vụ:</span></label>
@@ -102,17 +103,14 @@
             <label><i class="fas fa-building"></i>&nbsp;<span>Doanh nghiệp/ Đại lý:</span></label>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <div class="form-group ">
-                    <label class="form-label">Loại khách hàng:</label>
-                    <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText" disabled>
-                        <option value="">-Lựa chọn-</option>
-                        @Html.Raw(CustomerTypeService.DropdownList(customerType))
-                    </select>
-                    <span id="lblCustomer" class="message msg-box"></span>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="form-label">Tên khách hàng:</label>
+                    <input id="txtTitle" name="txtTitle" maxlength="80" type="text" class="form-control" value="@title" />
+                    <span id="lblTitle" class="message msg-box"></span>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-label">Mã khách hàng:</label>
                     <input id="txtCodeID" name="txtCodeID" maxlength="3" type="text" class="form-control" style="background: #CCFFCD" value="@customerCode" disabled />
@@ -120,11 +118,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-label">Tên khách hàng:</label>
-            <input id="txtTitle" name="txtTitle" maxlength="80" type="text" class="form-control" value="@title" />
-            <span id="lblTitle" class="message msg-box"></span>
-        </div>
+
         <div class="form-group">
             <label class="form-label">Mô tả:</label>
             <textarea id="txtSummary" name="txtSummary" class="form-control default">@summary</textarea>
@@ -187,11 +181,24 @@
         <div class="top-pic special">
             <label><i class="fas fa-server"></i>&nbsp;<span>Dịch vụ:</span></label>
         </div>
+        <div class="form-group ">
+            <label class="form-label">Loại khách hàng:</label>
+            <select id="ddlCustomerType" name="ddlCustomerType" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText" disabled>
+                <option value="">-Lựa chọn-</option>
+                @Html.Raw(CustomerTypeService.DropdownList(customerType))
+            </select>
+            <span id="lblCustomer" class="message msg-box"></span>
+        </div>
+        @if (CustomerTypeService.GetCustomerType(customerType) == (int)WebCore.ENM.CustomerEnum.CustomerType.COMP)
+        {
+            stateDeposit = "disabled";
+        }
         <div class="form-group">
             <label class="form-label">Đặt cọc:</label>
-            <input id="txtDeposit" name="txtDeposit" maxlength="15" type="text" class="form-control" value="@depositAmount" />
+            <input id="txtDeposit" name="txtDeposit" data-currency="true" maxlength="15" type="text" class="form-control" value="@Helper.Page.Library.FormatCurrency(depositAmount, false)" @stateDeposit />
             <span id="lblDeposit" class="message msg-box"></span>
-        </div> 
+        </div>
+
         <div class="form-group">
             <label class="form-label">Thời hạn TT(ngày):</label>
             <input id="txtTermPayment" name="txtTermPayment" maxlength="3" type="text" class="form-control" value="@termPayment" />

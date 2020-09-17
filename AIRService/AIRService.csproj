@@ -1704,8 +1704,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="File\no-img.gif" />
-    <Content Include="Application\Customer\Entities\CustomerType-csdl.txt" />
-    <Content Include="Application\Customer\Services\CustomerTypeService-csdl.txt" />
     <Content Include="Libraries\dll\AL.NetFrame.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,10 +5,10 @@
     src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-.slimScrollDiv
-{
-    cursor:pointer;
+.slimScrollDiv {
+    cursor: pointer;
 }
+
 * {
     /*font-family: Menlo, Monaco, Consolas, "Courier New", monospace;*/
     font-family: 'Roboto', sans-serif, monospace;
@@ -6785,7 +6785,7 @@ textarea.form-control {
             background: #FBE4A1;
         }
 
-        
+
         .list-select .data-group .list-group-item {
             border: none;
         }
@@ -6805,15 +6805,15 @@ textarea.form-control {
     .list-group-item .form-group {
         padding-bottom: 10px;
     }
- 
-    .list-group .active .list-group-item-text {
-        color: #dfe9f1;
-        font-size: 13px;
-    }
 
-        .list-group .active .list-group-item-text:hover, .list-group .active .list-group-item-text:active, .list-group .active .list-group-item-text:focus {
-            color: #dfe9f1;
-        }
+.list-group .active .list-group-item-text {
+    color: #dfe9f1;
+    font-size: 13px;
+}
+
+    .list-group .active .list-group-item-text:hover, .list-group .active .list-group-item-text:active, .list-group .active .list-group-item-text:focus {
+        color: #dfe9f1;
+    }
 
 .list-group-item label {
     position: relative;
@@ -9062,6 +9062,19 @@ textarea.form-control {
                     float: right;
                 }
 
+.infor-container-img {
+    background: #CCC;
+    padding: 30px 0px;
+    height: 220px
+}
+
+
+@media only screen and (max-width: 768px) {
+    .infor-container-img {
+        height: auto
+    }
+}
+ 
 .card-about-me .body ul {
     margin: 0;
     padding: 0;

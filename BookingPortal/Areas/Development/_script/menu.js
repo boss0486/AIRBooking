@@ -203,7 +203,7 @@ var MenuItemController = {
                 var role = _role;
                 //  role
                 var action = HelperModel.RolePermission(role, "MenuItemController", id);
-                            //
+                //
                 // icon sort
                 // icon sort
                 var _orderId = item.OrderID;
@@ -884,3 +884,59 @@ function GetMenuArea(_id, isChangeEvent) {
         }
     });
 }
+
+
+$(document).on('click', '#btnAutoSort', function () {
+    var model = {
+    };
+    AjaxFrom.POST({
+        url: URLC + '/SortAuto',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    MenuItemController.DataList(pageIndex);
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NotService);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+});
+
+$(document).on('click', '#btnSync', function () {
+    var model = {
+    };
+    AjaxFrom.POST({
+        url: URLC + '/Menu-Sync',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    $("#ddlArea").change();
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NotService);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+});
+

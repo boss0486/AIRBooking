@@ -18,5 +18,33 @@ namespace WebCore.Services
         public UserRoleService() : base() { }
         public UserRoleService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
+        public List<string> GetUserRoleByUserID(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                    return new List<string>();
+                //
+                userId = userId.ToLower();
+                RoleService roleService = new RoleService(_connection);
+                UserRoleService userRoleService = new UserRoleService(_connection);
+                List<string> roles = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID == userId).Select(m => m.RoleID).ToList();
+                if (roles.Count == 0)
+                    return new List<string>();
+                //
+                List<string> result = new List<string>();
+                foreach (var item in roles)
+                {
+                    string roleName = roleService.GetAlls(m => m.ID == item).Select(m => m.Title).FirstOrDefault();
+                    result.Add(roleName);
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+        //##############################################################################################################################################################################################################################################################
     }
 }

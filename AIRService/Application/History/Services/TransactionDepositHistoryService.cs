@@ -86,7 +86,7 @@ namespace WebCore.Services
             if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
                 transState = "-";
             //
-            string title = "Nạp tiền vào tài khoản. GD " + transState + " " + Helper.Page.Library.FormatThousands(amount) + " đ. Số dư: " + Helper.Page.Library.FormatThousands(balance) + " đ.";
+            string title = "Nạp tiền vào tài khoản. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
             string summary = "";
             TransactionDepositHistoryService BalanceCustomerHistoryService = new TransactionDepositHistoryService(dbConnection);
             var id = BalanceCustomerHistoryService.Create<string>(new TransactionDepositHistory()

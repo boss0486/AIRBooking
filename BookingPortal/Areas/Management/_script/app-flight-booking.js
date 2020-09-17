@@ -304,7 +304,7 @@ var flightBookingController = {
                                 var rbsc = item.ResBookDesigCode;
                                 var active = "";
                                 if (rbsc === special_pesBookDesigCode) {
-                                    special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare'>${LibCurrencies.FormatThousands(item.AdtAmount)}.0 ${unit}</span></label>`
+                                    special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare'>${LibCurrencies.FormatToCurrency(item.AdtAmount)}.0 ${unit}</span></label>`
                                     active = "on";
                                 }
                                 //
@@ -486,7 +486,7 @@ $(document).on('click', '.lbl-list label.fare-item', function () {
     $(tr).find(".fare-item span.resbook").removeClass("on");
     $(this).find("span.resbook").addClass("on");
 
-    var _html = `<label class='lbl-special-item' data-param='${param}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${resbookdesigcode}'><span class='resbook'>${resbookdesigcode}:</span><span class='fare'>${LibCurrencies.FormatThousands(adtAmount)}.0 ${unit}</span></label>`
+    var _html = `<label class='lbl-special-item' data-param='${param}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${resbookdesigcode}'><span class='resbook'>${resbookdesigcode}:</span><span class='fare'>${LibCurrencies.FormatToCurrency(adtAmount)}.0 ${unit}</span></label>`
     $(tr).find("label.lbl-special").html(_html);
 });
 //
@@ -1075,9 +1075,9 @@ function BookingOrderLoad() {
                                                             <td style='width: 25px;' class='text-center'>:</td>
                                                             <td style='width: 25px;' class="text-right">${_quantities}</td>
                                                             <td style='width: 25px;' class='text-center'>x</td>
-                                                            <td style='width: 100px;' class="text-right" data-tax='${taxOfType}'>${LibCurrencies.FormatThousands(fareOfType)}</td>
+                                                            <td style='width: 100px;' class="text-right" data-tax='${taxOfType}'>${LibCurrencies.FormatToCurrency(fareOfType)}</td>
                                                             <td style='width: 25px;' class='text-center'>=</td>
-                                                            <td style=' 'class="text-right">${LibCurrencies.FormatThousands(flightTotal)} đ</td>
+                                                            <td style=' 'class="text-right">${LibCurrencies.FormatToCurrency(flightTotal)} đ</td>
                                                         </tr>`;
                                                 };
                                                 //
@@ -1112,14 +1112,14 @@ function BookingOrderLoad() {
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"> ${_taxRow}</table>
                                 </td>
                                 <td class="td-faretotal text-right">
-                                    <label class="depart-price">${LibCurrencies.FormatThousands(fareRound)} đ</label>
+                                    <label class="depart-price">${LibCurrencies.FormatToCurrency(fareRound)} đ</label>
                                 </td>
                             </tr>`;
                             // add row to table
                             $("#TblFlight > tbody").append(_flightRow);
                         });
                         var _flightRow = `<tr>
-                                <td colspan="7" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price" style='color:#F00;'>${LibCurrencies.FormatThousands(_fareFlight)} đ</label></td>
+                                <td colspan="7" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price" style='color:#F00;'>${LibCurrencies.FormatToCurrency(_fareFlight)} đ</label></td>
                             </tr>`
                         // add row to table
                         $("#TblFlight > tbody").append(_flightRow);

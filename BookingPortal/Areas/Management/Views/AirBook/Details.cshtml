@@ -178,7 +178,7 @@
                         {
                             foreach (var item in bookFares)
                             {
-                                <td class="text-right">@Helper.Page.Library.FormatThousands(item.PriceTotal) đ &nbsp;</td>
+                                <td class="text-right">@Helper.Page.Library.FormatCurrency(item.PriceTotal) đ &nbsp;</td>
                             }
                         }
                     </tr>
@@ -224,7 +224,7 @@
                                         {
                                             amount = fareTaxs.Amount;
                                         }
-                                        <td class="text-right">@Helper.Page.Library.FormatThousands(amount) đ &nbsp;</td>
+                                        <td class="text-right">@Helper.Page.Library.FormatCurrency(amount) đ &nbsp;</td>
                                     }
                                 </tr>
                             }
@@ -247,13 +247,13 @@
 
                                         ticketTotal += fareOfType;
                                     }
-                                    <td class="text-right">@Helper.Page.Library.FormatThousands(fareOfType) đ &nbsp;</td>
+                                    <td class="text-right">@Helper.Page.Library.FormatCurrency(fareOfType) đ &nbsp;</td>
                                 }
                             </tr>
                         }
                     }
                     <tr>
-                        <td colspan="5" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price">@Helper.Page.Library.FormatThousands(ticketTotal) đ &nbsp;</label></td>
+                        <td colspan="5" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price">@Helper.Page.Library.FormatCurrency(ticketTotal) đ &nbsp;</label></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,14 +1,15 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 @using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.UserClientModel
+@model WebCore.Entities.UserClientResult
 
 @{
-    string id = "";
+    string userId = "";
     string areaId = "";
     string loginId = "";
     string imageFile = "";
@@ -23,39 +24,43 @@
     string createdDate = "";
     string isBlock = "Hoạt động";
     string enabled = "None";
+    //
+    List<string> userRoles = new List<string>();
     try
     {
         if (Model != null)
         {
-            id = Model.ID;
-            areaId = Model.AreaID;
+            userId = Model.ID;
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            if (!string.IsNullOrWhiteSpace(Model.Birthday))
-            {
-                birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.Birthday), Helper.Language.LanguageCode.Vietnamese.ID);
-            }
+            birthday = Model.Birthday;
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.CreatedDate), Helper.Language.LanguageCode.Vietnamese.ID);
-            imageFile = Helper.File.AttachmentFile.GetFile(Model.ImageFile);
+            createdDate = Model.CreatedDate;
+            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
             //
             if (Model.IsBlock)
             {
-                isBlock = "Tài khoản bị khóa";
+                isBlock = "Đang khóa";
             }
+            //
+
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
-                enabled = "Tài khoản đã active";
+                enabled = "Kích hoạt";
             }
             else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
             {
-                enabled = "Tài khoản chưa được active";
+                enabled = "Không được kích hoạt";
             }
+            //
+            UserRoleService userRoleService = new UserRoleService();
+            userRoles = userRoleService.GetUserRoleByUserID(userId);
+
         }
     }
     catch (Exception)
@@ -63,77 +68,80 @@
 
     }
 }
-<div class="row">
-    <div class="col-md-4 profile">
-        <div class="profile-card">
-            <div class="profile-header">&nbsp;</div>
-            <div class="profile-body">
-                <div class="image-area">
-                    <img src="@imageFile" />
-                </div>
-                <div class="content-area">
-                    <h3>@fullName</h3>
-                    <p>*******</p>
-                    <p>@birthday</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
+
+<div class="row profile">
+    <div class="col-md-8">
         <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin liên hệ:</label>
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin Hồ sơ:</label>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ email:</label>
+                <div class="form-group text-center infor-container-img">
+                    <img src="@imageFile" class="infor-img img-responsive" />
                 </div>
             </div>
             <div class="col-md-8">
                 <div class="form-group ">
-                    <label class="form-label">@email</label>
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Họ tên: <span>@fullName</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Số ĐT: <span>@phone</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> E-Mail: <span>@email</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày sinh: <span>@birthday</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Địa chỉ: <span>@address</span></label>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="form-label"><i class="fas fa-check-circle"></i> Số điện thoại</label>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group ">
-                    <label class="form-label">@phone</label>
-                </div>
-            </div>
+        <div class="top-pic m-t-30">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ</label>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group ">
-                    <label class="form-label">@address</label>
-                </div>
-            </div>
+        <div class="form-group ">
+            <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
         </div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Tình trạng: <span>@isBlock</span></label>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
+        </div>
+        @if (userRoles != null && userRoles.Count() > 0)
+        {
+            int cnt = 1;
+            string strIndex = cnt + "";
+            foreach (var item in userRoles)
+            {
+                if (cnt < 10)
+                {
+                    strIndex = "0" + cnt;
+                }
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> @strIndex: <span>@item</span></label>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="form-group ">
+                <label class="form-label" sty><i class="fas fa-check-circle"></i> 01: <span class="red-text">Chưa thiết lập</span></label>
+            </div>
+        }
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-
-        <div class="row">
-            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Tình trạng:</div></div>
-            <div class="col-md-8"><div class="form-group">@isBlock</div></div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@enabled</span></label>
         </div>
-        <div class="row">
-            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái:</div></div>
-            <div class="col-md-8"><div class="form-group">@enabled</div></div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày tạo: <span>@createdDate</span></label>
         </div>
-        <div class="row">
-            <div class="col-md-4"><div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo hồ sơ:</div></div>
-            <div class="col-md-8"><div class="form-group">@createdDate</div></div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Người tạo: <span>@createdBy</span></label>
         </div>
         <div class="form-group text-right att-data-list">
             <a href="@Helper.Page.Navigate.PathDataList()">

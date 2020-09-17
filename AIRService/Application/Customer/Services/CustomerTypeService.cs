@@ -53,14 +53,14 @@ namespace WebCore.Services
                 {
                     new CustomerTypeOption()
                     {
-                        ID = "AGENT",
-                        Alias = "AGENT",
+                        ID = "agent",
+                        Alias = "agent",
                         Title = "Đại lý",
                         Type =  1,
                     },
                     new CustomerTypeOption()
                     {
-                        ID = "COMP",
+                        ID = "comp",
                         Alias = "comp",
                         Title = "Công ty",
                         Type =  2,

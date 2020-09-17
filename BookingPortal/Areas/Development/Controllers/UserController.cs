@@ -48,11 +48,6 @@ namespace WebApplication.Development.Controllers
             return View();
         }
 
-        public ActionResult Setting()
-        {
-            return View();
-        }
-
         public ActionResult Password()
         {
             return View();

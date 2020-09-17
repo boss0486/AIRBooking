@@ -41,7 +41,7 @@
       },
       {
         "OrderID": 6,
-        "KeyID": "Profiles",
+        "KeyID": "Profile",
         "Method": "Profile",
         "APIRouter": "Action/Profile",
         "Title": "Hồ sơ"
@@ -91,9 +91,30 @@
     ]
   },
   {
+    "KeyID": "VNAReport",
+    "Title": "VNA Báo cáo",
+    "OrderID": 3,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
     "KeyID": "AirFlight",
     "Title": "Sân bay",
-    "OrderID": 3,
+    "OrderID": 4,
     "Action": [
       {
         "OrderID": 1,
@@ -135,7 +156,7 @@
   {
     "KeyID": "Bank",
     "Title": "Ngân hàng",
-    "OrderID": 4,
+    "OrderID": 5,
     "Action": [
       {
         "OrderID": 1,
@@ -177,7 +198,7 @@
   {
     "KeyID": "CardCredit",
     "Title": "Thẻ tín dụng",
-    "OrderID": 5,
+    "OrderID": 6,
     "Action": [
       {
         "OrderID": 1,
@@ -219,7 +240,7 @@
   {
     "KeyID": "Customer",
     "Title": "Khách hàng",
-    "OrderID": 6,
+    "OrderID": 7,
     "Action": [
       {
         "OrderID": 1,
@@ -261,7 +282,7 @@
   {
     "KeyID": "Permission",
     "Title": "Phân quyền",
-    "OrderID": 7,
+    "OrderID": 8,
     "Action": [
       {
         "OrderID": 1,
@@ -275,7 +296,7 @@
   {
     "KeyID": "Report",
     "Title": "Báo cáo",
-    "OrderID": 8,
+    "OrderID": 9,
     "Action": [
       {
         "OrderID": 1,
@@ -317,7 +338,7 @@
   {
     "KeyID": "Role",
     "Title": "Nhóm quyền",
-    "OrderID": 9,
+    "OrderID": 10,
     "Action": [
       {
         "OrderID": 1,
@@ -359,7 +380,7 @@
   {
     "KeyID": "Supplier",
     "Title": "Nhà cung cấp",
-    "OrderID": 10,
+    "OrderID": 11,
     "Action": [
       {
         "OrderID": 1,
@@ -401,7 +422,7 @@
   {
     "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
-    "OrderID": 11,
+    "OrderID": 12,
     "Action": [
       {
         "OrderID": 1,
@@ -429,7 +450,7 @@
   {
     "KeyID": "TransactionSpending",
     "Title": "G.D hạn mức(Khách hàng)",
-    "OrderID": 12,
+    "OrderID": 13,
     "Action": [
       {
         "OrderID": 1,
@@ -457,7 +478,7 @@
   {
     "KeyID": "TransactionUserSpending",
     "Title": "G.D hạn mức(Người dùng)",
-    "OrderID": 13,
+    "OrderID": 14,
     "Action": [
       {
         "OrderID": 1,
@@ -486,7 +507,7 @@
   {
     "KeyID": "User",
     "Title": "Người dùng",
-    "OrderID": 14,
+    "OrderID": 15,
     "Action": [
       {
         "OrderID": 1,
@@ -528,20 +549,6 @@
   {
     "KeyID": "WalletCustomerDepositHistory",
     "Title": "Lịch sử nạp tiền",
-    "OrderID": 15,
-    "Action": [
-      {
-        "OrderID": 1,
-        "KeyID": "DataList",
-        "Method": "DataList",
-        "APIRouter": "Action/DataList",
-        "Title": "D.sách"
-      }
-    ]
-  },
-  {
-    "KeyID": "WalletCustomerSpendingHistory",
-    "Title": "Lịch sử hạn mức (KH)",
     "OrderID": 16,
     "Action": [
       {
@@ -550,12 +557,19 @@
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
       }
     ]
   },
   {
-    "KeyID": "WalletUserSpendingHistory",
-    "Title": "Lịch sử hạn mức (Người dùng)",
+    "KeyID": "WalletCustomerSpendingHistory",
+    "Title": "Lịch sử hạn mức (KH)",
     "OrderID": 17,
     "Action": [
       {
@@ -564,6 +578,34 @@
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "WalletUserSpendingHistory",
+    "Title": "Lịch sử hạn mức (Người dùng)",
+    "OrderID": 18,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
       }
     ]
   }

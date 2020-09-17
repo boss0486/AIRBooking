@@ -9,13 +9,25 @@
 }
 <div class="row">
     <div class="col-md-7">
-        <div class="form-group">
-            <label class="form-label">@Helper.Language.Resource.Label.Area:</label>
-            <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
-                <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
-            </select>
-            <span id="lblArea" class="message msg-box"></span>
-        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Dữ liệu:</label>
+                    <button id="btnSync" type="button" class="btn btn-primary w-100" style="width:100%">
+                        Đồng bộ
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label class="form-label">@Helper.Language.Resource.Label.Area:</label>
+                    <select id="ddlArea" name="ddlArea" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
+                        <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblArea" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>   
         <div class="form-group ">
             <label class="form-label">Tiêu đề</label>
             <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
