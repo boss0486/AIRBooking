@@ -33,16 +33,19 @@ var TransactionSpendingController = {
                 $('#lblAmount').html('Không được để trống số tiền nạp');
                 flg = false;
             }
-            else if (!FormatNumberFloat.test(txtAmount)) {
-                $('#lblAmount').html('Số tiền nạp không hợp lệ');
-                flg = false;
-            }
-            else if (parseFloat(txtAmount) <= 0) {
-                $('#lblAmount').html('Số tiền nạp phải > 0');
-                flg = false;
-            }
             else {
-                $('#lblAmount').html('');
+                txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+                if (!FormatCurrency.test(txtAmount)) {
+                    $('#lblAmount').html('Số tiền nạp không hợp lệ');
+                    flg = false;
+                }
+                else if (parseFloat(txtAmount) <= 0) {
+                    $('#lblAmount').html('Số tiền nạp phải > 0');
+                    flg = false;
+                }
+                else {
+                    $('#lblAmount').html('');
+                }
             }
              //
             if (txtSummary !== '') {
@@ -172,7 +175,7 @@ var TransactionSpendingController = {
     Create: function () {
         var ddlCustomer = $('#ddlCustomer').val();
         var ddlEmployee = $('#ddlEmployee').val();
-        var txtAmount = $('#txtAmount').val();
+        var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());  
         var txtSummary = $('#txtSummary').val();
         var enabled = 0;
         if ($('input[name="cbxActive"]').is(":checked"))
@@ -353,18 +356,21 @@ $(document).on("change", "#ddlEmployee", function () {
     }
 });
 $(document).on("keyup", "#txtAmount", function () {
-    var txtDeposit = $(this).val();
-    if (txtDeposit === '') {
+    var txtAmount = $(this).val();
+    if (txtAmount === '') {
         $('#lblAmount').html('Không được để trống số tiền nạp');
     }
-    else if (!FormatNumberFloat.test(txtDeposit)) {
-        $('#lblAmount').html('Số tiền nạp không hợp lệ');
-    }
-    else if (parseFloat(txtDeposit) <= 0) {
-        $('#lblAmount').html('Số tiền nạp phải > 0');
-    }
     else {
-        $('#lblAmount').html('');
+        txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+        if (!FormatCurrency.test(txtAmount)) {
+            $('#lblAmount').html('Số tiền nạp không hợp lệ');
+        }
+        else if (parseFloat(txtAmount) <= 0) {
+            $('#lblAmount').html('Số tiền nạp phải > 0');
+        }
+        else {
+            $('#lblAmount').html('');
+        }
     }
 });
 // summary

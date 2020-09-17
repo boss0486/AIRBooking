@@ -86,16 +86,19 @@ var TransactionHistoryController = {
                 $('#lblAmount').html('Không được để trống số tiền nạp');
                 flg = false;
             }
-            else if (!FormatNumberFloat.test(txtAmount)) {
-                $('#lblAmount').html('Số tiền nạp không hợp lệ');
-                flg = false;
-            }
-            else if (parseFloat(txtAmount) <= 0) {
-                $('#lblAmount').html('Số tiền nạp phải > 0');
-                flg = false;
-            }
             else {
-                $('#lblAmount').html('');
+                txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+                if (!FormatCurrency.test(txtAmount)) {
+                    $('#lblAmount').html('Số tiền nạp không hợp lệ');
+                    flg = false;
+                }
+                else if (parseFloat(txtAmount) <= 0) {
+                    $('#lblAmount').html('Số tiền nạp phải > 0');
+                    flg = false;
+                }
+                else {
+                    $('#lblAmount').html('');
+                }
             }
             // lblReceivedDate
             if (txtReceivedDate === '') {
@@ -234,16 +237,19 @@ var TransactionHistoryController = {
                 $('#lblAmount').html('Không được để trống số tiền nạp');
                 flg = false;
             }
-            else if (!FormatNumberFloat.test(txtAmount)) {
-                $('#lblAmount').html('Số tiền nạp không hợp lệ');
-                flg = false;
-            }
-            else if (parseFloat(txtAmount) <= 0) {
-                $('#lblAmount').html('Số tiền nạp phải > 0');
-                flg = false;
-            }
             else {
-                $('#lblAmount').html('');
+                txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+                if (!FormatCurrency.test(txtAmount)) {
+                    $('#lblAmount').html('Số tiền nạp không hợp lệ');
+                    flg = false;
+                }
+                else if (parseFloat(txtAmount) <= 0) {
+                    $('#lblAmount').html('Số tiền nạp phải > 0');
+                    flg = false;
+                }
+                else {
+                    $('#lblAmount').html('');
+                }
             }
 
             // lblReceivedDate
@@ -389,7 +395,7 @@ var TransactionHistoryController = {
         var txtBankIDSent = $('#txtBankIDSent').val();
         var ddlBankReceived = $('#ddlBankReceived').val();
         var txtBankIDReceived = $('#txtBankIDReceived').val();
-        var txtAmount = $('#txtAmount').val();
+        var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());  
         var txtReceivedDate = $('#txtReceivedDate').val();
         var txtTitle = $('#txtTitle').val();
         var txtSummary = $('#txtSummary').val();
@@ -584,18 +590,21 @@ $(document).on("change", "#ddlCustomer", function () {
     }
 });
 $(document).on("keyup", "#txtAmount", function () {
-    var txtDeposit = $(this).val();
-    if (txtDeposit === '') {
+    var txtAmount = $(this).val();
+    if (txtAmount === '') {
         $('#lblAmount').html('Không được để trống số tiền nạp');
     }
-    else if (!FormatNumberFloat.test(txtDeposit)) {
-        $('#lblAmount').html('Số tiền nạp không hợp lệ');
-    }
-    else if (parseFloat(txtDeposit) <= 0) {
-        $('#lblAmount').html('Số tiền nạp phải > 0');
-    }
     else {
-        $('#lblAmount').html('');
+        txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+        if (!FormatCurrency.test(txtAmount)) {
+            $('#lblAmount').html('Số tiền nạp không hợp lệ');
+        }
+        else if (parseFloat(txtAmount) <= 0) {
+            $('#lblAmount').html('Số tiền nạp phải > 0');
+        }
+        else {
+            $('#lblAmount').html('');
+        }
     }
 });
 
