@@ -73,7 +73,7 @@ namespace WebCore.Core
                 //
                 string actionName = filterContext.ActionDescriptor.ActionName;
                 var type = filterContext.Controller.GetType();
-                MemberInfo method = type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).Where(m => m.IsDefined(typeof(IsManage), true) && m.Name.Equals(actionName)).FirstOrDefault();
+                MemberInfo method = type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).Where(m => m.IsDefined(typeof(IsManage), true) && m.Name == actionName).FirstOrDefault();
                 var manage = (IsManage)Attribute.GetCustomAttribute(method, typeof(IsManage));
                 // return for api then -> return action result
                 if (manage != null && manage.Skip)
@@ -107,7 +107,7 @@ namespace WebCore.Core
             string actionText = filterContext.ActionDescriptor.ActionName;
 
             //
-            if (Helper.Current.UserLogin.IsAdministratorInApplication)
+            if (Helper.Current.UserLogin.IsAdminInApplication)
                 return true;
             //
             if (string.IsNullOrWhiteSpace(controllerText) || string.IsNullOrWhiteSpace(actionText))
@@ -120,7 +120,7 @@ namespace WebCore.Core
             string userId = Helper.Current.UserLogin.IdentifierID;
             //#1. Get role of user
             UserRoleService userRoleService = new UserRoleService();
-            var userRole = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+            var userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault();
             if (userRole == null)
                 return false;
             //

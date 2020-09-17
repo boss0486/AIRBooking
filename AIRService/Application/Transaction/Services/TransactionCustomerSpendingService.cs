@@ -112,7 +112,8 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(customerId))
                         return Notifization.Invalid("Vui lòng chọn khách hàng");
                     //
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(customerId), transaction: _transaction).FirstOrDefault();
+                    customerId = customerId.ToLower();
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == customerId, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.Invalid("Khách hàng không hợp lệ");
                     //
@@ -192,10 +193,11 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
@@ -203,11 +205,12 @@ namespace WebCore.Services
                 {
                     try
                     {
-                        TransactionCustomerSpendingService TransactionSpendingService = new TransactionCustomerSpendingService(_connectDb);
-                        var TransactionSpending = TransactionSpendingService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                        TransactionCustomerSpendingService transactionSpendingService = new TransactionCustomerSpendingService(_connectDb);
+                        var TransactionSpending = transactionSpendingService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
                         if (TransactionSpending == null)
                             return Notifization.NotFound();
-                        TransactionSpendingService.Remove(TransactionSpending.ID, transaction: transaction);
+                        //
+                        transactionSpendingService.Remove(TransactionSpending.ID, transaction: transaction);
                         // remover seo
                         transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);

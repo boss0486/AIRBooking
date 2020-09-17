@@ -166,7 +166,7 @@ namespace AIRService.Service
                 {
                     foreach (var flightSegment in lstFlightSegment)
                     {
-                        if (item.DepartureDateTime.Equals(flightSegment.DepartureDateTime) && item.ArrivalDateTime.Equals(flightSegment.ArrivalDateTime))
+                        if (item.DepartureDateTime == flightSegment.DepartureDateTime && item.ArrivalDateTime == flightSegment.ArrivalDateTime)
                         {
                             response_FlightSearches.Add(new Response_FlightSearch
                             {
@@ -289,7 +289,7 @@ namespace AIRService.Service
                 {
                     foreach (var flightSegment in lstFlightSegment)
                     {
-                        if (item.DepartureDateTime.Equals(flightSegment.DepartureDateTime) && item.ArrivalDateTime.Equals(flightSegment.ArrivalDateTime))
+                        if (item.DepartureDateTime == flightSegment.DepartureDateTime && item.ArrivalDateTime == flightSegment.ArrivalDateTime)
                         {
                             response_FlightSearches.Add(new Response_FlightSearch
                             {
@@ -1508,14 +1508,14 @@ namespace AIRService.Service
                 BookPassengerService appBookPassengerService = new BookPassengerService();
                 BookPriceService appBookPriceService = new BookPriceService();
                 BookTaxService appBookFareService = new BookTaxService();
-                var passengers = appBookPassengerService.GetAlls(m => m.PNR.ToLower().Equals(pnr.ToLower())).OrderBy(m => m.PassengerType).ToList();
+                var passengers = appBookPassengerService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower()).OrderBy(m => m.PassengerType).ToList();
                 if (passengers.Count == 0)
                     return Notifization.Invalid("Thông tin hành khách không hợp lệ");
                 // 
                 foreach (var item in passengers)
                 {
-                    var bookPrice = appBookPriceService.GetAlls(m => m.PNR.ToLower().Equals(pnr.ToLower()) && m.PassengerType.ToLower().Equals(item.PassengerType.ToLower())).Sum(m => m.Amount);
-                    var bookTax = appBookFareService.GetAlls(m => m.PNR.ToLower().Equals(pnr.ToLower()) && m.PassengerType.ToLower().Equals(item.PassengerType.ToLower())).Sum(m => m.Amount);
+                    var bookPrice = appBookPriceService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
+                    var bookTax = appBookFareService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
                     exTitketPassengerFareModels.Add(new ExTitketPassengerFareModel
                     {
                         FullName = item.FullName,
@@ -1587,7 +1587,7 @@ namespace AIRService.Service
                     //wss.GetReservationWS(getReservationModel);
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
                     var ReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                    if (paymentData.Result != null && paymentData.Result.ResultCode.Equals("SUCCESS"))
+                    if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
                     {
                         if (paymentData.Items.Count() == 0)
                             return Notifization.Error("Server not responding from getreservation");
@@ -1611,7 +1611,7 @@ namespace AIRService.Service
                         if (end.ApplicationResults.Success != null)
                         {
                             BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
-                            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(pnr.ToLower())).FirstOrDefault();
+                            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
                             if (bookPNRCode != null)
                             {
                                 bookPNRCode.Enabled = (int)BookTicketEnum.BookPNRCodeStatus.ExTicket;
@@ -1707,7 +1707,7 @@ namespace AIRService.Service
                     if (dataPnr.TicketDetails != null && dataPnr.TicketDetails.Count > 0)
                     {
                         VNA_VoidTicketLLSRQService vNAWSVoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
-                        foreach (var item in dataPnr.TicketDetails.Where(m => m.TransactionIndicator.Equals("TE")))
+                        foreach (var item in dataPnr.TicketDetails.Where(m => m.TransactionIndicator == "TE"))
                         {
                             var data = vNAWSVoidTicketLLSRQService.VoidETicket(tokenModel, item.TicketNumber);
                             ldata.Add(data);

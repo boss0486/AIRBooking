@@ -274,10 +274,20 @@ var UserController = {
         });
     },
     DataList: function (page) {
+        //       
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
-            Page: page
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -301,32 +311,8 @@ var UserController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="UserController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-
-                                if (role.Block) {
-                                    if (item.IsBlock)
-                                        action += `<a onclick="UserController.Unlock('${id}')"><i class='far fa-dot-circle'></i>&nbsp;Unlock</a>`;
-                                    else
-                                        action += `<a onclick="UserController.Block('${id}')"><i class='fas fa-ban'></i>&nbsp;Block</a>`;
-                                }
-                                if (role.Active) {
-                                    if (item.Enabled)
-                                        action += `<a onclick="UserController.UnActive('${id}')"><i class='fas fa-toggle-off'></i>&nbsp;UnActive</a>`;
-                                    else
-                                        action += `<a onclick="UserController.Active('${id}')"><i class='fas fa-toggle-on'></i>&nbsp;Active</a>`;
-                                }
-                                action += `</div>
-                                           </div>`;
-                            }
+                            var action = HelperModel.RolePermission(result.role, "DevAccountController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>

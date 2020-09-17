@@ -115,46 +115,47 @@ namespace WebCore.Services
         public ActionResult Update(ProductProviderUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     var productProviderService = new ProductProviderService(_connection);
-                    string Id = model.ID.ToLower();
-                    var productProviders = productProviderService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                    if (productProviders == null)
+                    string id = model.ID.ToLower();
+                    var productProvider = productProviderService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (productProvider == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = productProviderService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !productProviders.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    productProvider = productProviderService.GetAlls(m => m.Title.ToLower() == title.ToLower() && productProvider.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (productProvider != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
-                    productProviders.Title = title;
-                    productProviders.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-                    productProviders.Summary = model.Summary;
-                    productProviders.Enabled = model.Enabled;
-                    productProviderService.Update(productProviders, transaction: transaction);
-                    transaction.Commit();
+                    productProvider.Title = title;
+                    productProvider.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+                    productProvider.Summary = model.Summary;
+                    productProvider.Enabled = model.Enabled;
+                    productProviderService.Update(productProvider, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
-        public ProductProvider UpdateForm(string Id)
+        public ProductProvider UpdateForm(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
+                //
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_ProductProvider WHERE ID = @Query";
-                return _connection.Query<ProductProvider>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<ProductProvider>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -162,27 +163,30 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            //
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     var productProviderService = new ProductProviderService(_connection);
-                    var productProviders = productProviderService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                    var productProviders = productProviderService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (productProviders == null)
                         return Notifization.NotFound();
-                    productProviderService.Remove(productProviders.ID, transaction: transaction);
+                    //
+                    productProviderService.Remove(productProviders.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -222,7 +226,7 @@ namespace WebCore.Services
                         {
                             string select = string.Empty;
 
-                            if (!string.IsNullOrEmpty(id) && item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

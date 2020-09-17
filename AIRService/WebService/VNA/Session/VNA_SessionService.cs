@@ -28,7 +28,7 @@ namespace AIR.Helper.Session
                 if (disposing)
                 {
                     // các đối tượng có Dispose gọi ở đây
-                    CloseSession(_tokenModel); 
+                    CloseSession(_tokenModel);
                 }
                 // giải phóng các tài nguyên không quản lý được cửa lớp
                 m_Disposed = true;
@@ -100,58 +100,58 @@ namespace AIR.Helper.Session
         {
             //try
             //{
-                AIRService.WebService.VNA_SessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_SessionCreateRQ.MessageHeader
+            AIRService.WebService.VNA_SessionCreateRQ.MessageHeader messageHeader = new AIRService.WebService.VNA_SessionCreateRQ.MessageHeader
+            {
+                MessageData = new AIRService.WebService.VNA_SessionCreateRQ.MessageData()
+            };
+            messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
+            messageHeader.ConversationId = "fOV1LWT3EJIUnGC0Yh1";// Guid.NewGuid().ToString(); // "fOV1LWT3EJIUnGC0Yh1";
+            messageHeader.Service = new AIRService.WebService.VNA_SessionCreateRQ.Service();
+            messageHeader.Action = "SessionCreateRQ";
+            messageHeader.From = new AIRService.WebService.VNA_SessionCreateRQ.From
+            {
+                PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
+            };
+            var partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
+            {
+                Value = "WebServiceClient"
+            };
+            messageHeader.From.PartyId[0] = partyID;
+            messageHeader.To = new AIRService.WebService.VNA_SessionCreateRQ.To
+            {
+                PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
+            };
+            partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
+            {
+                Value = "WebServiceSupplier"
+            };
+            messageHeader.To.PartyId[0] = partyID;
+            AIRService.WebService.VNA_SessionCreateRQ.Security security = new AIRService.WebService.VNA_SessionCreateRQ.Security
+            {
+                UsernameToken = new AIRService.WebService.VNA_SessionCreateRQ.SecurityUsernameToken
                 {
-                    MessageData = new AIRService.WebService.VNA_SessionCreateRQ.MessageData()
-                };
-                messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
-                messageHeader.ConversationId = "fOV1LWT3EJIUnGC0Yh1";// Guid.NewGuid().ToString(); // "fOV1LWT3EJIUnGC0Yh1";
-                messageHeader.Service = new AIRService.WebService.VNA_SessionCreateRQ.Service();
-                messageHeader.Action = "SessionCreateRQ";
-                messageHeader.From = new AIRService.WebService.VNA_SessionCreateRQ.From
-                {
-                    PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
-                };
-                var partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
-                {
-                    Value = "WebServiceClient"
-                };
-                messageHeader.From.PartyId[0] = partyID;
-                messageHeader.To = new AIRService.WebService.VNA_SessionCreateRQ.To
-                {
-                    PartyId = new AIRService.WebService.VNA_SessionCreateRQ.PartyId[1]
-                };
-                partyID = new AIRService.WebService.VNA_SessionCreateRQ.PartyId
-                {
-                    Value = "WebServiceSupplier"
-                };
-                messageHeader.To.PartyId[0] = partyID;
-                AIRService.WebService.VNA_SessionCreateRQ.Security security = new AIRService.WebService.VNA_SessionCreateRQ.Security
-                {
-                    UsernameToken = new AIRService.WebService.VNA_SessionCreateRQ.SecurityUsernameToken
-                    {
-                        Organization = wSAuthencation.ORGANIZATION,
-                        Username = wSAuthencation.USERNAME,
-                        Password = wSAuthencation.PASSWORD,
-                        Domain = wSAuthencation.DOMAIN
-                    }
-                };
-                AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ
-                {
-                    returnContextID = true,
-                    returnContextIDSpecified = true
-                };
-                AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient();
-                var data = client.SessionCreateRQ(ref messageHeader, ref security, sessionCreateRQ);
-                if (data == null)
-                    return null;
-                // set data for model ->> return
-                var result = new TokenModel
-                {
-                    ConversationID = messageHeader.ConversationId,
-                    Token = security.BinarySecurityToken
-                };
-                return result;
+                    Organization = wSAuthencation.ORGANIZATION,
+                    Username = wSAuthencation.USERNAME,
+                    Password = wSAuthencation.PASSWORD,
+                    Domain = wSAuthencation.DOMAIN
+                }
+            };
+            AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ sessionCreateRQ = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreateRQ
+            {
+                returnContextID = true,
+                returnContextIDSpecified = true
+            };
+            AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient client = new AIRService.WebService.VNA_SessionCreateRQ.SessionCreatePortTypeClient();
+            var data = client.SessionCreateRQ(ref messageHeader, ref security, sessionCreateRQ);
+            if (data == null)
+                return null;
+            // set data for model ->> return
+            var result = new TokenModel
+            {
+                ConversationID = messageHeader.ConversationId,
+                Token = security.BinarySecurityToken
+            };
+            return result;
             //}
             //catch (Exception ex)
             //{
@@ -209,7 +209,7 @@ namespace AIR.Helper.Session
                     return false;
                 if (string.IsNullOrWhiteSpace(data.status))
                     return false;
-                if (data.status.ToLower().Equals("approved"))
+                if (data.status.ToLower() == "approved")
                     return true;
                 return false;
             }

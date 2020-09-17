@@ -117,32 +117,32 @@ namespace WebCore.Services
         public ActionResult Update(MetaGroupUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var MetaGroupService = new MetaGroupService(_connection);
-                    string Id = model.ID.ToLower();
-                    var MetaGroup = MetaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                    if (MetaGroup == null)
+                    var metaGroupService = new MetaGroupService(_connection);
+                    string id = model.ID.ToLower();
+                    var metaGroup = metaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (metaGroup == null)
                         return Notifization.NotFound(MessageText.NotFound);
-
+                    //
                     string title = model.Title;
-                    var dpm = MetaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower().Equals(title.ToLower()) && !MetaGroup.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    metaGroup = metaGroupService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && metaGroup.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (metaGroup != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
-                    MetaGroup.Title = title;
-                    MetaGroup.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-                    MetaGroup.Summary = model.Summary;
-                    MetaGroup.Enabled = model.Enabled;
-                    MetaGroupService.Update(MetaGroup, transaction: transaction);
-                    transaction.Commit();
+                    metaGroup.Title = title;
+                    metaGroup.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+                    metaGroup.Summary = model.Summary;
+                    metaGroup.Enabled = model.Enabled;
+                    metaGroupService.Update(metaGroup, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -151,7 +151,7 @@ namespace WebCore.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
@@ -169,24 +169,25 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.Invalid();
             //
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     MetaGroupService metaGroupService = new MetaGroupService(_connection);
-                    MetaGroup metaGroup = metaGroupService.GetAlls(m => m.ID.Equals(id.ToLower()), transaction: transaction).FirstOrDefault();
+                    MetaGroup metaGroup = metaGroupService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (metaGroup == null)
                         return Notifization.NotFound();
                     //
-                    metaGroupService.Remove(metaGroup.ID, transaction: transaction);
+                    metaGroupService.Remove(metaGroup.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -226,7 +227,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

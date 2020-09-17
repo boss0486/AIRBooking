@@ -57,6 +57,16 @@ namespace WebApplication.Management.Controllers
                 return View(model);
             //
             return View();
+        }        
+        
+        public ActionResult Details(string id)
+        {
+            AccountService service = new AccountService();
+            UserResult model = service.GetUserModel(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
         }
         //
         public ActionResult ChangePassword()

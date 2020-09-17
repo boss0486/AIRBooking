@@ -40,7 +40,7 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public CMSUserResult CMSUserViewModel(string Id)
         {
-            CMSUserResult  cMSUserResult = new CMSUserResult();
+            CMSUserResult cMSUserResult = new CMSUserResult();
             try
             {
                 string langID = Helper.Current.UserLogin.LanguageID;
@@ -58,17 +58,16 @@ namespace WebCore.Services
         }
 
         // function ###########################################################################################################################################################################################
-        public string GetFullName(string Id)
+        public string GetFullName(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return string.Empty;
                 //
                 using (var service = new CMSUserInfoService(_connection))
                 {
-                    var data = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(Id.ToLower())).FirstOrDefault();
-                    //
+                    var data = service.GetAlls(m => m.ID == id.ToLower()).FirstOrDefault();
                     if (data == null)
                         return string.Empty;
                     //

@@ -25,7 +25,6 @@ namespace WebCore.Entities
         public string UserID { get; set; }
         public string AuthenType { get; set; }
         public string SecurityPassword { get; set; }
-        public string RoleID { get; set; }
         public bool IsBlock { get; set; }
     }
 }

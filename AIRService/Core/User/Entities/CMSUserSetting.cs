@@ -19,11 +19,9 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string AreaID { get; set; }
         public string UserID { get; set; }
         public string AuthenType { get; set; }
         public string SecurityPassword { get; set; }
-        public string RoleID { get; set; }
         public bool IsBlock { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 var URLC = "/Development/Account/Action";
 var URLA = "/Development/Account";
 
-var AccountController = {
+var DevAccountController = {
     init: function () {
-        AccountController.registerEvent();
+        DevAccountController.registerEvent();
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
@@ -121,11 +121,6 @@ var AccountController = {
                     $('#lblAddress').html('');
                 }
             }
-            var ddlRole = $('#ddlRole').val();
-            if (ddlRole === "") {
-                $('#ddlRole').html('Vui lòng chọn nhóm quyền');
-                flg = false;
-            }
             //var ddlLanguage = $('#ddlLanguage').val();
             //if (ddlLanguage === "") {
             //    $('#lblLanguage').html('Vui lòng chọn ngôn ngữ');
@@ -136,12 +131,12 @@ var AccountController = {
             //}
 
             if (flg)
-                AccountController.Create();
+                DevAccountController.Create();
             else
                 Notifization.Error(MessageText.Datamissing);
         });
         $('#btnSearch').off('click').on('click', function () {
-            AccountController.DataList(1);
+            DevAccountController.DataList(1);
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
@@ -225,7 +220,7 @@ var AccountController = {
             //    $('#lblLanguage').html('');
             //}
             if (flg) {
-                AccountController.Update();
+                DevAccountController.Update();
             }
             else
                 Notifization.Error(MessageText.Datamissing + "11");
@@ -278,16 +273,26 @@ var AccountController = {
             }
             // submit
             if (flg)
-                AccountController.ChangePassword();
+                DevAccountController.ChangePassword();
             else
                 Notifization.Error(MessageText.Datamissing);
         });
     },
     DataList: function (page) {
+        //       
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
-            Page: page
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
+        //
         AjaxFrom.POST({
             url: URLC + '/DataList',
             data: model,
@@ -312,32 +317,8 @@ var AccountController = {
                                 id = id.trim();
                             //
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role)
-                                    action += `<a href='${URLA}/update/${id}'><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="AccountController.ConfirmDelete('${id}')"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/details/${id}'><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-
-                                if (role.Block) {
-                                    if (item.IsBlock)
-                                        action += `<a onclick="AccountController.Unlock('${id}')"><i class='far fa-dot-circle'></i>&nbsp;Unlock</a>`;
-                                    else
-                                        action += `<a onclick="AccountController.Block('${id}')"><i class='fas fa-ban'></i>&nbsp;Block</a>`;
-                                }
-                                if (role.Active) {
-                                    if (item.Enabled)
-                                        action += `<a onclick="AccountController.UnActive('${id}')"><i class='fas fa-toggle-off'></i>&nbsp;UnActive</a>`;
-                                    else
-                                        action += `<a onclick="AccountController.Active('${id}')"><i class='fas fa-toggle-on'></i>&nbsp;Active</a>`;
-                                }
-                                action += `</div>
-                                           </div>`;
-                            }
+                            var action = HelperModel.RolePermission(result.role, "DevAccountController", id);
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
@@ -352,7 +333,7 @@ var AccountController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, AccountController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, DevAccountController.DataList);
                         }
                         return;
                     }
@@ -492,7 +473,7 @@ var AccountController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, AccountController.Delete, null, null);
+        Confirm.Delete(id, DevAccountController.Delete, null, null);
     },
     Delete: function (id) {
         var model = {
@@ -507,7 +488,7 @@ var AccountController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AccountController.DataList(pageIndex);
+                        DevAccountController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -538,7 +519,7 @@ var AccountController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AccountController.DataList(pageIndex);
+                        DevAccountController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -569,7 +550,7 @@ var AccountController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AccountController.DataList(pageIndex);
+                        DevAccountController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -600,7 +581,7 @@ var AccountController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AccountController.DataList(pageIndex);
+                        DevAccountController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -631,7 +612,7 @@ var AccountController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AccountController.DataList(pageIndex);
+                        DevAccountController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -680,7 +661,7 @@ var AccountController = {
         });
     }
 };
-AccountController.init();
+DevAccountController.init();
 $(document).on("keyup", "#txtFirstName", function () {
     var txtFirstName = $(this).val();
     if (txtFirstName === '') {

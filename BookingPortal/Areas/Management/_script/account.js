@@ -9,7 +9,6 @@ var AccountController = {
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
-            var file = "";
             // account validate
             var txtLoginID = $('#txtLoginID').val();
             if (txtLoginID === '') {

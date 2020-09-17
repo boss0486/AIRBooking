@@ -1,9 +1,9 @@
 ﻿var pageIndex = 1;
 var URLC = "/Development/Menu-Item/Action";
 var URLA = "/Development/MenuItem";
-var menuController = {
+var MenuItemController = {
     init: function () {
-        menuController.registerEvent();
+        MenuItemController.registerEvent();
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
@@ -52,12 +52,12 @@ var menuController = {
             //    $('#lblOrder').html('');
             //}
             if (flg)
-                menuController.Create();
+                MenuItemController.Create();
             else
                 Notifization.Error(MessageText.Datamissing);
         });
         $('#btnSearch').off('click').on('click', function () {
-            menuController.DataList(1);
+            MenuItemController.DataList(1);
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
@@ -106,59 +106,9 @@ var menuController = {
             //}
 
             if (flg)
-                menuController.Update();
+                MenuItemController.Update();
             else
                 Notifization.Error(MessageText.Datamissing);
-        });
-    },
-    Details: function () {
-        var id = $('#txtID').val();
-        if (id.length <= 0) {
-            Notifization.Error(MessageText.NotService);
-            return;
-        }
-        var fData = {
-            Id: $('#txtID').val()
-        };
-        $.ajax({
-            url: '/post/detail',
-            data: {
-                strData: JSON.stringify(fData)
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (result) {
-                if (result !== null) {
-                    if (result.status === 200) {
-                        var item = result.data;
-                        $('#LblAccount').html(item.LoginID);
-                        $('#LblDate').html(item.CreatedDate);
-                        var action = '';
-                        if (item.Enabled)
-                            action += `<i class='fa fa-toggle-on'></i> actived`;
-                        else
-                            action += `<i class='fa fa-toggle-off'></i>not active`;
-
-                        $('#LblActive').html(action);
-                        $('#lblLastName').html(item.FirstName + ' ' + item.LastName);
-                        $('#LblEmail').html(item.Email);
-                        $('#LblPhone').html(item.Phone);
-                        $('#LblLanguage').html(item.LanguageID);
-                        $('#LblPermission').html(item.PermissionID);
-
-                        return;
-                    }
-                    else {
-                        Notifization.Error(result.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (result) {
-                console.log('::' + MessageText.NotService);
-            }
         });
     },
     DataList: function (page) {
@@ -196,26 +146,15 @@ var menuController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var role = result.role;
-                            if (role !== undefined && role !== null) {
-                                var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span>
-                                              <div class='ddl-action-content'>`;
-                                if (role.Update)
-                                    action += `<a href='${URLA}/update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                                if (role.Delete)
-                                    action += `<a onclick="menuController.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                                if (role.Details)
-                                    action += `<a href='${URLA}/detail/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                                action += `</div>
-                                           </div>`;
-                            }
+                            var action = HelperModel.RolePermission(result.role, "MenuItemController", id);
+                            //
                             // icon sort
                             var _level = 0;
                             var _orderId = item.OrderID;
                             var _actionSort = `<i data-sortup='btn-sort-up' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-up icon-mnsort'></i> <i data-sortdown ='btn-sort-down' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-down icon-mnsort'></i>`;
                             //
                             var _title = SubStringText.SubTitle(item.Title);
-                            var _areaKey = item.AreaID;
+                            var _areaKey = item.RouteArea;
                             //var _summary = SubStringText.SubSummary(item.Summary);
                             //var _createdDate = LibDateTime.ConvertUnixTimestampToDate(item.CreatedDate, '-', 'en');
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
@@ -232,7 +171,7 @@ var menuController = {
                             </tr>`;
                             var subMenu = item.SubMenuLevelModel;
                             if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                                rowData += menuController.GetSubMenuList(index, subMenu, _level, role);
+                                rowData += MenuItemController.GetSubMenuList(index, subMenu, _level, result.role);
                             }
                         });
                         $('tbody#TblData').html(rowData);
@@ -262,23 +201,16 @@ var menuController = {
                     id = id.trim();
                 var action = '';
                 var role = _role;
-                if (role !== undefined && role !== null) {
-                    action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;
-                    if (role.Update)
-                        action += `<a href='${URLA}/update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Edit</a>`;
-                    if (role.Delete)
-                        action += `<a onclick="menuController.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;Delete</a>`;
-                    if (role.Details)
-                        action += `<a href='${URLA}/detail/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;Detail</a>`;
-                    action += `</div></div>`;
-                }
+                //  role
+                var action = HelperModel.RolePermission(role, "MenuItemController", id);
+                            //
                 // icon sort
                 // icon sort
                 var _orderId = item.OrderID;
                 var _actionSort = `<i data-sortup='btn-sort-up' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-up icon-mnsort'></i> <i data-sortdown ='btn-sort-down' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-down icon-mnsort'></i>`;
                 //
                 var _title = SubStringText.SubTitle(item.Title);
-                var _areaKey = item.AreaID;
+                var _areaKey = item.RouteArea;
                 //var _summary = SubStringText.SubSummary(item.Summary);
                 //var _cratedDate = LibDateTime.ConvertUnixTimestampToDate(item.CreatedDate, '-', 'en');
                 var rowNum = ''; //parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
@@ -297,7 +229,7 @@ var menuController = {
 
                 var subMenu = item.SubMenuLevelModel;
                 if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                    rowData += menuController.GetSubMenuList(_index, subMenu, _level, _role);
+                    rowData += MenuItemController.GetSubMenuList(_index, subMenu, _level, _role);
                 }
             });
         }
@@ -339,13 +271,13 @@ var menuController = {
             Enabled: enabled
         };
         AjaxFrom.POST({
-            url: URLC + '/create',
+            url: URLC + '/Create',
             data: model,
             success: function (response) {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        menuController.GetMenuCategory(areaId);
+                        MenuItemController.GetMenuCategory(areaId);
                         FData.ResetForm();
                         return;
                     }
@@ -399,13 +331,13 @@ var menuController = {
             Enabled: enabled
         };
         AjaxFrom.POST({
-            url: URLC + '/update',
+            url: URLC + '/Update',
             data: model,
             success: function (response) {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        menuController.GetMenuCategory(areaId, parentId);
+                        MenuItemController.GetMenuCategory(areaId, parentId);
                         return;
                     }
                     else {
@@ -462,7 +394,7 @@ var menuController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, menuController.InLineList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, MenuItemController.InLineList);
                         }
                         return;
                     }
@@ -484,13 +416,13 @@ var menuController = {
             Id: id
         };
         AjaxFrom.POST({
-            url: URLC + '/delete',
+            url: URLC + '/Delete',
             data: model,
             success: function (response) {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        menuController.DataList(pageIndex);
+                        MenuItemController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -508,13 +440,13 @@ var menuController = {
     },
     ConfirmDelete: function (id) {
 
-        Confirm.Delete(id, menuController.Delete, null, null);
+        Confirm.Delete(id, MenuItemController.Delete, null, null);
 
         //Confirm.ConfirmDelete({
         //    Title: 'Xác nhận!',
         //    Message: "This is a confirm with custom button text and color! Do you like it?",
         //    Modalc: 'modal-col-pink',
-        //    YesEvent: function () { menuController.Delete(id); },
+        //    YesEvent: function () { MenuItemController.Delete(id); },
         //    NoEvent: null,
         //    Callback: null
         //});
@@ -534,7 +466,7 @@ var menuController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        menuController.DataList(pageIndex);
+                        MenuItemController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -565,7 +497,7 @@ var menuController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        menuController.DataList(pageIndex);
+                        MenuItemController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -614,7 +546,7 @@ var menuController = {
                                         <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} />
                                         <label for="cbxItem${id}">- ${_title}</label>`;
                             if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                                rowData += menuController.GetSubMenuCategoryList(index, subMenu, _level, _id);
+                                rowData += MenuItemController.GetSubMenuCategoryList(index, subMenu, _level, _id);
                             }
                             rowData += '</li>';
 
@@ -660,7 +592,7 @@ var menuController = {
                                <label for="cbxItem${id}">${_title}</label>`;
 
                 if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                    rowData += menuController.GetSubMenuCategoryList(_index, subMenu, _level, _id);
+                    rowData += MenuItemController.GetSubMenuCategoryList(_index, subMenu, _level, _id);
                 }
                 rowData += '</li>';
             });
@@ -669,7 +601,7 @@ var menuController = {
         return rowData;
     }
 };
-menuController.init();
+MenuItemController.init();
 $(document).on('keyup', '#txtTitle', function () {
     var txtTitle = $(this).val();
     if (txtTitle === '') {
@@ -747,7 +679,7 @@ $(document).on('click', '[data-sortup]', function () {
             if (result !== null) {
                 if (result.status === 200) {
                     Notifization.Success(result.message);
-                    menuController.DataList(pageIndex);
+                    MenuItemController.DataList(pageIndex);
                     return;
                 }
                 else {
@@ -775,7 +707,7 @@ $(document).on('click', '[data-sortdown]', function () {
             if (result !== null) {
                 if (result.status === 200) {
                     Notifization.Success(result.message);
-                    menuController.DataList(pageIndex);
+                    MenuItemController.DataList(pageIndex);
                     return;
                 }
                 else {
@@ -807,11 +739,11 @@ $(document).on('change', '#ddlArea', function (index, item) {
 
     switch (page.toLowerCase()) {
         case "create":
-            menuController.GetMenuCategory(areaId);
+            MenuItemController.GetMenuCategory(areaId);
             GetControllerListByAreaId("", areaId, true);
             break;
         case "datalist":
-            menuController.DataList(1)
+            MenuItemController.DataList(1)
             break;
         default:
     }

@@ -76,28 +76,21 @@ namespace WebCore.Services
                 try
                 {
                     ArticleService articleService = new ArticleService(_connection);
-                    var articles = articleService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
-                    if (articles.Count > 0)
+                    var articles = articleService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction).FirstOrDefault();
+                    if (articles == null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
-
+                    //
+                    string categoryId = model.CategoryID.ToLower();
                     ArticleCategoryService articleCategoryService = new ArticleCategoryService(_connection);
-                    var articleCategory = articleCategoryService.GetAlls(m => m.ID.Equals(model.CategoryID.ToLower()), transaction: transaction).FirstOrDefault();
+                    var articleCategory = articleCategoryService.GetAlls(m => m.ID == categoryId, transaction: transaction).FirstOrDefault();
                     if (articleCategory == null)
                         return Notifization.NotFound();
-
-                    string alias = model.Alias;
-                    if (string.IsNullOrEmpty(alias))
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                    else
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                    var aliasData = articleService.GetAlls(m => m.Alias.ToLower() == model.Alias.ToLower(), transaction: transaction);
-                    if (aliasData.Count > 0)
-                        return Notifization.Invalid("Đường dẫn đã được sử dụng");
                     //
+                    string alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
                     string imgFile = model.ImageFile;
                     var Id = articleService.Create<string>(new Article()
                     {
-                        CategoryID = model.CategoryID,
+                        CategoryID = categoryId,
                         Title = model.Title,
                         Alias = alias,
                         Summary = model.Summary,
@@ -156,32 +149,31 @@ namespace WebCore.Services
         public ActionResult Update(ArticleUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     ArticleService articleService = new ArticleService(_connection);
-                    string Id = model.ID.ToLower();
-                    var article = articleService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var article = articleService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (article == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = articleService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !article.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    article = articleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && article.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (article != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     //
-                    string alias = model.Alias;
-                    if (string.IsNullOrEmpty(alias))
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                    else
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                    var aliasData = articleService.GetAlls(m => m.Alias.ToLower().Equals(alias.ToLower()) && !article.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (aliasData.Count > 0)
-                        return Notifization.Invalid("Đường dẫn đã được sử dụng");
+                    string categoryId = model.CategoryID.ToLower();
+                    ArticleCategoryService articleCategoryService = new ArticleCategoryService(_connection);
+                    var articleCategory = articleCategoryService.GetAlls(m => m.ID == categoryId, transaction: _transaction).FirstOrDefault();
+                    if (articleCategory == null)
+                        return Notifization.NotFound();
                     //
+                    string alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
                     string imgFile = model.ImageFile;
-                    article.CategoryID = model.CategoryID;
+                    //
+                    article.CategoryID = categoryId;
                     article.TextID = model.TextID;
                     article.Title = model.Title;
                     article.Alias = alias;
@@ -194,13 +186,13 @@ namespace WebCore.Services
                     article.ViewDate = model.ViewDate;
                     article.LanguageID = Helper.Current.UserLogin.LanguageID;
                     article.Enabled = model.Enabled;
-                    articleService.Update(article, transaction: transaction);
+                    articleService.Update(article, transaction: _transaction);
                     IList<string> photoFile = model.Photos;
                     Helper.Page.MetaSEO meta = new Helper.Page.MetaSEO();
                     var attachmentIngredientService = new AttachmentIngredientService(_connection);
                     var _controllerText = Helper.Page.MetaSEO.ControllerText.ToLower();
                     // get all frorm db
-                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
+                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).Select(m => m.FileID).ToList();
                     // add new
                     var lstAddNewFile = photoFile;
                     if (lstPhotoDb != null && lstPhotoDb.Count > 0)
@@ -209,16 +201,16 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstAddNewFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient == null)
                             {
                                 string guid = attachmentIngredientService.Create<string>(new Entities.AttachmentIngredient()
                                 {
-                                    ForID = Id,
+                                    ForID = id,
                                     FileID = item,
                                     CategoryID = _controllerText,
                                     TypeID = (int)ModelEnum.FileType.MULTI
-                                }, transaction: transaction);
+                                }, transaction: _transaction);
                             }
                         }
                     }
@@ -230,20 +222,20 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstDeleteFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient != null)
                             {
-                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: transaction);
+                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: _transaction);
                             }
                         }
                     }
                     // 
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.TEST("::" + ex);
                 }
             }
@@ -271,38 +263,40 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
-                using (var transaction = _connectDb.BeginTransaction())
+                using (var _transaction = _connectDb.BeginTransaction())
                 {
                     try
                     {
                         ArticleService articleService = new ArticleService(_connectDb);
-                        var article = articleService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                        var article = articleService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (article == null)
                             return Notifization.NotFound();
                         // delete
-                        AttachmentFile.DeleteFile(article.ImageFile, transaction: transaction);
-                        articleService.Remove(article.ID, transaction: transaction);
+                        AttachmentFile.DeleteFile(article.ImageFile, transaction: _transaction);
+                        articleService.Remove(article.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Details (string Id)
+        public ActionResult Details(string Id)
         {
             try
             {
@@ -312,7 +306,7 @@ namespace WebCore.Services
                 string sqlQuery = @"SELECT * FROM App_Article WHERE ID = @ID";
                 var item = _connection.Query<Article>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound); 
+                    return Notifization.NotFound(MessageText.NotFound);
 
                 return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
@@ -335,7 +329,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

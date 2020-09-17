@@ -11,6 +11,7 @@ using Helper;
 using System.Web;
 using WebCore.Entities;
 using WebCore.Model.Entities;
+using Helper.Page;
 
 namespace WebCore.Services
 {
@@ -85,12 +86,33 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(ProductWarrantyCreateModel model)
         {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string title = model.Title;
+            string summary = model.Summary;
+            if (string.IsNullOrEmpty(title))
+                return Notifization.Invalid("Không được để trống tiêu đề");
+            title = title.Trim();
+            if (!Validate.TestText(title))
+                return Notifization.Invalid("Tiêu đề không hợp lệ");
+            if (title.Length < 2 || title.Length > 80)
+                return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+            // summary valid               
+            if (!string.IsNullOrEmpty(summary))
+            {
+                summary = summary.Trim();
+                if (!Validate.TestText(summary))
+                    return Notifization.Invalid("Mô tả không hợp lệ");
+                if (summary.Length < 1 || summary.Length > 120)
+                    return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+            }
             ProductWarrantyService productWarrantyService = new ProductWarrantyService(_connection);
             ProductWarranty productWarrantys = productWarrantyService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
             if (productWarrantys != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
-            var id = productWarrantyService.Create<string>(new ProductWarranty()
+            var productId = productWarrantyService.Create<string>(new ProductWarranty()
             {
                 Title = model.Title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
@@ -103,20 +125,40 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult Update(ProductWarrantyUpdateModel model)
         {
-            ProductWarrantyService productWarrantyService = new ProductWarrantyService(_connection);
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+
             string id = model.ID.ToLower();
-            var productWarranty = productWarrantyService.GetAlls(m => m.ID.Equals(id)).FirstOrDefault();
+            string title = model.Title;
+            string summary = model.Summary;
+            if (string.IsNullOrEmpty(title))
+                return Notifization.Invalid("Không được để trống tiêu đề");
+            title = title.Trim();
+            if (!Validate.TestText(title))
+                return Notifization.Invalid("Tiêu đề không hợp lệ");
+            if (title.Length < 2 || title.Length > 80)
+                return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+            // summary valid               
+            if (!string.IsNullOrEmpty(summary))
+            {
+                summary = summary.Trim();
+                if (!Validate.TestText(summary))
+                    return Notifization.Invalid("Mô tả không hợp lệ");
+                if (summary.Length < 1 || summary.Length > 120)
+                    return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+            }
+            ProductWarrantyService productWarrantyService = new ProductWarrantyService(_connection);
+            var productWarranty = productWarrantyService.GetAlls(m => m.ID == id).FirstOrDefault();
             if (productWarranty == null)
                 return Notifization.NotFound(MessageText.NotFound);
-
-            string title = model.Title;
-            productWarranty = productWarrantyService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !productWarranty.ID.ToLower().Equals(id)).FirstOrDefault();
+            //
+            productWarranty = productWarrantyService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && productWarranty.ID.ToLower() != id).FirstOrDefault();
             if (productWarranty != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
             // update user information
             productWarranty.Title = title;
             productWarranty.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-            productWarranty.Summary = model.Summary;
+            productWarranty.Summary = summary;
             productWarranty.Enabled = model.Enabled;
             productWarrantyService.Update(productWarranty);
             return Notifization.Success(MessageText.UpdateSuccess);
@@ -138,36 +180,21 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            id = id.ToLower();
             ProductWarrantyService productWarrantyService = new ProductWarrantyService(_connection);
-            var productWarranty = productWarrantyService.GetAlls(m => m.ID.Equals(Id.ToLower())).FirstOrDefault();
+            var productWarranty = productWarrantyService.GetAlls(m => m.ID == id).FirstOrDefault();
             if (productWarranty == null)
                 return Notifization.NotFound();
             //
             productWarrantyService.Remove(productWarranty.ID);
             return Notifization.Success(MessageText.DeleteSuccess);
         }
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string Id)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM App_ProductWarranty WHERE ID = @ID";
-                var item = _connection.Query<ProductWarranty>(sqlQuery, new { ID = Id }).FirstOrDefault();
-                if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
-            }
-            catch
-            {
-                return Notifization.NotService;
-            }
-        }
+
         //##############################################################################################################################################################################################################################################################
         public static string DDLProductWarranty(string id)
         {
@@ -182,7 +209,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrEmpty(id) && item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

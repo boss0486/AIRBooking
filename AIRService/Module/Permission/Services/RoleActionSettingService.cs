@@ -26,6 +26,9 @@ namespace WebCore.Services
             {
                 // controller
                 string areaId = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
+                if (Helper.Current.UserLogin.IsCMSUser)
+                    areaId = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
+                //
                 string controllerId = Helper.Security.Library.FakeGuidID(areaId + Helper.Page.MetaSEO.ControllerText);
                 //
                 RoleActionSettingService roleActionSettingService = new RoleActionSettingService();
@@ -34,7 +37,7 @@ namespace WebCore.Services
                 if (dtList.Count == 0)
                     return null;
                 //
-                if (Helper.Current.UserLogin.IsAdministratorInApplication)
+                if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
                     return dtList;
                 // 
                 // check permissons

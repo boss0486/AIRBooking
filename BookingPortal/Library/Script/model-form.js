@@ -145,6 +145,8 @@ class HelperModel {
                     action += `<a onclick="${_controlInit}.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;${item.Title}</a>`;
                 if (item.KeyID == "Details")
                     action += `<a href='${URLA}/Details/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
+                if (item.KeyID == "Profile")
+                    action += `<a href='${URLA}/Profile/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
                 //
             });
             action += `</div></div>`;

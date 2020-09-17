@@ -17,26 +17,5 @@ namespace WebCore.Services
         public RoleControllerSettingService() : base() { }
         public RoleControllerSettingService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-
-        // permission setting
-        //******************************************************************************************************************************************************************************
-
-        public string GetRoleGroupID(string _userId, string Id, IDbTransaction transaction = null)
-        {
-            try
-            {
-                RoleControllerSettingService RoleControllerSettingService = new RoleControllerSettingService(_connection);
-                var RoleControllerSetting = RoleControllerSettingService.GetAlls(m => m.RoleID.ToLower().Equals(_userId.ToLower()) && m.ID.Equals(Id.ToLower()), transaction).FirstOrDefault();
-                if (RoleControllerSetting != null)
-                    return RoleControllerSetting.ID;
-                return string.Empty;
-            }
-            catch (Exception ex)
-            {
-                return string.Empty;
-            }
-        }
-        //##############################################################################################################################################################################################################################################################
-        //check permission
     }
 }

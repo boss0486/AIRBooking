@@ -27,10 +27,12 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(id))
                     return string.Empty;
                 //
+                id = id.ToLower();
                 var service = new AreaApplicationService();
-                var data = service.DataOption().Where(m => m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
-                if (data== null)
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                if (data == null)
                     return string.Empty;
+                //
                 return data.KeyID;
             }
             catch
@@ -46,8 +48,9 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(id))
                     return (int)AreaApplicationEnum.AreaType.NONE;
                 //
+                id = id.ToLower();
                 var service = new AreaApplicationService();
-                var data = service.DataOption().Where(m => m.ID.Equals(id.ToLower())).FirstOrDefault();
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
                 return data.Type;
             }
             catch
@@ -63,9 +66,9 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(keyId))
                     return string.Empty;
                 //
+                keyId = keyId.ToLower();
                 var service = new AreaApplicationService();
-                var data = service.DataOption().Where(m => m.KeyID.ToLower().Equals(keyId.ToLower())).FirstOrDefault();
-
+                var data = service.DataOption().Where(m => m.KeyID == keyId).FirstOrDefault();
                 return data.ID;
             }
             catch
@@ -104,7 +107,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrEmpty(id) && item.ID.Equals(id.ToLower()))
+                        if (!string.IsNullOrEmpty(id) && item.ID == id.ToLower())
                             select = "selected";
                         //
                         result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
@@ -127,17 +130,17 @@ namespace WebCore.Services
                 {
                     new AreaOption()
                     {
-                        ID = "Development",
+                        ID = "development",
                         Alias = "df490f33-4382-6a75-8a4d-c7f7f7ee6dfe", //old:58c2d3c0-5f95-42cc-942e-1d1b014d30a4
-                        KeyID = "Development",
+                        KeyID = "development",
                         Title = "Nhà phát triển",
                         Type =  1,
                     },
                     new AreaOption()
                     {
-                        ID = "Management",
+                        ID = "management",
                         Alias = "abbc4dfe-919b-7705-e503-5e97ac068dae",//old:58c2d3c0-5f95-42cc-942e-1d1b014d30a4
-                        KeyID = "Management",
+                        KeyID = "management",
                         Title = "Ứng dụng",
                         Type =  2,
                     }

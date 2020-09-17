@@ -136,22 +136,23 @@ namespace WebCore.Services
         public ActionResult Update(BannerUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     string id = model.ID;
-                    if (string.IsNullOrEmpty(id))
+                    if (string.IsNullOrWhiteSpace(id))
                         return Notifization.NotFound(MessageText.NotFound);
+                    //
                     id = id.ToLower();
                     var bannerService = new BannerService(_connection);
-                    var banner = bannerService.GetAlls(m => m.ID.Equals(id), transaction: transaction).FirstOrDefault();
+                    var banner = bannerService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (banner == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = bannerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.Title.ToLower().Equals(title.ToLower()) && !banner.ID.ToLower().Equals(id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    banner = bannerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && banner.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (banner != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
                     banner.Title = title;
@@ -159,13 +160,13 @@ namespace WebCore.Services
                     banner.Summary = model.Summary;
                     banner.LocationID = model.LocationID;
                     banner.Enabled = model.Enabled;
-                    bannerService.Update(banner, transaction: transaction);
+                    bannerService.Update(banner, transaction: _transaction);
                     IList<string> photos = model.Photos;
                     MetaSEO meta = new MetaSEO();
                     var attachmentIngredientService = new AttachmentIngredientService(_connection);
                     var _controllerText = MetaSEO.ControllerText.ToLower();
                     // get all frorm db
-                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
+                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).Select(m => m.FileID).ToList();
                     // add new
                     var lstAddNewFile = photos;
                     if (lstPhotoDb != null && lstPhotoDb.Count > 0)
@@ -174,7 +175,7 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstAddNewFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient == null)
                             {
                                 string guid = attachmentIngredientService.Create<string>(new Entities.AttachmentIngredient()
@@ -183,7 +184,7 @@ namespace WebCore.Services
                                     FileID = item,
                                     CategoryID = _controllerText,
                                     TypeID = (int)ModelEnum.FileType.MULTI
-                                }, transaction: transaction);
+                                }, transaction: _transaction);
                             }
                         }
                     }
@@ -195,20 +196,20 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstDeleteFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient != null)
                             {
-                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: transaction);
+                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: _transaction);
                             }
                         }
                     }
                     //
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -236,17 +237,19 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            //
+            id = id.ToLower();
             _connection.Open();
             using (var transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     var bannerService = new BannerService(_connection);
-                    var banner = bannerService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                    var banner = bannerService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
                     if (banner == null)
                         return Notifization.NotFound();
                     bannerService.Remove(banner.ID, transaction: transaction);
@@ -275,7 +278,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -293,14 +296,14 @@ namespace WebCore.Services
             try
             {
                 string sqlQuery = @"SELECT * FROM App_Banner ORDER BY Title ASC";
-                return _connection.Query<BannerOption>(sqlQuery, new {   }).ToList();
+                return _connection.Query<BannerOption>(sqlQuery, new { }).ToList();
             }
             catch
             {
                 return new List<BannerOption>();
             }
         }
-        public static string DDLBannerLoaction(int Id)
+        public static string DDLBannerLoaction(int id)
         {
             try
             {
@@ -317,7 +320,7 @@ namespace WebCore.Services
                 foreach (var item in bannerLocationModels)
                 {
                     string selected = string.Empty;
-                    if (item.ID == Id)
+                    if (item.ID == id)
                         selected = "selected";
                     result += "<option value='" + item.ID + "' " + selected + ">" + item.Title + "</option>";
                 }

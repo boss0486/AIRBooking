@@ -93,7 +93,7 @@ namespace APIBooking.VNA.Controllers
                                 {
                                     foreach (var itemTrans in reportSaleSummaryTransactions)
                                     {
-                                        if (!itemTrans.DocumentType.Equals("TKT"))
+                                        if (itemTrans.DocumentType != ("TKT"))
                                         {
                                             reportSaleSummaryDetailsResults.Add(new ReportSaleSummaryDetailsResult
                                             {

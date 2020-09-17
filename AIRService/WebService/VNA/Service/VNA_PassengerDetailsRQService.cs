@@ -444,7 +444,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    if (soapEnvelopeXml.GetElementsByTagName("ApplicationResults")[0].Attributes["status"].Value.Equals("Complete"))
+                    if (soapEnvelopeXml.GetElementsByTagName("ApplicationResults")[0].Attributes["status"].Value == "Complete")
                     {
                         string pna = soapEnvelopeXml.GetElementsByTagName("ItineraryRef")[0].Attributes["ID"].Value;
                         return pna;

@@ -11,6 +11,7 @@ using Helper;
 using System.Web;
 using WebCore.Entities;
 using WebCore.Model.Entities;
+using Helper.Page;
 
 namespace WebCore.Services
 {
@@ -20,7 +21,7 @@ namespace WebCore.Services
         public MetaService() : base() { }
         public MetaService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
 
             if (model == null)
@@ -86,17 +87,39 @@ namespace WebCore.Services
             {
                 try
                 {
+                    if (model == null)
+                        return Notifization.Invalid();
+
+                    string title = model.MetaTitle;
+                    string summary = model.MetaDescription;
+                    string metaKeyword = model.MetaKeyword;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
                     MetaService MetaService = new MetaService(_connection);
-                    var Metas = MetaService.GetAlls(m => m.MetaTitle.ToLower() == model.MetaTitle.ToLower(), transaction: transaction);
+                    var Metas = MetaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.MetaTitle) && m.MetaTitle.ToLower() == model.MetaTitle.ToLower(), transaction: transaction);
                     if (Metas.Count > 0)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
                     var Id = MetaService.Create<string>(new Meta()
                     {
-                        MetaTitle = model.MetaTitle,
-                        Alias = Helper.Page.Library.FormatToUni2NONE(model.MetaTitle),
-                        MetaDescription = model.MetaDescription,
-                        MetaKeyword = model.MetaKeyword,
+                        MetaTitle = title,
+                        Alias = Helper.Page.Library.FormatToUni2NONE(title),
+                        MetaDescription = summary,
+                        MetaKeyword = metaKeyword,
                         LanguageID = Helper.Current.UserLogin.LanguageID,
                         Enabled = model.Enabled,
                     }, transaction: transaction);
@@ -117,45 +140,67 @@ namespace WebCore.Services
         public ActionResult Update(MetaUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var MetaService = new MetaService(_connection);
-                    string Id = model.ID.ToLower();
-                    var Meta = MetaService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                    if (Meta == null)
-                        return Notifization.NotFound(MessageText.NotFound);
-
+                    if (model == null)
+                        return Notifization.Invalid();
+                    //
+                    string id = model.ID.ToLower();
                     string title = model.MetaTitle;
-                    var dpm = MetaService.GetAlls(m => m.MetaTitle.ToLower().Equals(title.ToLower()) && !Meta.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    string summary = model.MetaDescription;
+                    string metaKeyword = model.MetaKeyword;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
+                    var MetaService = new MetaService(_connection);
+                  
+                    var meta = MetaService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (meta == null)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    //
+                    meta = MetaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.MetaTitle) && m.MetaTitle.ToLower() == title.ToLower() && meta.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (meta != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
-                    Meta.MetaTitle = title;
-                    Meta.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-                    Meta.MetaDescription = model.MetaDescription;
-                    Meta.MetaKeyword = model.MetaKeyword;
-                    Meta.Enabled = model.Enabled;
-                    MetaService.Update(Meta, transaction: transaction);
-                    transaction.Commit();
+                    meta.MetaTitle = title;
+                    meta.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+                    meta.MetaDescription = summary;
+                    meta.MetaKeyword = metaKeyword;
+                    meta.Enabled = model.Enabled;
+                    MetaService.Update(meta, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
-        public Meta UpdateForm(string Id)
+        public Meta UpdateForm(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrWhiteSpace(id))
                 return null;
             string query = string.Empty;
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT TOP (1) * FROM App_Meta WHERE ID = @Query";
-            return _connection.Query<Meta>(sqlQuery, new { Query = Id }).FirstOrDefault();
+            return _connection.Query<Meta>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(string id)
@@ -163,35 +208,39 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
             //
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var MetaService = new MetaService(_connection);
-                    var Meta = MetaService.GetAlls(m => m.ID.Equals(id.ToLower()), transaction: transaction).FirstOrDefault();
-                    if (Meta == null)
+                    MetaService metaService = new MetaService(_connection);
+                    var meta = metaService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (meta == null)
                         return Notifization.NotFound();
-                    MetaService.Remove(Meta.ID, transaction: transaction);
+                    //
+                    metaService.Remove(meta.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string Id)
+        public ActionResult Details(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound(MessageText.Invalid);
+            //
+            id = id.ToLower();
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_Meta WHERE ID = @ID";
-            var item = _connection.Query<MetaResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
+            var item = _connection.Query<MetaResult>(sqlQuery, new { ID = id }).FirstOrDefault();
             if (item == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -211,7 +260,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.MetaTitle + "</option>";
                         }

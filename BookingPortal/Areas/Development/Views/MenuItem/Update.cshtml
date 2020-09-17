@@ -37,18 +37,11 @@
         routeArea = model.RouteArea;
         parentId = model.ParentID;
         title = model.Title;
-        summary = model.Summary;
-        alias = model.Alias;
         iconFront = model.IconFont;
         path = model.Path;
-        languageId = model.LanguageID;
-        createdDate = model.CreatedDate;
         controllerId = model.MvcController;
         actionId = model.MvcAction;
-        if (model.IsPermission == 1)
-        {
-            isPermission = "checked";
-        }
+
         if (model.Enabled == (int)ModelEnum.Enabled.ENABLED)
         {
             isEnable = "checked";
@@ -167,7 +160,7 @@
             var actionId = `@actionId`;
             var routeArea = `@routeArea`;
             // function
-            menuController.GetMenuCategory(routeArea, parentId);
+            MenuItemController.GetMenuCategory(routeArea, parentId);
         });
         $(document).on('change', '.vatical-menu input[type="checkbox"]', function () {
             $('.vatical-menu input[type="checkbox"]').not(this).prop('checked', false);

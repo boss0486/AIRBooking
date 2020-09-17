@@ -98,35 +98,36 @@ namespace WebCore.Services
         public ActionResult Update(ArticleCategoryUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    string Id = model.ID;
-                    if (string.IsNullOrEmpty(Id))
+                    string id = model.ID;
+                    if (string.IsNullOrWhiteSpace(id))
                         return Notifization.NotFound(MessageText.NotFound);
-                    Id = Id.ToLower();
+                    //
+                    id = id.ToLower();
                     var articleCategoryService = new ArticleCategoryService(_connection);
-                    var articleCategory = articleCategoryService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    var articleCategory = articleCategoryService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (articleCategory == null)
                         return Notifization.NotFound(MessageText.NotFound);
 
                     string title = model.Title;
-                    var dpm = articleCategoryService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !articleCategory.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    articleCategory = articleCategoryService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && articleCategory.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (articleCategory != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
                     articleCategory.Title = title;
                     articleCategory.Alias = Helper.Page.Library.FormatToUni2NONE(title);
                     articleCategory.Summary = model.Summary;
                     articleCategory.Enabled = model.Enabled;
-                    articleCategoryService.Update(articleCategory, transaction: transaction);
-                    transaction.Commit();
+                    articleCategoryService.Update(articleCategory, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
-                catch  
+                catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -148,27 +149,29 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     var articleCategoryService = new ArticleCategoryService(_connection);
-                    var articleCategory = articleCategoryService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                    var articleCategory = articleCategoryService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (articleCategory == null)
                         return Notifization.NotFound();
-                    articleCategoryService.Remove(articleCategory.ID, transaction: transaction);
+                    articleCategoryService.Remove(articleCategory.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -185,7 +188,7 @@ namespace WebCore.Services
                 var item = _connection.Query<ArticleCategoryResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
-                 return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
+                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
             }
             catch
             {
@@ -206,7 +209,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

@@ -32,7 +32,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(item.ID) && !string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                        if (!string.IsNullOrWhiteSpace(item.ID) && item.ID == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.ID + "' " + select + ">" + item.Title + "</option>";
                     }
@@ -79,7 +79,8 @@ namespace WebCore.Services
             try
             {
                 var service = new CustomerTypeService();
-                var data = service.DataOption().Where(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(id)).FirstOrDefault();
+                id = id.ToLower();
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
                 return data.Title;
             }
             catch
@@ -108,9 +109,10 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(id))
                     return (int)CustomerEnum.CustomerType.NONE;
                 //
+                id = id.ToLower();
                 var service = new CustomerTypeService();
-                var data = service.DataOption().Where(m => m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
-
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                //
                 return data.Type;
             }
             catch
@@ -130,7 +132,7 @@ namespace WebCore.Services
             }
             catch
             {
-                return  string.Empty;
+                return string.Empty;
             }
         }
         public static List<CustomerTypeOption> GetCustomerTypeByTypeID(int typeId)

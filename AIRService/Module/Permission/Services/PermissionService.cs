@@ -69,7 +69,7 @@ namespace WebCore.Services
                     {
                         var controllerId = controller.ID;
                         // #1. Check controller
-                        var controllerInDb = roleControllerSettingService.GetAlls(m => m.RouteArea.Equals(routeArea) && m.RoleID.Equals(roleId) && m.ControllerID.Equals(controllerId), transaction: _transaction).FirstOrDefault();
+                        var controllerInDb = roleControllerSettingService.GetAlls(m => m.RouteArea == routeArea && m.RoleID == roleId && m.ControllerID == controllerId, transaction: _transaction).FirstOrDefault();
                         // insert |  update
                         if (controllerInDb == null)
                         {
@@ -87,8 +87,8 @@ namespace WebCore.Services
                                 foreach (var action in actionList)
                                 {
                                     // neu chua co thi them moi
-                                    var actionSetting = roleActionSettingService.GetAlls(m => m.RouteArea.Equals(routeArea) && m.RoleID.Equals(roleId) &&
-                                    m.ControllerID.Equals(controllerId) && m.ActionID.Equals(action), transaction: _transaction).FirstOrDefault();
+                                    var actionSetting = roleActionSettingService.GetAlls(m => m.RouteArea == routeArea && m.RoleID == roleId &&
+                                    m.ControllerID == controllerId && m.ActionID == action, transaction: _transaction).FirstOrDefault();
                                     //
                                     if (actionSetting == null)
                                     {
@@ -129,8 +129,8 @@ namespace WebCore.Services
                                 foreach (var action in actionList)
                                 {
                                     // neu chua co thi them moi
-                                    var actionSetting = roleActionSettingService.GetAlls(m => m.RouteArea.Equals(routeArea) && m.RoleID.Equals(roleId) &&
-                                    m.ControllerID.Equals(controllerId) && m.ActionID.Equals(action), transaction: _transaction).FirstOrDefault();
+                                    var actionSetting = roleActionSettingService.GetAlls(m => m.RouteArea == routeArea && m.RoleID == roleId &&
+                                    m.ControllerID == controllerId && m.ActionID == action, transaction: _transaction).FirstOrDefault();
                                     //
                                     if (actionSetting == null)
                                     {
@@ -139,7 +139,7 @@ namespace WebCore.Services
                                             RouteArea = routeArea,
                                             RoleID = roleId,
                                             ControllerID = controllerId,
-                                            ActionID = action.ToLower()
+                                            ActionID = action
                                         }, transaction: _transaction);
                                     }
                                     // da ton tai thi ko lam gi
@@ -159,12 +159,12 @@ namespace WebCore.Services
             }
         }
 
-        
+
 
         //##############################################################################################################################################################################################################################################################
-   
-        
-        
+
+
+
         //##############################################################################################################################################################################################################################################################
 
 

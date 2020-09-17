@@ -128,7 +128,6 @@
     <Compile Include="Areas\Authentication\Controllers\AuthenController.cs" />
     <Compile Include="Areas\Development\Controllers\AccountController.cs" />
     <Compile Include="Areas\Development\Controllers\AreaController.cs" />
-    <Compile Include="Areas\Development\Controllers\CMSRoleController.cs" />
     <Compile Include="Areas\Development\Controllers\HomeController.cs" />
     <Compile Include="Areas\Development\Controllers\MenuActionController.cs" />
     <Compile Include="Areas\Development\Controllers\MenuControllerController.cs" />
@@ -150,6 +149,7 @@
     <Compile Include="Areas\Management\Controllers\TransactionSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
+    <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletCustomerDepositHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletUserSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletCustomerSpendingHistoryController.cs" />
@@ -891,7 +891,6 @@
     <Content Include="Areas\Development\Views\MenuController\DataList.cshtml" />
     <Content Include="Areas\Development\Views\MenuItem\Create.cshtml" />
     <Content Include="Areas\Development\Views\MenuItem\DataList.cshtml" />
-    <Content Include="Areas\Development\Views\MenuItem\Index.cshtml" />
     <Content Include="Areas\Development\Views\MenuItem\Permission.cshtml" />
     <Content Include="Areas\Development\Views\MenuItem\Setting.cshtml" />
     <Content Include="Areas\Development\Views\MenuItem\Update.cshtml" />
@@ -1112,8 +1111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Development\Data\" />
     <Folder Include="Areas\Development\Views\Test\" />
+    <Folder Include="Areas\Management\Data\" />
+    <Folder Include="Areas\Management\Views\VNAReport\" />
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
     <Folder Include="Files\export\" />
@@ -1297,7 +1297,11 @@
     <Content Include="Areas\Management\Views\WalletUserSpendingHistory\DataList.cshtml" />
     <Content Include="Library\Script\timezones.json" />
     <Content Include="Areas\Management\Views\_ViewSearchPatial.cshtml" />
-    <Content Include="Areas\Management\Data\permission-data.json" />
+    <Content Include="Areas\Development\Data\mnr-contruct-permission.json" />
+    <Content Include="Areas\Development\Data\dev-contruct-permission.json" />
+    <Content Include="Areas\Development\Views\Account\Details.cshtml" />
+    <Content Include="Areas\Management\Views\Account\Details.cshtml" />
+    <Content Include="Areas\Development\Views\User\Profile.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

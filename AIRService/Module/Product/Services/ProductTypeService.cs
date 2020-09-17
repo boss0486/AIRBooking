@@ -12,6 +12,7 @@ using System.Web;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 using WebCore.ENM;
+using Helper.Page;
 
 namespace WebCore.Services
 {
@@ -81,32 +82,53 @@ namespace WebCore.Services
         public ActionResult Create(ProductTypeCreateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    ProductTypeService ProductTypeService = new ProductTypeService(_connection);
-                    var ProductTypes = ProductTypeService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
-                    if (ProductTypes.Count > 0)
-                        return Notifization.Invalid("Tiêu đề đã được sử dụng");
+                    if (model == null)
+                        return Notifization.Invalid();
 
-                    var Id = ProductTypeService.Create<string>(new ProductType()
+                    string title = model.Title;
+                    string summary = model.Summary;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
+                    ProductTypeService productTypeService = new ProductTypeService(_connection);
+                    var productType = productTypeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == model.Title.ToLower(), transaction: _transaction);
+                    if (productType.Count > 0)
+                        return Notifization.Invalid("Tiêu đề đã được sử dụng");
+                    //
+                    var Id = productTypeService.Create<string>(new ProductType()
                     {
                         Title = model.Title,
                         Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
                         Summary = model.Summary,
                         LanguageID = Helper.Current.UserLogin.LanguageID,
                         Enabled = model.Enabled,
-                    }, transaction: transaction);
+                    }, transaction: _transaction);
                     string temp = string.Empty;
 
                     //sort
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -115,46 +137,66 @@ namespace WebCore.Services
         public ActionResult Update(ProductTypeUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var ProductTypeService = new ProductTypeService(_connection);
-                    string Id = model.ID.ToLower();
-                    var ProductType = ProductTypeService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                    if (ProductType == null)
-                        return Notifization.NotFound(MessageText.NotFound);
+                    if (model == null)
+                        return Notifization.Invalid();
 
                     string title = model.Title;
-                    var dpm = ProductTypeService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !ProductType.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    string summary = model.Summary;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
+                    var productTypeService = new ProductTypeService(_connection);
+                    string id = model.ID.ToLower();
+                    var productType = productTypeService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (productType == null)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    //
+                    productType = productTypeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && productType.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (productType != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
-                    ProductType.Title = title;
-                    ProductType.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-                    ProductType.Summary = model.Summary;
-                    ProductType.Enabled = model.Enabled;
-                    ProductTypeService.Update(ProductType, transaction: transaction);
-                    transaction.Commit();
+                    productType.Title = title;
+                    productType.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+                    productType.Summary = model.Summary;
+                    productType.Enabled = model.Enabled;
+                    productTypeService.Update(productType, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
-        public ProductType UpdateForm(string Id)
+        public ProductType UpdateForm(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_ProductType WHERE ID = @Query";
-                return _connection.Query<ProductType>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<ProductType>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -162,41 +204,42 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var ProductTypeService = new ProductTypeService(_connection);
-                    var ProductType = ProductTypeService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                    if (ProductType == null)
+                    var productTypeService = new ProductTypeService(_connection);
+                    var _productType = productTypeService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (_productType == null)
                         return Notifization.NotFound();
-                    ProductTypeService.Remove(ProductType.ID, transaction: transaction);
+                    productTypeService.Remove(_productType.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string Id)
+        public ActionResult Details(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrEmpty(id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM App_ProductType WHERE ID = @ID";
-                var item = _connection.Query<ProductType>(sqlQuery, new { ID = Id }).FirstOrDefault();
+                var item = _connection.Query<ProductType>(sqlQuery, new { ID = id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
@@ -221,7 +264,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrEmpty(id) && item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -234,12 +277,12 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<ProductTypeOption> DataOption(string langID)
+        public List<ProductTypeOption> DataOption(string langId)
         {
             try
             {
                 string sqlQuery = @"SELECT * FROM App_ProductType ORDER BY Title ASC";
-                return _connection.Query<ProductTypeOption>(sqlQuery, new { LangID = langID }).ToList();
+                return _connection.Query<ProductTypeOption>(sqlQuery, new { LangID = langId }).ToList();
             }
             catch
             {

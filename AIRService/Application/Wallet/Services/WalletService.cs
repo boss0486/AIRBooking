@@ -73,8 +73,9 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(userId))
                     return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
                 //
+                userId = userId.ToLower();
                 ClientLoginService  clientLoginService = new ClientLoginService();
-                var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower()), dbTransaction).FirstOrDefault();
+                var client = clientLoginService.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
                 //

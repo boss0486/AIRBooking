@@ -27,9 +27,10 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(userId))
                 return string.Empty;
             //
+            userId = userId.ToLower();
             using (var service = new ClientLoginService())
             {
-                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID == userId).FirstOrDefault();
                 if (customer == null)
                     return string.Empty;
                 //

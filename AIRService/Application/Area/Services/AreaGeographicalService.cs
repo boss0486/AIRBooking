@@ -96,32 +96,32 @@ namespace WebCore.Services
         public ActionResult Update(AreaGeographicalUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    var appAreaService = new AreaGeographicalService(_connection);
+                    var areaGeographicalService = new AreaGeographicalService(_connection);
                     string id = model.ID.ToLower();
-                    var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id), transaction: transaction).FirstOrDefault();
-                    if (appArea == null)
+                    var areaGeographical = areaGeographicalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (areaGeographical == null)
                         return Notifization.NotFound(MessageText.NotFound);
-
+                    //
                     string title = model.Title;
-                    var dpm = appAreaService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !appArea.ID.ToLower().Equals(id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    areaGeographical = areaGeographicalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && areaGeographical.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (areaGeographical != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
-                    appArea.Title = title;
-                    appArea.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                    appArea.Summary = model.Summary;
-                    appArea.Enabled = model.Enabled;
-                    appAreaService.Update(appArea, transaction: transaction);
-                    transaction.Commit();
+                    areaGeographical.Title = title;
+                    areaGeographical.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
+                    areaGeographical.Summary = model.Summary;
+                    areaGeographical.Enabled = model.Enabled;
+                    areaGeographicalService.Update(areaGeographical, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -150,11 +150,12 @@ namespace WebCore.Services
                 try
                 {
                     id = id.ToLower();
-                    var appAreaService = new AreaGeographicalService(_connection);
-                    var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id), transaction: transaction).FirstOrDefault();
-                    if (appArea == null)
+                    var  areaGeographicalService = new AreaGeographicalService(_connection);
+                    var  areaGeographical = areaGeographicalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID ==id, transaction: transaction).FirstOrDefault();
+                    if (areaGeographical == null)
                         return Notifization.NotFound();
-                    appAreaService.Remove(appArea.ID, transaction: transaction);
+                    //
+                    areaGeographicalService.Remove(areaGeographical.ID, transaction: transaction);
                     // remover seo
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -165,23 +166,6 @@ namespace WebCore.Services
                     return Notifization.NotService;
                 }
             }
-        }
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(AreaGeographicalIDModel model)
-        {
-            if (model == null)
-                return Notifization.Invalid();
-            //
-            string id = model.ID;
-            if (string.IsNullOrWhiteSpace(id))
-                return Notifization.NotFound();
-            //
-            string sqlQuery = @"SELECT * FROM App_Geographical WHERE ID = @ID";
-            var result = _connection.Query<ResultAreaGeographical>(sqlQuery, new { ID = id }).FirstOrDefault();
-            if (result == null)
-                return Notifization.NotFound(MessageText.NotFound);
-            //
-            return Notifization.Data(MessageText.Success, data: result, role: null, paging: null);
         }
         //##############################################################################################################################################################################################################################################################
         public static string AreaDropdownList(string id)
@@ -197,7 +181,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrEmpty(id) && item.ID.ToLower().Equals(id.ToLower()))
+                            if (!string.IsNullOrEmpty(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -231,8 +215,9 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(id))
                     return string.Empty;
                 //
+                id = id.ToLower();
                 AreaGeographicalService appAreaService = new AreaGeographicalService();
-                var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (appArea == null)
                     return string.Empty;
                 // 

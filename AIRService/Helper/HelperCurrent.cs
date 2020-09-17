@@ -45,7 +45,7 @@ namespace Helper.Current
                 }
             }
         }
-        public static bool IsAdministratorInApplication
+        public static bool IsAdminInApplication
         {
             get
             {

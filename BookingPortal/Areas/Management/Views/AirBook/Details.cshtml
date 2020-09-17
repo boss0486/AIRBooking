@@ -32,7 +32,7 @@
         }
         bookContacs = Model.Contacts;
         BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
-        var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(pnr.ToLower())).FirstOrDefault();
+        var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
 
         if (bookPNRCode != null)
         {
@@ -308,7 +308,7 @@
                         }
                         if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.None)
                         {
-                            <label class="btn btn-danger -w-100  mgb-10 disabled"  type="button"><i class="fas fa-arrow-circle-right"></i> Không X.Định</label>
+                            <label class="btn btn-danger -w-100  mgb-10 disabled" type="button"><i class="fas fa-arrow-circle-right"></i> Không X.Định</label>
                         }
                     }
 

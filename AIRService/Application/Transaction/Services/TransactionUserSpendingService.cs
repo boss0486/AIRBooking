@@ -122,14 +122,15 @@ namespace WebCore.Services
                     }
                     else
                     {
-                        var currClient = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(currentUserId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var currClient = clientLoginService.GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
                         if (currClient == null)
                             return Notifization.NotFound("Khách hàng không hợp lệ");
                         //
                         customerId = currClient.ClientID;
                     }
                     //
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(customerId), transaction: _transaction).FirstOrDefault();
+                    customerId = customerId.ToLower();
+                    var customer = customerService.GetAlls(m => m.ID == customerId, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.Invalid("Khách hàng không hợp lệ");
                     //
@@ -137,7 +138,7 @@ namespace WebCore.Services
                         return Notifization.Invalid("Vui lòng chọn nhân viên");
                     //
                     userIdReceived = userIdReceived.Trim().ToLower();
-                    var userReceive = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(userIdReceived), transaction: _transaction).FirstOrDefault();
+                    var userReceive = userLoginService.GetAlls(m => m.ID == userIdReceived, transaction: _transaction).FirstOrDefault();
                     if (userReceive == null)
                         return Notifization.Invalid("Nhân viên không hợp lệ");
                     //
@@ -241,29 +242,31 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
-                using (var transaction = _connectDb.BeginTransaction())
+                using (var _transaction = _connectDb.BeginTransaction())
                 {
                     try
                     {
-                        TransactionUserSpendingService TransactionUserSpendingService = new TransactionUserSpendingService(_connectDb);
-                        var TransactionUserSpending = TransactionUserSpendingService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                        if (TransactionUserSpending == null)
+                        TransactionUserSpendingService transactionUserSpendingService = new TransactionUserSpendingService(_connectDb);
+                        var transactionUserSpending = transactionUserSpendingService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                        if (transactionUserSpending == null)
                             return Notifization.NotFound();
-                        TransactionUserSpendingService.Remove(TransactionUserSpending.ID, transaction: transaction);
+                        transactionUserSpendingService.Remove(transactionUserSpending.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }

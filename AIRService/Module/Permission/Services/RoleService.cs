@@ -136,7 +136,7 @@ namespace WebCore.Services
             //
             RoleService roleService = new RoleService(_connection);
             string id = model.ID.ToLower();
-            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id)).FirstOrDefault();
+            var role = roleService.GetAlls(m => m.ID == id).FirstOrDefault();
             if (role == null)
                 return Notifization.NotFound(MessageText.NotFound);
 
@@ -162,7 +162,7 @@ namespace WebCore.Services
                 summary = summary.Trim();
             }
 
-            var roleName = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.ToLower().Equals(id)).FirstOrDefault();
+            var roleName = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
             if (roleName != null)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             // update user information
@@ -194,19 +194,20 @@ namespace WebCore.Services
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
-
+            //
+            id = id.ToLower();
             _connection.Open();
             using (var transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     RoleService roleService = new RoleService(_connection);
-                    var department = roleService.GetAlls(m => m.ID.Equals(id.ToLower()), transaction: transaction).FirstOrDefault();
-                    if (department == null)
+                    var role = roleService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
+                    if (role == null)
                         return Notifization.NotFound();
-                    roleService.Remove(department.ID, transaction: transaction);
+                    roleService.Remove(role.ID, transaction: transaction);
                     // remover seo
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -232,7 +233,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(item.ID) && !string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -259,7 +260,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -284,7 +285,6 @@ namespace WebCore.Services
                 return new List<RoleOption>();
             }
         }
-
         public static List<string> GetRoleForUser(string userId)
         {
             using (var service = new RoleService())
@@ -296,7 +296,6 @@ namespace WebCore.Services
                 return service.Query<string>(sqlQuery, new { UserID = userId }).ToList();
             }
         }
-
         public static string DDLListRoleMultiSelect(List<string> arrData = null, bool isNotcheck = false)
         {
             try
@@ -337,7 +336,7 @@ namespace WebCore.Services
                             else
                             {
 
-                                result += "<a class='list-group-item "+ active + "'>";
+                                result += "<a class='list-group-item " + active + "'>";
                                 result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + "  disabled />";
                                 result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
                                 result += "</a>";
@@ -353,11 +352,6 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-
-
-
         //##############################################################################################################################################################################################################################################################
-
-
     }
 }

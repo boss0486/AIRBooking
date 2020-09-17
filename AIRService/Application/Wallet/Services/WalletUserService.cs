@@ -33,11 +33,11 @@ namespace WebCore.Services
                 dbConnection = DbConnect.Connection.CMS;
             //
             var service = new WalletUserService(dbConnection);
-            string customerId = model.CustomerID;
+            string customerId = model.CustomerID.ToLower();
             double amount = model.Amount;
-            string userId = model.UserID;
+            string userId = model.UserID.ToLower();
             int transType = model.TransactionType;
-            WalletUser balanceUser = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.CustomerID.ToLower().Equals(customerId.ToLower()) && m.UserID.ToLower().Equals(userId.ToLower()), transaction: dbTransaction).FirstOrDefault();
+            WalletUser balanceUser = service.GetAlls(m => m.CustomerID == customerId && m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
             if (balanceUser == null)
             {
                 service.Create<string>(new WalletUser()
@@ -69,9 +69,10 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(userId))
                 return new WalletUserMessageModel { Status = false, Balance = 0, Message = "Người dùng không xác định" };
             //
+            userId = userId.ToLower();
             double amount = 0;
             var service = new WalletUserService(dbConnection);
-            var balance = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()), transaction: dbTransaction).FirstOrDefault();
+            var balance = service.GetAlls(m => m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
             if (balance != null)
                 amount = balance.Amount;
             //

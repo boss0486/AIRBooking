@@ -88,7 +88,7 @@ namespace WebCore.Services
         public ActionResult Create(BankCreateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
@@ -97,7 +97,7 @@ namespace WebCore.Services
                     //
                     string title = model.Title;
                     string summary = model.Summary;
-                    if (string.IsNullOrEmpty(title))
+                    if (string.IsNullOrWhiteSpace(title))
                         return Notifization.Invalid("Không được để trống tiêu đề");
                     title = title.Trim();
                     if (!Validate.TestText(title))
@@ -105,7 +105,7 @@ namespace WebCore.Services
                     if (title.Length < 2 || title.Length > 80)
                         return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
                     // summary valid               
-                    if (!string.IsNullOrEmpty(summary))
+                    if (!string.IsNullOrWhiteSpace(summary))
                     {
                         summary = summary.Trim();
                         if (!Validate.TestText(summary))
@@ -115,7 +115,7 @@ namespace WebCore.Services
                     }
                     //
                     BankService bankService = new BankService(_connection);
-                    var bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()), transaction: transaction).FirstOrDefault();
+                    var bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (bank != null)
                         return Notifization.Invalid("Tên ngân hàng đã được sử dụng");
                     //
@@ -126,15 +126,15 @@ namespace WebCore.Services
                         Summary = model.Summary,
                         LanguageID = Helper.Current.UserLogin.LanguageID,
                         Enabled = model.Enabled,
-                    }, transaction: transaction);
+                    }, transaction: _transaction);
                     string temp = string.Empty;
                     //sort
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -143,7 +143,7 @@ namespace WebCore.Services
         public ActionResult Update(BankUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
@@ -152,7 +152,7 @@ namespace WebCore.Services
 
                     string title = model.Title;
                     string summary = model.Summary;
-                    if (string.IsNullOrEmpty(title))
+                    if (string.IsNullOrWhiteSpace(title))
                         return Notifization.Invalid("Không được để trống tiêu đề");
                     title = title.Trim();
                     if (!Validate.TestText(title))
@@ -160,7 +160,7 @@ namespace WebCore.Services
                     if (title.Length < 2 || title.Length > 80)
                         return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
                     // summary valid               
-                    if (!string.IsNullOrEmpty(summary))
+                    if (!string.IsNullOrWhiteSpace(summary))
                     {
                         summary = summary.Trim();
                         if (!Validate.TestText(summary))
@@ -169,40 +169,41 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     BankService bankService = new BankService(_connection);
-                    string Id = model.ID.ToLower();
-                    var bank = bankService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var bank = bankService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (bank == null)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    var dpm = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.ToLower().Equals(Id), transaction: transaction).FirstOrDefault();
-                    if (dpm != null)
+                    bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (bank != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
                     bank.Title = title;
                     bank.Alias = Helper.Page.Library.FormatToUni2NONE(title);
                     bank.Summary = model.Summary;
                     bank.Enabled = model.Enabled;
-                    bankService.Update(bank, transaction: transaction);
-                    transaction.Commit();
+                    bankService.Update(bank, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
-        public BankResult GetBankByID(string Id)
+        public BankResult GetBankByID(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
+                //
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_Bank WHERE ID = @Query";
-                return _connection.Query<BankResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<BankResult>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -210,29 +211,32 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            //
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
-                using (var transaction = _connectDb.BeginTransaction())
+                using (var _transaction = _connectDb.BeginTransaction())
                 {
                     try
                     {
                         BankService BankService = new BankService(_connectDb);
-                        var Bank = BankService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                        if (Bank == null)
+                        var bank = BankService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                        if (bank == null)
                             return Notifization.NotFound();
-                        BankService.Remove(Bank.ID, transaction: transaction);
+                        //
+                        BankService.Remove(bank.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -243,7 +247,7 @@ namespace WebCore.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrWhiteSpace(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM App_Bank WHERE ID = @ID";
@@ -272,7 +276,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
@@ -302,9 +306,13 @@ namespace WebCore.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(id))
+                    return string.Empty;
+                //
+                id = id.ToLower();
                 using (var service = new BankService())
                 {
-                    var bank = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                    var bank = service.GetAlls(m => m.ID == id).FirstOrDefault();
                     if (bank == null)
                         return string.Empty;
                     //

@@ -76,29 +76,32 @@ namespace WebCore.Services
             try
             {
                 if (model == null)
-                    return Notifization.NotFound();
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
                 _connection.Open();
-                var _Id = model.ID;
-                if (string.IsNullOrEmpty(_Id))
+                string id = model.ID;
+                if (string.IsNullOrWhiteSpace(id))
                     return Notifization.NotFound();
-                using (var transaction = _connection.BeginTransaction())
+                //
+                id = id.ToLower();
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
                         var attachmentService = new AttachmentService(_connection);
-                        var attachment = attachmentService.GetAlls(m => m.ID.Equals(_Id.ToLower()), transaction: transaction).FirstOrDefault();
+                        var attachment = attachmentService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (attachment == null)
                             return Notifization.NotFound();
 
-                        attachmentService.Remove(_Id, transaction: transaction);
-                        AttachmentFile.DeleteFile(_Id, transaction: transaction);
+                        attachmentService.Remove(id, transaction: _transaction);
+                        AttachmentFile.DeleteFile(id, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -120,7 +123,7 @@ namespace WebCore.Services
                     return new List<ViewAttachment>();
                 return dtList;
             }
-            catch 
+            catch
             {
                 return new List<ViewAttachment>();
             }

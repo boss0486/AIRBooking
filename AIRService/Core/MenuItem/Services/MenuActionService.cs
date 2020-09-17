@@ -42,7 +42,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && !string.IsNullOrWhiteSpace(item.ID) && item.ID.ToLower().Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             //
                             result += "<option value='" + item.ID + "'" + select + ">" + item.KeyID + "</option>";

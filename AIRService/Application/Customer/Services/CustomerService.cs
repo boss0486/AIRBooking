@@ -148,7 +148,7 @@ namespace WebCore.Services
                     //
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     //return Notifization.TEST(":::" + Helper.Current.UserLogin.IdentifierID.ToLower());
-                    string currentUserId = Helper.Current.UserLogin.IdentifierID.ToLower();
+                    string currentUserId = Helper.Current.UserLogin.IdentifierID;
                     var userService = new UserService();
 
                     bool customerLoginStatus = userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction);
@@ -156,11 +156,11 @@ namespace WebCore.Services
                     string suppId = string.Empty;
                     if (userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction))
                     {
-                        var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(currentUserId) && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).FirstOrDefault();
+                        var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).FirstOrDefault();
                         if (client == null)
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 01");
                         //
-                        var customer1 = customerService.GetAlls(m => m.ID.ToLower().Equals(client.ClientID.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var customer1 = customerService.GetAlls(m => m.ID == client.ClientID, transaction: _transaction).FirstOrDefault();
                         if (customer1 == null)
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 02");
                         //
@@ -174,11 +174,11 @@ namespace WebCore.Services
                     }
                     else if (userService.IsSupplierLogged(currentUserId, dbConnection: _connection, _transaction))
                     {
-                        var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(currentUserId) && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).FirstOrDefault();
+                        var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).FirstOrDefault();
                         if (client == null)
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 03");
                         //
-                        var supplier = supplierService.GetAlls(m => m.ID.ToLower().Equals(client.ClientID.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var supplier = supplierService.GetAlls(m => m.ID == client.ClientID, transaction: _transaction).FirstOrDefault();
                         if (supplier == null)
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 04");
                         //
@@ -189,9 +189,9 @@ namespace WebCore.Services
                         if (string.IsNullOrWhiteSpace(supplierId))
                             return Notifization.Invalid("Vui lòng chọn nhà cung cấp 05");
                         //
-                        supplierId = supplierId.Trim();
+                        supplierId = supplierId.Trim().ToLower();
                         //
-                        var supplier = supplierService.GetAlls(m => m.ID.ToLower().Equals(supplierId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var supplier = supplierService.GetAlls(m => m.ID == supplierId, transaction: _transaction).FirstOrDefault();
                         if (supplier == null)
                             return Notifization.Invalid("Không thể xác định nhà cung cấp 06");
                         //
@@ -199,7 +199,7 @@ namespace WebCore.Services
                     // CHECK CREATE AGENT *************************************************************
                     // 1.neu phai admin, admin app, nha cung cap, khach hang se ko dc tao khach hang
                     // 1.neu la khach hang ko dc tao them dai ly, chỉ dc tạo comp
-                    if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
+                    if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
                         return Notifization.Invalid("Không thể tạo khách hàng");
                     //
                     if (Helper.Current.UserLogin.IsCustomerLogged() && CustomerTypeService.GetCustomerType(typeId) == (int)CustomerEnum.CustomerType.AGENT)
@@ -315,11 +315,11 @@ namespace WebCore.Services
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
                     //
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower().Equals(codeId.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (customer != null)
                         return Notifization.Invalid("Mã khách hàng đã được sử dụng");
 
-                    customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()), transaction: _transaction).FirstOrDefault();
+                    customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (customer != null)
                         return Notifization.Invalid("Tên khách hàng đã được sử dụng");
                     //
@@ -375,7 +375,6 @@ namespace WebCore.Services
                         UserID = userId,
                         SecurityPassword = null,
                         AuthenType = null,
-                        RoleID = null,
                         IsBlock = false,
                         Enabled = enabled,
                         LanguageID = languageId,
@@ -454,6 +453,7 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Invalid();
                     //
+                    string id = model.ID.ToLower();
                     string typeId = model.TypeID;
                     string codeId = model.CodeID;
                     string parentId = model.ParentID;
@@ -559,15 +559,15 @@ namespace WebCore.Services
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
                     //
                     CustomerService customerService = new CustomerService(_connection);
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.NotFound();
                     //
-                    var modelTitle = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var modelTitle = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tên khách hàng đã được sử dụng");
 
-                    var customerId = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower().Equals(codeId.ToLower()) && !m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var customerId = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (customerId != null)
                         return Notifization.Invalid("Tên khách hàng đã được sử dụng");
 
@@ -630,14 +630,14 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Error(MessageText.Invalid);
                     //
-                    string id = model.ID;
+                    string id = model.ID.ToLower();
                     CustomerService customerService = new CustomerService(_connection);
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.NotFound();
                     // get all user
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID.ToLower().Equals(customer.ID.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).ToList();
+                    var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ClientID) && m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).ToList();
                     if (clientLogin.Count == 0)
                         return Notifization.Error(MessageText.Invalid);
                     //
@@ -690,7 +690,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                     }
@@ -711,7 +711,7 @@ namespace WebCore.Services
             using (var service = new CustomerService())
             {
                 string typeId = CustomerTypeService.GetCustomerTypeIDByType(typeEnum);
-                if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+                if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
                     return result;
                 //
                 // limit by user login
@@ -730,7 +730,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                     }
@@ -767,7 +767,7 @@ namespace WebCore.Services
                         foreach (var item in customer)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID== id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                         }
@@ -783,7 +783,7 @@ namespace WebCore.Services
                         foreach (var item in customer)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID.ToLower().Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                         }
@@ -804,9 +804,10 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(id))
                 return string.Empty;
             //
+            id = id.ToLower();
             using (var service = new CustomerService())
             {
-                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower())).FirstOrDefault();
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (customer == null)
                     return string.Empty;
                 //
@@ -859,7 +860,7 @@ namespace WebCore.Services
             //
             using (var service = new ClientLoginService())
             {
-                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower())).FirstOrDefault();
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower() == userId.ToLower()).FirstOrDefault();
                 if (customer == null)
                     return string.Empty;
                 //

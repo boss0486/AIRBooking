@@ -19,19 +19,19 @@ namespace WebCore.Services
         public UserInfoService() : base() { }
         public UserInfoService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        
+
 
         // function ###########################################################################################################################################################################################
-        public string GetFullName(string Id)
+        public string GetFullName(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return string.Empty;
                 //
                 using (var service = new UserInfoService(_connection))
                 {
-                    var data = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(Id.ToLower())).FirstOrDefault();
+                    var data = service.GetAlls(m => m.UserID == id.ToLower()).FirstOrDefault();
                     //
                     if (data == null)
                         return string.Empty;

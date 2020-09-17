@@ -11,9 +11,9 @@ namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
     [Table("App_ServicePackCategory")]
-    public partial class AppServiceCategory : WEBModel
+    public partial class ServicePackCategory : WEBModel
     {
-        public AppServiceCategory()
+        public ServicePackCategory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }

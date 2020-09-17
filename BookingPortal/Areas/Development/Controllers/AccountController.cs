@@ -47,6 +47,15 @@ namespace WebApplication.Development.Controllers
             //
             return View();
         }
+        public new ActionResult Details(string id)
+        {
+            CMSUserService service = new CMSUserService();
+            UserResult model = service.GetUserModel(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
+        }
 
         public ActionResult Password()
         {

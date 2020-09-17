@@ -61,7 +61,7 @@ namespace WebCore.Services
             #endregion
             //
 
-            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
                 return Notifization.AccessDenied(MessageText.AccessDenied);
             //
             if (Helper.Current.UserLogin.IsSupplierLogged())
@@ -229,11 +229,11 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     // 
-                    var supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower().Equals(codeId.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (supplier != null)
                         return Notifization.Invalid("Mã nhà cung cấp đã được sử dụng");
 
-                    supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()), transaction: _transaction).FirstOrDefault();
+                    supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (supplier != null)
                         return Notifization.Invalid("Tên nhà cung cấp đã được sử dụng");
                     //
@@ -288,7 +288,6 @@ namespace WebCore.Services
                         UserID = userId,
                         SecurityPassword = null,
                         AuthenType = null,
-                        RoleID = null,
                         IsBlock = false,
                         Enabled = enabled,
                         LanguageID = languageId,
@@ -436,15 +435,15 @@ namespace WebCore.Services
                     // 
 
                     SupplierService supplierService = new SupplierService(_connection);
-                    var supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var supplier = supplierService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (supplier == null)
                         return Notifization.NotFound();
                     //
-                    var modelTitle = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var modelTitle = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tên nhà cung cấp đã được sử dụng");
 
-                    var supplierId = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower().Equals(codeId.ToLower()) && !m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var supplierId = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (supplierId != null)
                         return Notifization.Invalid("Mã nhà cung cấp đã được sử dụng");
                     //
@@ -505,14 +504,14 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Error(MessageText.Invalid);
                     //
-                    string id = model.ID;
+                    string id = model.ID.ToLower();
                     SupplierService supplierService = new SupplierService(_connection);
-                    var supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var supplier = supplierService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (supplier == null)
                         return Notifization.NotFound();
                     // get all user
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID.ToLower().Equals(supplier.ID.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).ToList();
+                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).ToList();
                     if (clientLogin.Count == 0)
                         return Notifization.Error(MessageText.Invalid);
                     //
@@ -595,7 +594,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID.Equals(id.ToLower()))
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.ID + "' data-codeid='" + item.CodeID + "' " + select + ">" + item.CodeID + "-" + item.Title + "</option>";
                     }

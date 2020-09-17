@@ -83,7 +83,7 @@ namespace WebCore.Services
                 }
             }
             else
-            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdministratorInApplication)
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
             {
                 return Notifization.AccessDenied(MessageText.AccessDenied);
             }
@@ -176,7 +176,8 @@ namespace WebCore.Services
                                 clientName = "Nhà cung cấp";
                             }
                             // 
-                            var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID.ToLower().Equals(clientId.ToLower()), transaction: _transaction).FirstOrDefault();
+                            clientId = clientId.ToLower();
+                            var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID == clientId , transaction: _transaction).FirstOrDefault();
                             if (client == null)
                                 return Notifization.Invalid(clientName + " không hợp lệ");
                         }
@@ -282,7 +283,8 @@ namespace WebCore.Services
                         RoleService roleService = new RoleService(_connection);
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(roleId.ToLower()), transaction: _transaction);
+                            roleId = roleId.ToLower();
+                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
                             if (role == null)
                                 return Notifization.Error("Nhóm quyền không hợp lệ");
                         }
@@ -323,7 +325,6 @@ namespace WebCore.Services
                             UserID = userId,
                             SecurityPassword = null,
                             AuthenType = null,
-                            RoleID = null,
                             IsBlock = isBlock,
                             Enabled = enabled,
                             LanguageID = languageId,
@@ -387,7 +388,7 @@ namespace WebCore.Services
                         //
                         if (string.IsNullOrWhiteSpace(userId))
                             return Notifization.Invalid(MessageText.Invalid);
-                        userId = userId.Trim();
+                        userId = userId.Trim().ToLower();
 
                         UserLoginService userLoginService = new UserLoginService(_connection);
                         UserInfoService userInfoService = new UserInfoService(_connection);
@@ -396,19 +397,20 @@ namespace WebCore.Services
 
                         LanguageService languageService = new LanguageService(_connection);
                         //update user information
-                        var userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(userId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == userId, transaction: _transaction).FirstOrDefault();
                         if (userLogin == null)
                             return Notifization.Invalid(MessageText.Invalid);
                         //
                         RoleService roleService = new RoleService(_connection);
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(roleId.ToLower()), transaction: _transaction);
+                            roleId = roleId.ToLower();
+                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
                             if (role == null)
                                 return Notifization.Error("Nhóm quyền không hợp lệ");
                         }
                         var _uId = userLogin.ID;
-                        var userInfo = userInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userInfo = userInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userInfo == null)
                             return Notifization.Invalid(MessageText.Invalid);
                         //
@@ -435,7 +437,7 @@ namespace WebCore.Services
                         userInfo.Address = model.Address;
                         userInfoService.Update(userInfo, transaction: _transaction);
                         //
-                        var userSetting = userSettingService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userSetting = userSettingService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userSetting == null)
                             return Notifization.Invalid(MessageText.Invalid);
                         //
@@ -448,7 +450,7 @@ namespace WebCore.Services
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
                             // delete role cũ
-                            var userRole = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.RoleID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                            var userRole = userRoleService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                             if (userRole == null)
                             {
                                 userRoleService.Create<string>(new UserRole()

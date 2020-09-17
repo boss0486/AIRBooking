@@ -74,20 +74,20 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success, data: result, paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DdlLanguage(string langID, string selected)
+        public static string DdlLanguage(string langId, string selected)
         {
             try
             {
                 string result = string.Empty;
                 using (LanguageService languageService = new LanguageService())
                 {
-                    List<LanguageOption> dtList = languageService.DataOption(langID);
+                    List<LanguageOption> dtList = languageService.DataOption(langId);
                     if (dtList.Count > 0)
                     {
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.LanguageID.ToLower().Equals(selected.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(selected) && item.LanguageID == selected.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.LanguageID + "'" + select + ">" + item.Title + "</option>";
                         }

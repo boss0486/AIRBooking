@@ -110,16 +110,16 @@ namespace WebCore.Services
                 return Notifization.NotFound(MessageText.NotFound);
             id = id.ToLower();
             AirportService flightService = new AirportService(_connection);
-            var flight = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id)).FirstOrDefault();
+            var flight = flightService.GetAlls(m => m.ID == id).FirstOrDefault();
             if (flight == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
             string title = model.Title;
-            var flightValid = flightService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !flight.ID.ToLower().Equals(id)).FirstOrDefault();
+            var flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && flight.ID != id).FirstOrDefault();
             if (flightValid != null)
                 return Notifization.Invalid("Tên chuyến bay đã được sử dụng");
             //
-            flightValid = flightService.GetAlls(m => m.IATACode.ToLower().Equals(model.IATACode.ToLower()) && !flight.ID.ToLower().Equals(id)).FirstOrDefault();
+            flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.IATACode) && m.IATACode.ToLower() == model.IATACode.ToLower() && flight.ID != id).FirstOrDefault();
             if (flightValid != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
             //
@@ -153,26 +153,16 @@ namespace WebCore.Services
             if (id == null)
                 return Notifization.NotFound();
             //
+            id = id.ToLower();
             AirportService flightService = new AirportService(_connection);
-            var banner = flightService.GetAlls(m => m.ID.Equals(id.ToLower())).FirstOrDefault();
-            if (banner == null)
+            var airport = flightService.GetAlls(m => m.ID == id).FirstOrDefault();
+            if (airport == null)
                 return Notifization.NotFound();
             //
-            flightService.Remove(banner.ID);
+            flightService.Remove(airport.ID);
             return Notifization.Success(MessageText.DeleteSuccess);
         }
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                return null;
-            //
-            var viewFilght = GetAirAportModel(id);
-            if (viewFilght == null)
-                return Notifization.NotFound(MessageText.NotFound);
-            //
-            return Notifization.Data(MessageText.Success, data: viewFilght, role: null, paging: null);
-        }
+ 
         //##############################################################################################################################################################################################################################################################   
         public List<AirportOption> DataOption()
         {
@@ -195,7 +185,7 @@ namespace WebCore.Services
                     foreach (var item in dtList)
                     {
                         string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(item.IATACode) && item.IATACode.ToLower().Equals(id.ToLower()))
+                        if (!string.IsNullOrWhiteSpace(item.IATACode) && item.IATACode.ToLower() == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.IATACode + "'" + select + ">" + item.Title + " - " + item.IATACode + "</option>";
                     }

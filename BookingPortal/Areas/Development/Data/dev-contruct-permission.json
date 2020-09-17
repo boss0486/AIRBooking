@@ -1,0 +1,149 @@
+﻿[
+  {
+    "KeyID": "Account",
+    "Title": "Tài khoản",
+    "OrderID": 1,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      },
+      {
+        "OrderID": 6,
+        "KeyID": "Profile",
+        "Method": "Profile",
+        "APIRouter": "Action/Profile",
+        "Title": "Hồ sơ"
+      },
+      {
+        "OrderID": 7,
+        "KeyID": "LoginInfo",
+        "Method": "LoginInfo",
+        "APIRouter": "Action/LoginInfo",
+        "Title": "Truy cập"
+      },
+      {
+        "OrderID": 8,
+        "KeyID": "ChangePassword",
+        "Method": "ChangePassword",
+        "APIRouter": "Action/ChangePassword",
+        "Title": "Đổi mật khẩu"
+      }
+    ]
+  },
+  {
+    "KeyID": "MenuItem",
+    "Title": "Menu quản lý",
+    "OrderID": 2,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Setting",
+        "Method": "Setting",
+        "APIRouter": "Action/Setting",
+        "Title": "Thiết lập"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      }
+    ]
+  },
+  {
+    "KeyID": "User",
+    "Title": "Người dùng",
+    "OrderID": 3,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "OrderID": 4,
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  }
+]

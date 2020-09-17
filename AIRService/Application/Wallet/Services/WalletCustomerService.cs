@@ -33,10 +33,10 @@ namespace WebCore.Services
                 dbConnection = DbConnect.Connection.CMS;
             //
             var service = new WalletCustomerService(dbConnection);
-            string customerId = model.CustomerID;
+            string customerId = model.CustomerID.ToLower();
             double amount = model.Amount;
             double transType = model.TransactionType;
-            WalletCustomer balanceCustomer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.CustomerID) && m.CustomerID.ToLower().Equals(customerId), transaction: dbTransaction).FirstOrDefault();
+            WalletCustomer balanceCustomer = service.GetAlls(m => m.CustomerID == customerId, transaction: dbTransaction).FirstOrDefault();
             if (balanceCustomer == null)
                 return new WalletCustomerMessageModel { Status = false, Message = "Không thể cập nhật giao dịch" };
             // + 
@@ -56,10 +56,10 @@ namespace WebCore.Services
                 dbConnection = DbConnect.Connection.CMS;
             //
             var service = new WalletCustomerService(dbConnection);
-            string customerId = model.CustomerID;
+            string customerId = model.CustomerID.ToLower();
             double amount = model.Amount;
             double transType = model.TransactionType;
-            WalletCustomer balanceCustomer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.CustomerID) && m.CustomerID.ToLower().Equals(customerId), transaction: dbTransaction).FirstOrDefault();
+            WalletCustomer balanceCustomer = service.GetAlls(m => m.CustomerID == customerId, transaction: dbTransaction).FirstOrDefault();
             if (balanceCustomer == null)
                 return new WalletCustomerMessageModel { Status = false, Message = "Không thể cập nhật giao dịch" };
             // + 
@@ -80,7 +80,7 @@ namespace WebCore.Services
             double spendingAmount = 0;
             double depositAmount = 0;
             var service = new WalletCustomerService(dbConnection);
-            var balance = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.CustomerID) && m.CustomerID.ToLower().Equals(customerId.ToLower()), transaction: dbTransaction).FirstOrDefault();
+            var balance = service.GetAlls(m => m.CustomerID == customerId.ToLower(), transaction: dbTransaction).FirstOrDefault();
             if (balance != null)
             {
                 spendingAmount = balance.SpendingAmount;

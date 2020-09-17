@@ -65,7 +65,7 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new AccountService())
             {
-                string sqlQuery = @"SELECT * FROM View_User WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' "+ whereCondition + " ORDER BY FullName,CreatedDate";
+                string sqlQuery = @"SELECT * FROM View_User as vu  WHERE vu.ID NOT IN (SELECT UserID FROM App_ClientLogin) AND  dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
                 var dtList = service.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -216,7 +216,8 @@ namespace WebCore.Services
                         RoleService roleService = new RoleService(_connection);
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(roleId.ToLower()), transaction: _transaction);
+                            roleId = roleId.ToLower();
+                            var role = roleService.GetAlls(m => m.ID == roleId, transaction: _transaction);
                             if (role == null)
                                 return Notifization.Error("Nhóm quyền không hợp lệ");
                         }
@@ -259,7 +260,6 @@ namespace WebCore.Services
                             UserID = userId,
                             SecurityPassword = null,
                             AuthenType = null,
-                            RoleID = null,
                             IsBlock = isBlock,
                             Enabled = enabled,
                             LanguageID = languageId,
@@ -317,7 +317,7 @@ namespace WebCore.Services
                         if (string.IsNullOrWhiteSpace(userId))
                             return Notifization.Invalid(MessageText.Invalid);
                         //
-                        userId = userId.Trim();
+                        userId = userId.Trim().ToLower();
                         //
                         UserLoginService userLoginService = new UserLoginService(_connection);
                         UserInfoService userInfoService = new UserInfoService(_connection);
@@ -325,9 +325,9 @@ namespace WebCore.Services
                         UserRoleService userRoleService = new UserRoleService(_connection);
                         LanguageService languageService = new LanguageService(_connection);
                         //
-                        var userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(userId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userLogin = userLoginService.GetAlls(m => m.ID == userId, transaction: _transaction).FirstOrDefault();
                         if (userLogin == null)
-                            return Notifization.Invalid(MessageText.Invalid + userId);
+                            return Notifization.Invalid(MessageText.Invalid);
                         //  email
                         if (string.IsNullOrWhiteSpace(email))
                             return Notifization.Invalid("Không được để trống địa chỉ email");
@@ -345,16 +345,17 @@ namespace WebCore.Services
                         RoleService roleService = new RoleService(_connection);
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(roleId.ToLower()), transaction: _transaction);
+                            roleId = roleId.ToLower();
+                            var role = roleService.GetAlls(m => m.ID == roleId, transaction: _transaction);
                             if (role == null)
                                 return Notifization.Error("Nhóm quyền không hợp lệ");
                         }
-                        var userInfo = userInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userInfo = userInfoService.GetAlls(m => m.UserID == userId, transaction: _transaction).FirstOrDefault();
                         if (userInfo == null)
-                            return Notifization.Invalid(MessageText.Invalid + userId);
+                            return Notifization.Invalid(MessageText.Invalid);
                         //
                         //
-                        var userSetting = userSettingService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userSetting = userSettingService.GetAlls(m => m.UserID == userId, transaction: _transaction).FirstOrDefault();
                         if (userSetting == null)
                             return Notifization.Invalid(MessageText.Invalid);
 
@@ -377,7 +378,7 @@ namespace WebCore.Services
                         if (!string.IsNullOrWhiteSpace(roleId))
                         {
                             // delete role cũ
-                            var userRole = userRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.RoleID) && m.UserID.ToLower().Equals(userId.ToLower()), transaction: _transaction).FirstOrDefault();
+                            var userRole = userRoleService.GetAlls(m => m.UserID == userId, transaction: _transaction).FirstOrDefault();
                             if (userRole == null)
                             {
                                 userRoleService.Create<string>(new UserRole()
@@ -484,8 +485,8 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult ChangePassword(UserChangePasswordModel model)
         {
-            string loginId = Helper.Current.UserLogin.IdentifierID;
-            if (string.IsNullOrWhiteSpace(loginId))
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            if (string.IsNullOrWhiteSpace(userId))
                 return Notifization.Error("Bạn cần đăng nhập trước");
             //
             if (model == null)
@@ -504,11 +505,11 @@ namespace WebCore.Services
             string passwordHash = Helper.Security.Library.Encryption256(model.Password);
             // check account system
             UserLoginService userLoginService = new UserLoginService();
-            var user = userLoginService.GetAlls(m => m.ID.Equals(loginId)).FirstOrDefault();
+            var user = userLoginService.GetAlls(m => m.ID == userId).FirstOrDefault();
             if (user == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            if (!user.Password.Equals(passwordHash))
+            if (user.Password != passwordHash)
                 return Notifization.NotFound("Mật khẩu cũ chưa đúng");
             // update
             user.Password = Helper.Security.Library.Encryption256(model.NewPassword);

@@ -14,11 +14,11 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAppServiceCategoryService : IEntityService<AppServiceCategory> { }
-    public class AppServiceCategoryService : EntityService<AppServiceCategory>, IAppServiceCategoryService
+    public interface IServicePackCategoryService : IEntityService<ServicePackCategory> { }
+    public class ServicePackCategoryService : EntityService<ServicePackCategory>, IServicePackCategoryService
     {
-        public AppServiceCategoryService() : base() { }
-        public AppServiceCategoryService(System.Data.IDbConnection db) : base(db) { }
+        public ServicePackCategoryService() : base() { }
+        public ServicePackCategoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
@@ -53,7 +53,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_ServiceCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<AppServiceCategory>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<ServicePackCategory>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -86,12 +86,12 @@ namespace WebCore.Services
                 {
                     try
                     {
-                        AppServiceCategoryService AppServiceCategoryService = new AppServiceCategoryService(_connection);
+                        ServicePackCategoryService AppServiceCategoryService = new ServicePackCategoryService(_connection);
                         var AppServiceCategorys = AppServiceCategoryService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
                         if (AppServiceCategorys.Count > 0)
                             return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
-                        var Id = AppServiceCategoryService.Create<string>(new AppServiceCategory()
+                        var Id = AppServiceCategoryService.Create<string>(new ServicePackCategory()
                         {
                             Title = model.Title,
                             Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
@@ -127,22 +127,22 @@ namespace WebCore.Services
                 {
                     try
                     {
-                        var AppServiceCategoryService = new AppServiceCategoryService(_connection);
-                        string Id = model.ID.ToLower();
-                        var AppServiceCategory = AppServiceCategoryService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                        if (AppServiceCategory == null)
+                        var servicePackCategoryService = new ServicePackCategoryService(_connection);
+                        string id = model.ID.ToLower();
+                        var servicePackCategory = servicePackCategoryService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
+                        if (servicePackCategory == null)
                             return Notifization.NotFound(MessageText.NotFound);
-
+                        //
                         string title = model.Title;
-                        var dpm = AppServiceCategoryService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !AppServiceCategory.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                        if (dpm.Count > 0)
+                        servicePackCategory = servicePackCategoryService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && servicePackCategory.ID != id, transaction: transaction).FirstOrDefault();
+                        if (servicePackCategory != null)
                             return Notifization.Invalid("Tiêu đề đã được sử dụng");
                         // update user information
-                        AppServiceCategory.Title = title;
-                        AppServiceCategory.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-                        AppServiceCategory.Summary = model.Summary;
-                        AppServiceCategory.Enabled = model.Enabled;
-                        AppServiceCategoryService.Update(AppServiceCategory, transaction: transaction);
+                        servicePackCategory.Title = title;
+                        servicePackCategory.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+                        servicePackCategory.Summary = model.Summary;
+                        servicePackCategory.Enabled = model.Enabled;
+                        servicePackCategoryService.Update(servicePackCategory, transaction: transaction);
                         transaction.Commit();
                         return Notifization.Success(MessageText.UpdateSuccess);
                     }
@@ -158,16 +158,16 @@ namespace WebCore.Services
                 return Notifization.NotService;
             }
         }
-        public AppServiceCategory UpdateForm(string Id)
+        public ServicePackCategory UpdateForm(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_ServiceCategory WHERE ID = @Query";
-                return _connection.Query<AppServiceCategory>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<ServicePackCategory>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -175,29 +175,31 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
             try
             {
-                if (Id == null)
+                if (string.IsNullOrWhiteSpace(id))
                     return Notifization.NotFound();
+                //
+                id = id.ToLower();
                 _connection.Open();
-                using (var transaction = _connection.BeginTransaction())
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
-                        var AppServiceCategoryService = new AppServiceCategoryService(_connection);
-                        var AppServiceCategory = AppServiceCategoryService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                        if (AppServiceCategory == null)
+                        var servicePackCategoryService = new ServicePackCategoryService(_connection);
+                        var servicePackCategory = servicePackCategoryService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                        if (servicePackCategory == null)
                             return Notifization.NotFound();
-                        AppServiceCategoryService.Remove(AppServiceCategory.ID, transaction: transaction);
+                        servicePackCategoryService.Remove(servicePackCategory.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -207,33 +209,14 @@ namespace WebCore.Services
                 return Notifization.NotService;
             }
         }
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM App_ServiceCategory WHERE ID = @ID";
-                var item = _connection.Query<AppServiceCategory>(sqlQuery, new { ID = Id }).FirstOrDefault();
-                if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //               
-                return Notifization.Data(MessageText.Success, data: item, role: null, paging: null);
-            }
-            catch
-            {
-                return Notifization.NotService;
-            }
-        }
+
         //##############################################################################################################################################################################################################################################################
         public static string DDLAppServiceCategory(string id)
         {
             try
             {
                 string result = string.Empty;
-                using (var AppServiceCategoryService = new AppServiceCategoryService())
+                using (var AppServiceCategoryService = new ServicePackCategoryService())
                 {
                     var dtList = AppServiceCategoryService.DataOption(id);
                     if (dtList.Count > 0)
@@ -241,7 +224,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrEmpty(id) && item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

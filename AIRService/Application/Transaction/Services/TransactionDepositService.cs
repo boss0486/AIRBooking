@@ -176,10 +176,7 @@ namespace WebCore.Services
                     //
                     //
                     TransactionDepositService transactionDeposit = new TransactionDepositService(_connection);
-                    //var history = historyService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()), transaction: transaction).FirstOrDefault();
-                    //if (history != null)
-                    //    return Notifization.Invalid("Tên giao dịch đã được sử dụng");
-                    //
+
                     var transactionDepositId = transactionDeposit.Create<string>(new TransactionDeposit()
                     {
                         CustomerID = customerId,
@@ -328,12 +325,12 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     TransactionDepositService transactionDepositService = new TransactionDepositService(_connection);
-                    string Id = model.ID.ToLower();
-                    var transactionDeposit = transactionDepositService.GetAlls(m => m.ID.Equals(Id), transaction: _transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var transactionDeposit = transactionDepositService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (transactionDeposit == null)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    //var dpm = historyService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.ToLower().Equals(Id), transaction: transaction).FirstOrDefault();
+                    //var dpm = historyService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower()== title.ToLower() && !m.ID == id, transaction: transaction).FirstOrDefault();
                     //if (dpm != null)
                     //    return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
@@ -389,29 +386,32 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
-                return Notifization.NotFound();
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid();
+            //
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
-                using (var transaction = _connectDb.BeginTransaction())
+                using (var _transaction = _connectDb.BeginTransaction())
                 {
                     try
                     {
-                        TransactionDepositService TransactionDepositService = new TransactionDepositService(_connectDb);
-                        var TransactionDeposit = TransactionDepositService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                        if (TransactionDeposit == null)
+                        TransactionDepositService transactionDepositService = new TransactionDepositService(_connectDb);
+                        var transactionDeposit = transactionDepositService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                        if (transactionDeposit == null)
                             return Notifization.NotFound();
-                        TransactionDepositService.Remove(TransactionDeposit.ID, transaction: transaction);
+                        //
+                        transactionDepositService.Remove(transactionDeposit.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -450,7 +450,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

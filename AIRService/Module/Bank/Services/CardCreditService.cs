@@ -85,7 +85,7 @@ namespace WebCore.Services
         public ActionResult Create(CardCreditCreateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
@@ -113,7 +113,7 @@ namespace WebCore.Services
                     }
                     //
                     CardCreditService cardCreditService = new CardCreditService(_connection);
-                    var cardCredit = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(title) && m.Title.ToLower().Equals(title.ToLower()), transaction: transaction).FirstOrDefault();
+                    var cardCredit = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (cardCredit != null)
                         return Notifization.Invalid("Tên thẻ tín dụng đã được sử dụng");
                     var Id = cardCreditService.Create<string>(new CardCredit()
@@ -123,15 +123,15 @@ namespace WebCore.Services
                         Summary = model.Summary,
                         LanguageID = Helper.Current.UserLogin.LanguageID,
                         Enabled = model.Enabled,
-                    }, transaction: transaction);
+                    }, transaction: _transaction);
                     string temp = string.Empty;
                     //sort
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -140,7 +140,7 @@ namespace WebCore.Services
         public ActionResult Update(CardCreditUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
@@ -166,40 +166,40 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     CardCreditService cardCreditService = new CardCreditService(_connection);
-                    string Id = model.ID.ToLower();
-                    var cardCredit = cardCreditService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var cardCredit = cardCreditService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (cardCredit == null)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    var dpm = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower().Equals(title.ToLower()) && !m.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    cardCredit = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (cardCredit != null)
                         return Notifization.Invalid("Tên thẻ tín dụng đã được sử dụng");
                     // update user information
                     cardCredit.Title = title;
                     cardCredit.Alias = Helper.Page.Library.FormatToUni2NONE(title);
                     cardCredit.Summary = model.Summary;
                     cardCredit.Enabled = model.Enabled;
-                    cardCreditService.Update(cardCredit, transaction: transaction);
-                    transaction.Commit();
+                    cardCreditService.Update(cardCredit, transaction: _transaction);
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
-        public CardCreditResult GetCreditByID(string Id)
+        public CardCreditResult GetCreditByID(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_CardCredit WHERE ID = @Query";
-                return _connection.Query<CardCreditResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<CardCreditResult>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -207,29 +207,31 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            //
+            id = id.ToLower();
             using (var _connectDb = DbConnect.Connection.CMS)
             {
                 _connectDb.Open();
-                using (var transaction = _connectDb.BeginTransaction())
+                using (var _transaction = _connectDb.BeginTransaction())
                 {
                     try
                     {
                         CardCreditService cardCreditService = new CardCreditService(_connectDb);
-                        var cardCredit = cardCreditService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                        var cardCredit = cardCreditService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (cardCredit == null)
                             return Notifization.NotFound();
-                        cardCreditService.Remove(cardCredit.ID, transaction: transaction);
+                        cardCreditService.Remove(cardCredit.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -269,7 +271,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

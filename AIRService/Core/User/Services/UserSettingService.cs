@@ -23,60 +23,60 @@ namespace WebCore.Services
         public UserSettingService() : base() { }
         public UserSettingService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult UserBlock(string Id)
+        public ActionResult UserBlock(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrEmpty(id))
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
-            Id = Id.ToLower();
+            id = id.ToLower();
             UserSettingService userSettingService = new UserSettingService(_connection);
-            var userSetting = userSettingService.GetAlls(m => m.UserID.ToLower().Equals(Id)).FirstOrDefault();
+            var userSetting = userSettingService.GetAlls(m => m.UserID == id).FirstOrDefault();
             if (userSetting == null)
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
             userSetting.IsBlock = true;
             userSettingService.Update(userSetting);
-            return Notifization.Success("Update successfuly");
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult UserUnlock(string Id)
+        public ActionResult UserUnlock(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
-            Id = Id.ToLower();
+            id = id.ToLower();
             UserSettingService userSettingService = new UserSettingService(_connection);
-            var userSetting = userSettingService.GetAlls(m => m.UserID.ToLower().Equals(Id)).FirstOrDefault();
+            var userSetting = userSettingService.GetAlls(m => m.UserID == id).FirstOrDefault();
             if (userSetting == null)
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
             userSetting.IsBlock = false;
             userSettingService.Update(userSetting);
-            return Notifization.Success("Update successfuly");
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult UserActive(string Id)
+        public ActionResult UserActive(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrEmpty(id))
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
-            Id = Id.ToLower();
+            id = id.ToLower();
             UserSettingService userSettingService = new UserSettingService(_connection);
-            var userSetting = userSettingService.GetAlls(m => m.UserID.ToLower().Equals(Id)).FirstOrDefault();
+            var userSetting = userSettingService.GetAlls(m => m.UserID == id).FirstOrDefault();
             if (userSetting == null)
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
             userSetting.Enabled = (int)ModelEnum.Enabled.ENABLED;
             userSettingService.Update(userSetting);
-            return Notifization.Success("Update successfuly");
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult UserUnActive(string Id)
+        public ActionResult UserUnActive(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrEmpty(id))
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
-            Id = Id.ToLower();
+            id = id.ToLower();
             UserSettingService userSettingService = new UserSettingService(_connection);
-            var userSetting = userSettingService.GetAlls(m => m.UserID.ToLower().Equals(Id)).FirstOrDefault();
+            var userSetting = userSettingService.GetAlls(m => m.UserID == id).FirstOrDefault();
             if (userSetting == null)
                 return Notifization.NotFound("Dữ liệu không hợp lệ");
             userSetting.Enabled = (int)ModelEnum.Enabled.DISABLE;
             userSettingService.Update(userSetting);
-            return Notifization.Success("Update successfuly");
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
     }

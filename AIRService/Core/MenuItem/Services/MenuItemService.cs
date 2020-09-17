@@ -24,62 +24,7 @@ namespace WebCore.Services
         public MenuItemService() : base() { }
         public MenuItemService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        //public ActionResult UpdateInline(MenuItemEditModel model)
-        //{
-        //    MenuItemService menuItemService = new MenuItemService(_connection);
-        //    var menuItem = menuItemService.GetAlls(m => m.ID.Equals(model.ID.ToLower())).FirstOrDefault();
-        //    if (menuItem == null)
-        //        return Notifization.NotFound();
-        //    if (model.Field == "Title")
-        //    {
-        //        menuItem.Title = model.Val;
-        //        menuItem.Summary = model.Val;
-        //        menuItem.Alias = Helper.Page.Library.FormatToUni2NONE(menuItem.Title);
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-
-        //    if (model.Field == "PathAction")
-        //    {
-        //        menuItem.PathAction = model.Val;
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-        //    if (model.Field == "Controller")
-        //    {
-        //        menuItem.MvcController = model.Val;
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-        //    if (model.Field == "Action")
-        //    {
-        //        menuItem.MvcAction = model.Val;
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-
-        //    if (model.Field == "IsPermission")
-        //    {
-        //        menuItem.Enabled = Convert.ToInt32(model.Val);
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-        //    if (model.Field == "Enabled")
-        //    {
-        //        menuItem.IsPermission = Convert.ToInt32(model.Val);
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-        //    if (model.Field == "OrderID")
-        //    {
-        //        menuItem.OrderID = Convert.ToInt32(model.Val);
-        //        menuItemService.Update(menuItem);
-        //        return Notifization.Success(MessageText.UpdateSuccess);
-        //    }
-        //    return Notifization.TEST("::-");
-        //}
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             //
             int page = model.Page;
@@ -99,9 +44,9 @@ namespace WebCore.Services
                 whereCondition = "AND RouteArea = @RouteArea";
             //
             string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
-                                    AND ParentID ='' " + whereCondition + " ORDER BY RouteArea, OrderID ASC ";
- 
-            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, Enabled = status }).ToList();
+                                    AND ParentID IS NULl " + whereCondition + " ORDER BY RouteArea, OrderID ASC ";
+
+            var dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -117,18 +62,10 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: dtList, role: roleAccountModel, paging: pagingModel);
+             //
+            return Notifization.Data(MessageText.Success, data: dtList, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-        public List<ViewMenuItemLevelResult> GetSubMenuByLevel(string routeArea, string parentId, int status, string query)
+        public List<MenuItemModelResult> GetSubMenuByLevel(string routeArea, string parentId, int status, string query)
         {
             try
             {
@@ -141,9 +78,9 @@ namespace WebCore.Services
                 //
                 string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
                 AND ParentID = @ParentID " + whereCondition + " ORDER BY RouteArea, OrderID ASC";
-                List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, ParentID = parentId }).ToList();
+                List<MenuItemModelResult> dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, ParentID = parentId }).ToList();
                 if (dtList.Count == 0)
-                    return new List<ViewMenuItemLevelResult>();
+                    return new List<MenuItemModelResult>();
                 foreach (var item in dtList)
                 {
                     var menuLists = GetSubMenuByLevel(routeArea, item.ID, status, query);
@@ -154,7 +91,7 @@ namespace WebCore.Services
             }
             catch
             {
-                return new List<ViewMenuItemLevelResult>();
+                return new List<MenuItemModelResult>();
             }
         }
 
@@ -172,8 +109,22 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(routeArea))
                 return Notifization.NotFound();
             //
+
+
+
+            //string wherecondition = string.Empty;
+            //if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
+            //{
+            //    // select role of user login
+            //    RoleActionSettingService.RoleListForUser
+
+            //    wherecondition += " AND ";
+            //}
+
+
+
             string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
-            var allData = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
+            var allData = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
 
             var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
             if (dtList.Count == 0)
@@ -187,16 +138,16 @@ namespace WebCore.Services
             }
             return Notifization.Option(MessageText.Success + sqlQuery + routeArea, data: dtList);
         }
-        public List<ViewMenuItemLevelResult> SubMenuItemByLevel(string parentId, List<ViewMenuItemLevelResult> allData)
+        public List<MenuItemModelResult> SubMenuItemByLevel(string parentId, List<MenuItemModelResult> allData)
         {
             //string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
             //var menuService = new MenuService(_connection);
             //List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
 
-
-            List<ViewMenuItemLevelResult> dtList = allData.Where(m => m.ParentID.Equals(parentId)).ToList();
+            List<MenuItemModelResult> dtList = allData.Where(m => m.ParentID == parentId).ToList();
             if (dtList.Count == 0)
-                return new List<ViewMenuItemLevelResult>();
+                return new List<MenuItemModelResult>();
+            //
             foreach (var item in dtList)
             {
                 var menuLists = SubMenuItemByLevel(item.ID, allData);
@@ -212,8 +163,8 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(routeArea))
                 return Notifization.NotFound();
             //
-            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
-            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID IS NULL AND Enabled = 1 ORDER BY OrderID ASC ";
+            var dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -226,12 +177,12 @@ namespace WebCore.Services
             }
             return Notifization.Option(MessageText.Success + sqlQuery + routeArea, data: dtList);
         }
-        public List<ViewMenuItemLevelResult> SubMenuItemCategory(string parentId)
+        public List<MenuItemModelResult> SubMenuItemCategory(string parentId)
         {
             string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
-            List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
+            List<MenuItemModelResult> dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { ParentID = parentId }).ToList();
             if (dtList.Count == 0)
-                return new List<ViewMenuItemLevelResult>();
+                return new List<MenuItemModelResult>();
             foreach (var item in dtList)
             {
                 var menuLists = SubMenuItemCategory(item.ID);
@@ -241,118 +192,6 @@ namespace WebCore.Services
             }
             return dtList;
         }
-        //##############################################################################################################################################################################################################################################################
-        //public ActionResult MenuItemPremission(AreaIDRequestModel model)
-        //{
-        //    string routeArea = model.RouteArea;
-        //    if (string.IsNullOrWhiteSpace(routeArea))
-        //        return Notifization.NotFound();
-        //    //
-        //    string sqlQuery = @"SELECT * FROM  WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
-        //    var menuService = new MenuService(_connection);
-        //    var allData = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
-        //    if (allData.Count == 0)
-        //        return Notifization.NotFound();
-        //    //
-
-        //    var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
-
-        //    List<ViewMenuItemLevelResult> viewMenuItemLevelResults = new List<ViewMenuItemLevelResult>();
-        //    foreach (var item in dtList)
-        //    {
-
-        //        var subMenus = SubMenuItemPremission(item.ID, viewMenuItemLevelResults, allData);
-        //        //item.PathAction = GetPathActionPage(item.MvcController, item.MvcAction);
-        //        if (subMenus.Count == 0)
-        //        {
-        //            viewMenuItemLevelResults.Add(item);
-        //        }
-        //    }
-        //    //
-        //    List<ViewMenuItemPermissionResult> viewMenuItemPermissionResults = new List<ViewMenuItemPermissionResult>();
-        //    if (viewMenuItemLevelResults.Count > 0)
-        //    {
-        //        foreach (var item in viewMenuItemLevelResults)
-        //        {
-        //            string label = "";
-        //            string path = item.Path;
-        //            if (path.Contains("/"))
-        //            {
-        //                string[] arr = path.Split('/');
-
-        //                if (arr.Length > 0)
-        //                {
-
-        //                    foreach (var itemPath in arr)
-        //                    {
-        //                        var menu = allData.Where(m => m.ID.Equals(itemPath)).FirstOrDefault();
-        //                        if (menu != null && !string.IsNullOrWhiteSpace(menu.Title))
-        //                        {
-        //                            if (itemPath == arr[arr.Length - 1])
-        //                                label += menu.Title;
-        //                            else
-        //                                label += menu.Title + " <i class='far fa-arrow-alt-circle-right'></i> ";
-        //                        }
-        //                    }
-        //                }
-
-        //            }
-        //            // action
-        //            List<ViewMenuItemPermissionActionResult> actionList = new List<ViewMenuItemPermissionActionResult>();
-        //            sqlQuery = @"SELECT ID, Title FROM MenuAction WHERE RouteArea = @RouteArea AND CategoryID = @CategoryID ORDER BY Title ASC ";
-        //            var dtActions = menuService.Query<ViewMenuItemPermissionActionResult>(sqlQuery, new { RouteArea = routeArea, CategoryID = item.MvcController }).ToList();
-        //            // return
-        //            //if (!string.IsNullOrWhiteSpace(item.MvcAction))
-        //            //{
-        //            //    actionList = new List<ViewMenuItemPermissionActionResult>();
-        //            //    var actTitle = "-";
-        //            //    string actId = item.MvcAction;
-        //            //    if (dtActions.Count > 0)
-        //            //    {
-        //            //        var action = dtActions.Where(m => m.ID.Equals(actId)).FirstOrDefault();
-        //            //        if (action != null)
-        //            //            actTitle = action.Title;
-
-        //            //    }
-        //            //    actionList.Add(new ViewMenuItemPermissionActionResult
-        //            //    {
-        //            //        ID = actId,
-        //            //        Title = actTitle
-        //            //    });
-        //            //}
-        //            //else
-        //            //{
-        //            //    actionList = dtActions;
-        //            //}
-        //            viewMenuItemPermissionResults.Add(new ViewMenuItemPermissionResult
-        //            {
-        //                ID = item.ID,
-        //                Title = label,
-        //                Path = item.Path,
-        //                Actions = dtActions
-        //            });
-        //        }
-        //    }
-        //    return Notifization.Option(MessageText.Success + sqlQuery + routeArea, data: viewMenuItemPermissionResults);
-        //}
-        //public List<ViewMenuItemLevelResult> SubMenuItemPremission(string parentId, List<ViewMenuItemLevelResult> viewMenuItemLevelResults, List<ViewMenuItemLevelResult> allData)
-        //{
-        //    List<ViewMenuItemLevelResult> dtList = allData.Where(m => m.ParentID.Equals(parentId)).ToList();
-        //    if (dtList.Count == 0)
-        //        return new List<ViewMenuItemLevelResult>();
-        //    foreach (var item in dtList)
-        //    {
-        //        var menuLists = SubMenuItemPremission(item.ID, viewMenuItemLevelResults, allData);
-        //        //item.PathAction = GetPathActionPage(item.MvcController, item.MvcAction);
-        //        if (menuLists.Count == 0)
-        //        {
-        //            viewMenuItemLevelResults.Add(item);
-        //        }
-        //    }
-        //    return dtList;
-        //}
-
-
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(MenuItemCreateFormModel model)
         {
@@ -365,20 +204,23 @@ namespace WebCore.Services
                         return Notifization.Invalid("Dữ liệu không hợp lệ");
                     //
                     string routeArea = model.RouteArea;
-                    if (string.IsNullOrWhiteSpace(routeArea))
-                        return Notifization.Invalid("Area không hợp lệ");
-                    //
-                    AreaApplicationService areaApplicationService = new AreaApplicationService();
-                    var area = areaApplicationService.DataOption().Where(m => m.ID.ToLower().Equals(routeArea.ToLower())).FirstOrDefault();
-                    if (area == null)
-                        return Notifization.Invalid("Area không hợp lệ");
-                    //
                     string title = model.Title;
                     string summary = model.Summary;
                     //
+                    if (string.IsNullOrWhiteSpace(routeArea))
+                        return Notifization.Invalid("Phân vùng không hợp lệ");
+                    //
+                    routeArea = routeArea.ToLower();
+                    AreaApplicationService areaApplicationService = new AreaApplicationService();
+                    var area = areaApplicationService.DataOption().Where(m => m.ID == routeArea).FirstOrDefault();
+                    if (area == null)
+                        return Notifization.Invalid("Phân vùng không hợp lệ");
+                    //
                     string parentId = model.ParentID;
-                    if (parentId.Equals("0") || parentId == "")
-                        parentId = "";
+                    if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
+                        parentId = null;
+                    else
+                        parentId = parentId.ToLower();
                     //
                     if (string.IsNullOrWhiteSpace(title))
                         return Notifization.Invalid("Không được để trống tiêu đề");
@@ -400,27 +242,53 @@ namespace WebCore.Services
                     string controllerId = model.MvcController;
                     string actionId = model.MvcAction;
                     string pathAction = string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
+                    {
+                        parentId = null;
+                    }
+                    else
+                    {
+                        parentId = parentId.ToLower();
+                    }
                     //
+                    if (string.IsNullOrWhiteSpace(controllerId) || controllerId.Length != 36)
+                    {
+                        controllerId = null;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(actionId) || actionId.Length != 36)
+                    {
+                        actionId = null;
+                    }
+                    // get path
                     if (!string.IsNullOrWhiteSpace(controllerId) && !string.IsNullOrWhiteSpace(actionId))
                     {
                         var sqlPath = @"SELECT Top (1) Concat('/',c.RouteArea,'/', c.KeyID,'/',a.KeyID) as ActionPath FROM MenuController as c
                                      INNER JOIN MenuAction as a ON a.CategoryID = c.ID AND c.RouteArea = a.RouteArea
                                      WHERE  c.RouteArea = @RouteArea AND c.ID = @ControllerID AND a.ID = @ActionID";
-                        pathAction =  _connection.Query<string>(sqlPath, new { RouteArea = routeArea, ControllerID = controllerId, ActionID = actionId }, transaction: _transaction).FirstOrDefault();
+                        pathAction = _connection.Query<string>(sqlPath, new { RouteArea = routeArea, ControllerID = controllerId, ActionID = actionId }, transaction: _transaction).FirstOrDefault();
                     }
-
+                    //
                     string _sqlTitle = @"SELECT ID FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title";
                     var modelTitle = _connection.Query<MenuItemIDModel>(_sqlTitle, new { RouteArea = routeArea, ParentID = parentId, Title = title }, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng" + _sqlTitle);
                     //
-                    int orderId = model.OrderID;
-                    if (orderId != (int)MenuItemEnum.Sort.FIRST && orderId != (int)MenuItemEnum.Sort.LAST)
-                        orderId = (int)MenuItemEnum.Sort.LAST;
+                    int sortType = model.OrderID;
+                    int orderId = 1;
+                    if (sortType != (int)MenuItemEnum.Sort.FIRST)
+                    {
+                        MenuItem menuItem = menuItemService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ParentID) && m.ParentID == parentId && m.RouteArea.ToLower() == routeArea, transaction: _transaction).LastOrDefault();
+                        if (menuItem != null)
+                        {
+                            orderId = menuItem.OrderID + 1;
+                        }
+                    }
                     //
                     var meta = new MetaSEO();
                     var attachmentIngredientService = new AttachmentIngredientService(_connection);
-
+                    // get last order
                     // page manager, navigate to page manager
                     var id = menuItemService.Create<string>(new MenuItem()
                     {
@@ -430,7 +298,7 @@ namespace WebCore.Services
                         Alias = Helper.Page.Library.FormatToUni2NONE(title),
                         Summary = model.Summary,
                         IconFont = model.IconFont,
-                        OrderID = orderId,
+                        OrderID = sortType,
                         LocationID = 0,
                         IsPermission = model.IsPermission,
                         MvcController = controllerId,
@@ -439,53 +307,53 @@ namespace WebCore.Services
                         Enabled = model.Enabled,
                     }, transaction: _transaction);
                     // update part
-                    string strPath = string.Empty;
-                    var menuParent = menuItemService.GetAlls(m => m.ID.Equals(parentId), transaction: _transaction).FirstOrDefault();
-                    if (menuParent != null)
-                        strPath = menuParent.Path + "/" + id;
-                    else
-                        strPath = "/" + id;
+                    //string strPath = string.Empty;
+                    //var menuParent = menuItemService.GetAlls(m => m.ID = parentId , transaction: _transaction).FirstOrDefault();
+                    //if (menuParent != null)
+                    //    strPath = menuParent.Path + "/" + id;
+                    //else
+                    //    strPath = "/" + id;
 
-                    var menuPath = menuItemService.GetAlls(m => m.ID.Equals(id), transaction: _transaction).FirstOrDefault();
-                    menuPath.Path = strPath;
-                    menuItemService.Update(menuPath, transaction: _transaction);
-                    //sort
-                    var menus = menuItemService.GetAlls(m => m.ParentID.Equals(parentId) && (m.ID != (id)), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
+                    //var menuPath = menuItemService.GetAlls(m => m.ID ==id, transaction: _transaction).FirstOrDefault();
+                    //menuPath.Path = strPath;
+                    //menuItemService.Update(menuPath, transaction: _transaction);
+                    ////sort
+                    //var menus = menuItemService.GetAlls(m => m.ParentID == parentId && (m.ID != (id)), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
 
-                    if (model.OrderID == (int)MenuItemEnum.Sort.FIRST)
-                    {
-                        if (menus.Count > 0)
-                        {
-                            int count = 2;
-                            foreach (var item in menus)
-                            {
-                                if (!item.ID.Equals(id))
-                                {
-                                    var menuOther = menuItemService.GetAlls(m => m.ID.Equals(item.ID), transaction: _transaction).FirstOrDefault();
-                                    if (menuOther != null)
-                                    {
-                                        menuOther.OrderID = item.OrderID + 1;
-                                        menuItemService.Update(menuOther, transaction: _transaction);
-                                    }
-                                    count++;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
+                    //if (model.OrderID == (int)MenuItemEnum.Sort.FIRST)
+                    //{
+                    //    if (menus.Count > 0)
+                    //    {
+                    //        int count = 2;
+                    //        foreach (var item in menus)
+                    //        {
+                    //            if (item.ID != id)
+                    //            {
+                    //                var menuOther = menuItemService.GetAlls(m => m.ID == item.ID, transaction: _transaction).FirstOrDefault();
+                    //                if (menuOther != null)
+                    //                {
+                    //                    menuOther.OrderID = item.OrderID + 1;
+                    //                    menuItemService.Update(menuOther, transaction: _transaction);
+                    //                }
+                    //                count++;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
 
-                        if (menus.Count > 0)
-                        {
-                            int max = menus.Max(m => m.OrderID);
-                            var menuOther = menuItemService.GetAlls(m => m.ID.Equals(id), transaction: _transaction).FirstOrDefault();
-                            if (menuOther != null)
-                            {
-                                menuOther.OrderID = max + 1;
-                                menuItemService.Update(menuOther, transaction: _transaction);
-                            }
-                        }
-                    }
+                    //    if (menus.Count > 0)
+                    //    {
+                    //        int max = menus.Max(m => m.OrderID);
+                    //        var menuOther = menuItemService.GetAlls(m => m.ID =id, transaction: _transaction).FirstOrDefault();
+                    //        if (menuOther != null)
+                    //        {
+                    //            menuOther.OrderID = max + 1;
+                    //            menuItemService.Update(menuOther, transaction: _transaction);
+                    //        }
+                    //    }
+                    //}
                     _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
@@ -505,16 +373,17 @@ namespace WebCore.Services
                 try
                 {
                     MenuItemService menuItemService = new MenuItemService(_connection);
-                    string id = model.ID;
+                    string id = model.ID.ToLower();
                     string title = model.Title;
                     var controllerId = model.MvcController;
                     var actionId = model.MvcAction;
                     string parentId = model.ParentID;
-
-                    if (parentId.Equals("0") || parentId == "")
-                        parentId = "";
+                    if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
+                        parentId = null;
+                    else
+                        parentId = parentId.ToLower();
                     //
-                    var menuItem = menuItemService.GetAlls(m => m.ID.Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var menuItem = menuItemService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (menuItem == null)
                         return Notifization.NotFound();
                     string menuId = menuItem.ID;
@@ -536,17 +405,17 @@ namespace WebCore.Services
                     string alias = Helper.Page.Library.FormatToUni2NONE(title).ToLower();
                     string menuPath = menuItem.Path;
                     // check parentId
-                    if (string.IsNullOrWhiteSpace(model.ParentID) || model.ParentID.Equals("0"))
+                    if (string.IsNullOrWhiteSpace(model.ParentID) || model.ParentID == "0")
                     {
                         parentId = "";
                         menuPath = "/" + id;
                     }
                     else
                     {
-                        if (!menuItem.ID.Equals(model.ParentID))
+                        if (menuItem.ID != model.ParentID)
                             parentId = model.ParentID;
 
-                        var mPath = menuItemService.GetAlls(m => m.ID.Equals(model.ParentID), transaction: _transaction).FirstOrDefault();
+                        var mPath = menuItemService.GetAlls(m => m.ID == model.ParentID.ToLower(), transaction: _transaction).FirstOrDefault();
                         if (mPath != null)
                             menuPath = mPath.Path + "/" + id;
 
@@ -571,13 +440,13 @@ namespace WebCore.Services
                     bool _sortdf = false;
                     // update part
                     string parentPath = string.Empty;
-                    var mnChildren = menuItemService.GetAlls(m => m.ParentID.Equals(id), transaction: _transaction).ToList();
+                    var mnChildren = menuItemService.GetAlls(m => m.ParentID == id, transaction: _transaction).ToList();
                     if (mnChildren.Count > 0)
                     {
                         _sortdf = true;
                         foreach (var item in mnChildren)
                         {
-                            var mn = menuItemService.GetAlls(m => m.ID.Equals(item.ID), transaction: _transaction).FirstOrDefault();
+                            var mn = menuItemService.GetAlls(m => m.ID == item.ID, transaction: _transaction).FirstOrDefault();
                             if (mn != null)
                             {
                                 mn.Path = menuPath + "/" + item.ID;
@@ -587,7 +456,7 @@ namespace WebCore.Services
                     }
                     //sort
                     parentId = parentId.ToLower();
-                    var menus = menuItemService.GetAlls(m => m.ParentID.Equals(parentId) && m.ID != id, transaction: _transaction).OrderBy(m => m.OrderID).ToList();
+                    var menus = menuItemService.GetAlls(m => m.ParentID == parentId && m.ID != id, transaction: _transaction).OrderBy(m => m.OrderID).ToList();
                     // set sort default if user not select sort
                     int sort = model.OrderID;
                     if (_sortdf)
@@ -601,7 +470,7 @@ namespace WebCore.Services
                             int cnt = 2;
                             foreach (var item in menus)
                             {
-                                var menuLast = menuItemService.GetAlls(m => m.ID.Equals(item.ID), transaction: _transaction).FirstOrDefault();
+                                var menuLast = menuItemService.GetAlls(m => m.ID == item.ID, transaction: _transaction).FirstOrDefault();
                                 if (menuLast != null)
                                 {
                                     menuLast.OrderID = cnt;
@@ -618,7 +487,7 @@ namespace WebCore.Services
                             int cnt = 1;
                             foreach (var item in menus)
                             {
-                                var menuLast = menuItemService.GetAlls(m => m.ID.Equals(item.ID), transaction: _transaction).FirstOrDefault();
+                                var menuLast = menuItemService.GetAlls(m => m.ID == item.ID, transaction: _transaction).FirstOrDefault();
                                 if (menuLast != null)
                                 {
                                     menuLast.OrderID = cnt;
@@ -640,7 +509,7 @@ namespace WebCore.Services
                 }
             }
         }
-        public MenuItemResult GetMenuItemByID(string id)
+        public MenuItemModel GetMenuItemByID(string id)
         {
             try
             {
@@ -650,7 +519,7 @@ namespace WebCore.Services
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM MenuItem WHERE ID = @Query";
-                var model = _connection.Query<MenuItemResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+                var model = _connection.Query<MenuItemModel>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch
@@ -659,26 +528,42 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(MenuItemIDModel model)
+        public ActionResult Delete(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            id = id.ToLower();
+
             _connection.Open();
             using (var transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     MenuItemService menuItemService = new MenuItemService(_connection);
-                    var menuItem = menuItemService.GetAlls(m => m.ID.Equals(model.ID.ToLower()), transaction: transaction).FirstOrDefault();
+                    var menuItem = menuItemService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
                     if (menuItem == null)
                         return Notifization.Error("Không tìm thấy dữ liệu");
+                    // update OrderID
+                    int orderId = menuItem.OrderID;
+                    string parentId = menuItem.ParentID;
+                    // tru order > hon
+
+                    var menuItems = menuItemService.GetAlls(m => m.OrderID > orderId && m.RouteArea == menuItem.RouteArea && m.ParentID == parentId, transaction: transaction).ToList();
+                    if (menuItems.Count > 0)
+                    {
+                        string sqlQuery = @"UPDATE MenuItem SET OrderID = (OrderID -1) WHERE ID IN ('" + String.Join("','", menuItems.Select(m => m.ID)) + "')";
+                        _connection.Execute(sqlQuery, new { OrderID = orderId, ParentID = parentId, RouteArea = menuItem.RouteArea }, transaction: transaction);
+                    }
                     // delete menu
-                    _connection.Query("sp_menuitem_delete", new { ID = model.ID }, commandType: System.Data.CommandType.StoredProcedure, transaction: transaction);
+                    _connection.Query("sp_menuitem_delete", new { ID = id }, commandType: System.Data.CommandType.StoredProcedure, transaction: transaction);
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
-                catch
+                catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return Notifization.NotService;
+                    return Notifization.TEST(">>" + ex);
                 }
             }
         }
@@ -687,7 +572,7 @@ namespace WebCore.Services
         public ActionResult LeftMenuItemOption(MenuItemIDModel model)
         {
             string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID ='' AND Enabled = 1 ORDER BY OrderID ASC ";
-            var dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { }).ToList();
+            var dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 
@@ -699,12 +584,12 @@ namespace WebCore.Services
             }
             return Notifization.Option(MessageText.Success, data: dtList);
         }
-        public List<ViewMenuItemLevelResult> LeftSubMenuItemOption(string parentId)
+        public List<MenuItemModelResult> LeftSubMenuItemOption(string parentId)
         {
             string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
-            List<ViewMenuItemLevelResult> dtList = _connection.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
+            List<MenuItemModelResult> dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { ParentID = parentId }).ToList();
             if (dtList.Count == 0)
-                return new List<ViewMenuItemLevelResult>();
+                return new List<MenuItemModelResult>();
             foreach (var item in dtList)
             {
                 var menuLists = LeftSubMenuItemOption(item.ID);
@@ -803,7 +688,6 @@ namespace WebCore.Services
         // Phan quyen for menu
 
 
-
         //#######################################################################################################################################################################################
         public ActionResult SortUp(MenuItemIDModel model)
         {
@@ -812,157 +696,25 @@ namespace WebCore.Services
             {
                 try
                 {
+                    string id = model.ID.ToLower();
                     MenuItemService menuItemService = new MenuItemService(_connection);
-                    var menu = menuItemService.GetAlls(m => m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
+                    var menu = menuItemService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (menu == null)
-                        return Notifization.Error(MessageText.NotService);
+                        return Notifization.Invalid(MessageText.Invalid);
                     int _orderId = menu.OrderID;
                     string _parentId = menu.ParentID;
+                    string roundArea = menu.RouteArea.ToLower();
                     // list first
-                    IList<MenuSortModel> lstFirst = new List<MenuSortModel>();
-                    // list last
-                    IList<MenuSortModel> lstLast = new List<MenuSortModel>();
-                    //
-                    if (!string.IsNullOrWhiteSpace(_parentId))
+                    MenuItem lastMenu = menuItemService.GetAlls(m => !string.IsNullOrWhiteSpace(m.RouteArea) && m.RouteArea == roundArea && m.ParentID == _parentId && m.OrderID < _orderId, transaction: _transaction).OrderBy(m => m.OrderID).LastOrDefault();
+                    if (lastMenu != null)
                     {
-                        var menuItems = menuItemService.GetAlls(m => m.ParentID.ToLower().Equals(_parentId.ToLower()) && !m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
-                        if (menuItems.Count > 0)
-                        {
-                            foreach (var item in menuItems)
-                            {
-                                // set list first
-                                if (item.OrderID < menu.OrderID)
-                                {
-                                    lstFirst.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                                // set list last
-                                if (item.OrderID > menu.OrderID)
-                                {
-                                    lstLast.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                            }
-                            //  first
-                            int _cntFirst = 1;
-                            if (lstFirst.Count > 0)
-                            {
-                                for (int i = 0; i < lstFirst.Count; i++)
-                                {
-                                    if (i == lstFirst.Count - 1)
-                                    {
-                                        menu.OrderID = _cntFirst;
-                                        menuItemService.Update(menu, transaction: _transaction);
-                                        _cntFirst++;
-                                    }
-                                    var itemFirst = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstFirst[i].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemFirst.OrderID = _cntFirst;
-                                    menuItemService.Update(itemFirst, transaction: _transaction);
-                                    _cntFirst++;
-                                }
-
-                            }
-                            else
-                            {
-                                menu.OrderID = 1;
-                                menuItemService.Update(menu, transaction: _transaction);
-                                _cntFirst++;
-                            }
-                            //last
-                            int _cntLast = _cntFirst;
-                            if (lstLast.Count > 0)
-                            {
-                                foreach (var item in lstLast)
-                                {
-                                    var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(item.ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemLast.OrderID = _cntLast;
-                                    menuItemService.Update(itemLast, transaction: _transaction);
-                                    _cntLast++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            menu.OrderID = 1;
-                            menuItemService.Update(menu, transaction: _transaction);
-                        }
-                    }
-                    else
-                    {
-                        // truong hop cha , _parentId = ""
-                        var menuItems = menuItemService.GetAlls(m => m.ParentID.Equals(_parentId) && !m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
-                        if (menuItems.Count > 0)
-                        {
-                            foreach (var item in menuItems)
-                            {
-                                // set list first
-                                if (item.OrderID < menu.OrderID)
-                                {
-                                    lstFirst.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                                // set list last
-                                if (item.OrderID > menu.OrderID)
-                                {
-                                    lstLast.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                            }
-                            //  first
-                            int _cntFirst = 1;
-                            if (lstFirst.Count > 0)
-                            {
-                                for (int i = 0; i < lstFirst.Count; i++)
-                                {
-                                    if (i == lstFirst.Count - 1)
-                                    {
-                                        menu.OrderID = _cntFirst;
-                                        menuItemService.Update(menu, transaction: _transaction);
-                                        _cntFirst++;
-                                    }
-                                    var itemFirst = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstFirst[i].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemFirst.OrderID = _cntFirst;
-                                    menuItemService.Update(itemFirst, transaction: _transaction);
-                                    _cntFirst++;
-                                }
-
-                            }
-                            else
-                            {
-                                menu.OrderID = 1;
-                                menuItemService.Update(menu, transaction: _transaction);
-                                _cntFirst++;
-                            }
-                            //last
-                            int _cntLast = _cntFirst;
-                            if (lstLast.Count > 0)
-                            {
-                                foreach (var item in lstLast)
-                                {
-                                    var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(item.ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemLast.OrderID = _cntLast;
-                                    menuItemService.Update(itemLast, transaction: _transaction);
-                                    _cntLast++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            menu.OrderID = 1;
-                            menuItemService.Update(menu, transaction: _transaction);
-                        }
+                        int lastOrderID = lastMenu.OrderID;
+                        lastMenu.OrderID = _orderId;
+                        // update last menu
+                        menuItemService.Update(lastMenu, transaction: _transaction);
+                        // update current menu
+                        menu.OrderID = lastOrderID;
+                        menuItemService.Update(menu, transaction: _transaction);
                     }
                     _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
@@ -974,7 +726,6 @@ namespace WebCore.Services
                 }
             }// end transaction
         }
-        //#######################################################################################################################################################################################
         public ActionResult SortDown(MenuItemIDModel model)
         {
             _connection.Open();
@@ -982,165 +733,25 @@ namespace WebCore.Services
             {
                 try
                 {
+                    string id = model.ID.ToLower();
                     MenuItemService menuItemService = new MenuItemService(_connection);
-                    var menuItem = menuItemService.GetAlls(m => m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                    if (menuItem == null)
-                        return Notifization.Error(MessageText.NotService);
-                    int _orderId = menuItem.OrderID;
-                    string _parentId = menuItem.ParentID;
+                    var menu = menuItemService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (menu == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    int _orderId = menu.OrderID;
+                    string _parentId = menu.ParentID;
+                    string roundArea = menu.RouteArea.ToLower();
                     // list first
-                    IList<MenuSortModel> lstFirst = new List<MenuSortModel>();
-                    // list last
-                    IList<MenuSortModel> lstLast = new List<MenuSortModel>();
-                    //
-                    if (!string.IsNullOrWhiteSpace(_parentId))
+                    MenuItem firstMenu = menuItemService.GetAlls(m => !string.IsNullOrWhiteSpace(m.RouteArea) && m.RouteArea == roundArea && m.ParentID == _parentId && m.OrderID > _orderId, transaction: _transaction).OrderBy(m => m.OrderID).FirstOrDefault();
+                    if (firstMenu != null)
                     {
-                        var menuItems = menuItemService.GetAlls(m => m.ParentID.ToLower().Equals(_parentId.ToLower()) && !m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
-                        if (menuItems.Count > 0)
-                        {
-                            foreach (var item in menuItems)
-                            {
-                                // set list first
-                                if (item.OrderID < menuItem.OrderID)
-                                {
-                                    lstFirst.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                                // set list last
-                                if (item.OrderID > menuItem.OrderID)
-                                {
-                                    lstLast.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                            }
-                            // xu ly
-                            int _cntFirst = 1;
-                            if (lstFirst.Count > 0)
-                            {
-                                foreach (var item in lstFirst)
-                                {
-                                    var itemFirst = menuItemService.GetAlls(m => m.ID.ToLower().Equals(item.ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemFirst.OrderID = _cntFirst;
-                                    menuItemService.Update(itemFirst, transaction: _transaction);
-                                    _cntFirst++;
-                                }
-
-                            }
-                            //  last
-                            int _cntLast = _cntFirst;
-                            if (lstLast.Count == 1)
-                            {
-                                var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstLast[0].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                itemLast.OrderID = _cntLast;
-                                menuItemService.Update(itemLast, transaction: _transaction);
-                                //
-                                menuItem.OrderID = _cntLast + 1;
-                                menuItemService.Update(menuItem, transaction: _transaction);
-                                _cntLast++;
-                            }
-                            else if (lstLast.Count > 1)
-                            {
-                                for (int i = 0; i < lstLast.Count; i++)
-                                {
-                                    if (i == 1)
-                                    {
-                                        menuItem.OrderID = _cntLast;
-                                        menuItemService.Update(menuItem, transaction: _transaction);
-                                        _cntLast++;
-                                    }
-                                    var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstLast[i].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemLast.OrderID = _cntLast;
-                                    menuItemService.Update(itemLast, transaction: _transaction);
-                                    _cntLast++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            menuItem.OrderID = 1;
-                            menuItemService.Update(menuItem, transaction: _transaction);
-                        }
-                    }
-                    else
-                    {
-                        // truong hop cha , _parentId = ""
-                        var menuItems = menuItemService.GetAlls(m => m.ParentID.Equals(_parentId) && !m.ID.ToLower().Equals(model.ID.ToLower()), transaction: _transaction).OrderBy(m => m.OrderID).ToList();
-                        if (menuItems.Count > 0)
-                        {
-                            foreach (var item in menuItems)
-                            {
-                                // set list first
-                                if (item.OrderID < menuItem.OrderID)
-                                {
-                                    lstFirst.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                                // set list last
-                                if (item.OrderID > menuItem.OrderID)
-                                {
-                                    lstLast.Add(new MenuSortModel
-                                    {
-                                        ID = item.ID,
-                                        OrderID = item.OrderID
-                                    });
-                                }
-                            }
-                            // xu ly
-                            int _cntFirst = 1;
-                            if (lstFirst.Count > 0)
-                            {
-                                foreach (var item in lstFirst)
-                                {
-                                    var itemFirst = menuItemService.GetAlls(m => m.ID.ToLower().Equals(item.ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemFirst.OrderID = _cntFirst;
-                                    menuItemService.Update(itemFirst, transaction: _transaction);
-                                    _cntFirst++;
-                                }
-
-                            }
-                            //  last
-                            int _cntLast = _cntFirst;
-                            if (lstLast.Count == 1)
-                            {
-                                var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstLast[0].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                itemLast.OrderID = _cntLast;
-                                menuItemService.Update(itemLast, transaction: _transaction);
-                                //
-                                menuItem.OrderID = _cntLast + 1;
-                                menuItemService.Update(menuItem, transaction: _transaction);
-                                _cntLast++;
-                            }
-                            else if (lstLast.Count > 1)
-                            {
-                                for (int i = 0; i < lstLast.Count; i++)
-                                {
-                                    if (i == 1)
-                                    {
-                                        menuItem.OrderID = _cntLast;
-                                        menuItemService.Update(menuItem, transaction: _transaction);
-                                        _cntLast++;
-                                    }
-                                    var itemLast = menuItemService.GetAlls(m => m.ID.ToLower().Equals(lstLast[i].ID.ToLower()), transaction: _transaction).FirstOrDefault();
-                                    itemLast.OrderID = _cntLast;
-                                    menuItemService.Update(itemLast, transaction: _transaction);
-                                    _cntLast++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            menuItem.OrderID = 1;
-                            menuItemService.Update(menuItem, transaction: _transaction);
-                        }
+                        int firstOrderID = firstMenu.OrderID;
+                        firstMenu.OrderID = _orderId;
+                        // update last menu
+                        menuItemService.Update(firstMenu, transaction: _transaction);
+                        // update current menu
+                        menu.OrderID = firstOrderID;
+                        menuItemService.Update(menu, transaction: _transaction);
                     }
                     _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
@@ -1152,6 +763,59 @@ namespace WebCore.Services
                 }
             }// end transaction
         }
+        //
+
+        public ActionResult MenuItemManage_Sort()
+        {
+            AreaApplicationService areaApplicationService = new AreaApplicationService();
+            var areaOptions = areaApplicationService.DataOption();
+            if (areaOptions.Count > 0)
+            {
+                foreach (var areaItem in areaOptions)
+                {
+                    string routeArea = areaItem.ID;
+                    string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea ORDER BY OrderID ASC ";
+                    var allData = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
+                    if (allData.Count == 0)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    // 
+                    var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+                    if (dtList.Count > 0)
+                    {
+                        int _cnt = 1;
+                        foreach (var item in dtList)
+                        {
+                            var subMenus = SubMenuItemByLevel_Sort(item.ID, allData);
+                            //
+                            sqlQuery = @"UPDATE MenuItem SET OrderID =" + _cnt + " WHERE RouteArea = @RouteArea AND ID = @ID";
+                            _connection.Execute(sqlQuery, new { RouteArea = routeArea, ID = item.ID });
+                            _cnt++;
+                        }
+                    }
+                }
+            }
+            return Notifization.Success(MessageText.Success);
+        }
+        public List<MenuItemModelResult> SubMenuItemByLevel_Sort(string parentId, List<MenuItemModelResult> allData)
+        {
+            if (allData.Count == 0)
+                return new List<MenuItemModelResult>();
+            //
+            List<MenuItemModelResult> dtList = allData.Where(m => m.ParentID == parentId).ToList();
+            if (dtList.Count == 0)
+                return new List<MenuItemModelResult>();
+            //
+            int _cnt = 1;
+            foreach (var item in dtList)
+            {
+                var menuLists = SubMenuItemByLevel_Sort(item.ID, allData);
+                string sqlQuery = @"UPDATE MenuItem SET OrderID =" + _cnt + " WHERE RouteArea = @RouteArea AND ID = @ID";
+                _connection.Execute(sqlQuery, new { RouteArea = item.RouteArea, item.ID });
+                _cnt++;
+            }
+            return dtList;
+        }
+
         //#######################################################################################################################################################################################
         public static string DropdownListMenuItem(string id)
         {
@@ -1167,7 +831,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             else if (cnt == 0)
                                 select = "selected";
@@ -1201,17 +865,16 @@ namespace WebCore.Services
         {
             try
             {
-
                 string pathAction = string.Empty;
                 if (string.IsNullOrWhiteSpace(_controllerId) || string.IsNullOrWhiteSpace(_actionId))
                     return string.Empty;
                 MenuControllerService menuControllerService = new MenuControllerService();
-                var menuController = menuControllerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(_controllerId.ToLower())).FirstOrDefault();
+                var menuController = menuControllerService.GetAlls(m => m.ID == _controllerId.ToLower()).FirstOrDefault();
                 if (menuController != null)
                     pathAction += "/" + menuController.RouteArea + "/" + menuController.KeyID;
                 //
                 MenuActionService menuActionService = new MenuActionService();
-                var menuAction = menuActionService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(_actionId.ToLower())).FirstOrDefault();
+                var menuAction = menuActionService.GetAlls(m => m.ID != _actionId.ToLower()).FirstOrDefault();
                 if (menuAction != null)
                     pathAction += "/" + menuAction.KeyID;
                 //

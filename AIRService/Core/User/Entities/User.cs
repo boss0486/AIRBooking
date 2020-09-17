@@ -10,15 +10,10 @@ namespace WebCore.Entities
     public class Logged
     {
         public string ID { get; set; }
-        public string AreaID { get; set; }
         public string LoginID { get; set; }
         public string Password { get; set; }
-        public string TokenID { get; set; }
-        public string OTPCode { get; set; }
-        public int Enabled { get; set; }
         public bool IsBlock { get; set; }
-        public string ImageFile { get; set; }
-        public string Email { get; set; }
+        public int Enabled { get; set; }
         public bool IsCMSUser { get; set; }
         public bool IsAdministrator { get; set; }
     }

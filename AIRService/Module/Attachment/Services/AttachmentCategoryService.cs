@@ -118,22 +118,23 @@ namespace WebCore.Services
             try
             {
                 _connection.Open();
-                using (var transaction = _connection.BeginTransaction())
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
-                        string Id = model.ID;
-                        if (string.IsNullOrEmpty(Id))
+                        string id = model.ID;
+                        if (string.IsNullOrWhiteSpace(id))
                             return Notifization.NotFound(MessageText.NotFound);
-                        Id = Id.ToLower();
+                        //
+                        id = id.ToLower();
                         var attachmentCategoryService = new AttachmentCategoryService(_connection);
-                        var attachmentCategory = attachmentCategoryService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                        var attachmentCategory = attachmentCategoryService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (attachmentCategory == null)
                             return Notifization.NotFound(MessageText.NotFound);
 
                         string title = model.Title;
-                        var dpm = attachmentCategoryService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !attachmentCategory.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                        if (dpm.Count > 0)
+                        attachmentCategory = attachmentCategoryService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && attachmentCategory.ID != id, transaction: _transaction).FirstOrDefault();
+                        if (attachmentCategory != null)
                             return Notifization.Invalid("Tiêu đề đã được sử dụng");
                         // update user information
                         attachmentCategory.Title = title;
@@ -141,13 +142,13 @@ namespace WebCore.Services
                         attachmentCategory.Summary = model.Summary;
                         attachmentCategory.ControllerID = model.ControllerID;
                         attachmentCategory.Enabled = model.Enabled;
-                        attachmentCategoryService.Update(attachmentCategory, transaction: transaction);
-                        transaction.Commit();
+                        attachmentCategoryService.Update(attachmentCategory, transaction: _transaction);
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.UpdateSuccess);
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -174,29 +175,31 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
             try
             {
-                if (Id == null)
-                    return Notifization.NotFound();
+                if (string.IsNullOrWhiteSpace(id))
+                    return Notifization.NotFound(MessageText.Invalid);
+                //
+                id = id.ToLower();
                 _connection.Open();
-                using (var transaction = _connection.BeginTransaction())
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
                         var AttachmentCategoryService = new AttachmentCategoryService(_connection);
-                        var AttachmentCategory = AttachmentCategoryService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                        var AttachmentCategory = AttachmentCategoryService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (AttachmentCategory == null)
                             return Notifization.NotFound();
-                        AttachmentCategoryService.Remove(AttachmentCategory.ID, transaction: transaction);
+                        AttachmentCategoryService.Remove(AttachmentCategory.ID, transaction: _transaction);
                         // remover seo
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);
                     }
                     catch
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.NotService;
                     }
                 }
@@ -220,7 +223,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

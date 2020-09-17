@@ -59,25 +59,42 @@
     {
 
     }
-} 
+}
 
-<div class="row profile">
-    <div class="col-md-4 ">
-        <div class="profile-card">
-            <div class="profile-header">&nbsp;</div>
-            <div class="profile-body">
-                <div class="image-area">
-                    <img src="@imageFile"  alt="cxzc" />
+<div class="row profile"> 
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin Hồ sơ:</label>
+        </div>
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="form-group text-center" style="background:#CCC; padding:30px 0px; height:220px">
+                    <img src="@imageFile" class="img-responsive infor-img">
                 </div>
-                <div class="content-area">
-                    <h3>@fullName</h3>
-                    <p>*******</p>
-                    <p>@birthday</p>
+                <div class="form-group m-t-5">
+                    <label class="form-label">Ảnh đại diện:<span class="note"></span> </label>
+                    <span id="lblFile" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Họ tên: <span>@fullName</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Số ĐT: <span>@phone</span></label>
+                </div> 
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> E-Mail: <span>@email</span></label>
+                </div> 
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày sinh: <span>@birthday</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@isBlock</span></label>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
         </div>
@@ -90,9 +107,15 @@
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tình trạng: @isBlock</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Tình trạng: <span>@isBlock</span></label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@enabled</span></label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày tạo: <span>@createdDate</span></label>
+        </div>
         <div class="form-group text-right att-data-list">
             <a href="@Helper.Page.Navigate.PathDataList()">
                 @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>

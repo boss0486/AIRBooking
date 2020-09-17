@@ -85,7 +85,7 @@ namespace WebCore.Services
                     var fareFlights = model.FareFlights;
                     string pnrId = bookPNRCodeService.Create<string>(new BookPNRCode
                     {
-                        OrderID =  model.OrderID,
+                        OrderID = model.OrderID,
                         AirlineID = "VNA",
                         Title = pnr,
                         Alias = "VNA-" + pnr,
@@ -208,7 +208,7 @@ namespace WebCore.Services
 
         public BookTicketOrderDetails BookTicketDetails(string pnr)
         {
-            BookTicketOrderDetails  bookTicketOrderDetails = new BookTicketOrderDetails();
+            BookTicketOrderDetails bookTicketOrderDetails = new BookTicketOrderDetails();
             List<BookTicketDetails> bookTicketDetails = new List<BookTicketDetails>();
             //try
             //{
@@ -223,7 +223,7 @@ namespace WebCore.Services
 
 
             BookPriceService bookPriceService = new BookPriceService(_connection);
-            var bookTickets = bookTicketService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.PNR.ToLower().Equals(pnr)).OrderBy(m => m.Direction).ToList();
+            var bookTickets = bookTicketService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).OrderBy(m => m.Direction).ToList();
             if (bookTickets.Count == 0)
                 return bookTicketOrderDetails;
 
@@ -248,7 +248,7 @@ namespace WebCore.Services
                 // add ticket
             }
 
-            var bookPassengers = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower().Equals(pnr)).ToList();
+            var bookPassengers = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).ToList();
             if (bookPassengers.Count > 0)
             {
                 foreach (var item in bookPassengers)
@@ -268,11 +268,11 @@ namespace WebCore.Services
             var passengerType = bookPassengerDetails.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }).ToList();
             foreach (var item in passengerType)
             {
-                int passengerQty = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PassengerType) && m.PassengerType.Equals(item.PassengerType)).Count();
-                double priceTotal = bookPriceService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower().Equals(pnr) && m.PassengerType.Equals(item.PassengerType)).Sum(m => m.Amount);
+                int passengerQty = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PassengerType) && m.PassengerType == item.PassengerType).Count();
+                double priceTotal = bookPriceService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
 
 
-                List<BookTax> bookTaxs = bookFareService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower().Equals(pnr) && m.PassengerType.Equals(item.PassengerType)).ToList();
+                List<BookTax> bookTaxs = bookFareService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr && m.PassengerType == item.PassengerType).ToList();
                 double taxTotal = bookTaxs.Sum(m => m.Amount);
                 List<BookTax> bookFareTaxs = new List<BookTax>();
 
@@ -287,7 +287,7 @@ namespace WebCore.Services
             }
             // contact
             List<BookContacDetails> bookContacDetails = new List<BookContacDetails>();
-            var contactList = bookContactService.GetAlls(m => m.PNR.ToLower().Equals(pnr)).ToList();
+            var contactList = bookContactService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).ToList();
             if (contactList.Count > 0)
             {
                 foreach (var item in contactList)

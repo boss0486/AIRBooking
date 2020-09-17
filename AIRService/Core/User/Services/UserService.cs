@@ -43,10 +43,7 @@ namespace WebCore.Services
                     return Notifization.Invalid(MessageText.Invalid);
                 //   
                 var sqlHelper = DbConnect.Connection.CMS;
-                string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE LoginID = @LoginID AND Password = @Password
-                                 UNION 
-                                 SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE LoginID = @LoginID AND Password = @Password";
-                var login = sqlHelper.Query<Logged>(sqlQuerry, new { model.LoginID, Password = Helper.Security.Library.Encryption256(password) }).FirstOrDefault();
+                var login = _connection.Query<Logged>("sp_user_login", new { model.LoginID, Password = Helper.Security.Library.Encryption256(password) }, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
                 //
                 if (login == null)
                     return Notifization.Error("Sai thông tin tài khoản hoặc mật khẩu");
@@ -224,7 +221,7 @@ namespace WebCore.Services
             string strGuid = new Guid().ToString();
             string strToken = Helper.Security.Token.Create(user.LoginID);
             //  send otp for reset password 
-            string subject = "HRM-XÁC THỰC OTP";
+            string subject = "XÁC THỰC OTP";
             int status = Helper.Email.EMailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
             if (status != 1)
                 return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
@@ -232,7 +229,7 @@ namespace WebCore.Services
             if (user.IsCMSUser)
             {
                 CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);
-                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(user.ID.ToLower())).FirstOrDefault();
+                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => m.ID == user.ID).FirstOrDefault();
                 cmsUserLogin.OTPCode = strOTP;
                 cmsUserLogin.TokenID = strToken;
                 cmsUserLoginService.Update(cmsUserLogin);
@@ -240,7 +237,7 @@ namespace WebCore.Services
             else
             {
                 UserLoginService userLoginService = new UserLoginService(_connection);
-                UserLogin userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.Equals(user.ID.ToLower())).FirstOrDefault();
+                UserLogin userLogin = userLoginService.GetAlls(m => m.ID == user.ID).FirstOrDefault();
                 userLogin.OTPCode = strOTP;
                 userLogin.TokenID = strToken;
                 userLoginService.Update(userLogin);
@@ -286,12 +283,12 @@ namespace WebCore.Services
             if (user.IsCMSUser)
             {
                 CMSUserLoginService cmsUserLoginService = new CMSUserLoginService(_connection);
-                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower().Equals(loginId.ToLower())).FirstOrDefault();
+                CMSUserLogin cmsUserLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower() == loginId.ToLower()).FirstOrDefault();
                 if (cmsUserLogin == null)
                     return Notifization.Invalid("Dữ liệu không hợp lệ");
                 //
-                if (!cmsUserLogin.OTPCode.Equals(otp))
-                    return Notifization.Invalid("Sai mã OTP");
+                if (cmsUserLogin.OTPCode != otp)
+                    return Notifization.Invalid("Mã OTP chưa đúng");
                 //
                 cmsUserLogin.OTPCode = string.Empty;
                 cmsUserLogin.TokenID = string.Empty;
@@ -301,11 +298,11 @@ namespace WebCore.Services
             else
             {
                 UserLoginService userLoginService = new UserLoginService(_connection);
-                UserLogin userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower().Equals(loginId.ToLower())).FirstOrDefault();
+                UserLogin userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.LoginID) && m.LoginID.ToLower() == loginId.ToLower()).FirstOrDefault();
                 if (userLogin == null)
                     return Notifization.Invalid("Dữ liệu không hợp lệ");
                 //
-                if (!userLogin.OTPCode.Equals(otp))
+                if (userLogin.OTPCode != otp)
                     return Notifization.Invalid("Sai mã OTP");
                 //
                 userLogin.OTPCode = string.Empty;
@@ -321,26 +318,44 @@ namespace WebCore.Services
         public ActionResult Datalist(SearchModel model)
         {
             if (model == null)
-                return Notifization.Invalid();
-            //
-            string query = string.Empty;
-            if (string.IsNullOrWhiteSpace(model.Query))
-                query = "";
-            else
-                query = model.Query;
+                return Notifization.Invalid(MessageText.Invalid);
             //
             int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserService(_connection))
             {
-                string sqlQuery = @"SELECT * FROM View_User WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' ORDER BY FullName,CreatedDate";
-                var dtList = service.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
+                string sqlQuery = @"SELECT * FROM View_User WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
+                var dtList = service.Query<UserResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
                 var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
-                if (result.Count <= 0 && page > 1)
+                if (result.Count == 0 && page > 1)
                 {
                     page -= 1;
                     result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -354,16 +369,8 @@ namespace WebCore.Services
                     Total = dtList.Count,
                     Page = page
                 };
-                Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-                {
-                    Create = true,
-                    Update = true,
-                    Details = true,
-                    Delete = true,
-                    Block = true,
-                    Active = true,
-                };
-                return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+                // ressult data
+                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
         }
 
@@ -522,7 +529,6 @@ namespace WebCore.Services
                             UserID = userId,
                             SecurityPassword = null,
                             AuthenType = null,
-                            RoleID = null,
                             IsBlock = isBlock,
                             Enabled = enabled,
                             LanguageID = languageId,
@@ -570,7 +576,8 @@ namespace WebCore.Services
                         //
                         if (string.IsNullOrWhiteSpace(id))
                             return Notifization.Invalid(MessageText.Invalid);
-                        id = id.Trim();
+                        //
+                        id = id.Trim().ToLower();
                         //  email
                         if (string.IsNullOrWhiteSpace(email))
                             return Notifization.Invalid("Không được để trống địa chỉ email");
@@ -590,14 +597,13 @@ namespace WebCore.Services
                         UserSettingService userSettingService = new UserSettingService(_connection);
                         LanguageService languageService = new LanguageService(_connection);
                         //update user information
-                        var userLogin = userLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userLogin = userLoginService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (userLogin == null)
-                            return Notifization.Invalid(MessageText.Invalid + id);
+                            return Notifization.Invalid(MessageText.Invalid);
                         //
-                        var _uId = userLogin.ID;
-                        var userInfo = userInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userInfo = userInfoService.GetAlls(m => m.UserID == id, transaction: _transaction).FirstOrDefault();
                         if (userInfo == null)
-                            return Notifization.Invalid(MessageText.Invalid + id);
+                            return Notifization.Invalid(MessageText.Invalid);
                         //
                         userInfo.ImageFile = imageFile;
                         userInfo.FullName = fullName;
@@ -608,11 +614,10 @@ namespace WebCore.Services
                         userInfo.Address = model.Address;
                         userInfoService.Update(userInfo, transaction: _transaction);
                         //
-                        var userSetting = userSettingService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userSetting = userSettingService.GetAlls(m => m.UserID == id, transaction: _transaction).FirstOrDefault();
                         if (userSetting == null)
                             return Notifization.Invalid(MessageText.Invalid);
                         //
-                        //userSetting.AreaID = areaId;
                         //userSetting.IsRootUser 
                         userSetting.IsBlock = isBlock;
                         userSetting.Enabled = enabled;
@@ -709,8 +714,8 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult ChangePassword(UserChangePasswordModel model)
         {
-            string loginId = Helper.Current.UserLogin.IdentifierID;
-            if (string.IsNullOrWhiteSpace(loginId))
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            if (string.IsNullOrWhiteSpace(userId))
                 return Notifization.Error("Bạn cần đăng nhập trước");
             //
             if (model == null)
@@ -729,11 +734,11 @@ namespace WebCore.Services
             string passId = Helper.Security.Library.Encryption256(model.Password);
             // check account system
             UserLoginService userLoginService = new UserLoginService();
-            var userLogin = userLoginService.GetAlls(m => m.ID.Equals(loginId)).FirstOrDefault();
+            var userLogin = userLoginService.GetAlls(m => m.ID == userId).FirstOrDefault();
             if (userLogin == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            if (!userLogin.Password.Equals(passId))
+            if (userLogin.Password != passId)
                 return Notifization.NotFound("Mật khẩu cũ chưa đúng");
             // update
             userLogin.Password = Helper.Security.Library.Encryption256(model.NewPassword);
@@ -766,18 +771,22 @@ namespace WebCore.Services
         }
 
         //FUNTION FOR CURRENT ##############################################################################################################################################################################################################################################################
-        public LoginInForModel LoginInformation(string loginId)
+        public LoginInForModel LoginInformation(string userId)
         {
-            var userId = loginId; // get lai =  userID
             using (var service = new UserService())
             {
-                string sqlQuerry = @"SELECT TOP (1) * FROM View_CMSUserInfo WHERE UserID = @UserID                                         
-                                     UNION SELECT TOP (1) * FROM View_UserInfo WHERE UserID = @UserID";
-                var loginModel = service.Query<LoginInForModel>(sqlQuerry, new { UserID = userId }).FirstOrDefault();
-                if (loginModel != null)
+                if (Helper.Current.UserLogin.IsCMSUser)
+                {
+                    string sqlQuerry = @"SELECT TOP (1) * FROM CMSUserInfo WHERE UserID = @UserID";
+                    LoginInForModel loginModel = service.Query<LoginInForModel>(sqlQuerry, new { UserID = userId }).FirstOrDefault();
                     return loginModel;
-                //
-                return null;
+                }
+                else
+                {
+                    string sqlQuerry = @"SELECT TOP (1) * FROM UserInfo WHERE UserID = @UserID";
+                    var loginModel = service.Query<LoginInForModel>(sqlQuerry, new { UserID = userId }).FirstOrDefault();
+                    return loginModel;
+                }
             }
         }
         public bool IsLogin()
@@ -798,7 +807,7 @@ namespace WebCore.Services
         {
             string loginId = Convert.ToString(HttpContext.Current.Session["identifyId"]);
             if (!string.IsNullOrWhiteSpace(loginId))
-                return loginId;
+                return loginId.ToLower();
             return string.Empty;
         }
         public string LoginID()
@@ -819,8 +828,9 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(userId))
                         return result;
                     //
+                    userId = userId.ToLower();
                     UserSettingService service = new UserSettingService();
-                    var userModal = service.GetAlls(m => m.UserID.ToLower().Equals(userId)).FirstOrDefault();
+                    var userModal = service.GetAlls(m => m.UserID == userId).FirstOrDefault();
                     if (userModal == null)
                         return result;
                     //
@@ -842,7 +852,9 @@ namespace WebCore.Services
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
-                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower()), dbTransaction).FirstOrDefault();
+                //
+                userId = userId.ToLower();
+                var client = service.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
                 //
@@ -864,7 +876,8 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
                 //
-                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
+                userId = userId.ToLower();
+                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
                 //
@@ -887,7 +900,8 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
                 //
-                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
+                userId = userId.ToLower();
+                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
 
@@ -912,10 +926,11 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
                 //
-                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
+                userId = userId.ToLower();
+                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
-
+                //
                 if (client.IsSuper)
                     return true;
                 //
@@ -934,7 +949,9 @@ namespace WebCore.Services
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
-                var client = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID.ToLower().Equals(userId.ToLower()) && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
+                //
+                userId = userId.ToLower();
+                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
                 //

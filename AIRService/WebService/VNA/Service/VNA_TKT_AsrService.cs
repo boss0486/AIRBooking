@@ -160,7 +160,7 @@ namespace AIRService.WS.Service
                         {
                             foreach (XmlNode itemSale in salesNode.ChildNodes)
                             {
-                                if (itemSale.LocalName.Equals("Transaction"))
+                                if (itemSale.LocalName =="Transaction")
                                 {
                                     XmlNodeList xmlNodeList = itemSale.ChildNodes;
                                     if (xmlNodeList != null)
@@ -181,38 +181,38 @@ namespace AIRService.WS.Service
                                         {
                                             string localName = item.LocalName;
                                             //
-                                            if (localName.Equals("DocumentType"))
+                                            if (localName == "DocumentType")
                                                 documentType = item.InnerText;
                                             //
-                                            if (localName.Equals("DocumentNumber"))
+                                            if (localName == "DocumentNumber")
                                                 documentNumber = item.InnerText;
                                             //
-                                            if (localName.Equals("PassengerName"))
+                                            if (localName == "PassengerName")
                                                 passengerName = item.InnerText;
                                             //
-                                            if (localName.Equals("PnrLocator"))
+                                            if (localName == "PnrLocator")
                                                 pnrLocator = item.InnerText;
                                             //
-                                            if (localName.Equals("TicketPrinterLniata"))
+                                            if (localName == "TicketPrinterLniata")
                                                 ticketPrinterLniata = item.InnerText;
                                             //
-                                            if (localName.Equals("TransactionTime"))
+                                            if (localName=="TransactionTime")
                                                 transactionTime = item.InnerText;
                                             //      
-                                            if (localName.Equals("ExceptionItem"))
+                                            if (localName == "ExceptionItem")
                                                 exceptionItem = Convert.ToBoolean(item.InnerText);
                                             //
-                                            if (localName.Equals("DecoupleItem"))
+                                            if (localName == "DecoupleItem")
                                                 decoupleItem = Convert.ToBoolean(item.InnerText);
                                             //     
-                                            if (localName.Equals("TicketStatusCode"))
+                                            if (localName== "TicketStatusCode")
                                                 ticketStatusCode = item.InnerText;
                                             //  
-                                            if (localName.Equals("IsElectronicTicket"))
+                                            if (localName == "IsElectronicTicket")
                                                 isElectronicTicket = Convert.ToBoolean(item.InnerText);
                                             //
                                             // SSFop 
-                                            if (localName.Equals("SSFop"))
+                                            if (localName == "SSFop")
                                             {
                                                 XmlNodeList ssfopNode = item.ChildNodes;
                                                 if (ssfopNode.Count > 0)
@@ -220,13 +220,13 @@ namespace AIRService.WS.Service
                                                     foreach (XmlNode itemSSFop in ssfopNode)
                                                     {
                                                         string ssfopLocalName = itemSSFop.LocalName;
-                                                        if (ssfopLocalName.Equals("FopCode"))
+                                                        if (ssfopLocalName == "FopCode")
                                                             ePRReportTransactionSSFop.FopCode = itemSSFop.InnerText;
                                                         //
-                                                        if (ssfopLocalName.Equals("CurrencyCode"))
+                                                        if (ssfopLocalName == "CurrencyCode")
                                                             ePRReportTransactionSSFop.CurrencyCode = itemSSFop.InnerText;
                                                         //
-                                                        if (ssfopLocalName.Equals("FareAmount"))
+                                                        if (ssfopLocalName  == "FareAmount")
                                                         {
                                                             if (!string.IsNullOrWhiteSpace(itemSSFop.InnerText))
                                                             {
@@ -234,7 +234,7 @@ namespace AIRService.WS.Service
                                                             }
                                                         }
                                                         //
-                                                        if (ssfopLocalName.Equals("TaxAmount"))
+                                                        if (ssfopLocalName == "TaxAmount")
                                                         {
                                                             if (!string.IsNullOrWhiteSpace(itemSSFop.InnerText))
                                                             {
@@ -242,7 +242,7 @@ namespace AIRService.WS.Service
                                                             }
                                                         }
                                                         //
-                                                        if (ssfopLocalName.Equals("TotalAmount"))
+                                                        if (ssfopLocalName == "TotalAmount")
                                                         {
                                                             if (!string.IsNullOrWhiteSpace(itemSSFop.InnerText))
                                                             {
@@ -349,7 +349,7 @@ namespace AIRService.WS.Service
                         {
                             foreach (XmlNode itemDetails in salesNode.ChildNodes)
                             {
-                                if (itemDetails.LocalName.Equals("AssociatedDocInfo"))
+                                if (itemDetails.LocalName == "AssociatedDocInfo")
                                 {
                                     XmlNodeList xmlNodeList = itemDetails.ChildNodes;
                                     if (xmlNodeList != null)
@@ -375,16 +375,16 @@ namespace AIRService.WS.Service
                                         {
                                             string localName = item.LocalName;
                                             //
-                                            if (localName.Equals("AssociatedDocument"))
+                                            if (localName == "AssociatedDocument")
                                                 associatedDocument = item.InnerText;
                                             //
-                                            if (localName.Equals("ReasonForIssuanceCode"))
+                                            if (localName == "ReasonForIssuanceCode")
                                                 reasonForIssuanceCode = item.InnerText;
                                             //
-                                            if (localName.Equals("ReasonForIssuanceDesc"))
+                                            if (localName == "ReasonForIssuanceDesc")
                                                 reasonForIssuanceDesc = item.InnerText;
                                             //
-                                            if (localName.Equals("CouponDetail"))
+                                            if (localName == "CouponDetail")
                                             {
                                                 XmlNodeList couponDetailNodeList = item.ChildNodes;
                                                 if (couponDetailNodeList.Count > 0)
@@ -394,37 +394,37 @@ namespace AIRService.WS.Service
                                                         localName = couponDetailNode.LocalName;
                                                         string valText = couponDetailNode.InnerText;
 
-                                                        if (localName.Equals("CouponNumber") && !string.IsNullOrWhiteSpace(valText))
+                                                        if (localName == "CouponNumber" && !string.IsNullOrWhiteSpace(valText))
                                                             couponNumber = Convert.ToInt32(valText);
                                                         //
-                                                        if (localName.Equals("TicketingProvider"))
+                                                        if (localName == "TicketingProvider")
                                                             ticketingProvider = valText;
                                                         //
-                                                        if (localName.Equals("FlightNumber") && !string.IsNullOrWhiteSpace(valText))
+                                                        if (localName == "FlightNumber" && !string.IsNullOrWhiteSpace(valText))
                                                             flightNumber = Convert.ToInt32(valText);
                                                         //      
-                                                        if (localName.Equals("ClassOfService"))
+                                                        if (localName == "ClassOfService")
                                                             classOfService = valText;
                                                         // 
-                                                        if (localName.Equals("DepartureDtm") && !string.IsNullOrWhiteSpace(valText))
+                                                        if (localName == "DepartureDtm" && !string.IsNullOrWhiteSpace(valText))
                                                             departureDtm = Helper.VNALibrary.ConvertToDateTime(valText);
                                                         // 
-                                                        if (localName.Equals("ArrivalDtm") && !string.IsNullOrWhiteSpace(valText))
+                                                        if (localName == "ArrivalDtm" && !string.IsNullOrWhiteSpace(valText))
                                                             arrivalDtm = Helper.VNALibrary.ConvertToDateTime(valText);
                                                         // 
-                                                        if (localName.Equals("DepartureCity"))
+                                                        if (localName == "DepartureCity")
                                                             departureCity = valText;
                                                         // 
-                                                        if (localName.Equals("ArrivalCity"))
+                                                        if (localName == "ArrivalCity")
                                                             arrivalCity = valText;
                                                         // 
-                                                        if (localName.Equals("CouponStatus"))
+                                                        if (localName == "CouponStatus")
                                                             couponStatus = valText;
                                                         //
-                                                        if (localName.Equals("FareBasis"))
+                                                        if (localName == "FareBasis")
                                                             fareBasis = valText;
                                                         // 
-                                                        if (localName.Equals("BaggageAllowance"))
+                                                        if (localName == "BaggageAllowance")
                                                             baggageAllowance = valText;
                                                         //
                                                     }

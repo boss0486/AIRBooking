@@ -38,15 +38,10 @@ namespace WebApplication.Development.Controllers
             return View();
         }
 
-        public new ActionResult Profile()
-        {
-            return View();
-        }
-
         public ActionResult Details(string id)
         {
-            UserService service = new UserService();
-            UserModel model = service.GetUserModel(id);
+            AccountService service = new AccountService();
+            UserResult model = service.GetUserModel(id);
             if (model != null)
                 return View(model);
             //

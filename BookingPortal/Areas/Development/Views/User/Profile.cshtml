@@ -39,19 +39,19 @@
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
             createdDate = Model.CreatedDate;
-            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+            imageFile = Helper.File.AttachmentFile.GetFile(Model.ImageFile);
             //
             if (Model.IsBlock)
             {
-                isBlock = "Đang khóa";
+                isBlock = "Tài khoản bị khóa";
             }
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
-                enabled = "Kích hoạt";
+                enabled = "Tài khoản đã active";
             }
             else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
             {
-                enabled = "Không được kích hoạt";
+                enabled = "Tài khoản chưa được active";
             }
         }
     }
@@ -59,15 +59,14 @@
     {
 
     }
-} 
-
-<div class="row profile">
-    <div class="col-md-4 ">
+}
+<div class="row">
+    <div class="col-md-4 profile">
         <div class="profile-card">
             <div class="profile-header">&nbsp;</div>
             <div class="profile-body">
                 <div class="image-area">
-                    <img src="@imageFile"  alt="cxzc" />
+                    <img src="@imageFile" />
                 </div>
                 <div class="content-area">
                     <h3>@fullName</h3>
@@ -79,24 +78,36 @@
     </div>
     <div class="col-md-6">
         <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
         </div>
         <div class="form-group ">
-            <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
+            <label class="form-label"><i class="fas fa-check-circle"></i> Quản trị viên:</label>
+        </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin liên hệ:</label>
         </div>
         <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Mã ID: <span class="account-id">@id</span></label>
+            <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ email: @email</label>
         </div>
+        <div class="form-group ">
+            <label class="form-label"><i class="fas fa-check-circle"></i> Số điện thoại: @phone</label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label"><i class="fas fa-check-circle"></i> Địa chỉ: @address</label>
+        </div>
+        <div class="form-group"><label class="form-label"><i class="fas fa-check-circle"></i> Tình trạng: @isBlock</label></div>
+
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tình trạng: @isBlock</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
         <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+        <div class="form-group text-right">
+            <a href="#">
+                Danh sách <i class="fas fa-arrow-circle-right"></i>
             </a>
+            <hr />
         </div>
     </div>
+
 </div>

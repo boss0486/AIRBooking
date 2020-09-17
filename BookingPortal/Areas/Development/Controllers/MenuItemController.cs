@@ -97,15 +97,9 @@ namespace WebApplication.Development.Controllers
         public ActionResult Delete(MenuItemIDModel model)
         {
             try
-            {
-                if (model == null)
-                    return Notifization.Invalid("Dữ liệu không hợp lệ");
-                string Id = model.ID;
-                if (string.IsNullOrEmpty(Id))
-                    return Notifization.Invalid(MessageText.Invalid);
-                // call service
+            { 
                 using (var menuItemService = new MenuItemService())
-                    return menuItemService.Delete(model);
+                    return menuItemService.Delete(model.ID);
             }
             catch (Exception)
             {
@@ -120,7 +114,7 @@ namespace WebApplication.Development.Controllers
             try
             {
                 using (var menuItemService = new MenuItemService())
-                    return menuItemService.Datalist(model);
+                    return menuItemService.DataList(model);
             }
             catch (Exception ex)
             {
@@ -190,7 +184,20 @@ namespace WebApplication.Development.Controllers
             }
         }
 
-
+        [HttpPost]
+        [Route("Action/SortAuto")]
+        public ActionResult SortAuto()
+        {
+            try
+            {
+                using (var menuItemService = new MenuItemService())
+                    return menuItemService.MenuItemManage_Sort();
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
         // ###########################################################################################################################################33
 
 
@@ -201,12 +208,24 @@ namespace WebApplication.Development.Controllers
             try
             {
                 MenuControllerService menuControllerService = new MenuControllerService();
-                ////
-                //Assembly asm = Assembly.GetExecutingAssembly();
-                //var model = asm.GetTypes();
+                return menuControllerService.MenuControlSync();
 
-                string routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
-                return menuControllerService.MenuControlSync(routeArea);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("Action/Menu-Sync-Area")]
+        public ActionResult MenuControlSyncByAreaID(MenuItemIDModel model)
+        {
+            try
+            {
+                MenuControllerService menuControllerService = new MenuControllerService();
+                string routeArea = model.ID;
+                return menuControllerService.MenuControlSyncByRouteArea(routeArea);
 
             }
             catch (Exception ex)
@@ -215,6 +234,8 @@ namespace WebApplication.Development.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
+
+
 
         [HttpPost]
         [Route("Action/Menu-Sync-List")]

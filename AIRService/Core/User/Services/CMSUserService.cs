@@ -270,7 +270,6 @@ namespace WebCore.Services
                             UserID = userId,
                             SecurityPassword = null,
                             AuthenType = null,
-                            RoleID = null,
                             IsBlock = isBlock,
                             Enabled = enabled,
                             LanguageID = languageId,
@@ -343,14 +342,14 @@ namespace WebCore.Services
                         CMSUserInfoService cmsUserInfoService = new CMSUserInfoService(_connection);
                         CMSUserSettingService cmsUserSettingService = new CMSUserSettingService(_connection);
                         //CMSLanguageService languageService = new LanguageService(_connection);
-                        var userLogin = cmsUserLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID.ToLower().Equals(id.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userLogin = cmsUserLoginService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (userLogin == null)
-                            return Notifization.Invalid(MessageText.Invalid + " -2");
+                            return Notifization.Invalid(MessageText.Invalid);
                         //
                         var _uId = userLogin.ID;
-                        var userInfo = cmsUserInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userInfo = cmsUserInfoService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userInfo == null)
-                            return Notifization.Invalid(MessageText.Invalid + " -3");
+                            return Notifization.Invalid(MessageText.Invalid);
 
                         userInfo.ImageFile = imageFile;
                         userInfo.FullName = fullName;
@@ -361,20 +360,18 @@ namespace WebCore.Services
                         userInfo.Address = model.Address;
                         cmsUserInfoService.Update(userInfo, transaction: _transaction);
                         //
-                        var userSetting = cmsUserSettingService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userSetting = cmsUserSettingService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userSetting == null)
-                            return Notifization.Invalid(MessageText.Invalid + " -4");
+                            return Notifization.Invalid(MessageText.Invalid);
                         // 
-                        //userSetting.AreaID = areaId;
                         //userSetting.IsRootUser 
-                        userSetting.RoleID = roleId;
                         userSetting.IsBlock = isBlock;
                         userSetting.Enabled = enabled;
                         userSetting.LanguageID = model.LanguageID;
                         cmsUserSettingService.Update(userSetting, transaction: _transaction);
                         //
                         CMSUserRoleService cmsUserRoleService = new CMSUserRoleService(_connection);
-                        var userRole = cmsUserRoleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID.ToLower().Equals(_uId.ToLower()), transaction: _transaction).FirstOrDefault();
+                        var userRole = cmsUserRoleService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userRole == null)
                         {
                             cmsUserRoleService.Create<string>(new CMSUserRole()
@@ -503,11 +500,11 @@ namespace WebCore.Services
             string passId = Helper.Security.Library.Encryption256(model.Password);
             // check account system
             CMSUserLoginService cmsUserLoginService = new CMSUserLoginService();
-            var cmsUserLogin = cmsUserLoginService.GetAlls(m => m.ID.Equals(loginId)).FirstOrDefault();
+            var cmsUserLogin = cmsUserLoginService.GetAlls(m => m.ID == loginId).FirstOrDefault();
             if (cmsUserLogin == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            if (!cmsUserLogin.Password.Equals(passId))
+            if (cmsUserLogin.Password != passId)
                 return Notifization.NotFound("Mật khẩu cũ chưa đúng");
             // update
             cmsUserLogin.Password = Helper.Security.Library.Encryption256(model.NewPassword);
@@ -553,7 +550,7 @@ namespace WebCore.Services
                         return result;
                     //
                     UserSettingService service = new UserSettingService();
-                    var userModal = service.GetAlls(m => m.UserID.ToLower().Equals(userId)).FirstOrDefault();
+                    var userModal = service.GetAlls(m => m.UserID == userId).FirstOrDefault();
                     if (userModal == null)
                         return result;
                     //

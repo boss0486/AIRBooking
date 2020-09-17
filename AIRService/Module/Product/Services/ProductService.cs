@@ -14,6 +14,7 @@ using WebCore.ENM;
 using WebCore.Model.Enum;
 using Helper.File;
 using WebCore.Model.Entities;
+using Helper.Page;
 
 namespace WebCore.Services
 {
@@ -72,8 +73,7 @@ namespace WebCore.Services
             }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_Product 
-                WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_Product WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [CreatedDate]";
             var dtList = _connection.Query<ViewProduct>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound + sqlQuery);
@@ -100,36 +100,50 @@ namespace WebCore.Services
         public ActionResult Create(ProductCreateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
+                    if (model == null)
+                        return Notifization.Invalid();
+                    //
+                    string categoryId = model.CategoryID;
+                    string title = model.Title;
+                    string summary = model.Summary;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
                     ProductService productService = new ProductService(_connection);
-                    var products = productService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
-                    if (products.Count > 0)
+                    var product = productService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == model.Title.ToLower(), transaction: _transaction).FirstOrDefault();
+                    if (product != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     //
-                    ProductCategoryService ProductCategoryService = new ProductCategoryService(_connection);
-                    var productCategory = ProductCategoryService.GetAlls(m => m.ID.Equals(model.CategoryID.ToLower()), transaction: transaction).FirstOrDefault();
+                    categoryId = categoryId.ToLower();
+                    ProductCategoryService productCategoryService = new ProductCategoryService(_connection);
+                    var productCategory = productCategoryService.GetAlls(m => m.ID == categoryId, transaction: _transaction).FirstOrDefault();
                     if (productCategory == null)
                         return Notifization.NotFound();
-                    //
-                    string alias = model.Alias;
-                    if (string.IsNullOrEmpty(alias))
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                    else
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                    var aliasData = productService.GetAlls(m => m.Alias.ToLower().Equals(alias.ToLower()), transaction: transaction).ToList();
-                    if (aliasData.Count > 0)
-                        return Notifization.Invalid("Đường dẫn đã được sử dụng");
-                    //
+                    // 
                     string imgFile = model.ImageFile;
                     var Id = productService.Create<string>(new Product()
                     {
                         CategoryID = model.CategoryID,
                         TextID = model.TextID,
                         Title = model.Title,
-                        Alias = alias,
+                        Alias = Helper.Page.Library.FormatToUni2NONE(title),
                         Summary = model.Summary,
                         ImageFile = imgFile,
                         HtmlNote = model.HtmlNote,
@@ -146,7 +160,7 @@ namespace WebCore.Services
                         State = model.State,
                         LanguageID = Helper.Current.UserLogin.LanguageID,
                         Enabled = model.Enabled,
-                    }, transaction: transaction);
+                    }, transaction: _transaction);
                     // photo : save, insert product file
                     IEnumerable<string> photoFile = model.Photos;
                     Helper.Page.MetaSEO meta = new Helper.Page.MetaSEO();
@@ -162,7 +176,7 @@ namespace WebCore.Services
                                 FileID = item,
                                 CategoryID = _controllerText,
                                 TypeID = (int)ModelEnum.FileType.MULTI
-                            }, transaction: transaction);
+                            }, transaction: _transaction);
                         }
                     }
                     //
@@ -174,10 +188,10 @@ namespace WebCore.Services
                             FileID = imgFile,
                             CategoryID = _controllerText,
                             TypeID = (int)ModelEnum.FileType.ALONE
-                        }, transaction: transaction);
+                        }, transaction: _transaction);
                     }
                     //sort
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
                 catch
@@ -190,35 +204,47 @@ namespace WebCore.Services
         public ActionResult Update(ProductUpdateModel model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
+                    if (model == null)
+                        return Notifization.Invalid();
+                    //
+                    string categoryId = model.CategoryID;
+                    string title = model.Title;
+                    string summary = model.Summary;
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
                     ProductService productService = new ProductService(_connection);
-                    string Id = model.ID.ToLower();
-                    var product = productService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
+                    string id = model.ID.ToLower();
+                    var product = productService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (product == null)
                         return Notifization.NotFound(MessageText.NotFound);
-
-                    string title = model.Title;
-                    var dpm = productService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !product.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (dpm.Count > 0)
+                    //
+                    product = productService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && product.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (product != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
-
-                    string alias = model.Alias;
-                    if (string.IsNullOrEmpty(alias))
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                    else
-                        alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                    var aliasData = productService.GetAlls(m => m.Alias.ToLower().Equals(alias.ToLower()) && !product.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                    if (aliasData.Count > 0)
-                        return Notifization.Invalid("Đường dẫn đã được sử dụng");
                     //
                     string imgFile = model.ImageFile;
                     product.CategoryID = model.CategoryID;
                     product.TextID = model.TextID;
                     product.Title = model.Title;
-                    product.Alias = alias;
+                    product.Alias = Helper.Page.Library.FormatToUni2NONE(title);
                     product.Summary = model.Summary;
                     product.ImageFile = imgFile;
                     product.HtmlNote = model.HtmlNote;
@@ -235,14 +261,14 @@ namespace WebCore.Services
                     product.State = model.State;
                     product.LanguageID = Helper.Current.UserLogin.LanguageID;
                     product.Enabled = model.Enabled;
-                    productService.Update(product, transaction: transaction);
+                    productService.Update(product, transaction: _transaction);
                     // file
                     IList<string> photoFile = model.Photos;
                     Helper.Page.MetaSEO meta = new Helper.Page.MetaSEO();
                     var attachmentIngredientService = new AttachmentIngredientService(_connection);
                     var _controllerText = Helper.Page.MetaSEO.ControllerText.ToLower();
                     // get all frorm db
-                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
+                    IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.ForID.ToLower() == id && m.CategoryID == _controllerText, transaction: _transaction).Select(m => m.FileID).ToList();
                     // add new
                     var lstAddNewFile = photoFile;
                     if (lstPhotoDb != null && lstPhotoDb.Count > 0)
@@ -251,16 +277,16 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstAddNewFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ForID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient == null)
                             {
                                 string guid = attachmentIngredientService.Create<string>(new Entities.AttachmentIngredient()
                                 {
-                                    ForID = Id,
+                                    ForID = id,
                                     FileID = item,
                                     CategoryID = _controllerText,
                                     TypeID = (int)ModelEnum.FileType.MULTI
-                                }, transaction: transaction);
+                                }, transaction: _transaction);
                             }
                         }
                     }
@@ -272,20 +298,20 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstDeleteFile)
                         {
-                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                            var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                             if (attachmentIngredient != null)
                             {
-                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: transaction);
+                                attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: _transaction);
                             }
                         }
                     }
                     //
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -313,29 +339,30 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
-            if (Id == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound();
+            id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
                     ProductService ProductService = new ProductService(_connection);
-                    var Product = ProductService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
+                    var Product = ProductService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (Product == null)
                         return Notifization.NotFound();
                     // delete
-                    AttachmentFile.DeleteFile(Product.ImageFile, transaction: transaction);
-                    ProductService.Remove(Product.ID, transaction: transaction);
+                    AttachmentFile.DeleteFile(Product.ImageFile, transaction: _transaction);
+                    ProductService.Remove(Product.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
@@ -345,7 +372,7 @@ namespace WebCore.Services
         {
             try
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrWhiteSpace(id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM App_Product WHERE ID = @ID";
@@ -378,7 +405,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }

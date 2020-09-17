@@ -368,11 +368,11 @@ namespace Helper.Page
             for (int i = 0; i < arr1.Length; i++)
             {
                 text = text.Replace(arr1[i], arr2[i]);
-                text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
+                text = text.Replace(arr1[i].ToLower(), arr2[i].ToLower());
             }
             text = text.Replace(" ", "");
 
-            return text;
+            return text.ToLower();
         }
         public static string FormatToUpper(string strText)
         {

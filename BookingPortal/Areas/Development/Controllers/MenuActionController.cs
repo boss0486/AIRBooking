@@ -17,12 +17,6 @@ namespace WebApplication.Development.Controllers
     [RoutePrefix("Menu-Action")]
     public class MenuActionController : CMSController
     {
-        // GET: BackEnd/MenuActions
-        public ActionResult DataList()
-        {
-            return View();
-        }
-        //##########################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DropdownList")]
         public ActionResult DropdownList(string id)

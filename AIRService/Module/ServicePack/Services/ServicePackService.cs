@@ -18,10 +18,10 @@ using WebCore.Model.Entities;
 namespace WebCore.Services
 {
     public interface IAppServiceService : IEntityService<ServicePack> { }
-    public class AppServiceService : EntityService<ServicePack>, IAppServiceService
+    public class ServicePackService : EntityService<ServicePack>, IAppServiceService
     {
-        public AppServiceService() : base() { }
-        public AppServiceService(System.Data.IDbConnection db) : base(db) { }
+        public ServicePackService() : base() { }
+        public ServicePackService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(ServicePackSearchModel model)
         {
@@ -110,36 +110,29 @@ namespace WebCore.Services
             try
             {
                 _connection.Open();
-                using (var transaction = _connection.BeginTransaction())
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
-                        AppServiceService AppServiceService = new AppServiceService(_connection);
-                        var AppServices = AppServiceService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: transaction);
-                        if (AppServices.Count > 0)
+                        string categoryId = model.CategoryID.ToLower();
+                        ServicePackService servicePackService = new ServicePackService(_connection);
+                        var servicePack = servicePackService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower(), transaction: _transaction).FirstOrDefault();
+                        if (servicePack != null)
                             return Notifization.Invalid("Tiêu đề đã được sử dụng");
                         //
-                        AppServiceCategoryService AppServiceCategoryService = new AppServiceCategoryService(_connection);
-                        var AppServiceCategory = AppServiceCategoryService.GetAlls(m => m.ID.Equals(model.CategoryID.ToLower()), transaction: transaction).FirstOrDefault();
-                        if (AppServiceCategory == null)
+                        ServicePackCategoryService servicePackCategoryService = new ServicePackCategoryService(_connection);
+                        var servicePackCategory = servicePackCategoryService.GetAlls(m => m.ID == categoryId, transaction: _transaction).FirstOrDefault();
+                        if (servicePackCategory == null)
                             return Notifization.NotFound();
                         //
-                        string alias = model.Alias;
-                        if (string.IsNullOrEmpty(alias))
-                            alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-                        else
-                            alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                        var aliasData = AppServiceService.GetAlls(m => m.Alias.ToLower().Equals(alias.ToLower()), transaction: transaction).ToList();
-                        if (aliasData.Count > 0)
-                            return Notifization.Invalid("Đường dẫn đã được sử dụng");
-                        //
+
                         string imgFile = model.ImageFile;
-                        var Id = AppServiceService.Create<string>(new ServicePack()
+                        var Id = servicePackService.Create<string>(new ServicePack()
                         {
-                            CategoryID = model.CategoryID,
+                            CategoryID = categoryId,
                             TextID = model.TextID,
                             Title = model.Title,
-                            Alias = alias,
+                            Alias = Helper.Page.Library.FormatToUni2NONE(model.Alias),
                             Summary = model.Summary,
                             ImageFile = imgFile,
                             HtmlNote = model.HtmlNote,
@@ -152,7 +145,7 @@ namespace WebCore.Services
                             PriceText = model.PriceText,
                             LanguageID = Helper.Current.UserLogin.LanguageID,
                             Enabled = model.Enabled,
-                        }, transaction: transaction);
+                        }, transaction: _transaction);
                         // photo : save, insert AppService file
                         IEnumerable<string> photoFile = model.Photos;
                         Helper.Page.MetaSEO meta = new Helper.Page.MetaSEO();
@@ -168,7 +161,7 @@ namespace WebCore.Services
                                     FileID = item,
                                     CategoryID = _controllerText,
                                     TypeID = (int)ModelEnum.FileType.MULTI
-                                }, transaction: transaction);
+                                }, transaction: _transaction);
                             }
                         }
                         //
@@ -180,10 +173,10 @@ namespace WebCore.Services
                                 FileID = imgFile,
                                 CategoryID = _controllerText,
                                 TypeID = (int)ModelEnum.FileType.ALONE
-                            }, transaction: transaction);
+                            }, transaction: _transaction);
                         }
                         //sort
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.CreateSuccess);
                     }
                     catch (Exception ex)
@@ -203,48 +196,45 @@ namespace WebCore.Services
             try
             {
                 _connection.Open();
-                using (var transaction = _connection.BeginTransaction())
+                using (var _transaction = _connection.BeginTransaction())
                 {
                     try
                     {
-                        AppServiceService AppServiceService = new AppServiceService(_connection);
-                        string Id = model.ID.ToLower();
-                        var AppService = AppServiceService.GetAlls(m => m.ID.Equals(Id), transaction: transaction).FirstOrDefault();
-                        if (AppService == null)
+                        ServicePackService servicePackService = new ServicePackService(_connection);
+                        string id = model.ID.ToLower();
+                        var servicePack = servicePackService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                        if (servicePack == null)
                             return Notifization.NotFound(MessageText.NotFound);
 
                         string title = model.Title;
-                        var dpm = AppServiceService.GetAlls(m => m.Title.ToLower().Equals(title.ToLower()) && !AppService.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                        if (dpm.Count > 0)
+                        servicePack = servicePackService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && servicePack.ID != id, transaction: _transaction).FirstOrDefault();
+                        if (servicePack != null)
                             return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
                         string alias = model.Alias;
-                        if (string.IsNullOrEmpty(alias))
+                        if (string.IsNullOrWhiteSpace(alias))
                             alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
                         else
                             alias = Helper.Page.Library.FormatToUni2NONE(model.Alias);
-                        var aliasData = AppServiceService.GetAlls(m => m.Alias.ToLower().Equals(alias.ToLower()) && !AppService.ID.ToLower().Equals(Id), transaction: transaction).ToList();
-                        if (aliasData.Count > 0)
-                            return Notifization.Invalid("Đường dẫn đã được sử dụng");
                         //
                         string imgFile = model.ImageFile;
-                        AppService.CategoryID = model.CategoryID;
-                        AppService.TextID = model.TextID;
-                        AppService.Title = model.Title;
-                        AppService.Alias = alias;
-                        AppService.Summary = model.Summary;
-                        AppService.ImageFile = imgFile;
-                        AppService.HtmlNote = model.HtmlNote;
-                        AppService.HtmlText = model.HtmlText;
-                        AppService.Tag = model.Tag;
-                        AppService.ViewTotal = model.ViewTotal;
-                        AppService.ViewDate = model.ViewDate;
-                        AppService.Price = model.Price;
-                        AppService.PriceListed = model.PriceListed;
-                        AppService.PriceText = model.PriceText;
-                        AppService.LanguageID = Helper.Current.UserLogin.LanguageID;
-                        AppService.Enabled = model.Enabled;
-                        AppServiceService.Update(AppService, transaction: transaction);
+                        servicePack.CategoryID = model.CategoryID;
+                        servicePack.TextID = model.TextID;
+                        servicePack.Title = model.Title;
+                        servicePack.Alias = alias;
+                        servicePack.Summary = model.Summary;
+                        servicePack.ImageFile = imgFile;
+                        servicePack.HtmlNote = model.HtmlNote;
+                        servicePack.HtmlText = model.HtmlText;
+                        servicePack.Tag = model.Tag;
+                        servicePack.ViewTotal = model.ViewTotal;
+                        servicePack.ViewDate = model.ViewDate;
+                        servicePack.Price = model.Price;
+                        servicePack.PriceListed = model.PriceListed;
+                        servicePack.PriceText = model.PriceText;
+                        servicePack.LanguageID = Helper.Current.UserLogin.LanguageID;
+                        servicePack.Enabled = model.Enabled;
+                        servicePackService.Update(servicePack, transaction: _transaction);
                         // file
                         IList<string> photoFile = model.Photos;
                         Helper.Page.MetaSEO meta = new Helper.Page.MetaSEO();
@@ -252,7 +242,7 @@ namespace WebCore.Services
                         var _controllerText = Helper.Page.MetaSEO.ControllerText.ToLower();
                         // get all frorm db
                         var lstAddNewFile = photoFile;
-                        IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).Select(m => m.FileID).ToList();
+                        IList<string> lstPhotoDb = attachmentIngredientService.GetAlls(m => m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).Select(m => m.FileID).ToList();
                         // add news                      
                         if (lstPhotoDb.Count > 0 && lstAddNewFile != null)
                             lstAddNewFile = photoFile.Except(lstPhotoDb).ToList();
@@ -261,16 +251,16 @@ namespace WebCore.Services
                         {
                             foreach (var item in lstAddNewFile)
                             {
-                                var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                                var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                                 if (attachmentIngredient == null)
                                 {
                                     string guid = attachmentIngredientService.Create<string>(new Entities.AttachmentIngredient()
                                     {
-                                        ForID = Id,
+                                        ForID = id,
                                         FileID = item,
                                         CategoryID = _controllerText,
                                         TypeID = (int)ModelEnum.FileType.MULTI
-                                    }, transaction: transaction);
+                                    }, transaction: _transaction);
                                 }
                             }
                         }
@@ -282,20 +272,20 @@ namespace WebCore.Services
                         {
                             foreach (var item in lstDeleteFile)
                             {
-                                var attachmentIngredient = attachmentIngredientService.GetAlls(m => m.FileID.ToLower().Equals(item.ToLower()) && m.ForID.ToLower().Equals(Id) && m.CategoryID.ToLower().Equals(_controllerText), transaction: transaction).FirstOrDefault();
+                                var attachmentIngredient = attachmentIngredientService.GetAlls(m => !string.IsNullOrWhiteSpace(m.FileID) && m.FileID.ToLower() == item.ToLower() && m.ForID.ToLower() == id && m.CategoryID.ToLower() == _controllerText, transaction: _transaction).FirstOrDefault();
                                 if (attachmentIngredient != null)
                                 {
-                                    attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: transaction);
+                                    attachmentIngredientService.Remove(attachmentIngredient.ID, transaction: _transaction);
                                 }
                             }
                         }
                         //
-                        transaction.Commit();
+                        _transaction.Commit();
                         return Notifization.Success(MessageText.UpdateSuccess);
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
+                        _transaction.Rollback();
                         return Notifization.TEST("::" + ex.ToString());
                     }
                 }
@@ -328,33 +318,35 @@ namespace WebCore.Services
             }
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string id)
         {
             try
             {
-                if (Id == null)
-                    return Notifization.NotFound();
+                if (string.IsNullOrWhiteSpace(id))
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                id = id.ToLower();
                 using (var _connectDb = DbConnect.Connection.CMS)
                 {
                     _connectDb.Open();
-                    using (var transaction = _connectDb.BeginTransaction())
+                    using (var _transaction = _connectDb.BeginTransaction())
                     {
                         try
                         {
-                            AppServiceService AppServiceService = new AppServiceService(_connectDb);
-                            var AppService = AppServiceService.GetAlls(m => m.ID.Equals(Id.ToLower()), transaction: transaction).FirstOrDefault();
-                            if (AppService == null)
+                            ServicePackService servicePackService = new ServicePackService(_connectDb);
+                            var servicePack = servicePackService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                            if (servicePack == null)
                                 return Notifization.NotFound();
                             // delete
-                            AttachmentFile.DeleteFile(AppService.ImageFile, transaction: transaction);
-                            AppServiceService.Remove(AppService.ID, transaction: transaction);
+                            AttachmentFile.DeleteFile(servicePack.ImageFile, transaction: _transaction);
+                            servicePackService.Remove(servicePack.ID, transaction: _transaction);
                             // remover seo
-                            transaction.Commit();
+                            _transaction.Commit();
                             return Notifization.Success(MessageText.DeleteSuccess);
                         }
                         catch
                         {
-                            transaction.Rollback();
+                            _transaction.Rollback();
                             return Notifization.NotService;
                         }
                     }
@@ -395,7 +387,7 @@ namespace WebCore.Services
             try
             {
                 string result = string.Empty;
-                using (var AppServiceService = new AppServiceService())
+                using (var AppServiceService = new ServicePackService())
                 {
                     var dtList = AppServiceService.DataOption(id);
                     if (dtList.Count > 0)
@@ -403,7 +395,7 @@ namespace WebCore.Services
                         foreach (var item in dtList)
                         {
                             string select = string.Empty;
-                            if (item.ID.Equals(id.ToLower()))
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
                         }
