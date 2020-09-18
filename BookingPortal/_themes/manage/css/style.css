@@ -6107,6 +6107,9 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     padding-bottom: 21px;
     position: relative;
 }
+.form-group button {
+    margin-bottom:21px;
+}
 
 .input-group {
     width: 100%;

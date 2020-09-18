@@ -59,14 +59,28 @@ namespace WebCore.Services
             }
             #endregion
             //
+            if (Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                string supplierId = ClientLoginService.GetClientIDByUserID(userId);
+                // admin of supplier
+                if (Helper.Current.UserLogin.IsAdminSupplierLogged())
+                {
+                    whereCondition += " AND SupplierID = '" + supplierId + "'";
+                }
+                else  // emp of supplier
+                {
+                    whereCondition += " AND UserIDSend = '" + userId + "'";
+                }
+            }
+            //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_TransactionCustomerSpending WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR ID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
             //
             var dtList = _connection.Query<TransactionCustomerSpendingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
-
+            //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count <= 0 && page > 1)
             {
@@ -97,14 +111,20 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Invalid();
                     //
-                    string title = "Thay đổi hạn mức";
+                    string title = "Giao dịch cấp hạn mức";
                     string summary = model.Summary;
                     string customerId = model.CustomerID;
                     double amount = model.Amount;
                     string languageId = Helper.Current.UserLogin.LanguageID;
                     //
-                    string currUserId = Helper.Current.UserLogin.IdentifierID;
-
+                    string userId = Helper.Current.UserLogin.IdentifierID;
+                    string supplierId = model.SupplierID;
+                    if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+                        supplierId = ClientLoginService.GetClientIDByUserID(userId);
+                    // 
+                    if (string.IsNullOrWhiteSpace(supplierId))
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
                     CustomerService customerService = new CustomerService(_connection);
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
@@ -132,10 +152,11 @@ namespace WebCore.Services
                     TransactionCustomerSpendingService transactionSpendingService = new TransactionCustomerSpendingService(_connection);
                     var transactionSpendingId = transactionSpendingService.Create<string>(new TransactionCustomerSpending()
                     {
-                        CustomerID = customerId,
                         Title = title,
                         Summary = summary,
-                        UserIDSend = currUserId,
+                        SupplierID = supplierId,
+                        SupplierUserID = userId,
+                        CustomerID = customerId,
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -176,7 +197,7 @@ namespace WebCore.Services
             }
         }
 
-        public TransactionCustomerSpending GetTransactionSpendingModel(string Id)
+        public TransactionCustomerSpendingResult GetTransactionSpendingModel(string Id)
         {
             try
             {
@@ -184,8 +205,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionSpending WHERE ID = @Query";
-                return _connection.Query<TransactionCustomerSpending>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionCustomerSpending WHERE ID = @Query";
+                return _connection.Query<TransactionCustomerSpendingResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
             {
@@ -231,7 +252,7 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(Id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM App_TransactionSpending WHERE ID = @ID";
+                string sqlQuery = @"SELECT * FROM App_TransactionCustomerSpending WHERE ID = @ID";
                 var item = _connection.Query<TransactionCustomerSpendingResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -243,9 +264,6 @@ namespace WebCore.Services
                 return Notifization.NotService;
             }
         }
-        //##############################################################################################################################################################################################################################################################
-
-
         //##############################################################################################################################################################################################################################################################
     }
 }

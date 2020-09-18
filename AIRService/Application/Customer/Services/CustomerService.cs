@@ -701,8 +701,17 @@ namespace WebCore.Services
         }
         public List<CustomerOption> DataOption()
         {
-            string sqlQuery = @"SELECT * FROM App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
             return _connection.Query<CustomerOption>(sqlQuery, new { }).ToList();
+        }
+
+        public List<CustomerOption> GetCustomerBySupplierIDOption(string supplierId)
+        {
+            if (string.IsNullOrWhiteSpace(supplierId))
+                return new List<CustomerOption>();
+            //
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE SupplierID = @SupplierID AND Enabled = 1 ORDER BY Title ASC";
+            return _connection.Query<CustomerOption>(sqlQuery, new { SupplierID = supplierId }).ToList();
         }
 
         public static string DropdownListWithTypeID(int typeEnum, string id)
@@ -767,7 +776,7 @@ namespace WebCore.Services
                         foreach (var item in customer)
                         {
                             string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID== id.ToLower())
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                                 select = "selected";
                             result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                         }
@@ -798,7 +807,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public static string GetCustomerCode(string id)
+        public static string GetCustomerCodeID(string id)
         {
 
             if (string.IsNullOrWhiteSpace(id))

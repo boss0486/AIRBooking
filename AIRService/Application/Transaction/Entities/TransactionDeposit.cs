@@ -66,7 +66,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return CustomerService.GetCustomerCode(_customerId);
+                return CustomerService.GetCustomerCodeID(_customerId);
             }
             set
             {

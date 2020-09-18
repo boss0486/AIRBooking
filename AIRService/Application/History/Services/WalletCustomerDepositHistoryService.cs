@@ -122,6 +122,28 @@ namespace WebCore.Services
             //commit
             return new WalletHistoryMessageModel { Status = true, Message = "Ok" };
         }
+
+
+        public static string TransactionTypeText(int transactionType)
+        {
+            if (transactionType == (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT)
+                return "Nhận";
+            else
+            if (transactionType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
+                return "Chuyển";
+            else
+                return "Không xác định";
+        }
+        public static string TransactionOriginalText(int transactionType)
+        {
+            if (transactionType == (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DEPOSIT)
+                return "G.Dịch nạp tiền";
+            else
+            if (transactionType == (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DEPOSIT)
+                return "Cấp trực tiếp";
+            else
+                return "Không xác định";
+        }
         //##############################################################################################################################################################################################################################################################
     }
 }

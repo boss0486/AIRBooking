@@ -1,8 +1,22 @@
 ﻿[
   {
+    "KeyID": "Home",
+    "Title": "Trang chủ",
+    "OrderID": 1,
+    "Action": [
+      {
+        "OrderID": 1,
+        "KeyID": "Index",
+        "Method": "Index",
+        "APIRouter": "",
+        "Title": "Trang chủ"
+      }
+    ]
+  },
+  {
     "KeyID": "Account",
     "Title": "Tài khoản",
-    "OrderID": 1,
+    "OrderID": 2,
     "Action": [
       {
         "OrderID": 1,
@@ -65,7 +79,7 @@
   {
     "KeyID": "AirBook",
     "Title": "Dịch vụ booking",
-    "OrderID": 2,
+    "OrderID": 3,
     "Action": [
       {
         "OrderID": 1,
@@ -93,7 +107,7 @@
   {
     "KeyID": "VNAReport",
     "Title": "VNA Báo cáo",
-    "OrderID": 3,
+    "OrderID": 4,
     "Action": [
       {
         "OrderID": 1,
@@ -114,7 +128,7 @@
   {
     "KeyID": "AirFlight",
     "Title": "Sân bay",
-    "OrderID": 4,
+    "OrderID": 5,
     "Action": [
       {
         "OrderID": 1,
@@ -156,7 +170,7 @@
   {
     "KeyID": "Bank",
     "Title": "Ngân hàng",
-    "OrderID": 5,
+    "OrderID": 6,
     "Action": [
       {
         "OrderID": 1,
@@ -198,7 +212,7 @@
   {
     "KeyID": "CardCredit",
     "Title": "Thẻ tín dụng",
-    "OrderID": 6,
+    "OrderID": 7,
     "Action": [
       {
         "OrderID": 1,
@@ -240,7 +254,7 @@
   {
     "KeyID": "Customer",
     "Title": "Khách hàng",
-    "OrderID": 7,
+    "OrderID": 8,
     "Action": [
       {
         "OrderID": 1,
@@ -282,7 +296,7 @@
   {
     "KeyID": "Permission",
     "Title": "Phân quyền",
-    "OrderID": 8,
+    "OrderID": 9,
     "Action": [
       {
         "OrderID": 1,
@@ -296,7 +310,7 @@
   {
     "KeyID": "Report",
     "Title": "Báo cáo",
-    "OrderID": 9,
+    "OrderID": 10,
     "Action": [
       {
         "OrderID": 1,
@@ -338,7 +352,7 @@
   {
     "KeyID": "Role",
     "Title": "Nhóm quyền",
-    "OrderID": 10,
+    "OrderID": 11,
     "Action": [
       {
         "OrderID": 1,
@@ -380,7 +394,7 @@
   {
     "KeyID": "Supplier",
     "Title": "Nhà cung cấp",
-    "OrderID": 11,
+    "OrderID": 12,
     "Action": [
       {
         "OrderID": 1,
@@ -422,7 +436,7 @@
   {
     "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
-    "OrderID": 12,
+    "OrderID": 13,
     "Action": [
       {
         "OrderID": 1,
@@ -448,9 +462,9 @@
     ]
   },
   {
-    "KeyID": "TransactionSpending",
+    "KeyID": "TransactionCustomerSpending",
     "Title": "G.D hạn mức(Khách hàng)",
-    "OrderID": 13,
+    "OrderID": 14,
     "Action": [
       {
         "OrderID": 1,
@@ -478,7 +492,7 @@
   {
     "KeyID": "TransactionUserSpending",
     "Title": "G.D hạn mức(Người dùng)",
-    "OrderID": 14,
+    "OrderID": 15,
     "Action": [
       {
         "OrderID": 1,
@@ -507,7 +521,7 @@
   {
     "KeyID": "User",
     "Title": "Người dùng",
-    "OrderID": 15,
+    "OrderID": 16,
     "Action": [
       {
         "OrderID": 1,
@@ -549,7 +563,7 @@
   {
     "KeyID": "WalletCustomerDepositHistory",
     "Title": "Lịch sử nạp tiền",
-    "OrderID": 16,
+    "OrderID": 17,
     "Action": [
       {
         "OrderID": 1,
@@ -570,7 +584,7 @@
   {
     "KeyID": "WalletCustomerSpendingHistory",
     "Title": "Lịch sử hạn mức (KH)",
-    "OrderID": 17,
+    "OrderID": 18,
     "Action": [
       {
         "OrderID": 1,
@@ -591,7 +605,7 @@
   {
     "KeyID": "WalletUserSpendingHistory",
     "Title": "Lịch sử hạn mức (Người dùng)",
-    "OrderID": 18,
+    "OrderID": 19,
     "Action": [
       {
         "OrderID": 1,

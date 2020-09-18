@@ -225,7 +225,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public TransactionUserSpending GetTransactionUserSpendingModel(string Id)
+        public TransactionUserSpendingResult GetTransactionUserSpendingModel(string Id)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace WebCore.Services
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionUserSpending WHERE ID = @Query";
-                return _connection.Query<TransactionUserSpending>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                return _connection.Query<TransactionUserSpendingResult>(sqlQuery, new { Query = Id }).FirstOrDefault();
             }
             catch
             {

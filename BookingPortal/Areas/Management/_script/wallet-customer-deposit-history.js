@@ -49,27 +49,30 @@ var WalletCustomerDepositHistoryController = {
                                 id = id.trim();
                             //  role
                             var customerId = item.CustomerID;
+                            var customerCodeID = item.CustomerCodeID;
+                            
                             var title = item.Title;
                             var summary = item.Summary;
                             var transactionId = item.TransactionID;
-                            var bankSent = item.BankSent;
-                            var bankIDSent = item.BankIDSent;
-                            var bankReceived = item.BankReceived;
-                            var bankIDReceived = item.BankIDReceived;
-                            var receivedDate = item.ReceivedDate;
                             var amount = item.Amount;
                             var status = item.Status;
                             var enabled = item.Enabled;
+                            var createdBy = item.CreatedBy;
+                            var createdDate = item.CreatedDate;
 
-                            title += ` thời gian: ${item.CreatedFullDate} `;
-                            // <td>${transactionId}, giao dịch từ N.Hàng ${bankSent} đến N.Hàng ${bankReceived} ${summary}</td>          
+                            var transactionTypeText = item.TransactionTypeText;
+                            var transactionOriginalText = item.TransactionOriginalText;
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${title}</td>                                    
+                                 <td>${customerCodeID}</td>                                     
+                                 <td>${title}</td>                                     
+                                 <td>${transactionOriginalText}</td>                                    
+                                 <td>${transactionTypeText}</td>                                    
                                  <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
-                                 <td class="text-center">${item.CreatedDate}</td>
+                                 <td class='text-right'>${createdBy}</td>                                    
+                                 <td class="text-center">${createdDate}</td>
                             </tr>`;
                         });
                         $('tbody#TblData').html(rowData);

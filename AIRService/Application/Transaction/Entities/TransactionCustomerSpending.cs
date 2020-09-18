@@ -4,6 +4,7 @@ using AL.NetFrame.Services;
 using Dapper;
 using System;
 using WebCore.Model.Entities;
+using WebCore.Services;
 
 namespace WebCore.Entities
 {
@@ -18,11 +19,12 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string UserIDSend { get; set; }
+        public string SupplierID { get; set; }
+        public string SupplierUserID { get; set; }
+        public string CustomerID { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
     }
@@ -30,12 +32,12 @@ namespace WebCore.Entities
     // model
     public class TransactionCustomerSpendingCreateModel
     {
+        public string SupplierID { get; set; }
         public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public double Amount { get; set; }
         public int Enabled { get; set; }
-
     }
     public class TransactionCustomerSpendingUpdateModel : TransactionCustomerSpendingCreateModel
     {
@@ -49,11 +51,28 @@ namespace WebCore.Entities
     {
 
         public string ID { get; set; }
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string UserIDSend { get; set; }
+        public string SupplierID { get; set; }
+        [NotMapped]
+        public string SupplierCodeID
+        {
+            get
+            {
+                return SupplierService.GetSupplierCodeID(SupplierID);
+            }
+        }
+        public string SupplierUserID { get; set; }
+        public string CustomerID { get; set; }
+        [NotMapped]
+        public string CustomerCodeID
+        {
+            get
+            {
+                return CustomerService.GetCustomerCodeID(CustomerID);
+            }
+        }
         public double Amount { get; set; }
         public bool Status { get; set; }
     }

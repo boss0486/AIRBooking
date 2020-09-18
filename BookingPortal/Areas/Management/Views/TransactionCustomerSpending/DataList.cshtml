@@ -13,17 +13,28 @@
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-none">Mã giao dịch</th>
                 <th class="tbcol-title">Tiêu đề</th>
-                <th class="tbcol-active">Số tiền</th>
+                <th class="tbcol-none">Nhà cung cấp</th>
+                <th class="tbcol-none">Khách hàng</th>
+                <th class="tbcol-none">Số tiền</th>
+                <th class="tbcol-active">T.Thái</th>
                 <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-action">
+                    ACT &nbsp;
+                    <a href="@Helper.Page.Navigate.PathCreate()">
+                        <i class="fa fa-plus-square" title="create"></i>
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody id="TblData"></tbody>
     </table>
 </div>
 <div id="Pagination"></div>
+
 @section scripts{
-    <script src="~/Areas/Management/_script/wallet-customer-spending-history.js"></script>
+    <script src="~/Areas/Management/_script/trans-spending.js"></script>
     <script type="text/javascript">
         $(function () {
             //var d = new Date();
@@ -56,7 +67,7 @@
                 $('#txtStartDate').val('');
                 $('#txtEndDate').val('');
             });
-            WalletCustomerSpendingHistoryController.DataList(1);
+            TransactionSpendingController.DataList(1);
         });
     </script>
 }

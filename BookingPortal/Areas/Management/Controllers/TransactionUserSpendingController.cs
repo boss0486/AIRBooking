@@ -31,7 +31,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             TransactionUserSpendingService service = new TransactionUserSpendingService();
-            var model = service.GetTransactionUserSpendingModel(id);
+            TransactionUserSpendingResult model = service.GetTransactionUserSpendingModel(id);
             if (model != null)
                 return View(model);
             //

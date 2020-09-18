@@ -4,6 +4,7 @@ using AL.NetFrame.Services;
 using Dapper;
 using System;
 using WebCore.Model.Entities;
+using WebCore.Services;
 
 namespace WebCore.Entities
 {
@@ -53,12 +54,38 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
         public string CustomerID { get; set; }
+        [NotMapped]
+        public string CustomerCodeID
+        {
+            get
+            {
+                return CustomerService.GetCustomerCodeID(CustomerID);
+            }
+        }
+
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
         public double Amount { get; set; }
-        public int TransactionType { get; set; }
+        public int TransactionType { get; set; } 
+        [NotMapped]
+        public string TransactionTypeText
+        {
+            get
+            {
+                return WalletCustomerDepositHistoryService.TransactionTypeText(TransactionType);
+            }
+        }
+
         public int TransactionOriginal { get; set; }
+        [NotMapped]
+        public string TransactionOriginalText
+        {
+            get
+            {
+                return WalletCustomerDepositHistoryService.TransactionOriginalText(TransactionType);
+            }
+        } 
         public string TransactionOriginalID { get; set; }
         public int Status { get; set; }
     }

@@ -135,5 +135,26 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
+
+        [HttpPost]
+        [Route("Action/GetCustomer-By-SuplierID")]
+        [IsManage(skip: true)]
+        public ActionResult GetCustomerBySuplierID(SupplierIDModel model)
+        {
+            try
+            {
+                var service = new CustomerService();
+                var data = service.GetCustomerBySupplierIDOption(model.ID);
+                if (data.Count == 0)
+                    return Notifization.NotFound(MessageText.NotFound);
+                //
+                return Notifization.Option("OK", data);
+
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
     }
 }

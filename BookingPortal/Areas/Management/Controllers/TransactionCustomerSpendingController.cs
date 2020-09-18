@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("TransactionSpending")]
-    public class TransactionSpendingController : CMSController
+    [RoutePrefix("TransactionCustomerSpending")]
+    public class TransactionCustomerSpendingController : CMSController
     {
         // GET: BackEnd/bank
         public ActionResult DataList()
@@ -31,7 +31,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             TransactionCustomerSpendingService service = new TransactionCustomerSpendingService();
-            var model = service.GetTransactionSpendingModel(id);
+            TransactionCustomerSpendingResult model = service.GetTransactionSpendingModel(id);
             if (model != null)
                 return View(model);
             //

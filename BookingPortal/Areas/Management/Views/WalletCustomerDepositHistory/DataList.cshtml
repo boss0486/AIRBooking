@@ -6,15 +6,19 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 
-@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
+@Html.Partial("~/Areas/Management/Views/_ViewSearchForHistoryPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-title">Tiêu đề</th>
+                <th class="tbcol-title">MKH</th>
+                <th class="tbcol-none">Tiêu đề</th>
+                <th class="tbcol-none">Hình thức G.D</th>
+                <th class="tbcol-none">Loại G.D</th>
                 <th class="tbcol-active">Số tiền</th>
+                <th class="tbcol-active">Người chuyển</th>
                 <th class="tbcol-date">Ngày tạo</th>
             </tr>
         </thead>

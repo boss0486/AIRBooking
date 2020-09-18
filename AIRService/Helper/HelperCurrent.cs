@@ -25,6 +25,38 @@ namespace Helper.Current
             }
         }
 
+        public static int UserRoleInApplication
+        {
+            get
+            {
+                try
+                {
+                    if (Helper.Current.UserLogin.IsCMSUser)
+                        return 1;
+                    //
+                    if (Helper.Current.UserLogin.IsAdminInApplication)
+                        return 2;
+                    //
+                    if (Helper.Current.UserLogin.IsAdminSupplierLogged())
+                        return 3;
+                    //
+                    if (Helper.Current.UserLogin.IsSupplierLogged())
+                        return 4;
+                    //
+                    if (Helper.Current.UserLogin.IsAdminCustomerLogged())
+                        return 5;
+                    //
+                    if (Helper.Current.UserLogin.IsCustomerLogged())
+                        return 6;
+                    //
+                    return 0;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+        }
         public static bool IsCMSUser
         {
             get

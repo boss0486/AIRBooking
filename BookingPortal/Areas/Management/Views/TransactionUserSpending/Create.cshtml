@@ -18,7 +18,7 @@
                         <label class="form-label">Khách hàng:</label>
                         <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
                             <option value="">-Lựa chọn-</option>
-                            @Html.Raw(CustomerService.DropdownList(""))
+                            @Html.Raw(CustomerService.DropdownListWithTypeID((int)WebCore.ENM.CustomerEnum.CustomerType.AGENT, ""))
                         </select>
                         <span id="lblCustomer" class="message msg-box"></span>
                     </div>
@@ -110,7 +110,7 @@
             <span id="lblSummary" class="message msg-box"></span>
         </div>
         <div class="form-group ">
-            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" checked data-notreload="true" />
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" checked data-notreload="true" disabled />
             <label for="cbxActive">Hoàn tất giao dịch</label>
             <span id="lblActive" class="message msg-box"></span>
         </div>

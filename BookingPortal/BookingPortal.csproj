@@ -146,7 +146,7 @@
     <Compile Include="Areas\Management\Controllers\RoleController.cs" />
     <Compile Include="Areas\Management\Controllers\SupplierController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositController.cs" />
-    <Compile Include="Areas\Management\Controllers\TransactionSpendingController.cs" />
+    <Compile Include="Areas\Management\Controllers\TransactionCustomerSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
     <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
@@ -817,36 +817,8 @@
     <Content Include="_themes\manage\plugins\momentjs\ender.js" />
     <Content Include="_themes\manage\plugins\momentjs\moment.js" />
     <Content Include="_themes\manage\plugins\momentjs\package.js" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\area-as-line.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\area.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\bar-colors.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\bar-no-axes.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\bar.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\days.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\decimal-custom-hover.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\diagonal-xlabels-bar.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\diagonal-xlabels.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\donut-colors.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\donut-formatter.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\donut.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\dst.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\events.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\goals.html" />
     <Content Include="_themes\manage\plugins\morrisjs\examples\lib\example.css" />
     <Content Include="_themes\manage\plugins\morrisjs\examples\lib\example.js" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\months-no-smooth.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\negative.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\no-grid.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\non-continuous.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\non-date.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\quarters.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\resize.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\stacked_bars.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\timestamps.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\updating.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\weeks.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\years.html" />
-    <Content Include="_themes\manage\plugins\morrisjs\examples\_template.html" />
     <Content Include="_themes\manage\plugins\morrisjs\Gruntfile.js" />
     <Content Include="_themes\manage\plugins\morrisjs\morris.css" />
     <Content Include="_themes\manage\plugins\morrisjs\morris.js" />
@@ -940,7 +912,7 @@
     <Content Include="Areas\Management\Views\TransactionDeposit\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\Create.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionSpending\Create.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionCustomerSpending\Create.cshtml" />
     <Content Include="Areas\Management\Views\TransactionUserSpending\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\DataList.cshtml" />
@@ -1083,7 +1055,6 @@
     <Content Include="_themes\manage\plugins\morrisjs\.travis.yml" />
     <Content Include="_themes\manage\plugins\morrisjs\bower.json" />
     <Content Include="_themes\manage\plugins\morrisjs\bower.travis.json" />
-    <Content Include="_themes\manage\plugins\morrisjs\less\morris.core.less" />
     <Content Include="_themes\manage\plugins\morrisjs\lib\morris.area.coffee" />
     <Content Include="_themes\manage\plugins\morrisjs\lib\morris.bar.coffee" />
     <Content Include="_themes\manage\plugins\morrisjs\lib\morris.coffee" />
@@ -1302,6 +1273,12 @@
     <Content Include="Areas\Management\Views\Account\Details.cshtml" />
     <Content Include="Areas\Development\Views\User\Profile.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionPayment\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionCustomerSpending\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionUserSpending\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionCustomerSpending\Details.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionUserSpending\Details.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewSearchForHistoryPatial.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

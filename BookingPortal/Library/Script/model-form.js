@@ -3,11 +3,11 @@
 
 $(document).ajaxStart(function () {
     Loading.ShowLoading();
-    ajaxStatus++;  
+    ajaxStatus++;
     console.log("ajaxStatus:" + ajaxStatus);
 
 }).ajaxComplete(function () {
-    ajaxStatus--;  
+    ajaxStatus--;
     console.log("ajaxStatus:" + ajaxStatus);
 });
 
@@ -153,6 +153,15 @@ class HelperModel {
             return action;
         }
         return "";
+    }
+    static AccessInApplication() {
+
+        var _val = $('#txtAccessInApplication').val();
+        if (_val == undefined || _val == null) {
+            return -1;
+        }
+        else
+            return parseInt(_val);
     }
 }
 
