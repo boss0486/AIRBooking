@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>TicketingDocumentServicesRQ</eb:Service>
+      <eb:Action>TicketingDocumentServicesRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>481090229576530283</eb:MessageId>
+        <eb:Timestamp>2020-09-21T06:22:37</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESA!ICESMSLB\/RES.LB!1600669349873!981!285!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <GetTicketingDocumentRS xmlns="http://www.sabre.com/ns/Ticketing/DC" Version="3.12.0">
+      <STL:STL_Header.RS xmlns:STL="http://services.sabre.com/STL/v01" messageID="TKTHLP636-62515-1307455066-1600669357910-3761589-tktdoc" timeStamp="2020-09-21T01:22:37">
+        <STL:OrchestrationID seq="0">TKTHLP636-62515-1307455066-1600669357910-3761589-tktdoc</STL:OrchestrationID>
+        <STL:Results>
+          <STL:Error status="NotProcessed" timeStamp="2020-09-21T01:22:37" type="Validation">
+            <STL:Source>TktDoc</STL:Source>
+            <STL:System>TKT-WS</STL:System>
+            <STL:SystemSpecificResults>
+              <STL:ErrorMessage code="21220">Request content violates business validation rules: Only up to 4 documents can be retrieved at once using D (details) or A (abbreviated) result type (failed rule: CheckNumberOfDocumentForOtherThanCustom)</STL:ErrorMessage>
+              <STL:ShortText>Request content violates business validation rules</STL:ShortText>
+            </STL:SystemSpecificResults>
+          </STL:Error>
+        </STL:Results>
+      </STL:STL_Header.RS>
+    </GetTicketingDocumentRS>
+  </soap-env:Body>
+</soap-env:Envelope>

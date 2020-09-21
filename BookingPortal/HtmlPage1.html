@@ -1,53 +1,96 @@
-﻿    
-stringXML+="<?xml version='1.0' encoding='UTF-8' ?>";
-stringXML+="<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
-stringXML+="    <SOAP-ENV:Header>";
-stringXML+="        <ns1:MessageHeader ns1:version='' xmlns:ns1='http://www.ebxml.org/namespaces/messageHeader'>";
-stringXML+="            <ns1:From>";
-stringXML+="                <ns1:PartyId>999999</ns1:PartyId>";
-stringXML+="            </ns1:From>";
-stringXML+="            <ns1:To>";
-stringXML+="                <ns1:PartyId>123123</ns1:PartyId>";
-stringXML+="            </ns1:To>";
-stringXML+="            <ns1:CPAId>IPCC</ns1:CPAId>";
-stringXML+="            <ns1:ConversationId>ABC123</ns1:ConversationId>";
-stringXML+="            <ns1:Service>TKT_AsrServicesRQ</ns1:Service>";
-stringXML+="            <ns1:Action>TKT_AsrServicesRQ</ns1:Action>";
-stringXML+="            <ns1:MessageData>";
-stringXML+="                <ns1:MessageId>1000</ns1:MessageId>";
-stringXML+="                <ns1:MessageId>1000</ns1:MessageId>";
-stringXML+="                <ns1:Timestamp>2001-02-15T11:15:12Z</ns1:Timestamp>";
-stringXML+="            </ns1:MessageData>";
-stringXML+="        </ns1:MessageHeader>";
-stringXML+="        <ns1:Security xmlns:ns1='http://schemas.xmlsoap.org/ws/2002/12/secext'>";
-stringXML+="            <ns1:BinarySecurityToken></ns1:BinarySecurityToken>";
-stringXML+="        </ns1:Security>";
-stringXML+="    </SOAP-ENV:Header>";
-stringXML+="    <SOAP-ENV:Body>";
-stringXML+="        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
-stringXML+="            <Header />";
-stringXML+="            <SelectionCriteria>";
-stringXML+="                <TicketingProvider>7F</TicketingProvider>";
-stringXML+="                <DocumentNumber>2452104442772</DocumentNumber>";
-stringXML+="            </SelectionCriteria>";
-stringXML+="        </DetailRQ>";
-stringXML+="    </SOAP-ENV:Body>";
-stringXML+="</SOAP-ENV:Envelope>";
+﻿stringXML+="
+<?xml version='1.0' encoding='UTF-8' ?>
+";
+stringXML+="<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+    ";
+    stringXML+="    <SOAP-ENV:Header>
+        ";
+        stringXML+="        <ns1:MessageHeader ns1:version='' xmlns:ns1='http://www.ebxml.org/namespaces/messageHeader'>
+            ";
+            stringXML+="            <ns1:From>
+                ";
+                stringXML+="                <ns1:PartyId>999999</ns1:PartyId>";
+                stringXML+="
+            </ns1:From>";
+            stringXML+="            <ns1:To>
+                ";
+                stringXML+="                <ns1:PartyId>123123</ns1:PartyId>";
+                stringXML+="
+            </ns1:To>";
+            stringXML+="            <ns1:CPAId>IPCC</ns1:CPAId>";
+            stringXML+="            <ns1:ConversationId>ABC123</ns1:ConversationId>";
+            stringXML+="            <ns1:Service>TKT_AsrServicesRQ</ns1:Service>";
+            stringXML+="            <ns1:Action>TKT_AsrServicesRQ</ns1:Action>";
+            stringXML+="            <ns1:MessageData>
+                ";
+                stringXML+="                <ns1:MessageId>1000</ns1:MessageId>";
+                stringXML+="                <ns1:MessageId>1000</ns1:MessageId>";
+                stringXML+="                <ns1:Timestamp>2001-02-15T11:15:12Z</ns1:Timestamp>";
+                stringXML+="
+            </ns1:MessageData>";
+            stringXML+="
+        </ns1:MessageHeader>";
+        stringXML+="        <ns1:Security xmlns:ns1='http://schemas.xmlsoap.org/ws/2002/12/secext'>
+            ";
+            stringXML+="            <ns1:BinarySecurityToken></ns1:BinarySecurityToken>";
+            stringXML+="
+        </ns1:Security>";
+        stringXML+="
+    </SOAP-ENV:Header>";
+    stringXML+="    <SOAP-ENV:Body>
+        ";
+        stringXML+="        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>
+            ";
+            stringXML+="            <Header />";
+            stringXML+="            <SelectionCriteria>
+                ";
+                stringXML+="                <TicketingProvider>7F</TicketingProvider>";
+                stringXML+="                <DocumentNumber>2452104442772</DocumentNumber>";
+                stringXML+="
+            </SelectionCriteria>";
+            stringXML+="
+        </DetailRQ>";
+        stringXML+="
+    </SOAP-ENV:Body>";
+    stringXML+="
+</SOAP-ENV:Envelope>";
 
 
 
 
 
 
-            stringXML+="<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
-            stringXML+="    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
-            stringXML+="    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
-            stringXML+="    <SearchParameters>";
-            stringXML+="        <TicketingProvider>VA</TicketingProvider>";
-            stringXML+="        <DocumentNumber>7958216920632</DocumentNumber>";
-            stringXML+="        <DocumentNumber>7958216920633</DocumentNumber>";
-            stringXML+="    </SearchParameters>";
-            stringXML+="</GetTicketingDocumentRQ>";
+            stringXML+="<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>
+    ";
+    stringXML+="    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+    stringXML+="    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+    stringXML+="    <SearchParameters>
+        ";
+        stringXML+="        <TicketingProvider>VA</TicketingProvider>";
+        stringXML+="        <DocumentNumber>7958216920632</DocumentNumber>";
+        stringXML+="        <DocumentNumber>7958216920633</DocumentNumber>";
+        stringXML+="
+    </SearchParameters>";
+    stringXML+="
+</GetTicketingDocumentRQ>";
 
 
 
+
+
+        "7382435519474",
+        "7382435507975",
+        "7382435507976",
+        "7382435507977",
+        "7382435507983",
+        "7382435507984",
+        "7382435512115",
+        "7382435513897",
+        "7382435519902",
+        "7382435519903",
+        "7382435521980",
+        "7382435521983",
+        "7382435519602",
+        "7382435519603",
+        "7382435509846",
+        "7382435516413"

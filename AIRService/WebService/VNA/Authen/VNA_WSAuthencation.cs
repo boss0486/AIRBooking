@@ -14,10 +14,10 @@ namespace AIRService.WebService.VNA.Authen
         public string ORGANIZATION = "ABK";
         public string DOMAIN = "VN";
 
-        ////public string USERNAME = "7845";
-        ////public string PASSWORD = "DAN6688";
-        ////public string ORGANIZATION = "AZJ";
-        ////public string DOMAIN = "VN";
+        //public string USERNAME = "007845";
+        //public string PASSWORD = "DUCANH11";
+        //public string ORGANIZATION = "AZJ";
+        //public string DOMAIN = "VN";
 
     }
 }

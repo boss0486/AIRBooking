@@ -11,6 +11,12 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public DateTime ReportDate { get; set; }
         public string EmpNumber { get; set; }
     }
+
+    public class EmpReportDate
+    {
+        public string ReportDate { get; set; }
+    }
+
     public class EmpReportModel : TokenModel
     {
         public DateTime ReportDate { get; set; }
@@ -19,7 +25,8 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
     public class ReportDetailsModel : TokenModel
     {
         public DateTime ReportDate { get; set; }
-        public string DocumentNumber { get; set; }
+        public List<string> DocumentNumbers { get; set; }
+        public  string EmpNumber { get; set; }
     }
 
     public class ReportSaleSummaryTransaction
@@ -45,7 +52,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public double TaxAmount { get; set; }
         public double TotalAmount { get; set; }
     }
-    public class ReportSummaryDetails
+    public class ReportSummaryDetail
     {
         public string DocumentNumber { get; set; }
         public string AssociatedDocument { get; set; }
@@ -70,15 +77,24 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public bool Status { get; set; }
         public List<ReportSaleSummaryTransaction> SaleSummaryTransaction { get; set; }
     }
-    public class ReportSaleSummaryDetailsResult
+    public class ReportSaleSummaryDetailResult
     {
         public string DocumentNumber { get; set; }
         public bool Status { get; set; }
-        public ReportSummaryDetails SaleSummaryDetails { get; set; }
+        public bool StatusGetDetail { get; set; }
+        public ReportSummaryDetail SaleSummaryDetail { get; set; }
     }
     public class ReportEprResult
     {
         public ReportSaleSummaryResult SaleSummary { get; set; }
-        public List<ReportSaleSummaryDetailsResult> SaleSummaryDetails { get; set; }
     }
+
+    //
+    public class ReportEprModel
+    {
+        public string EmployeeNumber { get; set; }
+        public string DocumentNumber { get; set; }
+        public string ReportDate { get; set; }
+    }
+
 }

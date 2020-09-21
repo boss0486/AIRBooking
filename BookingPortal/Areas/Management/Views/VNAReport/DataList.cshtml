@@ -5,17 +5,46 @@
 @using WebCore.Services;
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
-
-@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+    <div class="col-md-2">
+        <div class="form-group">
+            <input type="text" class="form-control" id="txtEmployeeNumber" placeholder="Employee number" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <input type="text" class="form-control" id="txtDocummentNumber" placeholder="Documment number" />
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="input-group">
+            <input type="text" class="form-control" id="txtReportDate" placeholder="01-11-@DateTime.Now.Year" value="01-01-2020" />
+            <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+    <div class="col-md-1 col-md-offset-3 ">
+        <div class="form-group">
+            <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary w-100" style="width:100%">
+                Export
+            </a>
+        </div>
+    </div>
+</div>
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-title">Tiêu đề</th>
-                <th class="tbcol-active">Số tiền</th>
-                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-title">Mã nhân viên/ Doc Number</th>
+                <th class="tbcol-active">Tên hành khách</th>
+                <th class="tbcol-active">Mã PNA</th>
+                <th class="tbcol-none report-trans">TicketPrinterLniata</th>
+                <th class="tbcol-none report-trans">T.Gian</th>
+                <th class="tbcol-none report-trans">FareAmount</th>
+                <th class="tbcol-none report-trans">FopCode</th>
+                <th class="tbcol-none report-trans">TaxAmount</th>
+                <th class="tbcol-none report-trans">TotalAmount</th>
             </tr>
         </thead>
         <tbody id="TblData"></tbody>
@@ -24,39 +53,4 @@
 <div id="Pagination"></div>
 @section scripts{
     <script src="~/Areas/Management/_script/vna-report.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            //var d = new Date();
-            //d.setDate(d.getDate() - 3);
-            //var today = d;
-            //var dd = String(today.getDate()).padStart(2, '0');
-            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            //var yyyy = today.getFullYear();
-            //today = dd + "-" + mm + "-" + yyyy;
-
-            //$('#txtStartDate').val(today);
-            $('#txtStartDate').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: '01-07-2020',
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
-                /// $('#selectDate').datepicker('hide');
-            });
-            $('#txtEndDate').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: $('#txtStartDate').val(),
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
-                //$('#ddlTimeExpress').datepicker('hide');
-            });
-            //
-            $(document).on('change', '#ddlTimeExpress', function () {
-                $('#txtStartDate').val('');
-                $('#txtEndDate').val('');
-            });
-            //WalletCustomerDepositHistoryController.DataList(1);
-        });
-    </script>
 }

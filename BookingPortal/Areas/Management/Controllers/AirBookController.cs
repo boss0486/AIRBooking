@@ -249,8 +249,6 @@ namespace WebApplication.Management.Controllers
             }
         }
 
-
-
         [HttpPost]
         [Route("Action/GetFeeBasic")]
         public ActionResult GetFeeBasic(List<FeeTaxBasicModel> models)
@@ -369,7 +367,11 @@ namespace WebApplication.Management.Controllers
             }
         }
 
-        [HttpGet]
+
+
+        ///
+        [HttpPost]
+        [Route("Action/TestLogin")]
         public ActionResult TestLogin()
         {
             try

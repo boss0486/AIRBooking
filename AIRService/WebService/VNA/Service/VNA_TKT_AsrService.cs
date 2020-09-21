@@ -160,7 +160,7 @@ namespace AIRService.WS.Service
                         {
                             foreach (XmlNode itemSale in salesNode.ChildNodes)
                             {
-                                if (itemSale.LocalName =="Transaction")
+                                if (itemSale.LocalName == "Transaction")
                                 {
                                     XmlNodeList xmlNodeList = itemSale.ChildNodes;
                                     if (xmlNodeList != null)
@@ -196,7 +196,7 @@ namespace AIRService.WS.Service
                                             if (localName == "TicketPrinterLniata")
                                                 ticketPrinterLniata = item.InnerText;
                                             //
-                                            if (localName=="TransactionTime")
+                                            if (localName == "TransactionTime")
                                                 transactionTime = item.InnerText;
                                             //      
                                             if (localName == "ExceptionItem")
@@ -205,7 +205,7 @@ namespace AIRService.WS.Service
                                             if (localName == "DecoupleItem")
                                                 decoupleItem = Convert.ToBoolean(item.InnerText);
                                             //     
-                                            if (localName== "TicketStatusCode")
+                                            if (localName == "TicketStatusCode")
                                                 ticketStatusCode = item.InnerText;
                                             //  
                                             if (localName == "IsElectronicTicket")
@@ -226,7 +226,7 @@ namespace AIRService.WS.Service
                                                         if (ssfopLocalName == "CurrencyCode")
                                                             ePRReportTransactionSSFop.CurrencyCode = itemSSFop.InnerText;
                                                         //
-                                                        if (ssfopLocalName  == "FareAmount")
+                                                        if (ssfopLocalName == "FareAmount")
                                                         {
                                                             if (!string.IsNullOrWhiteSpace(itemSSFop.InnerText))
                                                             {
@@ -292,7 +292,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public ReportSaleSummaryDetailsResult EprReportSaleReportDetails(ReportDetailsModel model)
+        public ReportSaleSummaryDetailResult EprReportSaleReportDetails(ReportDetailsModel model)
         {
             try
             {
@@ -301,26 +301,29 @@ namespace AIRService.WS.Service
                 var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
                 soapEnvelopeXml.Load(path);
                 soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TKT_AsrServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TKT_AsrServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
                 soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
                 soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
                 var stringXML = "";
-                stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
-                stringXML += "            <Header />";
-                stringXML += "            <SelectionCriteria>";
-                stringXML += "                <TicketingProvider>VN</TicketingProvider>";
-                stringXML += "                <DocumentNumber>" + model.DocumentNumber + "</DocumentNumber>";
-                stringXML += "            </SelectionCriteria>";
-                stringXML += "        </DetailRQ>";
+                stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+                stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <SearchParameters>";
+                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+                foreach (var item in model.DocumentNumbers)
+                {
+                    stringXML += "<DocumentNumber>" + item + "</DocumentNumber>";
+                }
+                stringXML += "    </SearchParameters>";
+                stringXML += "</GetTicketingDocumentRQ>";
                 child.InnerXml = stringXML;
                 soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
                 using (Stream stream = request.GetRequestStream())
                 {
                     soapEnvelopeXml.Save(stream);
                 }
-                //
                 using (WebResponse response = request.GetResponse())
                 {
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
@@ -328,147 +331,220 @@ namespace AIRService.WS.Service
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
-
+                        //
                         XmlWriterSettings settings = new XmlWriterSettings();
                         settings.Indent = true;
                         // Save the document to a file and auto-indent the output.
-                        string fileName = "" + model.DocumentNumber + "_details.xml";
+                        string fileName = model.EmpNumber + "_ticketingdocumentrq_details.xml";
                         var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
                         XmlWriter writer = XmlWriter.Create(urlFile, settings);
                         soapEnvelopeXml.Save(writer);
+
+                        // ********************************************************************************************
+                        ReportSaleSummaryDetailResult reportSaleSummaryDetailResult = new ReportSaleSummaryDetailResult();
+                        return new ReportSaleSummaryDetailResult
+                        {
+                            DocumentNumber = "ok",
+                            Status = true,
+                            SaleSummaryDetail = null
+                        };
+
+
                         //
 
-                        // data test ################################################################################################################################################
-                        //var urlFileTest = HttpContext.Current.Server.MapPath(@"~/Team/DetailRS.xml");
-                        //soapEnvelopeXml = new XmlDocument();
-                        //soapEnvelopeXml.Load(urlFileTest);
-                        // data test ################################################################################################################################################
-                        XmlNode salesNode = soapEnvelopeXml.GetElementsByTagName("ns:DetailRS")[0];
-                        ReportSummaryDetails reportSummaryDetails = new ReportSummaryDetails();
-                        if (salesNode != null && salesNode.ChildNodes.Count > 0)
-                        {
-                            foreach (XmlNode itemDetails in salesNode.ChildNodes)
-                            {
-                                if (itemDetails.LocalName == "AssociatedDocInfo")
-                                {
-                                    XmlNodeList xmlNodeList = itemDetails.ChildNodes;
-                                    if (xmlNodeList != null)
-                                    {
-                                        string name = string.Empty;
-                                        string documentNumber = model.DocumentNumber;
-                                        string associatedDocument = string.Empty;
-                                        string reasonForIssuanceCode = string.Empty;
-                                        string reasonForIssuanceDesc = string.Empty;
-                                        int couponNumber = 0;
-                                        string ticketingProvider = string.Empty;
-                                        int flightNumber = 0;
-                                        string classOfService = string.Empty;
-                                        DateTime departureDtm = DateTime.Now;
-                                        DateTime arrivalDtm = DateTime.Now;
-                                        string departureCity = string.Empty;
-                                        string arrivalCity = string.Empty;
-                                        string couponStatus = string.Empty;
-                                        string fareBasis = string.Empty;
-                                        string baggageAllowance = string.Empty;
-                                        //
-                                        foreach (XmlNode item in xmlNodeList)
-                                        {
-                                            string localName = item.LocalName;
-                                            //
-                                            if (localName == "AssociatedDocument")
-                                                associatedDocument = item.InnerText;
-                                            //
-                                            if (localName == "ReasonForIssuanceCode")
-                                                reasonForIssuanceCode = item.InnerText;
-                                            //
-                                            if (localName == "ReasonForIssuanceDesc")
-                                                reasonForIssuanceDesc = item.InnerText;
-                                            //
-                                            if (localName == "CouponDetail")
-                                            {
-                                                XmlNodeList couponDetailNodeList = item.ChildNodes;
-                                                if (couponDetailNodeList.Count > 0)
-                                                {
-                                                    foreach (XmlNode couponDetailNode in couponDetailNodeList)
-                                                    {
-                                                        localName = couponDetailNode.LocalName;
-                                                        string valText = couponDetailNode.InnerText;
-
-                                                        if (localName == "CouponNumber" && !string.IsNullOrWhiteSpace(valText))
-                                                            couponNumber = Convert.ToInt32(valText);
-                                                        //
-                                                        if (localName == "TicketingProvider")
-                                                            ticketingProvider = valText;
-                                                        //
-                                                        if (localName == "FlightNumber" && !string.IsNullOrWhiteSpace(valText))
-                                                            flightNumber = Convert.ToInt32(valText);
-                                                        //      
-                                                        if (localName == "ClassOfService")
-                                                            classOfService = valText;
-                                                        // 
-                                                        if (localName == "DepartureDtm" && !string.IsNullOrWhiteSpace(valText))
-                                                            departureDtm = Helper.VNALibrary.ConvertToDateTime(valText);
-                                                        // 
-                                                        if (localName == "ArrivalDtm" && !string.IsNullOrWhiteSpace(valText))
-                                                            arrivalDtm = Helper.VNALibrary.ConvertToDateTime(valText);
-                                                        // 
-                                                        if (localName == "DepartureCity")
-                                                            departureCity = valText;
-                                                        // 
-                                                        if (localName == "ArrivalCity")
-                                                            arrivalCity = valText;
-                                                        // 
-                                                        if (localName == "CouponStatus")
-                                                            couponStatus = valText;
-                                                        //
-                                                        if (localName == "FareBasis")
-                                                            fareBasis = valText;
-                                                        // 
-                                                        if (localName == "BaggageAllowance")
-                                                            baggageAllowance = valText;
-                                                        //
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        reportSummaryDetails = new ReportSummaryDetails
-                                        {
-                                            DocumentNumber = documentNumber,
-                                            AssociatedDocument = associatedDocument,
-                                            ReasonForIssuanceCode = reasonForIssuanceCode,
-                                            ReasonForIssuanceDesc = reasonForIssuanceDesc,
-                                            CouponNumber = couponNumber,
-                                            TicketingProvider = ticketingProvider,
-                                            FlightNumber = flightNumber,
-                                            ClassOfService = classOfService,
-                                            DepartureDtm = Convert.ToString(departureDtm),
-                                            ArrivalDtm = Convert.ToString(arrivalDtm),
-                                            DepartureCity = departureCity,
-                                            ArrivalCity = arrivalCity,
-                                            CouponStatus = couponStatus,
-                                            FareBasis = fareBasis,
-                                            BaggageAllowance = baggageAllowance
-                                        };
-                                    }
-                                }
-                            }
-                        }
-                        return new ReportSaleSummaryDetailsResult
-                        {
-                            DocumentNumber = model.DocumentNumber,
-                            Status = true,
-                            SaleSummaryDetails = reportSummaryDetails
-                        };
                     }
                 }
+
+
+
+                //HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+                //XmlDocument soapEnvelopeXml = new XmlDocument();
+                //var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+                //soapEnvelopeXml.Load(path);
+                //soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                //soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TKT_AsrServicesRQ";
+                //soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TKT_AsrServicesRQ";
+                //soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
+                //soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
+                //XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+                //var stringXML = "";
+                //stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+                //stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+                //stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+                //stringXML += "    <SearchParameters>";
+                //stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+                //foreach (var item in model.DocumentNumbers)
+                //{
+                //    stringXML += "        <DocumentNumber>" + item + "</DocumentNumber>";
+                //}
+                //stringXML += "    </SearchParameters>";
+                //stringXML += "</GetTicketingDocumentRQ>";
+
+                //var stringXML = "";
+                //stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
+                //stringXML += "            <Header />";
+                //stringXML += "            <SelectionCriteria>";
+                //stringXML += "                <TicketingProvider>VN</TicketingProvider>";
+                //stringXML += "                <DocumentNumber>" + model.DocumentNumber + "</DocumentNumber>";
+                //stringXML += "            </SelectionCriteria>";
+                //stringXML += "        </DetailRQ>";
+
+                //////child.InnerXml = stringXML;
+                //////soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+                //////using (Stream stream = request.GetRequestStream())
+                //////{
+                //////    soapEnvelopeXml.Save(stream);
+                //////}
+                ////////
+                //////using (WebResponse response = request.GetResponse())
+                //////{
+                //////    using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                //////    {
+                //////        string soapResult = rd.ReadToEnd();
+                //////        soapEnvelopeXml = new XmlDocument();
+                //////        soapEnvelopeXml.LoadXml(soapResult);
+
+                //////        XmlWriterSettings settings = new XmlWriterSettings();
+                //////        settings.Indent = true;
+                //////        // Save the document to a file and auto-indent the output.
+                //////        string fileName = "" + model.DocumentNumbers + "_details.xml";
+                //////        var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                //////        XmlWriter writer = XmlWriter.Create(urlFile, settings);
+                //////        soapEnvelopeXml.Save(writer);
+
+                //////        //
+
+                //////        // data test ################################################################################################################################################
+                //////        //var urlFileTest = HttpContext.Current.Server.MapPath(@"~/Team/DetailRS.xml");
+                //////        //soapEnvelopeXml = new XmlDocument();
+                //////        //soapEnvelopeXml.Load(urlFileTest);
+                //////        // data test ################################################################################################################################################
+                //////        XmlNode salesNode = soapEnvelopeXml.GetElementsByTagName("TT:GetTicketingDocumentRQ")[0];
+                //////        ReportSummaryDetail reportSummaryDetails = new ReportSummaryDetail();
+                //////        //if (salesNode != null && salesNode.ChildNodes.Count > 0)
+                //////        //{
+                //////        //    foreach (XmlNode itemDetails in salesNode.ChildNodes)
+                //////        //    {
+                //////        //        if (itemDetails.LocalName == "AssociatedDocInfo")
+                //////        //        {
+                //////        //            XmlNodeList xmlNodeList = itemDetails.ChildNodes;
+                //////        //            if (xmlNodeList != null)
+                //////        //            {
+                //////        //                string name = string.Empty;
+                //////        //                string documentNumber = model.DocumentNumbers;
+                //////        //                string associatedDocument = string.Empty;
+                //////        //                string reasonForIssuanceCode = string.Empty;
+                //////        //                string reasonForIssuanceDesc = string.Empty;
+                //////        //                int couponNumber = 0;
+                //////        //                string ticketingProvider = string.Empty;
+                //////        //                int flightNumber = 0;
+                //////        //                string classOfService = string.Empty;
+                //////        //                DateTime departureDtm = DateTime.Now;
+                //////        //                DateTime arrivalDtm = DateTime.Now;
+                //////        //                string departureCity = string.Empty;
+                //////        //                string arrivalCity = string.Empty;
+                //////        //                string couponStatus = string.Empty;
+                //////        //                string fareBasis = string.Empty;
+                //////        //                string baggageAllowance = string.Empty;
+                //////        //                //
+                //////        //                foreach (XmlNode item in xmlNodeList)
+                //////        //                {
+                //////        //                    string localName = item.LocalName;
+                //////        //                    //
+                //////        //                    if (localName == "AssociatedDocument")
+                //////        //                        associatedDocument = item.InnerText;
+                //////        //                    //
+                //////        //                    if (localName == "ReasonForIssuanceCode")
+                //////        //                        reasonForIssuanceCode = item.InnerText;
+                //////        //                    //
+                //////        //                    if (localName == "ReasonForIssuanceDesc")
+                //////        //                        reasonForIssuanceDesc = item.InnerText;
+                //////        //                    //
+                //////        //                    if (localName == "CouponDetail")
+                //////        //                    {
+                //////        //                        XmlNodeList couponDetailNodeList = item.ChildNodes;
+                //////        //                        if (couponDetailNodeList.Count > 0)
+                //////        //                        {
+                //////        //                            foreach (XmlNode couponDetailNode in couponDetailNodeList)
+                //////        //                            {
+                //////        //                                localName = couponDetailNode.LocalName;
+                //////        //                                string valText = couponDetailNode.InnerText;
+
+                //////        //                                if (localName == "CouponNumber" && !string.IsNullOrWhiteSpace(valText))
+                //////        //                                    couponNumber = Convert.ToInt32(valText);
+                //////        //                                //
+                //////        //                                if (localName == "TicketingProvider")
+                //////        //                                    ticketingProvider = valText;
+                //////        //                                //
+                //////        //                                if (localName == "FlightNumber" && !string.IsNullOrWhiteSpace(valText))
+                //////        //                                    flightNumber = Convert.ToInt32(valText);
+                //////        //                                //      
+                //////        //                                if (localName == "ClassOfService")
+                //////        //                                    classOfService = valText;
+                //////        //                                // 
+                //////        //                                if (localName == "DepartureDtm" && !string.IsNullOrWhiteSpace(valText))
+                //////        //                                    departureDtm = Helper.VNALibrary.ConvertToDateTime(valText);
+                //////        //                                // 
+                //////        //                                if (localName == "ArrivalDtm" && !string.IsNullOrWhiteSpace(valText))
+                //////        //                                    arrivalDtm = Helper.VNALibrary.ConvertToDateTime(valText);
+                //////        //                                // 
+                //////        //                                if (localName == "DepartureCity")
+                //////        //                                    departureCity = valText;
+                //////        //                                // 
+                //////        //                                if (localName == "ArrivalCity")
+                //////        //                                    arrivalCity = valText;
+                //////        //                                // 
+                //////        //                                if (localName == "CouponStatus")
+                //////        //                                    couponStatus = valText;
+                //////        //                                //
+                //////        //                                if (localName == "FareBasis")
+                //////        //                                    fareBasis = valText;
+                //////        //                                // 
+                //////        //                                if (localName == "BaggageAllowance")
+                //////        //                                    baggageAllowance = valText;
+                //////        //                                //
+                //////        //                            }
+                //////        //                        }
+                //////        //                    }
+                //////        //                }
+                //////        //                reportSummaryDetails = new ReportSummaryDetail
+                //////        //                {
+                //////        //                    DocumentNumber = documentNumber,
+                //////        //                    AssociatedDocument = associatedDocument,
+                //////        //                    ReasonForIssuanceCode = reasonForIssuanceCode,
+                //////        //                    ReasonForIssuanceDesc = reasonForIssuanceDesc,
+                //////        //                    CouponNumber = couponNumber,
+                //////        //                    TicketingProvider = ticketingProvider,
+                //////        //                    FlightNumber = flightNumber,
+                //////        //                    ClassOfService = classOfService,
+                //////        //                    DepartureDtm = Convert.ToString(departureDtm),
+                //////        //                    ArrivalDtm = Convert.ToString(arrivalDtm),
+                //////        //                    DepartureCity = departureCity,
+                //////        //                    ArrivalCity = arrivalCity,
+                //////        //                    CouponStatus = couponStatus,
+                //////        //                    FareBasis = fareBasis,
+                //////        //                    BaggageAllowance = baggageAllowance
+                //////        //                };
+                //////        //            }
+                //////        //        }
+                //////        //    }
+                //////        //}
+                //////        return new ReportSaleSummaryDetailResult
+                //////        {
+                //////            DocumentNumber = null,
+                //////            Status = true,
+                //////            SaleSummaryDetail = reportSummaryDetails
+                //////        };
+                //////    }
+                //////}
             }
             catch (Exception ex)
             {
-                return new ReportSaleSummaryDetailsResult
+                return new ReportSaleSummaryDetailResult
                 {
-                    DocumentNumber = model.DocumentNumber,
+                    DocumentNumber = null,
                     Status = false,
-                    SaleSummaryDetails = null
+                    SaleSummaryDetail = null
                 };
             }
         }
@@ -677,7 +753,7 @@ namespace AIRService.WS.Service
                 var timezone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"); //  vn time
                 var dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
                 //string date = dateTime.ToString("yyyy-MM-dd");
-                string date = "2020-08-29";
+                string date = "2020-01-01";
                 return date;
             }
             catch (Exception)
@@ -719,6 +795,25 @@ namespace AIRService.WS.Service
             }
         }
         // ##########################################################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ##########################################################################################################################################################################
         public string Test01(ReportModel model)
         {
             try
@@ -734,28 +829,29 @@ namespace AIRService.WS.Service
                 soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
                 var stringXML = "";
-
                 stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
                 stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
                 stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
                 stringXML += "    <SearchParameters>";
-                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
-                stringXML += "        <DocumentNumber>7382444368772</DocumentNumber>";
+                stringXML += "        <TicketingProvider>VN</TicketingProvider>"; 
+                stringXML += "        <DocumentNumber>7382435519474</DocumentNumber>";
+                stringXML += "        <DocumentNumber>7382435507975</DocumentNumber>";
+                stringXML += "        <DocumentNumber>7382435507976</DocumentNumber>";
+                stringXML += "        <DocumentNumber>7382435507977</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435507983</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435507984</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435512115</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435513897</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435519902</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435519903</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435521980</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435521983</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435519602</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435519603</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435509846</DocumentNumber>";
+                //stringXML += "        <DocumentNumber>7382435516413</DocumentNumber>";
                 stringXML += "    </SearchParameters>";
                 stringXML += "</GetTicketingDocumentRQ>";
-
-
-
-                //stringXML += "        <DetailRQ version='1.0.0' xmlns='http://www.sabre.com/ns/Ticketing/AsrServices/1.0'>";
-                //stringXML += "            <Header />";
-                //stringXML += "            <SelectionCriteria>";
-                //stringXML += "                <TicketingProvider>VN</TicketingProvider>";
-                //stringXML += "                <DocumentNumber>7382444368772</DocumentNumber>";
-                //stringXML += "            </SelectionCriteria>";
-                //stringXML += "        </DetailRQ>";
-
-
-
                 child.InnerXml = stringXML;
                 soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
                 using (Stream stream = request.GetRequestStream())

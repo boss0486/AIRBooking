@@ -30,31 +30,30 @@ namespace APIBooking.VNA.Controllers
         // GET: Booking
         [HttpPost]
         [Route("Action/EPR-Date")]
-        public ActionResult ReportDate(ReportModel model)
+        public ActionResult ReportDate()
         {
             VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
             string rpDate = vna_TKT_AsrService.GetReportDateInToday();
             if (string.IsNullOrWhiteSpace(rpDate))
                 return Notifization.Invalid("Report is invalid");
             //
-            return Notifization.TEST("::" + rpDate);
+            return Notifization.Success("::" + rpDate);
 
         }
         [HttpPost]
         [Route("Action/EPR-Report")]
-        public ActionResult EPRReport()
+        public ActionResult EPRReport(EmpReportDate model)
         {
             try
             {
+                string inputDate = model.ReportDate;
+                if (!Helper.Page.Validate.TestDateSQL(inputDate))
+                    return Notifization.Invalid(MessageText.Invalid);
+                // chuan date
+                inputDate = Convert.ToDateTime(inputDate).ToString("yyyy-MM-dd");
+                //
+                DateTime reportDate = Convert.ToDateTime(inputDate);
                 VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-                string rpDate = vna_TKT_AsrService.GetReportDateInToday();
-                if (string.IsNullOrWhiteSpace(rpDate))
-                    return Notifization.Invalid("Report is invalid");
-                //
-                DateTime reportDate = Convert.ToDateTime(rpDate);
-                if (!vna_TKT_AsrService.CheckReportSaleSummary(reportDate))
-                    return Notifization.Invalid("Report is executed");
-                //
                 using (var sessionService = new VNA_SessionService())
                 {
 
@@ -73,85 +72,58 @@ namespace APIBooking.VNA.Controllers
                     var data = vna_TKT_AsrService.GetEmployeeNumber(empReportModel);
                     if (data.Count() > 0)
                     {
-                        List<ReportEprResult> reportEprResults = new List<ReportEprResult>();
+                        List<ReportSaleSummaryResult> reportEprResult = new List<ReportSaleSummaryResult>();
                         foreach (var employee in data)
                         {
+                            string empNumber = employee.IssuingAgentEmployeeNumber;
                             ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new ReportModel
                             {
                                 Token = tokenModel.Token,
                                 ConversationID = tokenModel.ConversationID,
                                 ReportDate = reportDate,
-                                EmpNumber = employee.IssuingAgentEmployeeNumber
+                                EmpNumber = empNumber
                             });
+
+                            reportEprResult.Add(reportSaleSummaryResult);
                             // call service details
-                            List<string> statusSaveData = new List<string>();
-                            List<ReportSaleSummaryDetailsResult> reportSaleSummaryDetailsResults = new List<ReportSaleSummaryDetailsResult>();
-                            if (reportSaleSummaryResult != null)
-                            {
-                                List<ReportSaleSummaryTransaction> reportSaleSummaryTransactions = reportSaleSummaryResult.SaleSummaryTransaction;
-                                if (reportSaleSummaryTransactions.Count() > 0)
-                                {
-                                    foreach (var itemTrans in reportSaleSummaryTransactions)
-                                    {
-                                        if (itemTrans.DocumentType != ("TKT"))
-                                        {
-                                            reportSaleSummaryDetailsResults.Add(new ReportSaleSummaryDetailsResult
-                                            {
-                                                DocumentNumber = itemTrans.DocumentNumber,
-                                                Status = false
-                                            });
-                                        }
-                                        else
-                                        {
-                                            ReportSaleSummaryDetailsResult reportSaleSummaryDetailsResult = vna_TKT_AsrService.EprReportSaleReportDetails(new ReportDetailsModel
-                                            {
-                                                Token = tokenModel.Token,
-                                                ConversationID = tokenModel.ConversationID,
-                                                ReportDate = reportDate,
-                                                DocumentNumber = itemTrans.DocumentNumber
-                                            });
-                                            // save details
-                                            if (reportSaleSummaryDetailsResult != null)
-                                            {
-                                                ReportSummaryDetails reportSummaryDetails = reportSaleSummaryDetailsResult.SaleSummaryDetails;
-                                                if (reportSummaryDetails != null)
-                                                {
-                                                    string stateReportSummaryDetails = vna_TKT_AsrService.ReportSaleSummaryDetailsSave(new ReportSaleSummaryDetailsCreate
-                                                    {
-                                                        DocumentNumber = reportSummaryDetails.DocumentNumber,
-                                                        AssociatedDocument = reportSummaryDetails.AssociatedDocument,
-                                                        ReasonForIssuanceCode = reportSummaryDetails.ReasonForIssuanceCode,
-                                                        ReasonForIssuanceDesc = reportSummaryDetails.ReasonForIssuanceDesc,
-                                                        CouponNumber = reportSummaryDetails.CouponNumber,
-                                                        TicketingProvider = reportSummaryDetails.TicketingProvider,
-                                                        FlightNumber = reportSummaryDetails.FlightNumber,
-                                                        ClassOfService = reportSummaryDetails.ClassOfService,
-                                                        DepartureDtm = Convert.ToDateTime(reportSummaryDetails.DepartureDtm),
-                                                        ArrivalDtm = Convert.ToDateTime(reportSummaryDetails.ArrivalDtm),
-                                                        DepartureCity = reportSummaryDetails.DepartureCity,
-                                                        ArrivalCity = reportSummaryDetails.ArrivalCity,
-                                                        CouponStatus = reportSummaryDetails.CouponStatus,
-                                                        FareBasis = reportSummaryDetails.FareBasis,
-                                                        BaggageAllowance = reportSummaryDetails.BaggageAllowance
-                                                    });
-                                                }
-                                            }
-                                            //
-                                            reportSaleSummaryDetailsResults.Add(reportSaleSummaryDetailsResult);
-                                        }
-                                        // save report transaction
-                                        string stateReportSaleSummarySave = vna_TKT_AsrService.ReportSaleSummarySave(itemTrans, reportDate, employee.IssuingAgentEmployeeNumber);
-                                        statusSaveData.Add(stateReportSaleSummarySave);
-                                    }
-                                }
-                            }
-                            reportEprResults.Add(new ReportEprResult
-                            {
-                                SaleSummary = reportSaleSummaryResult,
-                                SaleSummaryDetails = reportSaleSummaryDetailsResults
-                            });
+                            //List<string> statusSaveData = new List<string>();
+                            //List<ReportSaleSummaryDetailResult> reportSaleSummaryDetailResult = new List<ReportSaleSummaryDetailResult>();
+
+                            //if (reportSaleSummaryResult != null)
+                            //{
+                            //    List<ReportSaleSummaryTransaction> reportSaleSummaryTransactions = reportSaleSummaryResult.SaleSummaryTransaction;
+                            //    if (reportSaleSummaryTransactions.Count() > 0)
+                            //    {
+
+                            //        foreach (var itemTrans in reportSaleSummaryTransactions)
+                            //        {
+                            //            if (itemTrans.DocumentType != ("TKT"))
+                            //            {
+                            //                reportSaleSummaryDetailResult.Add(new ReportSaleSummaryDetailResult
+                            //                {
+                            //                    DocumentNumber = itemTrans.DocumentNumber,
+                            //                    StatusGetDetail = false,
+                            //                    Status = false
+                            //                });
+                            //            }
+                            //            else
+                            //            {
+                            //                // 
+                            //                string docNumber = itemTrans.DocumentNumber;
+                            //                reportSaleSummaryDetailResult.Add(new ReportSaleSummaryDetailResult
+                            //                {
+                            //                    DocumentNumber = docNumber,
+                            //                    StatusGetDetail = true,
+                            //                    Status = true
+                            //                });
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                            // result
+                            //
                         }
-                        return Notifization.Data("Ok" + data.Count, reportEprResults);
+                        return Notifization.Data("Ok" + data.Count, reportEprResult);
                     }
                     return Notifization.NotFound("Data is not found");
                 }
@@ -270,32 +242,34 @@ namespace APIBooking.VNA.Controllers
         }
 
         // #########################################################################################################################
-        [HttpPost]
-        [Route("Action/EPR-DetailsByDocumentNumber")]
-        public ActionResult GetDetailsByDocumentNumber()
-        {
-            VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-            using (var sessionService = new VNA_SessionService())
-            {
+        //[HttpPost]
+        //[Route("Action/EPR-DetailsByDocumentNumber")]
+        //public ActionResult GetDetailsByDocumentNumber()
+        //{
+        //    VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
+        //    using (var sessionService = new VNA_SessionService())
+        //    {
 
-                TokenModel tokenModel = sessionService.GetSession();
-                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                designatePrinter.ConversationID = tokenModel.ConversationID;
-                designatePrinter.Token = tokenModel.Token;
-                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                // model
-                ReportSaleSummaryDetailsResult reportSaleSummaryDetailsResult = vna_TKT_AsrService.EprReportSaleReportDetails(new ReportDetailsModel
-                {
-                    Token = tokenModel.Token,
-                    ConversationID = tokenModel.ConversationID,
-                    ReportDate = Convert.ToDateTime("2020-08-29"),
-                    DocumentNumber = "7382444368772"
-                });
-                // save details
-                return Notifization.NotFound("Data is not found");
-            }
-        }
+        //        TokenModel tokenModel = sessionService.GetSession();
+        //        DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
+        //        designatePrinter.ConversationID = tokenModel.ConversationID;
+        //        designatePrinter.Token = tokenModel.Token;
+        //        VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+        //        var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+        //        // model
+        //        List<string> lstDocNumber = new List<string>();
+        //        lstDocNumber.Add("7382435519474");// 
+        //        ReportSaleSummaryDetailResult reportSaleSummaryDetailsResult = vna_TKT_AsrService.EprReportSaleReportDetails(new ReportDetailsModel
+        //        {
+        //            Token = tokenModel.Token,
+        //            ConversationID = tokenModel.ConversationID,
+        //            ReportDate = Convert.ToDateTime("2020-01-01"),
+        //            DocumentNumbers = lstDocNumber
+        //        });
+        //        // save details
+        //        return Notifization.NotFound("Data is not found");
+        //    }
+        //}
 
         // #########################################################################################################################
         [HttpPost]
