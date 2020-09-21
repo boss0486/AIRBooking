@@ -5,31 +5,8 @@
 @using WebCore.Services;
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
-<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
-    <div class="col-md-2">
-        <div class="form-group">
-            <input type="text" class="form-control" id="txtEmployeeNumber" placeholder="Employee number" />
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="form-group">
-            <input type="text" class="form-control" id="txtDocummentNumber" placeholder="Documment number" />
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="input-group">
-            <input type="text" class="form-control" id="txtReportDate" placeholder="01-11-@DateTime.Now.Year" value="01-01-2020" />
-            <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
-        </div>
-    </div>
-    <div class="col-md-1 col-md-offset-3 ">
-        <div class="form-group">
-            <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary w-100" style="width:100%">
-                Export
-            </a>
-        </div>
-    </div>
-</div>
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
@@ -53,4 +30,9 @@
 <div id="Pagination"></div>
 @section scripts{
     <script src="~/Areas/Management/_script/vna-report.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            VNAReportController.DataList(1);
+        });
+    </script>
 }

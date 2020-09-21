@@ -7,31 +7,22 @@ var VNAReportController = {
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
-
-            var reportDate = $("#txtReportDate").val();
-            if (reportDate == "") {
-                Notifization.Error("Không được để trống ngày báo cáo");
-                $("#txtReportDate").focus();
-                return;
-            }
-            if (!ValidData.ValidDate(reportDate, "vn")) {
-                Notifization.Error("Ngày báo cáo không hợp lệ");
-                $("#txtReportDate").focus();
-                return;
-            }
             VNAReportController.DataList(1);
         });
     },
     DataList: function (page) {
         //
-        var reportDate = $("#txtReportDate").val();
-        var employeeNumber = $("#txtEmployeeNumber").val();
-        var docummentNumber = $("#txtDocummentNumber").val();
-
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
-            ReportDate: LibDateTime.FormatToServerDate(reportDate),
-            EmployeeNumber: employeeNumber,
-            DocummentNumber: docummentNumber,
+            Query: $('#txtQuery').val(),
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val())
         };
         //
         AjaxFrom.POST({
@@ -39,54 +30,57 @@ var VNAReportController = {
             data: model,
             success: function (result) {
                 $('tbody#TblData').html('');
+                $('#Pagination').html('');
                 if (result !== null) {
                     if (result.status === 200) {
-
+                        var currentPage = 1;
+                        var pagination = result.paging;
+                        if (pagination !== null) {
+                            totalPage = pagination.TotalPage;
+                            currentPage = pagination.Page;
+                            pageSize = pagination.PageSize;
+                            pageIndex = pagination.Page;
+                        }
                         var rowData = '';
-                        // employee
-                        var empData = result.data;
-                        var _stt = 1;
-                        $.each(empData, function (index, item) {
+                        $.each(result.data, function (index, item) {
+                            index = index + 1;
+                            var id = item.ID;
+                            if (id.length > 0)
+                                id = id.trim();
+                            //  role
+                            var action = HelperModel.RolePermission(result.role, "AccountController", id);
+                            //
+                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                            var transFee = item.SaleSummaryTransactionSSFop;
 
-
-                            var empNumber = item.EmpNumber;
-                            var transaction = item.SaleSummaryTransaction;
-                            $.each(transaction, function (transIndex, transItem) {
-
-                                transIndex = transIndex + 1;
-                                //  role
-                                var action = HelperModel.RolePermission(result.role, "VNAReportController", transItem.DocumentNumber);
-                                //
-                                //var rowNum = parseInt(transIndex) + (parseInt(currentPage) - 1) * parseInt(pageSize);
-
-                                var transFee = transItem.SaleSummaryTransactionSSFop;
-                                
-                                rowData += `
+                            rowData += `
                                     <tr>
-                                         <td class="text-right">${_stt}&nbsp;</td>                             
-                                         <td>${empNumber}-${transItem.DocumentNumber}</td>                                                               
-                                         <td class="tbcol-none">${transItem.PassengerName}</td>
-                                         <td class="tbcol-none">${transItem.PnrLocator}</td>
-                                         <td class="tbcol-none">${transItem.TicketPrinterLniata}</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${transItem.TransactionTime}</td>
+                                         <td class="text-right">${rowNum}&nbsp;</td>                             
+                                         <td>${item.EmployeeNumber}-${item.DocumentNumber}</td>                                                               
+                                         <td class="tbcol-none">${item.PassengerName}</td>
+                                         <td class="tbcol-none">${item.PnrLocator}</td>
+                                         <td class="tbcol-none">${item.TicketPrinterLniata}</td>
+                                         <td class="text-right" style = "background: #fee1ee;">${item.TransactionTime}</td>
                                          <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(transFee.FareAmount)} đ</td>
                                          <td class="tbcol-none report-trans" style = "background: #fee1ee;">${transFee.FopCode}</td>
                                          <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(transFee.TaxAmount)} đ</td>
                                          <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(transFee.TotalAmount)} đ</td>
                                     </tr>`;
-                                _stt += 1;
-                            });
+                            _stt += 1;
                         });
-
                         $('tbody#TblData').html(rowData);
+                        if (parseInt(totalPage) > 1) {
+                            Paging.Pagination("#Pagination", totalPage, currentPage, AccountController.DataList);
+                        }
                         return;
                     }
                     else {
-                        Notifization.Error(result.message);
+                        //Notifization.Error(result.message);
+                        console.log('::' + result.message);
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NotService);
+                //Message.Error(MessageText.NOTSERVICES);
                 return;
             },
             error: function (result) {

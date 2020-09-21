@@ -124,6 +124,5 @@ namespace WebCore.Entities
     public class ServicePackSearchModel: SearchModel
     {
         public string CategoryID { get; set; }
-        public int Status { get; set; }
     }
 }

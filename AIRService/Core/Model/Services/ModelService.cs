@@ -8,7 +8,7 @@ namespace WebCore.Model.Services
 {
     public class ModelService
     {
-        public static SearchResult SearchDefault(SearchModel model)
+        public static SearchResult SearchDefault(SearchModel model, string dateColumn = null)
         {
             string whereCondition = string.Empty;
             int status = model.Status;
@@ -18,6 +18,12 @@ namespace WebCore.Model.Services
             string timeZoneLocal = model.TimeZoneLocal;
             //
             string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
+            string columName = "CreatedDate";
+            if (!string.IsNullOrWhiteSpace(dateColumn))
+            {
+                columName = dateColumn;
+            }
+
             //
             if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
             {
@@ -27,50 +33,50 @@ namespace WebCore.Model.Services
                 {
                     string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
                     DateTime dtime = Convert.ToDateTime(strDate);
-                    whereCondition = " AND cast(CreatedDate as Date) = cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
                 }
                 // Yesterday
                 if (timeExpress == 2)
                 {
                     DateTime dtime = today.AddDays(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date) AND cast(CreatedDate as Date) <= cast('" + today + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date) AND cast(" + columName + " as Date) <= cast('" + today + "' as Date)";
                 }
                 // ThreeDayAgo
                 if (timeExpress == 3)
                 {
                     DateTime dtime = today.AddDays(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
                 // SevenDayAgo
                 if (timeExpress == 4)
                 {
                     DateTime dtime = today.AddDays(-7);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
                 // OneMonthAgo
                 if (timeExpress == 5)
                 {
                     DateTime dtime = today.AddMonths(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
 
                 // ThreeMonthAgo
                 if (timeExpress == 6)
                 {
                     DateTime dtime = today.AddMonths(-3);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
                 // SixMonthAgo
                 if (timeExpress == 7)
                 {
                     DateTime dtime = today.AddMonths(-6);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
                 // OneYearAgo
                 if (timeExpress == 8)
                 {
                     DateTime dtime = today.AddYears(-1);
-                    whereCondition = " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
 
                 if (status == (int)ModelEnum.Enabled.ENABLED)

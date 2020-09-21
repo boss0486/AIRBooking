@@ -20,6 +20,7 @@ using WebCore.ENM;
 using Helper;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using WebCore.Core;
+using WebCore.Model.Entities;
 
 namespace WebApplication.Management.Controllers
 {
@@ -36,61 +37,78 @@ namespace WebApplication.Management.Controllers
         }
 
         // API ********************************************************************************************************
+
+        // API ********************************************************************************************************
         [HttpPost]
         [Route("Action/DataList")]
-        public ActionResult EPRReport(ReportEprModel model)
+        public ActionResult DataList(SearchModel model)
         {
             try
             {
-                string inputDate = model.ReportDate;
-                if (!Helper.Page.Validate.TestDateSQL(inputDate))
-                    return Notifization.Invalid(MessageText.Invalid);
-                // chuan date
-                inputDate = Convert.ToDateTime(inputDate).ToString("yyyy-MM-dd");
-                //
-                DateTime reportDate = Convert.ToDateTime(inputDate);
-                VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-                using (var sessionService = new VNA_SessionService())
-                {
-
-                    TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    // model
-                    EmpReportModel empReportModel = new EmpReportModel();
-                    empReportModel.Token = tokenModel.Token;
-                    empReportModel.ConversationID = tokenModel.ConversationID;
-                    empReportModel.ReportDate = reportDate;
-                    // 
-                    var data = vna_TKT_AsrService.GetEmployeeNumber(empReportModel);
-                    if (data.Count() > 0)
-                    {
-                        List<ReportSaleSummaryResult> reportEprResult = new List<ReportSaleSummaryResult>();
-                        foreach (var employee in data)
-                        {
-                            string empNumber = employee.IssuingAgentEmployeeNumber;
-                            ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new ReportModel
-                            {
-                                Token = tokenModel.Token,
-                                ConversationID = tokenModel.ConversationID,
-                                ReportDate = reportDate,
-                                EmpNumber = empNumber
-                            });
-                            //
-                            reportEprResult.Add(reportSaleSummaryResult);
-                        }
-                        return Notifization.Data("Ok" + data.Count, reportEprResult);
-                    }
-                    return Notifization.NotFound("Data is not found");
-                }
+               ReportSaleSummaryService service = new ReportSaleSummaryService();
+                return service.DataList(model);
             }
             catch (Exception ex)
             {
-                return Notifization.Error("Error: " + ex);
+                return Notifization.TEST("::" + ex);
             }
         }
+
+        //[HttpPost]
+        //[Route("Action/DataList")]
+        //public ActionResult EPRReport(ReportEprModel model)
+        //{
+        //    try
+        //    {
+        //        string inputDate = model.ReportDate;
+        //        if (!Helper.Page.Validate.TestDateSQL(inputDate))
+        //            return Notifization.Invalid(MessageText.Invalid);
+        //        // chuan date
+        //        inputDate = Convert.ToDateTime(inputDate).ToString("yyyy-MM-dd");
+        //        //
+        //        DateTime reportDate = Convert.ToDateTime(inputDate);
+        //        VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
+        //        using (var sessionService = new VNA_SessionService())
+        //        {
+
+        //            TokenModel tokenModel = sessionService.GetSession();
+        //            DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
+        //            designatePrinter.ConversationID = tokenModel.ConversationID;
+        //            designatePrinter.Token = tokenModel.Token;
+        //            VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+        //            var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+        //            // model
+        //            EmpReportModel empReportModel = new EmpReportModel();
+        //            empReportModel.Token = tokenModel.Token;
+        //            empReportModel.ConversationID = tokenModel.ConversationID;
+        //            empReportModel.ReportDate = reportDate;
+        //            // 
+        //            var data = vna_TKT_AsrService.GetEmployeeNumber(empReportModel);
+        //            if (data.Count() > 0)
+        //            {
+        //                List<ReportSaleSummaryResult> reportEprResult = new List<ReportSaleSummaryResult>();
+        //                foreach (var employee in data)
+        //                {
+        //                    string empNumber = employee.IssuingAgentEmployeeNumber;
+        //                    ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new ReportModel
+        //                    {
+        //                        Token = tokenModel.Token,
+        //                        ConversationID = tokenModel.ConversationID,
+        //                        ReportDate = reportDate,
+        //                        EmpNumber = empNumber
+        //                    });
+        //                    //
+        //                    reportEprResult.Add(reportSaleSummaryResult);
+        //                }
+        //                return Notifization.Data("Ok" + data.Count, reportEprResult);
+        //            }
+        //            return Notifization.NotFound("Data is not found");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Notifization.Error("Error: " + ex);
+        //    }
+        //}
     }
 }
