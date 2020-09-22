@@ -18,11 +18,11 @@ using Helper.File;
 
 namespace WebCore.Services
 {
-    public interface IReportSaleSummaryCloseService : IEntityService<ReportSaleSummaryClose> { }
-    public class ReportSaleSummaryCloseService : EntityService<ReportSaleSummaryClose>, IReportSaleSummaryCloseService
+    public interface IReportTicketingDocumentCouponService : IEntityService<ReportTicketingDocumentCoupon> { }
+    public class ReportTicketingDocumentCouponService : EntityService<ReportTicketingDocumentCoupon>, IReportTicketingDocumentCouponService
     {
-        public ReportSaleSummaryCloseService() : base() { }
-        public ReportSaleSummaryCloseService(System.Data.IDbConnection db) : base(db) { }
+        public ReportTicketingDocumentCouponService() : base() { }
+        public ReportTicketingDocumentCouponService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
     }
 }

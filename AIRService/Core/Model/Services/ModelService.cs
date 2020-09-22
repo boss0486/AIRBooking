@@ -111,6 +111,8 @@ namespace WebCore.Model.Services
                     DateTime dtime = Convert.ToDateTime(endDate);
                     whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
                 }
+
+
                 //
                 if (status == (int)ModelEnum.Enabled.ENABLED)
                     whereCondition += " AND Enabled = 1 ";

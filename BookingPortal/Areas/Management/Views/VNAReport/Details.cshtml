@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.ReportSaleSummaryResult
+
+@{
+    string id = "";
+    string title = "";
+    string summary = "";
+    string employeeNumber = "";
+    string documentType = "";
+    string documentNumber = "";
+    string passengerName = "";
+    string pnrLocator = "";
+    string ticketPrinterLniata = "";
+    string transactionTime = "";
+    bool exceptionItem = false;
+    bool decoupleItem = false;
+    string ticketStatusCode = "";
+    bool isElectronicTicket = false;
+    string reportDate = "";
+
+    double fareAmount = 0;
+    double taxAmount = 0;
+    double totalAmount = 0;
+
+
+    try
+    {
+        if (Model != null)
+        {
+            id = Model.ID;
+            title = Model.Title;
+            summary = Model.Summary;
+            employeeNumber = Model.EmployeeNumber;
+            documentType = Model.DocumentType;
+            documentNumber = Model.DocumentNumber;
+            passengerName = Model.PassengerName;
+            pnrLocator = Model.PnrLocator;
+            ticketPrinterLniata = Model.TicketPrinterLniata;
+            transactionTime = Model.TransactionTime;
+            exceptionItem = Model.ExceptionItem;
+            decoupleItem = Model.DecoupleItem;
+            ticketStatusCode = Model.TicketStatusCode;
+            isElectronicTicket = Model.IsElectronicTicket;
+            reportDate = Model.ReportDate;
+            //
+            fareAmount = Model.FareAmount;
+            taxAmount = Model.TaxAmount;
+            totalAmount = Model.TotalAmount;
+        }
+    }
+    catch (Exception)
+    {
+
+    }
+}
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> @documentNumber </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment type:</span> @documentType </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Employee number:</span> @employeeNumber </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>PnrLocator:</span> @pnrLocator </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Passenger name:</span> @passengerName </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>IsElectronicTicket:</span> @isElectronicTicket </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Report date:</span> @reportDate </div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí dịch vụ:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Fare total:</span> @Helper.Page.Library.FormatCurrency(fareAmount) đ.</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Tax amount:</span> @Helper.Page.Library.FormatCurrency(taxAmount) đ.</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Total amount:</span> @Helper.Page.Library.FormatCurrency(totalAmount) đ.</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Transaction time:</span> @transactionTime</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin vé:</label>
+        </div>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

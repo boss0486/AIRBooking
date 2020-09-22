@@ -31,7 +31,7 @@ namespace AIRService.WS.Service
 {
     public class VNA_TKT_AsrService
     {
-        public List<EmployeeNumber> GetEmployeeNumber(EmpReportModel model)
+        public List<EmployeeNumber> GetEmployeeNumber(VNA_EmpReportModel model)
         {
             HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
             XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -114,7 +114,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public ReportSaleSummaryResult ReportSaleSummaryReport(ReportModel model)
+        public VNA_ReportSaleSummaryResult ReportSaleSummaryReport(VNA_ReportModel model)
         {
             try
             {
@@ -272,7 +272,7 @@ namespace AIRService.WS.Service
                                 }
                             }
                         }
-                        return new ReportSaleSummaryResult
+                        return new VNA_ReportSaleSummaryResult
                         {
                             EmpNumber = model.EmpNumber,
                             Status = true,
@@ -283,7 +283,7 @@ namespace AIRService.WS.Service
             }
             catch (Exception ex)
             {
-                return new ReportSaleSummaryResult
+                return new VNA_ReportSaleSummaryResult
                 {
                     EmpNumber = model.EmpNumber + ex,
                     Status = false,
@@ -292,7 +292,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public ReportSaleSummaryDetailResult EprReportSaleReportDetails(ReportDetailsModel model)
+        public VNA_ReportSaleSummaryDetailResult EprReportSaleReportDetails(VNA_ReportDetailsModel model)
         {
             try
             {
@@ -341,8 +341,8 @@ namespace AIRService.WS.Service
                         soapEnvelopeXml.Save(writer);
 
                         // ********************************************************************************************
-                        ReportSaleSummaryDetailResult reportSaleSummaryDetailResult = new ReportSaleSummaryDetailResult();
-                        return new ReportSaleSummaryDetailResult
+                        VNA_ReportSaleSummaryDetailResult reportSaleSummaryDetailResult = new VNA_ReportSaleSummaryDetailResult();
+                        return new VNA_ReportSaleSummaryDetailResult
                         {
                             DocumentNumber = "ok",
                             Status = true,
@@ -540,7 +540,7 @@ namespace AIRService.WS.Service
             }
             catch (Exception ex)
             {
-                return new ReportSaleSummaryDetailResult
+                return new VNA_ReportSaleSummaryDetailResult
                 {
                     DocumentNumber = null,
                     Status = false,
@@ -549,7 +549,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public ReportSaleSummaryResult ExcuteEprReportClose(ReportModel model)
+        public VNA_ReportSaleSummaryResult ExcuteEprReportClose(VNA_ReportModel model)
         {
             try
             {
@@ -590,7 +590,7 @@ namespace AIRService.WS.Service
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
 
-                        return new ReportSaleSummaryResult
+                        return new VNA_ReportSaleSummaryResult
                         {
                             EmpNumber = model.EmpNumber,
                             Status = true,
@@ -600,7 +600,7 @@ namespace AIRService.WS.Service
             }
             catch (Exception)
             {
-                return new ReportSaleSummaryResult
+                return new VNA_ReportSaleSummaryResult
                 {
                     EmpNumber = model.EmpNumber,
                     Status = false,
@@ -608,7 +608,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public ReportSaleSummaryResult ExcuteEprReportExtend(ReportModel model)
+        public VNA_ReportSaleSummaryResult ExcuteEprReportExtend(VNA_ReportModel model)
         {
             try
             {
@@ -646,7 +646,7 @@ namespace AIRService.WS.Service
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
-                        return new ReportSaleSummaryResult
+                        return new VNA_ReportSaleSummaryResult
                         {
                             EmpNumber = model.EmpNumber,
                             Status = true,
@@ -656,7 +656,7 @@ namespace AIRService.WS.Service
             }
             catch (Exception)
             {
-                return new ReportSaleSummaryResult
+                return new VNA_ReportSaleSummaryResult
                 {
                     EmpNumber = model.EmpNumber,
                     Status = false,
@@ -782,7 +782,7 @@ namespace AIRService.WS.Service
         {
             try
             {
-                ReportSaleSummaryCloseService reportSaleSummaryCloseService = new ReportSaleSummaryCloseService();
+                ReportSaleSummaryClosedService reportSaleSummaryCloseService = new ReportSaleSummaryClosedService();
                 var reportSaleSummary = reportSaleSummaryCloseService.GetAlls(m => m.ReportDate == reportDate).FirstOrDefault();
                 if (reportSaleSummary != null)
                     return false;
@@ -813,8 +813,7 @@ namespace AIRService.WS.Service
 
 
 
-        // ##########################################################################################################################################################################
-        public string Test01(ReportModel model)
+        public string Test01(VNA_ReportModel model)
         {
             try
             {
@@ -833,7 +832,7 @@ namespace AIRService.WS.Service
                 stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
                 stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
                 stringXML += "    <SearchParameters>";
-                stringXML += "        <TicketingProvider>VN</TicketingProvider>"; 
+                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
                 stringXML += "        <DocumentNumber>7382435519474</DocumentNumber>";
                 stringXML += "        <DocumentNumber>7382435507975</DocumentNumber>";
                 stringXML += "        <DocumentNumber>7382435507976</DocumentNumber>";
@@ -874,6 +873,138 @@ namespace AIRService.WS.Service
             {
                 return "Error: " + ex;
             }
+        }
+
+        // ##########################################################################################################################################################################
+        public VNA_ReportSaleSummaryTicketingDocument GetSaleReportTicketByDocNumber(string docNumber)
+        {
+            //try
+            //{
+            if (string.IsNullOrWhiteSpace(docNumber))
+                return new VNA_ReportSaleSummaryTicketingDocument();
+            //
+            using (var sessionService = new VNA_SessionService())
+            {
+                TokenModel tokenModel = sessionService.GetSession();
+                HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+                XmlDocument soapEnvelopeXml = new XmlDocument();
+                var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+                soapEnvelopeXml.Load(path);
+                soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
+                soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = tokenModel.Token;
+                soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = tokenModel.ConversationID;
+                XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+                var stringXML = "";
+                stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+                stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+                stringXML += "    <SearchParameters>";
+                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+                stringXML += "        <DocumentNumber>" + docNumber + "</DocumentNumber>";
+                stringXML += "    </SearchParameters>";
+                stringXML += "</GetTicketingDocumentRQ>";
+                child.InnerXml = stringXML;
+                soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+                using (Stream stream = request.GetRequestStream())
+                {
+                    soapEnvelopeXml.Save(stream);
+                }
+                using (WebResponse response = request.GetResponse())
+                {
+                    using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                    {
+                        string soapResult = rd.ReadToEnd();
+                        soapEnvelopeXml = new XmlDocument();
+                        soapEnvelopeXml.LoadXml(soapResult);
+                        //
+                        XmlWriterSettings settings = new XmlWriterSettings();
+                        settings.Indent = true;
+                        // Save the document to a file and auto-indent the output.
+                        string fileName = docNumber + "_ticketingdocumentrq_details.xml";
+                        var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                        XmlWriter writer = XmlWriter.Create(urlFile, settings);
+                        soapEnvelopeXml.Save(writer);
+                        //
+                        // ********************************************************************************************
+                        //XmlNode ticketingDocumentNode = soapEnvelopeXml.GetElementsByTagName("TT:GetTicketingDocumentRS")[0];
+                        //XmlNode detailsNode = soapEnvelopeXml.GetElementsByTagName("TT:Details")[0];
+
+                        XmlNodeList xmlNodeList = soapEnvelopeXml.GetElementsByTagName("TT:ServiceCoupon");
+                        if (xmlNodeList.Count > 0)
+                        {
+                            XmlSerializer serial = new XmlSerializer(typeof(VNA_ReportSaleSummaryTicketingDocument));
+                            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocument = new List<VNA_ReportSaleSummaryTicketingDocument>();
+                            string marketingFlightNumber = string.Empty;
+                            string classOfService = string.Empty;
+                            string fareBasis = string.Empty;
+                            string startLocation = string.Empty;
+                            string endLocation = string.Empty;
+                            string bookingStatus = string.Empty;
+                            string currentStatus = string.Empty;
+                            string systemDateTime = string.Empty;
+                            string flownCoupon_DepartureDateTime = string.Empty;
+                            foreach (XmlNode itemCoupon in xmlNodeList)
+                            {
+                                XmlNodeList xmlNode = itemCoupon.ChildNodes;
+                                if (xmlNode.Count > 0)
+                                {
+                                    foreach (XmlNode item in xmlNode)
+                                    {
+                                        string localName = item.LocalName;
+                                        if (localName == "MarketingFlightNumber")
+                                            marketingFlightNumber = item.InnerText;
+                                        //
+                                        if (localName == "ClassOfService")
+                                            classOfService = item.InnerText;
+                                        // 
+                                        if (localName == "FareBasis")
+                                            fareBasis = item.InnerText;
+                                        //
+                                        if (localName == "StartLocation")
+                                            startLocation = item.InnerText;
+                                        //
+                                        if (localName == "EndLocation")
+                                            endLocation = item.InnerText;
+                                        //
+                                        if (localName == "BookingStatus")
+                                            bookingStatus = item.InnerText;
+                                        //
+                                        if (localName == "CurrentStatus")
+                                            currentStatus = item.InnerText;
+                                        //       
+                                        if (localName == "DepartureDateTime")
+                                            flownCoupon_DepartureDateTime = item.InnerText;
+                                        //
+                                    }
+                                    vna_ReportSaleSummaryTicketingDocument.Add(new VNA_ReportSaleSummaryTicketingDocument
+                                    {
+                                        MarketingFlightNumber = marketingFlightNumber,
+                                        ClassOfService = classOfService,
+                                        FareBasis = fareBasis,
+                                        StartLocation = startLocation,
+                                        EndLocation = endLocation,
+                                        BookingStatus = bookingStatus,
+                                        CurrentStatus = currentStatus,
+                                        FlownCoupon_DepartureDateTime = flownCoupon_DepartureDateTime
+                                    });
+                                }
+                            }
+
+                            var data = vna_ReportSaleSummaryTicketingDocument;
+                        }
+                        return new VNA_ReportSaleSummaryTicketingDocument();
+                        //
+                    }
+                }
+            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //    return new VNA_ReportSaleSummaryTicketingDocument();
+            //}
         }
     }
     public class EmployeeNumber

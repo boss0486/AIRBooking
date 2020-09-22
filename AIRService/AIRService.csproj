@@ -139,12 +139,18 @@
     <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
     <Compile Include="Application\AirFilght\Entities\Airport.cs" />
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
-    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryClose.cs" />
-    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummaryDetails.cs" />
-    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummarySSFop.cs" />
-    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryDetailsService.cs" />
-    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryCloseService.cs" />
-    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummarySSFopService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentCoupon.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentTaxes.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentAmount.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportSaleSummaryClosed.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportSaleSummaryDetails.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportSaleSummarySSFop.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportTicketingDocumentCouponService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportTicketingDocumentTaxesService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportTicketingDocumentAmountService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummaryDetailsService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummaryClosedService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummarySSFopService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -333,8 +339,8 @@
     <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />
     <Compile Include="Module\Language\Entities\Language.cs" />
     <Compile Include="Module\Language\Services\LanguageService.cs" />
-    <Compile Include="Application\ReportTransaction\Entities\ReportSaleSummary.cs" />
-    <Compile Include="Application\ReportTransaction\Services\ReportSaleSummaryService.cs" />
+    <Compile Include="Application\ReportSaleSummary\Entities\ReportSaleSummary.cs" />
+    <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummaryService.cs" />
     <Compile Include="Module\Meta\Entities\Meta.cs" />
     <Compile Include="Module\Meta\Entities\MetaGroup.cs" />
     <Compile Include="Module\Meta\Services\MetaGroupService.cs" />
@@ -409,7 +415,7 @@
     <Compile Include="WebService\VNA\Entities\GetReservationModel.cs" />
     <Compile Include="WebService\VNA\Entities\PassengerDetailsModel.cs" />
     <Compile Include="WebService\VNA\Entities\PaymentModel.cs" />
-    <Compile Include="WebService\VNA\Entities\ReportModel.cs" />
+    <Compile Include="WebService\VNA\Entities\VNA_ReportModel.cs" />
     <Compile Include="WebService\VNA\Entities\ReservationModel.cs" />
     <Compile Include="WebService\VNA\Entities\RevResult.cs" />
     <Compile Include="WebService\VNA\Entities\SearchFlightModel.cs" />
@@ -1664,7 +1670,7 @@
   <ItemGroup>
     <Folder Include="Application\AirFilght\Enum\" />
     <Folder Include="Application\Area\Enum\" />
-    <Folder Include="Application\ReportTransaction\Enum\" />
+    <Folder Include="Application\ReportSaleSummary\Enum\" />
     <Folder Include="Application\Wallet\Enum\" />
     <Folder Include="Core\Authorization\Entities\" />
     <Folder Include="Core\Authorization\Enum\" />

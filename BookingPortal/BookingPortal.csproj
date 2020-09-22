@@ -1279,6 +1279,10 @@
     <Content Include="Areas\Management\Views\TransactionCustomerSpending\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionUserSpending\Details.cshtml" />
     <Content Include="Areas\Management\Views\_ViewSearchForHistoryPatial.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewReportSearchPatial.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\Details.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\Search.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\RpDetails.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

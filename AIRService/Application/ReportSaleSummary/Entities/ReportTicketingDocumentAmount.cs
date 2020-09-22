@@ -11,19 +11,19 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_ReportSaleSummaryClose")]
-    public partial class ReportSaleSummaryClose : WEBModel
+    [Table("App_ReportTicketingDocument_Amount")]
+    public partial class ReportTicketingDocumentAmount
     {
-        public ReportSaleSummaryClose()
+        public ReportTicketingDocumentAmount()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string EmployeeNumber { get; set; } 
-        public DateTime ReportDate { get; set; }
+        public double BaseAmount { get; set; }
+        public double TotalTax { get; set; }
+        public double Total { get; set; }
+        public double NonRefundable { get; set; }
     }
 }

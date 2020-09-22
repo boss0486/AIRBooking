@@ -62,20 +62,13 @@ namespace WebCore.Services
             if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
                 return Notifization.AccessDenied(MessageText.AccessDenied);
             //
-            if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                string supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
-
-                whereCondition += " AND ID = '" + supplierId + "'";
-            }
-            //
             string typeId = "";
             string sqlQuery = @"
             SELECT rps.*,rpsf.FareAmount, rpsf.TaxAmount, rpsf.TotalAmount FROM App_ReportSaleSummary as rps 
             LEFT JOIN App_ReportSaleSummarySSFop as rpsf 
             ON rpsf.ReportTransactionID =  rps.ID
             WHERE (dbo.Uni2NONE(EmployeeNumber) LIKE N'%'+ @Query +'%' OR DocumentNumber LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<SupplierResultModel>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
+            var dtList = _connection.Query<ReportSaleSummaryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -96,6 +89,24 @@ namespace WebCore.Services
             };
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+        }
+
+        public ReportSaleSummaryResult GetReportSaleSummaryModel(string id)
+        {
+            
+            if (string.IsNullOrWhiteSpace(id))
+                return new ReportSaleSummaryResult();
+            //
+            id = id.ToLower();
+            string sqlQuery = @"SELECT rps.*,rpsf.FareAmount, rpsf.TaxAmount, rpsf.TotalAmount FROM App_ReportSaleSummary as rps 
+                LEFT JOIN App_ReportSaleSummarySSFop as rpsf 
+                ON rpsf.ReportTransactionID =  rps.ID
+                WHERE rps.ID = @ID";
+            var item = _connection.Query<ReportSaleSummaryResult>(sqlQuery, new { ID = id }).FirstOrDefault();
+            if (item == null)
+                return new ReportSaleSummaryResult();
+            //
+            return item;
         }
 
     }

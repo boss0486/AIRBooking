@@ -6,7 +6,24 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 
-@Html.Partial("~/Areas/Management/Views/_ViewReportSearchPatial.cshtml", null)
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+    <div class="col-md-2">
+        <div class="form-group ">
+            <input id="txtReportDate" type="text" class="form-control" data-date="true" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" />
+        </div>
+    </div>
+    <div class="col-md-4 col-md-offset-5" data-keyenter="#btnSearch">
+        <div class="input-group">
+            <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+            <span id="btnEprReportSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group ">
+             
+        </div>
+    </div>
+</div>
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
@@ -16,7 +33,6 @@
                 <th class="tbcol-title">Mã nhân viên/ Doc Number</th>
                 <th class="tbcol-active">Mã PNA</th>
                 <th class="tbcol-active">Tên hành khách</th>
-                <th class="tbcol-date report-trans">Ng.Báo cáo</th>
                 <th class="tbcol-none report-trans">T.Gian</th>
                 <th class="tbcol-none report-trans">FareAmount</th>
                 <th class="tbcol-none report-trans">TaxAmount</th>
@@ -31,8 +47,5 @@
 @section scripts{
     <script src="~/Areas/Management/_script/vna-report.js"></script>
     <script type="text/javascript">
-        $(function () {
-            VNAReportController.DataList(1);
-        });
     </script>
 }

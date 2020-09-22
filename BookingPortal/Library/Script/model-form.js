@@ -4,21 +4,18 @@
 $(document).ajaxStart(function () {
     Loading.ShowLoading();
     ajaxStatus++;
-    console.log("ajaxStatus:" + ajaxStatus);
 
 }).ajaxComplete(function () {
     ajaxStatus--;
-    console.log("ajaxStatus:" + ajaxStatus);
+     
 });
 
 class AjaxFrom {
     static POST(_form) {
-        Loading.ShowLoading();
         _form.method = "POST";
         _form.dataType = 'json';
         _form.async = false;
         $.ajax(_form).done(function () {
-            console.log("o111111331k");
             setTimeout(function () {
                 Loading.HideLoading();
             }, 1500);
@@ -83,10 +80,6 @@ $(document).ready(function () {
     //        _startDate.setDate(_startDate.getDate(new Date(selected.date.valueOf())));
     //    $('input[date-datepicker="1"]').datepicker('setEndDate', _startDate);
     //    });
-
-
-
-
 });
 
 class HelperModel {

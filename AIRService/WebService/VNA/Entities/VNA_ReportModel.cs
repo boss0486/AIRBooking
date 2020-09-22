@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ApiPortalBooking.Models.VNA_WS_Model
 {
-    public class ReportModel : TokenModel
+    public class VNA_ReportModel : TokenModel
     {
         public DateTime ReportDate { get; set; }
         public string EmpNumber { get; set; }
@@ -17,12 +17,12 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string ReportDate { get; set; }
     }
 
-    public class EmpReportModel : TokenModel
+    public class VNA_EmpReportModel : TokenModel
     {
         public DateTime ReportDate { get; set; }
     }
 
-    public class ReportDetailsModel : TokenModel
+    public class VNA_ReportDetailsModel : TokenModel
     {
         public DateTime ReportDate { get; set; }
         public List<string> DocumentNumbers { get; set; }
@@ -71,30 +71,43 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string BaggageAllowance { get; set; }
     }
     //
-    public class ReportSaleSummaryResult
+    public class VNA_ReportSaleSummaryResult
     {
         public string EmpNumber { get; set; }
         public bool Status { get; set; }
         public List<ReportSaleSummaryTransaction> SaleSummaryTransaction { get; set; }
     }
-    public class ReportSaleSummaryDetailResult
+
+
+    public class VNA_ReportSaleSummaryDetailResult
     {
         public string DocumentNumber { get; set; }
         public bool Status { get; set; }
         public bool StatusGetDetail { get; set; }
         public ReportSummaryDetail SaleSummaryDetail { get; set; }
     }
-    public class ReportEprResult
-    {
-        public ReportSaleSummaryResult SaleSummary { get; set; }
-    }
 
-    //
-    public class ReportEprModel
+
+    // ****************************************************************************************************************************
+    public class ReportEprSearchModel
     {
-        public string EmployeeNumber { get; set; }
-        public string DocumentNumber { get; set; }
         public string ReportDate { get; set; }
+        public string Query { get; set; }
     }
+    public class VNA_ReportSaleSummaryTicketingDocument
+    {
+        public string MarketingFlightNumber { get; set; }
+        public string ClassOfService { get; set; }
+        public string FareBasis { get; set; }
+        public string StartLocation { get; set; }
+        public string EndLocation { get; set; }
+        public string BookingStatus { get; set; }
+        public string CurrentStatus { get; set; }
+        public string SystemDateTime { get; set; }
+        public string FlownCoupon_DepartureDateTime { get; set; }
+    }    
+    // ****************************************************************************************************************************
+
+
 
 }

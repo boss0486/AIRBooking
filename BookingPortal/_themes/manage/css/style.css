@@ -5538,6 +5538,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     font-weight: 400;
     background: #D9F1EC;
     border: 1px solid #ABDED4;
+    white-space: nowrap;
 }
 
 .table-bordered {

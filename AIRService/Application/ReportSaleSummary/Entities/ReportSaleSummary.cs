@@ -37,7 +37,7 @@ namespace WebCore.Entities
         public DateTime ReportDate { get; set; }
     }
 
-    public partial class ReportSaleSummaryResult : WEBModelResult
+    public partial class ReportSaleSummaryResult : ReportSaleSummaryFeeResult
     {
         public string ID { get; set; }
         public string Title { get; set; }
@@ -53,16 +53,28 @@ namespace WebCore.Entities
         public bool DecoupleItem { get; set; }
         public string TicketStatusCode { get; set; }
         public bool IsElectronicTicket { get; set; }
-        public DateTime ReportDate { get; set; }
-        public ReportSaleSummaryFeeResult SaleSummaryFee { get; set; }
+        private string _createdDate;
+        public string ReportDate
+        {
+            get
+            {
+                if (_createdDate == null)
+                    return "../" + "../" + "..";
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _createdDate = value;
+            }
+        }
 
     }
 
-    public partial class ReportSaleSummaryFeeResult
+    public partial class ReportSaleSummaryFeeResult : WEBModelResult
     {
-        public string FareAmount { get; set; }
-        public string TaxAmount { get; set; }
-        public string TotalAmount { get; set; }
+        public double FareAmount { get; set; }
+        public double TaxAmount { get; set; }
+        public double TotalAmount { get; set; }
 
     }
 
