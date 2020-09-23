@@ -42,6 +42,7 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult RpDetails(string id)
         {
+            ViewData["DocummentNumber"] = id;
             VNA_TKT_AsrService service = new VNA_TKT_AsrService();
             var model = service.GetSaleReportTicketByDocNumber(id);
             if (model != null)

@@ -410,6 +410,26 @@ namespace Helper.Page
             //
 
         }
+
+        public static string FormatCurrencyUnit(string unit, bool isText = true)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(unit))
+                    return string.Empty;
+                //
+                if (unit.ToLower() == "vnd")
+                    return "đ";
+                //
+                return string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+            //
+
+        }
         public static string FirstCharToUpper(string strText)
         {
             if (string.IsNullOrWhiteSpace(strText))
@@ -493,7 +513,32 @@ namespace Helper.Page
                 return string.Empty;
             }
         }
-
+        public static string PathBase(string action = null)
+        {
+            try
+            {
+                var meta = new MetaSEO();
+                string _url = string.Empty;
+                // area
+                if (!string.IsNullOrWhiteSpace(MetaSEO.AreaText))
+                    _url += "/" + MetaSEO.AreaText;
+                // controller
+                if (!string.IsNullOrWhiteSpace(MetaSEO.ControllerText))
+                    _url += "/" + MetaSEO.ControllerText;
+                // action
+                if (string.IsNullOrWhiteSpace(_url))
+                    return string.Empty;
+                //
+                if (!string.IsNullOrWhiteSpace(action))
+                    _url += "/" + action.ToLower();
+                //
+                return _url.ToLower();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
         public static string NavigateByParam(string _url)
         {
             try

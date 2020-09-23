@@ -876,135 +876,290 @@ namespace AIRService.WS.Service
         }
 
         // ##########################################################################################################################################################################
-        public VNA_ReportSaleSummaryTicketingDocument GetSaleReportTicketByDocNumber(string docNumber)
+        public VNA_ReportSaleSummaryTicketing GetSaleReportTicketByDocNumber(string docNumber)
         {
-            //try
-            //{
-            if (string.IsNullOrWhiteSpace(docNumber))
-                return new VNA_ReportSaleSummaryTicketingDocument();
-            //
-            using (var sessionService = new VNA_SessionService())
+            try
             {
-                TokenModel tokenModel = sessionService.GetSession();
-                HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
-                XmlDocument soapEnvelopeXml = new XmlDocument();
-                var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
-                soapEnvelopeXml.Load(path);
-                soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
-                soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = tokenModel.Token;
-                soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = tokenModel.ConversationID;
-                XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
-                var stringXML = "";
-                stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
-                stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
-                stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
-                stringXML += "    <SearchParameters>";
-                stringXML += "        <TicketingProvider>VN</TicketingProvider>";
-                stringXML += "        <DocumentNumber>" + docNumber + "</DocumentNumber>";
-                stringXML += "    </SearchParameters>";
-                stringXML += "</GetTicketingDocumentRQ>";
-                child.InnerXml = stringXML;
-                soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
-                using (Stream stream = request.GetRequestStream())
+                if (string.IsNullOrWhiteSpace(docNumber))
+                    return new VNA_ReportSaleSummaryTicketing();
+                //
+                using (var sessionService = new VNA_SessionService())
                 {
-                    soapEnvelopeXml.Save(stream);
-                }
-                using (WebResponse response = request.GetResponse())
-                {
-                    using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                    TokenModel tokenModel = sessionService.GetSession();
+                    HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+                    XmlDocument soapEnvelopeXml = new XmlDocument();
+                    var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+                    soapEnvelopeXml.Load(path);
+                    soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                    soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+                    soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
+                    soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = tokenModel.Token;
+                    soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = tokenModel.ConversationID;
+                    XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+                    var stringXML = "";
+                    stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+                    stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+                    stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+                    stringXML += "    <SearchParameters>";
+                    stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+                    stringXML += "        <DocumentNumber>" + docNumber + "</DocumentNumber>";
+                    stringXML += "    </SearchParameters>";
+                    stringXML += "</GetTicketingDocumentRQ>";
+                    child.InnerXml = stringXML;
+                    soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+                    using (Stream stream = request.GetRequestStream())
                     {
-                        string soapResult = rd.ReadToEnd();
-                        soapEnvelopeXml = new XmlDocument();
-                        soapEnvelopeXml.LoadXml(soapResult);
-                        //
-                        XmlWriterSettings settings = new XmlWriterSettings();
-                        settings.Indent = true;
-                        // Save the document to a file and auto-indent the output.
-                        string fileName = docNumber + "_ticketingdocumentrq_details.xml";
-                        var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
-                        XmlWriter writer = XmlWriter.Create(urlFile, settings);
-                        soapEnvelopeXml.Save(writer);
-                        //
-                        // ********************************************************************************************
-                        //XmlNode ticketingDocumentNode = soapEnvelopeXml.GetElementsByTagName("TT:GetTicketingDocumentRS")[0];
-                        //XmlNode detailsNode = soapEnvelopeXml.GetElementsByTagName("TT:Details")[0];
-
-                        XmlNodeList xmlNodeList = soapEnvelopeXml.GetElementsByTagName("TT:ServiceCoupon");
-                        if (xmlNodeList.Count > 0)
+                        soapEnvelopeXml.Save(stream);
+                    }
+                    using (WebResponse response = request.GetResponse())
+                    {
+                        using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                         {
-                            XmlSerializer serial = new XmlSerializer(typeof(VNA_ReportSaleSummaryTicketingDocument));
+                            string soapResult = rd.ReadToEnd();
+                            soapEnvelopeXml = new XmlDocument();
+                            soapEnvelopeXml.LoadXml(soapResult);
+                            //
+                            ////// Save the document to a file and auto-indent the output.
+                            ////XmlWriterSettings settings = new XmlWriterSettings();
+                            ////settings.Indent = true;
+                            ////string fileName = docNumber + "_ticketingdocumentrq_details.xml";
+                            ////var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                            ////XmlWriter writer = XmlWriter.Create(urlFile, settings);
+                            ////soapEnvelopeXml.Save(writer);
+                            //
+                            // ********************************************************************************************
+                            //XmlNode ticketingDocumentNode = soapEnvelopeXml.GetElementsByTagName("TT:GetTicketingDocumentRS")[0];
+                            //XmlNode detailsNode = soapEnvelopeXml.GetElementsByTagName("TT:Details")[0];
                             List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocument = new List<VNA_ReportSaleSummaryTicketingDocument>();
-                            string marketingFlightNumber = string.Empty;
-                            string classOfService = string.Empty;
-                            string fareBasis = string.Empty;
-                            string startLocation = string.Empty;
-                            string endLocation = string.Empty;
-                            string bookingStatus = string.Empty;
-                            string currentStatus = string.Empty;
-                            string systemDateTime = string.Empty;
-                            string flownCoupon_DepartureDateTime = string.Empty;
-                            foreach (XmlNode itemCoupon in xmlNodeList)
+                            XmlNodeList xmlNodeList = soapEnvelopeXml.GetElementsByTagName("TT:ServiceCoupon");
+                            if (xmlNodeList.Count > 0)
                             {
-                                XmlNodeList xmlNode = itemCoupon.ChildNodes;
-                                if (xmlNode.Count > 0)
+
+                                string marketingFlightNumber = string.Empty;
+                                string classOfService = string.Empty;
+                                string fareBasis = string.Empty;
+                                string startLocation = string.Empty;
+                                string endLocation = string.Empty;
+                                string bookingStatus = string.Empty;
+                                string currentStatus = string.Empty;
+                                string systemDateTime = string.Empty;
+                                string flownCoupon_DepartureDateTime = string.Empty;
+                                foreach (XmlNode itemCoupon in xmlNodeList)
                                 {
-                                    foreach (XmlNode item in xmlNode)
+                                    XmlNodeList xmlNode = itemCoupon.ChildNodes;
+                                    if (xmlNode.Count > 0)
                                     {
-                                        string localName = item.LocalName;
-                                        if (localName == "MarketingFlightNumber")
-                                            marketingFlightNumber = item.InnerText;
-                                        //
-                                        if (localName == "ClassOfService")
-                                            classOfService = item.InnerText;
-                                        // 
-                                        if (localName == "FareBasis")
-                                            fareBasis = item.InnerText;
-                                        //
-                                        if (localName == "StartLocation")
-                                            startLocation = item.InnerText;
-                                        //
-                                        if (localName == "EndLocation")
-                                            endLocation = item.InnerText;
-                                        //
-                                        if (localName == "BookingStatus")
-                                            bookingStatus = item.InnerText;
-                                        //
-                                        if (localName == "CurrentStatus")
-                                            currentStatus = item.InnerText;
-                                        //       
-                                        if (localName == "DepartureDateTime")
-                                            flownCoupon_DepartureDateTime = item.InnerText;
+                                        foreach (XmlNode item in xmlNode)
+                                        {
+                                            string localName = item.LocalName;
+                                            if (localName == "MarketingFlightNumber")
+                                                marketingFlightNumber = item.InnerText;
+                                            //
+                                            if (localName == "ClassOfService")
+                                                classOfService = item.InnerText;
+                                            // 
+                                            if (localName == "FareBasis")
+                                                fareBasis = item.InnerText;
+                                            //
+                                            if (localName == "StartLocation")
+                                                startLocation = item.InnerText;
+                                            //
+                                            if (localName == "EndLocation")
+                                                endLocation = item.InnerText;
+                                            //
+                                            if (localName == "BookingStatus")
+                                                bookingStatus = item.InnerText;
+                                            //
+                                            if (localName == "CurrentStatus")
+                                                currentStatus = item.InnerText;
+                                            //     
+                                            if (localName == "FlownCoupon")
+                                            {
+                                                XmlNodeList childNodes = item.ChildNodes;
+                                                if (childNodes.Count > 0)
+                                                {
+                                                    foreach (XmlNode itemChild in childNodes)
+                                                    {
+                                                        localName = itemChild.LocalName;
+                                                        if (localName == "DepartureDateTime")
+                                                            flownCoupon_DepartureDateTime = itemChild.InnerText;
+                                                        //
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        vna_ReportSaleSummaryTicketingDocument.Add(new VNA_ReportSaleSummaryTicketingDocument
+                                        {
+                                            MarketingFlightNumber = marketingFlightNumber,
+                                            ClassOfService = classOfService,
+                                            FareBasis = fareBasis,
+                                            StartLocation = startLocation,
+                                            EndLocation = endLocation,
+                                            BookingStatus = bookingStatus,
+                                            CurrentStatus = currentStatus,
+                                            FlownCoupon_DepartureDateTime = flownCoupon_DepartureDateTime
+                                        });
+                                    }
+                                }
+
+                            }
+                            // get amount
+                            VNA_ReportSaleSummaryTicketingDocumentAmount vna_ReportSaleSummaryTicketingDocumentAmount = new VNA_ReportSaleSummaryTicketingDocumentAmount();
+                            XmlNode amountNode = soapEnvelopeXml.GetElementsByTagName("TT:Amounts")[0];
+                            if (amountNode != null)
+                            {
+                                XmlNodeList amountChildNodes = amountNode.ChildNodes;
+                                if (amountChildNodes.Count > 0)
+                                {
+                                    double baseAmount = 0;
+                                    double totalTax = 0;
+                                    double total = 0;
+                                    double nonRefundable = 0;
+                                    string unit = "";
+
+                                    foreach (XmlNode itemAmountNode in amountChildNodes)
+                                    {
+                                        string localName = itemAmountNode.LocalName;
+                                        if (localName == "New")
+                                        {
+                                            XmlNodeList newNodes = itemAmountNode.ChildNodes;
+                                            if (newNodes.Count > 0)
+                                            {
+                                                foreach (XmlNode newNode in newNodes)
+                                                {
+                                                    //
+                                                    localName = newNode.LocalName;
+                                                    if (localName == "Base")
+                                                    {
+                                                        XmlNode baseNodeChild = newNode.ChildNodes[0];
+                                                        if (baseNodeChild != null && baseNodeChild.LocalName == "Amount")
+                                                        {
+                                                            baseAmount = Convert.ToDouble(baseNodeChild.InnerText);
+                                                            //
+                                                            XmlAttribute xmlAttributeUnit = baseNodeChild.Attributes["currencyCode"];
+                                                            if (xmlAttributeUnit != null)
+                                                            {
+                                                                unit = xmlAttributeUnit.Value;
+                                                            }
+                                                        }
+                                                    }
+                                                    //
+                                                    if (localName == "TotalTax")
+                                                    {
+                                                        XmlNode totalTaxNode = newNode.ChildNodes[0];
+                                                        if (totalTaxNode != null && totalTaxNode.LocalName == "Amount")
+                                                        {
+                                                            totalTax = Convert.ToDouble(totalTaxNode.InnerText);
+                                                        }
+                                                    }
+                                                    //
+                                                    if (localName == "Total")
+                                                    {
+                                                        XmlNode totalNode = newNode.ChildNodes[0];
+                                                        if (totalNode != null && totalNode.LocalName == "Amount")
+                                                        {
+                                                            total = Convert.ToDouble(totalNode.InnerText);
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+
+                                        }
+                                        if (localName == "Other")
+                                        {
+                                            XmlNode newOther = itemAmountNode.ChildNodes[0];
+                                            if (newOther != null && newOther.LocalName == "NonRefundable")
+                                            {
+                                                XmlNode nonRefundableAmountNode = newOther.ChildNodes[0];
+                                                if (nonRefundableAmountNode != null && nonRefundableAmountNode.LocalName == "Amount")
+                                                {
+                                                    nonRefundable = Convert.ToDouble(nonRefundableAmountNode.InnerText);
+                                                }
+                                            }
+
+                                        }
+
                                         //
                                     }
-                                    vna_ReportSaleSummaryTicketingDocument.Add(new VNA_ReportSaleSummaryTicketingDocument
-                                    {
-                                        MarketingFlightNumber = marketingFlightNumber,
-                                        ClassOfService = classOfService,
-                                        FareBasis = fareBasis,
-                                        StartLocation = startLocation,
-                                        EndLocation = endLocation,
-                                        BookingStatus = bookingStatus,
-                                        CurrentStatus = currentStatus,
-                                        FlownCoupon_DepartureDateTime = flownCoupon_DepartureDateTime
-                                    });
+                                    // add to model
+                                    vna_ReportSaleSummaryTicketingDocumentAmount.BaseAmount = baseAmount;
+                                    vna_ReportSaleSummaryTicketingDocumentAmount.TotalTax = totalTax;
+                                    vna_ReportSaleSummaryTicketingDocumentAmount.Total = total;
+                                    vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable = nonRefundable;
+                                    vna_ReportSaleSummaryTicketingDocumentAmount.Unit = unit;
                                 }
                             }
+                            // get taxes 
+                            List<VNA_ReportSaleSummaryTicketingDocumentTaxes> vna_ReportSaleSummaryTicketingDocumentTaxes = new List<VNA_ReportSaleSummaryTicketingDocumentTaxes>();
+                            XmlNode taxNode = soapEnvelopeXml.GetElementsByTagName("TT:Taxes")[0];
+                            if (taxNode != null)
+                            {
 
-                            var data = vna_ReportSaleSummaryTicketingDocument;
+                                XmlNode newNode = taxNode.ChildNodes[0];
+                                if (newNode != null)
+                                {
+                                    XmlNodeList newChildNodes = newNode.ChildNodes;
+                                    if (newChildNodes.Count > 0)
+                                    {
+
+                                        //
+                                        foreach (XmlNode itemTaxChild in newChildNodes)
+                                        {
+                                            string taxCode = "";
+                                            double taxAmount = 0;
+                                            string unit = "";
+                                            string localName = itemTaxChild.LocalName;
+                                            if (localName == "Tax")
+                                            {
+                                                XmlAttribute xmlAttributeTaxCode = itemTaxChild.Attributes["code"];
+                                                if (xmlAttributeTaxCode != null)
+                                                {
+                                                    taxCode = Convert.ToString(xmlAttributeTaxCode.Value);
+                                                }
+                                                //
+                                                XmlNode taxAmountNode = itemTaxChild.ChildNodes[0];
+                                                if (taxAmountNode != null && taxAmountNode.LocalName == "Amount")
+                                                {
+                                                    taxAmount = Convert.ToDouble(taxAmountNode.InnerText);
+                                                    //
+                                                    XmlAttribute xmlAttributeUnit = taxAmountNode.Attributes["currencyCode"];
+                                                    if (xmlAttributeUnit != null)
+                                                    {
+                                                        unit = xmlAttributeUnit.Value;
+                                                    }
+                                                }
+                                                vna_ReportSaleSummaryTicketingDocumentTaxes.Add(new VNA_ReportSaleSummaryTicketingDocumentTaxes
+                                                {
+                                                    TaxCode = taxCode,
+                                                    Amount = taxAmount,
+                                                    Unit = unit
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            // result
+                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = new VNA_ReportSaleSummaryTicketing
+                            {
+                                SaleSummaryTicketingDocument = vna_ReportSaleSummaryTicketingDocument,
+                                SaleSummaryTicketingDocumentAmount = vna_ReportSaleSummaryTicketingDocumentAmount,
+                                SaleSummaryTicketingDocumentTaxes = vna_ReportSaleSummaryTicketingDocumentTaxes
+                            };
+                            //
+                            var data = vna_ReportSaleSummaryTicketing;
+                            return vna_ReportSaleSummaryTicketing;
+                            //
                         }
-                        return new VNA_ReportSaleSummaryTicketingDocument();
-                        //
                     }
                 }
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //    return new VNA_ReportSaleSummaryTicketingDocument();
-            //}
+            catch (Exception ex)
+            {
+                throw ex;
+                return new VNA_ReportSaleSummaryTicketing();
+            }
         }
     }
     public class EmployeeNumber

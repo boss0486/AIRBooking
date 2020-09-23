@@ -21,9 +21,9 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public double BaseAmount { get; set; }
-        public double TotalTax { get; set; }
-        public double Total { get; set; }
-        public double NonRefundable { get; set; }
+        public string TicketingDocumentID { get; set; }
+        public string TaxCode { get; set; }
+        public double Amount { get; set; }
+        public double Unit { get; set; }
     }
 }

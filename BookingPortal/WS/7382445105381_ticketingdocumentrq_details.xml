@@ -13,19 +13,19 @@
       <eb:Service>TicketingDocumentServicesRQ</eb:Service>
       <eb:Action>TicketingDocumentServicesRQ</eb:Action>
       <eb:MessageData>
-        <eb:MessageId>789330388125660281</eb:MessageId>
-        <eb:Timestamp>2020-09-22T10:46:53</eb:Timestamp>
+        <eb:MessageId>660767288899890212</eb:MessageId>
+        <eb:Timestamp>2020-09-23T08:01:30</eb:Timestamp>
         <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
       </eb:MessageData>
     </eb:MessageHeader>
     <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
-      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESA!ICESMSLB\/RES.LB!1600771611185!2283!273!1</wsse:BinarySecurityToken>
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESE!ICESMSLB\/RES.LB!1600848089374!4561!269!1</wsse:BinarySecurityToken>
     </wsse:Security>
   </soap-env:Header>
   <soap-env:Body>
     <TT:GetTicketingDocumentRS xmlns:TT="http://www.sabre.com/ns/Ticketing/DC" xmlns="http://services.sabre.com/STL/v01" xmlns:STL="http://services.sabre.com/STL/v01" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:str="http://sabre.com/ticketing/xslt/strings" xmlns:xs="http://www.w3.org/2001/XMLSchema" Version="3.12.0">
-      <STL:STL_Header.RS messageID="TKTHLP623-16979-226103035-1600771612862-6953110-tktdoc" timeStamp="2020-09-22T05:46:52">
-        <OrchestrationID seq="1">TKTHLP623-16979-226103035-1600771612862-6953110-tktdoc</OrchestrationID>
+      <STL:STL_Header.RS messageID="TKTHLP729-6312-1235092522-1600848090295-2320702-tktdoc" timeStamp="2020-09-23T03:01:30">
+        <OrchestrationID seq="1">TKTHLP729-6312-1235092522-1600848090295-2320702-tktdoc</OrchestrationID>
         <DiagnosticData xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">Found</DiagnosticData>
         <STL:Results>
           <Success xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">

@@ -26,7 +26,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
     {
         public DateTime ReportDate { get; set; }
         public List<string> DocumentNumbers { get; set; }
-        public  string EmpNumber { get; set; }
+        public string EmpNumber { get; set; }
     }
 
     public class ReportSaleSummaryTransaction
@@ -94,6 +94,13 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string ReportDate { get; set; }
         public string Query { get; set; }
     }
+    public class VNA_ReportSaleSummaryTicketing
+    {
+        public List<VNA_ReportSaleSummaryTicketingDocument> SaleSummaryTicketingDocument { get; set; }
+        public VNA_ReportSaleSummaryTicketingDocumentAmount SaleSummaryTicketingDocumentAmount { get; set; }
+        public List<VNA_ReportSaleSummaryTicketingDocumentTaxes> SaleSummaryTicketingDocumentTaxes { get; set; }
+    }
+
     public class VNA_ReportSaleSummaryTicketingDocument
     {
         public string MarketingFlightNumber { get; set; }
@@ -105,7 +112,22 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string CurrentStatus { get; set; }
         public string SystemDateTime { get; set; }
         public string FlownCoupon_DepartureDateTime { get; set; }
-    }    
+    }
+    public class VNA_ReportSaleSummaryTicketingDocumentAmount
+    {
+        public double BaseAmount { get; set; }
+        public double TotalTax { get; set; }
+        public double Total { get; set; }
+        public double NonRefundable { get; set; }
+        public string Unit { get; set; }
+    }
+    public class VNA_ReportSaleSummaryTicketingDocumentTaxes
+    {
+        public string TaxCode { get; set; }
+        public double Amount { get; set; }
+        public string Unit { get; set; }
+    }
+
     // ****************************************************************************************************************************
 
 
