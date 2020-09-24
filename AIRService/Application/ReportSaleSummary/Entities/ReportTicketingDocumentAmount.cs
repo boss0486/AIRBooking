@@ -21,10 +21,12 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string TicketingDocumentID { get; set; }
+        public DateTime ReportDate { get; set; }
+        public string DocumentNumber { get; set; }
         public double BaseAmount { get; set; }
         public double TotalTax { get; set; }
         public double Total { get; set; }
         public double NonRefundable { get; set; }
+        public string Unit { get; set; }
     }
 }

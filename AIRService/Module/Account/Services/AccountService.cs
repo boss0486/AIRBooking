@@ -29,7 +29,7 @@ namespace WebCore.Services
         public AccountService() : base() { }
         public AccountService(System.Data.IDbConnection db) : base(db) { }
         //###############################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             #region
             if (model == null)

@@ -91,22 +91,34 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
-        public ReportSaleSummaryResult GetReportSaleSummaryModel(string id)
+        public ReportSaleSummaryModel GetReportSaleSummaryByDocumentNumber(string id)
         {
-            
+
             if (string.IsNullOrWhiteSpace(id))
-                return new ReportSaleSummaryResult();
+                return new ReportSaleSummaryModel();
             //
             id = id.ToLower();
-            string sqlQuery = @"SELECT rps.*,rpsf.FareAmount, rpsf.TaxAmount, rpsf.TotalAmount FROM App_ReportSaleSummary as rps 
-                LEFT JOIN App_ReportSaleSummarySSFop as rpsf 
-                ON rpsf.ReportTransactionID =  rps.ID
-                WHERE rps.ID = @ID";
-            var item = _connection.Query<ReportSaleSummaryResult>(sqlQuery, new { ID = id }).FirstOrDefault();
-            if (item == null)
-                return new ReportSaleSummaryResult();
+
+
+
+            ReportSaleSummaryService reportSaleSummaryService = new ReportSaleSummaryService();
+            ReportSaleSummary reportSaleSummary = reportSaleSummaryService.GetAlls(m => m.ID == id).FirstOrDefault();
+            string docNumber = reportSaleSummary.DocumentNumber;
             //
-            return item;
+
+            ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
+            ReportTicketingDocumentAmountService reportTicketingDocumentAmount = new ReportTicketingDocumentAmountService(_connection);
+            ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
+            // reuslt
+            ReportSaleSummaryModel reportSaleSummaryTicketing = new ReportSaleSummaryModel
+            {
+                ReportSaleSummary = reportSaleSummary,
+                TicketingDocumentCoupons = reportTicketingDocumentCouponService.GetAlls(m => m.DocumentNumber == docNumber).ToList(),
+                TicketingDocumentAmount = reportTicketingDocumentAmount.GetAlls(m => m.DocumentNumber == docNumber).FirstOrDefault(),
+                TicketingDocumentTaxes = reportTicketingDocumentTaxes.GetAlls(m => m.DocumentNumber == docNumber).ToList()
+            };
+
+            return reportSaleSummaryTicketing;
         }
 
     }

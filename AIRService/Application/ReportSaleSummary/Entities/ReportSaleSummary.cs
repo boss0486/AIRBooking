@@ -77,5 +77,11 @@ namespace WebCore.Entities
         public double TotalAmount { get; set; }
 
     }
-
+    public class ReportSaleSummaryModel
+    {
+        public ReportSaleSummary ReportSaleSummary { get; set; }
+        public List<ReportTicketingDocumentCoupon> TicketingDocumentCoupons { get; set; }
+        public ReportTicketingDocumentAmount TicketingDocumentAmount { get; set; }
+        public List<ReportTicketingDocumentTaxes> TicketingDocumentTaxes { get; set; }
+    }
 }

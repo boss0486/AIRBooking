@@ -8,23 +8,24 @@
 @model WebCore.Entities.TransactionCustomerSpendingResult
 
 @{
-    string id = "";
-    string title = "";
-    string summary = "";
-    double amount = 0;
-    string supplierCodeId = "";
-    string customerCodeId = "";
-    string createdBy = "";
-    string createdDate = "";
-    string createdFullDate = "";
-    string enabled = "";
-    int transactionType = -1;
-    string strTransactionType = "";
-    string customerName = "";
-    string supplierName = "";
-
     try
     {
+        string id = "";
+        string title = "";
+        string summary = "";
+        double amount = 0;
+        string supplierCodeId = "";
+        string customerCodeId = "";
+        string createdBy = "";
+        string createdDate = "";
+        string createdFullDate = "";
+        string enabled = "";
+        int transactionType = -1;
+        string strTransactionType = "";
+        string customerName = "";
+        string supplierName = "";
+
+
         if (Model != null)
         {
             id = Model.ID;
@@ -71,30 +72,31 @@
                 customerName = customer.Title;
             }
         }
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @id</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Chuyển từ: @supplierCodeId - @supplierName</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Chuyển đến: @customerCodeId - @customerName</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @createdFullDate</div>
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     }
     catch (Exception)
     {
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
-<div class="row">
-    <div class="col-md-8">
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @id</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Chuyển từ: @supplierCodeId - @supplierName</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Chuyển đến: @customerCodeId - @customerName</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @createdFullDate</div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-</div>

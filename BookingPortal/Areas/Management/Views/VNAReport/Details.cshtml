@@ -5,84 +5,180 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
-@model WebCore.Entities.ReportSaleSummaryResult
+@model WebCore.Entities.ReportSaleSummaryModel
 
 @{
-    string id = "";
-    string title = "";
-    string summary = "";
-    string employeeNumber = "";
-    string documentType = "";
-    string documentNumber = "";
-    string passengerName = "";
-    string pnrLocator = "";
-    string ticketPrinterLniata = "";
-    string transactionTime = "";
-    bool exceptionItem = false;
-    bool decoupleItem = false;
-    string ticketStatusCode = "";
-    bool isElectronicTicket = false;
-    string reportDate = "";
+    string rps_id = "";
+    string rps_title = "";
+    string rps_summary = "";
+    string rps_employeeNumber = "";
+    string rps_documentType = "";
+    string rps_documentNumber = "";
+    string rps_passengerName = "";
+    string rps_pnrLocator = "";
+    string rps_ticketPrinterLniata = "";
+    string rps_transactionTime = "";
+    bool rps_exceptionItem = false;
+    bool rps_decoupleItem = false;
+    string rps_ticketStatusCode = "";
+    bool rps_isElectronicTicket = false;
+    string rps_reportDate = "";
 
-    double fareAmount = 0;
-    double taxAmount = 0;
-    double totalAmount = 0;
+    ReportSaleSummary reportSaleSummary = new ReportSaleSummary();
+    List<ReportTicketingDocumentCoupon> ticketingDocumentCoupons = new List<ReportTicketingDocumentCoupon>();
+    ReportTicketingDocumentAmount ticketingDocumentAmount = new ReportTicketingDocumentAmount();
+    List<ReportTicketingDocumentTaxes> ticketingDocumentTaxes = new List<ReportTicketingDocumentTaxes>();
+
     try
     {
         if (Model != null)
         {
-            id = Model.ID;
-            title = Model.Title;
-            summary = Model.Summary;
-            employeeNumber = Model.EmployeeNumber;
-            documentType = Model.DocumentType;
-            documentNumber = Model.DocumentNumber;
-            passengerName = Model.PassengerName;
-            pnrLocator = Model.PnrLocator;
-            ticketPrinterLniata = Model.TicketPrinterLniata;
-            transactionTime = Model.TransactionTime;
-            exceptionItem = Model.ExceptionItem;
-            decoupleItem = Model.DecoupleItem;
-            ticketStatusCode = Model.TicketStatusCode;
-            isElectronicTicket = Model.IsElectronicTicket;
-            reportDate = Model.ReportDate;
-            //
-            fareAmount = Model.FareAmount;
-            taxAmount = Model.TaxAmount;
-            totalAmount = Model.TotalAmount;
-        }
-    }
-    catch (Exception)
-    {
+            reportSaleSummary = Model.ReportSaleSummary;
+            ticketingDocumentCoupons = Model.TicketingDocumentCoupons;
+            ticketingDocumentAmount = Model.TicketingDocumentAmount;
+            ticketingDocumentTaxes = Model.TicketingDocumentTaxes;
 
-    }
-}
-<div class="row">
-    <div class="col-md-8">
+            if (reportSaleSummary != null)
+            {
+                rps_id = reportSaleSummary.ID;
+                rps_title = reportSaleSummary.Title;
+                rps_summary = reportSaleSummary.Summary;
+                rps_employeeNumber = reportSaleSummary.EmployeeNumber;
+                rps_documentType = reportSaleSummary.DocumentType;
+                rps_documentNumber = reportSaleSummary.DocumentNumber;
+                rps_passengerName = reportSaleSummary.PassengerName;
+                rps_pnrLocator = reportSaleSummary.PnrLocator;
+                rps_ticketPrinterLniata = reportSaleSummary.TicketPrinterLniata;
+                rps_transactionTime = reportSaleSummary.TransactionTime;
+                rps_exceptionItem = reportSaleSummary.ExceptionItem;
+                rps_decoupleItem = reportSaleSummary.DecoupleItem;
+                rps_ticketStatusCode = reportSaleSummary.TicketStatusCode;
+                rps_isElectronicTicket = reportSaleSummary.IsElectronicTicket;
+                rps_reportDate = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(reportSaleSummary.ReportDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+        }
+
+
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> @documentNumber </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment type:</span> @documentType </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Employee number:</span> @employeeNumber </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>PnrLocator:</span> @pnrLocator </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Passenger name:</span> @passengerName </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>IsElectronicTicket:</span> @isElectronicTicket </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Report date:</span> @reportDate </div>
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí dịch vụ:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Fare total:</span> @Helper.Page.Library.FormatCurrency(fareAmount) đ.</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Tax amount:</span> @Helper.Page.Library.FormatCurrency(taxAmount) đ.</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Total amount:</span> @Helper.Page.Library.FormatCurrency(totalAmount) đ.</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Transaction time:</span> @transactionTime</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <b class="col-red">@rps_documentNumber</b> </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment type:</span> @rps_documentType </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Employee number:</span> @rps_employeeNumber </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>PnrLocator:</span> @rps_pnrLocator </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Passenger name:</span> @rps_passengerName </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>IsElectronicTicket:</span> @rps_isElectronicTicket </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Report date:</span> @rps_reportDate </div>
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin vé:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <span class="col-red">@ViewBag.DocummentNumber</span> </div>
+        <div class="table-responsive m-b-50">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>MarketingFlightNumber</th>
+                        <th>ClassOfService</th>
+                        <th>FareBasis</th>
+                        <th>StartLocation</th>
+                        <th>EndLocation</th>
+                        <th>BookingStatus</th>
+                        <th>CurrentStatus</th>
+                        <th>DepartureDateTime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ticketingDocumentCoupons != null && ticketingDocumentCoupons.Count > 0)
+                    {
+
+                        foreach (var item in ticketingDocumentCoupons)
+                        {
+                            <tr>
+                                <td>@item.MarketingFlightNumber</td>
+                                <td>@item.ClassOfService</td>
+                                <td>@item.FareBasis</td>
+                                <td>@item.StartLocation</td>
+                                <td>@item.EndLocation</td>
+                                <td>@item.BookingStatus</td>
+                                <td>@item.CurrentStatus</td>
+                                <td>@item.FlownCoupon_DepartureDateTime</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí cơ bản:</label>
+        </div>
+        <div class="table-responsive m-b-50">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>TotalTax</th>
+                        <th>Total</th>
+                        <th>NonRefundable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if (ticketingDocumentAmount != null)
+                        {
+                            string unit = Helper.Page.Library.FormatCurrencyUnit(ticketingDocumentAmount.Unit);
+                            double baseAmount = ticketingDocumentAmount.BaseAmount;
+                            double totalTax = ticketingDocumentAmount.TotalTax;
+                            double total = ticketingDocumentAmount.Total;
+                            double nonRefundable = ticketingDocumentAmount.NonRefundable;
+                            //
+                            <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount)</td>
+                            <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
+                            <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
+                            <td class="text-right">@Helper.Page.Library.FormatCurrency(nonRefundable) @unit</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí thuế:</label>
+        </div>
+        <div class="table-responsive m-b-50">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tax code</th>
+                        <th>Amount</th>
+                        <th>Unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ticketingDocumentTaxes != null && ticketingDocumentTaxes.Count > 0)
+                    {
+                        foreach (var item in ticketingDocumentTaxes)
+                        {
+                            string unit = Helper.Page.Library.FormatCurrencyUnit(item.Unit);
+                            <tr>
+                                <td>@item.TaxCode</td>
+                                <td class="text-right">@Helper.Page.Library.FormatCurrency(item.Amount)</td>
+                                <td>@item.Unit</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
         </div>
         <div class="form-group text-right att-data-list">
             <a href="@Helper.Page.Navigate.PathDataList()">
                 @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
-    </div>
-</div>
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+}

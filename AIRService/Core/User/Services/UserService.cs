@@ -42,7 +42,7 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(loginId) || string.IsNullOrWhiteSpace(password))
                     return Notifization.Invalid(MessageText.Invalid);
                 //   
-                var sqlHelper = DbConnect.Connection.CMS;
+                var sqlHelper = DbConnect.Connection.CMS; 
                 var login = _connection.Query<Logged>("sp_user_login", new { model.LoginID, Password = Helper.Security.Library.Encryption256(password) }, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
                 //
                 if (login == null)

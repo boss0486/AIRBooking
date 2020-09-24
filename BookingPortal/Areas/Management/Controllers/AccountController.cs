@@ -86,7 +86,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 AccountService service = new AccountService();
-                return service.Datalist(model);
+                return service.DataList(model);
             }
             catch (Exception ex)
             {

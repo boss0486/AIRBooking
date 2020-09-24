@@ -6,20 +6,20 @@
 @using WebCore.Model.Enum;
 
 @model WebCore.Entities.CMSRoleResult
-
 @{
-    string id = "";
-    string areaId = "";
-    string title = "";
-    string imageFile = "";
-    string summary = "";
-    int Level = 0;
-    string languageId = "";
-    string createdBy = "";
-    string createdDate = "";
-    string enabled = "None";
     try
     {
+        string id = "";
+        string areaId = "";
+        string title = "";
+        string imageFile = "";
+        string summary = "";
+        int Level = 0;
+        string languageId = "";
+        string createdBy = "";
+        string createdDate = "";
+        string enabled = "None";
+
         if (Model != null)
         {
             id = Model.ID;
@@ -41,30 +41,31 @@
                 enabled = "DISABLE";
             }
         }
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Cấp quản lý: @Level</div>
+                <div class="form-group"><i class="fas fa-hand-point-right"></i> Lưu ý: Cấp độ tăng dần theo chiều giảm dần của giá trị cấp độ.</div>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo hồ sơ: @createdDate</div>
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     }
     catch (Exception)
     {
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
-<div class="row">
-    <div class="col-md-8">
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Cấp quản lý: @Level</div>
-        <div class="form-group"><i class="fas fa-hand-point-right"></i> Lưu ý: Cấp độ tăng dần theo chiều giảm dần của giá trị cấp độ.</div>
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo hồ sơ: @createdDate</div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-</div>

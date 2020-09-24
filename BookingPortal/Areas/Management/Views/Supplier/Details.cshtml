@@ -7,29 +7,30 @@
 
 @model WebCore.Entities.Supplier
 @{
-    string id = "";
-    string typeId = "";
-    string codeId = "";
-    string parentID = "";
-    string title = "";
-    string alias = "";
-    string summary = "";
-    string address = "";
-    string companyPhone = "";
-    string taxCode = "";
-    string contactName = "";
-    string contactEmail = "";
-    string contactPhone = "";
-    string path = "";
-    string accountId = "";
-    string languageId = "";
-    string createdBy = "";
-    string createdDate = "";
-    string enabled = "Chưa kích hoạt";
-    //
-    string _loginId = "";
     try
     {
+        string id = "";
+        string typeId = "";
+        string codeId = "";
+        string parentID = "";
+        string title = "";
+        string alias = "";
+        string summary = "";
+        string address = "";
+        string companyPhone = "";
+        string taxCode = "";
+        string contactName = "";
+        string contactEmail = "";
+        string contactPhone = "";
+        string path = "";
+        string accountId = "";
+        string languageId = "";
+        string createdBy = "";
+        string createdDate = "";
+        string enabled = "Chưa kích hoạt";
+        //
+        string _loginId = "";
+
         if (Model != null)
         {
             id = Model.ID;
@@ -56,40 +57,41 @@
             }
             _loginId = UserService.GetLoginIDByID(accountId);
         }
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin hồ sơ:</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Tên khách hàng: @title</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Loại khách hàng: Nhà cung cấp</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mã nhà cung cấp: <b style="color:#F00;">@codeId</b></div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mã số thuế: <span style="font-weight:400; color:#F00;">@taxCode</span></div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @companyPhone</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Địa chỉ: @address</div>
+                <div class="top-pic special">
+                    <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Người liên hệ: @contactName</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> E-mail: @contactEmail</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @contactPhone</div>
+
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     }
     catch (Exception)
     {
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
-<div class="row">
-    <div class="col-md-8">
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin hồ sơ:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tên khách hàng: @title</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Loại khách hàng: Nhà cung cấp</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mã nhà cung cấp: <b style="color:#F00;">@codeId</b></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mã số thuế: <span style="font-weight:400; color:#F00;">@taxCode</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @companyPhone</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Địa chỉ: @address</div>
-        <div class="top-pic special">
-            <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Người liên hệ: @contactName</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> E-mail: @contactEmail</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Đ.thoại: @contactPhone</div>
-
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-</div>

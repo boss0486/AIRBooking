@@ -52,8 +52,9 @@ namespace WebApplication.Management.Controllers
         }
         public ActionResult Details(string id)
         {
+            
             ReportSaleSummaryService service = new ReportSaleSummaryService();
-            ReportSaleSummaryResult model = service.GetReportSaleSummaryModel(id);
+            ReportSaleSummaryModel model = service.GetReportSaleSummaryByDocumentNumber(id);
             if (model != null)
                 return View(model);
             //

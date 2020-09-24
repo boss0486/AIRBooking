@@ -9,25 +9,25 @@
 @model WebCore.Entities.UserResult
 
 @{
-    string userId = "";
-    string areaId = "";
-    string loginId = "";
-    string imageFile = "";
-    string fullName = "";
-    string nickname = "";
-    string birthday = "";
-    string email = "";
-    string phone = "";
-    string address = "";
-    string languageId = "";
-    string createdBy = "";
-    string createdDate = "";
-    string isBlock = "Hoạt động";
-    string enabled = "None";
-    //
-    List<string> userRoles = new List<string>();
     try
     {
+        string userId = "";
+        string areaId = "";
+        string loginId = "";
+        string imageFile = "";
+        string fullName = "";
+        string nickname = "";
+        string birthday = "";
+        string email = "";
+        string phone = "";
+        string address = "";
+        string languageId = "";
+        string createdBy = "";
+        string createdDate = "";
+        string isBlock = "Hoạt động";
+        string enabled = "None";
+        //
+        List<string> userRoles = new List<string>();
         if (Model != null)
         {
             userId = Model.ID;
@@ -62,100 +62,101 @@
             userRoles = userRoleService.GetUserRoleByUserID(userId);
 
         }
+
+
+        <div class="row profile">
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin Hồ sơ:</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group text-center infor-container-img">
+                            <img src="@imageFile" class="infor-img img-responsive" />
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> Họ tên: <span>@fullName</span></label>
+                        </div>
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> Số ĐT: <span>@phone</span></label>
+                        </div>
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> E-Mail: <span>@email</span></label>
+                        </div>
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày sinh: <span>@birthday</span></label>
+                        </div>
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> Địa chỉ: <span>@address</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-pic m-t-30">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Mã ID: <span>@userId</span></label>
+                </div>
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
+                </div>
+                @if (Model.IsAdministrator)
+                {
+                    <div class="form-group ">
+                        <label class="form-label" sty><i class="fas fa-check-circle"></i> 00: <span class="account-id">Quản trị hệ thống</span></label>
+                    </div>
+                }
+                @if (userRoles != null && userRoles.Count() > 0)
+                {
+                    int cnt = 1;
+                    string strIndex = cnt + "";
+                    foreach (var item in userRoles)
+                    {
+                        if (cnt < 10)
+                        {
+                            strIndex = "0" + cnt;
+                        }
+                        <div class="form-group ">
+                            <label class="form-label" sty><i class="fas fa-check-circle"></i> @strIndex: <span>@item</span></label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="form-group ">
+                        <label class="form-label" sty><i class="fas fa-check-circle"></i> 01: <span class="red-text">Chưa thiết lập</span></label>
+                    </div>
+                }
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Tình trạng: <span>@isBlock</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@enabled</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày tạo: <span>@createdDate</span></label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Người tạo: <span>@createdBy</span></label>
+                </div>
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     }
     catch (Exception)
     {
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
-
-<div class="row profile">
-    <div class="col-md-8">
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin Hồ sơ:</label>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group text-center infor-container-img">
-                    <img src="@imageFile" class="infor-img img-responsive" />
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Họ tên: <span>@fullName</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Số ĐT: <span>@phone</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> E-Mail: <span>@email</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày sinh: <span>@birthday</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Địa chỉ: <span>@address</span></label>
-                </div>
-            </div>
-        </div>
-        <div class="top-pic m-t-30">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Mã ID: <span>@userId</span></label>
-        </div>
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
-        </div>
-        @if (Model.IsAdministrator)
-        {
-            <div class="form-group ">
-                <label class="form-label" sty><i class="fas fa-check-circle"></i> 00: <span class="account-id">Quản trị hệ thống</span></label>
-            </div>
-        }
-        @if (userRoles != null && userRoles.Count() > 0)
-        {
-            int cnt = 1;
-            string strIndex = cnt + "";
-            foreach (var item in userRoles)
-            {
-                if (cnt < 10)
-                {
-                    strIndex = "0" + cnt;
-                }
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> @strIndex: <span>@item</span></label>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="form-group ">
-                <label class="form-label" sty><i class="fas fa-check-circle"></i> 01: <span class="red-text">Chưa thiết lập</span></label>
-            </div>
-        }
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Tình trạng: <span>@isBlock</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@enabled</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày tạo: <span>@createdDate</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Người tạo: <span>@createdBy</span></label>
-        </div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-</div>

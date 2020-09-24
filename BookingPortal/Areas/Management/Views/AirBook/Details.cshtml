@@ -4,345 +4,353 @@
 @using WebCore.ENM
 @model  WebCore.Entities.BookTicketOrderDetails
 @{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-    //
-    List<BookTicketDetails> tickets = new List<BookTicketDetails>();
-    List<BookPassengerDetails> passengers = new List<BookPassengerDetails>();
-    List<BookFareDetails> bookFares = new List<BookFareDetails>();
-    List<BookTax> bookTaxs = new List<BookTax>();
-    List<BookContacDetails> bookContacs = new List<BookContacDetails>();
-
-    var pnr = string.Empty;
-    double ticketTotal = 0;
-    int bookPNRCodeStatus = (int)BookTicketEnum.BookPNRCodeStatus.None;
-    List<string> lstPassengerType = new List<string>();
-    if (Model != null)
+    try
     {
-        pnr = "";
-        if (Model.BookTickets != null)
-        {
-            tickets = Model.BookTickets.ToList();
-            pnr = tickets[0].PNR;
-        }
-        if (Model.BookPassengers != null)
-        {
-            passengers = Model.BookPassengers.ToList();
-            bookFares = Model.BookFares;
-            lstPassengerType = bookFares.GroupBy(m => new { m.PassengerType }).Select(m => m.Key.PassengerType).ToList();
-        }
-        bookContacs = Model.Contacts;
-        BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
-        var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
+        ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+        //
+        List<BookTicketDetails> tickets = new List<BookTicketDetails>();
+        List<BookPassengerDetails> passengers = new List<BookPassengerDetails>();
+        List<BookFareDetails> bookFares = new List<BookFareDetails>();
+        List<BookTax> bookTaxs = new List<BookTax>();
+        List<BookContacDetails> bookContacs = new List<BookContacDetails>();
 
-        if (bookPNRCode != null)
+        var pnr = string.Empty;
+        double ticketTotal = 0;
+        int bookPNRCodeStatus = (int)BookTicketEnum.BookPNRCodeStatus.None;
+        List<string> lstPassengerType = new List<string>();
+        if (Model != null)
         {
-            bookPNRCodeStatus = bookPNRCode.Status;
-        }
-    }
-}
-<div class="card book-in details">
-    <div class="header" style="background:#FFF;">
-        <h3><i class="fas fa-plane-departure" style="font-size:21px;"></i> Xuất vé</h3>
-    </div>
+            pnr = "";
+            if (Model.BookTickets != null)
+            {
+                tickets = Model.BookTickets.ToList();
+                pnr = tickets[0].PNR;
+            }
+            if (Model.BookPassengers != null)
+            {
+                passengers = Model.BookPassengers.ToList();
+                bookFares = Model.BookFares;
+                lstPassengerType = bookFares.GroupBy(m => new { m.PassengerType }).Select(m => m.Key.PassengerType).ToList();
+            }
+            bookContacs = Model.Contacts;
+            BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
+            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
 
-    <div class="body" id="BookingForm">
-        <div class="top-pic mgb-20">
-            <label><i class="fa fa-check-circle" aria-hidden="true"></i> Thông tin chuyến bay:</label>
-        </div>
-        <div class="row">
-            <div class="col-md-6"><label id="lblPNRCode" data-pnr="@pnr" style="color:#ff0000; font-size:16px;"><i style="color:#ff0000; font-size:16px;" class="fas fa-qrcode"></i> PNR: @pnr</label></div>
-        </div>
-        <div class="table-responsive mgb-20">
-            <table id="TblFlight" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Hãng</th>
-                        <th>Số hiệu</th>
-                        <th>Hành trình</th>
-                        <th>Ngày bay</th>
-                        <th>Giờ xuất phát</th>
-                        <th>Giờ đến</th>
-                        <th class="text-center">Hạng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (tickets.Count() > 0)
-                    {
-                        foreach (var item in tickets)
-                        {
+            if (bookPNRCode != null)
+            {
+                bookPNRCodeStatus = bookPNRCode.Status;
+            }
+        }
+
+        <div class="card book-in details">
+            <div class="header" style="background:#FFF;">
+                <h3><i class="fas fa-plane-departure" style="font-size:21px;"></i> Xuất vé</h3>
+            </div>
+
+            <div class="body" id="BookingForm">
+                <div class="top-pic mgb-20">
+                    <label><i class="fa fa-check-circle" aria-hidden="true"></i> Thông tin chuyến bay:</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><label id="lblPNRCode" data-pnr="@pnr" style="color:#ff0000; font-size:16px;"><i style="color:#ff0000; font-size:16px;" class="fas fa-qrcode"></i> PNR: @pnr</label></div>
+                </div>
+                <div class="table-responsive mgb-20">
+                    <table id="TblFlight" class="table table-bordered">
+                        <thead>
                             <tr>
-                                <td>
-
-                                    <label class="lblTrademark">VNA</label>
-                                </td>
-                                <td>
-                                    <i class="fa fa-plane" aria-hidden="true"></i> <label class="lblFlightNo">VN @item.FlightNumber</label> <label>@item.AirEquipType</label>
-                                </td>
-                                <td>
-                                    <label class="lblItinerary">@item.OriginLocation - @item.DestinationLocation; @item.DepartureDateTime.ToString("dd-MM-yyyy")</label>
-                                </td>
-                                <td>
-                                    <span class="lblItineraryTime">@item.DepartureDateTime.ToString("dd-MM-yyyy")</span>
-                                </td>
-                                <td>
-                                    <span class="lblItineraryTime">@item.DepartureDateTime.ToString("HH:mm:ss")</span>
-                                </td>
-                                <td>
-                                    <span class="lblItineraryTime">@item.ArrivalDateTime.ToString("HH:mm:ss")</span>
-                                </td>
-                                <td class="text-center">
-                                    <label class="lblResbookdesigcode">@item.ResBookDesigCode</label>
-                                </td>
+                                <th>Hãng</th>
+                                <th>Số hiệu</th>
+                                <th>Hành trình</th>
+                                <th>Ngày bay</th>
+                                <th>Giờ xuất phát</th>
+                                <th>Giờ đến</th>
+                                <th class="text-center">Hạng</th>
                             </tr>
-                        }
-                    }
-
-                </tbody>
-            </table>
-        </div>
-        <div class="top-pic mgb-10">
-            <label><i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin hành khách:</label>
-        </div>
-        <div class="table-responsive mgb-20">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-right"># &nbsp;</th>
-                        <th style="width:60px;">Mã hành khách</th>
-                        <th>Họ và Tên</th>
-                        <th>Giới tính</th>
-                        <th>Ngày sinh</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (passengers != null && passengers.Count() > 0)
-                    {
-                        int cnt = 0;
-                        foreach (var item in passengers.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }))
-                        {
-                            var list = passengers.Where(m => m.PassengerType == item.PassengerType).ToList();
-                            string _rowspan = "";
-                            if (list.Count() > 1)
+                        </thead>
+                        <tbody>
+                            @if (tickets.Count() > 0)
                             {
-                                _rowspan = " rowspan=" + @list.Count();
+                                foreach (var item in tickets)
+                                {
+                                    <tr>
+                                        <td>
+
+                                            <label class="lblTrademark">VNA</label>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-plane" aria-hidden="true"></i> <label class="lblFlightNo">VN @item.FlightNumber</label> <label>@item.AirEquipType</label>
+                                        </td>
+                                        <td>
+                                            <label class="lblItinerary">@item.OriginLocation - @item.DestinationLocation; @item.DepartureDateTime.ToString("dd-MM-yyyy")</label>
+                                        </td>
+                                        <td>
+                                            <span class="lblItineraryTime">@item.DepartureDateTime.ToString("dd-MM-yyyy")</span>
+                                        </td>
+                                        <td>
+                                            <span class="lblItineraryTime">@item.DepartureDateTime.ToString("HH:mm:ss")</span>
+                                        </td>
+                                        <td>
+                                            <span class="lblItineraryTime">@item.ArrivalDateTime.ToString("HH:mm:ss")</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <label class="lblResbookdesigcode">@item.ResBookDesigCode</label>
+                                        </td>
+                                    </tr>
+                                }
                             }
 
-                            for (int i = 0; i < list.Count(); i++)
+                        </tbody>
+                    </table>
+                </div>
+                <div class="top-pic mgb-10">
+                    <label><i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin hành khách:</label>
+                </div>
+                <div class="table-responsive mgb-20">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-right"># &nbsp;</th>
+                                <th style="width:60px;">Mã hành khách</th>
+                                <th>Họ và Tên</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (passengers != null && passengers.Count() > 0)
                             {
-                                cnt++;
-
-                                var gender = WebCore.Services.BookTicketService.ConvertToGenderName(list[i].Gender);
-                                <tr>
-                                    <td class="text-right">@cnt &nbsp;</td>
-                                    @if (i == 0)
+                                int cnt = 0;
+                                foreach (var item in passengers.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }))
+                                {
+                                    var list = passengers.Where(m => m.PassengerType == item.PassengerType).ToList();
+                                    string _rowspan = "";
+                                    if (list.Count() > 1)
                                     {
-                                        <td style="vertical-align:middle;" @(i == 0 ? _rowspan : "")>- @list[i].PassengerType</td>
+                                        _rowspan = " rowspan=" + @list.Count();
                                     }
-                                    <td>@list[i].FullName</td>
-                                    <td>@gender</td>
-                                    <td>@list[i].DateOfBirth</td>
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="top-pic mgb-10">
-            <label><i class="fa fa-info-circle" aria-hidden="true"></i> Chi phí:</label>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-right" style="width:100px;"># &nbsp;</th>
-                        <th style="width:150px;">CHI PHÍ</th>
-                        @if (bookFares.Count > 0)
-                        {
-                            foreach (var item in bookFares)
-                            {
-                                <th>KH-@item.PassengerType </th>
-                            }
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class="text-right">- &nbsp;</th>
-                        <th style="width:60px;" colspan="4">Giá vé</th>
-                    </tr>
-                    <tr>
-                        <th class="text-right"></th>
-                        <th style="width:60px;" class="text-right">Tổng/1KH: </th>
-                        @if (bookFares.Count > 0)
-                        {
-                            foreach (var item in bookFares)
-                            {
-                                <td class="text-right">@Helper.Page.Library.FormatCurrency(item.PriceTotal) đ &nbsp;</td>
-                            }
-                        }
-                    </tr>
-                    <tr>
-                        <th class="text-right">- &nbsp;</th>
-                        <th style="width:60px;" colspan="4">Tax</th>
-                    </tr>
-                    @if (bookFares.Count > 0)
-                    {
-                        List<string> taxCode = new List<string>();
-                        for (int i = 0; i < bookFares.Count; i++)
-                        {
-                            //
-                            if (i == 0)
-                            {
-                                foreach (var item in bookFares[i].FareTaxs)
-                                {
-                                    taxCode.Add(item.TaxCode);
-                                }
-                            }
-                            if (taxCode.Count != 0 && taxCode.Count < bookFares[i].FareTaxs.Count())
-                            {
-                                taxCode = new List<string>();
-                                foreach (var item in bookFares[i].FareTaxs)
-                                {
-                                    taxCode.Add(item.TaxCode);
-                                }
-                            }
-                        }
 
-                        if (taxCode.Count > 0)
-                        {
-                            for (int i = 0; i < taxCode.Count; i++)
-                            {
-                                <tr>
-                                    <td class="text-right"></td>
-                                    <td class="text-right">@taxCode[i] / 1KH: </td>
-                                    @foreach (var fare in bookFares)
+                                    for (int i = 0; i < list.Count(); i++)
                                     {
-                                        double amount = 0;
-                                        var fareTaxs = fare.FareTaxs.Where(m => m.TaxCode == taxCode[i] && m.PassengerType == fare.PassengerType).FirstOrDefault();
-                                        if (fareTaxs != null)
+                                        cnt++;
+
+                                        var gender = WebCore.Services.BookTicketService.ConvertToGenderName(list[i].Gender);
+                                        <tr>
+                                            <td class="text-right">@cnt &nbsp;</td>
+                                            @if (i == 0)
+                                            {
+                                                <td style="vertical-align:middle;" @(i == 0 ? _rowspan : "")>- @list[i].PassengerType</td>
+                                            }
+                                            <td>@list[i].FullName</td>
+                                            <td>@gender</td>
+                                            <td>@list[i].DateOfBirth</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="top-pic mgb-10">
+                    <label><i class="fa fa-info-circle" aria-hidden="true"></i> Chi phí:</label>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-right" style="width:100px;"># &nbsp;</th>
+                                <th style="width:150px;">CHI PHÍ</th>
+                                @if (bookFares.Count > 0)
+                                {
+                                    foreach (var item in bookFares)
+                                    {
+                                        <th>KH-@item.PassengerType </th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="text-right">- &nbsp;</th>
+                                <th style="width:60px;" colspan="4">Giá vé</th>
+                            </tr>
+                            <tr>
+                                <th class="text-right"></th>
+                                <th style="width:60px;" class="text-right">Tổng/1KH: </th>
+                                @if (bookFares.Count > 0)
+                                {
+                                    foreach (var item in bookFares)
+                                    {
+                                        <td class="text-right">@Helper.Page.Library.FormatCurrency(item.PriceTotal) đ &nbsp;</td>
+                                    }
+                                }
+                            </tr>
+                            <tr>
+                                <th class="text-right">- &nbsp;</th>
+                                <th style="width:60px;" colspan="4">Tax</th>
+                            </tr>
+                            @if (bookFares.Count > 0)
+                            {
+                                List<string> taxCode = new List<string>();
+                                for (int i = 0; i < bookFares.Count; i++)
+                                {
+                                    //
+                                    if (i == 0)
+                                    {
+                                        foreach (var item in bookFares[i].FareTaxs)
                                         {
-                                            amount = fareTaxs.Amount;
+                                            taxCode.Add(item.TaxCode);
                                         }
-                                        <td class="text-right">@Helper.Page.Library.FormatCurrency(amount) đ &nbsp;</td>
                                     }
-                                </tr>
+                                    if (taxCode.Count != 0 && taxCode.Count < bookFares[i].FareTaxs.Count())
+                                    {
+                                        taxCode = new List<string>();
+                                        foreach (var item in bookFares[i].FareTaxs)
+                                        {
+                                            taxCode.Add(item.TaxCode);
+                                        }
+                                    }
+                                }
+
+                                if (taxCode.Count > 0)
+                                {
+                                    for (int i = 0; i < taxCode.Count; i++)
+                                    {
+                                        <tr>
+                                            <td class="text-right"></td>
+                                            <td class="text-right">@taxCode[i] / 1KH: </td>
+                                            @foreach (var fare in bookFares)
+                                            {
+                                                double amount = 0;
+                                                var fareTaxs = fare.FareTaxs.Where(m => m.TaxCode == taxCode[i] && m.PassengerType == fare.PassengerType).FirstOrDefault();
+                                                if (fareTaxs != null)
+                                                {
+                                                    amount = fareTaxs.Amount;
+                                                }
+                                                <td class="text-right">@Helper.Page.Library.FormatCurrency(amount) đ &nbsp;</td>
+                                            }
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="text-right">-</td>
+                                        <td class="text-right">Tổng/MKH</td>
+                                        @foreach (var bookFare in bookFares)
+                                        {
+                                            double priceOfType = 0;
+                                            double taxOfType = 0;
+                                            double fareOfType = 0;
+                                            var fare = bookFare.FareTaxs.Where(m => m.PassengerType == bookFare.PassengerType).FirstOrDefault();
+                                            if (fare != null)
+                                            {
+                                                priceOfType = bookFare.PriceTotal;
+                                                taxOfType = bookFare.TaxTotal;
+                                                int passengerQty = bookFare.PassengerQty;
+
+                                                fareOfType = (priceOfType + taxOfType) * passengerQty;
+
+                                                ticketTotal += fareOfType;
+                                            }
+                                            <td class="text-right">@Helper.Page.Library.FormatCurrency(fareOfType) đ &nbsp;</td>
+                                        }
+                                    </tr>
+                                }
                             }
                             <tr>
-                                <td class="text-right">-</td>
-                                <td class="text-right">Tổng/MKH</td>
-                                @foreach (var bookFare in bookFares)
-                                {
-                                    double priceOfType = 0;
-                                    double taxOfType = 0;
-                                    double fareOfType = 0;
-                                    var fare = bookFare.FareTaxs.Where(m => m.PassengerType == bookFare.PassengerType).FirstOrDefault();
-                                    if (fare != null)
-                                    {
-                                        priceOfType = bookFare.PriceTotal;
-                                        taxOfType = bookFare.TaxTotal;
-                                        int passengerQty = bookFare.PassengerQty;
-
-                                        fareOfType = (priceOfType + taxOfType) * passengerQty;
-
-                                        ticketTotal += fareOfType;
-                                    }
-                                    <td class="text-right">@Helper.Page.Library.FormatCurrency(fareOfType) đ &nbsp;</td>
-                                }
+                                <td colspan="5" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price">@Helper.Page.Library.FormatCurrency(ticketTotal) đ &nbsp;</label></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="top-pic mgb-10">
+                    <label><i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin liên hệ:</label>
+                </div>
+                <div class="container-fluid mgb-20" style="background: #a2d5d0;">
+                    <div class="row">
+                        @if (bookContacs.Count > 0)
+                        {
+                            foreach (var item in bookContacs)
+                            {
+                                <div class="col-md-5">
+                                    <div class="form-group mgt-20">
+                                        <br />
+                                        <label class="form-label">Họ tên: @item.Name</label>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="form-label">Số đ.thoại: @item.Phone</label>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="form-label">Địa chỉ e-mail:  @item.Email</label>
+                                    </div>
+                                </div>
+                            }
                         }
-                    }
-                    <tr>
-                        <td colspan="5" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price">@Helper.Page.Library.FormatCurrency(ticketTotal) đ &nbsp;</label></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="top-pic mgb-10">
-            <label><i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin liên hệ:</label>
-        </div>
-        <div class="container-fluid mgb-20" style="background: #a2d5d0;">
-            <div class="row">
-                @if (bookContacs.Count > 0)
+                        <div class="col-md-12"> <hr /></div>
+                    </div>
+                </div>
+
+                @if (passengers != null && passengers.Count() > 0)
                 {
-                    foreach (var item in bookContacs)
-                    {
-                        <div class="col-md-5">
-                            <div class="form-group mgt-20">
-                                <br />
-                                <label class="form-label">Họ tên: @item.Name</label>
-                            </div>
-                            <div class="form-group ">
-                                <label class="form-label">Số đ.thoại: @item.Phone</label>
-                            </div>
-                            <div class="form-group ">
-                                <label class="form-label">Địa chỉ e-mail:  @item.Email</label>
+                    <div class="row mgt-20 mgb-25">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra thông tin khách hàng.</p>
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Xuất vé" để thực hiện lệnh xuất vé.</p>
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "xuất vé" hoàn tất.</p>
                             </div>
                         </div>
-                    }
+                        <div class="col-md-4 text-right">
+                            @{
+                                if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.Booking)
+                                {
+                                    <button id="btnRelease" class="btn btn-success -w-100  mgb-10" type="button"><i class="fas fa-arrow-circle-right"></i> Xuất vé</button>
+                                }
+                                if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.ExTicket)
+                                {
+                                    <label class="btn btn-danger -w-100  mgb-10" type="button"><i class="fas fa-arrow-circle-right"></i> Đã xuất</label>
+                                }
+                                if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.None)
+                                {
+                                    <label class="btn btn-danger -w-100  mgb-10 disabled" type="button"><i class="fas fa-arrow-circle-right"></i> Không X.Định</label>
+                                }
+                            }
+
+                            <a href="/backend/flightbook/search" class="btn btn-info -w-100 mgb-10"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
                 }
-                <div class="col-md-12"> <hr /></div>
+                else
+                {
+                    <div class="row mgt-20 mgb-25">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Thông tin chuyến bay không hợp lệ.</p>
+                                <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Vui lòng thực hiện lại lệnh tìm kiếm chuyến bay.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <a href="/backend/flightbook/search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-
-        @if (passengers != null && passengers.Count() > 0)
-        {
-            <div class="row mgt-20 mgb-25">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra thông tin khách hàng.</p>
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Xuất vé" để thực hiện lệnh xuất vé.</p>
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "xuất vé" hoàn tất.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-right">
-                    @{
-                        if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.Booking)
-                        {
-                            <button id="btnRelease" class="btn btn-success -w-100  mgb-10" type="button"><i class="fas fa-arrow-circle-right"></i> Xuất vé</button>
-                        }
-                        if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.ExTicket)
-                        {
-                            <label class="btn btn-danger -w-100  mgb-10" type="button"><i class="fas fa-arrow-circle-right"></i> Đã xuất</label>
-                        }
-                        if (bookPNRCodeStatus == (int)WebCore.ENM.BookTicketEnum.BookPNRCodeStatus.None)
-                        {
-                            <label class="btn btn-danger -w-100  mgb-10 disabled" type="button"><i class="fas fa-arrow-circle-right"></i> Không X.Định</label>
-                        }
-                    }
-
-                    <a href="/backend/flightbook/search" class="btn btn-info -w-100 mgb-10"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
-                </div>
-                <div class="col-md-12">
-                    <hr />
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="row mgt-20 mgb-25">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Thông tin chuyến bay không hợp lệ.</p>
-                        <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Vui lòng thực hiện lại lệnh tìm kiếm chuyến bay.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-right">
-                    <a href="/backend/flightbook/search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
-                </div>
-                <div class="col-md-12">
-                    <hr />
-                </div>
-            </div>
-        }
-    </div>
-</div>
-<div class="form-group text-right att-data-list">
-    <a href="@Helper.Page.Navigate.PathDataList()">
-        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-    </a>
-</div>
-@section scripts{
-    <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
+        <div class="form-group text-right att-data-list">
+            <a href="@Helper.Page.Navigate.PathDataList()">
+                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+    @section scripts{
+        <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
+    }
 }

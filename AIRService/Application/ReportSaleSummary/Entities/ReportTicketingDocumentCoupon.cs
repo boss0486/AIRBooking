@@ -23,6 +23,8 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
+        public DateTime ReportDate { get; set; }
+        public string DocumentNumber { get; set; }
         public string MarketingFlightNumber { get; set; }
         public string ClassOfService { get; set; }
         public string FareBasis { get; set; }

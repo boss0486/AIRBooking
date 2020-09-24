@@ -664,51 +664,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-        public string ReportSaleSummarySave(ApiPortalBooking.Models.VNA_WS_Model.ReportSaleSummaryTransaction model, DateTime reportDate, string empNumber)
-        {
-            try
-            {
-                if (model == null)
-                    return MessageText.Invalid;
-                //
-                ReportSaleSummaryService reportTransactionService = new ReportSaleSummaryService();
-                App_ReportSaleSummarySSFopService reportTransactionSSFopService = new App_ReportSaleSummarySSFopService();
-                string reportTransactionId = reportTransactionService.Create<string>(new ReportSaleSummary
-                {
-                    Title = empNumber,
-                    EmployeeNumber = empNumber,
-                    DocumentType = model.DocumentType,
-                    DocumentNumber = model.DocumentNumber,
-                    PassengerName = model.PassengerName,
-                    PnrLocator = model.PassengerName,
-                    TicketPrinterLniata = model.TicketPrinterLniata,
-                    TransactionTime = model.TransactionTime,
-                    ExceptionItem = model.ExceptionItem,
-                    DecoupleItem = model.DecoupleItem,
-                    TicketStatusCode = model.TicketStatusCode,
-                    IsElectronicTicket = model.IsElectronicTicket,
-                    ReportDate = reportDate
-                });
-                ApiPortalBooking.Models.VNA_WS_Model.ReportSaleSummaryTransactionSSFop ePRReportTransactionSSFop = model.SaleSummaryTransactionSSFop;
-                if (ePRReportTransactionSSFop != null)
-                {
-                    reportTransactionSSFopService.Create<string>(new ReportSaleSummarySSFop
-                    {
-                        Title = ePRReportTransactionSSFop.FopCode,
-                        ReportTransactionID = reportTransactionId,
-                        CurrencyCode = ePRReportTransactionSSFop.CurrencyCode,
-                        FareAmount = ePRReportTransactionSSFop.FareAmount,
-                        TaxAmount = ePRReportTransactionSSFop.TaxAmount,
-                        TotalAmount = ePRReportTransactionSSFop.TaxAmount,
-                    });
-                }
-                return "Ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
+         
         public string ReportSaleSummaryDetailsSave(ReportSaleSummaryDetailsCreate model)
         {
             try
@@ -753,7 +709,7 @@ namespace AIRService.WS.Service
                 var timezone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"); //  vn time
                 var dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
                 //string date = dateTime.ToString("yyyy-MM-dd");
-                string date = "2020-01-01";
+                string date = "2020-08-29";
                 return date;
             }
             catch (Exception)
@@ -761,7 +717,7 @@ namespace AIRService.WS.Service
                 return string.Empty;
             }
         }
-        public bool CheckReportSaleSummary(DateTime reportDate)
+        public bool StatusReportSaleSummary(DateTime reportDate)
         {
             try
             {
