@@ -332,13 +332,13 @@ namespace AIRService.WS.Service
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
                         //
-                        XmlWriterSettings settings = new XmlWriterSettings();
-                        settings.Indent = true;
-                        // Save the document to a file and auto-indent the output.
-                        string fileName = model.EmpNumber + "_ticketingdocumentrq_details.xml";
-                        var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
-                        XmlWriter writer = XmlWriter.Create(urlFile, settings);
-                        soapEnvelopeXml.Save(writer);
+                        //XmlWriterSettings settings = new XmlWriterSettings();
+                        //settings.Indent = true;
+                        //// Save the document to a file and auto-indent the output.
+                        //string fileName = model.EmpNumber + "_ticketingdocumentrq_details.xml";
+                        //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                        //XmlWriter writer = XmlWriter.Create(urlFile, settings);
+                        //soapEnvelopeXml.Save(writer);
 
                         // ********************************************************************************************
                         VNA_ReportSaleSummaryDetailResult reportSaleSummaryDetailResult = new VNA_ReportSaleSummaryDetailResult();
@@ -665,42 +665,6 @@ namespace AIRService.WS.Service
         }
         //
          
-        public string ReportSaleSummaryDetailsSave(ReportSaleSummaryDetailsCreate model)
-        {
-            try
-            {
-                if (model == null)
-                    return MessageText.Invalid;
-                //
-                ReportTransactionDetailsService reportTransactionDetailsService = new ReportTransactionDetailsService();
-                string reportTransactionId = reportTransactionDetailsService.Create<string>(new ReportSaleSummaryDetails
-                {
-                    Title = model.DocumentNumber,
-                    DocumentNumber = model.DocumentNumber,
-                    AssociatedDocument = model.AssociatedDocument,
-                    ReasonForIssuanceCode = model.ReasonForIssuanceCode,
-                    ReasonForIssuanceDesc = model.ReasonForIssuanceDesc,
-                    CouponNumber = model.CouponNumber,
-                    TicketingProvider = model.TicketingProvider,
-                    FlightNumber = model.FlightNumber,
-                    ClassOfService = model.ClassOfService,
-                    DepartureDtm = model.DepartureDtm,
-                    DecoupleItem = model.DecoupleItem,
-                    ArrivalDtm = model.ArrivalDtm,
-                    DepartureCity = model.DepartureCity,
-                    ArrivalCity = model.ArrivalCity,
-                    CouponStatus = model.CouponStatus,
-                    FareBasis = model.FareBasis,
-                    BaggageAllowance = model.BaggageAllowance
-                });
-                return "Ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        //
         public string GetReportDateInToday()
         {
             try

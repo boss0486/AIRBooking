@@ -19,6 +19,7 @@ using System.Web;
 using WebCore.ENM;
 using Helper;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
+using Helper.Page;
 
 namespace AIRService.Service
 {
@@ -512,7 +513,55 @@ namespace AIRService.Service
             return fareDetailsModels;
         }
 
-        /// GET TAX ****************************************************************************************************************************************
+
+        /// Dieu kien ve ****************************************************************************************************************************************
+        /// #1.Get data
+        /// #2.Save file, fare ofticket check in file (1)
+        public ActionResult GetTicketCondition(TicketConditionModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return Notifization.Invalid(MessageText.Invalid + "1");
+                //
+
+                if (!Helper.Page.Validate.TestDateTime(model.DepartureDateTime))
+                    return Notifization.Invalid(MessageText.Invalid + "2");
+                //
+                using (var sessionService = new VNA_SessionService())
+                {
+                    // create session 
+                    var _session = sessionService.GetSession();
+                    if (_session == null)
+                        return Notifization.Error("Cannot create session");
+                    // get token
+                    string _token = _session.Token;
+                    string _conversationId = _session.ConversationID;
+                    if (string.IsNullOrWhiteSpace(_token))
+                        return Notifization.Error("Cannot create token");
+                    //
+                    DateTime departureDateTime = Convert.ToDateTime(model.DepartureDateTime);
+                    VNA_OTA_AirRulesLLSRQService vNA_OTA_AirRulesLLSRQService = new VNA_OTA_AirRulesLLSRQService();
+                    var data = vNA_OTA_AirRulesLLSRQService.GetOTA_AirRulesLLSRQ(new VNA_OTA_AirRulesLLSRQ
+                    {
+                        Token = _token,
+                        ConversationID = _conversationId,
+                        DepartureDateTime = departureDateTime,
+                        DestinationLocation = model.DestinationLocation,
+                        OriginLocation = model.OriginLocation,
+                        FareBasis = model.FareBasis
+                    });
+                    return Notifization.Data("Ok" + data, data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("E>>:" + ex);
+            }
+        }
+        /// ****************************************************************************************************************************************
+
+
         ////public ActionResult TaxFee(FlightFareModel model)
         ////{
         ////    using (var sessionService = new VNA_SessionService())
@@ -1483,8 +1532,8 @@ namespace AIRService.Service
                 });
                 result.TicketID = bookTicketId;
                 return Notifization.Data("Đặt chỗ thành công:" + bookTicketId + " PNR: " + pnrCode, result); // "/backend/flightbook/details/" + bookIdFist
-                ////    } // end using tran session
-                ////} // end using session
+                                                                                                             ////    } // end using tran session
+                                                                                                             ////} // end using session
             }
             catch (Exception ex)
             {

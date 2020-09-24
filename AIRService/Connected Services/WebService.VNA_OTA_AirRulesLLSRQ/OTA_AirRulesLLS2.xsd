@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:sws="http://webservices.sabre.com/sabreXML/2011/10" elementFormDefault="qualified" targetNamespace="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="sws_common.xsd" />
+  <xs:element name="OTA_AirRulesRQ">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OptionalQualifiers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="PricingQualifiers">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" name="Account">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Code" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Corporate">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ID" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="FareOptions">
+                      <xs:complexType>
+                        <xs:attribute name="Private" type="xs:boolean" use="optional" />
+                        <xs:attribute name="Public" type="xs:boolean" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="RetailerRuleQualifier">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="4" name="Qualifier" type="xs:string" />
+                        </xs:sequence>
+                        <xs:attribute name="Force" type="xs:boolean" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="TravelDateOptions">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Historical">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TicketingDate" type="sws:fullDate" />
+                          <xs:element name="TravelDate" type="sws:fullDate" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="OriginDestinationInformation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="FlightSegment">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="DestinationLocation">
+                      <xs:complexType>
+                        <xs:attribute name="LocationCode" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="MarketingCarrier">
+                      <xs:complexType>
+                        <xs:attribute name="Code" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OriginLocation">
+                      <xs:complexType>
+                        <xs:attribute name="LocationCode" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="DepartureDateTime" type="sws:date" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RuleReqInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="Category" type="xs:string" />
+              <xs:element minOccurs="0" name="FareBasis">
+                <xs:complexType>
+                  <xs:attribute name="Code" type="xs:string" use="optional" />
+                  <xs:attribute name="DisplayRouting" type="xs:boolean" use="optional" />
+                  <xs:attribute name="GlobalInd" type="xs:string" use="optional" />
+                  <xs:attribute name="TicketDesignator" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="RPH" type="xs:integer" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="ReturnHostCommand" type="xs:boolean" use="optional" />
+      <xs:attribute fixed="2.3.0" name="Version" type="xs:string" use="required" />
+      <xs:attribute name="TimeStamp" type="xs:dateTime" use="optional" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

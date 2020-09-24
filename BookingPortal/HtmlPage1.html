@@ -1,12 +1,14 @@
-﻿  string MarketingFlightNumber = "";
-  string ClassOfService = "";
-  string FareBasis = "";
-  string StartLocation = "";
-  string EndLocation = "";
-  string BookingStatus = "";
-  string CurrentStatus = "";
-  string SystemDateTime = "";
-  string FlownCoupon_DepartureDateTime = "";
-
-
-      
+﻿<OTA_AirRulesRQ ReturnHostCommand='true' Version='2.3.0' xmlns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	
+	
+	<OriginDestinationInformation>
+		<FlightSegment DepartureDateTime='12-21'>
+			<DestinationLocation LocationCode='LAS'/>
+			<MarketingCarrier Code='AA'/>
+			<OriginLocation LocationCode='DFW'/>
+		</FlightSegment>
+	</OriginDestinationInformation>
+	<RuleReqInfo>
+		<FareBasis Code='Y'/>
+	</RuleReqInfo>
+</OTA_AirRulesRQ>

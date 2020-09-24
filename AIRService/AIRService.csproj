@@ -206,6 +206,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WebService.VNA_OTA_AirTaxRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -398,6 +403,8 @@
     <Compile Include="WebService\Mbay\Enum\MBEnum.cs" />
     <Compile Include="WebService\Mbay\Service\GDS_WSGds_SearchFlightService.cs" />
     <Compile Include="WebService\Mbay\Session\GDS_SessionService.cs" />
+    <Compile Include="WebService\VNA\Entities\VNA_OTA_AirRulesLLSRQ.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_OTA_AirRulesLLSRQService.cs" />
     <Compile Include="WebService\VNA\Session\SabreSessionManager.cs" />
     <Compile Include="WebService\VNA\Session\VNA_SessionService.cs" />
     <Compile Include="WebService\VNA\Authen\VNA_WSAuthencation.cs" />
@@ -1146,6 +1153,55 @@
     <None Include="Connected Services\WebService.VNA_OTA_AirPriceLLSRQ\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\AIRService.WebService.VNA_OTA_AirRulesLLSRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\AIRService.WebService.VNA_OTA_AirRulesLLSRQ.OTA_AirRulesRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\AIRService.WebService.VNA_OTA_AirRulesLLSRQ.OTA_AirRulesRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\AIRService.WebService.VNA_OTA_AirRulesLLSRQ.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\OTA_AirRulesLLS2.wsdl" />
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\OTA_AirRulesLLS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\OTA_AirRulesLLS21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\OTA_AirRulesLLS22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\sws_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\WebService.VNA_OTA_AirTaxRQ\AirPricing_DiagnosticRequestElement_v1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1467,6 +1523,7 @@
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_AirAvailLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_AirBookLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_AirPriceLLSRQ\" />
+    <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_AirTaxRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_OTA_CancelLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_PassengerDetailsRQ\" />
@@ -1709,6 +1766,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\configuration91.svcinfo" />
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\configuration.svcinfo" />
+    <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="File\no-img.gif" />
     <Content Include="Libraries\dll\AL.NetFrame.dll" />
   </ItemGroup>

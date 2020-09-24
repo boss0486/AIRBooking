@@ -116,7 +116,7 @@ namespace ApiPortalBooking.Models
 
     public class Resquet_WsTax_BaseFareModel
     {
-        
+
         public int RPH { get; set; }
         public float Amount { get; set; }
         public string CurrencyCode { get; set; }
@@ -198,5 +198,16 @@ namespace ApiPortalBooking.Models
         public string Age { get; set; }
         public string AgeSpecified { get; set; }
         public string Total { get; set; }
+    }
+
+
+    // TicketConditionModel
+    public class TicketConditionModel
+    {
+        public string DepartureDateTime { get; set; }
+        public string DestinationLocation { get; set; }
+        public string OriginLocation { get; set; }
+        public string FareBasis { get; set; }
+ 
     }
 }

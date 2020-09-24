@@ -332,7 +332,26 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
+        }        
+        
+        
+        [HttpPost]
+        [Route("Action/TicketCondition")]
+        public ActionResult TicketCondition(TicketConditionModel model)
+        {
+            try
+            {
+                var vNASearchService = new VNA_SearchService();
+                return vNASearchService.GetTicketCondition(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
         }
+
+
 
         // API MAY BAY ********************************************************************************************************************************************
         [HttpPost]

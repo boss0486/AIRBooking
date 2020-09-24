@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c7524cb7-54e4-4c83-a1bc-bbeb8b6969c7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirRulesLLS2.3.0RQ.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OTA_AirRulesLLS2.wsdl" MetadataType="Wsdl" ID="1dd21b05-5b7c-4648-893d-8982ddba376a" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirRulesLLS2.3.0RQ.wsdl" />
+    <MetadataFile FileName="OTA_AirRulesLLS2.xsd" MetadataType="Schema" ID="b6126455-f187-4391-add4-a63f98636be6" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirRulesLLS2.3.0RQ.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="5f793fb6-0a05-4ab0-a675-341907a93958" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/wsse.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="9bd1338d-cae0-43bf-8da7-fb452206b5af" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="8912302e-903d-4dca-a58d-60909e0ee3ec" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="a5a92181-bb54-4040-93f9-4721b72b3582" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/envelope.xsd" />
+    <MetadataFile FileName="sws_common.xsd" MetadataType="Schema" ID="d3b2ff5b-ea32-4c2c-b8c2-d953449642b4" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/sws_common.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="8ea99a98-b495-4f84-a6c9-4fe8a04795f7" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xml.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="f2788550-ca1a-4ab1-9152-fdea88d67336" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xlink.xsd" />
+    <MetadataFile FileName="OTA_AirRulesLLS21.xsd" MetadataType="Schema" ID="ca4fbda6-4df7-4c01-94ae-0da75206a295" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirRulesLLS2.3.0RQRS.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="dafa8f11-7481-4f12-9731-ddc941dda2d0" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="OTA_AirRulesLLS22.xsd" MetadataType="Schema" ID="adab2719-a489-4a30-bbcc-c20de32dc8d8" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/OTA_AirRulesLLS2.3.0RS.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="804b9941-28d3-41e0-857e-eb4a2388ea91" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/tpfc/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
