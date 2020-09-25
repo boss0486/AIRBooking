@@ -165,18 +165,20 @@ namespace WebApplication.Management.Controllers
                 using (var sessionService = new VNA_SessionService())
                 {
                     TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
+                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token
+                    };
                     VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                     // model
-
-
-                    VNA_EmpReportModel vna_EmpReportModel = new VNA_EmpReportModel();
-                    vna_EmpReportModel.Token = tokenModel.Token;
-                    vna_EmpReportModel.ConversationID = tokenModel.ConversationID;
-                    vna_EmpReportModel.ReportDate = reportDate;
+                    VNA_EmpReportModel vna_EmpReportModel = new VNA_EmpReportModel
+                    {
+                        Token = tokenModel.Token,
+                        ConversationID = tokenModel.ConversationID,
+                        ReportDate = reportDate
+                    };
                     // 
                     var data = vna_TKT_AsrService.GetEmployeeNumber(vna_EmpReportModel);
                     if (data.Count() > 0)

@@ -139,6 +139,8 @@
     <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
     <Compile Include="Application\AirFilght\Entities\Airport.cs" />
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
+    <Compile Include="Application\ApiReport\Entities\ApiReport.cs" />
+    <Compile Include="Application\ApiReport\Services\ApiReportService.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentCoupon.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentTaxes.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentAmount.cs" />
@@ -1726,6 +1728,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\AirFilght\Enum\" />
+    <Folder Include="Application\ApiReport\Enum\" />
     <Folder Include="Application\Area\Enum\" />
     <Folder Include="Application\ReportSaleSummary\Enum\" />
     <Folder Include="Application\Wallet\Enum\" />

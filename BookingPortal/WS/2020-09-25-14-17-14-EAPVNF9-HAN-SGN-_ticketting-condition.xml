@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>OTA_AirRulesLLSRQ</eb:Service>
+      <eb:Action>OTA_AirRulesLLSRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>583704262433360343</eb:MessageId>
+        <eb:Timestamp>2020-09-25T07:17:23</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESE!ICESMSLB\/RES.LB!1601018241933!5415!261!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <OTA_AirRulesRS xmlns="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stl="http://services.sabre.com/STL/v01" Version="2.3.0">
+      <stl:ApplicationResults status="Complete">
+        <stl:Success timeStamp="2020-09-25T02:17:23-05:00">
+          <stl:SystemSpecificResults>
+            <stl:HostCommand LNIATA="222222">RDHANSGN18DECEAPVNF9</stl:HostCommand>
+          </stl:SystemSpecificResults>
+        </stl:Success>
+      </stl:ApplicationResults>
+      <FareRuleInfo>
+        <Header>
+          <Line Type="Legend">
+            <Text>V FARE BASIS     BK    FARE   TRAVEL-TICKET AP  MINMAX  RTG</Text>
+          </Line>
+          <Line Type="Fare">
+            <Text>1  ¤EAPVNF9        E X   299000 D31DE  T30SE  -/  -/  - 3000</Text>
+          </Line>
+          <Line Type="Passenger Type">
+            <Text>PASSENGER TYPE-ADT                 AUTO PRICE-YES</Text>
+          </Line>
+          <Line Type="Origin Destination">
+            <Text>FROM-HAN TO-SGN    CXR-VN    TVL-18DEC20  RULE-VND1 TPFDRPV/918</Text>
+          </Line>
+          <Line Type="Fare Basis">
+            <Text>FARE BASIS-EAPVNF9           SPECIAL FARE  DIS-E   VENDOR-ATP</Text>
+          </Line>
+          <Line Type="Fare Type">
+            <Text>FARE TYPE-EAP      OW-ECONOMY ADVANCE PURCHASE</Text>
+          </Line>
+          <Line Type="Currency">
+            <Text>VND   299000  3000  E15AUG20 D31DEC20   FC-EAPVNF9  FN-4L</Text>
+          </Line>
+          <Line Type="System Dates">
+            <Text>SYSTEM DATES - CREATED 14AUG20/0308  EXPIRES INFINITY</Text>
+          </Line>
+          <ParsedData>
+            <CurrencyLine>
+              <Amount>299000</Amount>
+              <CurrencyCode>VND</CurrencyCode>
+              <Discontinue>2020-12-31</Discontinue>
+              <Effective>2020-08-15</Effective>
+              <FareClass>EAPVNF9</FareClass>
+              <RoutingNumberOrMPM>3000</RoutingNumberOrMPM>
+              <TariffDescriptionNumber>4L</TariffDescriptionNumber>
+            </CurrencyLine>
+            <FareBasisLine>
+              <DisplayType Code="E" />
+              <FareBasis Code="EAPVNF9" />
+              <FareVendor>ATP</FareVendor>
+              <Text>SPECIAL FARE</Text>
+            </FareBasisLine>
+            <FareTypeLine>
+              <FareDescription Code="OW">ECONOMY ADVANCE PURCHASE</FareDescription>
+              <FareType>EAP</FareType>
+            </FareTypeLine>
+            <OriginDestinationLine>
+              <Airline Code="VN" />
+              <DestinationLocation LocationCode="SGN" />
+              <OriginLocation LocationCode="HAN" />
+              <Rule>VND1</Rule>
+              <TariffDescriptionNumber>TPFDRPV/918</TariffDescriptionNumber>
+              <TravelDate>2020-12-18</TravelDate>
+            </OriginDestinationLine>
+            <PassengerTypeLine>
+              <AutoPrice>YES</AutoPrice>
+              <PassengerType Code="ADT" />
+            </PassengerTypeLine>
+            <SystemDatesLine>
+              <CreateDateTime>2020-08-14T03:08</CreateDateTime>
+              <ExpireDateTime>INFINITY</ExpireDateTime>
+            </SystemDatesLine>
+          </ParsedData>
+        </Header>
+        <Rules>
+          <Paragraph RPH="50" Title="RULE APPLICATION AND OTHER CONDITIONS">
+            <Text>NOTE - THE FOLLOWING TEXT IS INFORMATIONAL AND NOT
+VALIDATED FOR AUTOPRICING.
+VIETNAM AIRLINES ECONOMY FARES
+APPLICATION
+AREA
+THESE FARES APPLY WITHIN VIET NAM.
+CLASS OF SERVICE
+THESE FARES APPLY FOR ECONOMY CLASS SERVICE.
+TYPES OF TRANSPORTATION
+THIS RULE GOVERNS ONE-WAY AND ROUND-TRIP FARES.
+FARES GOVERNED BY THIS RULE CAN BE USED TO CREATE
+ONE-WAY/ROUND-TRIP/CIRCLE-TRIP/OPEN-JAW JOURNEYS.
+CAPACITY LIMITATIONS
+THE CARRIER SHALL LIMIT THE NUMBER OF PASSENGERS
+CARRIED ON ANY ONE FLIGHT AT FARES GOVERNED BY
+THIS RULE AND SUCH FARES WILL NOT NECESSARILY BE
+AVAILABLE ON ALL FLIGHTS. THE NUMBER OF SEATS,
+WHICH THE CARRIER SHALL MAKE AVAILABLE ON A GIVEN
+FLIGHT, WILL BE DETERMINED BY THE CARRIER'S BEST
+JUDGEMENT.</Text>
+          </Paragraph>
+          <Paragraph RPH="01" Title="ELIGIBILITY">
+            <Text>NO ELIGIBILITY REQUIREMENTS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="02" Title="DAY/TIME">
+            <Text>NO DAY/TIME TRAVEL RESTRICTIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="03" Title="SEASONALITY">
+            <Text>NO SEASONAL TRAVEL RESTRICTIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="04" Title="FLIGHT APPLICATION">
+            <Text>THE FARE COMPONENT MUST BE ON
+ONE OR MORE OF THE FOLLOWING
+VN FLIGHTS 6000 THROUGH 6999.</Text>
+          </Paragraph>
+          <Paragraph RPH="05" Title="ADVANCE RESERVATIONS/TICKETING">
+            <Text>CONFIRMED RESERVATIONS ARE REQUIRED FOR ALL SECTORS.
+TICKETING ON EACH TRIP MUST BE COMPLETED WITHIN 12
+HOURS AFTER RESERVATIONS ARE MADE OR AT LEAST 1 DAY
+BEFORE DEPARTURE WHICHEVER IS EARLIER.
+NOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
+- GO-SHOW - CONTACT VN OFFICE FOR DETAILS.</Text>
+          </Paragraph>
+          <Paragraph RPH="06" Title="MINIMUM STAY">
+            <Text>NO MINIMUM STAY REQUIREMENTS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="07" Title="MAXIMUM STAY">
+            <Text>NO MAXIMUM STAY REQUIREMENTS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="08" Title="STOPOVERS">
+            <Text>UNLIMITED FREE STOPOVERS PERMITTED ON THE PRICING
+UNIT.</Text>
+          </Paragraph>
+          <Paragraph RPH="09" Title="TRANSFERS">
+            <Text>UNLIMITED TRANSFERS PERMITTED ON THE PRICING UNIT.
+FARE BREAK AND EMBEDDED SURFACE SECTORS NOT PERMITTED
+ON THE FARE COMPONENT.</Text>
+          </Paragraph>
+          <Paragraph RPH="10" Title="COMBINATIONS">
+            <Text>SINGLE/DOUBLE OPEN JAWS NOT PERMITTED.
+END-ON-END
+END-ON-END COMBINATIONS PERMITTED. VALIDATE ALL FARE
+COMBINATIONS.
+PROVIDED -
+COMBINATIONS ARE WITH ANY -VNF TYPE FARES FOR
+CARRIER VN IN IN THIS RULE AND TARIFF
+OR RULE VND4 IN TARIFF
+FBRA3P  - WITHIN AREA 3.
+ROUND TRIPS/CIRCLE TRIPS
+FARES MAY BE COMBINED ON A HALF ROUND TRIP BASIS
+WITH VN FARES
+-TO FORM ROUND TRIPS
+-TO FORM CIRCLE TRIPS WITH VN FARES.
+PROVIDED -
+COMBINATIONS ARE WITH ANY -VNF TYPE FARES FOR
+CARRIER VN IN IN THIS RULE AND TARIFF
+OR RULE VND4 IN TARIFF
+FBRA3P  - WITHIN AREA 3.</Text>
+          </Paragraph>
+          <Paragraph RPH="11" Title="BLACKOUT DATES">
+            <Text>NO BLACKOUT DATES APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="12" Title="SURCHARGES">
+            <Text>NO SURCHARGE REQUIREMENTS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="13" Title="ACCOMPANIED TRAVEL">
+            <Text>ACCOMPANIED TRAVEL NOT REQUIRED.</Text>
+          </Paragraph>
+          <Paragraph RPH="14" Title="TRAVEL RESTRICTIONS">
+            <Text>VALID FOR TRAVEL COMMENCING ON/AFTER 15AUG20 AND ON/
+BEFORE 31DEC20.</Text>
+          </Paragraph>
+          <Paragraph RPH="15" Title="SALES RESTRICTIONS">
+            <Text>FOOTNOTE RULE
+TICKETS MUST BE ISSUED ON/BEFORE 30SEP20.
+FARE RULE
+TICKETS MUST BE ISSUED ON THE STOCK OF VN OR 1S AND
+MAY NOT BE SOLD IN CSJ/IZV/GYF/LZT/JND/JSF/HBN/PZM/IQR/
+IZW/JNE/JKJ/HOO/JKY/IQU/KXJ/JNF/LJP/KON/JNT/IRU/GYH/
+IQG/FJCSW/GXW/KZJ/JNC/JNF. AND MAY ONLY BE SOLD IN
+VIET NAM.</Text>
+          </Paragraph>
+          <Paragraph RPH="16" Title="PENALTIES">
+            <Text>CANCELLATIONS
+ANY TIME
+TICKET IS NON-REFUNDABLE.
+CHANGES
+BEFORE DEPARTURE
+CHARGE VND 600000.
+CHILD/INFANT DISCOUNTS APPLY.
+NOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
+- BEFORE DEPARTURE IS DEFINED AS BEFORE TICKETED
+FLIGHT DATE.
+AFTER DEPARTURE
+CHANGES NOT PERMITTED.
+NOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
+- AFTER DEPARTURE IS DEFINED AS ON/AFTER TICKETED
+FLIGHT DATE
+NOTE - TEXT BELOW NOT VALIDATED FOR AUTOPRICING.
+WHEN NEW ITINERARY RESULTS IN A HIGHER FARE THE
+DIFFERENCE WILL BE COLLECTED AND THE APPLICABLE
+CHANGE FEE WILL APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="17" Title="HIP/MILEAGE EXCEPTIONS">
+            <Text>THE HIGHER INTERMEDIATE POINT RULE DOES NOT APPLY FOR
+STOPOVERS.
+AND - THE HIGHER INTERMEDIATE POINT RULE DOES NOT APPLY
+FOR CONNECTIONS.</Text>
+          </Paragraph>
+          <Paragraph RPH="18" Title="TICKET ENDORSEMENTS">
+            <Text>THE ORIGINAL AND THE REISSUED TICKET MUST BE ANNOTATED
+- NON-END.RESTRICT MAY APPLY - AND - CONTACT B4 DEPT
+FOR CHANGE - IN THE ENDORSEMENT BOX.</Text>
+          </Paragraph>
+          <Paragraph RPH="19" Title="CHILDREN DISCOUNTS">
+            <Text>CNN/ACCOMPANIED CHILD PSGR 2-11 - CHARGE 90 PERCENT OF
+THE FARE.
+TICKET DESIGNATOR - CH AND PERCENT APPLIED.
+MUST BE ACCOMPANIED ON ALL FLIGHTS IN THE SAME
+COMPARTMENT BY ADULT PSGR 18 OR OLDER.
+OR - 1ST INF/INFANT WITHOUT A SEAT PSGR UNDER 2 -
+CHARGE 10 PERCENT OF THE FARE.
+TICKET DESIGNATOR - IN AND PERCENT APPLIED.
+MUST BE ACCOMPANIED ON ALL FLIGHTS IN THE SAME
+COMPARTMENT BY ADULT PSGR 18 OR OLDER.</Text>
+          </Paragraph>
+          <Paragraph RPH="20" Title="TOUR CONDUCTOR DISCOUNTS">
+            <Text>NO DISCOUNTS FOR TOUR CONDUCTORS.</Text>
+          </Paragraph>
+          <Paragraph RPH="21" Title="AGENT DISCOUNTS">
+            <Text>NO DISCOUNTS FOR SALE AGENTS.</Text>
+          </Paragraph>
+          <Paragraph RPH="22" Title="ALL OTHER DISCOUNTS">
+            <Text>NO DISCOUNTS FOR OTHERS.</Text>
+          </Paragraph>
+          <Paragraph RPH="23" Title="MISCELLANEOUS PROVISIONS">
+            <Text>NO PROVISIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="25" Title="FARE BY RULE">
+            <Text>NOT APPLICABLE.</Text>
+          </Paragraph>
+          <Paragraph RPH="26" Title="GROUPS">
+            <Text>NO GROUP PROVISIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="27" Title="TOURS">
+            <Text>NO TOUR PROVISIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="28" Title="VISIT ANOTHER COUNTRY">
+            <Text>NO VISIT ANOTHER COUNTRY PROVISIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="29" Title="DEPOSITS">
+            <Text>NO DEPOSIT PROVISIONS APPLY.</Text>
+          </Paragraph>
+          <Paragraph RPH="31" Title="VOLUNTARY CHANGES">
+            <Text>ENTER RD*31 OR RDLINE NUM*31 FOR VOLUNTARY CHGS.</Text>
+          </Paragraph>
+          <Paragraph RPH="33" Title="VOLUNTARY REFUNDS">
+            <Text>CHECK CATEGORY 16 OR CONTACT CARRIER FOR DETAILS.</Text>
+          </Paragraph>
+          <Paragraph RPH="35" Title="NEGOTIATED FARES">
+            <Text>NOT APPLICABLE.</Text>
+          </Paragraph>
+          <Paragraph RPH="IC" Title="INTERNATIONAL CONSTRUCTION">
+            <Text>NOT A CONSTRUCTED FARE</Text>
+          </Paragraph>
+        </Rules>
+      </FareRuleInfo>
+    </OTA_AirRulesRS>
+  </soap-env:Body>
+</soap-env:Envelope>

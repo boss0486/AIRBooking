@@ -110,12 +110,14 @@ namespace AIRService.Service
                     fareLLSModel.PassengerType.Add("INF");
                 //
                 List<AIRService.WebService.VNA_FareLLSRQ.FareRS> fareRs = new List<WebService.VNA_FareLLSRQ.FareRS>();
-
-
-
                 var dataFareLLS = vNAFareLLSRQService.FareLLS(fareLLSModel);
                 if (dataFareLLS == null)
                     return Notifization.Invalid(MessageText.Invalid);
+
+
+
+
+
 
                 fareRs.Add(dataFareLLS);
                 // Fare 
@@ -157,7 +159,6 @@ namespace AIRService.Service
 
                         }
                     }
-
                 }
                 // group by time
                 List<Response_FlightSearch> response_FlightSearches = new List<Response_FlightSearch>();
@@ -311,6 +312,11 @@ namespace AIRService.Service
                 if (response_FlightSearches.Count() == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
+
+
+
+
+
                 return Notifization.Data("OK -> IsRoundTrip: true ", response_FlightSearches);
             }
         }

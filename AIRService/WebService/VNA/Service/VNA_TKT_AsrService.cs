@@ -664,7 +664,7 @@ namespace AIRService.WS.Service
             }
         }
         //
-         
+
         public string GetReportDateInToday()
         {
             try
@@ -796,7 +796,7 @@ namespace AIRService.WS.Service
         }
 
         // ##########################################################################################################################################################################
-        public VNA_ReportSaleSummaryTicketing GetSaleReportTicketByDocNumber(string docNumber)
+        public VNA_ReportSaleSummaryTicketing GetSaleReportTicketByDocNumber(string docNumber, TokenModel tokenModel = null)
         {
             try
             {
@@ -805,7 +805,11 @@ namespace AIRService.WS.Service
                 //
                 using (var sessionService = new VNA_SessionService())
                 {
-                    TokenModel tokenModel = sessionService.GetSession();
+                    if (tokenModel == null)
+                    {
+                        tokenModel = sessionService.GetSession();
+                    }
+
                     HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                     XmlDocument soapEnvelopeXml = new XmlDocument();
                     var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
