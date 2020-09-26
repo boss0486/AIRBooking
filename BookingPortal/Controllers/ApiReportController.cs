@@ -61,6 +61,22 @@ namespace APIBooking.VNA.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("Action/EPR-test")]
+        public ActionResult APIReportTest()
+        {
+            
+                ApiReportService apiReportService = new ApiReportService();
+                var a = apiReportService.APITest();
+
+                return Notifization.Data("ok", a);
+             
+
+        }
+
+
+
+
         //        [HttpPost]
         //        [Route("Action/EPR-ReportClose")]
         //        public ActionResult EPRReportClose(VNA_EmpReportModel model)

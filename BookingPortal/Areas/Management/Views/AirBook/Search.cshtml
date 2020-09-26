@@ -105,7 +105,7 @@
                     </p>
                 </div>
                 <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset q</button>
+                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
                     <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
                     <hr />
                 </div>
@@ -215,7 +215,6 @@
             }).on('changeDate', function (index, item) {
                 /// $('#selectDate').datepicker('hide');
                 $("#ReturnDateTime").datepicker("refresh");
-                console.log('ok:::' + $('#DepartureDateTime').val());
             });
             $('#ReturnDateTime').datepicker({
                 format: 'dd-mm-yyyy',
@@ -225,11 +224,6 @@
             }).on('changeDate', function (index, item) {
                 //$('#ddlTimeExpress').datepicker('hide');
             });
-        });
-
-
-        $(document).on('click', '#btnDataTab', function () {
-            console.log('ok');
         });
     </script>
 }

@@ -1,30 +1,19 @@
 ﻿var ajaxStatus = 0;
-
-
-$(document).ajaxStart(function () {
-    Loading.ShowLoading();
-    ajaxStatus++;
-
-}).ajaxComplete(function () {
-    ajaxStatus--;
-     
-});
-
 class AjaxFrom {
     static POST(_form) {
         _form.method = "POST";
         _form.dataType = 'json';
-        _form.async = false;
+        _form.async = true;
         $.ajax(_form).done(function () {
-            setTimeout(function () {
-                Loading.HideLoading();
-            }, 1500);
-            //if (ajaxStatus == 0) {
-            //    setTimeout(function () {
-            //        console.log("o11k");
-            //        Loading.HideLoading();
-            //    }, 1500);
-            //}
+            if ($(document).find("body")) {
+                Loading.ShowLoading();
+            }
+            else {
+                setTimeout(function () {
+                    Loading.HideLoading();
+                }, 1500);
+            }
+
         });
     }
     static POSTFILE(_form) {
@@ -34,7 +23,7 @@ class AjaxFrom {
         _form.dataType = 'json';
         _form.contentType = false;
         _form.processData = false;
-        $.ajax(_form).done(function () {
+        $.ajaxForm(_form).done(function () {
             ajaxStatus--;
             if (ajaxStatus === 0) {
                 setTimeout(function () {
@@ -46,11 +35,14 @@ class AjaxFrom {
     }
 }
 
-//$(document).bind("ajaxSend", function () {
-//    $("#loading").show();
-//}).bind("ajaxComplete", function () {
-//    $("#loading").hide();
-//});
+
+
+$(document).ajaxStart(function () {
+    Loading.ShowLoading();
+}).ajaxStop(function () {
+    //
+});
+
 
 
 $(document).ready(function () {

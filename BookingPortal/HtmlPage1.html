@@ -1,14 +1,17 @@
-﻿<OTA_AirRulesRQ ReturnHostCommand='true' Version='2.3.0' xmlns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-	
-	
-	<OriginDestinationInformation>
-		<FlightSegment DepartureDateTime='12-21'>
-			<DestinationLocation LocationCode='LAS'/>
-			<MarketingCarrier Code='AA'/>
-			<OriginLocation LocationCode='DFW'/>
-		</FlightSegment>
-	</OriginDestinationInformation>
-	<RuleReqInfo>
-		<FareBasis Code='Y'/>
-	</RuleReqInfo>
-</OTA_AirRulesRQ>
+﻿    System.Net.WebClient _web = new System.Net.WebClient();
+                                String dataAOC = _web.DownloadString("http://apicoin.xyz/api/account/eth/address/create?api_token=FgtyDqrIjWjNEwotPzD3QKIzJpVmnIWk4UiNVMHEirfQhWcrOFKHe8XWuUAy");
+                                Newtonsoft.Json.Linq.JObject json = (Newtonsoft.Json.Linq.JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(dataAOC);
+                                string strR = json.Value<string>
+	("address");
+	if (strR.Trim() != string.Empty && !string.IsNullOrEmpty(strR.Trim()))
+	{
+	strSysAddress = strR;
+	string strCreate = Create_Wallet(strSysAddress, 3, userID, 0.0, strIpLocal, "ETH");
+
+	if (strCreate.IndexOf("#CreateWalletSuccess") < 0)
+	{
+	return createResponse("504", "#ServerIsBusy");
+	}
+	}
+	else
+	return createResponse("504", "#ServerIsBusy");

@@ -68,8 +68,6 @@ var flightBookingController = {
         });
     },
     Search: function () {
-        Loading.ShowLoading();
-        //
         var ddlOriginLocation = $('#ddlOriginLocation').val();
         var ddlDestinationLocation = $('#ddlDestinationLocation').val();
         var departureDateTime = $("#DepartureDateTime").val();
@@ -122,9 +120,6 @@ var flightBookingController = {
             url: URLC + '/search',
             data: modelGo,
             success: function (response) {
-
-                console.log("Done");
-
                 if (response === null || response.status === undefined) {
                     Notifization.Error(MessageText.NotService);
                     return;

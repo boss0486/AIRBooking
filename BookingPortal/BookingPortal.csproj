@@ -291,7 +291,6 @@
     <Content Include="_themes\fonts\font.css" />
     <Content Include="_themes\fonts\metarial\material-icon.css" />
     <Content Include="_themes\fonts\Open_Sans\LICENSE.txt" />
-    <Content Include="_themes\icon\list-view-16.png" />
     <Content Include="_themes\library\css\all.css" />
     <Content Include="_themes\library\css\materialize.css" />
     <Content Include="_themes\library\plugins\animate\animate.css" />
@@ -947,10 +946,6 @@
     <Content Include="Team\tax-pna2.json" />
     <Content Include="Team\test.json" />
     <Content Include="Team\temp.json" />
-    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.eot" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.ttf" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.woff" />
@@ -1287,6 +1282,10 @@
     <Content Include="Areas\Template\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Template\Views\_ViewNotPageLoadPatial.cshtml" />
     <None Include="packages.config" />
+    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AIRService\AIRService.csproj">
@@ -1313,6 +1312,8 @@
           <DevelopmentServerPort>50180</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44334/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44334/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

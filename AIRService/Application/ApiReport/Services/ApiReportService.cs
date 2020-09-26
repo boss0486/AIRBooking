@@ -21,6 +21,16 @@ using AIRService.Models;
 using AIR.Helper.Session;
 using ApiPortalBooking.Models;
 
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace WebCore.Services
 {
     public interface IApiReportService : IEntityService<DbConnection> { }
@@ -229,6 +239,53 @@ namespace WebCore.Services
                 }
             }
         }
+
+
+ 
+
+        public async Task<string> APITest()
+        {
+            using (var client = new HttpClient())
+            {
+                string reportDate = "2020-09-23";
+                // Update port # in the following line.
+                client.BaseAddress = new Uri("https://localhost:44334/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var param = "{'UserName': 'api-booking','Password': '***********', 'ReportDate': '" + reportDate + "' }";
+
+                HttpContent httpContent = new StringContent(param, Encoding.UTF8, "application/json");
+                HttpResponseMessage response =  await client.PostAsync("APIBooking/Report/Action/EPR-Rpdata", httpContent);
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                return jsonData;
+            }
+        }
+
+        //public async Task<string> APITest()
+        //{
+        //    string reportDate = "2020-09-25";
+        //    //
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        client.BaseAddress = new Uri("http://localhost:44334/");
+        //        //
+        //        var param = "{'UserName': 'api-booking','Password': '***********', 'ReportDate': '" + reportDate + "' }";
+        //        //
+        //        HttpContent httpContent = new StringContent(param, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage result = await client.PostAsync("APIBooking/Report/Action/EPR-Rpdata", httpContent);
+        //        var a = result;
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            string statusCode = result.StatusCode.ToString();
+        //            string content = result.Content.ToString();
+        //            return "";
+        //        }
+        //        return "";
+        //    }
+        //}
 
     }
 }
