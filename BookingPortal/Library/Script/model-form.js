@@ -5,7 +5,7 @@ class AjaxFrom {
         _form.dataType = 'json';
         _form.async = true;
         $.ajax(_form).done(function () {
-            if ($(document).find("body")) {
+            if (!$(document).find("body")) {
                 Loading.ShowLoading();
             }
             else {

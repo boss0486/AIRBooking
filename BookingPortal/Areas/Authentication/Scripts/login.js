@@ -102,9 +102,9 @@ var loginController = {
                     if (response.status === 200) {
                         Loading.ShowLoading();
                         Notifization.Success(response.message);
-                        //setTimeout(function () {
-                        //    location.href = response.data;
-                        //}, 2000);
+                        setTimeout(function () {
+                            location.href = response.data;
+                        }, 2000);
                         return;
                     }
                     //

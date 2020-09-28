@@ -22,14 +22,15 @@ using AIR.Helper.Session;
 using ApiPortalBooking.Models;
 
 
-using System;
-using System.Collections.Generic;
+
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Web.Helpers;
 
 namespace WebCore.Services
 {
@@ -42,12 +43,16 @@ namespace WebCore.Services
         //###############################################################################################################################
         public ActionResult APIReportData(APIDailyReportModel model)
         {
+            //return Notifization.Success(MessageText.UpdateSuccess); 
+
+
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
             string userName = model.UserName;
             string password = model.Password;
             string rpDate = model.ReportDate;
+
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(rpDate))
                 return Notifization.Invalid(MessageText.Invalid);
             //
@@ -85,7 +90,7 @@ namespace WebCore.Services
                             Token = tokenModel.Token
                         };
                         VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                        var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                        var printer =  wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                         // model
                         VNA_EmpReportModel empReportModel = new VNA_EmpReportModel
                         {
@@ -241,24 +246,49 @@ namespace WebCore.Services
         }
 
 
- 
 
-        public async Task<string> APITest()
+
+        public async Task<ActionResult> APITest()
         {
-            using (var client = new HttpClient())
+            try
             {
-                string reportDate = "2020-09-23";
+
+
+                string reportDate = "2020-09-22";
                 // Update port # in the following line.
-                client.BaseAddress = new Uri("https://localhost:44334/");
-                client.DefaultRequestHeaders.Accept.Clear();
+                HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var param = "{'UserName': 'api-booking','Password': '***********', 'ReportDate': '" + reportDate + "' }";
+                client.DefaultRequestHeaders.Accept.Clear();
+                // var param = "{'UserName': 'api-booking','Password': '***********', 'ReportDate': '" + reportDate + "' }";
 
-                HttpContent httpContent = new StringContent(param, Encoding.UTF8, "application/json");
-                HttpResponseMessage response =  await client.PostAsync("APIBooking/Report/Action/EPR-Rpdata", httpContent);
+                APIDailyReportModel apiDailyReportModel = new APIDailyReportModel
+                {
+                    UserName = "api-booking",
+                    Password = "***********",
+                    ReportDate = reportDate,
+                };
+                var param = JsonConvert.SerializeObject(apiDailyReportModel);
+                client.BaseAddress = new Uri("http://api.plos.org/");
+                //client.BaseAddress = new Uri("https://localhost:44334/");
+                HttpContent httpContent = new StringContent(param, UTF8Encoding.UTF8, "application/json");
+                var response = await  client.PostAsync("search?q=title:DNA", httpContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var a = response.Content.ReadAsStringAsync().Result;
 
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                return jsonData;
+                    return Notifization.Data("OK" + Convert.ToString(response.Content.ReadAsStringAsync().Result), null);
+
+                    //string httpResponse = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                    // return Notifization.Data("OK" + response.Content.ReadAsStringAsync().Result, null);
+                }
+                return Notifization.TEST("::111" + response.IsSuccessStatusCode);
+
+            }
+            catch (Exception ex)
+            {
+
+                return Notifization.TEST("::" + ex);
+
             }
         }
 

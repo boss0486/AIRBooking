@@ -22,6 +22,7 @@ using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using AL.NetFrame.Attributes;
 using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
+using System.Threading.Tasks;
 
 namespace APIBooking.VNA.Controllers
 {
@@ -65,12 +66,12 @@ namespace APIBooking.VNA.Controllers
         [Route("Action/EPR-test")]
         public ActionResult APIReportTest()
         {
-            
-                ApiReportService apiReportService = new ApiReportService();
-                var a = apiReportService.APITest();
+            ApiReportService apiReportService = new ApiReportService();
 
-                return Notifization.Data("ok", a);
-             
+
+            return Notifization.Data("ok", apiReportService.APITest());
+
+
 
         }
 
