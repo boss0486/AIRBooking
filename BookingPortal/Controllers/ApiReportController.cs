@@ -49,12 +49,12 @@ namespace APIBooking.VNA.Controllers
 
         [HttpPost]
         [Route("Action/EPR-Rpdata")]
-        public ActionResult APIReportData(APIDailyReportModel model)
+        public async Task<ActionResult> APIReportDataAsync(APIDailyReportModel model)
         {
             try
             {
                 ApiReportService apiReportService = new ApiReportService();
-                return apiReportService.APIReportData(model);
+                return await apiReportService.APIReportDataAsync(model);
             }
             catch (Exception ex)
             {
@@ -64,15 +64,11 @@ namespace APIBooking.VNA.Controllers
         }
         [HttpPost]
         [Route("Action/EPR-test")]
-        public ActionResult APIReportTest()
+        public async Task<ActionResult> APIReportTestAsync()
         {
             ApiReportService apiReportService = new ApiReportService();
-
-
-            return Notifization.Data("ok", apiReportService.APITest());
-
-
-
+            var a = await apiReportService.APITest();
+            return Notifization.Data("ok", a);
         }
 
 

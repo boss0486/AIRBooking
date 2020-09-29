@@ -41,7 +41,7 @@ namespace WebCore.Services
         public ApiReportService() : base() { }
         public ApiReportService(System.Data.IDbConnection db) : base(db) { }
         //###############################################################################################################################
-        public ActionResult APIReportData(APIDailyReportModel model)
+        public async Task<ActionResult> APIReportDataAsync(APIDailyReportModel model)
         {
             //return Notifization.Success(MessageText.UpdateSuccess); 
 
@@ -90,7 +90,7 @@ namespace WebCore.Services
                             Token = tokenModel.Token
                         };
                         VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                        var printer =  wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                        var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                         // model
                         VNA_EmpReportModel empReportModel = new VNA_EmpReportModel
                         {
@@ -106,13 +106,11 @@ namespace WebCore.Services
                         foreach (var employee in empData)
                         {
                             string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new VNA_ReportModel
+                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = await vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
                             {
-                                Token = tokenModel.Token,
-                                ConversationID = tokenModel.ConversationID,
                                 ReportDate = reportDate,
                                 EmpNumber = empNumber
-                            });
+                            }, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
                             //get tickketing
                             List<string> docummentNunberForDetails = new List<string>();
                             if (reportSaleSummaryResult != null)
@@ -158,7 +156,7 @@ namespace WebCore.Services
                                         string docummentNumber = itemTrans.DocumentNumber;
                                         if (itemTrans.DocumentType == ("TKT") && !string.IsNullOrWhiteSpace(docummentNumber))
                                         {
-                                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = vna_TKT_AsrService.GetSaleReportTicketByDocNumber(docummentNumber, tokenModel);
+                                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = vna_TKT_AsrService.GetSaleReportTicketByDocNumber(docummentNumber, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
                                             if (vna_ReportSaleSummaryTicketing != null)
                                             {
                                                 List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = vna_ReportSaleSummaryTicketing.SaleSummaryTicketingDocument;
@@ -235,7 +233,7 @@ namespace WebCore.Services
 
                     }
                     _transaction.Commit();
-                    return Notifization.Success(MessageText.UpdateSuccess);
+                    return Notifization.Success(MessageText.UpdateSuccess + "11");
                 }
                 catch (Exception ex)
                 {
@@ -268,10 +266,9 @@ namespace WebCore.Services
                     ReportDate = reportDate,
                 };
                 var param = JsonConvert.SerializeObject(apiDailyReportModel);
-                client.BaseAddress = new Uri("http://api.plos.org/");
-                //client.BaseAddress = new Uri("https://localhost:44334/");
+                client.BaseAddress = new Uri("https://localhost:44334/");
                 HttpContent httpContent = new StringContent(param, UTF8Encoding.UTF8, "application/json");
-                var response = await  client.PostAsync("search?q=title:DNA", httpContent);
+                var response = await client.PostAsync("/APIBooking/Report/Action/EPR-Rpdata", httpContent);
                 if (response.IsSuccessStatusCode)
                 {
                     var a = response.Content.ReadAsStringAsync().Result;

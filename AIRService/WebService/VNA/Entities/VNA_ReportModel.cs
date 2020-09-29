@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ApiPortalBooking.Models.VNA_WS_Model
 {
-    public class VNA_ReportModel : TokenModel
+    public class VNA_ReportModel 
     {
         public DateTime ReportDate { get; set; }
         public string EmpNumber { get; set; }

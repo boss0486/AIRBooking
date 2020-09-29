@@ -9,7 +9,13 @@ namespace AIRService.Models
     {
         public string Status { get; set; }
         public string Token { get; set; }
-        public string ConversationID{ get; set; }
+        public string ConversationID { get; set; }
         public string LNIATA { get; set; }
+    }
+    public class TransactionModel  
+    {
+        public bool TranactionState { get; set; } = false;
+        public TokenModel TokenModel { get; set; }
+
     }
 }

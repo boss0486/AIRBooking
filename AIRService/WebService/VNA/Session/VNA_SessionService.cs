@@ -14,7 +14,10 @@ namespace AIR.Helper.Session
         {
             _tokenModel = GetSession();
         }
-
+        public VNA_SessionService(TokenModel tokenModel)
+        {
+            _tokenModel = tokenModel;
+        }
         public void Dispose()
         {
             Dispose(true);

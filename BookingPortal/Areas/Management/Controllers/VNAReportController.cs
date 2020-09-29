@@ -52,7 +52,7 @@ namespace WebApplication.Management.Controllers
         }
         public ActionResult Details(string id)
         {
-            
+
             ReportSaleSummaryService service = new ReportSaleSummaryService();
             ReportSaleSummaryModel model = service.GetReportSaleSummaryByDocumentNumber(id);
             if (model != null)
@@ -126,13 +126,11 @@ namespace WebApplication.Management.Controllers
                         foreach (var employee in data)
                         {
                             string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new VNA_ReportModel
+                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
                             {
-                                Token = tokenModel.Token,
-                                ConversationID = tokenModel.ConversationID,
                                 ReportDate = reportDate,
                                 EmpNumber = empNumber
-                            });
+                            }).Result;
                             reportEprResult.Add(reportSaleSummaryResult);
                         }
                         return Notifization.Data("Ok" + data.Count, reportEprResult);
@@ -187,13 +185,11 @@ namespace WebApplication.Management.Controllers
                         foreach (var employee in data)
                         {
                             string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReport(new VNA_ReportModel
+                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
                             {
-                                Token = tokenModel.Token,
-                                ConversationID = tokenModel.ConversationID,
                                 ReportDate = reportDate,
                                 EmpNumber = empNumber
-                            });
+                            }, new TransactionModel { TranactionState = true, TokenModel = tokenModel }).Result;
                             //
                             reportSaleSummaryResults.Add(reportSaleSummaryResult);
                         }
