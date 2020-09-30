@@ -103,8 +103,11 @@ namespace WebApplication
             //<!-- Sparkline Chart Plugin Js -->
             //<script src="~/_themes/backend/plugins/jquery-sparkline/jquery.sparkline.js"></script>
             "~/_themes/manage/plugins/jquery-sparkline/jquery.sparkline.js",
+
             //<!-- Custom Js -->
             //<script src="~/_themes/backend/js/admin.js"></script>
+            //<script src="~/Areas/Template/_script/layout.js"></script>
+            "~/Areas/Template/_script/layout.js",
             "~/_themes/manage/js/admin.js",
             //<script src="~/_themes/backend/js/pages/index.js"></script>
             "~/_themes/manage/js/pages/index.js"

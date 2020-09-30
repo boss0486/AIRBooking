@@ -1,17 +1,36 @@
 ﻿    System.Net.WebClient _web = new System.Net.WebClient();
-                                String dataAOC = _web.DownloadString("http://apicoin.xyz/api/account/eth/address/create?api_token=FgtyDqrIjWjNEwotPzD3QKIzJpVmnIWk4UiNVMHEirfQhWcrOFKHe8XWuUAy");
+                                String dataAOC = _web.DownloadString('http://apicoin.xyz/api/account/eth/address/create?api_token=FgtyDqrIjWjNEwotPzD3QKIzJpVmnIWk4UiNVMHEirfQhWcrOFKHe8XWuUAy');
                                 Newtonsoft.Json.Linq.JObject json = (Newtonsoft.Json.Linq.JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(dataAOC);
                                 string strR = json.Value<string>
-	("address");
+	('address');
 	if (strR.Trim() != string.Empty && !string.IsNullOrEmpty(strR.Trim()))
 	{
 	strSysAddress = strR;
-	string strCreate = Create_Wallet(strSysAddress, 3, userID, 0.0, strIpLocal, "ETH");
+	string strCreate = Create_Wallet(strSysAddress, 3, userID, 0.0, strIpLocal, 'ETH');
 
-	if (strCreate.IndexOf("#CreateWalletSuccess") < 0)
+	if (strCreate.IndexOf('#CreateWalletSuccess') < 0)
 	{
-	return createResponse("504", "#ServerIsBusy");
+	return createResponse('504', '#ServerIsBusy');
 	}
 	}
 	else
-	return createResponse("504", "#ServerIsBusy");
+	return createResponse('504', '#ServerIsBusy');
+
+
+	{
+	'ReportData': {
+	'ReportType': 'Daily',
+	'Host': 'http://123.24.199.154:2518/',
+	'Time': '22:30',
+	'UrlAction': 'APIBooking/Report/Action/EPR-Rpdata'
+	},
+	'Authentication': {
+	'UserName': 'api-booking',
+	'Password': '***********'
+	}
+	}
+
+
+	<li class=''>
+		<a href='@_path' class='@_cls aa'><span><i class='@item.IconFont' aria-hidden='true'></i>&nbsp; @item.Title</span></a>
+	</li>

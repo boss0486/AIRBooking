@@ -10,21 +10,8 @@ namespace WebApplication.HomePage.Controllers
     {
         public ActionResult Index()
         {
-            Response.Redirect("/Authentication");
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            
-            ViewBag.Message = "Your application description page. ewqe";
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
+           // Response.Redirect("/Authentication");
+            return View("~/Areas/Authentication/Views/Authen/Login.cshtml");
         }
     }
 }

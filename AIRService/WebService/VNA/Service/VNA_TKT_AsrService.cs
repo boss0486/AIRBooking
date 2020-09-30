@@ -284,7 +284,7 @@ namespace AIRService.WS.Service
                             }
                         }
                         ///***************************************************************************************************************
-                        if (transactionModel != null)
+                        if (transactionModel == null)
                             sessionService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
                         //
@@ -355,7 +355,7 @@ namespace AIRService.WS.Service
                         soapEnvelopeXml.LoadXml(soapResult);
 
                         ///***************************************************************************************************************
-                        if (transactionModel != null)
+                        if (transactionModel == null)
                             sessionService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
                         return new VNA_ReportSaleSummaryResult
@@ -420,9 +420,15 @@ namespace AIRService.WS.Service
                 {
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                     {
+
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
+
+                        ///***************************************************************************************************************
+                        if (transactionModel == null)
+                            sessionService.CloseSession(tokenModel);
+                        ///***************************************************************************************************************
                         return new VNA_ReportSaleSummaryResult
                         {
                             EmpNumber = model.EmpNumber,
@@ -430,6 +436,8 @@ namespace AIRService.WS.Service
                         };
                     }
                 }
+
+                
             }
             catch (Exception)
             {
@@ -790,9 +798,10 @@ namespace AIRService.WS.Service
                             SaleSummaryTicketingDocumentTaxes = vna_ReportSaleSummaryTicketingDocumentTaxes
                         };
                         //
-                        if (transactionModel != null)
+                        ///***************************************************************************************************************
+                        if (transactionModel == null)
                             sessionService.CloseSession(tokenModel);
-                        //
+                        ///***************************************************************************************************************
 
                         var data = vna_ReportSaleSummaryTicketing;
                         return vna_ReportSaleSummaryTicketing;

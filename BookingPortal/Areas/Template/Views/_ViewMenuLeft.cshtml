@@ -1,0 +1,81 @@
+﻿
+@using WebCore.Entities;
+@{
+
+    WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
+
+    List<WebCore.Entities.MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemData();
+
+    List<WebCore.Entities.MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+
+
+    string metaController = Helper.Page.MetaSEO.ControllerText;
+
+    string SubMenuItemByLevel(string parentId, List<MenuItemLayout> allData)
+    {
+        string result = string.Empty;
+        List<WebCore.Entities.MenuItemLayout> dtList = allData.Where(m => m.ParentID == parentId).ToList();
+        if (dtList.Count == 0)
+            return "";
+        //
+        result += "<ul class='ml-menu'>";
+        foreach (var item in dtList)
+        {
+            string _cls = "";
+            string _path = item.PathAction;
+            var menuLists = SubMenuItemByLevel(item.ID, allData);
+            if (!string.IsNullOrWhiteSpace(menuLists))
+            {
+                _cls = "menu-toggle";
+                _path = "javascript:void(0);";
+            }
+            //
+
+            result += "<li class=''><a href='" + _path + "' class='" + _cls + "'><span><i class='" + item.IconFont + "' aria-hidden='true'></i>&nbsp; " + item.Title + item.MvcController + "</span></a> " + menuLists + "</li>";
+
+        }
+        result += "</ul>";
+        return result;
+    }
+}
+<div class="menu">
+    <ul class="list" id="LeftMenu">
+
+        @{
+            if (menuItems.Count > 0)
+            {
+
+
+                string toggled = string.Empty;
+                foreach (var item in menuItems)
+                {
+                    string _cls = "";
+                    string _path = "";
+                    string parentId = item.ID;
+                    var menuLists = SubMenuItemByLevel(item.ID, menuItemModelResults);
+                    if (!string.IsNullOrWhiteSpace(menuLists))
+                    {
+
+                        _cls = "menu-toggle";
+                        _path = "javascript:void(0);";
+                    }
+
+                    string controller = item.MvcController;
+
+
+
+                    if (!string.IsNullOrWhiteSpace(metaController) && !string.IsNullOrWhiteSpace(controller) && metaController.ToLower() == controller.ToLower())
+                    {
+
+
+                        toggled = "toggled";
+                    }
+
+                    <li class="">
+                        <a href="@_path" class="@_cls  @toggled"><span><i class="@item.IconFont" aria-hidden="true"></i>&nbsp; @item.Title  11:@item.MvcController</span></a> @Html.Raw(menuLists)
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

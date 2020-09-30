@@ -29,7 +29,7 @@ namespace WebApplication.Areas.Authentication
                  "Authentication_default",
                  "Authentication/{action}/{id}",
                  new { controller = "Authen", action = "Login", id = UrlParameter.Optional },
-                new string[] { "WebApplication.Authentication.Controllers" } // namespace of Controller
+                 new string[] { "WebApplication.Authentication.Controllers" } // namespace of Controller
              );
 
             //context.MapRoute(

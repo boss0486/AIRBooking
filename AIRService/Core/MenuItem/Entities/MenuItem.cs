@@ -78,6 +78,41 @@ namespace WebCore.Entities
         public List<MenuItemModel> SubMenuModel { get; set; }
     }
 
+    public class MenuItemLayout
+    {
+        public string ID { get; set; }
+        public string ParentID { get; set; }
+        public string Title { get; set; }
+        public string IconFont { get; set; }
+        public string OrderID { get; set; }
+       
+        public string PathAction { get; set; }
+        private string _mvcController;
+        public string MvcController
+        {
+            get
+            {
+                return MenuControllerService.GetKeyByID(_mvcController);
+            }
+            set
+            {
+                _mvcController = value;
+            }
+        }
+        private string _mvcAction;
+        public string MvcAction
+        {
+            get
+            {
+                return MenuActionService.GetKeyByID(_mvcAction);
+            }
+            set
+            {
+                _mvcAction = value;
+            }
+        }
+    }
+
     public class MenuItemModelResult
     {
         public string ID { get; set; }

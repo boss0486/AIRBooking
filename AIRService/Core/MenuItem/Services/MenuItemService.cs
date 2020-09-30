@@ -62,7 +62,7 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-             //
+            //
             return Notifization.Data(MessageText.Success, data: dtList, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         public List<MenuItemModelResult> GetSubMenuByLevel(string routeArea, string parentId, int status, string query)
@@ -96,7 +96,28 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult MenuItemManage(AreaIDRequestModel model)
+        public List<MenuItemLayout> GetMenuItemData()
+        {
+            List<MenuItemLayout> menuItemModelResults = new List<MenuItemLayout>();
+            string routeArea = string.Empty;
+            if (Helper.Current.UserLogin.IsCMSUser)
+                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
+            else
+                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
+            //
+
+            if (string.IsNullOrWhiteSpace(routeArea))
+                return menuItemModelResults;
+            //
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
+            var dataList = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea }).ToList();
+            // 
+            return dataList;
+        }
+
+
+        //##############################################################################################################################################################################################################################################################
+        public ActionResult MenuItemManage()
         {
             string routeArea = string.Empty;
             if (Helper.Current.UserLogin.IsCMSUser)
@@ -140,10 +161,6 @@ namespace WebCore.Services
         }
         public List<MenuItemModelResult> SubMenuItemByLevel(string parentId, List<MenuItemModelResult> allData)
         {
-            //string sqlQuery = @"SELECT * FROM MenuItem WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY OrderID ASC";
-            //var menuService = new MenuService(_connection);
-            //List<ViewMenuItemLevelResult> dtList = menuService.Query<ViewMenuItemLevelResult>(sqlQuery, new { ParentID = parentId }).ToList();
-
             List<MenuItemModelResult> dtList = allData.Where(m => m.ParentID == parentId).ToList();
             if (dtList.Count == 0)
                 return new List<MenuItemModelResult>();

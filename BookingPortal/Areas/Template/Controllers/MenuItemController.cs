@@ -24,13 +24,8 @@ namespace WebApplication.Template.Controllers
         {
             try
             {
-                RouteAreaAttribute areaAttribute = (RouteAreaAttribute)Attribute.GetCustomAttribute(this.GetType(), typeof(RouteAreaAttribute));
-                string routeArea = areaAttribute.AreaName;
                 using (var menuItemService = new MenuItemService())
-                    return menuItemService.MenuItemManage(new AreaIDRequestModel
-                    {
-                        RouteArea = routeArea
-                    });
+                    return menuItemService.MenuItemManage( );
             }
             catch (Exception ex)
             {

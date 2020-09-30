@@ -629,5 +629,30 @@ namespace WebCore.Services
                 return new List<MvcControllerOption>();
             }
         }
+
+
+        //##############################################################################################################################################################################################################################################################
+        public static string GetKeyByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return string.Empty;
+                //
+                id = id.ToLower();
+                var service = new MenuControllerService();
+                var data = service.GetAlls(m => m.ID == id).FirstOrDefault();
+                if (data == null)
+                    return string.Empty;
+                //
+                return data.KeyID;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+
     }
 }

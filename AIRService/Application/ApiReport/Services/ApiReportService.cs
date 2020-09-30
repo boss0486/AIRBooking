@@ -142,7 +142,7 @@ namespace WebCore.Services
                                         ApiPortalBooking.Models.VNA_WS_Model.ReportSaleSummaryTransactionSSFop ePRReportTransactionSSFop = itemTrans.SaleSummaryTransactionSSFop;
                                         if (ePRReportTransactionSSFop != null)
                                         {
-                                            reportTransactionSSFopService.Create<string>(new ReportSaleSummarySSFop
+                                           await reportTransactionSSFopService.CreateAsync<string>(new ReportSaleSummarySSFop
                                             {
                                                 Title = ePRReportTransactionSSFop.FopCode,
                                                 ReportTransactionID = reportTransactionId,
@@ -225,15 +225,15 @@ namespace WebCore.Services
                                                 }
                                             }
                                         }
-                                        //
+
                                     }
                                 }
                             }
                         }
 
-                    }
                     _transaction.Commit();
                     return Notifization.Success(MessageText.UpdateSuccess + "11");
+                    }
                 }
                 catch (Exception ex)
                 {
