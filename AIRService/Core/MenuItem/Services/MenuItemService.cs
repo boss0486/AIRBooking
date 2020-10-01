@@ -229,7 +229,7 @@ namespace WebCore.Services
                     //
                     routeArea = routeArea.ToLower();
                     AreaApplicationService areaApplicationService = new AreaApplicationService();
-                    var area = areaApplicationService.DataOption().Where(m => m.ID == routeArea).FirstOrDefault();
+                    AreaOption area = areaApplicationService.DataOption().Where(m => m.ID == routeArea).FirstOrDefault();
                     if (area == null)
                         return Notifization.Invalid("Phân vùng không hợp lệ");
                     //
@@ -259,25 +259,17 @@ namespace WebCore.Services
                     string controllerId = model.MvcController;
                     string actionId = model.MvcAction;
                     string pathAction = string.Empty;
-
+                    //
                     if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
-                    {
                         parentId = null;
-                    }
                     else
-                    {
                         parentId = parentId.ToLower();
-                    }
                     //
                     if (string.IsNullOrWhiteSpace(controllerId) || controllerId.Length != 36)
-                    {
                         controllerId = null;
-                    }
-
+                    //
                     if (string.IsNullOrWhiteSpace(actionId) || actionId.Length != 36)
-                    {
                         actionId = null;
-                    }
                     // get path
                     if (!string.IsNullOrWhiteSpace(controllerId) && !string.IsNullOrWhiteSpace(actionId))
                     {
@@ -392,30 +384,36 @@ namespace WebCore.Services
                     MenuItemService menuItemService = new MenuItemService(_connection);
                     string id = model.ID.ToLower();
                     string title = model.Title;
-                    var controllerId = model.MvcController;
-                    var actionId = model.MvcAction;
+                    string controllerId = model.MvcController;
+                    string actionId = model.MvcAction;
                     string parentId = model.ParentID;
                     if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
                         parentId = null;
                     else
                         parentId = parentId.ToLower();
                     //
-                    var menuItem = menuItemService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (string.IsNullOrWhiteSpace(controllerId) || controllerId.Length != 36)
+                        controllerId = null;
+                    //
+                    if (string.IsNullOrWhiteSpace(actionId) || actionId.Length != 36)
+                        actionId = null;
+                    //
+                    MenuItem menuItem = menuItemService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (menuItem == null)
                         return Notifization.NotFound();
                     string menuId = menuItem.ID;
                     string routeArea = menuItem.RouteArea;
-                    var pathAction = string.Empty;
+                    string pathAction = string.Empty;
                     if (!string.IsNullOrWhiteSpace(controllerId) && !string.IsNullOrWhiteSpace(actionId))
                     {
-                        var sqlPath = @"SELECT Top (1) Concat('/',c.RouteArea,'/', c.KeyID,'/',a.KeyID) as ActionPath FROM MenuController as c
+                        string sqlPath = @"SELECT Top (1) Concat('/',c.RouteArea,'/', c.KeyID,'/',a.KeyID) as ActionPath FROM MenuController as c
                                      INNER JOIN MenuAction as a ON a.CategoryID = c.ID AND c.RouteArea = a.RouteArea
                                      WHERE  c.RouteArea = @RouteArea AND c.ID = @ControllerID AND a.ID = @ActionID";
                         pathAction = _connection.Query<string>(sqlPath, new { RouteArea = routeArea, ControllerID = controllerId, ActionID = actionId }, transaction: _transaction).FirstOrDefault();
                     }
                     //
                     string _sqlTitle = @"SELECT ID FROM MenuItem WHERE RouteArea = @RouteArea AND ParentID = @ParentID AND  Title = @Title AND ID != @ID ";
-                    var modelTitle = menuItemService.Query<MenuItemIDModel>(_sqlTitle, new { RouteArea = routeArea, ParentID = parentId, Title = title, ID = id }, transaction: _transaction).FirstOrDefault();
+                    MenuItemIDModel modelTitle = menuItemService.Query<MenuItemIDModel>(_sqlTitle, new { RouteArea = routeArea, ParentID = parentId, Title = title, ID = id }, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     //
@@ -432,13 +430,13 @@ namespace WebCore.Services
                         if (menuItem.ID != model.ParentID)
                             parentId = model.ParentID;
 
-                        var mPath = menuItemService.GetAlls(m => m.ID == model.ParentID.ToLower(), transaction: _transaction).FirstOrDefault();
+                        MenuItem mPath = menuItemService.GetAlls(m => m.ID == model.ParentID.ToLower(), transaction: _transaction).FirstOrDefault();
                         if (mPath != null)
                             menuPath = mPath.Path + "/" + id;
 
                     }
-                    var meta = new MetaSEO();
-                    var attachmentIngredientService = new AttachmentIngredientService(_connection);
+                    MetaSEO meta = new MetaSEO();
+                    AttachmentIngredientService attachmentIngredientService = new AttachmentIngredientService(_connection);
                     // update content
                     menuItem.ParentID = parentId;
                     menuItem.IconFont = model.IconFont;
@@ -457,7 +455,7 @@ namespace WebCore.Services
                     bool _sortdf = false;
                     // update part
                     string parentPath = string.Empty;
-                    var mnChildren = menuItemService.GetAlls(m => m.ParentID == id, transaction: _transaction).ToList();
+                    List<MenuItem> mnChildren = menuItemService.GetAlls(m => m.ParentID == id, transaction: _transaction).ToList();
                     if (mnChildren.Count > 0)
                     {
                         _sortdf = true;
@@ -473,7 +471,7 @@ namespace WebCore.Services
                     }
                     //sort
                     parentId = parentId.ToLower();
-                    var menus = menuItemService.GetAlls(m => m.ParentID == parentId && m.ID != id, transaction: _transaction).OrderBy(m => m.OrderID).ToList();
+                    List<MenuItem> menus = menuItemService.GetAlls(m => m.ParentID == parentId && m.ID != id, transaction: _transaction).OrderBy(m => m.OrderID).ToList();
                     // set sort default if user not select sort
                     int sort = model.OrderID;
                     if (_sortdf)
@@ -937,9 +935,9 @@ namespace WebCore.Services
                 }
                 return result;
             }
-            catch  
+            catch (Exception ex)
             {
-                return string.Empty;
+                return string.Empty + ex;
             }
         }
 
