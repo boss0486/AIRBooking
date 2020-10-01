@@ -902,6 +902,47 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
+        //##############################################################################################################################################################################################################################################################
+        public string GetSiteMap(string _controllerId, string _actionId)
+        {
+            try
+            {
+                string result = string.Empty;
+                string pathAction = string.Empty;
+                if (string.IsNullOrWhiteSpace(_controllerId))
+                    return string.Empty;
+                // check controller
+                MenuControllerService menuControllerService = new MenuControllerService();
+                MenuController menuController = menuControllerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.KeyID) && m.KeyID.ToLower() == _controllerId.ToLower()).FirstOrDefault();
+                if (menuController == null)
+                    return string.Empty;
+                // 
+                var menuActionService = new MenuActionService();
+                MenuAction menuAction = menuActionService.GetAlls(m => !string.IsNullOrWhiteSpace(m.KeyID) && m.CategoryID == menuController.ID && m.KeyID.ToLower() == _actionId.ToLower()).FirstOrDefault();
+                if (menuController == null)
+                    return result;
+                ////  
+                MenuItemService menuItemService = new MenuItemService();
+                var menuItem = menuItemService.GetAlls(m => m.MvcController == menuController.ID && m.MvcAction == menuAction.ID).FirstOrDefault();
+                if (menuItem == null)
+                    return result;
+                //
+                result = menuItem.Title;
+                string parentId = menuItem.ParentID;
+                if (!string.IsNullOrWhiteSpace(parentId))
+                {
+                    menuItem = menuItemService.GetAlls(m => m.ID == parentId).FirstOrDefault();
+                    if (menuItem != null)
+                        return menuItem.Title + " / " + result;
+                }
+                return result;
+            }
+            catch  
+            {
+                return string.Empty;
+            }
+        }
+
 
         //##############################################################################################################################################################################################################################################################
     }

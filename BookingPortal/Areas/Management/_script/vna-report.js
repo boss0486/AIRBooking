@@ -60,7 +60,7 @@ var VNAReportController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "AccountController", id);
+                            var action = HelperModel.RolePermission(result.role, "VNAReportController", id);
                             //
                             var reportDate = item.ReportDate;
 
@@ -81,7 +81,7 @@ var VNAReportController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, AccountController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, VNAReportController.DataList);
                         }
                         return;
                     }

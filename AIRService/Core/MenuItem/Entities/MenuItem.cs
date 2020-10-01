@@ -85,7 +85,7 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string IconFont { get; set; }
         public string OrderID { get; set; }
-       
+
         public string PathAction { get; set; }
         private string _mvcController;
         public string MvcController
@@ -111,6 +111,12 @@ namespace WebCore.Entities
                 _mvcAction = value;
             }
         }
+    }
+    public class MenuItemSubLayout
+    {
+        public string InnerText { get; set; }
+        public bool IsToggled { get; set; }
+
     }
 
     public class MenuItemModelResult
@@ -140,12 +146,6 @@ namespace WebCore.Entities
 
         public List<MenuItemModelResult> SubMenuLevelModel { get; set; }
 
-    }
-
-    public partial class MenuSortModel
-    {
-        public string ID { get; set; }
-        public int OrderID { get; set; }
     }
 
     public class MenuItemOption

@@ -1281,6 +1281,8 @@
     <Content Include="Areas\Template\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Template\Views\_ViewNotPageLoadPatial.cshtml" />
     <Content Include="Areas\Template\Views\_ViewMenuLeft.cshtml" />
+    <Content Include="Areas\Template\Views\_ViewFooter.cshtml" />
+    <Content Include="Areas\Template\Views\_ViewRightSidebar.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

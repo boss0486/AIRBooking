@@ -623,7 +623,7 @@ namespace Helper.Page
                 return string.Empty;
             }
         }
-        public static string PageTitle
+        public static string SiteMap
         {
             get
             {
@@ -631,19 +631,14 @@ namespace Helper.Page
                 {
                     string _controller = MetaSEO.ControllerText;
                     string _action = MetaSEO.ActionText;
-                    using (var _service = new MenuControllerService())
+                    using (var service = new MenuItemService())
                     {
-
-                        return _controller + "/" + _action;
-                        //string strTitle = _service.GetMenuName(_controller, _action);
-                        //if (string.IsNullOrWhiteSpace(strTitle))
-                        //    return string.Empty;
-                        //return strTitle.ToUpper();
+                        return service.GetSiteMap(_controller, _action);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return "HRM | MANAGE & " + ex;
+                    return string.Empty;
                 }
             }
         }
