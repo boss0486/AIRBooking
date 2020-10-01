@@ -125,7 +125,7 @@ namespace AIRService.WS.Service
                 else
                 {
                     sessionService = new VNA_SessionService(tokenModel);
-                    sessionService.GetSession();
+                    tokenModel = sessionService.GetSession();
                 }
                 // *************************************************************************************************************
 
@@ -315,7 +315,7 @@ namespace AIRService.WS.Service
                 else
                 {
                     sessionService = new VNA_SessionService(tokenModel);
-                    sessionService.GetSession();
+                    tokenModel = sessionService.GetSession();
                 }
                 return null;
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
@@ -387,7 +387,7 @@ namespace AIRService.WS.Service
                 else
                 {
                     sessionService = new VNA_SessionService(tokenModel);
-                    sessionService.GetSession();
+                    tokenModel = sessionService.GetSession();
                 }
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -534,7 +534,7 @@ namespace AIRService.WS.Service
                 else
                 {
                     sessionService = new VNA_SessionService(tokenModel);
-                    sessionService.GetSession();
+                    tokenModel = sessionService.GetSession();
                 }
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 XmlDocument soapEnvelopeXml = new XmlDocument();

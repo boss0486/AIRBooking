@@ -48,10 +48,10 @@
       },
       {
         "OrderID": 7,
-        "KeyID": "LoginInfo",
-        "Method": "LoginInfo",
-        "APIRouter": "Action/LoginInfo",
-        "Title": "Truy cập"
+        "KeyID": "AccountInfo",
+        "Method": "AccountInfo",
+        "APIRouter": "",
+        "Title": "Thông tin đăng nhập"
       },
       {
         "OrderID": 8,

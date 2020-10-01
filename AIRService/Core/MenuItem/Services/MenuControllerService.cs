@@ -621,7 +621,7 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM MenuController WHERE RouteArea = @RouteArea ORDER BY Title ASC";
+                string sqlQuery = @"SELECT * FROM MenuController WHERE RouteArea = @RouteArea ORDER BY OrderID ASC";
                 return _connection.Query<MvcControllerOption>(sqlQuery, new { RouteArea = cateId }).ToList();
             }
             catch

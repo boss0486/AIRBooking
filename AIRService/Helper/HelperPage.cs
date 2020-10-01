@@ -638,7 +638,7 @@ namespace Helper.Page
                 }
                 catch (Exception ex)
                 {
-                    return string.Empty;
+                    return string.Empty +  ex;
                 }
             }
         }

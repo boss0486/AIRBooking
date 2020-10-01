@@ -62,10 +62,10 @@
       },
       {
         "OrderID": 7,
-        "KeyID": "LoginInfo",
-        "Method": "LoginInfo",
-        "APIRouter": "Action/LoginInfo",
-        "Title": "Truy cập"
+        "KeyID": "AccountInfo",
+        "Method": "AccountInfo",
+        "APIRouter": "",
+        "Title": "Thông tin đăng nhập"
       },
       {
         "OrderID": 8,
@@ -118,6 +118,13 @@
       },
       {
         "OrderID": 2,
+        "KeyID": "Search",
+        "Method": "Search",
+        "APIRouter": "Action/Search",
+        "Title": "Tìm kiếm"
+      },
+      {
+        "OrderID": 3,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",

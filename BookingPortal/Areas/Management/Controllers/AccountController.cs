@@ -17,7 +17,7 @@ namespace WebApplication.Management.Controllers
     [RoutePrefix("Account")]
     public class AccountController : CMSController
     {
-        public ActionResult LoginInfo()
+        public ActionResult AccountInfo()
         {
             string id = Helper.Current.UserLogin.IdentifierID;
             AccountService service = new AccountService();

@@ -18,6 +18,16 @@ namespace WebApplication.Development.Controllers
     public class AccountController : CMSController
     {
         // GET: BackEnd/Account
+        public ActionResult AccountInfo()
+        {
+            string id = Helper.Current.UserLogin.IdentifierID;
+            AccountService service = new AccountService();
+            UserResult model = service.GetUserModel(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
+        }
         public ActionResult DataList()
         {
             return View();
@@ -57,7 +67,7 @@ namespace WebApplication.Development.Controllers
             return View();
         }
 
-        public ActionResult Password()
+        public ActionResult ChangePassword()
         {
             return View();
         }
