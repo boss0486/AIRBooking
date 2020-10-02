@@ -17,8 +17,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -197,6 +196,7 @@
     <Content Include="Areas\Management\_script\trans-spending.js" />
     <Content Include="Areas\Management\_script\trans-user-spending.js" />
     <Content Include="Areas\Management\_script\user-group.js" />
+    <Content Include="Areas\Management\_script\agent-fee.js" />
     <Content Include="Areas\Management\_script\vna-report.js" />
     <Content Include="Areas\Management\_script\wallet-customer-deposit-history.js" />
     <Content Include="Areas\Management\_script\wallet-user-spending.js" />
@@ -1283,12 +1283,17 @@
     <Content Include="Areas\Template\Views\_ViewRightSidebar.cshtml" />
     <Content Include="Areas\Development\Views\Account\AccountInfo.cshtml" />
     <Content Include="Areas\Development\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Areas\Management\Views\Home\Test.cshtml" />
+    <Content Include="Areas\Management\Views\AirBook\FeeConfig.cshtml" />
+    <Content Include="Areas\Management\Views\AirBook\TicketConfig.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Team\backup-booking-10-01-2020-01.bak" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Team\backup-booking-10-02-2020-01.bak" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AIRService\AIRService.csproj">
@@ -1315,8 +1320,6 @@
           <DevelopmentServerPort>50180</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44334/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44334/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

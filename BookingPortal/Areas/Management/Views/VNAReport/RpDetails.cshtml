@@ -83,7 +83,7 @@
                             double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
                             double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
                             //
-                            <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount)</td>
+                        <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(nonRefundable) @unit</td>

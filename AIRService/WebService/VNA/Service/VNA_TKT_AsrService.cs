@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using WebCore.Services;
 using WebCore.Entities;
+using AIRService.WebService.VNA.Authen;
 
 namespace AIRService.WS.Service
 {
@@ -33,6 +34,7 @@ namespace AIRService.WS.Service
     {
         public List<EmployeeNumber> GetEmployeeNumber(VNA_EmpReportModel model)
         {
+            // *************************************************************************************************************
             HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
             XmlDocument soapEnvelopeXml = new XmlDocument();
             var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
@@ -118,14 +120,12 @@ namespace AIRService.WS.Service
         {
             try
             {
-                VNA_SessionService sessionService = null;
                 TokenModel tokenModel = null;
                 if (transactionModel != null)
                     tokenModel = transactionModel.TokenModel;
                 else
                 {
-                    sessionService = new VNA_SessionService(tokenModel);
-                    tokenModel = sessionService.GetSession();
+                    tokenModel = VNA_AuthencationService.GetSession();
                 }
                 // *************************************************************************************************************
 
@@ -148,7 +148,7 @@ namespace AIRService.WS.Service
                 stringXML += "    <EmployeeNumber>" + model.EmpNumber + "</EmployeeNumber>";
                 stringXML += "    <ReportDate>" + model.ReportDate.ToString("yyyy-MM-dd") + "</ReportDate>";
                 stringXML += "   </SelectionCriteria>";
-                stringXML += "  </SalesSummaryRQ>";
+                stringXML += "</SalesSummaryRQ>";
                 child.InnerXml = stringXML;
                 soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
 
@@ -285,7 +285,7 @@ namespace AIRService.WS.Service
                         }
                         ///***************************************************************************************************************
                         if (transactionModel == null)
-                            sessionService.CloseSession(tokenModel);
+                            VNA_AuthencationService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
                         //
                         return new VNA_ReportSaleSummaryResult
@@ -300,7 +300,7 @@ namespace AIRService.WS.Service
             catch (Exception ex)
             {
                 return null;
-            } 
+            }
         }
         //
 
@@ -308,14 +308,13 @@ namespace AIRService.WS.Service
         {
             try
             {
-                VNA_SessionService sessionService = null;
                 TokenModel tokenModel = null;
                 if (transactionModel != null)
                     tokenModel = transactionModel.TokenModel;
                 else
                 {
-                    sessionService = new VNA_SessionService(tokenModel);
-                    tokenModel = sessionService.GetSession();
+                   
+                    tokenModel = VNA_AuthencationService.GetSession();
                 }
                 return null;
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
@@ -356,7 +355,7 @@ namespace AIRService.WS.Service
 
                         ///***************************************************************************************************************
                         if (transactionModel == null)
-                            sessionService.CloseSession(tokenModel);
+                            VNA_AuthencationService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
                         return new VNA_ReportSaleSummaryResult
                         {
@@ -380,14 +379,13 @@ namespace AIRService.WS.Service
         {
             try
             {
-                VNA_SessionService sessionService = null;
                 TokenModel tokenModel = null;
                 if (transactionModel != null)
                     tokenModel = transactionModel.TokenModel;
                 else
                 {
-                    sessionService = new VNA_SessionService(tokenModel);
-                    tokenModel = sessionService.GetSession();
+                   
+                    tokenModel = VNA_AuthencationService.GetSession();
                 }
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -427,7 +425,7 @@ namespace AIRService.WS.Service
 
                         ///***************************************************************************************************************
                         if (transactionModel == null)
-                            sessionService.CloseSession(tokenModel);
+                            VNA_AuthencationService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
                         return new VNA_ReportSaleSummaryResult
                         {
@@ -437,7 +435,7 @@ namespace AIRService.WS.Service
                     }
                 }
 
-                
+
             }
             catch (Exception)
             {
@@ -534,7 +532,7 @@ namespace AIRService.WS.Service
                 else
                 {
                     sessionService = new VNA_SessionService(tokenModel);
-                    tokenModel = sessionService.GetSession();
+                    tokenModel = VNA_AuthencationService.GetSession();
                 }
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -800,7 +798,7 @@ namespace AIRService.WS.Service
                         //
                         ///***************************************************************************************************************
                         if (transactionModel == null)
-                            sessionService.CloseSession(tokenModel);
+                            VNA_AuthencationService.CloseSession(tokenModel);
                         ///***************************************************************************************************************
 
                         var data = vna_ReportSaleSummaryTicketing;

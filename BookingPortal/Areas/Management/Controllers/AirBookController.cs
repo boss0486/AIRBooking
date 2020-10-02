@@ -100,6 +100,26 @@ namespace WebApplication.Management.Controllers
             return View(flightPassengerTypeInfos);
         }
 
+        public ActionResult FeeConfig()
+        {
+            return View();
+        }
+        public ActionResult TicketConfig()
+        {
+            if (Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                string customerId = CustomerService.GetCustomerIDByUserID(userId);
+                AirFeeAgentService airFeeAgentService = new AirFeeAgentService();
+                var airFeeAgentResult = airFeeAgentService.GetAirFeeAgentModel(customerId);
+                if (airFeeAgentResult != null)
+                {
+                    return View(airFeeAgentResult);
+                }
+            }
+            return View();
+        }
+
         public ActionResult Details()
         {
             BookTicketOrderDetails model = null;
@@ -332,9 +352,9 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
-        }        
-        
-        
+        }
+
+
         [HttpPost]
         [Route("Action/TicketCondition")]
         public ActionResult TicketCondition(TicketConditionModel model)
@@ -385,26 +405,12 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
-
-
-
         ///
         [HttpPost]
         [Route("Action/TestLogin")]
         public ActionResult TestLogin()
         {
-            try
-            {
-                VNA_WSAuthencation wSAuthencation = new VNA_WSAuthencation();
-                VNA_SessionService vNA_SessionService = new VNA_SessionService();
-                var service = new BookTicketService();
-                return Notifization.Data(":::", vNA_SessionService.GetSession());
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(":::" + ex);
-                //return Notifization.NotService;
-            }
+            return Notifization.Data(":::", VNA_AuthencationService.GetSession());
         }
 
 

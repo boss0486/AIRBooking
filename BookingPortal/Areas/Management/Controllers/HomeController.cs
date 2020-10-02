@@ -16,5 +16,9 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult Test()
+        {
+            return View();
+        }
     }
 }

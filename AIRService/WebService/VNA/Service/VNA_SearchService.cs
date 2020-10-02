@@ -20,6 +20,7 @@ using WebCore.ENM;
 using Helper;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using Helper.Page;
+using AIRService.WebService.VNA.Authen;
 
 namespace AIRService.Service
 {
@@ -28,7 +29,11 @@ namespace AIRService.Service
         // search  
         public ActionResult FlightSearch(FlightSearchModel model)
         {
-            using (var sessionService = new VNA_SessionService())
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Error("Cannot create session");
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 // check model
                 if (model == null)
@@ -50,13 +55,10 @@ namespace AIRService.Service
                 //
                 if (_inf > _adt)
                     return Notifization.Invalid("Infant invalid");
-                // create session 
-                var _session = sessionService.GetSession();
-                if (_session == null)
-                    return Notifization.Error("Cannot create session");
+
                 // get token
-                string _token = _session.Token;
-                string _conversationId = _session.ConversationID;
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.Error("Cannot create token");
                 // seach data in web service
@@ -354,7 +356,17 @@ namespace AIRService.Service
         // cost 
         public ActionResult FlightCost(FlightSearchModel model)
         {
-            using (var sessionService = new VNA_SessionService())
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Error("Cannot create session");
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            //
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 // check model 
                 if (model == null)
@@ -374,15 +386,6 @@ namespace AIRService.Service
                 //
                 if (_inf > _adt)
                     return Notifization.Invalid("Infant invalid");
-                // create session 
-                var _session = sessionService.GetSession();
-                if (_session == null)
-                    return Notifization.NotService;
-                // get token
-                string _token = _session.Token;
-                string _conversationId = _session.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
                 // seach data in web service
                 VNAFareLLSRQService vNAFareLLSRQService = new VNAFareLLSRQService();
                 // Flight >> go
@@ -530,22 +533,21 @@ namespace AIRService.Service
                 if (model == null)
                     return Notifization.Invalid(MessageText.Invalid + "1");
                 //
-
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                //
                 if (!Helper.Page.Validate.TestDateTime(model.DepartureDateTime))
                     return Notifization.Invalid(MessageText.Invalid + "2");
                 //
-                using (var sessionService = new VNA_SessionService())
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
-                    // create session 
-                    var _session = sessionService.GetSession();
-                    if (_session == null)
-                        return Notifization.Error("Cannot create session");
-                    // get token
-                    string _token = _session.Token;
-                    string _conversationId = _session.ConversationID;
-                    if (string.IsNullOrWhiteSpace(_token))
-                        return Notifization.Error("Cannot create token");
-                    //
                     DateTime departureDateTime = Convert.ToDateTime(model.DepartureDateTime);
                     VNA_OTA_AirRulesLLSRQService vNA_OTA_AirRulesLLSRQService = new VNA_OTA_AirRulesLLSRQService();
                     var data = vNA_OTA_AirRulesLLSRQService.GetOTA_AirRulesLLSRQ(new VNA_OTA_AirRulesLLSRQ
@@ -637,20 +639,24 @@ namespace AIRService.Service
         // 
         public ActionResult TaxFeeTest(List<FlightFareModel> models)
         {
-            using (var sessionService = new VNA_SessionService())
+            if (models == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Error("Cannot create session");
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            //
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 // check model
                 if (models.Count == 0)
                     return Notifization.Invalid(MessageText.Invalid);
-
-                var _session = sessionService.GetSession();
-                if (_session == null)
-                    return Notifization.NotService;
-                // get token
-                string _token = _session.Token;
-                string _conversationId = _session.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
                 // seach data in web service
                 VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
 
@@ -675,7 +681,7 @@ namespace AIRService.Service
                         }
                     });
                 }
-                List<AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS> airTaxRS = vNAOTA_AirTaxRQService.AirTaxList(_session, resquet_WsTaxes);
+                List<AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS> airTaxRS = vNAOTA_AirTaxRQService.AirTaxList(tokenModel, resquet_WsTaxes);
 
                 return Notifization.Data(":::::::::::::::::", airTaxRS);
                 ////
@@ -700,28 +706,26 @@ namespace AIRService.Service
 
         public ActionResult TaxFee(List<FlightFareModel> models)
         {
-
-
-
-
-            using (var sessionService = new VNA_SessionService())
+            if (models == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Error("Cannot create session");
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            //
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 // check model
                 if (models.Count == 0)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-                var _session = sessionService.GetSession();
-                if (_session == null)
-                    return Notifization.NotService;
-                // get token
-                string _token = _session.Token;
-                string _conversationId = _session.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
-                // seach data in web service
-
                 VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
-
                 var ListTax = new List<TaxModel>();
                 foreach (var item in models)
                 {
@@ -778,7 +782,7 @@ namespace AIRService.Service
                     ItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
                     ItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = item.BaseFare.Amount;
                     ItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.CurrencyCode = item.BaseFare.CurrencyCode;
-                    var tax = vNAOTA_AirTaxRQService.AirTax(_session, ItineraryInfo);
+                    var tax = vNAOTA_AirTaxRQService.AirTax(tokenModel, ItineraryInfo);
                     ListTax.Add(tax);
                 }
                 return Notifization.Data("", ListTax);
@@ -875,22 +879,22 @@ namespace AIRService.Service
 
         public ActionResult FlightFeeBasic(List<FeeTaxBasicModel> models)
         {
-            // check model
-            if (models.Count == 0)
-                return Notifization.Invalid(MessageText.Invalid);
+            if (models == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Error("Cannot create session");
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
             // 
             VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
-
-
-            using (var sessionService = new VNA_SessionService())
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
-                // create session
-                var _session = sessionService.GetSession();
-                if (_session == null)
-                    return Notifization.NotService;
-                string _token = _session.Token;
-                string _conversationId = _session.ConversationID;
-                //
                 List<FlightTax> flightTaxFees = new List<FlightTax>();
                 foreach (var flight in models)
                 {
@@ -918,7 +922,7 @@ namespace AIRService.Service
                             string _passengerType = item.PassengerType;
                             float _amount = item.Amount;
                             string _fareBasisCode = item.FareBaseCode;
-                            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(_session, new Resquet_WsTaxModel
+                            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(tokenModel, new Resquet_WsTaxModel
                             {
                                 RPH = _rph,
                                 OriginLocation = originLocation,
@@ -987,11 +991,19 @@ namespace AIRService.Service
         {
             try
             {
-
                 if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid);
+                    return Notifization.Invalid(MessageText.Invalid + "1");
                 //
-                // return Notifization.TEST("ok" + model.Passengers.Count);
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                // 
 
                 foreach (var item in model.Passengers)
                 {
@@ -1016,15 +1028,8 @@ namespace AIRService.Service
                 //
                 return Notifization.TEST("Test số dư hạn mức");
 
-                using (var sessionService = new VNA_SessionService())
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
-                    var tokenModel = new TokenModel();
-                    var _session = sessionService.GetSession();
-                    if (_session == null)
-                        return Notifization.Invalid("Can not create session");
-                    //
-                    string _token = _session.Token;
-                    string _conversationId = _session.ConversationID;
                     if (string.IsNullOrWhiteSpace(_token))
                         return Notifization.Invalid("Can not create token");
                     //
@@ -1033,7 +1038,7 @@ namespace AIRService.Service
                     if (appBookEmail == null)
                         return Notifization.Error("Thông tin đại lý chưa được cấu hình");
 
-                    using (var vnaTransaction = new VNA_EndTransaction(_session))
+                    using (var vnaTransaction = new VNA_EndTransaction(tokenModel))
                     {
                         var airBookModel = new AirBookModel
                         {
@@ -1187,10 +1192,7 @@ namespace AIRService.Service
                         if (string.IsNullOrWhiteSpace(pnrCode))
                             return Notifization.Invalid("Cannot get PNA code");
                         //set PNR code
-
                         result.PNR = pnrCode;
-                        sessionService.CloseSession(_session);
-
                         // save order | input data ***************************************************************************************************
                         OrderTicketService orderTicketService = new OrderTicketService();
                         List<RequestOrderFlightModel> requestOrderFlightModels = new List<RequestOrderFlightModel>();
@@ -1555,6 +1557,19 @@ namespace AIRService.Service
         {
             try
             {
+                if (model == null)
+                    return Notifization.Invalid(MessageText.Invalid + "1");
+                //
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                // 
                 string pnr = model.PNR;
                 if (string.IsNullOrWhiteSpace(pnr))
                     return Notifization.Invalid("Mã PNR không hợp lệ");
@@ -1582,23 +1597,14 @@ namespace AIRService.Service
                 }
                 //
                 double fareTotal = exTitketPassengerFareModels.Sum(m => m.TaxTotal + m.PriceTotal);
-                using (var sessionService = new VNA_SessionService())
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
-                    var _session = sessionService.GetSession();
-                    if (_session == null)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    // get token
-                    string _token = _session.Token;
-                    string _conversationId = _session.ConversationID;
-                    if (string.IsNullOrWhiteSpace(_token))
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
-                    var tokenAppro = sessionService.GetSession();
+
                     var paymentModel = new PaymentModel
                     {
                         //paymentModel.RevResult = ReservationData.RevResult;
-                        ConversationID = tokenAppro.ConversationID,
-                        Token = tokenAppro.Token,
+                        ConversationID = _conversationId,
+                        Token = _token,
                         pnr = pnr,
                         PaymentOrderDetail = new List<PaymentOrderDetail>(),
                         Total = fareTotal
@@ -1619,10 +1625,9 @@ namespace AIRService.Service
                     }
                     VNA_PaymentRQService vNAPaymentRQService = new VNA_PaymentRQService();
                     var paymentData = vNAPaymentRQService.Payment(paymentModel);
-                    sessionService.CloseSession(tokenAppro);
+
                     //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
                     #region xuất vé
-                    TokenModel tokenModel = _session;
                     //wss.SarbreCommand(tokenModel, "IG");
                     DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
                     designatePrinter.ConversationID = tokenModel.ConversationID;
@@ -1689,34 +1694,47 @@ namespace AIRService.Service
         /// <summary>
         ///  Hủy vé
         /// </summary>
-        /// <param name="mode">PNR code</param>
+        /// <param name="model">PNR code</param>
         /// <returns></returns>
-        public ActionResult TicketInfo(PNRModel mode)
+        public ActionResult TicketInfo(PNRModel model)
         {
             try
             {
-                if (mode == null)
-                    return Notifization.Invalid(MessageText.Invalid);
+                if (model == null)
+                    return Notifization.Invalid(MessageText.Invalid + "1");
                 //
-                string pnr = mode.PNR;
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                // 
+                string pnr = model.PNR;
                 if (string.IsNullOrWhiteSpace(pnr))
                     return Notifization.Invalid("PNR code in valid");
                 //
-                using (var sessionService = new VNA_SessionService())
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
-                    TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
+                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token
+                    };
                     VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                     //WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new WSDesignatePrinterLLSRQService();
                     //var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                     //if (printer.ApplicationResults.status != AIRService.WebService.WSDesignatePrinterLLSRQ.CompletionCodes.Complete)
                     //    return Notifization.Invalid(MessageText.Invalid);
-                    var getReservationModel = new GetReservationModel();
-                    getReservationModel.ConversationID = tokenModel.ConversationID;
-                    getReservationModel.Token = tokenModel.Token;
-                    getReservationModel.PNR = pnr;
+                    var getReservationModel = new GetReservationModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token,
+                        PNR = pnr
+                    };
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
                     ApiPortalBooking.Models.VNA_WS_Model.VNA.GetReservationData getReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
                     vNATransaction.EndTransaction(tokenModel);
@@ -1728,34 +1746,47 @@ namespace AIRService.Service
                 return Notifization.TEST("OK" + ex);
             }
         }
-        public ActionResult VoidTicket(PNRModel mode)
+        public ActionResult VoidTicket(PNRModel model)
         {
             try
             {
-                if (mode == null)
-                    return Notifization.Invalid(MessageText.Invalid);
+                if (model == null)
+                    return Notifization.Invalid(MessageText.Invalid + "1");
                 //
-                string pnr = mode.PNR;
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                // 
+                string pnr = model.PNR;
                 if (string.IsNullOrWhiteSpace(pnr))
                     return Notifization.Invalid("PNR code in valid");
                 //
-                using (var sessionService = new VNA_SessionService())
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
                     var voidTicketModel = new VNA_VoidTicketModel();
-                    TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
+                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token
+                    };
                     VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                     VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                     if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
-                    var getReservationModel = new GetReservationModel();
-                    getReservationModel.ConversationID = tokenModel.ConversationID;
-                    getReservationModel.Token = tokenModel.Token;
-                    getReservationModel.PNR = pnr;
+                    var getReservationModel = new GetReservationModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token,
+                        PNR = pnr
+                    };
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
                     var dataPnr = vNAWSGetReservationRQService.GetReservation(getReservationModel);
                     var ldata = new List<WebService.VNA_VoidTicketLLSRQ.VoidTicketRS>();
@@ -1776,7 +1807,6 @@ namespace AIRService.Service
                     }
                     if (voidTicketModel.JsonResultVoidTicket != null && voidTicketModel.JsonResultVoidTicket.ApplicationResults.Success != null)
                     {
-                        tokenModel = sessionService.GetSession();
                         getReservationModel.ConversationID = tokenModel.ConversationID;
                         getReservationModel.Token = tokenModel.Token;
                         getReservationModel.PNR = pnr;
@@ -1798,22 +1828,38 @@ namespace AIRService.Service
         {
             try
             {
-                using (var sessionService = new VNA_SessionService())
+                if (string.IsNullOrWhiteSpace(pnr))
+                    return Notifization.Invalid(MessageText.Invalid + "1");
+                //
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                // create session 
+                if (tokenModel == null)
+                    return Notifization.Error("Cannot create session");
+                // create session 
+                string _token = tokenModel.Token;
+                string _conversationId = tokenModel.ConversationID;
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.NotService;
+                // 
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
                     VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
+                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token
+                    };
                     var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                     if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
-                    var getReservationModel = new GetReservationModel();
-                    getReservationModel.ConversationID = tokenModel.ConversationID;
-                    getReservationModel.Token = tokenModel.Token;
-                    getReservationModel.PNR = pnr;
+                    var getReservationModel = new GetReservationModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token,
+                        PNR = pnr
+                    };
                     var dataPnr = vNAWSGetReservationRQService.GetReservation(getReservationModel);
                     return Notifization.Data("OK", dataPnr);
                 }

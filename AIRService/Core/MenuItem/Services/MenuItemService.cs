@@ -915,9 +915,12 @@ namespace WebCore.Services
             // 
             var menuActionService = new MenuActionService();
             MenuAction menuAction = menuActionService.GetAlls(m => !string.IsNullOrWhiteSpace(m.KeyID) && m.CategoryID == menuController.ID && m.KeyID.ToLower() == _actionId.ToLower()).FirstOrDefault();
-            if (menuController == null)
+            if (menuAction == null)
                 return result;
-            ////  
+            // 
+            if (string.IsNullOrWhiteSpace(menuController.ID) || string.IsNullOrWhiteSpace(menuAction.ID))
+                return result;
+            //
             MenuItemService menuItemService = new MenuItemService();
             var menuItem = menuItemService.GetAlls(m => m.MvcController == menuController.ID && m.MvcAction == menuAction.ID).FirstOrDefault();
             if (menuItem == null)
@@ -933,8 +936,6 @@ namespace WebCore.Services
             }
             return result;
         }
-
-
         //##############################################################################################################################################################################################################################################################
     }
 }

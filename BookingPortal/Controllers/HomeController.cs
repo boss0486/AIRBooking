@@ -13,5 +13,10 @@ namespace WebApplication.HomePage.Controllers
            // Response.Redirect("/Authentication");
             return View("~/Areas/Authentication/Views/Authen/Login.cshtml");
         }
+        public ActionResult Test()
+        {
+            // Response.Redirect("/Authentication");
+            return View();
+        }
     }
 }

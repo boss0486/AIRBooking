@@ -1,9 +1,9 @@
 ﻿
-@font-face {
+/*@font-face {
     font-family: 'Glyphicons Halflings';
     src: url('../fonts/glyphicons-halflings-regular.eot');
     src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-}
+}*/
 
 .slimScrollDiv {
     cursor: pointer;
@@ -16,6 +16,7 @@
     color: #033248;
     font-weight: 300;
     letter-spacing: 0;
+    outline: none;
 }
 
 a {
@@ -2436,14 +2437,15 @@ span {
 
 .block-header {
     margin-bottom: 15px;
+    padding-top:20px;
 }
-
     .block-header h2 {
         padding: 0px 0px 0px 0px;
         margin: 0 !important;
-        color: #666 !important;
+        color: inherit;
         font-weight: normal;
-        font-size: 16px;
+        font-size: 15px;
+        text-transform:uppercase;
     }
 
         .block-header h2 i {
@@ -6105,9 +6107,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     padding-bottom: 21px;
     position: relative;
 }
-.form-group button {
-    margin-bottom:21px;
-}
+ 
 
 .input-group {
     width: 100%;

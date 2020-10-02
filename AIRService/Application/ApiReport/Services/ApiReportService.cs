@@ -31,6 +31,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web.Helpers;
+using AIRService.WebService.VNA.Authen;
 
 namespace WebCore.Services
 {
@@ -80,10 +81,12 @@ namespace WebCore.Services
                         reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Amount WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
                         reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Taxes WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
                     }
-                    //
-                    using (var sessionService = new VNA_SessionService())
+                    // 
+
+                    TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                    using (var sessionService = new VNA_SessionService(tokenModel))
                     {
-                        TokenModel tokenModel = sessionService.GetSession();
+
                         DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
                         {
                             ConversationID = tokenModel.ConversationID,
@@ -142,7 +145,7 @@ namespace WebCore.Services
                                         ApiPortalBooking.Models.VNA_WS_Model.ReportSaleSummaryTransactionSSFop ePRReportTransactionSSFop = itemTrans.SaleSummaryTransactionSSFop;
                                         if (ePRReportTransactionSSFop != null)
                                         {
-                                           await reportTransactionSSFopService.CreateAsync<string>(new ReportSaleSummarySSFop
+                                            await reportTransactionSSFopService.CreateAsync<string>(new ReportSaleSummarySSFop
                                             {
                                                 Title = ePRReportTransactionSSFop.FopCode,
                                                 ReportTransactionID = reportTransactionId,
@@ -231,8 +234,8 @@ namespace WebCore.Services
                             }
                         }
 
-                    _transaction.Commit();
-                    return Notifization.Success(MessageText.UpdateSuccess + "11");
+                        _transaction.Commit();
+                        return Notifization.Success(MessageText.UpdateSuccess + "11");
                     }
                 }
                 catch (Exception ex)

@@ -21,6 +21,7 @@ using Helper;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using WebCore.Core;
 using WebCore.Model.Entities;
+using AIRService.WebService.VNA.Authen;
 
 namespace WebApplication.Management.Controllers
 {
@@ -82,7 +83,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/EPR-Search")]
-        public ActionResult EPRSearch(ReportEprSearchModel model)
+        public async System.Threading.Tasks.Task<ActionResult> EPRSearchAsync(ReportEprSearchModel model)
         {
             try
             {
@@ -99,10 +100,10 @@ namespace WebApplication.Management.Controllers
                 //
                 DateTime reportDate = Convert.ToDateTime(inputDate);
                 VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-                using (var sessionService = new VNA_SessionService())
+                //
+                TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                using (var sessionService = new VNA_SessionService(tokenModel))
                 {
-
-                    TokenModel tokenModel = sessionService.GetSession();
                     DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
                     {
                         ConversationID = tokenModel.ConversationID,
@@ -126,11 +127,11 @@ namespace WebApplication.Management.Controllers
                         foreach (var employee in data)
                         {
                             string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
+                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = await vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
                             {
                                 ReportDate = reportDate,
                                 EmpNumber = empNumber
-                            }).Result;
+                            }, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
                             reportEprResult.Add(reportSaleSummaryResult);
                         }
                         return Notifization.Data("Ok" + data.Count, reportEprResult);
@@ -143,66 +144,6 @@ namespace WebApplication.Management.Controllers
                 return Notifization.Error("Error: " + ex);
             }
         }
-        // API save for daily report ********************************************************************************************************
-
-        [HttpPost]
-        [Route("Action/EPRDailyReport")]
-        public ActionResult EPRDailyReport()
-        {
-            try
-            {
-                VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-
-                string inputDate = vna_TKT_AsrService.GetReportDateInToday();
-                if (!Helper.Page.Validate.TestDateSQL(inputDate))
-                    return Notifization.Invalid(MessageText.Invalid);
-                // chuan date
-                inputDate = Convert.ToDateTime(inputDate).ToString("yyyy-MM-dd");
-                //
-                DateTime reportDate = Convert.ToDateTime(inputDate);
-                using (var sessionService = new VNA_SessionService())
-                {
-                    TokenModel tokenModel = sessionService.GetSession();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token
-                    };
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    // model
-                    VNA_EmpReportModel vna_EmpReportModel = new VNA_EmpReportModel
-                    {
-                        Token = tokenModel.Token,
-                        ConversationID = tokenModel.ConversationID,
-                        ReportDate = reportDate
-                    };
-                    // 
-                    var data = vna_TKT_AsrService.GetEmployeeNumber(vna_EmpReportModel);
-                    if (data.Count() > 0)
-                    {
-                        List<VNA_ReportSaleSummaryResult> reportSaleSummaryResults = new List<VNA_ReportSaleSummaryResult>();
-                        foreach (var employee in data)
-                        {
-                            string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
-                            {
-                                ReportDate = reportDate,
-                                EmpNumber = empNumber
-                            }, new TransactionModel { TranactionState = true, TokenModel = tokenModel }).Result;
-                            //
-                            reportSaleSummaryResults.Add(reportSaleSummaryResult);
-                        }
-                        return Notifization.Data("Ok" + data.Count, reportSaleSummaryResults);
-                    }
-                    return Notifization.NotFound("Data is not found");
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.Error("Error: " + ex);
-            }
-        }
-
+        // API save for daily report *******************************************************************************************************
     }
 }

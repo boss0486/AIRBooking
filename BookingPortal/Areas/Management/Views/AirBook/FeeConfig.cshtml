@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.AirFeeAgentResult
+
+@{
+    try
+    {
+        string id = string.Empty;
+        string agentId = string.Empty;
+        float amount = 0;
+        if (Model != null)
+        {
+            id = Model.ID;
+            amount = Model.Amount;
+            agentId = Model.AgentID;
+        }
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="form-label">Khách hàng:</label>
+                    <select id="ddlSupplier" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
+                        @if (!Helper.Current.UserLogin.IsCustomerLogged())
+                        {
+                            <option value="">-Lựa chọn-</option>
+                            @Html.Raw(CustomerService.DropdownList(""))
+                        }
+                        else
+                        {
+                            <option value="">@agentId</option>
+                        }
+                    </select>
+                    <span id="lblCustomer" class="message msg-box"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Số tiền (đ):</label>
+                    <div class="input-group">
+                        <input id="txtAmount" type="text" class="form-control" value="@amount" />
+                        <span class="input-group-btn">
+                            <button id="btnFeeApply" type="button" class="btn btn-primary">Áp dụng</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Lưu ý:</label>
+                <div class="form-group">
+                    Phí dịch vụ sẽ được áp dụng sau khi bạn thực hiện thay đổi.
+                </div>
+            </div>
+        </div>
+        <input id="txtID" type="hidden" value="@id" />
+    }
+    catch (Exception)
+    {
+
+
+    }
+
+}
