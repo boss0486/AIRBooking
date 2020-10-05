@@ -111,7 +111,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\AirFeeAgent\Entities\AirFeeAgent.cs" />
+    <Compile Include="Application\AirFeeAgent\Entities\AirAgentFee.cs" />
     <Compile Include="Application\AirFeeAgent\Services\AirFeeAgentService.cs" />
     <Compile Include="Application\Area\Entities\AreaGeographical.cs" />
     <Compile Include="Application\Area\Services\AreaGeographicalService.cs" />

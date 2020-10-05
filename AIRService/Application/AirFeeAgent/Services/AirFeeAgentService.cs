@@ -14,8 +14,8 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAirFeeAgentService : IEntityService<Entities.AirFeeAgent> { }
-    public class AirFeeAgentService : EntityService<Entities.AirFeeAgent>, IAirFeeAgentService
+    public interface IAirFeeAgentService : IEntityService<Entities.AirAgentFee> { }
+    public class AirFeeAgentService : EntityService<Entities.AirAgentFee>, IAirFeeAgentService
     {
         public AirFeeAgentService() : base() { }
         public AirFeeAgentService(System.Data.IDbConnection db) : base(db) { }
@@ -79,24 +79,32 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult FeeAgentConfig(AirFeeAgentCreateModel model)
+        public ActionResult AgentFeeConfig(AirFeeAgentConfigModel model)
         {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
             string agentId = model.AgentID;
             float amount = model.Amount;
             if (amount < 0 && amount > 100000000)
-                return Notifization.Invalid("Tiêu đề giới hạn từ 0-> 100 000 000 đ");
+                return Notifization.Invalid("Số tiền giới hạn từ 0 - 100 000 000 đ");
             //
             if (string.IsNullOrWhiteSpace(agentId))
-                return Notifization.Invalid(MessageText.Invalid);
+                return Notifization.Invalid(MessageText.Invalid + "2");
+            //
+            CustomerService customerService = new CustomerService(_connection);
+            Customer customer = customerService.GetAlls(m => m.ID == agentId.ToLower()).FirstOrDefault();
+            if (customer == null)
+                return Notifization.Invalid(MessageText.Invalid + "3");
             //
             AirFeeAgentService airFeeAgentService = new AirFeeAgentService(_connection);
             var airFeeAgent = airFeeAgentService.GetAlls(m => m.AgentID == agentId).FirstOrDefault();
             if (airFeeAgent == null)
             {
                 // create
-                airFeeAgentService.Create<string>(new AirFeeAgent
+                airFeeAgentService.Create<string>(new AirAgentFee
                 {
-                    Title = agentId,
+                    Title = customer.CodeID,
                     AgentID = agentId,
                     Amount = amount,
                     Enabled = 1

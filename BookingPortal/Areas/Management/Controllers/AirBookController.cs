@@ -136,6 +136,23 @@ namespace WebApplication.Management.Controllers
             return View(model);
         }
 
+        // ******************************************************************************************************************************
+        [HttpPost]
+        [Route("Action/Agent-FeeConfig")]
+        public ActionResult AgentFeeConfig(AirFeeAgentConfigModel model)
+        {
+            try
+            {
+                using (var service = new AirFeeAgentService())
+                    return service.AgentFeeConfig(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+        // ******************************************************************************************************************************
 
         // GET: Booking
         [HttpGet]

@@ -148,5 +148,15 @@ class HelperModel {
         else
             return parseInt(_val);
     }
+
 }
 
+class RoleEnum {
+
+    static IsCMSUser = 1;
+    static IsAdminInApplication = 2;
+    static IsAdminSupplierLogged = 3;
+    static IsSupplierLogged = 4;
+    static IsAdminCustomerLogged = 5;
+    static IsCustomerLogged = 6;
+}

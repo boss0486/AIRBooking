@@ -13,7 +13,7 @@ var TransactionSpendingController = {
             var txtAmount = $('#txtAmount').val();
             var txtSummary = $('#txtSummary').val();
             //
-            if (HelperModel.AccessInApplication != 3 && HelperModel.AccessInApplication != 4) {
+            if (HelperModel.AccessInApplication != RoleEnum.IsAdminSupplierLogged && HelperModel.AccessInApplication != RoleEnum.IsSupplierLogged) {
                 //
                 if (ddlSupplier === "") {
                     $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
@@ -120,11 +120,11 @@ var TransactionSpendingController = {
                             //
                             var title = item.Title;
                             var amount = item.Amount;
-                            var supplierCodeId =item.SupplierCodeID 
-                            var customerCodeId= item.CustomerCodeID;
+                            var supplierCodeId = item.SupplierCodeID
+                            var customerCodeId = item.CustomerCodeID;
                             var createdBy = item.CreatedBy;
                             var createdDate = item.CreatedDate;
-                            var createdFullDate  = item.CreatedFullDate;
+                            var createdFullDate = item.CreatedFullDate;
                             var enabled = item.Enabled;
                             //  role
                             var action = HelperModel.RolePermission(result.role, "TransactionSpendingController", id);
@@ -137,7 +137,7 @@ var TransactionSpendingController = {
                                  <td>${title}</td>        
                                  <td>${supplierCodeId}</td>        
                                  <td>${customerCodeId}</td>        
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount, )} đ</td>                                  
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(enabled)}</td>
                                  <td class="text-rigth">${createdDate}</td>
                                  <td class="tbcol-action">${action}</td>

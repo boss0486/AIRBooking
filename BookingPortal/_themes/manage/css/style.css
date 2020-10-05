@@ -2437,15 +2437,16 @@ span {
 
 .block-header {
     margin-bottom: 15px;
-    padding-top:20px;
+    padding-top: 20px;
 }
+
     .block-header h2 {
         padding: 0px 0px 0px 0px;
         margin: 0 !important;
         color: inherit;
         font-weight: normal;
         font-size: 15px;
-        text-transform:uppercase;
+        text-transform: uppercase;
     }
 
         .block-header h2 i {
@@ -6107,7 +6108,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     padding-bottom: 21px;
     position: relative;
 }
- 
+
 
 .input-group {
     width: 100%;
@@ -8316,29 +8317,25 @@ textarea.form-control {
     width: 100%;
 }
 
-.dropdown-menu > li > a {
-    display: block;
-    padding: 3px 15px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333333;
-    white-space: nowrap;
-}
-
 .dropdown-menu.inner li {
     padding-left: 8px;
     padding-right: 8px;
 }
 
-    .dropdown-menu.inner li.selected a span.check-mark {
-        color: #FFF;
-        margin-top: 8px;
+    .dropdown-menu.inner li.selected a {
+        background: #2196F3;
     }
 
-    .dropdown-menu.inner li.selected a span {
-        color: #FFF;
-    }
+.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+    position: absolute;
+    display: inline-block;
+    right: 18px;
+    margin-top: 7px;
+}
+
+.dropdown-menu.inner li.selected a span {
+    color: #FFF;
+}
 
 .dropdown-menu .divider {
     margin: 5px 0;
@@ -8451,8 +8448,12 @@ textarea.form-control {
 
 .dropdown-menu > li > a {
     transition: all 0.3s;
-    line-height: 25px;
     height: 32px;
+    display: block;
+    padding: 7px 15px;
+    clear: both;
+    color: #333333;
+    white-space: nowrap;
 }
 
     .dropdown-menu > li > a:hover {
@@ -9075,7 +9076,7 @@ textarea.form-control {
         height: auto
     }
 }
- 
+
 .card-about-me .body ul {
     margin: 0;
     padding: 0;
@@ -9857,4 +9858,11 @@ th, td .none {
     outline: thin dotted #333 !important;
     outline: 0px auto -webkit-focus-ring-color !important;
     outline-offset: 0px;
+}
+
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #007bff;
 }
