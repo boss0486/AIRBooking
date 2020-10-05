@@ -38,7 +38,7 @@ class MessageText {
         return "Yêu cầu mật khẩu phức tạp hơn";
     }
     static confirm_delete = "Bạn có muốn xóa dữ liệu này không? Dữ liệu không thể khôi phục sau khi xóa.";
-     
+
 }
 class Notifization {
     static Success(message, callback, milisecondsInterval) {
@@ -167,31 +167,29 @@ class FData {
         return dformat;
     }
     static ResetForm(tag) {
-        $(document).find("input[type=text]:not([data-notreload]) ,input[type=password]:not([data-notreload]),textarea,input[type=file]:not([data-notreload])").val('');
+        var element = document;
+        if (tag == undefined || tag == null) {
+            element = $(tag);
+        }
 
-        $(document).find("input[type=checkbox]:not([data-notreload])").prop('checked', false);
+        $(element).find("input[type=text]:not([data-notreload]) ,input[type=password]:not([data-notreload]),textarea,input[type=file]:not([data-notreload])").val('');
+
+        $(element).find("input[type=checkbox]:not([data-notreload])").prop('checked', false);
         //$('select').selectpicker('refresh');
         //$('select').prop('selectedIndex', 0);  
         //
         if (tinymce !== undefined) {
-            console.log($('#txtNote').length + ":::");
-            if ($('#txtNote') !== undefined && $('#txtNote').length > 0)
-                tinymce.get("txtNote").setContent('');
-            if ($('#txtHtmlText') !== undefined && $('#txtHtmlText').length > 0)
-                tinymce.get("txtHtmlText").setContent('');
+
+            //if ($('#txtNote') !== undefined && $('#txtNote').length > 0)
+            //    tinymce.get("txtNote").setContent('');
+            //if ($('#txtHtmlText') !== undefined && $('#txtHtmlText').length > 0)
+            //    tinymce.get("txtHtmlText").setContent('');
         }
         //
-        if ($('.file-preview .pre-view') !== undefined)
-            $('.file-preview .pre-view').html('');
-        //
-        if ($('.photo-caption-text') !== undefined)
-            $('.photo-caption-text').html('');
-        //
-        if ($('.new-box-preview') !== undefined)
-            $('.new-box-preview').html(' ... chọn file');
-        //
-        if ($('.img-caption-text') !== undefined)
-            $('.img-caption-text').html(' ... chọn file');
+        $(element).find(".file-preview .pre-view").html('');
+        $(element).find(".photo-caption-text").html('');
+        $(element).find(".new-box-preview").html(' ... chọn file');
+        $(element).find(".img-caption-text").html(' ... chọn file');
     }
 }
 class File {

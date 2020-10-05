@@ -135,6 +135,8 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\AgentFeeController.cs" />
+    <Compile Include="Areas\Management\Controllers\TicketConditionController.cs" />
     <Compile Include="Areas\Management\Controllers\AccountController.cs" />
     <Compile Include="Areas\Management\Controllers\BankController.cs" />
     <Compile Include="Areas\Management\Controllers\CardCreditController.cs" />
@@ -180,6 +182,7 @@
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\Views\AirBook\Details.txt" />
     <Content Include="Areas\Management\_script\account.js" />
+    <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />
     <Content Include="Areas\Management\_script\app-flight.js" />
     <Content Include="Areas\Management\_script\app-user.js" />
@@ -1284,8 +1287,8 @@
     <Content Include="Areas\Development\Views\Account\AccountInfo.cshtml" />
     <Content Include="Areas\Development\Views\Account\ChangePassword.cshtml" />
     <Content Include="Areas\Management\Views\Home\Test.cshtml" />
-    <Content Include="Areas\Management\Views\AirBook\FeeConfig.cshtml" />
-    <Content Include="Areas\Management\Views\AirBook\TicketConfig.cshtml" />
+    <Content Include="Areas\Management\Views\TicketCondition\FeeSetting.cshtml" />
+    <Content Include="Areas\Management\Views\AgentFee\FeeSetting.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
@@ -1294,6 +1297,7 @@
     <Content Include="Team\backup-booking-10-01-2020-01.bak" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Team\backup-booking-10-02-2020-01.bak" />
+    <Content Include="Team\backup-booking-10-05-2020-01.bak" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AIRService\AIRService.csproj">

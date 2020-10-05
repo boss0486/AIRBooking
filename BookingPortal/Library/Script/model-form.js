@@ -15,6 +15,9 @@ class AjaxFrom {
             }
 
         });
+        //.fail(function () {
+        //    console.log('::111111111111' + MessageText.NotService);
+        //})
     }
     static POSTFILE(_form) {
         //Loading.ShowLoading();

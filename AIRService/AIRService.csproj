@@ -111,8 +111,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\AirFeeAgent\Entities\AirAgentFee.cs" />
-    <Compile Include="Application\AirFeeAgent\Services\AirFeeAgentService.cs" />
+    <Compile Include="Application\AirTicketCondition\Entities\AirTicketConditionFee.cs" />
+    <Compile Include="Application\AirAgentFee\Services\AirAgentFeeService.cs" />
+    <Compile Include="Application\AirAgentFee\Entities\AirAgentFee.cs" />
+    <Compile Include="Application\AirTicketCondition\Services\AirTicketConditionFeeService.cs" />
     <Compile Include="Application\Area\Entities\AreaGeographical.cs" />
     <Compile Include="Application\Area\Services\AreaGeographicalService.cs" />
     <Compile Include="Application\AirOrder\Entities\OrderTax.cs" />
@@ -1730,8 +1732,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\AirFeeAgent\Enum\" />
+    <Folder Include="Application\AirAgentFee\Enum\" />
     <Folder Include="Application\AirFilght\Enum\" />
+    <Folder Include="Application\AirTicketCondition\Enum\" />
     <Folder Include="Application\ApiReport\Enum\" />
     <Folder Include="Application\Area\Enum\" />
     <Folder Include="Application\ReportSaleSummary\Enum\" />

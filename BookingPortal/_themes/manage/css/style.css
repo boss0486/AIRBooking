@@ -5567,6 +5567,11 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     border: 1px solid #ABDED4;
 }
 
+@media screen and (max-width: 767px) {
+    .table-responsive > .table {
+         min-width:1200px;
+    }
+}
 /* Panel ======================================= */
 .panel-group .panel-col-red {
     border: 1px solid #F44336;
@@ -6112,7 +6117,6 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
 
 .input-group {
     width: 100%;
-    margin-bottom: 20px;
 }
 
 .input-group-addon {
@@ -9865,4 +9869,9 @@ th, td .none {
     color: #fff;
     text-decoration: none;
     background-color: #007bff;
+}
+
+
+.w-50 {
+    width:50%;
 }

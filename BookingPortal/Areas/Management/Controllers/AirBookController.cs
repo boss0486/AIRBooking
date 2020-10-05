@@ -100,26 +100,6 @@ namespace WebApplication.Management.Controllers
             return View(flightPassengerTypeInfos);
         }
 
-        public ActionResult FeeConfig()
-        {
-            return View();
-        }
-        public ActionResult TicketConfig()
-        {
-            if (Helper.Current.UserLogin.IsCustomerLogged())
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                string customerId = CustomerService.GetCustomerIDByUserID(userId);
-                AirFeeAgentService airFeeAgentService = new AirFeeAgentService();
-                var airFeeAgentResult = airFeeAgentService.GetAirFeeAgentModel(customerId);
-                if (airFeeAgentResult != null)
-                {
-                    return View(airFeeAgentResult);
-                }
-            }
-            return View();
-        }
-
         public ActionResult Details()
         {
             BookTicketOrderDetails model = null;
@@ -136,22 +116,8 @@ namespace WebApplication.Management.Controllers
             return View(model);
         }
 
-        // ******************************************************************************************************************************
-        [HttpPost]
-        [Route("Action/Agent-FeeConfig")]
-        public ActionResult AgentFeeConfig(AirFeeAgentConfigModel model)
-        {
-            try
-            {
-                using (var service = new AirFeeAgentService())
-                    return service.AgentFeeConfig(model);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("::" + ex);
-            }
+        
 
-        }
         // ******************************************************************************************************************************
 
         // GET: Booking

@@ -25,7 +25,7 @@ function Logout() {
             return;
         },
         error: function (response) {
-            console.log(':1:' + MessageText.NotService + response);
+            console.log('::' + MessageText.NotService);
         }
     });
 

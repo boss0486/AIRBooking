@@ -912,7 +912,7 @@ namespace WebCore.Services
             MenuController menuController = menuControllerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.KeyID) && m.KeyID.ToLower() == _controllerId.ToLower()).FirstOrDefault();
             if (menuController == null)
                 return string.Empty;
-            // 
+            //
             var menuActionService = new MenuActionService();
             MenuAction menuAction = menuActionService.GetAlls(m => !string.IsNullOrWhiteSpace(m.KeyID) && m.CategoryID == menuController.ID && m.KeyID.ToLower() == _actionId.ToLower()).FirstOrDefault();
             if (menuAction == null)

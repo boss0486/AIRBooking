@@ -115,9 +115,9 @@ namespace AIRService.Service
                 var dataFareLLS = vNAFareLLSRQService.FareLLS(fareLLSModel);
                 if (dataFareLLS == null)
                     return Notifization.Invalid(MessageText.Invalid);
+                //
 
-
-
+                return Notifization.Data("Ok", dataFareLLS);
 
 
 

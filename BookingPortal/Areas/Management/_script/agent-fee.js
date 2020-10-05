@@ -1,7 +1,6 @@
-﻿
-var pageIndex = 1;
-var URLC = "/Management/AirBook/Action";
-var URLA = "/Management/AirBook";
+﻿var pageIndex = 1;
+var URLC = "/Management/AgentFee/Action";
+var URLA = "/Management/AgentFee";
 var arrFile = [];
 //
 
@@ -117,6 +116,37 @@ $(document).on("change", "#ddlCustomer", function () {
     }
     else {
         $('#lblCustomer').html('');
+        // get data fill to form 
+        var model = {
+            AgentID: ddlCustomer
+        };
+        AjaxFrom.POST({
+            url: URLC + '/GetAgentFee',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        //
+                        var data = response.data;
+                        if (data != null) {
+                            var amount = LibCurrencies.FormatToCurrency(data.Amount);
+                            $('#txtAmount').val(amount);
+                        }
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService + JSON.stringify(response));
+            }
+        });
+
     }
 });
 

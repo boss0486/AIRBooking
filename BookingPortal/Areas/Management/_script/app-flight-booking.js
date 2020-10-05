@@ -142,9 +142,6 @@ var flightBookingController = {
                     var cntGo = false;
                     var cntReturn = false;
                     $.each(response.data, function (index, item) {
-
-
-
                         index = index + 1;
                         //var id = item.ID;
                         //if (id.length > 0)
@@ -312,7 +309,7 @@ var flightBookingController = {
                             htmlGo = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
                                 <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
-                                <td class='td-flightNo'><label data-flightNo='${flightNo}'>VN${flightNo} </label> No.<span data-AirEquipType='${airEquipType}'>${airEquipType}</span></td>
+                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span> / <span data-flightNo='${flightNo}'>${flightNo} </label></td>
                                 <td class='td-itinerary'>${originLocation} -> ${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
                                 <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
@@ -328,7 +325,7 @@ var flightBookingController = {
                             htmlReturn = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
                                 <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
-                                <td class='td-flightNo'><label data-flightNo='${flightNo}'>VN${flightNo} </label> No.<span data-AirEquipType='${airEquipType}'>${airEquipType}</span></td>
+                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span> / <span data-flightNo='${flightNo}'>${flightNo} </label></td>
                                 <td class='td-itinerary'>${originLocation} -> ${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
                                 <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
