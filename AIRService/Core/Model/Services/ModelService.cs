@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using WebCore.Entities;
 using WebCore.Model.Enum;
 using WebCore.Model.Entities;
+using System.Web;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace WebCore.Model.Services
 {
@@ -17,6 +20,12 @@ namespace WebCore.Model.Services
             string endDate = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
+
+
+
+
+
+
             string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
             string columName = "CreatedDate";
             if (!string.IsNullOrWhiteSpace(dateColumn))
@@ -238,7 +247,6 @@ namespace WebCore.Model.Services
                 throw;
             }
         }
-
-
     }
+
 }

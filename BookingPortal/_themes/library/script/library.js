@@ -199,27 +199,27 @@ class LibDateTime {
         if (utcLocal == undefined || utcLocal == "") {
             return "";
         }
+        return utcLocal;
+        //var result = "";
+        //$.ajax({
+        //    url: "/library/script/timezones.json",
+        //    async: true,
+        //    success: function (data) {
+        //        $.each(data, function (key, val) {
+        //            var _val = val.value;
+        //            if (val.utc != undefined && val.utc != null) {
+        //                $.each(val.utc, function (utcKey, utcVal) {
+        //                    if (utcVal == utcLocal) {
+        //                        result = _val;
+        //                        // return _val;
+        //                    }
+        //                });
+        //            }
+        //        });
 
-        var result = "";
-        $.ajax({
-            url: "/library/script/timezones.json",
-            async: false,
-            success: function (data) {
-                $.each(data, function (key, val) {
-                    var _val = val.value;
-                    if (val.utc != undefined && val.utc != null) {
-                        $.each(val.utc, function (utcKey, utcVal) {
-                            if (utcVal == utcLocal) {
-                                result = _val;
-                                // return _val;
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
-        return result;
+        //    }
+        //});
+        //return result;
         //var a = "";
         //const result = await $.ajax({
         //    url: "/library/script/timezones.json",
