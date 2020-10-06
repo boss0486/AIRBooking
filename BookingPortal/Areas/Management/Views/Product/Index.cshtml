@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+}
+@using Webcore.Services;
+@using Webcore.Model.Services;
+<link href="@Url.Content("~/_app/backend/site/product.css")" rel="stylesheet" />
+<div class="row clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>@Helper.MetaSEO.ControllerText | @Helper.MetaSEO.ActionText</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-2 align-right" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <select id="ddlCategoryID" name="ddlCategoryID" class="form-control show-tick" data-live-search="true">
+                                <option value="">-Danh mục-</option>
+                                @Html.Raw(ProductCategoryService.DDLProductCategory(string.Empty))
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 align-right" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <select id="ddlProductStage" name="ddlProductStage" class="form-control show-tick" data-live-search="true">
+                                <option value="-1">-Tình trạng-</option>
+                                @Html.Raw(ProductService.DDLProductState(-1))
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 align-right" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <select id="ddlProductStatus" name="ddlProductStatus" class="form-control show-tick" data-live-search="true">
+                                <option value="-1">-@Resource.Label.Status-</option>
+                                @Html.Raw(ModelService.DDLStatus(-1))
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 align-right" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <div class="ctrl-search-bar">
+                                <div id="btnSearch" class="search-icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                                <input id="txtQuery" class="form-control" type="text" placeholder="Nhập từ khóa..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-2 align-right" data-keyenter="#btnSearch">
+                        <div class="form-group">
+                            <a href="@Helper.Navigate.BackEnd.URLCreate" class="btn btn-primary">
+                                Thêm mới
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-y:hidden !important; overflow-x:auto !important;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="tbcol-id">#&nbsp;</th>
+                                <th class="tbcol-none">Hình ảnh</th>
+                                <th class="tbcol-none">Tiêu đề</th>
+                                <th class="tbcol-none">Danh mục</th>
+                                <th class="tbcol-none">Giá bán</th>
+                                <th class="tbcol-active">T.Trạng</th>
+                                <th class="tbcol-active">T.Thái</th>
+                                <th class="tbcol-action">
+                                    <a href="@Helper.Navigate.BackEnd.URLCreate">
+                                        <i class="fa fa-plus-square" title="create"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblData"></tbody>
+                    </table>
+                </div>
+                <div id="Pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/BackEnd/_script/product.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            productController.DataList(1);
+        })
+    </script>
+}

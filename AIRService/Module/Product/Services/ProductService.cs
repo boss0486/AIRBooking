@@ -24,7 +24,7 @@ namespace WebCore.Services
         public ProductService() : base() { }
         public ProductService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(ProductSearchModel model)
+        public ActionResult DataList(ProductSearchModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -126,6 +126,41 @@ namespace WebCore.Services
                         if (summary.Length < 1 || summary.Length > 120)
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
+                    // category
+                    if (string.IsNullOrEmpty(model.CategoryID))
+                        return Notifization.Invalid("Vui lòng chọn danh mục sản phẩm");
+                    // price
+                    double price = model.Price;
+                    if (price < 0)
+                        return Notifization.Invalid("Giá sản phẩm phải >= 0");
+
+                    double priceListed = model.PriceListed;
+                    if (priceListed < 0)
+                        return Notifization.Invalid("Giá khuyến mại phải >= 0");
+                    // create date display
+                    string viewDate = model.ViewDate;
+                    if (!string.IsNullOrEmpty(viewDate))
+                    {
+                        if (!Validate.TestDateVN(viewDate))
+                            return Notifization.Invalid("Ngày hiển thị không hợp lệ");
+                    }
+                    //
+                    string category = model.CategoryID;
+                    if (string.IsNullOrEmpty(category))
+                        return Notifization.Invalid("Vui lòng chọn danh mục sản phẩm");
+                    //
+                    var warranty = model.Warranty;
+                    if (string.IsNullOrEmpty(warranty))
+                        return Notifization.Invalid("Vui lòng chọn thời gian bảo hành");
+                    //
+                    var provider = model.Originate;
+                    if (string.IsNullOrEmpty(provider))
+                        return Notifization.Invalid("Vui lòng chọn nhà cung cấp");
+                    //
+                    var state = model.State;
+                    if (state == -1)
+                        return Notifization.Invalid("Vui lòng chọn tình trạng");
+                    //
                     ProductService productService = new ProductService(_connection);
                     var product = productService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == model.Title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (product != null)

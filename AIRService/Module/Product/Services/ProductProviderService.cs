@@ -20,7 +20,7 @@ namespace WebCore.Services
         public ProductProviderService() : base() { }
         public ProductProviderService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);

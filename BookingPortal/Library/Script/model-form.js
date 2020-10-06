@@ -3,7 +3,7 @@ class AjaxFrom {
     static POST(_form) {
         _form.method = "POST";
         _form.dataType = 'json';
-        _form.async = true;
+        _form.async = false;
         $.ajax(_form).done(function () {
             if (!$(document).find("body")) {
                 Loading.ShowLoading();
@@ -18,28 +18,8 @@ class AjaxFrom {
         //.fail(function () {
         //    console.log('::111111111111' + MessageText.NotService);
         //})
-    }
-    static POSTFILE(_form) {
-        //Loading.ShowLoading();
-        //ajaxStatus++;
-        _form.method = "POST";
-        _form.dataType = 'json';
-        _form.contentType = false;
-        _form.processData = false;
-        $.ajaxForm(_form).done(function () {
-            ajaxStatus--;
-            if (ajaxStatus === 0) {
-                setTimeout(function () {
-                    console.log("o11k");
-                    Loading.HideLoading();
-                }, 1500);
-            }
-        });
-    }
+    } 
 }
-
-
-
 $(document).ajaxStart(function () {
     Loading.ShowLoading();
 }).ajaxStop(function () {

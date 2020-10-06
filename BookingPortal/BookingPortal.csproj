@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -135,7 +136,11 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\ProductCategoryController.cs" />
+    <Compile Include="Areas\Management\Controllers\ProductController.cs" />
     <Compile Include="Areas\Management\Controllers\AgentFeeController.cs" />
+    <Compile Include="Areas\Management\Controllers\ProductProviderController.cs" />
+    <Compile Include="Areas\Management\Controllers\ProductWarrantyController.cs" />
     <Compile Include="Areas\Management\Controllers\TicketConditionController.cs" />
     <Compile Include="Areas\Management\Controllers\AccountController.cs" />
     <Compile Include="Areas\Management\Controllers\BankController.cs" />
@@ -193,6 +198,10 @@
     <Content Include="Areas\Management\_script\manage-user.js" />
     <Content Include="Areas\Management\_script\menu-item-category.js" />
     <Content Include="Areas\Management\_script\permission.js" />
+    <Content Include="Areas\Management\_script\product-category.js" />
+    <Content Include="Areas\Management\_script\product-provider.js" />
+    <Content Include="Areas\Management\_script\product-warranty.js" />
+    <Content Include="Areas\Management\_script\product.js" />
     <Content Include="Areas\Management\_script\supplier.js" />
     <Content Include="Areas\Management\_script\trans-deposit.js" />
     <Content Include="Areas\Management\_script\trans-history.js" />
@@ -1289,6 +1298,22 @@
     <Content Include="Areas\Management\Views\Home\Test.cshtml" />
     <Content Include="Areas\Management\Views\TicketCondition\FeeSetting.cshtml" />
     <Content Include="Areas\Management\Views\AgentFee\FeeSetting.cshtml" />
+    <Content Include="Areas\Management\Views\ProductCategory\Create.cshtml" />
+    <Content Include="Areas\Management\Views\ProductCategory\Details.cshtml" />
+    <Content Include="Areas\Management\Views\ProductCategory\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\ProductCategory\Update.cshtml" />
+    <Content Include="Areas\Management\Views\ProductProvider\Create.cshtml" />
+    <Content Include="Areas\Management\Views\ProductProvider\Detail.cshtml" />
+    <Content Include="Areas\Management\Views\ProductProvider\Index.cshtml" />
+    <Content Include="Areas\Management\Views\ProductProvider\Update.cshtml" />
+    <Content Include="Areas\Management\Views\ProductWarranty\Create.cshtml" />
+    <Content Include="Areas\Management\Views\ProductWarranty\Detail.cshtml" />
+    <Content Include="Areas\Management\Views\ProductWarranty\Index.cshtml" />
+    <Content Include="Areas\Management\Views\ProductWarranty\Update.cshtml" />
+    <Content Include="Areas\Management\Views\Product\Create.cshtml" />
+    <Content Include="Areas\Management\Views\Product\Detail.cshtml" />
+    <Content Include="Areas\Management\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Management\Views\Product\Update.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
