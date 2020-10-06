@@ -16,6 +16,7 @@ namespace ApiPortalBooking.Models
         public int CNN { get; set; }
         public int INF { get; set; }
         public bool IsRoundTrip { get; set; }
+        public bool IsHasTax { get; set; }
     }
     public class FlightSearchModel
     {
@@ -27,6 +28,7 @@ namespace ApiPortalBooking.Models
         public int CNN { get; set; }
         public int INF { get; set; }
         public bool IsRoundTrip { get; set; }
+        public bool IsHasTax { get; set; }
     }
 
     public class FlightFareModel

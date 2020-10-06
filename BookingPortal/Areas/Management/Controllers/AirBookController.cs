@@ -116,7 +116,7 @@ namespace WebApplication.Management.Controllers
             return View(model);
         }
 
-        
+
 
         // ******************************************************************************************************************************
 
@@ -148,6 +148,7 @@ namespace WebApplication.Management.Controllers
                 string _departureDateTime = model.DepartureDateTime;
                 //
                 string _returnDateTimeTemp = model.ReturnDateTime;
+                bool isHasTax = model.IsHasTax;
 
                 if (string.IsNullOrWhiteSpace(_departureDateTime) || !Helper.Page.Validate.TestDate_MMDDYYYY(_departureDateTime))
                     return Notifization.Invalid("Departure date invalid, format: MM/dd/yyyy" + _departureDateTime);
@@ -161,7 +162,6 @@ namespace WebApplication.Management.Controllers
                     _returnDateTime = _returnDateTimeTemp;
                 }
                 //
-
                 HttpContext.Response.Cookies.Add(new HttpCookie("FlightSearch", new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new Request_FlightSearchModel
                 {
                     OriginLocation = _originLocation,
@@ -185,7 +185,8 @@ namespace WebApplication.Management.Controllers
                     ADT = model.ADT,
                     CNN = model.CNN,
                     INF = model.INF,
-                    IsRoundTrip = model.IsRoundTrip
+                    IsRoundTrip = model.IsRoundTrip,
+                    IsHasTax = isHasTax
                 });
             }
             catch (Exception ex)

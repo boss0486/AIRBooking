@@ -68,6 +68,11 @@ var flightBookingController = {
         });
     },
     Search: function () {
+        //
+        var isHasTax = false;
+        if ($('input[name="cbxHasTax"]').is(":checked"))
+            isHasTax = true;
+        //
         var ddlOriginLocation = $('#ddlOriginLocation').val();
         var ddlDestinationLocation = $('#ddlDestinationLocation').val();
         var departureDateTime = $("#DepartureDateTime").val();
@@ -82,8 +87,6 @@ var flightBookingController = {
         }
 
         //
-        departureDateTime = LibDateTime.FormatDateForAPI(departureDateTime);
-        returnDateTime = LibDateTime.FormatDateForAPI(returnDateTime);
         // set information in title
         $('.flight-go .flight-name').html(ddlOriginLocation + " - " + ddlDestinationLocation);
         $('.flight-go .flight-date').html(departureDateTime);
@@ -106,6 +109,8 @@ var flightBookingController = {
         //cookiData = `{"OriginLocation":"HAN1","DestinationLocation":"SGN","DepartureDateTime":"06/30/2020","ReturnDateTime":"06/30/2020""ADT": 1,"CNN": 0,"INF":0,"IsRoundTrip":true}`;
         //Cookies.SetCookie("FlightSearch1", JSON.stringify(cookiData));
         //
+        departureDateTime = LibDateTime.FormatDateForAPI(departureDateTime);
+        returnDateTime = LibDateTime.FormatDateForAPI(returnDateTime);
         var modelGo = {
             OriginLocation: ddlOriginLocation,
             DestinationLocation: ddlDestinationLocation,
@@ -114,7 +119,8 @@ var flightBookingController = {
             ADT: adt,
             CNN: cnn,
             INF: inf,
-            IsRoundTrip: isRoundTrip
+            IsRoundTrip: isRoundTrip,
+            IsHasTax: isHasTax
         };
         AjaxFrom.POST({
             url: URLC + '/search',
@@ -167,6 +173,8 @@ var flightBookingController = {
                         var special_rph = "";
                         var special_code = "";
                         var arrFare = [];
+
+                        var fareItemCount = ":";
                         if (fareDetails !== undefined && fareDetails.length > 0) {
                             $.each(fareDetails, function (indexFare, itemFare) {
                                 var adtRph = 0;
@@ -184,8 +192,10 @@ var flightBookingController = {
                                 var fareItem = itemFare.FareItem;
                                 // lấy giá 
 
+                                fareItemCount += itemFare.ResBookDesigCode + ":" + fareItem.length + " ";
                                 if (fareItem !== null && fareItem.length > 0) {
                                     $.each(fareItem, function (indexFareItem, itemFareItem) {
+
                                         if (itemFareItem.PassengerType === "ADT") {
                                             if (adtAmount === 0) {
                                                 adtAmount = itemFareItem.FareAmount;
@@ -250,10 +260,7 @@ var flightBookingController = {
                                 var strRph = ``;
                                 var strCode = ``;
                                 var strAmount = ``;
-
                                 var strParam = '';
-
-
                                 if (adt > 0) {
                                     strParam += `ADT:${adtRph},${adtAmount},${adtCode}`;
                                     strRph += `${adtRph}`;
@@ -285,6 +292,8 @@ var flightBookingController = {
                                 //
                             });
                         }
+
+                        console.log("::" + fareItemCount);
                         //
                         var _active = "";
                         var special = `<label name='special-tag'><span data-ResBookDesigCode=''> </span>: <span data-AdtAmount=''>0.0 ${unit}</span></label>`;

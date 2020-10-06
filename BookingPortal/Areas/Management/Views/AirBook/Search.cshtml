@@ -8,9 +8,17 @@
 @section styles{
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
 }
- 
+
 <div class="form-group text-right">
     <a id="btnSearchTab" class="nav-link active" data-toggle="tab" href="#searchTab">Tìm kiếm</a> | <a id="btnDataTab" class="nav-link" data-toggle="tab" href="#dataTab">Danh sách</a>
+</div>
+<div class="row">
+    <div class="container-fluid">
+        <div class="form-group">
+            <input id="cbxHasTax" type="checkbox" class="filled-in" />
+            <label for="cbxHasTax" tabindex="1">Bao gồm thuế</label>
+        </div>
+    </div>
 </div>
 <div class="tab-content flight">
     <div id="searchTab" class="tab-pane active">
@@ -112,19 +120,10 @@
         </div>
     </div>
     <div id="dataTab" class="tab-pane fade">
-       
+
         <div class="row">
             <div class="container-fluid mgt-40 mgb-15 flight-wcontent flight-wcontent-go ">
-
-                <div class="row">
-                    <div class="container-fluid">
-                        <div class="form-group">
-                            <input id="priceTax" type="checkbox" class="filled-in" />
-                            <label for="priceTax" tabindex="1">Bao gồm thuế</label>
-                        </div>
-                    </div>
-                </div>
-                <h5 class="flight-title-top flight-go">Chuyến Đi: <b class="flight-name"></b> - <span class="flight-date"></span> - Người lớn: <span class="flight-adt-total"></span></h5>
+                <h5 class="flight-title-top flight-go">Chuyến Đi: <b class="flight-name"></b> <span class="flight-date"></span> Người lớn: <span class="flight-adt-total"></span></h5>
                 <div class="table-responsive">
                     <table id="TblFlightGo" class="table  table-bordered">
                         <thead>
@@ -154,7 +153,7 @@
         </div>
         <div class="row">
             <div class="container-fluid flight-wcontent flight-wcontent-return mgt-50">
-                <div class="flight-title-top flight-to m-t-40">Chuyến về: <b class="flight-name"></b> - <span class="flight-date"></span> - Người lớn: <span class="flight-adt-total"></span></div>
+                <div class="flight-title-top flight-to m-t-40">Chuyến về: <b class="flight-name"></b> <span class="flight-date"></span> Người lớn: <span class="flight-adt-total"></span></div>
                 <div class="responsive-table">
                     <table id="TblFlightReturn" class="table  table-bordered">
                         <thead>

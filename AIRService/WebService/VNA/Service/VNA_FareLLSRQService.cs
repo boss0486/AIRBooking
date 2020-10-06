@@ -175,29 +175,51 @@ namespace AIRService.WS.Service
                 return null;
             }
         }
-        public static string GetXMLFromObject(object o)
+
+        public List<VNAResbookDesigCode> ListVNAResbookDesigCode()
         {
-            StringWriter sw = new StringWriter();
-            XmlTextWriter tw = null;
-            try
+            List<VNAResbookDesigCode> vnaResbookDesigCode = new List<VNAResbookDesigCode>
             {
-                XmlSerializer serializer = new XmlSerializer(o.GetType());
-                tw = new XmlTextWriter(sw);
-                serializer.Serialize(tw, o);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                sw.Close();
-                if (tw != null)
-                {
-                    tw.Close();
-                }
-            }
-            return sw.ToString();
+                new VNAResbookDesigCode { ID = 01, Title = "J" },
+                new VNAResbookDesigCode { ID = 02, Title = "C" },
+                new VNAResbookDesigCode { ID = 03, Title = "D" },
+                new VNAResbookDesigCode { ID = 04, Title = "I" },
+                new VNAResbookDesigCode { ID = 05, Title = "O" },
+                new VNAResbookDesigCode { ID = 06, Title = "Y" },
+                new VNAResbookDesigCode { ID = 07, Title = "B" },
+                new VNAResbookDesigCode { ID = 08, Title = "M" },
+                new VNAResbookDesigCode { ID = 09, Title = "S" },
+                new VNAResbookDesigCode { ID = 10, Title = "H" },
+                new VNAResbookDesigCode { ID = 11, Title = "K" },
+                new VNAResbookDesigCode { ID = 12, Title = "L" },
+                new VNAResbookDesigCode { ID = 13, Title = "Q" },
+                new VNAResbookDesigCode { ID = 14, Title = "N" },
+                new VNAResbookDesigCode { ID = 15, Title = "R" },
+                new VNAResbookDesigCode { ID = 16, Title = "T" },
+                new VNAResbookDesigCode { ID = 17, Title = "E" },
+                new VNAResbookDesigCode { ID = 18, Title = "A" },
+                new VNAResbookDesigCode { ID = 19, Title = "G" },
+                new VNAResbookDesigCode { ID = 20, Title = "P" },
+                new VNAResbookDesigCode { ID = 21, Title = "X" },
+                new VNAResbookDesigCode { ID = 22, Title = "V" }
+            };
+            return vnaResbookDesigCode;
         }
+
+        public static int GetResbookDesigCodeIDByKey(string key)
+        {
+            VNAFareLLSRQService vnaFareLLSRQService = new VNAFareLLSRQService();
+            VNAResbookDesigCode vnaResbookDesigCode = vnaFareLLSRQService.ListVNAResbookDesigCode().Where(m => m.Title == key).FirstOrDefault();
+            if (vnaResbookDesigCode != null)
+                return vnaResbookDesigCode.ID;
+            else
+                return -1;
+        }
+    }
+
+    public class VNAResbookDesigCode
+    {
+        public int ID { get; set; }
+        public string Title { get; set; }
     }
 }
