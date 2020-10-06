@@ -56,13 +56,13 @@ namespace WebApplication.Management.Controllers
             try
             {
                 using (var service = new BankService())
-                { 
+                {
                     return service.DataList(model);
                 }
             }
             catch (Exception ex)
             {
-                return Notifization.NotService;
+                return Notifization.TEST("" + ex);
             }
         }
 

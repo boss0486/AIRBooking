@@ -48,4 +48,11 @@ namespace WebCore.Entities
     {
         public string ConditionID { get; set; }
     }
+
+
+    public class AirTicketConditionCheckModel
+    {
+        public int PlaneNo { get; set; }
+        public DateTime ?DepartureDateTime { get; set; }      
+    }
 }

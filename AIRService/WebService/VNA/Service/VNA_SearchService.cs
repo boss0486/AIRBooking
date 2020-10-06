@@ -63,7 +63,7 @@ namespace AIRService.Service
                     return Notifization.Error("Cannot create token");
                 // seach data in web service
                 VNA_AirAvailLLSRQService airAvailLLSRQService = new VNA_AirAvailLLSRQService();
-                VNAFareLLSRQService vNAFareLLSRQService = new VNAFareLLSRQService();
+                VNAFareLLSRQService vnaFareLLSRQService = new VNAFareLLSRQService();
                 // Flight >> go
                 // ****************************************************************************************************************************
                 //
@@ -112,13 +112,16 @@ namespace AIRService.Service
                     fareLLSModel.PassengerType.Add("INF");
                 //
                 List<AIRService.WebService.VNA_FareLLSRQ.FareRS> fareRs = new List<WebService.VNA_FareLLSRQ.FareRS>();
-                var dataFareLLS = vNAFareLLSRQService.FareLLS(fareLLSModel);
+                var dataFareLLS = vnaFareLLSRQService.FareLLS(fareLLSModel);
                 if (dataFareLLS == null)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
 
-                return Notifization.Data("Ok", dataFareLLS);
-
+                //string json = JsonConvert.SerializeObject(dataFareLLS);
+                //string fileName = "fare-test.json";
+                //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                //write string to file
+                //System.IO.File.WriteAllText(urlFile, json);
 
 
                 fareRs.Add(dataFareLLS);
@@ -128,6 +131,7 @@ namespace AIRService.Service
                 {
                     //#1. Availability: get all Flight is Availability
                     //#2.
+
                     var _lstFlightSegment = origin.FlightSegment;
                     if (_lstFlightSegment.Count() > 0)
                     {
@@ -142,13 +146,21 @@ namespace AIRService.Service
                                 var fareDetails = GetFlightFares(_availabilityTotal, _lstBookingClassAvail, fareLLSModel, dataFareLLS, _currencyCode);
                                 if (fareDetails.Count > 0)
                                 {
+                                    // check ticket condition
+                                    int planeNo = Convert.ToInt32(flightSegment.FlightNumber);
+                                    bool conditionState = AirTicketConditionFeeService.CheckTicketCondition(new AirTicketConditionCheckModel
+                                    {
+                                        PlaneNo = planeNo,
+                                        DepartureDateTime = _returnDateTime
+                                    });
+                                    //
                                     lstFlightSegment.Add(new FlightSegment
                                     {
                                         AirEquipType = flightSegment.Equipment.AirEquipType,
                                         ArrivalDateTime = _arrivalDateTime.ToString("dd/MM/yyyy HH:mm:ss"),
                                         DepartureDateTime = _datedepart.ToString("dd/MM/yyyy HH:mm:ss"),
                                         DestinationLocation = _destinationLocation,
-                                        FlightNo = Convert.ToInt32(flightSegment.FlightNumber),
+                                        FlightNo = planeNo,
                                         FlightType = (int)VNAEnum.FlightDirection.FlightGo,
                                         NumberInParty = _availabilityTotal,
                                         OriginLocation = _originLocation,
@@ -163,7 +175,7 @@ namespace AIRService.Service
                     }
                 }
                 // group by time
-                List<Response_FlightSearch> response_FlightSearches = new List<Response_FlightSearch>();
+                List<Response_FlightSearch> response_FlightSearch = new List<Response_FlightSearch>();
                 var lstFlightSegmentGroupByTime = lstFlightSegment.GroupBy(m => new { m.DepartureDateTime, m.ArrivalDateTime }).Select(m => new { m.Key.ArrivalDateTime, m.Key.DepartureDateTime }).ToList();
                 // 
                 foreach (var item in lstFlightSegmentGroupByTime)
@@ -172,7 +184,7 @@ namespace AIRService.Service
                     {
                         if (item.DepartureDateTime == flightSegment.DepartureDateTime && item.ArrivalDateTime == flightSegment.ArrivalDateTime)
                         {
-                            response_FlightSearches.Add(new Response_FlightSearch
+                            response_FlightSearch.Add(new Response_FlightSearch
                             {
                                 AirEquipType = flightSegment.AirEquipType,
                                 ArrivalDateTime = item.ArrivalDateTime,
@@ -191,10 +203,10 @@ namespace AIRService.Service
                 //
                 if (!model.IsRoundTrip)
                 {
-                    if (response_FlightSearches.Count() == 0)
+                    if (response_FlightSearch.Count() == 0)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    return Notifization.Data("OK -> IsRoundTrip: false ", response_FlightSearches);
+                    return Notifization.Data("OK -> IsRoundTrip: false ", response_FlightSearch);
                 }
                 ////////////
                 //////////// Flight >> return
@@ -242,7 +254,7 @@ namespace AIRService.Service
                 if (model.INF > 0)
                     fareLLSModel.PassengerType.Add("INF");
                 //
-                dataFareLLS = vNAFareLLSRQService.FareLLS(fareLLSModel);
+                dataFareLLS = vnaFareLLSRQService.FareLLS(fareLLSModel);
                 if (dataFareLLS == null)
                     return Notifization.Invalid(MessageText.Invalid);
                 // Fare 
@@ -267,6 +279,14 @@ namespace AIRService.Service
                                 var fareDetails = GetFlightFares(_availabilityTotal, _lstBookingClassAvail, fareLLSModel, dataFareLLS, _currencyCode);
                                 if (fareDetails.Count > 0)
                                 {
+                                    // check ticket condition
+                                    int planeNo = Convert.ToInt32(flightSegment.FlightNumber);
+                                    bool conditionState = AirTicketConditionFeeService.CheckTicketCondition(new AirTicketConditionCheckModel
+                                    {
+                                        PlaneNo = planeNo,
+                                        DepartureDateTime = _departureDateTime
+                                    });
+                                    //
                                     lstFlightSegment.Add(new FlightSegment
                                     {
                                         AirEquipType = flightSegment.Equipment.AirEquipType,
@@ -295,7 +315,7 @@ namespace AIRService.Service
                     {
                         if (item.DepartureDateTime == flightSegment.DepartureDateTime && item.ArrivalDateTime == flightSegment.ArrivalDateTime)
                         {
-                            response_FlightSearches.Add(new Response_FlightSearch
+                            response_FlightSearch.Add(new Response_FlightSearch
                             {
                                 AirEquipType = flightSegment.AirEquipType,
                                 ArrivalDateTime = item.ArrivalDateTime,
@@ -311,15 +331,10 @@ namespace AIRService.Service
                         }
                     }
                 }
-                if (response_FlightSearches.Count() == 0)
+                if (response_FlightSearch.Count() == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
-
-
-
-
-
-                return Notifization.Data("OK -> IsRoundTrip: true ", response_FlightSearches);
+                return Notifization.Data("OK -> IsRoundTrip: true ", response_FlightSearch);
             }
         }
 
@@ -344,13 +359,14 @@ namespace AIRService.Service
                     {
                         result.Add(new FlightSegment_ResBookDesigCode
                         {
+                            ResBookDesigCodeID = VNAFareLLSRQService.GetResbookDesigCodeIDByKey(_resBookDesigCode),
                             ResBookDesigCode = _resBookDesigCode,
                             FareItem = flightCostDetails
                         });
                     }
                 }
             }
-            result = result.OrderByDescending(m => m.ResBookDesigCode).ToList();
+            result = result.OrderByDescending(m => m.ResBookDesigCodeID).ToList();
             return result;
         }
         // cost 
@@ -731,10 +747,14 @@ namespace AIRService.Service
                 {
                     string _destinationLocation = item.DestinationLocation;
                     string _originLocation = item.OriginLocation;
-                    DateTime _departureDateTime = item.DepartureDateTime;
-                    var ItineraryInfo = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo();
-                    ItineraryInfo.ReservationItems = new AirTaxRQItineraryInfoReservationItems();
-                    ItineraryInfo.ReservationItems.Item = new AirTaxRQItineraryInfoReservationItemsItem();
+                    DateTime departureDateTime = item.DepartureDateTime;
+                    var ItineraryInfo = new WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfo
+                    {
+                        ReservationItems = new AirTaxRQItineraryInfoReservationItems
+                        {
+                            Item = new AirTaxRQItineraryInfoReservationItemsItem()
+                        }
+                    };
                     ItineraryInfo.ReservationItems.Item.RPH = 1;
                     ItineraryInfo.ReservationItems.Item.SalePseudoCityCode = "LZJ";
                     ItineraryInfo.ReservationItems.Item.TicketingCarrier = "VN";
@@ -742,27 +762,35 @@ namespace AIRService.Service
 
                     ItineraryInfo.ReservationItems.Item.FlightSegment = new AirTaxRQItineraryInfoReservationItemsItemFlightSegment[1];
 
-                    var FlightSegment = new AirTaxRQItineraryInfoReservationItemsItemFlightSegment();
-                    FlightSegment.DepartureDateTime = item.DepartureDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                    var FlightSegment = new AirTaxRQItineraryInfoReservationItemsItemFlightSegment
+                    {
+                        DepartureDateTime = item.DepartureDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss"),
 
-                    FlightSegment.ArrivalDateTime = item.ArrivalDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                    FlightSegment.FlightNumber = (Int16)item.FlightNumber;
-                    FlightSegment.ResBookDesigCode = item.ResBookDesigCode;
-                    FlightSegment.ForceConnectionInd = true;
-                    FlightSegment.ForceStopOverInd = true;
+                        ArrivalDateTime = item.ArrivalDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss"),
+                        FlightNumber = (Int16)item.FlightNumber,
+                        ResBookDesigCode = item.ResBookDesigCode,
+                        ForceConnectionInd = true,
+                        ForceStopOverInd = true,
 
-                    FlightSegment.DepartureAirport = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport();
-                    FlightSegment.DepartureAirport.CodeContext = "IATA";
-                    FlightSegment.DepartureAirport.LocationCode = _originLocation;
+                        DepartureAirport = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentDepartureAirport
+                        {
+                            CodeContext = "IATA",
+                            LocationCode = _originLocation
+                        },
 
-                    FlightSegment.ArrivalAirport = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport();
-                    FlightSegment.ArrivalAirport.CodeContext = "IATA";
-                    FlightSegment.ArrivalAirport.LocationCode = _destinationLocation;
+                        ArrivalAirport = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentArrivalAirport
+                        {
+                            CodeContext = "IATA",
+                            LocationCode = _destinationLocation
+                        },
 
-                    FlightSegment.MarketingAirline = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline();
-                    FlightSegment.MarketingAirline.Code = "VN";
+                        MarketingAirline = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentMarketingAirline
+                        {
+                            Code = "VN"
+                        },
 
-                    FlightSegment.OperatingAirline = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentOperatingAirline();
+                        OperatingAirline = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentOperatingAirline()
+                    };
                     FlightSegment.OperatingAirline.Code = "VN";
 
                     FlightSegment.Equipment = new AirTaxRQItineraryInfoReservationItemsItemFlightSegmentEquipment();

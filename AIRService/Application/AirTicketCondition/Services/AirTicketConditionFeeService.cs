@@ -116,8 +116,7 @@ namespace WebCore.Services
             return Notifization.Success(MessageText.UpdateSuccess);
         }
 
-
-        public AirTicketConditionFee GetConditionByID(string conditionId)
+        public AirTicketConditionFee GetAirTicketConditionByConditionID(string conditionId)
         {
             if (string.IsNullOrWhiteSpace(conditionId))
                 return new AirTicketConditionFee();
@@ -128,6 +127,37 @@ namespace WebCore.Services
                 return new AirTicketConditionFee();
             //
             return airTicketConditionFee;
+        }
+
+        // Check Condition ##############################################################################################################################################################################################################################################################
+        public static bool CheckTicketCondition(AirTicketConditionCheckModel model)
+        {
+            bool conditionState = false;
+            int planeNo = model.PlaneNo;
+
+            AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
+            var airTicketCondition = airTicketConditionFeeService.GetAirTicketConditionByConditionID("04");
+            if (airTicketCondition != null)
+            {
+                if (airTicketCondition.IsApplied)
+                {
+                    if (planeNo >= airTicketCondition.PlaneNoFrom && planeNo <= airTicketCondition.PlaneNoTo)
+                    {
+                        if (model.DepartureDateTime != null && airTicketCondition.TimeStart != null && airTicketCondition.TimeEnd != null)
+                        {
+                            // kiem tra thoi gian di
+                            DateTime _departureDateTime = Convert.ToDateTime(model.DepartureDateTime);
+                            if (_departureDateTime >= airTicketCondition.TimeStart && _departureDateTime <= airTicketCondition.TimeEnd)
+                                conditionState = true;
+                        }
+                        else
+                        {
+                            conditionState = true;
+                        }
+                    }
+                }
+            }
+            return conditionState;
         }
 
     }

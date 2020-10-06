@@ -582,7 +582,6 @@ namespace AIRService.WS.Service
                         XmlNodeList xmlNodeList = soapEnvelopeXml.GetElementsByTagName("TT:ServiceCoupon");
                         if (xmlNodeList.Count > 0)
                         {
-
                             string marketingFlightNumber = string.Empty;
                             string classOfService = string.Empty;
                             string fareBasis = string.Empty;
@@ -649,7 +648,6 @@ namespace AIRService.WS.Service
                                     });
                                 }
                             }
-
                         }
                         // get amount
                         VNA_ReportSaleSummaryTicketingDocumentAmount vna_ReportSaleSummaryTicketingDocumentAmount = new VNA_ReportSaleSummaryTicketingDocumentAmount();
@@ -664,7 +662,6 @@ namespace AIRService.WS.Service
                                 double total = 0;
                                 double nonRefundable = 0;
                                 string unit = "";
-
                                 foreach (XmlNode itemAmountNode in amountChildNodes)
                                 {
                                     string localName = itemAmountNode.LocalName;
@@ -725,9 +722,7 @@ namespace AIRService.WS.Service
                                                 nonRefundable = Convert.ToDouble(nonRefundableAmountNode.InnerText);
                                             }
                                         }
-
                                     }
-
                                     //
                                 }
                                 // add to model
@@ -743,14 +738,12 @@ namespace AIRService.WS.Service
                         XmlNode taxNode = soapEnvelopeXml.GetElementsByTagName("TT:Taxes")[0];
                         if (taxNode != null)
                         {
-
                             XmlNode newNode = taxNode.ChildNodes[0];
                             if (newNode != null)
                             {
                                 XmlNodeList newChildNodes = newNode.ChildNodes;
                                 if (newChildNodes.Count > 0)
                                 {
-
                                     //
                                     foreach (XmlNode itemTaxChild in newChildNodes)
                                     {

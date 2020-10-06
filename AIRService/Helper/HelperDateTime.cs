@@ -1,25 +1,28 @@
 ﻿
 using Dapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Helper.Time
 {
 
     public class TimeHelper
     {
-        public static string GetDateByTimeZone(string zoneId)
+        public static string GetDateByTimeZone(string strUtc)
         {
             try
             {
-               
+                string zoneId = GetTimeZoonClient(strUtc);
                 var timezone = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
-                if (timezone== null)
+                if (timezone == null)
                 {
                     return string.Empty;
                 }
@@ -193,11 +196,45 @@ namespace Helper.Time
                 return DateTime.Now;
             }
         }
+
+        //
+        public static string GetTimeZoonClient(string strUtc)
+        {
+            string timeZoneDefault = TimeZoneID.vn_zonetime;
+            if (string.IsNullOrWhiteSpace(strUtc))
+                return timeZoneDefault;
+            //
+            string file = HttpContext.Current.Server.MapPath(@"/library/script/timezones.json");
+            using (StreamReader r = new StreamReader(file))
+            {
+                string json = r.ReadToEnd();
+                List<TimeZoonClientModel> timeZoonClientModels = JsonConvert.DeserializeObject<List<TimeZoonClientModel>>(json);
+                if (timeZoonClientModels != null && timeZoonClientModels.Count > 0)
+                {
+                    foreach (var item in timeZoonClientModels)
+                    {
+                        List<string> lstUtc = item.utc;
+                        if (lstUtc.Contains(strUtc))
+                            return item.value;
+                    }
+                }
+                return timeZoneDefault;
+            }
+        }
     }
     //
     public class TimeZoneID
     {
         public static string vn_zonetime = "SE Asia Standard Time";
         public static string us_zonetime = "Central America Standard Time";
+    }
+    public class TimeZoonClientModel
+    {
+        public string value { get; set; }
+        public string abbr { get; set; }
+        public string offset { get; set; }
+        public string isdst { get; set; }
+        public string text { get; set; }
+        public List<string> utc { get; set; }
     }
 }

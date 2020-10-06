@@ -27,4 +27,5 @@ namespace ApiPortalBooking.Models
         public double FareAmount { get; set; } 
         public string Code { get; set; }
     }
+
 }
