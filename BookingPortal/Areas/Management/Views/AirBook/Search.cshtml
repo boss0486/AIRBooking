@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group form-float">
                             <label class="form-label">Ngày đi:</label>
-                            <input id="DepartureDateTime" name="DepartureDateTime" data-date="true" data-dateDefault="true" maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
+                            <input id="DepartureDateTime" name="DepartureDateTime" data-date="true"  maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
                             <span id="lblDepartureDateTime" class="message msg-box"></span>
                         </div>
                         <div class="row">
@@ -206,30 +206,19 @@
     <script type="text/javascript">
         Cookies.DelCookie("FlightOrder");
         $(function () {
-            var d = new Date();
-            d.setDate(d.getDate() - 0);
-            var today = d;
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            var yyyy = today.getFullYear();
-            today = dd + "-" + mm + "-" + yyyy;
+            //var d = new Date();
+            //d.setDate(d.getDate() - 0);
+            //var today = d;
+            //var dd = String(today.getDate()).padStart(2, '0');
+            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            //var yyyy = today.getFullYear();
+            //today = dd + "-" + mm + "-" + yyyy; 
 
-            $('#DepartureDateTime').val(today);
-            $('#DepartureDateTime').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: '01-07-2020',
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
+            $('#DepartureDateTime').on('changeDate', function (index, item) {
                 /// $('#selectDate').datepicker('hide');
                 $("#ReturnDateTime").datepicker("refresh");
             });
-            $('#ReturnDateTime').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: $('#DepartureDateTime').val(),
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
+            $('#ReturnDateTime').on('changeDate', function (index, item) {
                 //$('#ddlTimeExpress').datepicker('hide');
             });
         });

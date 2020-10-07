@@ -33,7 +33,7 @@ namespace ApiPortalBooking.Models
     {
         public int ResBookDesigCodeID { get; set; }
         public string ResBookDesigCode { get; set; }
-        public List<FareItemModel> FareItem { get; set; }
+        public List<FareItem> FareItem { get; set; }
     }
 
 

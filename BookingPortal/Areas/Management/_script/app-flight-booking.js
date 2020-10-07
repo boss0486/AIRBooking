@@ -175,8 +175,14 @@ var flightBookingController = {
                         var arrFare = [];
 
                         var fareItemCount = ":";
+
+
                         if (fareDetails !== undefined && fareDetails.length > 0) {
                             $.each(fareDetails, function (indexFare, itemFare) {
+
+                                console.log(itemFare.ResBookDesigCode + "::" + JSON.stringify(itemFare.FareItem));
+                                console.log("-------------------------------------");
+
                                 var adtRph = 0;
                                 var adtCode = "";
                                 var adtAmount = 0;
@@ -192,7 +198,7 @@ var flightBookingController = {
                                 var fareItem = itemFare.FareItem;
                                 // lấy giá 
 
-                                fareItemCount += itemFare.ResBookDesigCode + ":" + fareItem.length + " ";
+                                //fareItemCount += itemFare.ResBookDesigCode + ":" + fareItem.length + " ";
                                 if (fareItem !== null && fareItem.length > 0) {
                                     $.each(fareItem, function (indexFareItem, itemFareItem) {
 

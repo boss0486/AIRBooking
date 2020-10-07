@@ -8,7 +8,7 @@ var flightController = {
     },
     registerEvent: function () {
         $(document).ready(function () {
-            $('[data-date="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
+             
         });
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;

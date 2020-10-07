@@ -13,19 +13,19 @@ namespace ApiPortalBooking.Models
         public DateTime DepartureDateTime { get; set; }
         public string DestinationLocation { get; set; }
         public string AirlineCode { get; set; }
-        
+
     }
-    public class FareItemModel
+    public class FareItem
     {
-        public string RPH { get; set; }
+        public int RPH { get; set; }
         public string PassengerType { get; set; }
         //public double Total { get; set; }
         //public double ServiceFee { get; set; }
         //public double Tax { get; set; }//CHARGE DOMESTIC
         //public double ChargeDomesticFee { get; set; }
         //public double ScreeningFee { get; set; }
-        public double FareAmount { get; set; } 
+        public double FareAmount { get; set; }
         public string Code { get; set; }
+        public bool IsActive { get; set; }
     }
-
 }
