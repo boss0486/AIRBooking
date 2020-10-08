@@ -21,6 +21,7 @@ using Helper;
 using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using Helper.Page;
 using AIRService.WebService.VNA.Authen;
+using System.Web.Helpers;
 
 namespace AIRService.Service
 {
@@ -48,6 +49,7 @@ namespace AIRService.Service
                 string _originLocation = model.OriginLocation;
                 DateTime _departureDateTime = model.DepartureDateTime;
                 DateTime? _returnDateTime = model.ReturnDateTime;
+                string airlineType = model.AirlineType;
 
                 if (_isRoundTrip && _departureDateTime > Convert.ToDateTime(_returnDateTime))
                     return Notifization.Invalid("Ngày đi phải nhỏ hơn ngày về");
@@ -118,11 +120,14 @@ namespace AIRService.Service
                 if (dataFareLLS == null)
                     return Notifization.Invalid(MessageText.Invalid);
                 // 
-                //string json = JsonConvert.SerializeObject(dataFareLLS);
-                //string fileName = "fare-test.json";
-                //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
+                List<AirTicketConditionFee> airTicketConditionFees = airTicketConditionFeeService.GetAlls(m => m.IsApplied).ToList();
+
+                string json = JsonConvert.SerializeObject(dataFareLLS);
+                string fileName = "fare-test.json";
+                var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
                 //write string to file
-                //System.IO.File.WriteAllText(urlFile, json); 
+                System.IO.File.WriteAllText(urlFile, json);
                 // Fare 
                 int _year = _departureDateTime.Year;
 
@@ -143,7 +148,12 @@ namespace AIRService.Service
                         if (_lstResBookDesigCode.Count() == 0)
                             continue;
                         //
-                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode);
+                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode, new FlightAirTicketCondition
+                        {
+                            FlightNo = planeNo,
+                            AirlineType = airlineType,
+                            AirTicketConditionFee = airTicketConditionFees
+                        });
                         if (fareDetails.Count() == 0)
                             continue;
                         //
@@ -266,7 +276,12 @@ namespace AIRService.Service
                         if (_lstResBookDesigCode.Count() == 0)
                             continue;
                         //
-                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode);
+                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode, new FlightAirTicketCondition
+                        {
+                            FlightNo = planeNo,
+                            AirlineType = airlineType,
+                            AirTicketConditionFee = airTicketConditionFees
+                        });
                         if (fareDetails.Count() == 0)
                             continue;
                         //
@@ -320,7 +335,7 @@ namespace AIRService.Service
         }
 
         // Get list ResBookDesigCode is valid
-        public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, AIRService.WebService.VNA_FareLLSRQ.FareRS fareRS, string currencyCode)
+        public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, AIRService.WebService.VNA_FareLLSRQ.FareRS fareRS, string currencyCode, FlightAirTicketCondition flightAirTicketCondition)
         {
             List<FlightSegment_ResBookDesigCode> result = new List<FlightSegment_ResBookDesigCode>();
             foreach (var rbdc in lstResBookDesigCode)
@@ -331,7 +346,7 @@ namespace AIRService.Service
                     FareRSData = fareRS,
                     CurrencyCode = currencyCode,
                     ResBookDesigCode = rbdc
-                });
+                }, flightAirTicketCondition);
 
                 if (flightCostDetails == null)
                     continue;
@@ -346,7 +361,7 @@ namespace AIRService.Service
             result = result.OrderByDescending(m => m.ResBookDesigCodeID).ToList();
             return result;
         }
-        public List<FareItem> GetFareDetails(VNAFareLLSRQModel model)
+        public List<FareItem> GetFareDetails(VNAFareLLSRQModel model, FlightAirTicketCondition flightAirTicketCondition)
         {
             WebService.VNA_FareLLSRQ.FareRS dataFareLLS = model.FareRSData;
             List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
@@ -364,18 +379,45 @@ namespace AIRService.Service
 
             string rbdc = model.ResBookDesigCode;
             int rbdcEnum = VNAFareLLSRQService.GetResbookDesigCodeIDByKey(rbdc);
-
-
-
             List<FareItem> fareDetailsModels = new List<FareItem>();
             //string test = "";          
             foreach (var passengerType in lstPassengerType)
             {
                 List<FlightCost> flightCosts = new List<FlightCost>();
-                bool active = false;
+
                 // 
                 List<double> lstFare = new List<double>();
                 //
+                double minAmount = 0;
+
+                // check condition 04
+                bool conditionState = false;
+                string airlineType = flightAirTicketCondition.AirlineType;
+                int planeNo = flightAirTicketCondition.FlightNo;
+                if (flightAirTicketCondition.AirTicketConditionFee.Count() > 0)
+                {
+                    foreach (var item in flightAirTicketCondition.AirTicketConditionFee)
+                    {
+                        switch (item.ConditionID)
+                        {
+                            case "04":
+                                if (planeNo >= item.PlaneNoFrom && planeNo <= item.PlaneNoTo)
+                                {
+                                    conditionState = true;
+                                }
+                                break;
+                        }
+                    }
+                }
+                //
+                if (airlineType == "VNA" && conditionState == false)
+                {
+                    fareRSFareBases = fareRSFareBases.Where(m => m.Code.Last() == 'F').ToList();
+                }
+                else
+                {
+                    fareRSFareBases = fareRSFareBases.Where(m => m.Code.Last() == '9').ToList();
+                }
 
                 foreach (var fareRSFareBasis in fareRSFareBases)
                 {
@@ -384,14 +426,24 @@ namespace AIRService.Service
                         string strAmount = fareRSFareBasis.AdditionalInformation.Fare[0].Amount;
                         if (!string.IsNullOrWhiteSpace(strAmount) && Convert.ToDouble(strAmount) > 0)
                         {
+                            string test = "";
+                            bool active = false;
+
                             double _amount = Convert.ToDouble(strAmount);
+                            if (minAmount < _amount)
+                            {
+                                test = fareRSFareBasis.RPH;
+                                minAmount = _amount;
+                            }
+                            //
                             fareDetailsModels.Add(new FareItem
                             {
                                 RPH = Convert.ToInt32(fareRSFareBasis.RPH),
                                 PassengerType = passengerType,
                                 FareAmount = _amount,
                                 Code = fareRSFareBasis.Code,
-                                IsActive = active
+                                IsActive = active,
+                                Test = test
                             });
                         }
                     }
@@ -403,71 +455,76 @@ namespace AIRService.Service
             if (fareDetailsModels.Count == 0)
                 return null;
 
-            // display
+            //// display
 
 
-            bool ticketCondition = false;
+            //bool ticketCondition = false;
 
-            switch (rbdc)
-            {
-                // 1
-                case "J":
-                case "C":
-                case "D":
-                case "I":
+            //switch (rbdc)
+            //{
+            //    // 1
+            //    case "J":
+            //    case "C":
+            //    case "D":
+            //    case "I":
 
-                    // something
-                    break;
-                //
-                case "O": break; //none
-                case "Y": break; //none
-                case "B": break; //none
-                                 // 2
-                case "M":
-                case "A":
-                    // something
-                    break;
-                // 4
-                case "S":
-                case "H":
-                case "K":
-                case "L":
-                case "E":
-                case "P":
-                    List<FareItem> adtFareDetails = fareDetailsModels.Where(m => m.PassengerType == "ADT").ToList();
-                    IEnumerable<FareItem> fShare = adtFareDetails.Where(m => m.Code.Last() == '9').ToList();
-                    IEnumerable<FareItem> fDefault = adtFareDetails.Where(m => m.Code.Last() == 'F').ToList();
-                    var a = fareDetailsModels.Where(m => m.PassengerType == "ADT").FirstOrDefault();
-                    a.Code += "::" + fShare.Count() + ">>:" + fDefault.Count() + ":T:" + adtFareDetails.Count();
-                    int rphFare = 0;
-                    if (ticketCondition)
-                    {
-                        FareItem fareShare = fShare.Where(m => m.FareAmount == double.MinValue).FirstOrDefault();
-                        rphFare = Convert.ToInt32(fareShare.RPH);
-                    }
-                    else
-                    {
-                        FareItem temp = fDefault.Where(m => m.FareAmount == fDefault.Min(x => x.FareAmount)).FirstOrDefault();
-                        rphFare = Convert.ToInt32(temp.RPH);
-                    }
-                    // something
-                    var b = adtFareDetails.Where(m => m.RPH == rphFare).FirstOrDefault();
-                    if (b != null)
-                        b.IsActive = true;
+            //        // something
+            //        break;
+            //    //
+            //    case "O": break; //none
+            //    case "Y": break; //none
+            //    case "B": break; //none
+            //                     // 2
+            //    case "M":
+            //    case "A":
+            //        // something
+            //        break;
+            //    // 4
+            //    case "S":
+            //    case "H":
+            //    case "K":
+            //    case "L":
+            //    case "E":
+            //    case "P":
+            //        List<FareItem> adtFareDetails = fareDetailsModels.Where(m => m.PassengerType == "ADT").ToList();
+            //        List<FareItem> fShare = adtFareDetails.Where(m => m.Code.Last() == '9').ToList();
+            //        List<FareItem> fDefault = adtFareDetails.Where(m => m.Code.Last() == 'F').ToList();
+            //        var a = fareDetailsModels.Where(m => m.PassengerType == "ADT").FirstOrDefault();
+            //        a.Code += "::" + JsonConvert.SerializeObject(fDefault) + "::" + fDefault.Count();
+            //        int rphFare = 0;
+            //        if (ticketCondition)
+            //        {
+            //            FareItem fareShare = fShare.Where(m => m.FareAmount == double.MinValue).FirstOrDefault();
+            //            rphFare = Convert.ToInt32(fareShare.RPH);
+            //        }
+            //        else
+            //        {
+            //            if (fDefault.Count > 0)
+            //            {
+            //                double amount = fDefault.Min(m => m.FareAmount);
+            //                FareItem temp = fDefault.Where(m => m.FareAmount == amount).FirstOrDefault();
+            //                rphFare = Convert.ToInt32(temp.RPH);
+            //                // something
+            //                var b = adtFareDetails.Where(m => m.RPH == rphFare).FirstOrDefault();
+            //                if (b != null)
+            //                    b.IsActive = true;
+            //            }
+            //        }
 
-                    break;
-                // 6
-                case "Q":
-                case "N":
-                case "R":
-                case "T":
-                    // something
-                    break;
-                //
-                case "G": break; // none
-                case "X": break; // none
-                case "V": break; // none
-            }
+
+            //        break;
+            //    // 6
+            //    case "Q":
+            //    case "N":
+            //    case "R":
+            //    case "T":
+            //        // something
+            //        break;
+            //    //
+            //    case "G": break; // none
+            //    case "X": break; // none
+            //    case "V": break; // none
+            //}
 
 
 

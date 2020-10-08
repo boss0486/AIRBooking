@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebCore.Entities;
 
 namespace ApiPortalBooking.Models
 {
@@ -68,4 +69,13 @@ namespace ApiPortalBooking.Models
         public string ArrivalDateTime { get; set; }
         public string DepartureDateTime { get; set; }
     }
+
+
+    public class FlightAirTicketCondition
+    {
+        public List<AirTicketConditionFee> AirTicketConditionFee { get; set; }
+        public int FlightNo { get; set; }
+        public string AirlineType { get; set; }
+    }
+    
 }

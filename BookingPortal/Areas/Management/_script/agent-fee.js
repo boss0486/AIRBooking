@@ -61,7 +61,7 @@ var AgentFeeConfigController = {
         var txtAmount = $('#txtAmount').val();
         var model = {
             AgentID: ddlCustomer,
-            Amount: txtAmount
+            Amount: LibCurrencies.ConvertToCurrency(txtAmount)
         };
         AjaxFrom.POST({
             url: URLC + '/Agent-FeeConfig',

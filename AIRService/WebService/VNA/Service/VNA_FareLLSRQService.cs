@@ -109,54 +109,50 @@ namespace AIRService.WS.Service
                 // ok
                 return data;
                 #endregion
-                #region xml
-                //HttpWebRequest request = CreateWebRequest(URL_WS);
+
+                //HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
                 //XmlDocument soapEnvelopeXml = new XmlDocument();
                 //var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
                 //soapEnvelopeXml.Load(path);
                 //soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
                 //soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "FareLLSRQ";
                 //soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "FareLLSRQ";
-                //soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.token;
-                //soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationId;
-                //XmlDocument AddonXml = new XmlDocument();
+                //soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
+                //soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
                 //XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
-                //AddonXml.Load(path);
-                //string xmlString = @"";
-                //xmlString += "<FareRQ Version=\"2.9.0\" xmlns=\"http://webservices.sabre.com/sabreXML/2011/10\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">";
-                //xmlString += "   <OptionalQualifiers>";
-                //xmlString += "       <FlightQualifiers>";
-                //xmlString += "           <VendorPrefs>";
-                //xmlString += "               <Airline Code=\"VN\"/>";
-                //xmlString += "           </VendorPrefs>";
-                //xmlString += "       </FlightQualifiers>";
-                //xmlString += "       <PricingQualifiers>";
+                //string stringXML = @"";
+                //stringXML += "<FareRQ Version=\"2.9.0\" xmlns=\"http://webservices.sabre.com/sabreXML/2011/10\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">";
+                //stringXML += "   <OptionalQualifiers>";
+                //stringXML += "       <FlightQualifiers>";
+                //stringXML += "           <VendorPrefs>";
+                //stringXML += "               <Airline Code=\"VN\"/>";
+                //stringXML += "           </VendorPrefs>";
+                //stringXML += "       </FlightQualifiers>";
+                //stringXML += "       <PricingQualifiers>";
                 //foreach (var item in model.PassengerType)
                 //{
-                //    xmlString += "           <PassengerType Code=\"" + item + "\"/>";
+                //    stringXML += "           <PassengerType Code=\"" + item + "\"/>";
                 //}
                 ////xmlString += "       <FareOptions Private=\"true\"/>";
-                //xmlString += "       </PricingQualifiers>";
-                //xmlString += "       <TimeQualifiers>";
-                //xmlString += "           <TravelDateOptions Start=\"" + model.DepartureDateTime.ToString("MM-dd") + "\"/>";
-                //xmlString += "       </TimeQualifiers>";
-                //xmlString += "   </OptionalQualifiers>";
-                //xmlString += "   <OriginDestinationInformation>";
-                //xmlString += "       <FlightSegment>";
-                //xmlString += "           <DestinationLocation LocationCode=\"" + model.DestinationLocation + "\"/>";
-                //xmlString += "           <OriginLocation LocationCode=\"" + model.OriginLocation + "\"/>";
-                //xmlString += "       </FlightSegment>";
-                //xmlString += "   </OriginDestinationInformation>";
-                //xmlString += "</FareRQ>";
-                //child.InnerXml = xmlString;
+                //stringXML += "       </PricingQualifiers>";
+                //stringXML += "       <TimeQualifiers>";
+                //stringXML += "           <TravelDateOptions Start=\"" + model.DepartureDateTime.ToString("MM-dd") + "\"/>";
+                //stringXML += "       </TimeQualifiers>";
+                //stringXML += "   </OptionalQualifiers>";
+                //stringXML += "   <OriginDestinationInformation>";
+                //stringXML += "       <FlightSegment>";
+                //stringXML += "           <DestinationLocation LocationCode=\"" + model.DestinationLocation + "\"/>";
+                //stringXML += "           <OriginLocation LocationCode=\"" + model.OriginLocation + "\"/>";
+                //stringXML += "       </FlightSegment>";
+                //stringXML += "   </OriginDestinationInformation>";
+                //stringXML += "</FareRQ>";
+                //child.InnerXml = stringXML;
                 //soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
-                ////soapEnvelopeXml.LoadXml(xmlString);
+
                 //using (Stream stream = request.GetRequestStream())
                 //{
                 //    soapEnvelopeXml.Save(stream);
                 //}
-                ////var result = new AirFareByCityPairsResult();
-
                 //using (WebResponse response = request.GetResponse())
                 //{
                 //    using (StreamReader rd = new StreamReader(response.GetResponseStream()))
@@ -164,11 +160,8 @@ namespace AIRService.WS.Service
                 //        string soapResult = rd.ReadToEnd();
                 //        soapEnvelopeXml = new XmlDocument();
                 //        soapEnvelopeXml.LoadXml(soapResult);
-                //        return null;
                 //    }
                 //}
-
-                #endregion
             }
             catch (Exception ex)
             {

@@ -85,6 +85,7 @@ var flightBookingController = {
         if (parseInt(ddlFlightType) === 2) {
             isRoundTrip = "True";
         }
+        var ddlAirlineType = $('#ddlAirlineType').val();
 
         //
         // set information in title
@@ -120,7 +121,8 @@ var flightBookingController = {
             CNN: cnn,
             INF: inf,
             IsRoundTrip: isRoundTrip,
-            IsHasTax: isHasTax
+            IsHasTax: isHasTax,
+            AirlineType: ddlAirlineType
         };
         AjaxFrom.POST({
             url: URLC + '/search',

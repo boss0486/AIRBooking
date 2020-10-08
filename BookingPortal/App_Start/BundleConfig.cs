@@ -69,6 +69,7 @@ namespace WebApplication
                 // forms   
                 "~/_themes/library/plugins/jquery-slimscroll/jquery.slimscroll.js",
                 "~/_themes/library/plugins/datepickers/bootstrap/bootstrap-datepicker.min.js",
+                "~/_themes/library/plugins/bootstrap-datepicker/js/bootstrap-datepicker.language.js",
                 "~/_themes/library/plugins/bootstrap-select/js/bootstrap-select.js",
                 "~/_themes/library/plugins/node-waves/waves.js",
                 "~/_themes/library/plugins/file-manage/file-manage.js",

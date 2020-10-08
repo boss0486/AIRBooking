@@ -27,5 +27,6 @@ namespace ApiPortalBooking.Models
         public double FareAmount { get; set; }
         public string Code { get; set; }
         public bool IsActive { get; set; }
+        public string Test { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace WebApplication.Management.Controllers
     [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("AgentFee")]
-    public class AgentFeeController : CMSController
+    public class AgentFeeController :  Controller
     {
         public ActionResult FeeSetting()
         {
@@ -24,7 +24,7 @@ namespace WebApplication.Management.Controllers
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 string customerId = CustomerService.GetCustomerIDByUserID(userId);
                 AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
-                var airFeeAgentResult = airFeeAgentService.GetAirFeeAgentModel(customerId);
+                var airFeeAgentResult = airFeeAgentService.GetAgentFeeByCustomerID(customerId);
                 if (airFeeAgentResult != null)
                 {
                     return View(airFeeAgentResult);
