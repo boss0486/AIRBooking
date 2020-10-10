@@ -924,7 +924,11 @@ namespace WebCore.Services
             MenuItemService menuItemService = new MenuItemService();
             var menuItem = menuItemService.GetAlls(m => m.MvcController == menuController.ID && m.MvcAction == menuAction.ID).FirstOrDefault();
             if (menuItem == null)
-                return result;
+            {
+                return menuController.Title + " / " + menuAction.Title;
+            }    
+
+
             //
             result = menuItem.Title;
             string parentId = menuItem.ParentID;

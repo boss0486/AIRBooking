@@ -219,7 +219,7 @@ namespace WebCore.Services
             // send mail
             string strOTP = Helper.Security.Library.OTPCode;
             string strGuid = new Guid().ToString();
-            string strToken = Helper.Security.Token.Create(user.LoginID);
+            string strToken = Helper.Security.HashToken.Create(user.LoginID);
             //  send otp for reset password 
             string subject = "XÁC THỰC OTP";
             int status = Helper.Email.EMailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);

@@ -22,6 +22,8 @@ using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using Helper.Page;
 using AIRService.WebService.VNA.Authen;
 using System.Web.Helpers;
+using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace AIRService.Service
 {
@@ -75,15 +77,15 @@ namespace AIRService.Service
                 List<FlightSegment> lstFlightSegment = new List<FlightSegment>();
                 List<FlightSearch> lstFlightSearch = new List<FlightSearch>();
 
-                string _flightGo = model.OriginLocation;
-                string _flightTo = model.DestinationLocation;
+                //string _flightGo = model.OriginLocation;
+                //string _flightTo = model.DestinationLocation;
                 WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRS dataAirAvail = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
                 {
                     Token = _token,
                     ConversationID = _conversationId,
                     DepartureDateTime = _departureDateTime,
-                    DestinationLocation = _flightTo,
-                    OriginLocation = _flightGo
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation
                 });
                 // tim chuyen bay
                 if (dataAirAvail == null)
@@ -104,10 +106,11 @@ namespace AIRService.Service
                     Token = _token,
                     ConversationID = _conversationId,
                     DepartureDateTime = _departureDateTime,
-                    DestinationLocation = _flightTo,
-                    OriginLocation = _flightGo,
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation,
                     AirlineCode = "VN",
-                    PassengerType = new List<string>()
+                    PassengerType = new List<string>(),
+
                 };
                 if (model.ADT > 0)
                     fareLLSModel.PassengerType.Add("ADT");
@@ -115,23 +118,24 @@ namespace AIRService.Service
                     fareLLSModel.PassengerType.Add("CNN");
                 if (model.INF > 0)
                     fareLLSModel.PassengerType.Add("INF");
-                // 
-                WebService.VNA_FareLLSRQ.FareRS dataFareLLS = vnaFareLLSRQService.FareLLS(fareLLSModel);
-                if (dataFareLLS == null)
-                    return Notifization.Invalid(MessageText.Invalid);
+
+                fareLLSModel.CurrencyCode = _currencyCode;
+
+                // fareRSFareBasis
+                List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = vnaFareLLSRQService.FareLLS(fareLLSModel);
+                if (fareRSFareBases == null)
+                    return Notifization.Invalid(MessageText.Invalid + "111111");
                 // 
                 AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
                 List<AirTicketConditionFee> airTicketConditionFees = airTicketConditionFeeService.GetAlls(m => m.IsApplied).ToList();
 
-                string json = JsonConvert.SerializeObject(dataFareLLS);
-                string fileName = "fare-test.json";
-                var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
-                //write string to file
-                System.IO.File.WriteAllText(urlFile, json);
-                // Fare 
+                //string json = JsonConvert.SerializeObject(fareRSFareBases);
+                //string fileName = "fa-test.json";
+                //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                ////write string to file
+                //System.IO.File.WriteAllText(urlFile, json);
+
                 int _year = _departureDateTime.Year;
-
-
                 foreach (var originDestinationOption in originDestinationOptionList)
                 {
                     //#1. Availability: get all Flight is Availability
@@ -139,7 +143,8 @@ namespace AIRService.Service
                     List<WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOptionFlightSegment> _lstFlightSegment = originDestinationOption.FlightSegment.ToList();
                     if (_lstFlightSegment.Count() == 0)
                         continue;
-                    //
+                    // gioi han du lieu , do du lieu tra ve nhieu chang
+                    _lstFlightSegment = _lstFlightSegment.Where(m => m.OriginLocation.LocationCode == _originLocation && m.DestinationLocation.LocationCode == _destinationLocation).ToList();
                     foreach (var flightSegment in _lstFlightSegment)
                     {
                         int planeNo = Convert.ToInt32(flightSegment.FlightNumber);
@@ -147,18 +152,26 @@ namespace AIRService.Service
                         List<string> _lstResBookDesigCode = flightSegment.BookingClassAvail.Where(m => Convert.ToInt32(m.Availability) > 0 && Convert.ToInt32(m.Availability) >= _availabilityTotal).Select(m => m.ResBookDesigCode).ToList();
                         if (_lstResBookDesigCode.Count() == 0)
                             continue;
-                        //
-                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode, new FlightAirTicketCondition
+                        // 
+                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, fareRSFareBases, _currencyCode, new FlightAirTicketCondition
                         {
+                            Token = _token,
+                            ConversationID = _conversationId,
+                            OriginLocation = _originLocation,
+                            DestinationLocation = _destinationLocation,
+                            DepartureDateTime = _departureDateTime,
                             FlightNo = planeNo,
                             AirlineType = airlineType,
-                            AirTicketConditionFee = airTicketConditionFees
+                            AirTicketConditionFee = airTicketConditionFees,
                         });
                         if (fareDetails.Count() == 0)
                             continue;
                         //
                         DateTime _datedepart = DateTime.Parse(_year + "-" + flightSegment.DepartureDateTime + ":00");
-                        DateTime _arrivalDateTime = _datedepart.AddMinutes(double.Parse(flightSegment.FlightDetails.TotalTravelTime));
+                        DateTime _arrivalDateTime = _datedepart;
+                        if (flightSegment.FlightDetails.TotalTravelTime != null)
+                            _arrivalDateTime = _datedepart.AddMinutes(double.Parse(flightSegment.FlightDetails.TotalTravelTime));
+                        //
                         lstFlightSegment.Add(new FlightSegment
                         {
                             AirEquipType = flightSegment.Equipment.AirEquipType,
@@ -215,16 +228,16 @@ namespace AIRService.Service
 
 
                 lstFlightSegment = new List<FlightSegment>();
-                _flightGo = model.DestinationLocation;
-                _flightTo = model.OriginLocation;
+                _originLocation = model.DestinationLocation;
+                _destinationLocation = model.OriginLocation;
                 _departureDateTime = model.ReturnDateTime;
                 dataAirAvail = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
                 {
                     Token = _token,
                     ConversationID = _conversationId,
                     DepartureDateTime = _departureDateTime,
-                    DestinationLocation = _flightTo,
-                    OriginLocation = _flightGo
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation
                 });
                 if (dataAirAvail == null)
                     return Notifization.NotFound("Không tìm thấy chuyến bay nào phù hợp");
@@ -243,8 +256,8 @@ namespace AIRService.Service
                     Token = _token,
                     ConversationID = _conversationId,
                     DepartureDateTime = _departureDateTime,
-                    DestinationLocation = _flightTo,
-                    OriginLocation = _flightGo,
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation,
                     AirlineCode = "VN",
                     PassengerType = new List<string>()
                 };
@@ -255,10 +268,12 @@ namespace AIRService.Service
                 if (model.INF > 0)
                     fareLLSModel.PassengerType.Add("INF");
                 //
-                dataFareLLS = vnaFareLLSRQService.FareLLS(fareLLSModel);
-                if (dataFareLLS == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // Fare  
+                fareLLSModel.CurrencyCode = _currencyCode;
+                // fareRSFareBasis
+                fareRSFareBases = vnaFareLLSRQService.FareLLS(fareLLSModel);
+                if (fareRSFareBases == null)
+                    return Notifization.Invalid(MessageText.Invalid + "111111");
+                //
                 _year = _departureDateTime.Year;
                 foreach (var originDestinationOption in originDestinationOptionList)
                 {
@@ -268,6 +283,8 @@ namespace AIRService.Service
                     if (_lstFlightSegment.Count() == 0)
                         continue;
                     //
+                    // gioi han du lieu , do du lieu tra ve nhieu chang
+                    _lstFlightSegment = _lstFlightSegment.Where(m => m.OriginLocation.LocationCode == _originLocation && m.DestinationLocation.LocationCode == _destinationLocation).ToList();
                     foreach (var flightSegment in _lstFlightSegment)
                     {
                         int planeNo = Convert.ToInt32(flightSegment.FlightNumber);
@@ -276,17 +293,26 @@ namespace AIRService.Service
                         if (_lstResBookDesigCode.Count() == 0)
                             continue;
                         //
-                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, dataFareLLS, _currencyCode, new FlightAirTicketCondition
+                        List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, fareRSFareBases, _currencyCode, new FlightAirTicketCondition
                         {
+                            Token = _token,
+                            ConversationID = _conversationId,
+                            OriginLocation = _originLocation,
+                            DestinationLocation = _destinationLocation,
+                            DepartureDateTime = _departureDateTime,
                             FlightNo = planeNo,
                             AirlineType = airlineType,
-                            AirTicketConditionFee = airTicketConditionFees
+                            AirTicketConditionFee = airTicketConditionFees,
                         });
+                        //
                         if (fareDetails.Count() == 0)
                             continue;
                         //
                         DateTime _datedepart = DateTime.Parse(_year + "-" + flightSegment.DepartureDateTime + ":00");
-                        DateTime _arrivalDateTime = _datedepart.AddMinutes(double.Parse(flightSegment.FlightDetails.TotalTravelTime));
+                        DateTime _arrivalDateTime = _datedepart;
+                        if (flightSegment.FlightDetails.TotalTravelTime != null)
+                            _arrivalDateTime = _datedepart.AddMinutes(double.Parse(flightSegment.FlightDetails.TotalTravelTime));
+                        //
                         lstFlightSegment.Add(new FlightSegment
                         {
                             AirEquipType = flightSegment.Equipment.AirEquipType,
@@ -335,7 +361,7 @@ namespace AIRService.Service
         }
 
         // Get list ResBookDesigCode is valid
-        public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, AIRService.WebService.VNA_FareLLSRQ.FareRS fareRS, string currencyCode, FlightAirTicketCondition flightAirTicketCondition)
+        public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBasis, string currencyCode, FlightAirTicketCondition flightAirTicketCondition)
         {
             List<FlightSegment_ResBookDesigCode> result = new List<FlightSegment_ResBookDesigCode>();
             foreach (var rbdc in lstResBookDesigCode)
@@ -343,8 +369,7 @@ namespace AIRService.Service
                 List<FareItem> flightCostDetails = GetFareDetails(new VNAFareLLSRQModel
                 {
                     FareLLS = fareLLSModel,
-                    FareRSData = fareRS,
-                    CurrencyCode = currencyCode,
+                    FareRSFareBasis = fareRSFareBasis,
                     ResBookDesigCode = rbdc
                 }, flightAirTicketCondition);
 
@@ -355,6 +380,7 @@ namespace AIRService.Service
                 {
                     ResBookDesigCodeID = VNAFareLLSRQService.GetResbookDesigCodeIDByKey(rbdc),
                     ResBookDesigCode = rbdc,
+                    SellingFare = "",
                     FareItem = flightCostDetails
                 });
             }
@@ -363,18 +389,17 @@ namespace AIRService.Service
         }
         public List<FareItem> GetFareDetails(VNAFareLLSRQModel model, FlightAirTicketCondition flightAirTicketCondition)
         {
-            WebService.VNA_FareLLSRQ.FareRS dataFareLLS = model.FareRSData;
-            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
+            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = model.FareRSFareBasis.ToList();
             if (fareRSFareBases == null || fareRSFareBases.Count == 0)
-                return null;
+                return new List<FareItem>();
             //
             FareLLSModel fareLLSModel = model.FareLLS;
             if (fareLLSModel == null)
-                return null;
+                return new List<FareItem>();
             //
             List<string> lstPassengerType = fareLLSModel.PassengerType.ToList().OrderBy(m => m).ToList();
             if (lstPassengerType.Count == 0)
-                return null;
+                return new List<FareItem>();
             // 
 
             string rbdc = model.ResBookDesigCode;
@@ -405,34 +430,45 @@ namespace AIRService.Service
                                 {
                                     conditionState = true;
                                 }
+                                if (rbdc == "E" || rbdc == "R")
+                                {
+                                    conditionState = true;
+                                }
                                 break;
+                                //case "05":
+                                //    if (planeNo >= item.PlaneNoFrom && planeNo <= item.PlaneNoTo)
+                                //    {
+                                //        conditionState = true;
+                                //    }
+                                //    break;
                         }
                     }
                 }
                 //
+                string test = "::";
                 if (airlineType == "VNA" && conditionState == false)
                 {
                     fareRSFareBases = fareRSFareBases.Where(m => m.Code.Last() == 'F').ToList();
+                    test = "F";
                 }
                 else
                 {
-                    fareRSFareBases = fareRSFareBases.Where(m => m.Code.Last() == '9').ToList();
+                    fareRSFareBases = fareRSFareBases.Where(m => m.Code.Last() != 'F').ToList();
+                    test = "notF";
                 }
-
+                //OneWayRoundTrip
                 foreach (var fareRSFareBasis in fareRSFareBases)
                 {
-                    if (passengerType == fareRSFareBasis.PassengerType[0].Code && fareRSFareBasis.AdditionalInformation.ResBookDesigCode == rbdc && fareRSFareBasis.CurrencyCode == model.CurrencyCode)
+
+                    if (passengerType == fareRSFareBasis.PassengerType[0].Code && fareRSFareBasis.AdditionalInformation.ResBookDesigCode == rbdc && fareRSFareBasis.AdditionalInformation.PrivateInd != null)
                     {
                         string strAmount = fareRSFareBasis.AdditionalInformation.Fare[0].Amount;
                         if (!string.IsNullOrWhiteSpace(strAmount) && Convert.ToDouble(strAmount) > 0)
                         {
-                            string test = "";
                             bool active = false;
-
                             double _amount = Convert.ToDouble(strAmount);
                             if (minAmount < _amount)
                             {
-                                test = fareRSFareBasis.RPH;
                                 minAmount = _amount;
                             }
                             //
@@ -443,7 +479,7 @@ namespace AIRService.Service
                                 FareAmount = _amount,
                                 Code = fareRSFareBasis.Code,
                                 IsActive = active,
-                                Test = test
+                                Test = ""
                             });
                         }
                     }
@@ -604,8 +640,8 @@ namespace AIRService.Service
 
         public List<FareDetailsModel1> GetFareDetails2(VNAFareLLSRQModel model)
         {
-            var dataFareLLS = model.FareRSData;
-            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = dataFareLLS.FareBasis.ToList();
+
+            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = model.FareRSFareBasis.ToList();
             if (fareRSFareBases == null || fareRSFareBases.Count == 0)
                 return null;
             //
@@ -625,7 +661,7 @@ namespace AIRService.Service
                 int _cnt = 0;
                 foreach (var fareRSFareBasis in fareRSFareBases)
                 {
-                    if (fareLLS == fareRSFareBasis.PassengerType[0].Code && fareRSFareBasis.AdditionalInformation.ResBookDesigCode == model.ResBookDesigCode && fareRSFareBasis.CurrencyCode == model.CurrencyCode)
+                    if (fareLLS == fareRSFareBasis.PassengerType[0].Code && fareRSFareBasis.AdditionalInformation.ResBookDesigCode == model.ResBookDesigCode)
                     {
                         //test += "| " + _cnt +":" + fareLLS;
                         if (!string.IsNullOrWhiteSpace(fareRSFareBasis.BaseFare.Amount) && Convert.ToDouble(fareRSFareBasis.BaseFare.Amount) > 0)

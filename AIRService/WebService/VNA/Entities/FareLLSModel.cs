@@ -13,7 +13,7 @@ namespace ApiPortalBooking.Models
         public DateTime DepartureDateTime { get; set; }
         public string DestinationLocation { get; set; }
         public string AirlineCode { get; set; }
-
+        public string CurrencyCode { get; set; }
     }
     public class FareItem
     {

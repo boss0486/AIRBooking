@@ -135,7 +135,7 @@ namespace Helper.Security
             }
         }
     }
-    public class Token
+    public class HashToken
     {
         public static string NewToken()
         {
