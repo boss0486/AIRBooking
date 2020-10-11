@@ -51,9 +51,11 @@ namespace WebCore.Services
                 else
                     return Notifization.Invalid(searchResult.Message);
             }
-            //
+            // 
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_ProductCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_ProductCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+
+            
             var dtList = _connection.Query<ProductCategoryResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -73,7 +75,7 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            return Notifization.Data(MessageText.Success + "::" + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################

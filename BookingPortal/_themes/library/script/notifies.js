@@ -168,7 +168,7 @@ class FData {
     }
     static ResetForm(tag) {
         var element = document;
-        if (tag == undefined || tag == null) {
+        if (tag != undefined || tag != null) {
             element = $(tag);
         }
 

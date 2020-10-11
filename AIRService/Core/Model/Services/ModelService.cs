@@ -20,12 +20,6 @@ namespace WebCore.Model.Services
             string endDate = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
-
-
-
-
-
-
             string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
             string columName = "CreatedDate";
             if (!string.IsNullOrWhiteSpace(dateColumn))
@@ -41,14 +35,14 @@ namespace WebCore.Model.Services
                 if (timeExpress == 1)
                 {
                     string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
-                    DateTime dtime = Convert.ToDateTime(strDate);
+                    string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
                     whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
                 }
                 // Yesterday
                 if (timeExpress == 2)
                 {
                     DateTime dtime = today.AddDays(-1);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date) AND cast(" + columName + " as Date) <= cast('" + today + "' as Date)";
+                    whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
                 }
                 // ThreeDayAgo
                 if (timeExpress == 3)

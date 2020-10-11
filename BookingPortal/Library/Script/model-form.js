@@ -3,7 +3,7 @@ class AjaxFrom {
     static POST(_form) {
         _form.method = "POST";
         _form.dataType = 'json';
-        _form.async = false;
+        _form.async = true;
         $.ajax(_form).done(function () {
             if (!$(document).find("body")) {
                 Loading.ShowLoading();
