@@ -124,5 +124,63 @@ namespace AIRService.WS.Service
 
         }
 
+
+        public static XmlNode GetOTA_AirRulesLLSRQForSearch(VNA_OTA_AirRulesLLSRQ model)
+        {
+
+            HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+            soapEnvelopeXml.Load(path);
+            soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+            soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "OTA_AirRulesLLSRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "OTA_AirRulesLLSRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
+            soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
+            XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+            var stringXML = "";
+            stringXML += "<OTA_AirRulesRQ ReturnHostCommand='true' Version='2.3.0' xmlns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
+            stringXML += "    <OriginDestinationInformation>";
+            stringXML += "        <FlightSegment DepartureDateTime='" + model.DepartureDateTime.ToString("MM-dd") + "'>";
+            stringXML += "            <DestinationLocation LocationCode='" + model.DestinationLocation + "' />";
+            stringXML += "            <OriginLocation LocationCode='" + model.OriginLocation + "' />";
+            stringXML += "        </FlightSegment>";
+            stringXML += "    </OriginDestinationInformation>";
+            stringXML += "    <RuleReqInfo>";
+            stringXML += "        <FareBasis Code='" + model.FareBasis + "' />";
+            stringXML += "    </RuleReqInfo>";
+            stringXML += "</OTA_AirRulesRQ>";
+
+            child.InnerXml = stringXML;
+            soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+
+            using (Stream stream = request.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                {
+                    string soapResult = rd.ReadToEnd();
+                    soapEnvelopeXml = new XmlDocument();
+                    soapEnvelopeXml.LoadXml(soapResult);
+                    //
+                    if (soapEnvelopeXml == null)
+                        return null;
+                    //
+                    XmlNode rootXmlNode = soapEnvelopeXml.GetElementsByTagName("Rules")[0];
+                    if (rootXmlNode != null && rootXmlNode.HasChildNodes)
+                        return rootXmlNode;
+                    //
+                    return null;
+                }
+            }
+
+        }
+
     }
 }
+
+
+//  var listXmlNode = soapEnvelopeXml.GetElementsByTagName("Taxes");

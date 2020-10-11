@@ -265,6 +265,7 @@
     <Content Include="Files\upload\2019\9\ff4bab54-c41f-490a-9fe5-5066102eb9d3.png" />
     <Content Include="Global.asax" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />
     <Content Include="Library\Script\model-form.js" />
     <Content Include="Pages\forbidden.html" />
     <Content Include="Pages\mail.html" />

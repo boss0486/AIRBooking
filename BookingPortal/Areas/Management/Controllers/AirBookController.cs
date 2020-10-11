@@ -149,6 +149,7 @@ namespace WebApplication.Management.Controllers
                 //
                 string _returnDateTimeTemp = model.ReturnDateTime;
                 bool isHasTax = model.IsHasTax;
+                string airlineType = model.AirlineType;
 
                 if (string.IsNullOrWhiteSpace(_departureDateTime) || !Helper.Page.Validate.TestDate_MMDDYYYY(_departureDateTime))
                     return Notifization.Invalid("Departure date invalid, format: MM/dd/yyyy" + _departureDateTime);
@@ -186,7 +187,8 @@ namespace WebApplication.Management.Controllers
                     CNN = model.CNN,
                     INF = model.INF,
                     IsRoundTrip = model.IsRoundTrip,
-                    IsHasTax = isHasTax
+                    IsHasTax = isHasTax,
+                    AirlineType = airlineType
                 });
             }
             catch (Exception ex)

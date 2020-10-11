@@ -1,7 +1,10 @@
-﻿using System;
+﻿using AIRService.Models;
+using Helper.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebCore.Entities;
 
 namespace ApiPortalBooking.Models
 {
@@ -33,7 +36,8 @@ namespace ApiPortalBooking.Models
     {
         public int ResBookDesigCodeID { get; set; }
         public string ResBookDesigCode { get; set; }
-        public List<FareItemModel> FareItem { get; set; }
+        public List<FareItem> FareItem { get; set; }
+        public  string SellingFare { get; set; }
     }
 
 
@@ -68,4 +72,16 @@ namespace ApiPortalBooking.Models
         public string ArrivalDateTime { get; set; }
         public string DepartureDateTime { get; set; }
     }
+
+
+    public class FlightAirTicketCondition: TokenModel
+    {
+        public List<AirTicketConditionFee> AirTicketConditionFee { get; set; }
+        public int FlightNo { get; set; }
+        public string AirlineType { get; set; }
+        public DateTime DepartureDateTime { get; set; }
+        public string DestinationLocation { get; set; }
+        public string OriginLocation { get; set; }
+    }
+    
 }

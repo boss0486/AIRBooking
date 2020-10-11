@@ -10,8 +10,9 @@ namespace AIRService.WS.Entities
     public class VNAFareLLSRQModel
     {
         public string ResBookDesigCode { get; set; }
-        public string CurrencyCode { get; set; }
         public FareLLSModel FareLLS { get; set; }
-        public AIRService.WebService.VNA_FareLLSRQ.FareRS FareRSData { get; set; }
+        public List<WebService.VNA_FareLLSRQ.FareRSFareBasis> FareRSFareBasis { get; set; }
     }
+
+
 }

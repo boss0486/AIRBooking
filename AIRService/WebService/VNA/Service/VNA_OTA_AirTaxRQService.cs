@@ -277,10 +277,12 @@ namespace AIRService.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    var data = new TaxModel();
-                    data.Total = VNALibrary.ConvertToDouble(soapEnvelopeXml.GetElementsByTagName("TaxInfo")[0].Attributes["Total"].Value);
-                    data.PassengerType = AirTaxRQItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code;
-                    data.FareAmmout = AirTaxRQItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount;
+                    var data = new TaxModel
+                    {
+                        Total = VNALibrary.ConvertToDouble(soapEnvelopeXml.GetElementsByTagName("TaxInfo")[0].Attributes["Total"].Value),
+                        PassengerType = AirTaxRQItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code,
+                        FareAmmout = AirTaxRQItineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount
+                    };
                     var listXmlNode = soapEnvelopeXml.GetElementsByTagName("Taxes");
 
                     foreach (XmlNode node in listXmlNode)

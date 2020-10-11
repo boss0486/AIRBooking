@@ -27,6 +27,28 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group form-float">
+                            <label class="form-label">Loại hình:</label>
+                            <select id="ddlTicketType" name="ddlTicketType" class="form-control show-tick" data-live-search="true">
+                                <option value="1" selected>Nội địa</option>
+                                <option value="2">Quốc tế</option>
+                            </select>
+                            <span id="lblTicketType" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <label class="form-label">Hãng hàng không:</label>
+                            <select id="ddlAirlineType" name="ddlAirlineType" class="form-control show-tick" data-live-search="true">
+                                <option value="VNA" selected>Việt nam Airline</option>
+                            </select>
+                            <span id="lblAirlineType" class="message msg-box"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group form-float">
                             <label class="form-label">Nơi đi:</label>
                             <select id="ddlOriginLocation" name="ddlOriginLocation" class="form-control show-tick" data-live-search="true">
                                 <option value="-">-@Helper.Language.Resource.Label.Option-</option>
@@ -36,13 +58,13 @@
                         </div>
                         <div class="form-group form-float">
                             <label class="form-label">Ngày đi:</label>
-                            <input id="DepartureDateTime" name="DepartureDateTime" data-date="true" data-dateDefault="true" maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
+                            <input id="DepartureDateTime" name="DepartureDateTime" maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
                             <span id="lblDepartureDateTime" class="message msg-box"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group form-float">
-                                    <label class="form-label">ADT:</label>
+                                    <label class="form-label">Người lớn:</label>
                                     <select id="ddlAdt" name="ddlAdt" class="form-control show-tick" data-live-search="true">
                                         @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.ADT.ToString()))
                                     </select>
@@ -51,7 +73,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group form-float">
-                                    <label class="form-label">CHD</label>
+                                    <label class="form-label">Trẻ em:</label>
                                     <select id="ddlChd" name="ddlChd" class="form-control show-tick" data-live-search="true">
                                         <option value="0">00</option>
                                         @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.CNN.ToString()))
@@ -72,13 +94,13 @@
                         </div>
                         <div class="form-group form-float">
                             <label class="form-label">Ngày về:</label>
-                            <input id="ReturnDateTime" name="ReturnDateTime" data-date="true" maxlength="10" type="text" class="form-control" value="@Model.ReturnDateTime" />
+                            <input id="ReturnDateTime" name="ReturnDateTime" maxlength="10" type="text" class="form-control" value="@Model.ReturnDateTime" />
                             <span id="lblReturnDateTime" class="message msg-box"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group form-float">
-                                    <label class="form-label">INF:</label>
+                                    <label class="form-label">Em bé:</label>
                                     <select id="ddlInf" name="ddlInf" class="form-control show-tick" data-live-search="true">
                                         <option value="0">00</option>
                                         @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.INF.ToString()))
@@ -99,6 +121,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group text-right">
+                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
+                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
+                    <hr />
+                </div>
                 <div class="form-group">
                     <div class="form-label m-b-10">Lưu ý:</div>
                     <p>
@@ -110,11 +137,6 @@
                     <p>
                         <i class="fas fa-check-circle"></i> Mỗi người lớn chỉ được đính kèm một trẻ em
                     </p>
-                </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
-                    <hr />
                 </div>
             </div>
         </div>
@@ -179,22 +201,24 @@
                     </table>
                 </div>
                 <div id="PaginationReturm"></div>
-                <div class="form-group">
-                    <div class="container-fluid mgb-15" id="InforCustomerError"></div>
-                </div>
-                <div class="form-group">
-                    <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
-                    <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
-                    <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra giá vé chiều đi, chiều về.</p>
-                    <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Chọn chuyến bay chiều đi, chiều về.</p>
-                </div>
-                <div class="form-group text-right">
-                    <a href="/Management/AirBook/Search" class="btn btn-danger -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
-                    <button id="btnNextToInf" class="btn btn-success" type="button"><i class="fas fa-arrow-circle-right"></i> Tiếp tục</button>
-                </div>
+
             </div>
         </div>
-
+        <div class="row">
+            <div class="form-group">
+                <div class="container-fluid mgb-15" id="InforCustomerError"></div>
+            </div>
+            <div class="form-group">
+                <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra giá vé chiều đi, chiều về.</p>
+                <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Chọn chuyến bay chiều đi, chiều về.</p>
+            </div>
+            <div class="form-group text-right">
+                <a href="/Management/AirBook/Search" class="btn btn-danger -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+                <button id="btnNextToInf" class="btn btn-success" type="button"><i class="fas fa-arrow-circle-right"></i> Tiếp tục</button>
+            </div>
+        </div>
 
 
     </div>
@@ -202,35 +226,38 @@
 
 
 @section scripts{
+
     <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
     <script type="text/javascript">
         Cookies.DelCookie("FlightOrder");
         $(function () {
-            var d = new Date();
-            d.setDate(d.getDate() - 0);
-            var today = d;
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            var yyyy = today.getFullYear();
-            today = dd + "-" + mm + "-" + yyyy;
+            //var d = new Date();
+            //d.setDate(d.getDate() - 0);
+            //var today = d;
+            //var dd = String(today.getDate()).padStart(2, '0');
+            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            //var yyyy = today.getFullYear();
+            //today = dd + "-" + mm + "-" + yyyy;
 
-            $('#DepartureDateTime').val(today);
-            $('#DepartureDateTime').datepicker({
+
+            $("#DepartureDateTime").datepicker({
                 format: 'dd-mm-yyyy',
-                startDate: '01-07-2020',
-                todayHighlight: true
+                startDate: $(this).val(),
+                todayHighlight: true,
+                language: "vi"
 
             }).on('changeDate', function (index, item) {
-                /// $('#selectDate').datepicker('hide');
-                $("#ReturnDateTime").datepicker("refresh");
+                $('.datepicker').hide();
+                $(this).blur();
             });
-            $('#ReturnDateTime').datepicker({
+            $("#ReturnDateTime").datepicker({
                 format: 'dd-mm-yyyy',
-                startDate: $('#DepartureDateTime').val(),
-                todayHighlight: true
-
+                startDate: $(this).val(),
+                todayHighlight: true,
+                language: "kr"
             }).on('changeDate', function (index, item) {
-                //$('#ddlTimeExpress').datepicker('hide');
+                $("#ReturnDateTime").datepicker("refresh");
+                $(this).blur();
             });
         });
     </script>

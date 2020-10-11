@@ -31,6 +31,12 @@ namespace WebCore.Services
             if (amount < 0 && amount > 100000000)
                 return Notifization.Invalid("Số tiền giới hạn từ 0 - 100 000 000 đ");
             //
+            if (Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                agentId = CustomerService.GetCustomerIDByUserID(userId);
+            }
+
             if (string.IsNullOrWhiteSpace(agentId))
                 return Notifization.Invalid(MessageText.Invalid + "2");
             //
@@ -81,13 +87,13 @@ namespace WebCore.Services
             return Notifization.Data("OK", airAirFeeAgent);
         }
         //##############################################################################################################################################################################################################################################################
-        public AirAgentFeeResult GetAirFeeAgentModel(string id)
+        public AirAgentFeeResult GetAgentFeeByCustomerID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgentFee WHERE ID = @Query";
-            AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgentFee WHERE AgentID = @AgentID";
+            AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { AgentID = id }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
                 return null;

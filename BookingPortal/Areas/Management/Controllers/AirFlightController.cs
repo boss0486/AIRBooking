@@ -67,6 +67,7 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
+        [Route("Action/Create")]
         public ActionResult Create(AirportCreateModel model)
         {
             try

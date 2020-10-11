@@ -26,7 +26,7 @@
         string conditionId = string.Empty;
         //
         AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
-        AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetConditionByID("04");
+        AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetAirTicketConditionByConditionID("04");
         if (airTicketConditionFee != null)
         {
             planeNoFrom = airTicketConditionFee.PlaneNoFrom;
