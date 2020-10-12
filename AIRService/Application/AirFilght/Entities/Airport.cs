@@ -72,6 +72,13 @@ namespace WebCore.Entities
         public string IATACode { get; set; }
     }
 
+    public class AirportFromToOption
+    {
+        public string ID { get; set; }
+        public string Departure { get; set; } 
+        public string Destination { get; set; } 
+    }
+
     public class AirportSearch : SearchModel
     {
         public string ProviceID { get; set; }

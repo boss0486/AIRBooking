@@ -24,6 +24,7 @@ using AIRService.WebService.VNA.Authen;
 using System.Web.Helpers;
 using System.Web.UI.WebControls;
 using System.Xml;
+using AIRService.WS.Helper;
 
 namespace AIRService.Service
 {
@@ -126,8 +127,8 @@ namespace AIRService.Service
                 if (fareRSFareBases == null)
                     return Notifization.Invalid(MessageText.Invalid + "111111");
                 // 
-                AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
-                List<AirTicketConditionFee> airTicketConditionFees = airTicketConditionFeeService.GetAlls(m => m.IsApplied).ToList();
+                AirTicketCondition04Service airTicketConditionFeeService = new AirTicketCondition04Service();
+                List<AirTicketCondition04> airTicketConditionFees = airTicketConditionFeeService.GetAlls(m => m.IsApplied).ToList();
 
                 //string json = JsonConvert.SerializeObject(fareRSFareBases);
                 //string fileName = "fa-test.json";
@@ -378,7 +379,7 @@ namespace AIRService.Service
                 //
                 result.Add(new FlightSegment_ResBookDesigCode
                 {
-                    ResBookDesigCodeID = VNAFareLLSRQService.GetResbookDesigCodeIDByKey(rbdc),
+                    ResBookDesigCodeID = VNALibrary.GetResbookDesigCodeIDByKey(rbdc),
                     ResBookDesigCode = rbdc,
                     SellingFare = "",
                     FareItem = flightCostDetails
@@ -403,7 +404,7 @@ namespace AIRService.Service
             // 
 
             string rbdc = model.ResBookDesigCode;
-            int rbdcEnum = VNAFareLLSRQService.GetResbookDesigCodeIDByKey(rbdc);
+            int rbdcEnum = VNALibrary.GetResbookDesigCodeIDByKey(rbdc);
             List<FareItem> fareDetailsModels = new List<FareItem>();
             //string test = "";          
             foreach (var passengerType in lstPassengerType)

@@ -21,4 +21,7 @@ namespace AIRService.WS.Entities
         public string DestinationLocation { get; set; }
         public string OriginLocation { get; set; }
     }
+
+
+
 }

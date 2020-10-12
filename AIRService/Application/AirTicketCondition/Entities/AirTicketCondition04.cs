@@ -11,10 +11,10 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Dapper.Table("App_AirTicketConditionFee")]
-    public class AirTicketConditionFee : WEBModel
+    [Dapper.Table("App_AirTicketCondition04")]
+    public class AirTicketCondition04 : WEBModel
     {
-        public AirTicketConditionFee()
+        public AirTicketCondition04()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -32,25 +32,25 @@ namespace WebCore.Entities
         public bool IsApplied { get; set; }
     }
 
-    public class AirTicketConditionFeeIDModel
+    public class AirTicketCondition04IDModel
     {
         public string ID { get; set; }
     }
 
-    public class AirTicketConditionFeeConfigModel
+    public class AirTicketCondition04ConfigModel
     {
         public int PlaneNoFrom { get; set; }
         public int PlaneNoTo { get; set; }
         public string TimeStart { get; set; }
         public string TimeEnd { get; set; }
     }
-    public class AirTicketConditionEventEndModel
+    public class AirTicketCondition04EventEndModel
     {
         public string ConditionID { get; set; }
     }
 
 
-    public class AirTicketConditionCheckModel
+    public class AirTicketCondition04CheckModel
     {
         public int PlaneNo { get; set; }
         public DateTime ?DepartureDateTime { get; set; }      

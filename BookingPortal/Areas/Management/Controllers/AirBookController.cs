@@ -176,8 +176,8 @@ namespace WebApplication.Management.Controllers
 
                 })));
                 //
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.FlightSearch(new FlightSearchModel
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.FlightSearch(new FlightSearchModel
                 {
                     OriginLocation = _originLocation,
                     DestinationLocation = _destinationLocation,
@@ -209,8 +209,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.FlightCost(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.FlightCost(model);
             }
             catch (Exception ex)
             {
@@ -231,8 +231,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.TaxFee(models);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.TaxFee(models);
             }
             catch (Exception ex)
             {
@@ -261,8 +261,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.FlightFeeBasic(models);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.FlightFeeBasic(models);
             }
             catch (Exception ex)
             {

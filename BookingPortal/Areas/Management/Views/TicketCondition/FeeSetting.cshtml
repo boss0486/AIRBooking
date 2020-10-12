@@ -2,7 +2,6 @@
 @using WebCore.Services;
 @using Helper.Language;
 @{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 @{
     try
@@ -18,56 +17,56 @@
             </div>
         </div>
 
-        int planeNoFrom = 0;
-        int planeNoTo = 0;
-        string eventStart = string.Empty;
-        string eventEnd = string.Empty;
-        bool isApplied = false;
-        string conditionId = string.Empty;
+        int planeNoFrom04 = 0;
+        int planeNoTo04 = 0;
+        string eventStart04 = string.Empty;
+        string eventEnd04 = string.Empty;
+        bool isApplied04 = false;
+        string conditionId04 = string.Empty;
         //
-        AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
-        AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetAirTicketConditionByConditionID("04");
-        if (airTicketConditionFee != null)
+        AirTicketCondition04Service  airTicketCondition04Service = new AirTicketCondition04Service();
+        AirTicketCondition04 airTicketConditionFee04 = airTicketCondition04Service.GetAirTicketConditionByConditionID("04");
+        if (airTicketConditionFee04 != null)
         {
-            planeNoFrom = airTicketConditionFee.PlaneNoFrom;
-            planeNoTo = airTicketConditionFee.PlaneNoTo;
-            if (airTicketConditionFee.TimeStart != null)
+            planeNoFrom04 = airTicketConditionFee04.PlaneNoFrom;
+            planeNoTo04 = airTicketConditionFee04.PlaneNoTo;
+            if (airTicketConditionFee04.TimeStart != null)
             {
-                eventStart = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee.TimeStart), Helper.Language.LanguageCode.Vietnamese.ID);
+                eventStart04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), Helper.Language.LanguageCode.Vietnamese.ID);
             }
-            if (airTicketConditionFee.TimeEnd != null)
+            if (airTicketConditionFee04.TimeEnd != null)
             {
-                eventEnd = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee.TimeEnd), Helper.Language.LanguageCode.Vietnamese.ID);
+                eventEnd04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), Helper.Language.LanguageCode.Vietnamese.ID);
             }
-            isApplied = airTicketConditionFee.IsApplied;
-            conditionId = airTicketConditionFee.ConditionID;
+            isApplied04 = airTicketConditionFee04.IsApplied;
+            conditionId04 = airTicketConditionFee04.ConditionID;
         }
 
         <div class="row">
             <div id="form04" class="col-md-6 m-t-30">
                 <div class="top-pic mgb-10">
-                    <label><i class="fas fa-cog" aria-hidden="true"></i> Điều kiện 04:</label>
+                    <label><i class="fas fa-cog" aria-hidden="true"></i>No. 04: LIGHT APPLICATION</label>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Thời gian áp dụng:</label>
                     <div class="input-daterange input-group">
-                        <input type="text" class="form-control" id="txtStartNo04" placeholder="Số hiệu" maxlength="10" value="@planeNoFrom" />
+                        <input type="text" class="form-control" id="txtStartNo04" placeholder="Số hiệu" maxlength="10" value="@planeNoFrom04" />
                         <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
-                        <input type="text" class="form-control" id="txtEndNo04" placeholder="Số hiệu" maxlength="10" value="@planeNoTo" />
+                        <input type="text" class="form-control" id="txtEndNo04" placeholder="Số hiệu" maxlength="10" value="@planeNoTo04" />
                     </div>
                     <span id="lblAircraftNo04" class="message msg-box"></span>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Thời gian áp dụng:</label>
                     <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" class="form-control" data-date="true" id="txtStartDate04" placeholder="dd-mm-yyyy" maxlength="10" value="@eventStart" />
+                        <input type="text" class="form-control" data-date="true" id="txtStartDate04" placeholder="dd-mm-yyyy" maxlength="10" value="@eventStart04" />
                         <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
-                        <input type="text" class="form-control" data-date="true" id="txtEndDate04" placeholder="dd-mm-yyyy" maxlength="10" value="@eventEnd" />
+                        <input type="text" class="form-control" data-date="true" id="txtEndDate04" placeholder="dd-mm-yyyy" maxlength="10" value="@eventEnd04" />
                     </div>
                     <span id="lblApplyNo04" class="message msg-box"></span>
                 </div>
-                <div class="form-group text-right">
-                    <button id="btEventEnd04" type="button" class="btn btn-danger" data-conditionId="@conditionId">Không áp dụng</button>
+                <div class="form-group text-right m-t-30">
+                    <button id="btEventEnd04" type="button" class="btn btn-danger" data-conditionId="@conditionId04">Không áp dụng</button>
                     <button id="btnApply04" type="button" class="btn btn-primary">Áp dụng</button>
                 </div>
 
@@ -86,7 +85,7 @@
                     </div>*@
                 <div class="form-group">
                     <p id="applieState04">
-                        @if (isApplied)
+                        @if (isApplied04)
                         {
                             <i class="far fa-hand-point-right"></i> <label class="col-green">Đang áp dụng</label>
                         }
@@ -94,6 +93,106 @@
                         {
                             <i class="far fa-hand-point-right"></i> <label class="col-pink">Không áp dụng</label>
                         }
+                    </p>
+                    <p><i>Tất cả các máy bay có số hiệu trong khoảng được cấu hình, sẽ được áp dụng giá thấp nhất.</i></p>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+           @{ 
+               string id = "";
+               bool isApplied05 = false;
+               string resbookDesigCode = "";
+               //List<string> resbookDesigCodes = new List<string>();
+               //AirTicketCondition05Service airTicketCondition05Service = new AirTicketCondition05Service();
+               //AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls().FirstOrDefault();
+
+               //if (airTicketCondition05 != null)
+               //{
+               //    id = airTicketCondition05.ID;
+               //    resbookDesigCode = airTicketCondition05.ResbookDesigCode;
+               //    if (!string.IsNullOrWhiteSpace(resbookDesigCode) && resbookDesigCode.Contains(','))
+               //    {
+               //        resbookDesigCodes = resbookDesigCode.Split(',').ToList();
+               //    }
+               //    isApplied05 = airTicketCondition05.IsApplied;
+               //}
+           }
+
+            <div id="form05" class="col-md-6 m-t-30">
+                <div class="top-pic mgb-10">
+                    <label><i class="fas fa-cog" aria-hidden="true"></i>05: ADVANCE RESERVATIONS/TICKETING</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label">Chặng bay:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <select id="ddlFlightLocation05" name="ddlFlightLocation05" class="form-control show-tick" data-live-search="true">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(WebCore.Services.AirportService.FlightFromToDropdownList(id))
+                            </select>
+                            <span id="lblFlightLocation05" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-control" id="lblFlightLocationCode05" disabled></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        <label class="form-label">Hạng ghế:</label>
+                    </p>
+                    <div class="row">
+                        @{
+                            List<AIRService.WS.Entities.VNAResbookDesigCode> vNAResbookDesigCodes = AIRService.WS.Helper.VNALibrary.ListVNAResbookDesigCode();
+                            if (vNAResbookDesigCodes != null)
+                            {
+                                foreach (var item in vNAResbookDesigCodes)
+                                {
+                                    string idText = "cbxResbookDesig" + item.Title;
+                                    <div class="col-md-2 col-sm-3 col-xs-6">
+                                        <div class="form-group">
+                                            <input id="@idText" name="cbxResBookDesig" type="checkbox" class="filled-in" value="@item.Title" data-id="@item.ID" />
+                                            <label for="@idText">Hạng: @item.Title</label>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                        }
+                    </div>
+                    <span id="lblResBookDesigCode05" class="message msg-box"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Thời gian giữ chỗ (h):</label>
+                            <input type="text" class="form-control" id="txtTimePlaceHolder05" maxlength="10" value="0" />
+                            <span id="lblTimePlaceHolder05" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Thời gian xuất vé (d):</label>
+                            <input type="text" class="form-control" id="txtTimeBookHolder05" maxlength="10"  value="0"/>
+                            <span id="lblTimeBookHolder05" class="message msg-box"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-right m-t-30">
+                    <button id="btEventEnd05" type="button" class="btn btn-danger" data-conditionId="@conditionId04">Không áp dụng</button>
+                    <button id="btnApply05" type="button" class="btn btn-primary">Áp dụng</button>
+                </div>
+                <div class="form-group">
+                    <p id="applieState05">
+                       
                     </p>
                     <p><i>Tất cả các máy bay có số hiệu trong khoảng được cấu hình, sẽ được áp dụng giá thấp nhất.</i></p>
                     <hr />
@@ -112,4 +211,12 @@
 
 @section scripts{
     <script src="~/Areas/Management/_script/condition-fee.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("select#ddlFlightLocation05")[0].selectedIndex = 1;
+            $("#ddlFlightLocation05").change();
+        })
+        
+    </script>
 }

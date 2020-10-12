@@ -168,58 +168,6 @@ namespace AIRService.WS.Service
             //    }
             //}
 
-        }
-
-        public List<VNAResbookDesigCode> ListVNAResbookDesigCode()
-        {
-            List<VNAResbookDesigCode> vnaResbookDesigCode = new List<VNAResbookDesigCode>
-            {
-                new VNAResbookDesigCode { ID = 01, Title = "J" }, // 1
-                new VNAResbookDesigCode { ID = 02, Title = "C" }, // 1
-                new VNAResbookDesigCode { ID = 03, Title = "D" }, // 1
-                new VNAResbookDesigCode { ID = 04, Title = "I" },
-                new VNAResbookDesigCode { ID = 05, Title = "O" },
-                new VNAResbookDesigCode { ID = 06, Title = "Y" },
-                new VNAResbookDesigCode { ID = 07, Title = "B" },
-                new VNAResbookDesigCode { ID = 08, Title = "M" }, // 2
-                new VNAResbookDesigCode { ID = 09, Title = "S" }, // 4
-                new VNAResbookDesigCode { ID = 10, Title = "H" }, // 4
-                new VNAResbookDesigCode { ID = 11, Title = "K" }, // 4
-                new VNAResbookDesigCode { ID = 12, Title = "L" }, // 4
-                new VNAResbookDesigCode { ID = 13, Title = "Q" }, // 6
-                new VNAResbookDesigCode { ID = 14, Title = "N" }, // 6
-                new VNAResbookDesigCode { ID = 15, Title = "R" }, // 6
-                new VNAResbookDesigCode { ID = 16, Title = "T" }, // 6
-                new VNAResbookDesigCode { ID = 17, Title = "E" }, // 4
-                new VNAResbookDesigCode { ID = 18, Title = "A" },
-                new VNAResbookDesigCode { ID = 19, Title = "G" },
-                new VNAResbookDesigCode { ID = 20, Title = "P" },
-                new VNAResbookDesigCode { ID = 21, Title = "X" },
-                new VNAResbookDesigCode { ID = 22, Title = "V" }
-            };
-            return vnaResbookDesigCode;
-        }
-
-        public static int GetResbookDesigCodeIDByKey(string key)
-        {
-            VNAFareLLSRQService vnaFareLLSRQService = new VNAFareLLSRQService();
-            VNAResbookDesigCode vnaResbookDesigCode = vnaFareLLSRQService.ListVNAResbookDesigCode().Where(m => m.Title == key).FirstOrDefault();
-            if (vnaResbookDesigCode != null)
-                return vnaResbookDesigCode.ID;
-            else
-                return -1;
-        }
-    }
-
-    public class VNAResbookDesigCode
-    {
-        public int ID { get; set; }
-        public string Title { get; set; }
-    }
-
-    public class VNAResbookDesig
-    {
-        public int ID { get; set; }
-
+        } 
     }
 }

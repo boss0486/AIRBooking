@@ -15,14 +15,14 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAirTicketConditionFeeService : IEntityService<Entities.AirTicketConditionFee> { }
-    public class AirTicketConditionFeeService : EntityService<Entities.AirTicketConditionFee>, IAirTicketConditionFeeService
+    public interface IAirTicketCondition04Service : IEntityService<Entities.AirTicketCondition04> { }
+    public class AirTicketCondition04Service : EntityService<Entities.AirTicketCondition04>, IAirTicketCondition04Service
     {
-        public AirTicketConditionFeeService() : base() { }
-        public AirTicketConditionFeeService(System.Data.IDbConnection db) : base(db) { }
+        public AirTicketCondition04Service() : base() { }
+        public AirTicketCondition04Service(System.Data.IDbConnection db) : base(db) { }
 
         // Condition 04 ##############################################################################################################################################################################################################################################################
-        public ActionResult ConditionFee04(AirTicketConditionFeeConfigModel model)
+        public ActionResult ConditionFee04(AirTicketCondition04ConfigModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid + "1");
@@ -62,12 +62,12 @@ namespace WebCore.Services
                 return Notifization.Invalid("Thời gian bắt đầu phải <= thời gian kết thúc");
             }
 
-            AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService(_connection);
-            AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
+            AirTicketCondition04Service airTicketConditionFeeService = new AirTicketCondition04Service(_connection);
+            AirTicketCondition04 airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
             if (airTicketConditionFee == null)
             {
                 // create 
-                airTicketConditionFeeService.Create<string>(new AirTicketConditionFee
+                airTicketConditionFeeService.Create<string>(new AirTicketCondition04
                 {
                     Title = conditionId,
                     ConditionID = conditionId,
@@ -91,7 +91,7 @@ namespace WebCore.Services
             return Notifization.Success(MessageText.UpdateSuccess);
         }
 
-        public ActionResult AirTicketConditionEventEnd(AirTicketConditionEventEndModel model)
+        public ActionResult AirTicketCondition04EventEnd(AirTicketCondition04EventEndModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid + "1");
@@ -100,8 +100,8 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(conditionId))
                 return Notifization.Invalid(MessageText.Invalid);
             //
-            AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService(_connection);
-            AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
+            AirTicketCondition04Service airTicketConditionFeeService = new AirTicketCondition04Service(_connection);
+            AirTicketCondition04 airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
             if (airTicketConditionFee == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
@@ -116,49 +116,17 @@ namespace WebCore.Services
             return Notifization.Success(MessageText.UpdateSuccess);
         }
 
-        public AirTicketConditionFee GetAirTicketConditionByConditionID(string conditionId)
+        public AirTicketCondition04 GetAirTicketConditionByConditionID(string conditionId)
         {
             if (string.IsNullOrWhiteSpace(conditionId))
-                return new AirTicketConditionFee();
+                return new AirTicketCondition04();
             //
-            AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService(_connection);
-            AirTicketConditionFee airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
+            AirTicketCondition04Service airTicketConditionFeeService = new AirTicketCondition04Service(_connection);
+            AirTicketCondition04 airTicketConditionFee = airTicketConditionFeeService.GetAlls(m => m.ConditionID == conditionId.ToLower()).FirstOrDefault();
             if (airTicketConditionFee == null)
-                return new AirTicketConditionFee();
+                return new AirTicketCondition04();
             //
             return airTicketConditionFee;
         }
-
-        // Check Condition ##############################################################################################################################################################################################################################################################
-        public static bool CheckTicketCondition(AirTicketConditionCheckModel model)
-        {
-            bool conditionState = false;
-            int planeNo = model.PlaneNo;
-
-            AirTicketConditionFeeService airTicketConditionFeeService = new AirTicketConditionFeeService();
-            var airTicketCondition = airTicketConditionFeeService.GetAirTicketConditionByConditionID("04");
-            if (airTicketCondition != null)
-            {
-                if (airTicketCondition.IsApplied)
-                {
-                    if (planeNo >= airTicketCondition.PlaneNoFrom && planeNo <= airTicketCondition.PlaneNoTo)
-                    {
-                        if (model.DepartureDateTime != null && airTicketCondition.TimeStart != null && airTicketCondition.TimeEnd != null)
-                        {
-                            // kiem tra thoi gian di
-                            DateTime _departureDateTime = Convert.ToDateTime(model.DepartureDateTime);
-                            if (_departureDateTime >= airTicketCondition.TimeStart && _departureDateTime <= airTicketCondition.TimeEnd)
-                                conditionState = true;
-                        }
-                        else
-                        {
-                            conditionState = true;
-                        }
-                    }
-                }
-            }
-            return conditionState;
-        }
-
     }
 }
