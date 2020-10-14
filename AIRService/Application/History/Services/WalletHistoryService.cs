@@ -27,7 +27,7 @@ namespace WebCore.Services
         public WalletHistoryService() : base() { }
         public WalletHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public static WalletHistoryMessageModel LoggerWalletCustomerHistory(WalletCustomerDepositHistoryCreateModel model, IDbConnection dbConnection = null,IDbTransaction dbTransaction = null)
+        public static WalletHistoryMessageModel LoggerWalletCustomerDepositHistory(WalletCustomerDepositHistoryCreateModel model, IDbConnection dbConnection = null,IDbTransaction dbTransaction = null)
         {
             try
             {
@@ -39,12 +39,24 @@ namespace WebCore.Services
                 return new WalletHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
             }
         }
-        public static WalletHistoryMessageModel LoggerWalletUserHistory(WalletUserHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletHistoryMessageModel LoggerWalletCustomerSpendingHistory(WalletCustomerSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        {
+            try
+            {
+                WalletCustomerSpendingHistoryService service = new WalletCustomerSpendingHistoryService();
+                return service.WalletCustomerSpendingHistoryCreate(model, dbConnection, dbTransaction);
+            }
+            catch (Exception ex)
+            {
+                return new WalletHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
+            }
+        }
+        public static WalletHistoryMessageModel LoggerWalletUserSpendingHistory(WalletUserHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
                 WalletUserHistoryService service = new WalletUserHistoryService();
-                return service.WalletUserHistoryCreate(model, dbConnection, dbTransaction);
+                return service.WalletUserSpendingHistoryCreate(model, dbConnection, dbTransaction);
             }
             catch (Exception ex)
             {

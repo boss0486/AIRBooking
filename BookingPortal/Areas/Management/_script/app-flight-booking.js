@@ -326,8 +326,8 @@ var flightBookingController = {
                             htmlGo = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
                                 <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
-                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span> / <span data-flightNo='${flightNo}'>${flightNo} </label></td>
-                                <td class='td-itinerary'>${originLocation} -> ${destinationLocation}</td>
+                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
+                                <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
                                 <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
                                 <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
@@ -342,8 +342,8 @@ var flightBookingController = {
                             htmlReturn = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
                                 <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
-                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span> / <span data-flightNo='${flightNo}'>${flightNo} </label></td>
-                                <td class='td-itinerary'>${originLocation} -> ${destinationLocation}</td>
+                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
+                                <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
                                 <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
                                 <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
@@ -565,10 +565,6 @@ $(document).on('click', '#btnBooking', function () {
         flg = false;
     }
     // 
-    if (!flg) {
-        Notifization.Error(MessageText.NotService + 1);
-        return;
-    }
     var lPassenger = [];
     $("#BookingForm [data-PassengerType]").each(function (index, item) {
         var type = $(item).data("passengertype");
@@ -677,7 +673,7 @@ $(document).on('click', '#btnBooking', function () {
     console.log(JSON.stringify(bookModel));
     // call api
     AjaxFrom.POST({
-        url: URLC + '/book',
+        url: URLC + '/booking',
         data: bookModel,
         success: function (response) {
             if (response === null || response.status === undefined) {

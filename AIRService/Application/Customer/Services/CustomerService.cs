@@ -202,12 +202,8 @@ namespace WebCore.Services
                     if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
                         return Notifization.Invalid("Không thể tạo khách hàng");
                     //
-                    if (Helper.Current.UserLogin.IsCustomerLogged() && CustomerTypeService.GetCustomerType(typeId) == (int)CustomerEnum.CustomerType.AGENT)
+                    if (Helper.Current.UserLogin.IsCustomerLogged() && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                         return Notifization.Invalid("Không thể tạo đại lý");
-                    //
-                    if (string.IsNullOrWhiteSpace(typeId))
-                        return Notifization.Invalid("Vui lòng chọn loại khách hàng");
-                    typeId = typeId.Trim();
                     //
                     if (string.IsNullOrWhiteSpace(codeId))
                         return Notifization.Invalid("Không được để trống mã khách hàng");
@@ -302,7 +298,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     //
-                    if (CustomerTypeService.GetCustomerType(typeId) != (int)CustomerEnum.CustomerType.COMP)
+                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -405,14 +401,18 @@ namespace WebCore.Services
                         Enabled = enabled,
                     }, transaction: _transaction);
 
-                    //******* create balance 
-                    var balanceCustomer = balanceCustomerService.Create<string>(new WalletCustomer()
+                    //******* create balance for agent
+                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                     {
-                        CustomerID = customerId,
-                        SpendingAmount = 0,
-                        DepositAmount = 0
+                        var balanceCustomer = balanceCustomerService.Create<string>(new WalletCustomer()
+                        {
+                            CustomerID = customerId,
+                            SpendingAmount = 0,
+                            DepositAmount = 0
 
-                    }, transaction: _transaction);
+                        }, transaction: _transaction);
+                    }
+
                     //
                     var clientId = clientLoginService.Create<string>(new ClientLogin()
                     {
@@ -549,7 +549,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(contactPhone))
                         return Notifization.Invalid("Số đ.thoại liên hệ không hợp lệ");
                     //
-                    if (CustomerTypeService.GetCustomerType(typeId) != (int)CustomerEnum.CustomerType.COMP)
+                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -705,12 +705,20 @@ namespace WebCore.Services
             return _connection.Query<CustomerOption>(sqlQuery, new { }).ToList();
         }
 
-        public List<CustomerOption> GetCustomerBySupplierIDOption(string supplierId)
+        public List<CustomerOption> GetCustomerBySupplierIDOption(string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
         {
             if (string.IsNullOrWhiteSpace(supplierId))
                 return new List<CustomerOption>();
             //
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE SupplierID = @SupplierID AND Enabled = 1 ORDER BY Title ASC";
+            string whereCondition = string.Empty;
+
+
+            if (customerType != (int)CustomerEnum.CustomerType.NONE)
+            {
+                whereCondition += " AND TypeID = '" + CustomerTypeService.GetCustomerTypeIDByType(customerType) + "'";
+            }
+            //
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE SupplierID = @SupplierID " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
             return _connection.Query<CustomerOption>(sqlQuery, new { SupplierID = supplierId }).ToList();
         }
 
@@ -825,28 +833,7 @@ namespace WebCore.Services
             }
 
         }
-        public static string GetInforType(string typeId, string path)
-        {
-            try
-            {
-                var service = new CustomerTypeService();
-                string typeName = CustomerTypeService.GetNameByID(typeId);
-                if (CustomerTypeService.GetCustomerType(typeId) == (int)CustomerEnum.CustomerType.AGENT)
-                {
-                    int level = CustomerService.GetLevelByPath(path);
-                    string strLevel = level + "";
-                    if (level < 10)
-                        strLevel = "0" + level;
-                    //
-                    return typeName + " cấp: " + strLevel;
-                }
-                return typeName;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+
         public static int GetLevelByPath(string path)
         {
             if (string.IsNullOrWhiteSpace(path))

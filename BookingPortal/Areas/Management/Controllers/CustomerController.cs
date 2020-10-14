@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebCore.Core;
+using WebCore.ENM;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 using WebCore.Services;
@@ -144,7 +145,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 var service = new CustomerService();
-                var data = service.GetCustomerBySupplierIDOption(model.ID);
+                var data = service.GetCustomerBySupplierIDOption(model.ID, (int)CustomerEnum.CustomerType.AGENT);
                 if (data.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //

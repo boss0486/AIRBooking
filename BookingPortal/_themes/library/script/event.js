@@ -14,7 +14,7 @@
 
 $(function () {
     //
-    $('body').on('keypress', '[data-keyenter], input[type=text], input[type=password]', function (e) {
+    $('body').on('keypress', '[data-keyenter], input', function (e) {
         console.log('ok');
         if (e.keyCode === 13) {
             var $action = $($(this).parents('[data-keyenter]').data('keyenter'));
@@ -30,7 +30,7 @@ $(function () {
         format: 'dd-mm-yyyy',
         startDate: '01-07-2020',
         todayHighlight: true,
-        language: 'kr'
+        language: 'vi'
     }).on('changeDate', function (index, item) {
         $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
         $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
@@ -40,7 +40,7 @@ $(function () {
         format: 'dd-mm-yyyy',
         startDate: $("[data-datesearch='true'] #txtStartDate").val(),
         todayHighlight: true,
-        language: 'kr'
+        language: 'vi'
     }).on('changeDate', function (index, item) {
         $("[data-datesearch='true'] #ddlTimeExpress")[0].selectedIndex = 0;
         $("[data-datesearch='true'] #ddlTimeExpress").selectpicker('refresh');
@@ -56,9 +56,9 @@ $(function () {
 
     $("[data-date='true'], [data-date='false']").datepicker({
         format: 'dd-mm-yyyy',
-        startDate: '01-07-2020',
+        startDate: $(this).val(),
         todayHighlight: true,
-        language: 'kr'
+        language: 'vi'
     }).on('changeDate', function (index, item) {
         $('.datepicker').hide();
         $(this).blur();

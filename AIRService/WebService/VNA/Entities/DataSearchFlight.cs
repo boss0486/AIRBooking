@@ -74,14 +74,17 @@ namespace ApiPortalBooking.Models
     }
 
 
-    public class FlightAirTicketCondition: TokenModel
+    public class FlightAirTicketCondition
     {
-        public List<AirTicketConditionFee> AirTicketConditionFee { get; set; }
         public int FlightNo { get; set; }
         public string AirlineType { get; set; }
+        public int AirEquipType { get; set; }
         public DateTime DepartureDateTime { get; set; }
         public string DestinationLocation { get; set; }
         public string OriginLocation { get; set; }
+        public DateTime ArrivalDateTime { get; set; }
+        public AirTicketCondition04 AirTicketCondition04 { get; set; }
+        public AirTicketCondition05 AirTicketCondition05 { get; set; }
     }
     
 }

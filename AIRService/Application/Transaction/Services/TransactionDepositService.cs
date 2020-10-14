@@ -223,7 +223,7 @@ namespace WebCore.Services
                         return Notifization.Error("Không thể cập nhật giao dịch");
 
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerHistory(new WalletCustomerDepositHistoryCreateModel
+                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerDepositHistory(new WalletCustomerDepositHistoryCreateModel
                     {
                         CustomerID = customerId,
                         Amount = amount,

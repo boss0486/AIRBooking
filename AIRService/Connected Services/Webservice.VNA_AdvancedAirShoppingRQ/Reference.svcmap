@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="31704e81-9f21-4989-8208-1d3a897da8b2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShoppingRQ_v5-4-0.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AdvancedAirShoppingRQRS_v5-4-0.xsd" MetadataType="Schema" ID="66d4a554-f5b1-4c6a-a201-7fb770da4001" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShoppingRQRS_v5-4-0.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="74ae0b8c-3e49-4830-8502-25b0736a3af5" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/xlink.xsd" />
+    <MetadataFile FileName="OTA2003B.xsd" MetadataType="Schema" ID="f04b2916-67eb-43ab-93af-0cfb7e1b1661" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShopping_CommonTypes_v5-4-0.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="af858ef6-2e59-4f0d-a205-d595a840443e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="AdvancedAirShoppingRQ_v5-4-0.wsdl" MetadataType="Wsdl" ID="c49b84b0-74de-4357-8d85-162bb80fd4e3" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShoppingRQ_v5-4-0.wsdl" />
+    <MetadataFile FileName="OTA2003B1.xsd" MetadataType="Schema" ID="c1d936bb-6d84-4757-8acc-9b4e294fc961" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShoppingRS_v5-4-0.xsd" />
+    <MetadataFile FileName="OTA2003B2.xsd" MetadataType="Schema" ID="9fa393a0-82ce-4150-9a44-40f1aa93cd2a" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/AdvancedAirShoppingRQ_v5-4-0.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="548429de-2016-45be-95f1-b6040a59271c" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/xml.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="b4ec153b-fc88-4f55-84c4-726641065f64" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/wsse.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="8bbf3a28-8651-4985-8fdd-82850c5cd85e" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/envelope.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="1b1310f6-02d3-4a2e-bd60-538ce25cc718" SourceId="1" SourceUrl="http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/msg-header-2_0.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

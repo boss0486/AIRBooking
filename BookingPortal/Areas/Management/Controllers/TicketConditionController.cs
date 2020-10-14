@@ -25,11 +25,11 @@ namespace WebApplication.Management.Controllers
         // ******************************************************************************************************************************
         [HttpPost]
         [Route("Action/Condition04")]
-        public ActionResult AirTicketCondition(AirTicketConditionFeeConfigModel model)
+        public ActionResult AirTicketCondition04(AirTicketCondition04ConfigModel model)
         {
             try
             {
-                using (var service = new AirTicketConditionFeeService())
+                using (var service = new AirTicketCondition04Service())
                     return service.ConditionFee04(model);
             }
             catch (Exception ex)
@@ -37,15 +37,62 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
 
-        } 
+        }
         [HttpPost]
-        [Route("Action/EventEnd")]
-        public ActionResult AirTicketConditionEventEnd(AirTicketConditionEventEndModel model)
+        [Route("Action/EventEnd04")]
+        public ActionResult AirTicketCondition04EventEnd(AirTicketCondition04EventEndModel model)
         {
             try
             {
-                using (var service = new AirTicketConditionFeeService())
-                    return service.AirTicketConditionEventEnd(model);
+                using (var service = new AirTicketCondition04Service())
+                    return service.AirTicketCondition04EventEnd(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+        // ******************************************************************************************************************************
+        [HttpPost]
+        [Route("Action/Condition05")]
+        public ActionResult AirTicketCondition05(AirTicketCondition05ConfigModel model)
+        {
+            try
+            {
+                using (var service = new AirTicketCondition05Service())
+                    return service.ConditionFee05Setting(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+        [HttpPost]
+        [Route("Action/EventEnd05")]
+        public ActionResult AirTicketCondition05EventEnd(AirTicketConditionFlightLocationID05Model model)
+        {
+            try
+            {
+                using (var service = new AirTicketCondition05Service())
+                    return service.AirTicketCondition05EventEnd(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("Action/GetCondition05")]
+        public ActionResult GetCondition05(AirTicketConditionFlightLocationID05Model model)
+        {
+            try
+            {
+                using (var service = new AirTicketCondition05Service())
+                    return Notifization.Data("Ok", service.GetAirTicketConditionByID(model));
             }
             catch (Exception ex)
             {

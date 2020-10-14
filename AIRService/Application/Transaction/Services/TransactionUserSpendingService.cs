@@ -100,8 +100,8 @@ namespace WebCore.Services
                     string title = "Thay đổi hạn mức";
                     string summary = model.Summary;
                     string customerId = model.CustomerID;
-                    string userIdSend = Helper.Current.UserLogin.IdentifierID;
-                    string userIdReceived = model.UserIDReceived;
+                    string sendUserId = Helper.Current.UserLogin.IdentifierID;
+                    string receivedUserId = model.ReceivedUserID;
                     double amount = model.Amount;
                     int enabled = model.Enabled;
                     string languageId = Helper.Current.UserLogin.LanguageID;
@@ -134,11 +134,11 @@ namespace WebCore.Services
                     if (customer == null)
                         return Notifization.Invalid("Khách hàng không hợp lệ");
                     //
-                    if (string.IsNullOrWhiteSpace(userIdReceived))
+                    if (string.IsNullOrWhiteSpace(receivedUserId))
                         return Notifization.Invalid("Vui lòng chọn nhân viên");
                     //
-                    userIdReceived = userIdReceived.Trim().ToLower();
-                    var userReceive = userLoginService.GetAlls(m => m.ID == userIdReceived, transaction: _transaction).FirstOrDefault();
+                    receivedUserId = receivedUserId.Trim().ToLower();
+                    var userReceive = userLoginService.GetAlls(m => m.ID == receivedUserId, transaction: _transaction).FirstOrDefault();
                     if (userReceive == null)
                         return Notifization.Invalid("Nhân viên không hợp lệ");
                     //
@@ -167,8 +167,8 @@ namespace WebCore.Services
                         CustomerID = customerId,
                         Title = title,
                         Summary = summary,
-                        UserIDSend = userIdSend,
-                        UserIDReceived = userIdReceived,
+                        SendUserID = sendUserId,
+                        ReceivedUserID = receivedUserId,
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -181,30 +181,30 @@ namespace WebCore.Services
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerHistory(new WalletCustomerDepositHistoryCreateModel
+                    var balanceCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
                     {
-                        CustomerID = customerId,
+                        CustomerID = currentUserId,
                         Amount = amount,
-                        NewBalance = balanceCustomer.SpendingBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.OUT,
-                        TransactionOriginalType = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DEPOSIT
+                        NewBalance = balanceCustomer.SpendingBalance - amount,
+                        TransactionType = (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT,
+                        TransactionOriginal = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.NONE
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
                     // #2. tang han muc cho user
                     // update balance for user ************************************************************************************************************************************
-                    WalletUserMessageModel balanceUser = WalletService.GetBalanceOfUserByUserID(userIdReceived, dbConnection: _connection, dbTransaction: _transaction);
+                    WalletUserMessageModel balanceUser = WalletService.GetBalanceOfUserByUserID(receivedUserId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceUser.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     //
-                    var balanceUserUpdateStatus = WalletService.ChangeBalanceForUser(new WalletUserChangeModel { CustomerID = customerId, UserID = userIdReceived, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    var balanceUserUpdateStatus = WalletService.ChangeBalanceForUser(new WalletUserChangeModel { CustomerID = customerId, UserID = receivedUserId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceUserUpdateStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
 
                     // create histories for balance changed
-                    var balanceUserHistoryStatus = WalletHistoryService.LoggerWalletUserHistory(new WalletUserHistoryCreateModel
+                    var balanceUserHistoryStatus = WalletHistoryService.LoggerWalletUserSpendingHistory(new WalletUserHistoryCreateModel
                     {
                         CustomerID = customerId,
-                        UserID = userIdReceived,
+                        UserID = receivedUserId,
                         Amount = amount,
                         NewBalance = balanceUser.Balance + amount,
                         TransactionType = (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT

@@ -162,7 +162,7 @@ namespace WebCore.Services
             flightService.Remove(airport.ID);
             return Notifization.Success(MessageText.DeleteSuccess);
         }
- 
+
         //##############################################################################################################################################################################################################################################################   
         public List<AirportOption> DataOption()
         {
@@ -188,6 +188,49 @@ namespace WebCore.Services
                         if (!string.IsNullOrWhiteSpace(item.IATACode) && item.IATACode.ToLower() == id.ToLower())
                             select = "selected";
                         result += "<option value='" + item.IATACode + "'" + select + ">" + item.Title + " - " + item.IATACode + "</option>";
+                    }
+                    return result;
+                }
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public List<AirportFromToOption> FlightFromToData()
+        {
+            try
+            {
+                AirportService airportService = new AirportService();
+                string sqlQuery = @"SELECT CONCAT(a1.IATACode,'-',a2.IATACode) AS ID, a1.Title as 'Departure', a2.Title AS 'Destination' FROM App_Airport a1 RIGHT JOIN App_Airport as a2 On a1.IATACode != a2.IATACode ORDER BY a1.IATACode";
+                List<AirportFromToOption> flightOptions = _connection.Query<AirportFromToOption>(sqlQuery).ToList();
+                if (flightOptions.Count == 0)
+                    return new List<AirportFromToOption>();
+                //
+                return flightOptions;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static string FlightFromToDropdownList(string id)
+        {
+            try
+            {
+                AirportService airportService = new AirportService();
+                var dtList = airportService.FlightFromToData();
+                if (dtList.Count > 0)
+                {
+                    string result = string.Empty;
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(item.ID) && item.ID.ToLower() == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data = '" + item.ID + "'" + select + ">" + item.Departure + " -> " + item.Destination + " (x)</option>";
                     }
                     return result;
                 }

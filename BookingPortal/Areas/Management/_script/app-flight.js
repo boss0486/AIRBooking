@@ -470,19 +470,7 @@ $(document).on("change", "#ddlAreaID", function () {
     }
 });
 //
-$(document).on('click', '#cbxActive', function () {
-    if ($(this).hasClass('actived')) {
-        // remove
-        $(this).children('i').removeClass('fa-check-square');
-        $(this).children('i').addClass('fa-square');
-        $(this).removeClass('actived');
-    }
-    else {
-        $(this).children('i').addClass('fa-check-square');
-        $(this).children('i').removeClass('fa-square');
-        $(this).addClass('actived');
-    }
-});
+ 
 //
 $(document).on('', '.img-caption-text', function () {
     $('.new-box-preview img').click();
