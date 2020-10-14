@@ -14,7 +14,7 @@
     string languageId = "";
     string createdBy = "";
     string createdDate = "";
-    string enabled = "None";
+    string enabled = "";
     try
     {
         if (Model != null)
@@ -28,11 +28,7 @@
             enabled = "None";
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
-                enabled = "ENABLED";
-            }
-            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
-            {
-                enabled = "DISABLE";
+                enabled = "checked";
             }
         }
     }

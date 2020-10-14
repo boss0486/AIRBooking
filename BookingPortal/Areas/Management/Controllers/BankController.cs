@@ -37,8 +37,7 @@ namespace WebApplication.Management.Controllers
             //
             return View();
         }
-
-        [Route("Action/DataList")]
+         
         public ActionResult Details(string id)
         {
             BankService service = new BankService();

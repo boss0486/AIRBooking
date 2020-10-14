@@ -15,7 +15,7 @@ namespace WebApplication.Management.Controllers
     [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("ProductProvider")]
-    public class ProductProviderController : Controller
+    public class ProductProviderController : CMSController
     {
         // GET: BackEnd/ProductProvider
         public ActionResult DataList()
@@ -26,12 +26,23 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-        public ActionResult Update()
+        public ActionResult Update(string id)
         {
+            ProductProviderService service = new ProductProviderService();
+            ProductProvider model = service.ProductProviderByID(id);
+            if (model != null)
+                return View(model);
+            //
             return View();
-        }
-        public ActionResult Details()
+        } 
+
+        public ActionResult Details(string id)
         {
+            ProductProviderService service = new ProductProviderService();
+            ProductProvider model = service.ProductProviderByID(id);
+            if (model != null)
+                return View(model);
+            //
             return View();
         }
         //##########################################################################################################################################################################################################################################################

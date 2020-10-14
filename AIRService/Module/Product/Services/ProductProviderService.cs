@@ -145,13 +145,12 @@ namespace WebCore.Services
                 }
             }
         }
-        public ProductProvider UpdateForm(string id)
+        public ProductProvider ProductProviderByID(string id)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(id))
                     return null;
-                //
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_ProductProvider WHERE ID = @Query";
