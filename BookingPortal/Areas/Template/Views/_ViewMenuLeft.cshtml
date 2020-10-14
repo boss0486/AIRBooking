@@ -3,7 +3,7 @@
     try
     {
         WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
-        List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemData();
+        List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemUserLogin();
         List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
         string metaController = Helper.Page.MetaSEO.ControllerText;
         MenuItemSubLayout SubMenuItemByLevel(string parentId, List<MenuItemLayout> allData, string controllerText)
@@ -95,7 +95,8 @@
             </ul>
         </div>
     }
-    catch (Exception)
+    catch (Exception es)
     {
+        @es
     }
 }

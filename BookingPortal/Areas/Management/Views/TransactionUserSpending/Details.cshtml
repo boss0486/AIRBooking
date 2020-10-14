@@ -32,7 +32,7 @@
             title = Model.Title;
             summary = Model.Summary;
             amount = Model.Amount;
-            supplierCodeId = Model.UserIDReceived;
+            supplierCodeId = Model.ReceivedUserID;
             customerCodeId = Model.CustomerID;
             createdBy = Model.CreatedBy;
             createdDate = Model.CreatedDate;
@@ -59,7 +59,7 @@
             }
             //
             SupplierService supplierService = new SupplierService();
-            var supplier = supplierService.GetSupplierModel(Model.UserIDSend);
+            var supplier = supplierService.GetSupplierModel(Model.SendUserID);
             if (supplier != null)
             {
                 supplierName = supplier.Title;

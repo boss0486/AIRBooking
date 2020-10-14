@@ -84,7 +84,7 @@ namespace WebCore.Services
         }
 
 
-        public WalletHistoryMessageModel WalletUserHistoryCreate(WalletUserHistoryCreateModel model,IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public WalletHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserHistoryCreateModel model,IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (model == null)
                 return new WalletHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };

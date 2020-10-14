@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:xsd1="http://www.opentravel.org/OTA/2003/05" xmlns:tns="https://webservices.sabre.com/websvc" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="https://webservices.sabre.com/websvc" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema>
+      <xs:import schemaLocation="AdvancedAirShoppingRQRS_v5-4-0.xsd" namespace="http://www.opentravel.org/OTA/2003/05" />
+      <xs:import schemaLocation="msg-header-2_0.xsd" namespace="http://www.ebxml.org/namespaces/messageHeader" />
+      <xs:import schemaLocation="wsse.xsd" namespace="http://schemas.xmlsoap.org/ws/2002/12/secext" />
+    </xs:schema>
+  </types>
+  <message name="GetAirShoppingInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="xsd1:OTA_AirLowFareSearchRQ" />
+  </message>
+  <message name="GetAirShoppingOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="xsd1:OTA_AirLowFareSearchRS" />
+  </message>
+  <portType name="AdvancedAirShoppingPortType">
+    <operation name="AdvancedAirShoppingRQ">
+      <input message="tns:GetAirShoppingInput" />
+      <output message="tns:GetAirShoppingOutput" />
+    </operation>
+  </portType>
+  <binding name="AdvancedAirShoppingBinding" type="tns:AdvancedAirShoppingPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="AdvancedAirShoppingRQ">
+      <soap:operation soapAction="AdvancedAirShoppingRQ" />
+      <input>
+        <soap:header message="tns:GetAirShoppingInput" part="header" use="literal" />
+        <soap:header message="tns:GetAirShoppingInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="tns:GetAirShoppingOutput" part="header" use="literal" />
+        <soap:header message="tns:GetAirShoppingOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="AdvancedAirShoppingService">
+    <port name="AdvancedAirShoppingPortType" binding="tns:AdvancedAirShoppingBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+  </service>
+</definitions>

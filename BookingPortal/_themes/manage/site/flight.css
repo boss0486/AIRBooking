@@ -166,7 +166,7 @@
 
 
 .book-in table {
-    background: #a2d5d0;
+     
 }
 
     .book-in table.table-bordered tr td, .book-in table.table-bordered tr th {
@@ -232,19 +232,14 @@
         font-size: 17px;
     }
 
-.book-in .-warning {
-    color: #FF9800;
-    display: inline-block;
-    padding: 3px 0px;
-    width: 100%;
+ 
+
+
+
+.book-in .total-itinerary label {
+    font-size: 16px;
 }
 
-
-
-.book-in table.table-bordered tr .total-itinerary label {
-    font-size: 18px;
+.book-in .total-itinerary label.total-itinerary-price {
+    color: #F00;
 }
-
-    .book-in table.table-bordered tr .total-itinerary .total-itinerary-price {
-        color: #F00;
-    }

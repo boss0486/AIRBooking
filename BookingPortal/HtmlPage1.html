@@ -1,36 +1,43 @@
-﻿    System.Net.WebClient _web = new System.Net.WebClient();
-                                String dataAOC = _web.DownloadString('http://apicoin.xyz/api/account/eth/address/create?api_token=FgtyDqrIjWjNEwotPzD3QKIzJpVmnIWk4UiNVMHEirfQhWcrOFKHe8XWuUAy');
-                                Newtonsoft.Json.Linq.JObject json = (Newtonsoft.Json.Linq.JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(dataAOC);
-                                string strR = json.Value<string>
-	('address');
-	if (strR.Trim() != string.Empty && !string.IsNullOrEmpty(strR.Trim()))
-	{
-	strSysAddress = strR;
-	string strCreate = Create_Wallet(strSysAddress, 3, userID, 0.0, strIpLocal, 'ETH');
-
-	if (strCreate.IndexOf('#CreateWalletSuccess') < 0)
-	{
-	return createResponse('504', '#ServerIsBusy');
-	}
-	}
-	else
-	return createResponse('504', '#ServerIsBusy');
-
-
-	{
-	'ReportData': {
-	'ReportType': 'Daily',
-	'Host': 'http://123.24.199.154:2518/',
-	'Time': '22:30',
-	'UrlAction': 'APIBooking/Report/Action/EPR-Rpdata'
-	},
-	'Authentication': {
-	'UserName': 'api-booking',
-	'Password': '***********'
-	}
-	}
-
-
-	<li class=''>
-		<a href='@_path' class='@_cls aa'><span><i class='@item.IconFont' aria-hidden='true'></i>&nbsp; @item.Title</span></a>
-	</li>
+﻿<OTA_AirLowFareSearchRQ Target='Production' Version='5.1.0'
+                        xmlns='http://www.opentravel.org/OTA/2003/05'>
+    <POS>
+        <Source PseudoCityCode='ABM'>
+        <RequestorID Type='1' ID='1'>
+            <CompanyName Code='SSW'>SSW</CompanyName>
+        </RequestorID>
+        </Source>
+    </POS>
+    <OriginDestinationInformation RPH='1'>
+        <DepartureDateTime>2018-01-24T00:00:00</DepartureDateTime>
+        <OriginLocation LocationCode='SYD' />
+        <DestinationLocation LocationCode='AKL' />
+        <TPA_Extensions>
+            <SegmentType Code='O' />
+        </TPA_Extensions>
+    </OriginDestinationInformation>
+    <OriginDestinationInformation RPH='2'>
+        <DepartureDateTime>2018-02-24T00:00:00</DepartureDateTime>
+        <OriginLocation LocationCode='AKL' />
+        <DestinationLocation LocationCode='SYD' />
+        <TPA_Extensions>
+            <SegmentType Code='O' />
+        </TPA_Extensions>
+    </OriginDestinationInformation>
+    <TravelPreferences ETicketDesired='false'>
+        <CabinPref Cabin='Y' />
+    </TravelPreferences>
+    <TravelerInfoSummary>
+        <SeatsRequested>1</SeatsRequested>
+        <AirTravelerAvail>
+            <PassengerTypeQuantity Code='ADT' Quantity='1' />
+        </AirTravelerAvail>
+        <PriceRequestInformation></PriceRequestInformation>
+    </TravelerInfoSummary>
+    <TPA_Extensions>
+        <IntelliSellTransaction>
+            <RequestType Name='ADVBRD' />
+            <ServiceTag Name='VA' />
+        </IntelliSellTransaction>
+        <SplitTaxes ByLeg='true' ByFareComponent='true' />
+    </TPA_Extensions>
+</OTA_AirLowFareSearchRQ>

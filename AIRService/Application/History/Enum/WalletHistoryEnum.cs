@@ -11,12 +11,13 @@ namespace WebCore.Entities
     {
         public enum WalletHistoryTransactionType
         {
-            None = 0,
+            NONE = 0,
             INPUT = 1,
             OUTPUT = 2
         }
         public enum WalletHistoryTransactionOriginal
         {
+            NONE = 0,
             DEPOSIT = 1,
             DIRECTLY = 2
         }

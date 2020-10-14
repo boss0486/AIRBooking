@@ -96,13 +96,13 @@ namespace AIRService.Service
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
             //
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.PassengerType;
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.BaseFare.PassengerType;
             //
             //_itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.FareBasisCode = model.FareBasisCode;
             //
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
-            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = model.BaseFare.Amount;
+            _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = (float)model.BaseFare.Amount;
             _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.CurrencyCode = model.BaseFare.CurrencyCode;
             //
             _airTaxRQ.ItineraryInfos[0] = _itineraryInfo;
@@ -196,13 +196,13 @@ namespace AIRService.Service
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdown();
                 //
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerType();
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.PassengerType;
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerType.Code = model.BaseFare.PassengerType;
                 //
                 //_itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.FareBasisCode = model.FareBasisCode;
                 //
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFare();
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare = new AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRQItineraryInfoReservationItemsItemAirFareInfoPTC_FareBreakdownPassengerFareBaseFare();
-                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = model.BaseFare.Amount;
+                _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.Amount = (float)model.BaseFare.Amount;
                 _itineraryInfo.ReservationItems.Item.AirFareInfo.PTC_FareBreakdown.PassengerFare.BaseFare.CurrencyCode = model.BaseFare.CurrencyCode;
                 //
                 _airTaxRQ.ItineraryInfos[cnt] = _itineraryInfo;

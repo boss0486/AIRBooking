@@ -121,12 +121,12 @@ namespace WebApplication.Management.Controllers
         // ******************************************************************************************************************************
 
         // GET: Booking
-        [HttpGet]
+        [HttpPost]
+        [Route("Action/Test")]
         public ActionResult Test()
         {
-            //var a = new VNAService();
-            //return a.TicketSearch(model);
-            return Notifization.TEST("ok");
+            VNA_SearchService searchService = new VNA_SearchService();
+            return searchService.Test01();
         }
 
         /// <summary>
@@ -220,44 +220,9 @@ namespace WebApplication.Management.Controllers
             }
         }
 
-        /// <summary>
-        /// Fee basic
-        /// </summary>
-        /// <param name="model">FlightFareModel</param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Action/FeeBase")]
-        public ActionResult FeeBase(List<FlightFareModel> models)
-        {
-            try
-            {
-                var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.TaxFee(models);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(":::" + ex);
-                //return Notifization.NotService;
-            }
-        }
-        [HttpPost]
-        public ActionResult FeeBase1(List<FlightFareModel> models)
-        {
-            try
-            {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.TaxFeeTest(models);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(":::" + ex);
-                //return Notifization.NotService;
-            }
-        }
-
         [HttpPost]
         [Route("Action/GetFeeBasic")]
-        public ActionResult GetFeeBasic(List<FeeTaxBasicModel> models)
+        public ActionResult GetFeeBasic(List<TaxFeeModel> models)
         {
             try
             {
@@ -277,13 +242,13 @@ namespace WebApplication.Management.Controllers
         /// <param name="model">FlightSearchModel</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("Action/Book")]
-        public ActionResult Book(Request_BookModel model)
+        [Route("Action/Booking")]
+        public ActionResult TicketOrder(Request_BookModel model)
         {
             try
             {
                 var vNASearchService = new VNA_SearchService();
-                return vNASearchService.BookVe(model);
+                return vNASearchService.TicketOrder(model);
             }
             catch (Exception ex)
             {
@@ -398,7 +363,6 @@ namespace WebApplication.Management.Controllers
         {
             return Notifization.Data(":::", VNA_AuthencationService.GetSession());
         }
-
-
+         
     }
 }

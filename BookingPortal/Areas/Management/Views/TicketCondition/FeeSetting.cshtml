@@ -105,20 +105,6 @@
                string id = "";
                bool isApplied05 = false;
                string resbookDesigCode = "";
-               //List<string> resbookDesigCodes = new List<string>();
-               //AirTicketCondition05Service airTicketCondition05Service = new AirTicketCondition05Service();
-               //AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls().FirstOrDefault();
-
-               //if (airTicketCondition05 != null)
-               //{
-               //    id = airTicketCondition05.ID;
-               //    resbookDesigCode = airTicketCondition05.ResbookDesigCode;
-               //    if (!string.IsNullOrWhiteSpace(resbookDesigCode) && resbookDesigCode.Contains(','))
-               //    {
-               //        resbookDesigCodes = resbookDesigCode.Split(',').ToList();
-               //    }
-               //    isApplied05 = airTicketCondition05.IsApplied;
-               //}
            }
 
             <div id="form05" class="col-md-6 m-t-30">
@@ -187,7 +173,7 @@
                     </div>
                 </div>
                 <div class="form-group text-right m-t-30">
-                    <button id="btEventEnd05" type="button" class="btn btn-danger" data-conditionId="@conditionId04">Không áp dụng</button>
+                    <button id="btEventEnd05" type="button" class="btn btn-danger">Không áp dụng</button>
                     <button id="btnApply05" type="button" class="btn btn-primary">Áp dụng</button>
                 </div>
                 <div class="form-group">

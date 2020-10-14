@@ -1,10 +1,13 @@
-﻿using ApiPortalBooking.Models;
+﻿using AIRService.WS.Helper;
+using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -168,6 +171,129 @@ namespace AIRService.WS.Service
             //    }
             //}
 
-        } 
+        }
+
+
+        public string FareLLS2()
+        {
+            HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+            XmlDocument soapEnvelopeXml = new XmlDocument();  
+            string stringXML = @"<?xml version='1.0' encoding='UTF-8' ?><OTA_AirLowFareSearchRQ Target='Production' Version='5.1.0' xmlns='http://www.opentravel.org/OTA/2003/05'>
+    <POS>
+        <Source PseudoCityCode='ABM'>
+        <RequestorID Type='1' ID='1'>
+            <CompanyName Code='SSW'>SSW</CompanyName>
+        </RequestorID>
+        </Source>
+    </POS>
+    <OriginDestinationInformation RPH='14'>
+        <DepartureDateTime>2021-01-22T07:00:00</DepartureDateTime>
+        <OriginLocation LocationCode='HAN' />
+        <DestinationLocation LocationCode='SGN' />
+        <TPA_Extensions>
+            <SegmentType Code='O' />
+        </TPA_Extensions>
+    </OriginDestinationInformation>
+    <OriginDestinationInformation RPH='13'>
+        <DepartureDateTime>2021-01-28T06:15:00</DepartureDateTime>
+        <OriginLocation LocationCode='SGN' />
+        <DestinationLocation LocationCode='HAN' />
+        <TPA_Extensions>
+            <SegmentType Code='O' />
+        </TPA_Extensions>
+    </OriginDestinationInformation>
+    <TravelPreferences ETicketDesired='false'>
+        <CabinPref Cabin='Y' />
+    </TravelPreferences>
+    <TravelerInfoSummary>
+        <SeatsRequested>1</SeatsRequested>
+        <AirTravelerAvail>
+            <PassengerTypeQuantity Code='ADT' Quantity='1' />
+        </AirTravelerAvail>
+        <PriceRequestInformation></PriceRequestInformation>
+    </TravelerInfoSummary>
+    <TPA_Extensions>
+        <IntelliSellTransaction>
+            <RequestType Name='ADVBRD' />
+            <ServiceTag Name='VA' />
+        </IntelliSellTransaction>
+        <SplitTaxes ByLeg='true' ByFareComponent='true' />
+    </TPA_Extensions>
+</OTA_AirLowFareSearchRQ>
+
+";
+            //stringXML += "<?xml version='1.0' encoding='UTF-8' ?>";
+            //stringXML += "<OTA_AirLowFareSearchRQ xmlns:xs='http://www.w3.org/2001/XMLSchema' Target='Production' Version='5.4.0' xmlns='http://www.opentravel.org/OTA/2003/05' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' ResponseType='OTA' ResponseVersion='5.4.0'>";
+            //stringXML += "	<POS>";
+            //stringXML += "		<Source PseudoCityCode='WIN'>";
+            //stringXML += "		<RequestorID Type='0.AAA.X' ID='REQ.ID'>";
+            //stringXML += "			<CompanyName Code='SSW' />";
+            //stringXML += "		</RequestorID>";
+            //stringXML += "		</Source>";
+            //stringXML += "	</POS>";
+            //stringXML += "	<OriginDestinationInformation RPH='1'>";
+            //stringXML += "		<DepartureDateTime>2018-02-08T00:00:00</DepartureDateTime>";
+            //stringXML += "		<OriginLocation LocationCode='SYD' />";
+            //stringXML += "		<DestinationLocation LocationCode='BNE' />";
+            //stringXML += "		<TPA_Extensions>";
+            //stringXML += "			<SegmentType Code='O' />";
+            //stringXML += "		</TPA_Extensions>";
+            //stringXML += "	</OriginDestinationInformation>";
+            //stringXML += "	<OriginDestinationInformation RPH='2'>";
+            //stringXML += "		<DepartureDateTime>2018-02-15T00:00:00</DepartureDateTime>";
+            //stringXML += "		<OriginLocation LocationCode='BNE' />";
+            //stringXML += "		<DestinationLocation LocationCode='SYD' />";
+            //stringXML += "		<TPA_Extensions>";
+            //stringXML += "			<SegmentType Code='O' />";
+            //stringXML += "		</TPA_Extensions>";
+            //stringXML += "	</OriginDestinationInformation>";
+            //stringXML += "	<TravelPreferences>";
+            //stringXML += "		<TPA_Extensions>";
+            //stringXML += "			<NumTrips Number='10' />";
+            //stringXML += "		</TPA_Extensions>";
+            //stringXML += "		<InterlineBrands>";
+            //stringXML += "			<Brand Code='GW' />";
+            //stringXML += "			<Brand Code='EV' />";
+            //stringXML += "			<Brand Code='FD' />";
+            //stringXML += "		</InterlineBrands>";
+            //stringXML += "	</TravelPreferences>";
+            //stringXML += "	<TravelerInfoSummary>";
+            //stringXML += "		<SeatsRequested>1</SeatsRequested>";
+            //stringXML += "		<AirTravelerAvail>";
+            //stringXML += "			<PassengerTypeQuantity Code='ADT' Quantity='1' />";
+            //stringXML += "		</AirTravelerAvail>";
+            //stringXML += "		<PriceRequestInformation>";
+            //stringXML += "			<TPA_Extensions></TPA_Extensions>";
+            //stringXML += "		</PriceRequestInformation>";
+            //stringXML += "	</TravelerInfoSummary>";
+            //stringXML += "	<TPA_Extensions>";
+            //stringXML += "		<IntelliSellTransaction Debug='0'>";
+            //stringXML += "			<RequestType Name='ADVBRD' />";
+            //stringXML += "			<ServiceTag Name='VA' />";
+            //stringXML += "		</IntelliSellTransaction>";
+            //stringXML += "		<SplitTaxes ByLeg='true' ByFareComponent='true' />";
+            //stringXML += "	</TPA_Extensions>";
+            //stringXML += "</OTA_AirLowFareSearchRQ>";
+
+            soapEnvelopeXml.LoadXml(stringXML);
+            using (Stream stream = request.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                {
+                    string soapResult = rd.ReadToEnd();
+                    soapEnvelopeXml = new XmlDocument();
+                    soapEnvelopeXml.LoadXml(soapResult);
+                    return soapEnvelopeXml.InnerText;
+                }
+            }
+
+        }
+
+
+
     }
 }

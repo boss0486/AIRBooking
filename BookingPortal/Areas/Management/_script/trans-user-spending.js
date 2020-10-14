@@ -183,7 +183,7 @@ var TransactionSpendingController = {
         //
         var model = {
             CustomerID: ddlCustomer,
-            UserIDReceived: ddlEmployee,
+            ReceivedUserID: ddlEmployee,
             Amount: txtAmount,
             Summary: txtSummary,
             Enabled: enabled

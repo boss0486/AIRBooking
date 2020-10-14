@@ -70,7 +70,7 @@ namespace WebCore.Services
                 }
                 else  // emp of supplier
                 {
-                    whereCondition += " AND UserIDSend = '" + userId + "'";
+                    whereCondition += " AND SendUserID = '" + userId + "'";
                 }
             }
             //
@@ -172,7 +172,7 @@ namespace WebCore.Services
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerHistory(new WalletCustomerDepositHistoryCreateModel
+                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerDepositHistory(new WalletCustomerDepositHistoryCreateModel
                     {
                         CustomerID = customerId,
                         Amount = amount,

@@ -22,8 +22,8 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string UserIDSend { get; set; }
-        public string UserIDReceived { get; set; }
+        public string SendUserID { get; set; }
+        public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
     }
@@ -34,7 +34,7 @@ namespace WebCore.Entities
         public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string UserIDReceived { get; set; }
+        public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public int Enabled { get; set; }
 
@@ -55,8 +55,8 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string UserIDSend { get; set; }
-        public string UserIDReceived { get; set; }
+        public string SendUserID { get; set; }
+        public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public bool Status { get; set; }
     }

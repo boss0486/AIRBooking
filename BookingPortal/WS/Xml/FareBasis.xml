@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OTA_AirLowFareSearchRQ xmlns:xs="http://www.w3.org/2001/XMLSchema" Target="Production" Version="5.4.0" xmlns="http://www.opentravel.org/OTA/2003/05" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ResponseType="OTA" ResponseVersion="5.4.0">
+  <POS>
+    <Source PseudoCityCode="WIN">
+      <RequestorID Type="0.AAA.X" ID="REQ.ID">
+        <CompanyName Code="SSW"/>
+      </RequestorID>
+    </Source>
+  </POS>
+  <OriginDestinationInformation RPH="1">
+    <DepartureDateTime>2018-02-08T00:00:00</DepartureDateTime>
+    <OriginLocation LocationCode="SYD"/>
+    <DestinationLocation LocationCode="BNE"/>
+    <TPA_Extensions>
+      <SegmentType Code="O"/>
+    </TPA_Extensions>
+  </OriginDestinationInformation>
+  <OriginDestinationInformation RPH="2">
+    <DepartureDateTime>2018-02-15T00:00:00</DepartureDateTime>
+    <OriginLocation LocationCode="BNE"/>
+    <DestinationLocation LocationCode="SYD"/>
+    <TPA_Extensions>
+      <SegmentType Code="O"/>
+    </TPA_Extensions>
+  </OriginDestinationInformation>
+  <TravelPreferences>
+    <TPA_Extensions>
+      <NumTrips Number="10"/>
+    </TPA_Extensions>
+    <InterlineBrands>
+      <Brand Code="GW"/>
+      <Brand Code="EV"/>
+      <Brand Code="FD"/>
+    </InterlineBrands>
+
+  </TravelPreferences>
+  <TravelerInfoSummary>
+    <SeatsRequested>1</SeatsRequested>
+    <AirTravelerAvail>
+      <PassengerTypeQuantity Code="ADT" Quantity="1"/>
+    </AirTravelerAvail>
+    <PriceRequestInformation>
+      <TPA_Extensions>
+
+      </TPA_Extensions>
+    </PriceRequestInformation>
+  </TravelerInfoSummary>
+  <TPA_Extensions>
+    <IntelliSellTransaction Debug="0">
+      <RequestType Name="ADVBRD"/>
+      <ServiceTag Name="VA"/>
+    </IntelliSellTransaction>
+    <SplitTaxes ByLeg = "true" ByFareComponent = "true"/>
+  </TPA_Extensions>
+</OTA_AirLowFareSearchRQ>

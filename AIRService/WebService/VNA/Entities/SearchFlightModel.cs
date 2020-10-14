@@ -41,9 +41,7 @@ namespace ApiPortalBooking.Models
         public DateTime DepartureDateTime { get; set; }
         public DateTime ArrivalDateTime { get; set; }
         public int AirEquipType { get; set; }
-        public string PassengerType { get; set; }
         public int FlightNumber { get; set; }
-        public string FareBasisCode { get; set; }
         public string ResBookDesigCode { get; set; }
         public Resquet_WsTax_BaseFareModel BaseFare { get; set; }
     }
@@ -57,26 +55,12 @@ namespace ApiPortalBooking.Models
         public DateTime DepartureDateTime { get; set; }
         public DateTime ArrivalDateTime { get; set; }
         public int AirEquipType { get; set; }
-        public string PassengerType { get; set; }
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
-        public Double TotalTravelTime { get; set; }
-
-        public string FareBasisCode { get; set; }
-
-        public Resquet_WsTax_BaseFareModel BaseFare { get; set; }
+        public Resquet_WsTax_BaseFareModel BaseFare { get; set; } 
     }
-
-    //
-    //public class FlightFare_TaxBasicModel
-    //{
-    //    public List<FlightFare_PassengerTypeModel> TaxBasicModel { get; set; }
-    //}
-    //
-
-
-
-    public class FeeTaxBasicModel
+  
+    public class TaxFeeModel
     {
         public int RPH { get; set; }
         public int AirEquipType { get; set; }
@@ -120,9 +104,9 @@ namespace ApiPortalBooking.Models
 
     public class Resquet_WsTax_BaseFareModel
     {
-
         public int RPH { get; set; }
-        public float Amount { get; set; }
+        public string PassengerType { get; set; }
+        public double Amount { get; set; }
         public string CurrencyCode { get; set; }
     }
 

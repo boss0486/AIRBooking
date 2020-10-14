@@ -169,6 +169,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WebService.VNA_AirTicketLLSRQ\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -716,6 +721,49 @@
     </None>
     <None Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\AIRService.WebService.Mbay.WSGds_SearchFlight.VNASegment.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AdvancedAirShoppingRQRS_v5-4-0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AdvancedAirShoppingRQ_v5-4-0.wsdl" />
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AIRService.Webservice.VNA_AdvancedAirShoppingRQ.AdvancedAirShoppingRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AIRService.Webservice.VNA_AdvancedAirShoppingRQ.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AIRService.Webservice.VNA_AdvancedAirShoppingRQ.OTA_AirLowFareSearchRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\AIRService.Webservice.VNA_AdvancedAirShoppingRQ.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\OTA2003B.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\OTA2003B1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\OTA2003B2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\WebService.VNA_AirTicketLLSRQ\AIRService.WebService.VNA_AirTicketLLSRQ.AirTicketRQResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1525,6 +1573,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\" />
     <WCFMetadataStorage Include="Connected Services\WebService.Mbay.WSGds_SearchFlight\" />
+    <WCFMetadataStorage Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_AirTicketLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_DesignatePrinterLLSRQ\" />
     <WCFMetadataStorage Include="Connected Services\WebService.VNA_EndTransactionLLSRQ\" />
@@ -1783,6 +1832,12 @@
     <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\configuration91.svcinfo" />
     <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\configuration.svcinfo" />
     <None Include="Connected Services\WebService.VNA_OTA_AirRulesLLSRQ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\configuration91.svcinfo" />
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\configuration.svcinfo" />
+    <None Include="Connected Services\Webservice.VNA_AdvancedAirShoppingRQ\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
