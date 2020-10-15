@@ -92,7 +92,7 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             string roleId = model.RoleID;
             string sqlQuery = @" SELECT c.ID,c.KeyID,c.Title,Status = CASE WHEN (select count(s.ID) from RoleControllerSetting as s where s.RouteArea = c.RouteArea AND s.ControllerID = c.ID AND s.RoleID = @RoleID ) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END
-                FROM MenuController as c WHERE c.RouteArea =  @RouteArea ORDER BY Title  ";
+                FROM MenuController as c WHERE c.RouteArea =  @RouteArea ORDER BY OrderID,Title  ";
             List<MvcControllerForPermision> dtList = _connection.Query<MvcControllerForPermision>(sqlQuery, new { RouteArea = model.RouteArea, RoleID = roleId }).ToList();
             if (dtList.Count == 0)
                 return new List<MvcControllerForPermision>();
@@ -106,6 +106,7 @@ namespace WebCore.Services
                 item.Actions = actionList;
             }
             // return
+           
             return dtList;
         }
 

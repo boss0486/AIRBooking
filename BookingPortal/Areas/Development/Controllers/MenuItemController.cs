@@ -61,32 +61,11 @@ namespace WebApplication.Development.Controllers
         public ActionResult Update(MenuItemUpdateFormModel model)
         {
             try
-            {
-                if (model == null)
-                    return Notifization.Invalid("Dữ liệu không hợp lệ");
-                string title = model.Title;
-                string summary = model.Summary;
-                if (string.IsNullOrEmpty(title))
-                    return Notifization.Invalid("Không được để trống tiêu đề");
-                title = title.Trim();
-                if (!Validate.TestText(title))
-                    return Notifization.Invalid("Tiêu đề không hợp lệ");
-                if (title.Length < 2 || title.Length > 80)
-                    return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
-                // summary valid               
-                if (!string.IsNullOrEmpty(summary))
-                {
-                    summary = summary.Trim();
-                    if (!Validate.TestText(summary))
-                        return Notifization.Invalid("Mô tả không hợp lệ");
-                    if (summary.Length < 1 || summary.Length > 120)
-                        return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
-                }
-                // call service        
+            {     
                 using (var menuItemService = new MenuItemService())
                     return menuItemService.Update(model);
             }
-            catch (Exception ex)
+            catch  
             {
                 return Notifization.NotService;
             }

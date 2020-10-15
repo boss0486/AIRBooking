@@ -179,6 +179,7 @@ namespace WebCore.Services
             };
         }
 
+        
         //##############################################################################################################################################################################################################################################################
         public ActionResult MenuItemManage()
         {
@@ -444,12 +445,36 @@ namespace WebCore.Services
             {
                 try
                 {
+                    if (model == null)
+                        return Notifization.Invalid("Dữ liệu không hợp lệ");
+
+
+                    // call service    
                     MenuItemService menuItemService = new MenuItemService(_connection);
                     string id = model.ID.ToLower();
                     string title = model.Title;
+                    string summary = model.Summary;
                     string controllerId = model.MvcController;
                     string actionId = model.MvcAction;
                     string parentId = model.ParentID;
+
+                    if (string.IsNullOrEmpty(title))
+                        return Notifization.Invalid("Không được để trống tiêu đề");
+                    title = title.Trim();
+                    if (!Validate.TestText(title))
+                        return Notifization.Invalid("Tiêu đề không hợp lệ");
+                    if (title.Length < 2 || title.Length > 80)
+                        return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+                    // summary valid               
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary = summary.Trim();
+                        if (!Validate.TestText(summary))
+                            return Notifization.Invalid("Mô tả không hợp lệ");
+                        if (summary.Length < 1 || summary.Length > 120)
+                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+                    }
+
                     if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
                         parentId = null;
                     else
@@ -485,7 +510,7 @@ namespace WebCore.Services
                     // check parentId
                     if (string.IsNullOrWhiteSpace(model.ParentID) || model.ParentID == "0")
                     {
-                        parentId = "";
+                        parentId = null;
                         menuPath = "/" + id;
                     }
                     else
@@ -504,6 +529,7 @@ namespace WebCore.Services
                     menuItem.ParentID = parentId;
                     menuItem.IconFont = model.IconFont;
                     menuItem.Title = title;
+                    menuItem.Alias = alias;
                     menuItem.Summary = model.Summary;
                     menuItem.IsPermission = model.IsPermission;
                     menuItem.LocationID = (int)MenuItemEnum.Location.LEFT;
@@ -533,7 +559,6 @@ namespace WebCore.Services
                         }
                     }
                     //sort
-                    parentId = parentId.ToLower();
                     List<MenuItem> menus = menuItemService.GetAlls(m => m.ParentID == parentId && m.ID != id, transaction: _transaction).OrderBy(m => m.OrderID).ToList();
                     // set sort default if user not select sort
                     int sort = model.OrderID;

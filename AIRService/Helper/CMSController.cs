@@ -102,7 +102,7 @@ namespace WebCore.Core
             //
             var controller = filterContext.Controller.GetType();
             RouteAreaAttribute routeAreaAttribute = (RouteAreaAttribute)Attribute.GetCustomAttribute(controller, typeof(RouteAreaAttribute));
-            string routerArea = routeAreaAttribute.AreaName;
+            string routeArea = routeAreaAttribute.AreaName;
             string controllerText = controller.Name;
             string actionText = filterContext.ActionDescriptor.ActionName;
 
@@ -125,7 +125,7 @@ namespace WebCore.Core
                 return false;
             //
             string roleId = userRole.RoleID;
-            string controllerId = Helper.Security.Library.FakeGuidID(routerArea + controllerText);
+            string controllerId = Helper.Security.Library.FakeGuidID(routeArea + controllerText);
             string actionId = Helper.Security.Library.FakeGuidID(controllerId + actionText);
             //#2. check  
             using (PermissionService service = new PermissionService())
