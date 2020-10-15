@@ -114,13 +114,49 @@ namespace WebCore.Services
             // 
             return dataList;
         }
-        public List<MenuItemLayout> GetMenuItemUserLogin()
-        {
+        //public List<MenuItemLayout> GetMenuItemUserLogin()
+        //{
            
-            List<MenuItemLayout> menuItemModelResults = new List<MenuItemLayout>();
+        //    List<MenuItemLayout> menuItemModelResults = new List<MenuItemLayout>();
+        //    string userId = Helper.Current.UserLogin.IdentifierID;
+        //    if (string.IsNullOrWhiteSpace(userId))
+        //        return menuItemModelResults;
+        //    //
+        //    string routeArea;
+        //    if (Helper.Current.UserLogin.IsCMSUser)
+        //        routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
+        //    else
+        //        routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
+        //    //
+
+        //    if (string.IsNullOrWhiteSpace(routeArea))
+        //        return menuItemModelResults;
+        //    //
+        //    if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+        //    {
+        //        string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC";
+        //        List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, }).ToList();
+        //        return menuItemLayouts;  
+        //    }
+        //    else
+        //    { 
+        //        string sqlQuery = @"SELECT * FROM MenuItem as mn
+        //        INNER JOIN 
+        //        RoleControllerSetting as c ON c.ControllerID = mn.MvcController
+        //        INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID AND a.ActionID = mn.MvcAction
+        //        WHERE mn.RouteArea = @RouteArea AND mn.Enabled = 1 AND c.RoleID IN  (select  RoleID from UserRole where UserID = @UserID) ORDER BY OrderID ASC ";
+        //        List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
+        //        return menuItemLayouts;
+        //    }
+        //}
+
+        public List<PermissionIDModel> GetMenuItemUserLogin()
+        {
+
+            List<PermissionIDModel> permissionIDModels = new List<PermissionIDModel>();
             string userId = Helper.Current.UserLogin.IdentifierID;
             if (string.IsNullOrWhiteSpace(userId))
-                return menuItemModelResults;
+                return permissionIDModels;
             //
             string routeArea;
             if (Helper.Current.UserLogin.IsCMSUser)
@@ -130,25 +166,16 @@ namespace WebCore.Services
             //
 
             if (string.IsNullOrWhiteSpace(routeArea))
-                return menuItemModelResults;
+                return permissionIDModels;
             //
-            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-            {
-                string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC";
-                List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, }).ToList();
-                return menuItemLayouts;  
-            }
-            else
-            { 
-                string sqlQuery = @"SELECT * FROM MenuItem as mn
-                INNER JOIN 
-                RoleControllerSetting as c ON c.ControllerID = mn.MvcController
-                INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID AND a.ActionID = mn.MvcAction
-                WHERE mn.RouteArea = @RouteArea AND mn.Enabled = 1 AND c.RoleID IN  (select  RoleID from UserRole where UserID = @UserID) ORDER BY OrderID ASC ";
-                List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
-                return menuItemLayouts;
-            }
+            string sqlQuery = @"SELECT * FROM RoleControllerSetting as c 
+                INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID 
+                WHERE c.RoleID IN  (select  RoleID from UserRole where UserID = @UserID) ";
+            List<PermissionIDModel> menuItemLayouts = _connection.Query<PermissionIDModel>(sqlQuery, new { UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
+            return menuItemLayouts;
         }
+
+
         //##############################################################################################################################################################################################################################################################
         public ActionResult MenuItemManage()
         {
