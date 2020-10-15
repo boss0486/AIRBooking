@@ -42,4 +42,12 @@ namespace WebCore.Entities
         public string APIRouter { get; set; }
         public string Title { get; set; }
     }
+
+    //
+    public class PermissionForMenu
+    {
+        public string RoleID { get; set; }
+        public string ControllerID { get; set; }
+        public string ActionID { get; set; }
+    }
 }

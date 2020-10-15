@@ -96,67 +96,12 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public List<MenuItemLayout> GetMenuItemData()
+        public List<MenuItemLayout> GetMenuItemUserLogin()
         {
             List<MenuItemLayout> menuItemModelResults = new List<MenuItemLayout>();
-            string routeArea = string.Empty;
-            if (Helper.Current.UserLogin.IsCMSUser)
-                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
-            else
-                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
-            //
-
-            if (string.IsNullOrWhiteSpace(routeArea))
-                return menuItemModelResults;
-            //
-            string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
-            var dataList = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea }).ToList();
-            // 
-            return dataList;
-        }
-        //public List<MenuItemLayout> GetMenuItemUserLogin()
-        //{
-           
-        //    List<MenuItemLayout> menuItemModelResults = new List<MenuItemLayout>();
-        //    string userId = Helper.Current.UserLogin.IdentifierID;
-        //    if (string.IsNullOrWhiteSpace(userId))
-        //        return menuItemModelResults;
-        //    //
-        //    string routeArea;
-        //    if (Helper.Current.UserLogin.IsCMSUser)
-        //        routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
-        //    else
-        //        routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
-        //    //
-
-        //    if (string.IsNullOrWhiteSpace(routeArea))
-        //        return menuItemModelResults;
-        //    //
-        //    if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-        //    {
-        //        string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC";
-        //        List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, }).ToList();
-        //        return menuItemLayouts;  
-        //    }
-        //    else
-        //    { 
-        //        string sqlQuery = @"SELECT * FROM MenuItem as mn
-        //        INNER JOIN 
-        //        RoleControllerSetting as c ON c.ControllerID = mn.MvcController
-        //        INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID AND a.ActionID = mn.MvcAction
-        //        WHERE mn.RouteArea = @RouteArea AND mn.Enabled = 1 AND c.RoleID IN  (select  RoleID from UserRole where UserID = @UserID) ORDER BY OrderID ASC ";
-        //        List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
-        //        return menuItemLayouts;
-        //    }
-        //}
-
-        public List<PermissionIDModel> GetMenuItemUserLogin()
-        {
-
-            List<PermissionIDModel> permissionIDModels = new List<PermissionIDModel>();
             string userId = Helper.Current.UserLogin.IdentifierID;
             if (string.IsNullOrWhiteSpace(userId))
-                return permissionIDModels;
+                return menuItemModelResults;
             //
             string routeArea;
             if (Helper.Current.UserLogin.IsCMSUser)
@@ -166,15 +111,73 @@ namespace WebCore.Services
             //
 
             if (string.IsNullOrWhiteSpace(routeArea))
-                return permissionIDModels;
+                return menuItemModelResults;
             //
-            string sqlQuery = @"SELECT * FROM RoleControllerSetting as c 
-                INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID 
-                WHERE c.RoleID IN  (select  RoleID from UserRole where UserID = @UserID) ";
-            List<PermissionIDModel> menuItemLayouts = _connection.Query<PermissionIDModel>(sqlQuery, new { UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
-            return menuItemLayouts;
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC";
+                List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, }).ToList();
+                return menuItemLayouts;
+            }
+            else
+            {
+                string sqlQuery = @" SELECT ID, ParentID, IconFont, Title, OrderID, PathAction, MvcController, MvcAction 
+                FROM MenuItem as mn
+                WHERE RouteArea = @RouteArea AND (ParentID IS NULL OR [dbo].[CheckPermissionInMenu](@UserID, mn.MvcController, mn.MvcAction) =1) ORDER BY RouteArea, OrderID ASC";
+                List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
+                return menuItemLayouts;
+            }
         }
+        public MenuItemSubLayout SubMenuItemData(string parentId, List<MenuItemLayout> allData, string controllerText)
+        {
+            bool isToggled = false;
+            string result = string.Empty;
+            List<WebCore.Entities.MenuItemLayout> dtList = allData.Where(m => m.ParentID == parentId).ToList();
+            if (dtList.Count == 0)
+                return new MenuItemSubLayout();
+            //
+            result += "<ul class='ml-menu'>";
+            foreach (var item in dtList)
+            {
+                string _cls = "";
+                string _path = item.PathAction;
+                string toggled = string.Empty;
+                MenuItemSubLayout menuItemSubLayout = SubMenuItemData(item.ID, allData, controllerText);
+                if (menuItemSubLayout == null)
+                    continue;
 
+                string _innerText = menuItemSubLayout.InnerText;
+                bool _isToggled = menuItemSubLayout.IsToggled;
+                if (!string.IsNullOrWhiteSpace(_innerText))
+                {
+                    _cls = "menu-toggle";
+                    _path = "javascript:void(0);";
+                }
+                //
+                string controller = item.MvcController;
+                if (!string.IsNullOrWhiteSpace(controllerText) && !string.IsNullOrWhiteSpace(controller) && controllerText.ToLower() == controller.ToLower())
+                {
+                    isToggled = true;
+                }
+                //
+                if (_isToggled)
+                {
+                    toggled = "toggled";
+                }
+                //
+                if (!string.IsNullOrWhiteSpace(_path))
+                {
+                    _path = _path.ToLower();
+                }
+                result += "<li class=''><a href='" + _path + "' class='" + _cls + " " + toggled + "'><span><i class='" + item.IconFont + "' aria-hidden='true'></i>&nbsp; " + item.Title + "</span></a> " + _innerText + "</li>";
+            }
+            result += "</ul>";
+            return new MenuItemSubLayout
+            {
+                InnerText = result,
+                IsToggled = isToggled
+            };
+        }
 
         //##############################################################################################################################################################################################################################################################
         public ActionResult MenuItemManage()

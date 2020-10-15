@@ -3,58 +3,12 @@
     try
     {
         WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
-        List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemData();
+        List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemUserLogin();
         List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
-        List<PermissionIDModel> permissionIDModels = menuItemService.GetMenuItemUserLogin();
+
         string metaController = Helper.Page.MetaSEO.ControllerText;
 
-        MenuItemSubLayout SubMenuItemByLevel(string parentId, List<MenuItemLayout> allData, string controllerText)
-        {
-            bool isToggled = false;
-            string result = string.Empty;
-            List<WebCore.Entities.MenuItemLayout> dtList = allData.Where(m => m.ParentID == parentId).ToList();
-            if (dtList.Count == 0)
-                return new MenuItemSubLayout();
-            //
-            result += "<ul class='ml-menu'>";
-            foreach (var item in dtList)
-            {
-                string _cls = "";
-                string _path = item.PathAction;
-                string toggled = string.Empty;
-                MenuItemSubLayout menuItemSubLayout = SubMenuItemByLevel(item.ID, menuItemModelResults, controllerText);
-                string _innerText = menuItemSubLayout.InnerText;
-                bool _isToggled = menuItemSubLayout.IsToggled;
-                if (!string.IsNullOrWhiteSpace(_innerText))
-                {
-                    _cls = "menu-toggle";
-                    _path = "javascript:void(0);";
-                }
-                //
-                string controller = item.MvcController;
-                if (!string.IsNullOrWhiteSpace(controllerText) && !string.IsNullOrWhiteSpace(controller) && controllerText.ToLower() == controller.ToLower())
-                {
-                    isToggled = true;
-                }
-                //
-                if (_isToggled)
-                {
-                    toggled = "toggled";
-                }
-                //
-                if (!string.IsNullOrWhiteSpace(_path))
-                {
-                    _path = _path.ToLower();
-                }
-                result += "<li class=''><a href='" + _path + "' class='" + _cls + " " + toggled + "'><span><i class='" + item.IconFont + "' aria-hidden='true'></i>&nbsp; " + item.Title + "</span></a> " + _innerText + "</li>";
-            }
-            result += "</ul>";
-            return new MenuItemSubLayout
-            {
-                InnerText = result,
-                IsToggled = isToggled
-            };
-        }
+        @menuItems.Count();
 
         <div class="menu">
             <ul class="list" id="LeftMenu">
@@ -63,12 +17,23 @@
                     {
                         foreach (var item in menuItems)
                         {
+                            MenuItemLayout menuItemLayout = menuItemService.GetMenuItemUserLogin().Where(m => m.ParentID == item.ID).FirstOrDefault();
+                            if (menuItemLayout == null && string.IsNullOrWhiteSpace(item.MvcController))
+                            {
+                                continue;
+                            }
+                            //
                             string _cls = "";
                             string _path = item.PathAction;
                             string parentId = item.ID;
                             string toggled = string.Empty;
                             //
-                            MenuItemSubLayout menuItemSubLayout = SubMenuItemByLevel(item.ID, menuItemModelResults, metaController);
+                            MenuItemSubLayout menuItemSubLayout = menuItemService.SubMenuItemData(item.ID, menuItemModelResults, metaController);
+                            if (menuItemSubLayout == null)
+                            {
+                                continue;
+                            }
+
                             string _innerText = menuItemSubLayout.InnerText;
                             bool _isToggled = menuItemSubLayout.IsToggled;
                             //
@@ -97,8 +62,8 @@
             </ul>
         </div>
     }
-    catch (Exception es)
+    catch  
     {
-        @es
+        @Helper.MessageText.NotFound
     }
 }
