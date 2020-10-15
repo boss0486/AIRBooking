@@ -418,7 +418,8 @@ namespace WebCore.Services
                     {
                         ClientID = customerId,
                         ClientType = (int)ClientLoginEnum.ClientType.Customer,
-                        UserID = userId
+                        UserID = userId,
+                        IsSuper = true
                     }, transaction: _transaction);
 
 
