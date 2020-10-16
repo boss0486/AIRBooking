@@ -411,8 +411,7 @@ namespace WebCore.Services
                             DepositAmount = 0
 
                         }, transaction: _transaction);
-                    }
-
+                    } 
                     //
                     var clientId = clientLoginService.Create<string>(new ClientLogin()
                     {

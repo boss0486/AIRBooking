@@ -3,6 +3,18 @@
 @using WebCore.Model.Services;
 @*search control ******************************************************************************************************@
 
+@{
+    string addPath = string.Empty;
+    bool addState = false;
+    int vcol = 5;
+    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, Helper.Page.MetaSEO.ActionText))
+    {
+        addState = true;
+        vcol = 4;
+        addPath = Helper.Page.Navigate.PathCreate();
+
+    }
+}
 <div class="row" data-keyenter="#btnSearch" data-datesearch="true">
     <div class="col-md-2">
         <div class="form-group ">
@@ -27,19 +39,18 @@
             <input type="text" class="form-control" id="txtEndDate" placeholder="dd-mm-yyyy" />
         </div>
     </div>
-    <div class="col-md-4" data-keyenter="#btnSearch">
+
+    <div class="col-md-@vcol" data-keyenter="#btnSearch">
         <div class="input-group">
             <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
             <span id="btnSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
         </div>
     </div>
     @{
-
-        if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, Helper.Page.MetaSEO.ActionText))
+        if (addState)
         {
             <div class="col-md-1">
-                <div class="form-group">
-
+                <div class="form-group"> 
                     <a href="@Helper.Page.Navigate.PathCreate()" class="btn btn-primary w-100" style="width:100%">
                         +
                     </a>
