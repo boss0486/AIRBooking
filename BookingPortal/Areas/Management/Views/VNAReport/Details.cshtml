@@ -8,29 +8,28 @@
 @model WebCore.Entities.ReportSaleSummaryModel
 
 @{
-    string rps_id = "";
-    string rps_title = "";
-    string rps_summary = "";
-    string rps_employeeNumber = "";
-    string rps_documentType = "";
-    string rps_documentNumber = "";
-    string rps_passengerName = "";
-    string rps_pnrLocator = "";
-    string rps_ticketPrinterLniata = "";
-    string rps_transactionTime = "";
-    bool rps_exceptionItem = false;
-    bool rps_decoupleItem = false;
-    string rps_ticketStatusCode = "";
-    bool rps_isElectronicTicket = false;
-    string rps_reportDate = "";
-
-    ReportSaleSummary reportSaleSummary = new ReportSaleSummary();
-    List<ReportTicketingDocumentCoupon> ticketingDocumentCoupons = new List<ReportTicketingDocumentCoupon>();
-    ReportTicketingDocumentAmount ticketingDocumentAmount = new ReportTicketingDocumentAmount();
-    List<ReportTicketingDocumentTaxes> ticketingDocumentTaxes = new List<ReportTicketingDocumentTaxes>();
-
     try
     {
+        string rps_id = "";
+        string rps_title = "";
+        string rps_summary = "";
+        string rps_employeeNumber = "";
+        string rps_documentType = "";
+        string rps_documentNumber = "";
+        string rps_passengerName = "";
+        string rps_pnrLocator = "";
+        string rps_ticketPrinterLniata = "";
+        string rps_transactionTime = "";
+        bool rps_exceptionItem = false;
+        bool rps_decoupleItem = false;
+        string rps_ticketStatusCode = "";
+        bool rps_isElectronicTicket = false;
+        string rps_reportDate = "";
+
+        ReportSaleSummary reportSaleSummary = new ReportSaleSummary();
+        List<ReportTicketingDocumentCoupon> ticketingDocumentCoupons = new List<ReportTicketingDocumentCoupon>();
+        ReportTicketingDocumentAmount ticketingDocumentAmount = new ReportTicketingDocumentAmount();
+        List<ReportTicketingDocumentTaxes> ticketingDocumentTaxes = new List<ReportTicketingDocumentTaxes>();
         if (Model != null)
         {
             reportSaleSummary = Model.ReportSaleSummary;
@@ -171,11 +170,15 @@
                 </tbody>
             </table>
         </div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathDataList()">
-                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
+
+        if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+        {
+            <div class="form-group text-right att-data-list">
+                <a href="@Helper.Page.Navigate.PathDataList()">
+                    @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        }
     }
     catch (Exception)
     {

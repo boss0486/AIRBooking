@@ -369,3 +369,66 @@ $(document).on("keyup", "#txtTimeBookHolder05", function () {
         }
     }
 });
+//###################################################################################################################################################
+$(document).on("change", "#ddlFlightLocationView05", function () {
+    var ddlFlightLocationId = $(this).val();
+    if (ddlFlightLocationId === "") {
+        $('#lblFlightLocation05').html('Vui lòng chọn chặng bay');
+    }
+    else {
+        $('#lblFlightLocation05').html('');
+        $('#lblFlightLocationCode05').html(ddlFlightLocationId);
+        var model = {
+            FlightLocationID: ddlFlightLocationId,
+        };
+        AjaxFrom.POST({
+            url: URLC + '/GetCondition05',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        //
+                        var data = response.data;
+                        if (data != null) {
+
+                            var resBookDesigCode = data.ResBookDesigCode;
+
+                            $('#txtTimePlaceHolderView05').html(data.TimePlaceHolder);
+                            $('#txtTimeBookHolderView05').html(data.TimeBookHolder);
+                            var arrResBookDesigCode = [];
+                            if (resBookDesigCode != null && resBookDesigCode.includes(",")) {
+                                var arrResBookDesigCode = resBookDesigCode.split(",");
+                            }
+                            $('label[name="cbxResBookDesig"]').each(function (index, item) {
+                                if (arrResBookDesigCode.includes($(item).data("id")) == true) {
+                                    $(item).html(`<i class="fas fa-check-circle"></i>`);
+                                } else {
+                                    $(item).html(`<i class="far fa-times-circle"></i>`);
+                                }
+                            });
+                            if (data.IsApplied) {
+                                $('#applieStateView05').html(`<label class="col-green">Đang áp dụng</label>`);
+                            }
+                            else {
+                                $('#applieStateView05').html(`<label class="col-pink">Không áp dụng</label>`);
+
+                            }
+
+                        }
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService + JSON.stringify(response));
+            }
+        });
+    }
+});
+

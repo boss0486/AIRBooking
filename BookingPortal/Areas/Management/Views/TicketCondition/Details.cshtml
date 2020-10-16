@@ -1,0 +1,152 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using Helper.Language;
+@{
+}
+@{
+    try
+    {
+        int planeNoFrom04 = 0;
+        int planeNoTo04 = 0;
+        string eventStart04 = string.Empty;
+        string eventEnd04 = string.Empty;
+        bool isApplied04 = false;
+        string conditionId04 = string.Empty;
+        //
+        AirTicketCondition04Service airTicketCondition04Service = new AirTicketCondition04Service();
+        AirTicketCondition04 airTicketConditionFee04 = airTicketCondition04Service.GetAirTicketConditionByConditionID("04");
+        if (airTicketConditionFee04 != null)
+        {
+            planeNoFrom04 = airTicketConditionFee04.PlaneNoFrom;
+            planeNoTo04 = airTicketConditionFee04.PlaneNoTo;
+            if (airTicketConditionFee04.TimeStart != null)
+            {
+                eventStart04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            if (airTicketConditionFee04.TimeEnd != null)
+            {
+                eventEnd04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            isApplied04 = airTicketConditionFee04.IsApplied;
+            conditionId04 = airTicketConditionFee04.ConditionID;
+        }
+
+        <div class="row">
+            <div id="form04" class="col-md-8 m-t-30">
+                <div class="top-pic mgb-10">
+                    <label><i class="fas fa-cog" aria-hidden="true"></i>No. 04: LIGHT APPLICATION</label>
+                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Số hiệu: @planeNoFrom04 -> @planeNoTo04</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian: @eventStart04 -> @eventEnd04</div>
+                <div class="form-group">
+                    <i class="far fa-hand-point-right"></i> Trạng thái:
+                    @if (isApplied04)
+                    {
+                        <span class="col-green">Đang áp dụng</span>
+                    }
+                    else
+                    {
+                        <span class="col-pink">Không áp dụng</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            @{
+                string id = "";
+                bool isApplied05 = false;
+                string resbookDesigCode = "";
+            }
+
+            <div id="form05" class="col-md-8 m-t-30">
+                <div class="top-pic mgb-10">
+                    <label><i class="fas fa-cog" aria-hidden="true"></i>05: ADVANCE RESERVATIONS/TICKETING</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label">Chặng bay:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <select id="ddlFlightLocationView05" name="ddlFlightLocationView05" class="form-control show-tick" data-live-search="true">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(WebCore.Services.AirportService.FlightFromToDropdownList(id))
+                            </select>
+                            <span id="lblFlightLocation05" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-control" id="lblFlightLocationCode05" disabled></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        <label class="form-label">Hạng ghế:</label>
+                    </p>
+                    <div class="row">
+                        @{
+                            List<AIRService.WS.Entities.VNAResbookDesigCode> vNAResbookDesigCodes = AIRService.WS.Helper.VNALibrary.ListVNAResbookDesigCode();
+                            if (vNAResbookDesigCodes != null)
+                            {
+                                foreach (var item in vNAResbookDesigCodes)
+                                {
+                                    string idText = "cbxResbookDesig" + item.Title;
+                                    <div class="col-md-2 col-sm-3 col-xs-6">
+                                        <div class="form-group">
+                                            <label name="cbxResBookDesig" data-id="@item.Title"></label><label class="">: @item.Title</label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <span id="lblResBookDesigCode05" class="message msg-box"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-check-circle"></i> Thời gian giữ chỗ (h): <span id="txtTimePlaceHolderView05"></span> giờ</label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-check-circle"></i> Thời gian xuất vé (d): <span id="txtTimeBookHolderView05"></span> ngày</label>
+                </div>
+                <div class="form-group">
+                    <i class="far fa-hand-point-right"></i> Trạng thái: <span id="applieStateView05"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                @{
+                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.Update))
+                    {
+                        <div class="form-group text-right att-data-list">
+                            <a href="@Helper.Page.Navigate.PathBase(WebCore.Entities.RoleActionKey.Update)">
+                                @Helper.Language.Resource.Label.BtnUpdate <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+}
+@section scripts{
+    <script src="~/Areas/Management/_script/condition-fee.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("select#ddlFlightLocationView05")[0].selectedIndex = 1;
+            $("#ddlFlightLocationView05").change();
+        })
+
+    </script>
+}

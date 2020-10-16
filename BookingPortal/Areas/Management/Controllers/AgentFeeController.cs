@@ -15,9 +15,14 @@ namespace WebApplication.Management.Controllers
     [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("AgentFee")]
-    public class AgentFeeController :  Controller
+    public class AgentFeeController : CMSController
     {
-        public ActionResult FeeSetting()
+        // GET: BackEnd/AgentFee
+        public ActionResult DataList()
+        {
+            return View();
+        }
+        public ActionResult Update()
         {
             if (Helper.Current.UserLogin.IsCustomerLogged())
             {
@@ -33,7 +38,32 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
+        public ActionResult Details(string id)
+        {
+            AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
+            var airFeeAgentResult = airFeeAgentService.GetAgentFeeByID(id);
+            if (airFeeAgentResult != null)
+                return View(airFeeAgentResult);
+            //
+            return View();
+        }
+
         // ******************************************************************************************************************************
+        [HttpPost]
+        [Route("Action/DataList")]
+        public ActionResult DataList(SearchModel model)
+        {
+            try
+            {
+                using (var service = new AirAgentFeeService())
+                    return service.DataList(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
         [HttpPost]
         [Route("Action/GetAgentFee")]
         public ActionResult GetAgentFee(AirAgentFeeModel model)
@@ -49,14 +79,16 @@ namespace WebApplication.Management.Controllers
             }
 
         }
+
+
         [HttpPost]
-        [Route("Action/Agent-FeeConfig")]
-        public ActionResult AgentFeeConfig(AirAgentFeeConfigModel model)
+        [Route("Action/Update")]
+        public ActionResult Update(AirAgentFeeConfigModel model)
         {
             try
             {
                 using (var service = new AirAgentFeeService())
-                    return service.AgentFeeConfig(model);
+                    return service.Update(model);
             }
             catch (Exception ex)
             {

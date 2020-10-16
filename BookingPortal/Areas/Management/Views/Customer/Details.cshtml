@@ -99,11 +99,16 @@
                 </div>
                 <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Trạng thái:</label>&nbsp;<span>@enabled</span></div>
                 <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Ngày tạo:</label>&nbsp;<span>@createdDate</span></div>
-                <div class="form-group text-right att-data-list">
-                    <a href="@Helper.Page.Navigate.PathDataList()">
-                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
+                @{
+                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+                    {
+                        <div class="form-group text-right att-data-list">
+                            <a href="@Helper.Page.Navigate.PathDataList()">
+                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    }
+                }
             </div>
         </div>
     }

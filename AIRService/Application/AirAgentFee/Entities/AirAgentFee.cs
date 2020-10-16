@@ -46,12 +46,21 @@ namespace WebCore.Entities
     public class AirAgentFeeResult : WEBModelResult
     {
         public string ID { get; set; }
+        public string Title { get; set; }
         public string AgentID { get; set; }
+        [NotMapped]
+        public string AgentName
+        {
+            get
+            {
+                return CustomerService.GetCustomerName(AgentID);
+            }
+        }
         public float Amount { get; set; }
 
     }
 
-    public class AirAgentFeeModel 
+    public class AirAgentFeeModel
     {
         public string AgentID { get; set; }
     }

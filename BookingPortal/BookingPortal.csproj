@@ -1212,8 +1212,8 @@
     <Content Include="Areas\Development\Views\Account\AccountInfo.cshtml" />
     <Content Include="Areas\Development\Views\Account\ChangePassword.cshtml" />
     <Content Include="Areas\Management\Views\Home\Test.cshtml" />
-    <Content Include="Areas\Management\Views\TicketCondition\FeeSetting.cshtml" />
-    <Content Include="Areas\Management\Views\AgentFee\FeeSetting.cshtml" />
+    <Content Include="Areas\Management\Views\TicketCondition\Update.cshtml" />
+    <Content Include="Areas\Management\Views\AgentFee\Update.cshtml" />
     <Content Include="Areas\Management\Views\ProductCategory\Create.cshtml" />
     <Content Include="Areas\Management\Views\ProductCategory\Details.cshtml" />
     <Content Include="Areas\Management\Views\ProductCategory\DataList.cshtml" />
@@ -1230,6 +1230,9 @@
     <Content Include="Areas\Management\Views\ProductWarranty\DataList.cshtml" />
     <Content Include="Areas\Management\Views\ProductWarranty\Details.cshtml" />
     <Content Include="Areas\Management\Views\ProductWarranty\Update.cshtml" />
+    <Content Include="Areas\Management\Views\AgentFee\Details.cshtml" />
+    <Content Include="Areas\Management\Views\AgentFee\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TicketCondition\Details.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

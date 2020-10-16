@@ -83,10 +83,24 @@
     "Action": [
       {
         "OrderID": 1,
-        "KeyID": "FeeSetting",
-        "Method": "FeeSetting",
-        "APIRouter": "Action/Agent-FeeConfig",
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
         "Title": "Thiết lập"
+      },
+      {
+        "OrderID": 3,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
       }
     ]
   },
@@ -454,11 +468,18 @@
     "Action": [
       {
         "OrderID": 1,
-        "KeyID": "FeeSetting",
-        "Method": "FeeSetting",
+        "KeyID": "Update",
+        "Method": "Update",
         "APIRouter": "",
         "Title": "Thiết lập"
-      } 
+      },
+      {
+        "OrderID": 2,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
     ]
   },
   {

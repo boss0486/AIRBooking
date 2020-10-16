@@ -56,6 +56,85 @@ var AgentFeeConfigController = {
                 Notifization.Error(MessageText.Datamissing);
         });
     },
+    DataList: function (page) {
+        //       
+        var _ariaId = $('#ddlAreaID').val();
+        var _province = $('#ddlProvince').val();
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
+        var model = {
+            Query: $('#txtQuery').val(),
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: parseInt($('#ddlStatus').val()),
+            AreaID: _ariaId,
+            ProviceID: _province,
+        };
+        //
+        AjaxFrom.POST({
+            url: URLC + '/DataList',
+            data: model,
+            success: function (result) {
+                $('tbody#TblData').html('');
+                $('#Pagination').html('');
+                if (result !== null) {
+                    if (result.status === 200) {
+                        var currentPage = 1;
+                        var pagination = result.paging;
+                        if (pagination !== null) {
+                            totalPage = pagination.TotalPage;
+                            currentPage = pagination.Page;
+                            pageSize = pagination.PageSize;
+                            pageIndex = pagination.Page;
+                        }
+                        var rowData = '';
+                        $.each(result.data, function (index, item) {
+                            index = index + 1;
+                            var id = item.ID;
+                            if (id.length > 0)
+                                id = id.trim();
+                            //
+                            var _unit = 'đ';
+                            var _mkh = SubStringText.SubTitle(item.Title);
+                            var _amount = item.Amount;
+                            var _agentName = SubStringText.SubTitle(item.AgentName);
+                            //  role
+                            var action = HelperModel.RolePermission(result.role, "AgentFeeConfigController", id);
+                            //
+                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                            rowData += `
+                            <tr>
+                                 <td class="text-right">${rowNum}&nbsp;</td> 
+                                 <td class='text-left'>${_mkh}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-left'>${_agentName}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-right'>${_amount} ${_unit}</td>                                                                                                                                                                                                                                                                         
+                                 <td class="tbcol-action">${action}</td>
+                            </tr>`;
+                        });
+                        $('tbody#TblData').html(rowData);
+                        if (parseInt(totalPage) > 1) {
+                            Paging.Pagination("#Pagination", totalPage, currentPage, flightController.DataList);
+                        }
+                        return;
+                    }
+                    else {
+                        //Notifization.Error(result.message);
+                        console.log('::' + result.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NOTSERVICES);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NOTSERVICES);
+            }
+        });
+    },
     AgentFeeConfig: function () {
         var ddlCustomer = $('#ddlCustomer').val();
         var txtAmount = $('#txtAmount').val();

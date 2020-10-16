@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.Model.Services;
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
+@* control ******************************************************************************************************@
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-none">MKH</th>
+                <th class="tbcol-none">Tên đại lý</th>
+                <th class="tbcol-none">Phí thu</th>
+                <th class="tbcol-action">
+                    ACT
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+@section scripts{
+    <script src="~/Areas/Management/_script/agent-fee.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            AgentFeeConfigController.DataList(1);
+        })
+    </script>
+}

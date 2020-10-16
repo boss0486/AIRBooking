@@ -7,7 +7,8 @@
     string addPath = string.Empty;
     bool addState = false;
     int vcol = 5;
-    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, Helper.Page.MetaSEO.ActionText))
+
+    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
     {
         addState = true;
         vcol = 4;

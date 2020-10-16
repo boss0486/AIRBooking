@@ -271,12 +271,15 @@ class SubStringText {
         return _text;
     }
     static SubTitle(_text) {
+        if (_text == undefined || _text == null)
+            return '';
         if (_text !== '' && _text.length > 65)
-            return _text.substring(0, 65) + "...";
+            return _text.substring(0, 65);
+        //
         return _text;
     }
     static SubSummary(_text) {
-        if (_text !== undefined && _text === null)
+        if (_text == undefined || _text == null)
             return '';
         if (_text !== '' && _text.length > 65)
             return _text.substring(0, 65);

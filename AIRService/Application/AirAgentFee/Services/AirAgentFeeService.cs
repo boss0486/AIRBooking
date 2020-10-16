@@ -21,7 +21,66 @@ namespace WebCore.Services
         public AirAgentFeeService() : base() { }
         public AirAgentFeeService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult AgentFeeConfig(AirAgentFeeConfigModel model)
+        public ActionResult DataList(SearchModel model)
+        {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            //
+            string areaId = model.AreaID;
+            if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
+                whereCondition += " AND AreaID = @AreaID ";
+            // query
+            string sqlQuery = @"SELECT * FROM App_AirAgentFee WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            var dtList = _connection.Query<AirAgentFeeResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
+            if (dtList.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            if (result.Count == 0 && page > 1)
+            {
+                page -= 1;
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            }
+            if (result.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            // Pagination
+            Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
+            {
+                PageSize = Helper.Pagination.Paging.PAGESIZE,
+                Total = dtList.Count,
+                Page = page
+            };
+            // reusult
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+        }
+
+
+        public ActionResult Update(AirAgentFeeConfigModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid + "1");
@@ -94,6 +153,19 @@ namespace WebCore.Services
             //
             string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgentFee WHERE AgentID = @AgentID";
             AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { AgentID = id }).FirstOrDefault();
+            //
+            if (airAirFeeAgent == null)
+                return null;
+            //
+            return airAirFeeAgent;
+        }
+        public AirAgentFeeResult GetAgentFeeByID(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgentFee WHERE ID = @ID";
+            AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { ID = id }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
                 return null;

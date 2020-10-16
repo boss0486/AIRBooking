@@ -100,7 +100,7 @@ namespace WebCore.Services
 
             foreach (var item in dtList)
             {
-                sqlQuery = @" SELECT a.ID,a.KeyID,a.Title, Status = CASE WHEN (select count(s.ID) from RoleActionSetting as s where s.RouteArea = a.RouteArea AND s.ControllerID = a.CategoryID AND s.RoleID = @RoleID ) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END 
+                sqlQuery = @" SELECT a.ID,a.KeyID,a.Title, Status = CASE WHEN (select count(s.ID) from RoleActionSetting as s where s.RouteArea = a.RouteArea AND s.ControllerID = a.CategoryID AND s.RoleID = @RoleID AND s.ActionID = a.ID) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END 
                               FROM MenuAction as a WHERE a.RouteArea = @RouteArea AND a.CategoryID = @CategoryID ORDER BY a.OrderID";
                 List<MvcActionForPermision> actionList = _connection.Query<MvcActionForPermision>(sqlQuery, new { RouteArea = model.RouteArea, CategoryID = item.ID, RoleID = roleId }).ToList();
                 item.Actions = actionList;

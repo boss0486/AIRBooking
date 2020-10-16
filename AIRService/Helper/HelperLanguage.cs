@@ -62,6 +62,7 @@ namespace Helper.Language
             public static string Alias { get; set; } = "Đường dẫn";
             public static string Area { get; set; } = "Phân vùng";
             public static string Control { get; set; } = "Điều khiển";
+            public static string GoBack { get; set; } = "Trở lại";
         }
         public class Field
         {

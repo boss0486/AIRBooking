@@ -17,7 +17,11 @@ namespace WebApplication.Management.Controllers
     [RoutePrefix("TicketCondition")]
     public class TicketConditionController : CMSController
     {
-        public ActionResult FeeSetting()
+        public ActionResult Update()
+        {
+            return View();
+        }
+        public ActionResult Details()
         {
             return View();
         }

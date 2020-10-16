@@ -833,6 +833,24 @@ namespace WebCore.Services
             }
 
         }
+        public static string GetCustomerName(string id)
+        {
+
+            if (string.IsNullOrWhiteSpace(id))
+                return string.Empty;
+            //
+            id = id.ToLower();
+            using (var service = new CustomerService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
+                if (customer == null)
+                    return string.Empty;
+                //
+                return customer.Title;
+
+            }
+
+        }
 
         public static int GetLevelByPath(string path)
         {

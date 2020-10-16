@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+
+@model WebCore.Entities.AirAgentFeeResult
+
+@{
+    try
+    {
+        string id = string.Empty;
+        string agentId = string.Empty;
+        string agentCode = string.Empty;
+        float amount = 0;
+        if (Model != null)
+        {
+            id = Model.ID;
+            amount = Model.Amount;
+            agentId = Model.AgentID;
+            agentCode = Model.Title;
+        }
+        <div class="row">
+            <div class="col-md-8">
+                <div class="top-pic">
+                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí thu:</label>
+                </div>
+                <div class="col-md-12 bg-success">
+                    <div class="form-group" style="padding-top:40px; padding-bottom:50px">
+                        <h5>MKH: @agentCode</h5>
+                        <p>Phí đại lý đang áp dụng : @amount đ</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group text-right att-data-list m-t-30">
+                        <a href="javascript:window.history.back();">
+                            @Helper.Language.Resource.Label.GoBack <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+}
+
+@section scripts{
+    <script src="~/Areas/Management/_script/agent-fee.js"></script>
+}
