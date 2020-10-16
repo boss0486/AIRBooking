@@ -27,19 +27,35 @@ namespace WebCore.Services
         public TransactionHistoryService() : base() { }
         public TransactionHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public static TransactionHistoryMessageModel LoggerTransactionDepositHistory(TransactionDepositHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static TransactionHistoryMessageModel LoggerTransactionCustomerDepositHistory(TransactionCustomerDepositHistoryCreateModel model, IDbConnection dbConnection = null,IDbTransaction dbTransaction = null)
+        {
+            TransactionCustomerDepositHistoryService service = new TransactionCustomerDepositHistoryService();
+            return service.TransactionCustomerDepositHistoryCreate(model, dbConnection, dbTransaction);
+        }
+        public static TransactionHistoryMessageModel LoggerWalletCustomerSpendingHistory(WalletCustomerSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
-                TransactionDepositHistoryService service = new TransactionDepositHistoryService();
-                return service.TransactionDepositHistoryCreate(model, dbConnection, dbTransaction);
+                WalletCustomerSpendingHistoryService service = new WalletCustomerSpendingHistoryService();
+                return service.WalletCustomerSpendingHistoryCreate(model, dbConnection, dbTransaction);
             }
             catch (Exception ex)
             {
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
             }
         }
-
+        public static TransactionHistoryMessageModel LoggerWalletUserSpendingHistory(WalletUserHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        {
+            try
+            {
+                WalletUserHistoryService service = new WalletUserHistoryService();
+                return service.WalletUserSpendingHistoryCreate(model, dbConnection, dbTransaction);
+            }
+            catch (Exception ex)
+            {
+                return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
+            }
+        }
         //##############################################################################################################################################################################################################################################################
     }
 }

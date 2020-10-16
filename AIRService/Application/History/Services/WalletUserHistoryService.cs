@@ -60,7 +60,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_WalletUserHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
-            var dtList = _connection.Query<WalletCustomerDepositHistoryResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<TransactionCustomerDepositHistoryResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -84,10 +84,10 @@ namespace WebCore.Services
         }
 
 
-        public WalletHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserHistoryCreateModel model,IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public TransactionHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserHistoryCreateModel model,IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (model == null)
-                return new WalletHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
+                return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
             string customerId = model.CustomerID;
             string userId = model.UserID;
@@ -116,7 +116,7 @@ namespace WebCore.Services
                 Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
             }, transaction: dbTransaction);
             //commit
-            return new WalletHistoryMessageModel { Status = true, Message = "Ok" };
+            return new TransactionHistoryMessageModel { Status = true, Message = "Ok" };
         }
         //##############################################################################################################################################################################################################################################################
     }

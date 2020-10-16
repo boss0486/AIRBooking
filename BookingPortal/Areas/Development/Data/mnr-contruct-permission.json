@@ -511,7 +511,7 @@
     ]
   },
   {
-    "KeyID": "TransactionDeposit",
+    "KeyID": "TransactionCustomerDeposit",
     "Title": "G.D Nạp tiền",
     "OrderID": 16,
     "Action": [
@@ -530,7 +530,7 @@
         "Title": "Tạo"
       },
       {
-        "OrderID": 5,
+        "OrderID": 3,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",

@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/Transaction-Deposit/Action";
-var URLA = "/Management/TransactionDeposit";
+var URLC = "/Management/TransactionCustomerDeposit/Action";
+var URLA = "/Management/TransactionCustomerDeposit";
 var _TransactionDepositController = {
     init: function () {
         _TransactionDepositController.registerEvent();

@@ -759,60 +759,60 @@ namespace WebCore.Services
 
 
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownListCustomerChildByLogin(string id)
-        {
-            try
-            {
-                string result = string.Empty;
-                using (var service = new CustomerService())
-                {
-                    string whereCondition = string.Empty;
-                    if (Helper.Current.UserLogin.IsCustomerLogged())
-                    {
-                        // get customer
-                        string sqlQuery = @"SELECT TOP 1 * FROM App_ClientLogin where UserID = @UserID AND ClientType = 1";
-                        var clientLogin = service.Query<ClientLogin>(sqlQuery, new { }).FirstOrDefault();
-                        if (clientLogin == null)
-                            return string.Empty;
-                        //
-                        string customerId = clientLogin.ClientID;
-                        sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY Title ASC";
-                        var customer = service.Query<CustomerOption>(sqlQuery, new { ParentID = customerId }).ToList();
-                        if (customer.Count == 0)
-                            return string.Empty;
-                        //
-                        foreach (var item in customer)
-                        {
-                            string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                                select = "selected";
-                            result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-                        }
-                        return result;
-                    }
-                    else
-                    {
-                        string sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID IS NULL AND Enabled = 1 ORDER BY Title ASC";
-                        var customer = service.Query<CustomerOption>(sqlQuery, new { }).ToList();
-                        if (customer.Count == 0)
-                            return string.Empty;
-                        //
-                        foreach (var item in customer)
-                        {
-                            string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                                select = "selected";
-                            result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-                        }
-                        return result;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
+        ////public static string DropdownListCustomerChildByLogin(string id)
+        ////{
+        ////    try
+        ////    {
+        ////        string result = string.Empty;
+        ////        using (var service = new CustomerService())
+        ////        {
+        ////            string whereCondition = string.Empty;
+        ////            if (Helper.Current.UserLogin.IsCustomerLogged())
+        ////            {
+        ////                // get customer
+        ////                string sqlQuery = @"SELECT TOP 1 * FROM App_ClientLogin where UserID = @UserID AND ClientType = 1";
+        ////                var clientLogin = service.Query<ClientLogin>(sqlQuery, new { }).FirstOrDefault();
+        ////                if (clientLogin == null)
+        ////                    return string.Empty;
+        ////                //
+        ////                string customerId = clientLogin.ClientID;
+        ////                sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY Title ASC";
+        ////                var customer = service.Query<CustomerOption>(sqlQuery, new { ParentID = customerId }).ToList();
+        ////                if (customer.Count == 0)
+        ////                    return string.Empty;
+        ////                //
+        ////                foreach (var item in customer)
+        ////                {
+        ////                    string select = string.Empty;
+        ////                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+        ////                        select = "selected";
+        ////                    result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+        ////                }
+        ////                return result;
+        ////            }
+        ////            else
+        ////            {
+        ////                string sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID IS NULL AND Enabled = 1 ORDER BY Title ASC";
+        ////                var customer = service.Query<CustomerOption>(sqlQuery, new { }).ToList();
+        ////                if (customer.Count == 0)
+        ////                    return string.Empty;
+        ////                //
+        ////                foreach (var item in customer)
+        ////                {
+        ////                    string select = string.Empty;
+        ////                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+        ////                        select = "selected";
+        ////                    result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+        ////                }
+        ////                return result;
+        ////            }
+        ////        }
+        ////    }
+        ////    catch (Exception)
+        ////    {
+        ////        return string.Empty;
+        ////    }
+        ////}
 
         //##############################################################################################################################################################################################################################################################
         public static string GetCustomerCodeID(string id)

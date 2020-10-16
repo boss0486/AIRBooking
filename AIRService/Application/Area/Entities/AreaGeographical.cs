@@ -40,7 +40,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class ResultAreaGeographical: WEBModelResult
+    public class AreaGeographicalResult : WEBModelResult
     {
         public string ID { get; set; }
         public string Title { get; set; }

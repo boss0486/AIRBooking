@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("Wallet-Customer-Deposit-History")]
-    public class WalletCustomerDepositHistoryController : CMSController
+    [RoutePrefix("TransactionCustomerDepositHistory")]
+    public class TransactionCustomerDepositHistoryController : CMSController
     {
         // GET: Management/WalletHistory
         public ActionResult DataList()
@@ -30,7 +30,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new WalletCustomerDepositHistoryService())
+                using (var service = new TransactionCustomerDepositHistoryService())
                 {
                     return service.DataList(model);
                 }

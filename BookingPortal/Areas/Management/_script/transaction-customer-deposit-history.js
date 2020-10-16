@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/Wallet-Customer-Deposit-History/Action";
-var URLA = "/Management/WalletCustomerDepositHistory";
+var URLC = "/Management/TransactionCustomerDepositHistory/Action";
+var URLA = "/Management/TransactionCustomerDepositHistory";
 var WalletCustomerDepositHistoryController = {
     init: function () {
         WalletCustomerDepositHistoryController.registerEvent();

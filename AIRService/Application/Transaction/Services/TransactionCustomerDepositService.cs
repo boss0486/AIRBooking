@@ -20,11 +20,11 @@ using WebCore.ENM;
 
 namespace WebCore.Services
 {
-    public interface ITransactionDepositService : IEntityService<TransactionDeposit> { }
-    public class TransactionDepositService : EntityService<TransactionDeposit>, ITransactionDepositService
+    public interface ITransactionDepositService : IEntityService<TransactionCustomerDeposit> { }
+    public class TransactionCustomerDepositService : EntityService<TransactionCustomerDeposit>, ITransactionDepositService
     {
-        public TransactionDepositService() : base() { }
-        public TransactionDepositService(System.Data.IDbConnection db) : base(db) { }
+        public TransactionCustomerDepositService() : base() { }
+        public TransactionCustomerDepositService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
@@ -61,9 +61,9 @@ namespace WebCore.Services
             //
             string areaId = model.AreaID;
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_TransactionCustomerDeposit WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
             //
-            var dtList = _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
+            var dtList = _connection.Query<TransactionCustomerDepositResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -87,7 +87,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(TransactionDepositCreateModel model)
+        public ActionResult Create(TransactionCustomerDepositCreateModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -109,6 +109,7 @@ namespace WebCore.Services
                     double amount = model.Amount;
                     int enabled = model.Enabled;
                     string languageId = Helper.Current.UserLogin.LanguageID;
+                    string currentUserId = Helper.Current.UserLogin.IdentifierID;
                     //
                     if (string.IsNullOrWhiteSpace(customerId))
                         return Notifization.Invalid("Vui lòng chọn khách hàng");
@@ -175,14 +176,14 @@ namespace WebCore.Services
                         return Notifization.NotFound("Lỗi không xác định được ngân hàng nhận");
                     //
                     //
-                    TransactionDepositService transactionDeposit = new TransactionDepositService(_connection);
-
-                    var transactionDepositId = transactionDeposit.Create<string>(new TransactionDeposit()
+                    TransactionCustomerDepositService transactionDeposit = new TransactionCustomerDepositService(_connection);
+                    var transactionDepositId = transactionDeposit.Create<string>(new TransactionCustomerDeposit()
                     {
-                        CustomerID = customerId,
                         Title = title,
                         Alias = Helper.Page.Library.FormatToUni2NONE(title),
                         Summary = summary,
+                        SenderID = currentUserId,
+                        CustomerID = customerId,
                         TransactionID = transactionId,
                         BankSent = bankNameSent,
                         BankIDSent = bankIDSent,
@@ -196,35 +197,37 @@ namespace WebCore.Services
                     }, transaction: _transaction);
                     // update 
 
-                    // update balance ************************************************************************************************************************************
+                    // For send account ************************************************************************************************************************************
                     WalletCustomerMessageModel balanceCustomer = WalletService.GetBalanceByCustomerID(customerId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceCustomer.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
+                        return Notifization.Error("Không thể cập nhật giao dịch 0");
                     // update deposit wallet 
                     var changeBalanceDepositForCustomerStatus = WalletService.ChangeBalanceDepositForCustomer(new WalletCustomerChangeModel { CustomerID = customerId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
                     if (!changeBalanceDepositForCustomerStatus.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
+                        return Notifization.Error("Không thể cập nhật giao dịch 1");
                     // create histories for balance changed
-                    var loggerTransactionDepositHistoryStatus = TransactionHistoryService.LoggerTransactionDepositHistory(new TransactionDepositHistoryCreateModel
+                    var loggerTransactionDepositHistoryStatus = TransactionHistoryService.LoggerTransactionCustomerDepositHistory(new TransactionCustomerDepositHistoryCreateModel
                     {
-                        CustomerID = customerId,
+                        SenderID = currentUserId,
+                        CustomerID = currentUserId, 
                         Amount = amount,
-                        NewBalance = balanceCustomer.DepositBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN,
-                        TransactionOriginal = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DEPOSIT
+                        NewBalance = 0,
+                        TransactionType = (int)TransactionEnum.TransactionType.OUT,
+                        TransactionOriginalID = transactionDepositId,
+                        TransactionOriginalType = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DEPOSIT
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
                     if (!loggerTransactionDepositHistoryStatus.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
+                        return Notifization.Error("Không thể cập nhật giao dịch 2");
 
-                    // update sepending wallet 
+                    // for receive account ************************************************************************************************************************************
                     var changeBalanceSpendingForCustomerStatus = WalletService.ChangeBalanceSpendingForCustomer(new WalletCustomerChangeModel { CustomerID = customerId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
                     if (!changeBalanceSpendingForCustomerStatus.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
-
+                        return Notifization.Error("Không thể cập nhật giao dịch 3"); 
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerDepositHistory(new WalletCustomerDepositHistoryCreateModel
+                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerTransactionCustomerDepositHistory(new TransactionCustomerDepositHistoryCreateModel
                     {
+                        SenderID = currentUserId,
                         CustomerID = customerId,
                         Amount = amount,
                         NewBalance = balanceCustomer.SpendingBalance + amount,
@@ -247,7 +250,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Update(TransactionDepositUpdateModel model)
+        public ActionResult Update(TransactionCustomerDepositUpdateModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -324,7 +327,7 @@ namespace WebCore.Services
                         if (summary.Length < 1 || summary.Length > 120)
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
-                    TransactionDepositService transactionDepositService = new TransactionDepositService(_connection);
+                    TransactionCustomerDepositService transactionDepositService = new TransactionCustomerDepositService(_connection);
                     string id = model.ID.ToLower();
                     var transactionDeposit = transactionDepositService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (transactionDeposit == null)
@@ -368,7 +371,7 @@ namespace WebCore.Services
                 }
             }
         }
-        public TransactionDepositResult TransactionDepositModel(string id)
+        public TransactionCustomerDepositResult TransactionDepositModel(string id)
         {
             try
             {
@@ -377,8 +380,8 @@ namespace WebCore.Services
                 string query = string.Empty;
                 //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionDeposit WHERE ID = @Query";
-                return _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_TransactionCustomerDeposit WHERE ID = @Query";
+                return _connection.Query<TransactionCustomerDepositResult>(sqlQuery, new { Query = id }).FirstOrDefault();
             }
             catch
             {
@@ -399,7 +402,7 @@ namespace WebCore.Services
                 {
                     try
                     {
-                        TransactionDepositService transactionDepositService = new TransactionDepositService(_connectDb);
+                        TransactionCustomerDepositService transactionDepositService = new TransactionCustomerDepositService(_connectDb);
                         var transactionDeposit = transactionDepositService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                         if (transactionDeposit == null)
                             return Notifization.NotFound();
@@ -442,7 +445,7 @@ namespace WebCore.Services
             try
             {
                 string result = string.Empty;
-                using (var TransactionDepositService = new TransactionDepositService())
+                using (var TransactionDepositService = new TransactionCustomerDepositService())
                 {
                     var dtList = TransactionDepositService.DataOption(null);
                     if (dtList.Count > 0)
@@ -463,16 +466,16 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<TransactionDepositOption> DataOption(string languageId)
+        public List<TransactionCustomerDepositOption> DataOption(string languageId)
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE Enabled = 1 ORDER BY Title ASC";
-                return _connection.Query<TransactionDepositOption>(sqlQuery, new { LangID = languageId }).ToList();
+                string sqlQuery = @"SELECT * FROM App_TransactionCustomerDeposit WHERE Enabled = 1 ORDER BY Title ASC";
+                return _connection.Query<TransactionCustomerDepositOption>(sqlQuery, new { LangID = languageId }).ToList();
             }
             catch
             {
-                return new List<TransactionDepositOption>();
+                return new List<TransactionCustomerDepositOption>();
             }
         }
         //##############################################################################################################################################################################################################################################################  

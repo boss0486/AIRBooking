@@ -9,20 +9,21 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_TransactionDeposit")]
-    public partial class TransactionDeposit : WEBModel
+    [Table("App_TransactionCustomerDeposit")]
+    public partial class TransactionCustomerDeposit : WEBModel
     {
-        public TransactionDeposit()
+        public TransactionCustomerDeposit()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
+        public string SenderID { get; set; }
+        public string CustomerID { get; set; }
         public string TransactionID { get; set; }
         public string BankSent { get; set; }
         public string BankIDSent { get; set; }
@@ -34,7 +35,7 @@ namespace WebCore.Entities
     }
 
     // model
-    public class TransactionDepositCreateModel
+    public class TransactionCustomerDepositCreateModel
     {
         public string CustomerID { get; set; }
         public string Title { get; set; }
@@ -49,18 +50,19 @@ namespace WebCore.Entities
         public int Enabled { get; set; }
 
     }
-    public class TransactionDepositUpdateModel : TransactionDepositCreateModel
+    public class TransactionCustomerDepositUpdateModel : TransactionCustomerDepositCreateModel
     {
         public string ID { get; set; }
     }
-    public class TransactionDepositIDModel
+    public class TransactionCustomerDepositIDModel
     {
         public string ID { get; set; }
     }
-    public class TransactionDepositResult : WEBModelResult
+    public class TransactionCustomerDepositResult : WEBModelResult
     {
 
         public string ID { get; set; }
+        public string SenderID { get; set; }
         private string _customerId;
         public string CustomerID
         {
@@ -96,7 +98,7 @@ namespace WebCore.Entities
         public double Amount { get; set; }
         public int Status { get; set; }
     }
-    public class TransactionDepositOption
+    public class TransactionCustomerDepositOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

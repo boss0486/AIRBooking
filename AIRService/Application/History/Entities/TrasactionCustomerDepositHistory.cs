@@ -9,20 +9,21 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_WalletCustomerDepositHistory")]
-    public partial class WalletCustomerDepositHistory : WEBModel
+    [Table("App_TransactionCustomerDepositHistory")]
+    public partial class TrasactionCustomerDepositHistory : WEBModel
     {
-        public WalletCustomerDepositHistory()
+        public TrasactionCustomerDepositHistory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string SenderID { get; set; }
+        public string CustomerID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
         public int TransactionOriginalType { get; set; }
@@ -32,8 +33,9 @@ namespace WebCore.Entities
     }
 
     // model
-    public class WalletCustomerDepositHistoryCreateModel
+    public class TransactionCustomerDepositHistoryCreateModel
     {
+        public string SenderID { get; set; }
         public string CustomerID { get; set; }
         public double Amount { get; set; }
         public double NewBalance { get; set; }
@@ -41,18 +43,19 @@ namespace WebCore.Entities
         public int TransactionOriginalType { get; set; }
         public string TransactionOriginalID { get; set; }
     }
-    public class WalletCustomerDepositHistoryUpdateModel : WalletCustomerDepositHistoryCreateModel
+    public class WalletCustomerDepositHistoryUpdateModel : TransactionCustomerDepositHistoryCreateModel
     {
         public string ID { get; set; }
     }
-    public class WalletCustomerDepositHistoryIDModel
+    public class TrasactionCustomerDepositHistoryIDModel
     {
         public string ID { get; set; }
     }
     //
-    public partial class WalletCustomerDepositHistoryResult : WEBModelResult
+    public partial class TransactionCustomerDepositHistoryResult : WEBModelResult
     {
         public string ID { get; set; }
+        public string SenderID { get; set; }
         public string CustomerID { get; set; }
         [NotMapped]
         public string CustomerCodeID
@@ -73,7 +76,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return WalletCustomerDepositHistoryService.TransactionTypeText(TransactionType);
+                return TransactionCustomerDepositHistoryService.TransactionTypeText(TransactionType);
             }
         }
 
@@ -83,7 +86,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return WalletCustomerDepositHistoryService.TransactionOriginalText(TransactionType);
+                return TransactionCustomerDepositHistoryService.TransactionOriginalText(TransactionType);
             }
         } 
         public string TransactionOriginalID { get; set; }

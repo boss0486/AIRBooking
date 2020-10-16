@@ -181,7 +181,7 @@ namespace WebCore.Services
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var balanceCustomerHistoryStatus = WalletHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
+                    var balanceCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
                     {
                         CustomerID = currentUserId,
                         Amount = amount,
@@ -201,7 +201,7 @@ namespace WebCore.Services
                         return Notifization.Error("Không thể cập nhật giao dịch");
 
                     // create histories for balance changed
-                    var balanceUserHistoryStatus = WalletHistoryService.LoggerWalletUserSpendingHistory(new WalletUserHistoryCreateModel
+                    var balanceUserHistoryStatus = TransactionHistoryService.LoggerWalletUserSpendingHistory(new WalletUserHistoryCreateModel
                     {
                         CustomerID = customerId,
                         UserID = receivedUserId,

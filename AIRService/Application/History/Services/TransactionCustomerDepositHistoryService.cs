@@ -21,11 +21,11 @@ using System.Data;
 
 namespace WebCore.Services
 {
-    public interface IWalletCustomerDepositHistoryService : IEntityService<WalletCustomerDepositHistory> { }
-    public class WalletCustomerDepositHistoryService : EntityService<WalletCustomerDepositHistory>, IWalletCustomerDepositHistoryService
+    public interface IWalletCustomerDepositHistoryService : IEntityService<TrasactionCustomerDepositHistory> { }
+    public class TransactionCustomerDepositHistoryService : EntityService<TrasactionCustomerDepositHistory>, IWalletCustomerDepositHistoryService
     {
-        public WalletCustomerDepositHistoryService() : base() { }
-        public WalletCustomerDepositHistoryService(System.Data.IDbConnection db) : base(db) { }
+        public TransactionCustomerDepositHistoryService() : base() { }
+        public TransactionCustomerDepositHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
 
         public ActionResult DataList(SearchModel model)
@@ -63,7 +63,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_WalletCustomerDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
-            var dtList = _connection.Query<WalletCustomerDepositHistoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
+            var dtList = _connection.Query<TransactionCustomerDepositHistoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -85,10 +85,10 @@ namespace WebCore.Services
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-        public WalletHistoryMessageModel WalletCustomerDepositHistoryCreate(WalletCustomerDepositHistoryCreateModel model, IDbConnection dbConnection, IDbTransaction dbTransaction = null)
+        public TransactionHistoryMessageModel TransactionCustomerDepositHistoryCreate(TransactionCustomerDepositHistoryCreateModel model, IDbConnection dbConnection, IDbTransaction dbTransaction = null)
         {
             if (model == null)
-                return new WalletHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
+                return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
             string customerId = model.CustomerID;
             double amount = model.Amount;
@@ -104,10 +104,10 @@ namespace WebCore.Services
             if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
                 transState = "-";
             //
-            string title = "Nạp tiền. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string title = "Nạp tiền. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ";
             string summary = "";
-            WalletCustomerDepositHistoryService BalanceCustomerHistoryService = new WalletCustomerDepositHistoryService(dbConnection);
-            var id = BalanceCustomerHistoryService.Create<string>(new WalletCustomerDepositHistory()
+            TransactionCustomerDepositHistoryService BalanceCustomerHistoryService = new TransactionCustomerDepositHistoryService(dbConnection);
+            var id = BalanceCustomerHistoryService.Create<string>(new TrasactionCustomerDepositHistory()
             {
                 CustomerID = customerId,
                 Title = title,
@@ -120,7 +120,7 @@ namespace WebCore.Services
                 Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
             }, transaction: dbTransaction);
             //commit
-            return new WalletHistoryMessageModel { Status = true, Message = "Ok" };
+            return new TransactionHistoryMessageModel { Status = true, Message = "Ok" };
         }
 
 

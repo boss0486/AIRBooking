@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Helper;
 using System.Web;
 using WebCore.Entities;
+using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
@@ -19,44 +20,62 @@ namespace WebCore.Services
         public AreaGeographicalService() : base() { }
         public AreaGeographicalService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
-        {
-            string query = string.Empty;
-            if (string.IsNullOrEmpty(strQuery))
+        public ActionResult DataList(SearchModel model)
+        { 
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
                 query = "";
-            else
-                query = strQuery;
-            string sqlQuery = @"SELECT * FROM App_Geographical WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
-                                    ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ResultAreaGeographical>(sqlQuery, new { Query = query }).ToList();
-            if (dtList.Count <= 0)
+            //
+            string whereCondition = string.Empty;
+            //
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = model.Status,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            });
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return Notifization.Invalid(searchResult.Message);
+            }
+            //
+            string areaId = model.AreaID;
+            if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
+                whereCondition += " AND AreaID = @AreaID ";
+            // query
+            string sqlQuery = @"SELECT * FROM App_Geographical WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            var dtList = _connection.Query<AreaGeographicalResult >(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
+            if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-            //    
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count == 0 && page > 1)
             {
                 page -= 1;
                 result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             }
-            if (result.Count <= 0)
+            if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
+            // Pagination
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {
                 PageSize = Helper.Pagination.Paging.PAGESIZE,
                 Total = dtList.Count,
                 Page = page
             };
-            Helper.Model.RoleAccountModel roleAccountModel = new Helper.Model.RoleAccountModel
-            {
-                Create = true,
-                Update = true,
-                Details = true,
-                Delete = true,
-                Block = true,
-                Active = true,
-            };
-            return Notifization.Data(MessageText.Success, data: result, role: roleAccountModel, paging: pagingModel);
+            // reusult
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         //##############################################################################################################################################################################################################################################################
@@ -126,13 +145,13 @@ namespace WebCore.Services
                 }
             }
         }
-        public AreaGeographical UpdateForm(string Id)
+        public AreaGeographical GetAreaGeographicalByID(string id)
         {
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrWhiteSpace(id))
                 return null;
-            string query = string.Empty;
+            //
             string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
-            return _connection.Query<AreaGeographical>(sqlQuery, new { Query = Id }).FirstOrDefault();
+            return _connection.Query<AreaGeographical>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(AreaGeographicalIDModel model)
