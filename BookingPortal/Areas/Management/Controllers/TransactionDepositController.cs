@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("TransactionCustomerDeposit")]
-    public class TransactionCustomerDepositController : CMSController
+    [RoutePrefix("TransactionDeposit")]
+    public class TransactionDepositController : CMSController
     {
         // GET: BackEnd/bank
         public ActionResult DataList()
@@ -29,8 +29,8 @@ namespace WebApplication.Management.Controllers
         }
         public ActionResult Details(string id)
         {
-            TransactionCustomerDepositService service = new TransactionCustomerDepositService();
-            TransactionCustomerDepositResult model = service.TransactionDepositModel(id);
+            TransactionDepositService service = new TransactionDepositService();
+            TransactionDepositResult model = service.TransactionDepositModel(id);
             if (model != null)
                 return View(model);
             //
@@ -43,7 +43,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new TransactionCustomerDepositService())
+                using (var service = new TransactionDepositService())
                 { 
                     return service.DataList(model);
                 }
@@ -56,11 +56,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Create")]
-        public ActionResult Create(TransactionCustomerDepositCreateModel model)
+        public ActionResult Create(TransactionDepositCreateModel model)
         {
             try
             {
-                using (var service = new TransactionCustomerDepositService())
+                using (var service = new TransactionDepositService())
                     return service.Create(model);
             }
             catch (Exception ex)

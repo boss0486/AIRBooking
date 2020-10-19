@@ -343,13 +343,11 @@
     <Compile Include="Application\History\Entities\TransactionDepositHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
-    <Compile Include="Application\History\Entities\TrasactionCustomerDepositHistory.cs" />
     <Compile Include="Application\History\Entities\WalletCustomerSpendingHistory.cs" />
     <Compile Include="Application\History\Entities\WalletUserHistory.cs" />
     <Compile Include="Application\History\Enum\WalletHistoryEnum.cs" />
     <Compile Include="Application\History\Services\TransactionDepositHistoryService.cs" />
     <Compile Include="Application\History\Services\TransactionPaymentHistoryService.cs" />
-    <Compile Include="Application\History\Services\TransactionCustomerDepositHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletCustomerSpendingHistoryService.cs" />
     <Compile Include="Application\History\Services\TransactionHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />
@@ -391,11 +389,11 @@
     <Compile Include="Application\Supplier\Entities\Supplier.cs" />
     <Compile Include="Application\Supplier\Enum\SupplierEnum.cs" />
     <Compile Include="Application\Supplier\Services\SupplierService.cs" />
-    <Compile Include="Application\Transaction\Entities\TransactionCustomerDeposit.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionDeposit.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionCustomerSpending.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionUserSpending.cs" />
     <Compile Include="Application\Transaction\Enum\TransactionEnum.cs" />
-    <Compile Include="Application\Transaction\Services\TransactionCustomerDepositService.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionDepositService.cs" />
     <Compile Include="Application\Transaction\Services\TransactionCustomerSpendingService.cs" />
     <Compile Include="Application\Transaction\Services\TransactionUserSpendingService.cs" />
     <Compile Include="Application\UserClient\Entities\ClientLogin.cs" />

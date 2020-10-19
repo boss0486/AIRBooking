@@ -511,7 +511,7 @@
     ]
   },
   {
-    "KeyID": "TransactionCustomerDeposit",
+    "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
     "OrderID": 16,
     "Action": [
@@ -610,7 +610,7 @@
     ]
   },
   {
-    "KeyID": "WalletCustomerDepositHistory",
+    "KeyID": "TransactionDepositHistory",
     "Title": "Lịch sử nạp tiền",
     "OrderID": 19,
     "Action": [

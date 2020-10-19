@@ -61,6 +61,8 @@ $(function () {
         language: 'vi'
     }).on('changeDate', function (index, item) {
         $('.datepicker').hide();
+        $(this).keyup();
+        $(this).change();
         $(this).blur();
     });
 

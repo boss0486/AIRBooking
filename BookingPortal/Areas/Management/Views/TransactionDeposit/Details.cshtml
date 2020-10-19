@@ -38,7 +38,7 @@
             title = Model.Title;
             alias = Model.Alias;
             summary = Model.Summary;
-            transactionId = Model.TransactionID;
+            transactionId = Model.TransactionCode;
             bankSent = Model.BankSent;
             bankIDSent = Model.BankIDSent;
             bankReceived = Model.BankReceived;
@@ -51,25 +51,6 @@
             createdBy = Model.CreatedBy;
             createdDate = Model.CreatedDate;
             enabled = "None";
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "ENABLED";
-            }
-            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
-            {
-                enabled = "DISABLE";
-            }
-
-
-            if (status == 1)
-            {
-                transactionType = "Nhận";
-            }
-            else
-            {
-                transactionType = "Chuyển";
-            }
-
         }
 
         <div class="row">
@@ -83,14 +64,14 @@
                     <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
                 </div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @transactionId</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: @transactionType</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: Nạp tiền</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng chuyển: @bankSent , số tài khoản: @bankIDSent</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng nhận: @bankReceived , số tài khoản: @bankIDReceived</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @receivedDate</div>
                 <div class="top-pic">
                     <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
                 </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: Thành công</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
                 @{
                     if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))

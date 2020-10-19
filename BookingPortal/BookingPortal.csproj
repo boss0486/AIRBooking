@@ -153,12 +153,12 @@
     <Compile Include="Areas\Management\Controllers\ReportController.cs" />
     <Compile Include="Areas\Management\Controllers\RoleController.cs" />
     <Compile Include="Areas\Management\Controllers\SupplierController.cs" />
-    <Compile Include="Areas\Management\Controllers\TransactionCustomerDepositController.cs" />
+    <Compile Include="Areas\Management\Controllers\TransactionDepositController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionCustomerSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
     <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
-    <Compile Include="Areas\Management\Controllers\TransactionCustomerDepositHistoryController.cs" />
+    <Compile Include="Areas\Management\Controllers\TransactionDepositHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletUserSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletCustomerSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
@@ -208,6 +208,7 @@
     <Content Include="Areas\Management\_script\trans-history.js" />
     <Content Include="Areas\Management\_script\trans-spending.js" />
     <Content Include="Areas\Management\_script\trans-user-spending.js" />
+    <Content Include="Areas\Management\_script\transaction-deposit-history.js" />
     <Content Include="Areas\Management\_script\user-group.js" />
     <Content Include="Areas\Management\_script\agent-fee.js" />
     <Content Include="Areas\Management\_script\vna-report.js" />
@@ -837,9 +838,9 @@
     <Content Include="Areas\Management\Views\Supplier\DataList.cshtml" />
     <Content Include="Areas\Management\Views\Supplier\Details.cshtml" />
     <Content Include="Areas\Management\Views\Supplier\Update.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionCustomerDeposit\Create.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionCustomerDeposit\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionCustomerDeposit\Details.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionDeposit\Create.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionDeposit\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\Create.cshtml" />
     <Content Include="Areas\Management\Views\TransactionCustomerSpending\Create.cshtml" />
     <Content Include="Areas\Management\Views\TransactionUserSpending\Create.cshtml" />
@@ -1239,6 +1240,7 @@
     <Content Include="Areas\Management\Views\AreaGeographical\DataList.cshtml" />
     <Content Include="Areas\Management\Views\AreaGeographical\Details.cshtml" />
     <Content Include="Areas\Management\Views\AreaGeographical\Update.cshtml" />
+    <Content Include="Areas\Management\Views\TransactionDepositHistory\DataList.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

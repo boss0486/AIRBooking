@@ -9,10 +9,10 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_TransactionCustomerDeposit")]
-    public partial class TransactionCustomerDeposit : WEBModel
+    [Table("App_TransactionDeposit")]
+    public partial class TransactionDeposit : WEBModel
     {
-        public TransactionCustomerDeposit()
+        public TransactionDeposit()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -22,9 +22,10 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
+        public string SenderUserID { get; set; }
         public string SenderID { get; set; }
-        public string CustomerID { get; set; }
-        public string TransactionID { get; set; }
+        public string ReceivedID { get; set; }
+        public string TransactionCode { get; set; }
         public string BankSent { get; set; }
         public string BankIDSent { get; set; }
         public string BankReceived { get; set; }
@@ -35,12 +36,12 @@ namespace WebCore.Entities
     }
 
     // model
-    public class TransactionCustomerDepositCreateModel
+    public class TransactionDepositCreateModel
     {
-        public string CustomerID { get; set; }
+        public string ReceivedID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string TransactionID { get; set; }
+        public string TransactionCode { get; set; }
         public string BankSent { get; set; }
         public string BankIDSent { get; set; }
         public string BankReceived { get; set; }
@@ -50,7 +51,7 @@ namespace WebCore.Entities
         public int Enabled { get; set; }
 
     }
-    public class TransactionCustomerDepositUpdateModel : TransactionCustomerDepositCreateModel
+    public class TransactionDepositUpdateModel : TransactionDepositCreateModel
     {
         public string ID { get; set; }
     }
@@ -58,27 +59,27 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class TransactionCustomerDepositResult : WEBModelResult
+    public class TransactionDepositResult : WEBModelResult
     {
 
         public string ID { get; set; }
         public string SenderID { get; set; }
-        private string _customerId;
-        public string CustomerID
+        private string _receivedId;
+        public string ReceivedID
         {
             get
             {
-                return CustomerService.GetCustomerCodeID(_customerId);
+                return CustomerService.GetCustomerCodeID(_receivedId);
             }
             set
             {
-                _customerId = value;
+                _receivedId = value;
             }
         }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string TransactionID { get; set; }
+        public string TransactionCode { get; set; }
         public string BankSent { get; set; }
         public string BankIDSent { get; set; }
         public string BankReceived { get; set; }
@@ -98,7 +99,7 @@ namespace WebCore.Entities
         public double Amount { get; set; }
         public int Status { get; set; }
     }
-    public class TransactionCustomerDepositOption
+    public class TransactionDepositOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

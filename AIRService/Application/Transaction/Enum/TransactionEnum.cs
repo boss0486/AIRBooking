@@ -7,6 +7,10 @@
             IN = 1,
             OUT = 2
         }
-         
+        public enum TransactionOriginal
+        {
+            NONE = 0,
+            DEPOSIT = 1
+        }
     }
 }

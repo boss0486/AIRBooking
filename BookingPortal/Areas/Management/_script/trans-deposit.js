@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/TransactionCustomerDeposit/Action";
-var URLA = "/Management/TransactionCustomerDeposit";
+var URLC = "/Management/TransactionDeposit/Action";
+var URLA = "/Management/TransactionDeposit";
 var _TransactionDepositController = {
     init: function () {
         _TransactionDepositController.registerEvent();
@@ -9,7 +9,7 @@ var _TransactionDepositController = {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
             var ddlCustomer = $('#ddlCustomer').val();
-            var txtTransactionID = $('#txtTransactionID').val();
+            var txtTransactionCode = $('#txtTransactionCode').val();
             var ddlBankSent = $('#ddlBankSent').val();
             var txtBankIDSent = $('#txtBankIDSent').val();
             var ddlBankReceived = $('#ddlBankReceived').val();
@@ -27,16 +27,16 @@ var _TransactionDepositController = {
                 $('#lblCustomer').html('');
             }
             // transaction id
-            if (txtTransactionID === '') {
-                $('#lblTransactionID').html('Không được để trống mã giao dịch');
+            if (txtTransactionCode === '') {
+                $('#lblTransactionCode').html('Không được để trống mã giao dịch');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtTransactionID)) {
-                $('#lblTransactionID').html('Mã giao dịch không hợp lệ');
+            else if (!FormatKeyword.test(txtTransactionCode)) {
+                $('#lblTransactionCode').html('Mã giao dịch không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblTransactionID').html('');
+                $('#lblTransactionCode').html('');
             }
 
             // bank sent
@@ -160,7 +160,7 @@ var _TransactionDepositController = {
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
             var ddlCustomer = $('#ddlCustomer').val();
-            var txtTransactionID = $('#txtTransactionID').val();
+            var txtTransactionCode = $('#txtTransactionCode').val();
             var ddlBankSent = $('#ddlBankSent').val();
             var txtBankIDSent = $('#txtBankIDSent').val();
             var ddlBankReceived = $('#ddlBankReceived').val();
@@ -178,16 +178,16 @@ var _TransactionDepositController = {
                 $('#lblCustomer').html('');
             }
             // transaction id
-            if (txtTransactionID === '') {
-                $('#lblTransactionID').html('Không được để trống mã giao dịch');
+            if (txtTransactionCode === '') {
+                $('#lblTransactionCode').html('Không được để trống mã giao dịch');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtTransactionID)) {
-                $('#lblTransactionID').html('Mã giao dịch không hợp lệ');
+            else if (!FormatKeyword.test(txtTransactionCode)) {
+                $('#lblTransactionCode').html('Mã giao dịch không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblTransactionID').html('');
+                $('#lblTransactionCode').html('');
             }
 
             // bank sent
@@ -344,19 +344,11 @@ var _TransactionDepositController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //
-                            var customerId = item.CustomerID;
                             var title = item.Title;
-                            var summary = item.Summary;
-                            var customerId = item.CustomerID;
-                            var transactionId = item.TransactionID;
-                            var bankSent = item.BankSent;
-                            var bankIDSent = item.BankIDSent;
-                            var bankReceived = item.BankReceived;
-                            var bankIDReceived = item.BankIDReceived;
-                            var receivedDate = item.ReceivedDate;
+                            var receivedId = item.ReceivedID;
+                            var transactionCode = item.TransactionCode;
                             var amount = item.Amount;
-                            var status = item.Status;
-                            var enabled = item.Enabled;
+                            var createdBy = item.CreatedBy; 
 
                             //  role
                             var action = HelperModel.RolePermission(result.role, "_TransactionDepositController", id);
@@ -365,10 +357,10 @@ var _TransactionDepositController = {
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${title}</td>                                    
-                                 <td>${customerId}</td>                                    
+                                 <td>${title}, MGD: ${transactionCode}</td>                                    
+                                 <td>${receivedId}</td>                                    
                                  <td class="text-right"> ${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
-                                 <td>${summary}</td>                                    
+                                 <td>${createdBy}</td>                                    
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
@@ -396,7 +388,7 @@ var _TransactionDepositController = {
     },
     Create: function () {
         var ddlCustomer = $('#ddlCustomer').val();
-        var txtTransactionID = $('#txtTransactionID').val();
+        var txtTransactionCode = $('#txtTransactionCode').val();
         var ddlBankSent = $('#ddlBankSent').val();
         var txtBankIDSent = $('#txtBankIDSent').val();
         var ddlBankReceived = $('#ddlBankReceived').val();
@@ -407,8 +399,8 @@ var _TransactionDepositController = {
         var txtSummary = $('#txtSummary').val(); 
         //
         var model = {
-            CustomerID: ddlCustomer,
-            TransactionID: txtTransactionID,
+            ReceivedID: ddlCustomer,
+            TransactionCode: txtTransactionCode,
             BankSent: ddlBankSent,
             BankIDSent: txtBankIDSent,
             BankReceived: ddlBankReceived,
@@ -492,20 +484,19 @@ $(document).on("keyup", "#txtReceivedDate", function () {
 });
 
 // transaction 
-$(document).on('keyup', '#txtTransactionID', function () {
-    var txtTransactionID = $(this).val();
-    if (txtTransactionID === '') {
-        $('#lblTransactionID').html('Không được để trống mã giao dịch');
+$(document).on('keyup', '#txtTransactionCode', function () {
+    var txtTransactionCode = $(this).val();
+    if (txtTransactionCode === '') {
+        $('#lblTransactionCode').html('Không được để trống mã giao dịch');
     }
-    else if (!FormatKeyword.test(txtTransactionID)) {
-        $('#lblTransactionID').html('Mã giao dịch không hợp lệ');
+    else if (!FormatKeyword.test(txtTransactionCode)) {
+        $('#lblTransactionCode').html('Mã giao dịch không hợp lệ');
     }
     else {
-        $('#lblTransactionID').html('');
+        $('#lblTransactionCode').html('');
     }
 });
 // 
-
 $(document).on("change", "#ddlBankSent", function () {
     var ddlBankSent = $(this).val();
     if (ddlBankSent === "") {

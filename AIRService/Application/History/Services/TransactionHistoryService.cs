@@ -27,10 +27,10 @@ namespace WebCore.Services
         public TransactionHistoryService() : base() { }
         public TransactionHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public static TransactionHistoryMessageModel LoggerTransactionCustomerDepositHistory(TransactionCustomerDepositHistoryCreateModel model, IDbConnection dbConnection = null,IDbTransaction dbTransaction = null)
+        public static TransactionHistoryMessageModel LoggerTransactionDepositHistory(TransactionDepositHistoryCreateModel model, IDbConnection dbConnection = null,IDbTransaction dbTransaction = null)
         {
-            TransactionCustomerDepositHistoryService service = new TransactionCustomerDepositHistoryService();
-            return service.TransactionCustomerDepositHistoryCreate(model, dbConnection, dbTransaction);
+            TransactionDepositHistoryService service = new TransactionDepositHistoryService();
+            return service.TransactionDepositHistoryCreate(model, dbConnection, dbTransaction);
         }
         public static TransactionHistoryMessageModel LoggerWalletCustomerSpendingHistory(WalletCustomerSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {

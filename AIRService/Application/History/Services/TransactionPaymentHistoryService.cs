@@ -38,7 +38,7 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_TransactionDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
                                 ORDER BY [CreatedDate] DESC";
-            var dtList = _connection.Query<TransactionCustomerDepositResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<TransactionDepositResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //

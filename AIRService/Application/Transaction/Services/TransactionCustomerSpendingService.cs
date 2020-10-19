@@ -172,14 +172,13 @@ namespace WebCore.Services
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerTransactionCustomerDepositHistory(new TransactionCustomerDepositHistoryCreateModel
+                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerTransactionDepositHistory(new TransactionDepositHistoryCreateModel
                     {
-                        CustomerID = customerId,
+                        SenderID =  userId,
+                        ReceivedID = customerId,
                         Amount = amount,
                         NewBalance = balanceCustomer.SpendingBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN,
-                        TransactionOriginalType = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.DIRECTLY,
-                        TransactionOriginalID = transactionSpendingId
+                        TransactionType = (int)TransactionEnum.TransactionType.IN
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
                     if (!loggerWalletCustomerHistoryStatus.Status)
