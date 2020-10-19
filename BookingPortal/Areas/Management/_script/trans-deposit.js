@@ -404,11 +404,7 @@ var _TransactionDepositController = {
         var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());  
         var txtReceivedDate = $('#txtReceivedDate').val();
         var txtTitle = $('#txtTitle').val();
-        var txtSummary = $('#txtSummary').val();
-
-        var enabled = 0;
-        if ($('input[name="cbxActive"]').is(":checked"))
-            enabled = 1;
+        var txtSummary = $('#txtSummary').val(); 
         //
         var model = {
             CustomerID: ddlCustomer,
@@ -422,7 +418,7 @@ var _TransactionDepositController = {
             ReceivedDate: txtReceivedDate,
             Title: txtTitle,
             Summary: txtSummary,
-            Enabled: enabled
+            Enabled: 1
         };
         AjaxFrom.POST({
             url: URLC + '/Create',

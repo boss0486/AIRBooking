@@ -1,189 +1,172 @@
 ﻿@{
-    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-@using Webcore.Services;
-<div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header">
-                <div class="col-md-12">
-                    <h2>@Helper.MetaSEO.ControllerText | @Helper.MetaSEO.ActionText</h2>
+@using WebCore.Entities;
+@using WebCore.Services;
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">@Helper.Language.Resource.Label.IDNo:</label>
+                <input id="txtTextID" name="txtTextID" maxlength="50" type="text" class="form-control" value="" />
+            </div>
+            <span id="lblTextID" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">@Helper.Language.Resource.Label.Title</label>
+                <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
+            </div>
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">@Helper.Language.Resource.Label.Alias</label>
+                <input id="txtAlias" name="txtAlias" maxlength="80" type="text" class="form-control" />
+            </div>
+            <span id="lblAlias" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-nomal ">
+                <label class="form-label">@Helper.Language.Resource.Label.Summary</label>
+                <textarea id="txtSummary" name="txtSummary" class="form-control"></textarea>
+            </div>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">Tổng view:</label>
+                <input id="txtViewTotal" name="txtViewTotal" maxlength="255" type="text" class="form-control" value="0" />
+            </div>
+            <span id="lblViewTotal" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">Ngày đăng:</label>
+                <input id="txtViewDate" name="txtViewDate" data-date="true" maxlength="10" type="text" class="form-control" />
+            </div>
+            <span id="lblViewDate" class="message msg-box"></span>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-offset-1">
+        <div class="form-group">
+            <label class="form-label">@Helper.Language.Resource.Label.Photo:</label>
+            <div class="text-center new-box-preview">&nbsp;</div>
+            <div class="new-box-preview-caption">
+                <i class="far fa-folder"></i> <span class="img-caption-text">&nbsp;... chọn file</span>
+            </div>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-nomal ">
+                <label class="form-label">Gán thẻ:</label>
+                <textarea id="txtTag" name="txtTag" class="form-control"></textarea>
+            </div>
+            <span id="lblTag" class="message msg-box"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7">
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">@Helper.Language.Resource.Label.HtmlNote:</label>
+            </div>
+            <textarea class="HtmlEditor" id="txtNote" name="txtNote" style="width:100%; min-height:300px;"></textarea>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group form-float">
+            <div class="form-line selecter">
+                <label class="form-label">@Helper.Language.Resource.Label.Category:</label>
+            </div>
+            <select id="ddlCategoryID" name="ddlCategoryID" class="form-control show-tick" data-live-search="true">
+                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                @Html.Raw(ProductCategoryService.DDLProductCategory(string.Empty))
+            </select>
+            <span id="lblCategory" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">Giá bán:</label>
+                <input id="txtPrice" name="txtPrice" maxlength="12" type="text" class="form-control" value="0" />
+            </div>
+            <span id="lblPrice" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">Giá khuyến mại:</label>
+                <input id="txtPriceListed" name="txtPriceListed" maxlength="12" type="text" class="form-control" value="0" />
+            </div>
+            <span id="lblPriceListed" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line selecter">
+                <label class="form-label">TG.bảo hành</label>
+            </div>
+            <select id="ddlProductWarranty" name="ddlProductWarranty" class="form-control show-tick" data-live-search="true">
+                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                @Html.Raw(ProductWarrantyService.DDLProductWarranty(string.Empty))
+            </select>
+            <span id="lblProductWarranty" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line selecter">
+                <label class="form-label">Nhà cung cấp:</label>
+            </div>
+            <select id="ddlProductProvider" name="ddlProductProvider" class="form-control show-tick" data-live-search="true">
+                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                @Html.Raw(ProductProviderService.DDLProductProvider(string.Empty))
+            </select>
+            <span id="lblProductProvider" class="message msg-box"></span>
+        </div>
+        <div class="form-group form-float">
+            <div class="form-line selecter">
+                <label class="form-label">Tình trạng:</label>
+            </div>
+            <select id="ddlProductState" name="ddlProductState" class="form-control show-tick" data-live-search="true">
+                <option value="-1">-@Helper.Language.Resource.Label.Option-</option>
+                @Html.Raw(ProductService.DDLProductState(1))
+            </select>
+            <span id="lblProductState" class="message msg-box"></span>
+        </div>
+    </div>
+</div>
+<div class="form-group form-float">
+    <div class="form-line">
+        <label class="form-label">@Helper.Language.Resource.Label.HtmlText:</label>
+    </div>
+    <textarea class="HtmlEditors" id="txtHtmlText" name="txtHtmlText" style="width:100%; min-height:500px;"></textarea>
+</div> 
+<div class="form-group form-float">
+    <label class="form-label">@Helper.Language.Resource.Label.Photo:</label>
+    <div class="file-preview">
+        <div class="file-preview-footer">
+            <i id="btnOpenManagerFile" class="far fa-folder cursor"></i><span class="photo-caption-text">... chọn file</span>
+        </div>
+        <div class="container-fuild modal-container-layout">
+            <div class="pre-view"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group form-float">
+            <div class="form-line">
+                <label class="form-label">@Helper.Language.Resource.Label.Display:</label>
+                <div class="form-control">
+                    <label id="cbxActive" class="cursor "><i class="far fa-square" data-val="0"></i> &nbsp; @Helper.Language.Resource.Label.Active</label>
                 </div>
             </div>
-            <div class="body">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">@Resource.Label.IDNo:</label>
-                                    <input id="txtTextID" name="txtTextID" maxlength="50" type="text" class="form-control" value="" />
-                                </div>
-                                <span id="lblTextID" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">@Resource.Label.Title</label>
-                                    <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
-                                </div>
-                                <span id="lblTitle" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">@Resource.Label.Alias</label>
-                                    <input id="txtAlias" name="txtAlias" maxlength="80" type="text" class="form-control" />
-                                </div>
-                                <span id="lblAlias" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-nomal ">
-                                    <label class="form-label">@Resource.Label.Summary</label>
-                                    <textarea id="txtSummary" name="txtSummary" class="form-control"></textarea>
-                                </div>
-                                <span id="lblSummary" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">Tổng view:</label>
-                                    <input id="txtViewTotal" name="txtViewTotal" maxlength="255" type="text" class="form-control" value="0" />
-                                </div>
-                                <span id="lblViewTotal" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">Ngày đăng:</label>
-                                    <input id="txtViewDate" name="txtViewDate" data-date="true" maxlength="10" type="text" class="form-control" />
-                                </div>
-                                <span id="lblViewDate" class="message msg-box"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-offset-1">
-                            <div class="form-group">
-                                <label class="form-label">@Resource.Label.Photo:</label>
-                                <div class="text-center new-box-preview">&nbsp;</div>
-                                <div class="new-box-preview-caption">
-                                    <i class="far fa-folder"></i> <span class="img-caption-text">&nbsp;... chọn file</span>
-                                </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-nomal ">
-                                    <label class="form-label">Gán thẻ:</label>
-                                    <textarea id="txtTag" name="txtTag" class="form-control"></textarea>
-                                </div>
-                                <span id="lblTag" class="message msg-box"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">@Resource.Label.HtmlNote:</label>
-                                </div>
-                                <textarea class="HtmlEditor" id="txtNote" name="txtNote" style="width:100%; min-height:300px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group form-float">
-                                <div class="form-line selecter">
-                                    <label class="form-label">@Resource.Label.Category:</label>
-                                </div>
-                                <select id="ddlCategoryID" name="ddlCategoryID" class="form-control show-tick" data-live-search="true">
-                                    <option value="">-@Resource.Label.Option-</option>
-                                    @Html.Raw(ProductCategoryService.DDLProductCategory(string.Empty))
-                                </select>
-                                <span id="lblCategory" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">Giá bán:</label>
-                                    <input id="txtPrice" name="txtPrice" maxlength="12" type="text" class="form-control" value="0" />
-                                </div>
-                                <span id="lblPrice" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">Giá khuyến mại:</label>
-                                    <input id="txtPriceListed" name="txtPriceListed" maxlength="12" type="text" class="form-control" value="0" />
-                                </div>
-                                <span id="lblPriceListed" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line selecter">
-                                    <label class="form-label">TG.bảo hành</label>
-                                </div>
-                                <select id="ddlProductWarranty" name="ddlProductWarranty" class="form-control show-tick" data-live-search="true">
-                                    <option value="">-@Resource.Label.Option-</option>
-                                    @Html.Raw(ProductWarrantyService.DDLProductWarranty(string.Empty))
-                                </select>
-                                <span id="lblProductWarranty" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line selecter">
-                                    <label class="form-label">Nhà cung cấp:</label>
-                                </div>
-                                <select id="ddlProductProvider" name="ddlProductProvider" class="form-control show-tick" data-live-search="true">
-                                    <option value="">-@Resource.Label.Option-</option>
-                                    @Html.Raw(ProductProviderService.DDLProductProvider(string.Empty))
-                                </select>
-                                <span id="lblProductProvider" class="message msg-box"></span>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line selecter">
-                                    <label class="form-label">Tình trạng:</label>
-                                </div>
-                                <select id="ddlProductState" name="ddlProductState" class="form-control show-tick" data-live-search="true">
-                                    <option value="-1">-@Resource.Label.Option-</option>
-                                    @Html.Raw(ProductService.DDLProductState(1))
-                                </select>
-                                <span id="lblProductState" class="message msg-box"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group form-float">
-                        <div class="form-line">
-                            <label class="form-label">@Resource.Label.HtmlText:</label>
-                        </div>
-                        <textarea class="HtmlEditors" id="txtHtmlText" name="txtHtmlText" style="width:100%; min-height:500px;"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group form-float">
-                        <label class="form-label">@Resource.Label.Photo:</label>
-                        <div class="file-preview">
-                            <div class="file-preview-footer">
-                                <i id="btnOpenManagerFile" class="far fa-folder cursor"></i><span class="photo-caption-text">... chọn file</span>
-                            </div>
-                            <div class="container-fuild modal-container-layout">
-                                <div class="pre-view"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group form-float">
-                        <div class="form-line">
-                            <label class="form-label">@Resource.Label.Display:</label>
-                            <div class="form-control">
-                                <label id="cbxActive" class="cursor "><i class="far fa-square" data-val="0"></i> &nbsp; @Resource.Label.Active</label>
-                            </div>
-                        </div>
-                        <span id="lblActive" class="message msg-box"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group form-float">
-                        <label class="form-label">&nbsp;</label>
-                        <div class="text-right">
-                            <button id="btnCreate" class="btn btn-primary" type="button">@Resource.Label.BtnCreate</button>
-                            <button id="btnReset" class="btn btn-danger" type="reset">@Resource.Label.BtnReset</button>
-                        </div>
-                    </div>
-                </div>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group form-float">
+            <label class="form-label">&nbsp;</label>
+            <div class="text-right">
+                <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+                <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
             </div>
         </div>
     </div>
