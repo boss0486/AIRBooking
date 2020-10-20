@@ -7,7 +7,8 @@ var _TransactionDepositController = {
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
-            var flg = true;
+            var flg = true;  
+            var ddlSupplier = $('#ddlSuplier').val();
             var ddlCustomer = $('#ddlCustomer').val();
             var txtTransactionCode = $('#txtTransactionCode').val();
             var ddlBankSent = $('#ddlBankSent').val();
@@ -19,6 +20,19 @@ var _TransactionDepositController = {
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
             //
+            if (HelperModel.AccessInApplication != RoleEnum.IsAdminSupplierLogged && HelperModel.AccessInApplication != RoleEnum.IsSupplierLogged) {
+                //
+                if (ddlSupplier === "") {
+                    $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
+                    flg = false;
+                }
+                else {
+                    $('#lblSupplier').html('');
+                }
+                //
+            }
+            //
+
             if (ddlCustomer === "") {
                 $('#lblCustomer').html('Vui lòng chọn khách hàng');
                 flg = false;
@@ -387,6 +401,10 @@ var _TransactionDepositController = {
         });
     },
     Create: function () {
+        var ddlSupplier = $('#ddlSupplier').val();
+        if (ddlSupplier == undefined || ddlSupplier == null) {
+            ddlSupplier = '';
+        }
         var ddlCustomer = $('#ddlCustomer').val();
         var txtTransactionCode = $('#txtTransactionCode').val();
         var ddlBankSent = $('#ddlBankSent').val();
@@ -399,6 +417,7 @@ var _TransactionDepositController = {
         var txtSummary = $('#txtSummary').val(); 
         //
         var model = {
+            SenderID: ddlSupplier,
             ReceivedID: ddlCustomer,
             TransactionCode: txtTransactionCode,
             BankSent: ddlBankSent,
@@ -435,10 +454,77 @@ var _TransactionDepositController = {
             }
         });
 
+    },
+    GetCustomerBySupplierID: function (supplierId, _id, isChangeEvent) {
+        var option = `<option value="">-Lựa chọn-</option>`;
+        $('#ddlCustomer').html(option);
+        $('#ddlCustomer').selectpicker('refresh');
+        var model = {
+            ID: supplierId
+        };
+        AjaxFrom.POST({
+            url: '/Management/Customer/Action/GetCustomer-By-SuplierID',
+            data: model,
+            async: true,
+            success: function (result) {
+                if (result !== null) {
+                    if (result.status === 200) {
+
+                        var attrSelect = '';
+                        $.each(result.data, function (index, item) {
+                            var id = item.ID;
+                            var codeid = item.CodeID;
+                            if (_id !== undefined && _id != "" && _id === item.ID) {
+                                attrSelect = "selected";
+                            }
+                            else {
+                                attrSelect = '--';
+                            }
+                            option += `<option value='${id}' data-codeid='${codeid}' ${attrSelect}>${item.Title}</option>`;
+                        });
+                        //
+                        $('#ddlCustomer').html(option);
+                        setTimeout(function () {
+                            $('#ddlCustomer').selectpicker('refresh');
+                            if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
+                                $('#ddlCustomer').change();
+                            }
+                        }, 1000);
+                        return;
+                    }
+                    else {
+                        //Notifization.Error(result.message);
+                        console.log('::' + result.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
     }
 };
-
+ 
 _TransactionDepositController.init();
+// supplier
+$(document).on("change", "#ddlSupplier", function () {
+    var ddlSupplier = $(this).val();
+    if (ddlSupplier === "") {
+        $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
+        $('#lblSupplierCodeID').html('');
+    }
+    else {
+        $('#lblSupplier').html('');
+        var codeid = $(this).find(':selected').data('codeid');
+        $('#lblSupplierCodeID').html(codeid);
+        // load customer
+        _TransactionDepositController.GetCustomerBySupplierID(ddlSupplier, "", false);
+    }
+});
+
 // customer
 $(document).on("change", "#ddlCustomer", function () {
     var ddlCustomer = $(this).val();

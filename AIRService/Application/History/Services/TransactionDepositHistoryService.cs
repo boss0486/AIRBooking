@@ -68,8 +68,6 @@ namespace WebCore.Services
             else if (Helper.Current.UserLogin.IsAdminCustomerLogged() || Helper.Current.UserLogin.IsCustomerLogged())
             {
                 string customerId = CustomerService.GetCustomerIDByUserID(userId);
-                return Notifization.NotFound(MessageText.NotFound +":" + customerId);
-
                 whereCondition += " AND ReceivedID = '" + customerId + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.IN;
             }
             else if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())

@@ -12,7 +12,7 @@
         </div>
         <div class="row">
             <div class="col-md-7">
-                @if (!Helper.Current.UserLogin.IsCustomerLogged())
+                @if (!Helper.Current.UserLogin.IsAdminCustomerLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
                 {
                     <div class="form-group">
                         <label class="form-label">Khách hàng:</label>
@@ -25,8 +25,9 @@
                 }
                 else
                 {
+                    string customerId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
                     CustomerService customerService = new CustomerService();
-                    var customer = customerService.GetCustomerModel(Helper.Current.UserLogin.IdentifierID);
+                    var customer = customerService.GetCustomerModel(customerId);
                     if (customer != null)
                     {
                         customerCodeID = customer.CodeID;
@@ -36,7 +37,6 @@
                             <span id="lblCustomer" class="message msg-box"></span>
                         </div>
                     }
-
                 }
 
             </div>

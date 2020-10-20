@@ -619,6 +619,7 @@ namespace WebCore.Services
                 return null;
             }
         }
+         
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(CustomerIDModel model)
         {
@@ -685,6 +686,26 @@ namespace WebCore.Services
             using (var service = new CustomerService())
             {
                 var dtList = service.DataOption();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+            }
+
+        }
+        public static string DropdownListBySuplierID( string id,string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
+        {
+            string result = string.Empty;
+            using (var service = new CustomerService())
+            {
+                var dtList = service.GetCustomerBySupplierIDOption(supplierId, customerType);
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)
