@@ -17,7 +17,7 @@ using WebCore.Services;
 using Helper.Page;
 using WebCore.Model.Entities;
 using WebCore.ENM;
-using System.Data; 
+using System.Data;
 
 namespace WebCore.Services
 {
@@ -29,55 +29,31 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public static WalletCustomerMessageModel ChangeBalanceSpendingForCustomer(WalletCustomerChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                WalletCustomerService service = new WalletCustomerService();
-                return service.ExecuteChangeBalanceSpendingForCustomer(model, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletCustomerMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
-            }
+            WalletCustomerService service = new WalletCustomerService();
+            return service.ExecuteChangeBalanceSpendingForCustomer(model, dbConnection, dbTransaction);
         }
         public static WalletCustomerMessageModel ChangeBalanceDepositForCustomer(WalletCustomerChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                WalletCustomerService service = new WalletCustomerService();
-                return service.ExecuteChangeBalanceDepositForCustomer(model, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletCustomerMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
-            }
+            WalletCustomerService service = new WalletCustomerService();
+            return service.ExecuteChangeBalanceDepositForCustomer(model, dbConnection, dbTransaction);
         }
         public static WalletCustomerMessageModel GetBalanceByCustomerID(string clientId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                WalletCustomerService service = new WalletCustomerService();
-                return service.GetBalanceByCustomerID(clientId, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
-            }
+            WalletCustomerService service = new WalletCustomerService();
+            return service.GetBalanceByCustomerID(clientId, dbConnection, dbTransaction);
         }
         public static WalletCustomerMessageModel GetBalanceOfCustomerByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(userId))
-                    return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
+                    return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
                 //
                 userId = userId.ToLower();
-                ClientLoginService  clientLoginService = new ClientLoginService();
+                ClientLoginService clientLoginService = new ClientLoginService();
                 var client = clientLoginService.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
                 if (client == null)
-                    return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
+                    return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
                 //
                 string clientId = client.ClientID;
                 WalletCustomerService service = new WalletCustomerService();
@@ -86,35 +62,19 @@ namespace WebCore.Services
             catch (Exception ex)
             {
                 throw ex;
-                return new WalletCustomerMessageModel { Status = false, SpendingBalance = 0, DepositBalance = 0, Message = "Không tìm thây dữ liệu" };
+                return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
             }
         }
         //
         public static WalletUserMessageModel ChangeBalanceForUser(WalletUserChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                WalletUserService service = new WalletUserService();
-                return service.ChangeBalanceForUser(model, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletUserMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" + ex };
-            }
+            WalletUserService service = new WalletUserService();
+            return service.ChangeBalanceForUser(model, dbConnection, dbTransaction);
         }
         public static WalletUserMessageModel GetBalanceOfUserByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                WalletUserService service = new WalletUserService();
-                return service.GetBalanceByUserID(userId, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletUserMessageModel { Status = false, Balance = 0, Message = "Không tìm thây dữ liệu" };
-            }
+            WalletUserService service = new WalletUserService();
+            return service.GetBalanceByUserID(userId, dbConnection, dbTransaction);
         }
         //##############################################################################################################################################################################################################################################################
     }

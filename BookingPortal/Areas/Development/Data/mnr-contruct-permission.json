@@ -62,9 +62,9 @@
       },
       {
         "OrderID": 7,
-        "KeyID": "LoginInfo",
-        "Method": "LoginInfo",
-        "APIRouter": "Action/LoginInfo",
+        "KeyID": "AccountInfo",
+        "Method": "AccountInfo",
+        "APIRouter": "Action/AccountInfo",
         "Title": "Truy cập"
       },
       {

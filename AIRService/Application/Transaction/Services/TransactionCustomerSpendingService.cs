@@ -177,7 +177,7 @@ namespace WebCore.Services
                         SenderID =  userId,
                         ReceivedID = customerId,
                         Amount = amount,
-                        NewBalance = balanceCustomer.SpendingBalance + amount,
+                        NewBalance = balanceCustomer.SpendingLimitBalance + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //

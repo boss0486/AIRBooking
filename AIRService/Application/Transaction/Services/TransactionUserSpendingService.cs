@@ -158,7 +158,7 @@ namespace WebCore.Services
                     if (!balanceCustomer.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     //
-                    if (amount > balanceCustomer.SpendingBalance)
+                    if (amount > balanceCustomer.SpendingLimitBalance)
                         return Notifization.Invalid("Số dư hạn mức không đủ để giao dịch");
                     //
                     TransactionUserSpendingService transactionUserSpendingService = new TransactionUserSpendingService(_connection);
@@ -185,7 +185,7 @@ namespace WebCore.Services
                     {
                         CustomerID = currentUserId,
                         Amount = amount,
-                        NewBalance = balanceCustomer.SpendingBalance - amount,
+                        NewBalance = balanceCustomer.SpendingLimitBalance - amount,
                         TransactionType = (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT,
                         TransactionOriginal = (int)WalletHistoryEnum.WalletHistoryTransactionOriginal.NONE
                     }, dbConnection: _connection, dbTransaction: _transaction);

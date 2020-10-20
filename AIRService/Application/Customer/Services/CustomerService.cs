@@ -154,7 +154,7 @@ namespace WebCore.Services
                     bool customerLoginStatus = userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction);
                     bool supplierLoginStatus = userService.IsSupplierLogged(currentUserId, dbConnection: _connection, _transaction);
                     string suppId = string.Empty;
-                    if (userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction))
+                    if (customerLoginStatus)
                     {
                         var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).FirstOrDefault();
                         if (client == null)
@@ -172,7 +172,7 @@ namespace WebCore.Services
                         else
                             path = customer1.Path;
                     }
-                    else if (userService.IsSupplierLogged(currentUserId, dbConnection: _connection, _transaction))
+                    else if (supplierLoginStatus)
                     {
                         var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).FirstOrDefault();
                         if (client == null)
@@ -201,7 +201,7 @@ namespace WebCore.Services
                     // 1.neu la khach hang ko dc tao them dai ly, chỉ dc tạo comp
                     if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
                         return Notifization.Invalid("Không thể tạo khách hàng");
-                    //
+                    // 
                     if (Helper.Current.UserLogin.IsCustomerLogged() && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                         return Notifization.Invalid("Không thể tạo đại lý");
                     //
@@ -407,7 +407,7 @@ namespace WebCore.Services
                         var balanceCustomer = balanceCustomerService.Create<string>(new WalletCustomer()
                         {
                             CustomerID = customerId,
-                            SpendingAmount = 0,
+                            SpendingLimitAmount = 0,
                             DepositAmount = 0
 
                         }, transaction: _transaction);

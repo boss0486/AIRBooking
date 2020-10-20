@@ -18,8 +18,9 @@ namespace WebCore.Entities
     {
         public bool Status { get; set; }
         public string Message { get; set; }
-        public double SpendingBalance { get; set; }
+        public double SpendingLimitBalance { get; set; }
         public double DepositBalance { get; set; }
+        public double SpendingBalance { get; set; }
     }
 
     public class WalletCustomerModel

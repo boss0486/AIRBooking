@@ -48,7 +48,7 @@ var CustomerController = {
             //
 
             if (txtCodeID === '') {
-                $('#lblCodeID').html('Không được để trống mã khách hàng');
+                $('#lblCodeID').html('Không được để trống MKH');
                 flg = false;
             }
             else if (txtCodeID.length != 3) {
@@ -851,7 +851,7 @@ $(document).on("change", "#ddlCustomerType", function () {
 $(document).on("keyup", "#txtCodeID", function () {
     var txtCodeID = $(this).val();
     if (txtCodeID === '') {
-        $('#lblCodeID').html('Không được để trống mã khách hàng');
+        $('#lblCodeID').html('Không được để trống MKH');
     }
     else if (txtCodeID.length != 3) {
         $('#lblCodeID').html('Mã khách hàng bao gồm 3 ký tự');

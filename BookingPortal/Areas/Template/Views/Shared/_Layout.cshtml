@@ -298,55 +298,75 @@
     </section>
 
     <section class="content main-content">
-        <div class="container-fluid p-t-10">
-            @if (Helper.Current.UserLogin.IsCustomerLogged())
-            {
-                double spendingBalance = 0;
-                double depositBalance = 0;
-
-                // check if is booker
-                string userId = Helper.Current.UserLogin.IdentifierID;
-
-                if (Helper.Current.UserLogin.IsAdminCustomerLogged())
-                {
-                    WebCore.Entities.WalletCustomerMessageModel walletCustomerMessageModel = WalletService.GetBalanceOfCustomerByUserID(userId);
-                    if (walletCustomerMessageModel.Status)
-                    {
-                        spendingBalance = walletCustomerMessageModel.SpendingBalance;
-                        depositBalance = walletCustomerMessageModel.DepositBalance;
-                    }
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-md-push-6">
                     <div class="row">
-                        <div class="container-fluid">
-                            <ul class="nav navbar-group">
-                                <li><a class="bg-teal">Nạp: @Helper.Page.Library.FormatCurrency(depositBalance) đ</a></li>
-                                <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(spendingBalance) đ</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUserByUserID(userId);
-                    if (walletUserMessageModel.Status)
-                    {
-                        spendingBalance = walletUserMessageModel.Balance;
-                    }
-                    <div class="row">
-                        <div class="container-fluid">
-                            <ul class="nav navbar-group">
-                                <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(spendingBalance) đ</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                }
+                        @if (Helper.Current.UserLogin.IsCustomerLogged())
+                        {
+                            double spendingLimitBalance = 0;
+                            double spendingBalance = 0;
+                            double depositBalance = 0;
+                            // check if is booker
+                            string userId = Helper.Current.UserLogin.IdentifierID;
+                            if (Helper.Current.UserLogin.IsAdminCustomerLogged())
+                            {
+                                WebCore.Entities.WalletCustomerMessageModel walletCustomerMessageModel = WalletService.GetBalanceOfCustomerByUserID(userId);
+                                if (walletCustomerMessageModel.Status)
+                                {
+                                    spendingLimitBalance = walletCustomerMessageModel.SpendingLimitBalance;
+                                    depositBalance = walletCustomerMessageModel.SpendingBalance;
+                                    depositBalance = walletCustomerMessageModel.DepositBalance;
+                                }
+                                <ul class="nav navbar-group">
+                                    <li><a class="bg-teal">Nạp: @Helper.Page.Library.FormatCurrency(depositBalance) đ</a></li>
+                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(spendingBalance) đ</a></li>
+                                    <li><a class="bg-red">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
+                                </ul>
+                            }
+                            else
+                            {
+                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUserByUserID(userId);
+                                if (walletUserMessageModel.Status)
+                                {
+                                    spendingLimitBalance = walletUserMessageModel.Balance;
+                                }
+                                <ul class="nav navbar-group">
+                                    <li><a class="bg-green">TK: 0 11đ</a></li>
+                                    <li><a class="bg-red">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
+                                </ul>
+                            }
+                        }
+                        else if (Helper.Current.UserLogin.IsSupplierLogged())
+                        {
+                            if (Helper.Current.UserLogin.IsAdminSupplierLogged())
+                            {
+                                <ul class="nav navbar-group">
+                                    <li><a class="bg-teal">Tài khoản: 0 đ</a></li>
+                                    <li><a class="bg-red">Hạn mức: 0 đ</a></li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="nav navbar-group">
+                                    <li><a class="bg-teal">Tài khoản: 0 đ</a></li>
+                                    <li><a class="bg-red">Hạn mức: 0 đ</a></li>
+                                </ul>
+                            }
 
-            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6 col-md-pull-6">
+                    <div class="block-header">
+                        <h2><i class="fas fa-ellipsis-v"></i> @Helper.Page.MetaSEO.SiteMap</h2>
+                    </div>
+                </div>
 
-            <div class="block-header">
-                <h2><i class="fas fa-ellipsis-v"></i> @Helper.Page.MetaSEO.SiteMap</h2>
-                <hr />
             </div>
+
         </div>
+        <hr />
         <div class="container-fluid">
             @RenderBody()
             <input id="txtAccessInApplication" type="hidden" value="@Helper.Current.UserLogin.UserRoleInApplication" />
@@ -354,7 +374,7 @@
     </section>
 
     @Scripts.Render("~/library/js")
-    @Scripts.Render("~/manage/js") 
+    @Scripts.Render("~/manage/js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

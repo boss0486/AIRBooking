@@ -41,10 +41,10 @@ namespace WebCore.Services
                 return new WalletCustomerMessageModel { Status = false, Message = "Không thể cập nhật giao dịch" };
             // + 
             if (transType == (int)TransactionEnum.TransactionType.IN)
-                balanceCustomer.SpendingAmount += amount;
+                balanceCustomer.SpendingLimitAmount += amount;
             // -
             if (transType == (int)TransactionEnum.TransactionType.OUT)
-                balanceCustomer.SpendingAmount -= amount;
+                balanceCustomer.SpendingLimitAmount -= amount;
             // update
             service.Update(balanceCustomer, transaction: dbTransaction);
             return new WalletCustomerMessageModel { Status = true, Message = "Ok" };
@@ -77,17 +77,20 @@ namespace WebCore.Services
         {
             if (dbConnection == null)
                 dbConnection = DbConnect.Connection.CMS;
+            //
+            double spendingLimitAmount = 0;
             double spendingAmount = 0;
             double depositAmount = 0;
             var service = new WalletCustomerService(dbConnection);
             var balance = service.GetAlls(m => m.CustomerID == customerId.ToLower(), transaction: dbTransaction).FirstOrDefault();
             if (balance != null)
             {
-                spendingAmount = balance.SpendingAmount;
+                spendingLimitAmount = balance.SpendingLimitAmount;
                 depositAmount = balance.DepositAmount;
+                spendingAmount = balance.SpendingAmount;
             }
             //
-            return new WalletCustomerMessageModel { Status = true, SpendingBalance = spendingAmount, DepositBalance = depositAmount, Message = "Ok" };
+            return new WalletCustomerMessageModel { Status = true, SpendingLimitBalance = spendingLimitAmount, DepositBalance = depositAmount, SpendingBalance = spendingAmount, Message = "Ok" };
         }
         //##############################################################################################################################################################################################################################################################
     }

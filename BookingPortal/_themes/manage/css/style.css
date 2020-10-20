@@ -103,12 +103,7 @@ span {
         width: 300px;
     }
 }
-
-@media (max-width: 768px) {
-    .nav.navbar-group {
-        margin-bottom: 20px;
-    }
-}
+ 
 
 @media (max-width: 480px) {
     .nav.navbar-group {
@@ -2436,8 +2431,8 @@ span {
 }
 
 .block-header {
-    margin-bottom: 15px;
-    padding-top: 20px;
+    padding-top: 15px;
+    padding-bottom: 0px;
 }
 
     .block-header h2 {
@@ -9475,6 +9470,7 @@ html.ie11 .bs-searchbox .form-control {
     transition: 0.5s;
     background: #FFF;
     padding-bottom: 200px;
+     
 }
 
     .main-content .top-pic {

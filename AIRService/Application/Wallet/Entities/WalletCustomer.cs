@@ -19,8 +19,9 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string CustomerID { get; set; }
-        public double SpendingAmount { get; set; }
+        public double SpendingLimitAmount { get; set; }
         public double DepositAmount { get; set; }
+        public double SpendingAmount { get; set; }
     }
 
     // model
