@@ -17,6 +17,7 @@ using WebCore.Services;
 using Helper.Page;
 using WebCore.Model.Entities;
 using WebCore.ENM;
+using System.ComponentModel;
 
 namespace WebCore.Services
 {
@@ -113,27 +114,27 @@ namespace WebCore.Services
                     //
                     string title = "Giao dịch cấp hạn mức";
                     string summary = model.Summary;
-                    string customerId = model.CustomerID;
+                    string receivedId = model.CustomerID;
                     double amount = model.Amount;
                     string languageId = Helper.Current.UserLogin.LanguageID;
                     //
                     string userId = Helper.Current.UserLogin.IdentifierID;
-                    string supplierId = model.SupplierID;
+                    string senderId = model.SupplierID;
                     if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
-                        supplierId = ClientLoginService.GetClientIDByUserID(userId);
+                        senderId = ClientLoginService.GetClientIDByUserID(userId);
                     // 
-                    if (string.IsNullOrWhiteSpace(supplierId))
+                    if (string.IsNullOrWhiteSpace(senderId))
                         return Notifization.Invalid(MessageText.Invalid);
                     //
                     CustomerService customerService = new CustomerService(_connection);
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
                     //
-                    if (string.IsNullOrWhiteSpace(customerId))
+                    if (string.IsNullOrWhiteSpace(receivedId))
                         return Notifization.Invalid("Vui lòng chọn khách hàng");
                     //
-                    customerId = customerId.ToLower();
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == customerId, transaction: _transaction).FirstOrDefault();
+                    receivedId = receivedId.ToLower();
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == receivedId, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.Invalid("Khách hàng không hợp lệ");
                     //
@@ -154,32 +155,49 @@ namespace WebCore.Services
                     {
                         Title = title,
                         Summary = summary,
-                        SupplierID = supplierId,
-                        SupplierUserID = userId,
-                        CustomerID = customerId,
+                        SenderID = senderId,
+                        SenderUserID = userId,
+                        ReceivedID = receivedId,
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
                         Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
                     }, transaction: _transaction);
                     //
-                    // update balance ************************************************************************************************************************************
-                    WalletCustomerMessageModel balanceCustomer = WalletService.GetBalanceByCustomerID(customerId, dbConnection: _connection, dbTransaction: _transaction);
+                    // lich su cap ************************************************************************************************************************************
+                    // create histories for balance changed
+                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
+                    {
+                        SenderUserID = userId,
+                        SenderID = ClientLoginService.GetClientIDByUserID(userId),
+                        ReceivedID = receivedId,
+                        Amount = amount,
+                        NewBalance = 0,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN
+                    }, dbConnection: _connection, dbTransaction: _transaction);
+                    //
+                    // 
+
+
+
+                    // lich su nhan ************************************************************************************************************************************
+                    WalletCustomerMessageModel balanceCustomer = WalletService.GetBalanceByCustomerID(receivedId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceCustomer.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // 
-                    var changeBalanceSpendingForCustomerStatus = WalletService.ChangeBalanceSpendingForCustomer(new WalletCustomerChangeModel { CustomerID = customerId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    var changeBalanceSpendingForCustomerStatus = WalletService.ChangeBalanceSpendingForCustomer(new WalletCustomerChangeModel { CustomerID = receivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerTransactionDepositHistory(new TransactionDepositHistoryCreateModel
+                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
                     {
-                        SenderID =  userId,
-                        ReceivedID = customerId,
+                        SenderUserID = userId,
+                        SenderID = ClientLoginService.GetClientIDByUserID(userId),
+                        ReceivedID = receivedId,
                         Amount = amount,
                         NewBalance = balanceCustomer.SpendingLimitBalance + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN
-                    }, dbConnection: _connection, dbTransaction: _transaction);
+                    }, dbConnection: _connection, dbTransaction: _transaction); 
                     //
                     if (!loggerWalletCustomerHistoryStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");

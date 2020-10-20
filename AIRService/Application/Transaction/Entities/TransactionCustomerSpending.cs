@@ -22,9 +22,9 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string SupplierID { get; set; }
-        public string SupplierUserID { get; set; }
-        public string CustomerID { get; set; }
+        public string SenderID { get; set; }
+        public string SenderUserID { get; set; }
+        public string ReceivedID { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
     }
