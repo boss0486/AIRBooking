@@ -38,6 +38,7 @@ namespace WebCore.Entities
     // model
     public class TransactionDepositCreateModel
     {
+        public string SenderID { get; set; }
         public string ReceivedID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }

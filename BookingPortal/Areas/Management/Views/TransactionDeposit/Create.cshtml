@@ -1,7 +1,8 @@
 ﻿@using WebCore.Services;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-    string supplierCodeID = string.Empty;
+    string supplierId = string.Empty;
+    string supplierCodeId = string.Empty;
 }
 <div class="row">
     <div class="col-md-9">
@@ -12,7 +13,7 @@
                     {
                         <div class="form-group ">
                             <label class="form-label">Nhà cung cấp:</label>
-                            <select id="ddlSuplier" name="ddlSuplier" class="form-control show-tick" data-live-search="true">
+                            <select id="ddlSupplier" name="ddlSupplier" class="form-control show-tick" data-live-search="true">
                                 <option value="">-Lựa chọn-</option>
                                 @Html.Raw(WebCore.Services.SupplierService.DropdownList(""))
                             </select>
@@ -21,13 +22,13 @@
                     }
                     else
                     {
-                        string supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                        supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
                         SupplierService supplierService = new SupplierService();
                         var supplier = supplierService.GetSupplierModel(supplierId);
                         string title = "";
                         if (supplier != null)
                         {
-                            supplierCodeID = supplier.CodeID;
+                            supplierCodeId = supplier.CodeID;
                             title = supplier.Title;
                         }
                         <div class="form-group">
@@ -42,7 +43,7 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label class="form-label">MNCC:</label>
-                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">@supplierCodeID</label></div>
+                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">@supplierCodeId</label></div>
                 </div>
             </div>
         </div>
@@ -52,7 +53,7 @@
                     <label class="form-label">Khách hàng:</label>
                     <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
-                        @Html.Raw(CustomerService.DropdownListBySuplierID("", supplierCodeID, (int)WebCore.ENM.CustomerEnum.CustomerType.AGENT))
+                        @Html.Raw(CustomerService.DropdownListBySuplierID("", supplierId, (int)WebCore.ENM.CustomerEnum.CustomerType.AGENT))
                     </select>
                     <span id="lblCustomer" class="message msg-box"></span>
                 </div>

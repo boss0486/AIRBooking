@@ -8,7 +8,7 @@ var _TransactionDepositController = {
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;  
-            var ddlSupplier = $('#ddlSuplier').val();
+            var ddlSupplier = $('#ddlSupplier').val();
             var ddlCustomer = $('#ddlCustomer').val();
             var txtTransactionCode = $('#txtTransactionCode').val();
             var ddlBankSent = $('#ddlBankSent').val();
