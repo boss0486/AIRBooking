@@ -192,7 +192,7 @@ namespace WebCore.Services
                     //
                     // #2. tang han muc cho user
                     // update balance for user ************************************************************************************************************************************
-                    WalletUserMessageModel balanceUser = WalletService.GetBalanceOfUserByUserID(receivedUserId, dbConnection: _connection, dbTransaction: _transaction);
+                    WalletUserMessageModel balanceUser = WalletService.GetBalanceOfUser(receivedUserId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceUser.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     //

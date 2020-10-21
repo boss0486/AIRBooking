@@ -58,7 +58,7 @@ namespace WebCore.Services
             WalletUserService service = new WalletUserService(dbConnection);
             return service.ChangeBalanceForUser(model, dbConnection, dbTransaction);
         }
-        public static WalletUserMessageModel GetBalanceOfUserByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletUserMessageModel GetBalanceOfUser(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             WalletUserService service = new WalletUserService(dbConnection);
             return service.GetBalanceByUserID(userId, dbConnection, dbTransaction);
