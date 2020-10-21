@@ -315,10 +315,20 @@ namespace WebCore.Services
                     {
                         ClientID = supplierId,
                         ClientType = (int)ClientLoginEnum.ClientType.Supplier,
-                        UserID = userId
+                        UserID = userId,
+                        IsSuper = true
                     }, transaction: _transaction);
-                    // site id
-                    string strPath = string.Empty;
+                    // wallet
+                    WalletClientService walletClientService = new WalletClientService(_connection);
+                    walletClientService.Create<string>(new WalletClient()
+                    {
+                        ClientID = supplierId,
+                        InvestedAmount = 0,
+                        ClientType = (int)ClientLoginEnum.ClientType.Supplier,
+                        SpendingLimitAmount = 0,
+                        DepositAmount = 0
+
+                    }, transaction: _transaction);
                     _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }

@@ -27,55 +27,42 @@ namespace WebCore.Services
         public WalletService() : base() { }
         public WalletService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public static WalletCustomerMessageModel ChangeBalanceSpendingForCustomer(WalletCustomerChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletClientMessageModel ChangeSpendingLimitBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            WalletCustomerService service = new WalletCustomerService();
-            return service.ExecuteChangeBalanceSpendingForCustomer(model, dbConnection, dbTransaction);
+            WalletClientService service = new WalletClientService(dbConnection);
+            return service.ExecuteChangeSpendingLimitBalance(model, dbConnection, dbTransaction);
         }
-        public static WalletCustomerMessageModel ChangeBalanceDepositForCustomer(WalletCustomerChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletClientMessageModel ChangeSpendingBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            WalletCustomerService service = new WalletCustomerService();
-            return service.ExecuteChangeBalanceDepositForCustomer(model, dbConnection, dbTransaction);
+            WalletClientService service = new WalletClientService(dbConnection);
+            return service.ExecuteChangeSpendingBalance(model, dbConnection, dbTransaction);
         }
-        public static WalletCustomerMessageModel GetBalanceByCustomerID(string clientId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletClientMessageModel ChangeDepositBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            WalletCustomerService service = new WalletCustomerService();
-            return service.GetBalanceByCustomerID(clientId, dbConnection, dbTransaction);
+            WalletClientService service = new WalletClientService(dbConnection);
+            return service.ExecuteChangeDepositBalance(model, dbConnection, dbTransaction);
         }
-        public static WalletCustomerMessageModel GetBalanceOfCustomerByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static WalletClientMessageModel ChangeInvestmentBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(userId))
-                    return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
-                //
-                userId = userId.ToLower();
-                ClientLoginService clientLoginService = new ClientLoginService();
-                var client = clientLoginService.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
-                if (client == null)
-                    return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
-                //
-                string clientId = client.ClientID;
-                WalletCustomerService service = new WalletCustomerService();
-                return service.GetBalanceByCustomerID(clientId, dbConnection, dbTransaction);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return new WalletCustomerMessageModel { Status = false, SpendingLimitBalance = 0, DepositBalance = 0, SpendingBalance = 0, Message = "Không tìm thây dữ liệu" };
-            }
+            WalletClientService service = new WalletClientService(dbConnection);
+            return service.ExecuteChangeInvestmentBalance(model, dbConnection, dbTransaction);
         }
-        //
+        public static WalletClientMessageModel GetBalanceByClientID(string clientId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        {
+            return WalletClientService.GetBalanceByCustomerID(clientId, dbConnection, dbTransaction);
+        }
+   
+        //spending user ##############################################################################################################################################################################################################################################################
         public static WalletUserMessageModel ChangeBalanceForUser(WalletUserChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            WalletUserService service = new WalletUserService();
+            WalletUserService service = new WalletUserService(dbConnection);
             return service.ChangeBalanceForUser(model, dbConnection, dbTransaction);
         }
         public static WalletUserMessageModel GetBalanceOfUserByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
-            WalletUserService service = new WalletUserService();
+            WalletUserService service = new WalletUserService(dbConnection);
             return service.GetBalanceByUserID(userId, dbConnection, dbTransaction);
         }
-        //##############################################################################################################################################################################################################################################################
+        //User ##############################################################################################################################################################################################################################################################
     }
 }

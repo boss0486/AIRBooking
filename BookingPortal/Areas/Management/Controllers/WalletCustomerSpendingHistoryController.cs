@@ -29,7 +29,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new WalletCustomerSpendingHistoryService())
+                using (var service = new WalletSpendingHistoryService())
                 {
                     return service.DataList(model);
                 }

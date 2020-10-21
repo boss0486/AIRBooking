@@ -341,7 +341,7 @@ namespace WebCore.Services
                     UserInfoService userInfoService = new UserInfoService(_connection);
                     UserSettingService userSettingService = new UserSettingService(_connection);
                     UserRoleService userRoleService = new UserRoleService(_connection);
-                    WalletCustomerService balanceCustomerService = new WalletCustomerService(_connection);
+                    WalletClientService balanceCustomerService = new WalletClientService(_connection);
                     LanguageService languageService = new LanguageService(_connection);
                     // *******  account login
                     string languageId = Helper.Page.Default.LanguageID;
@@ -404,14 +404,16 @@ namespace WebCore.Services
                     //******* create balance for agent
                     if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                     {
-                        var balanceCustomer = balanceCustomerService.Create<string>(new WalletCustomer()
+                        var balanceCustomer = balanceCustomerService.Create<string>(new WalletClient()
                         {
-                            CustomerID = customerId,
+                            ClientID = customerId,
+                            InvestedAmount = 0,
+                            ClientType = (int)ClientLoginEnum.ClientType.Customer,
                             SpendingLimitAmount = 0,
                             DepositAmount = 0
 
                         }, transaction: _transaction);
-                    } 
+                    }
                     //
                     var clientId = clientLoginService.Create<string>(new ClientLogin()
                     {
@@ -619,7 +621,7 @@ namespace WebCore.Services
                 return null;
             }
         }
-         
+
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(CustomerIDModel model)
         {
@@ -700,7 +702,7 @@ namespace WebCore.Services
             }
 
         }
-        public static string DropdownListBySuplierID( string id,string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
+        public static string DropdownListBySuplierID(string id, string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
         {
             string result = string.Empty;
             using (var service = new CustomerService())

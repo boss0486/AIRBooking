@@ -8,10 +8,10 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_WalletCustomerSpendingHistory")]
-    public partial class WalletCustomerSpendingHistory : WEBModel
+    [Table("App_WalletSpendingLimitHistory")]
+    public partial class WalletSpendingLimitHistory : WEBModel
     {
-        public WalletCustomerSpendingHistory()
+        public WalletSpendingLimitHistory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -20,7 +20,7 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string SenderUserID { get; set; }
         public string SenderID { get; set; }
-        public string CustomerID { get; set; }
+        public string ReceivedID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
@@ -32,7 +32,7 @@ namespace WebCore.Entities
     }
 
     // model
-    public class WalletCustomerSpendingHistoryCreateModel
+    public class WalletSpendingLimitHistoryCreateModel
     {
         public string SenderUserID { get; set; }
         public string SenderID { get; set; }
@@ -42,21 +42,21 @@ namespace WebCore.Entities
         public int TransactionType { get; set; }
         public int TransactionOriginal { get; set; }
     }
-    public class WalletCustomerSpendingHistoryUpdateModel : WalletCustomerSpendingHistoryCreateModel
+    public class WalletSpendingLimitHistoryUpdateModel : WalletSpendingLimitHistoryCreateModel
     {
         public string ID { get; set; }
     }
-    public class WalletCustomerSpendingHistoryIDModel
+    public class WalletSpendingLimitHistoryIDModel
     {
         public string ID { get; set; }
     }
     //
-    public partial class WalletCustomerSpendingHistoryResult : WEBModelResult
+    public partial class WalletSpendingLimitHistoryResult : WEBModelResult
     {
         public string ID { get; set; }
         public string SenderUserID { get; set; }
         public string SenderID { get; set; }
-        public string CustomerID { get; set; }
+        public string ReceivedID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
@@ -64,10 +64,5 @@ namespace WebCore.Entities
         public int TransactionType { get; set; }
         public int TransactionOriginal { get; set; }
         public int Status { get; set; }
-    }
-    public class WalletCustomerSpendingHistoryMessageModel
-    {
-        public bool Status { get; set; }
-        public string Message { get; set; }
     }
 }

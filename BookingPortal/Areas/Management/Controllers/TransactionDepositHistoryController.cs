@@ -30,7 +30,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new TransactionDepositHistoryService())
+                using (var service = new WalletDepositHistoryService())
                 {
                     return service.DataList(model);
                 }

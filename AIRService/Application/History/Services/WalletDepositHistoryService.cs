@@ -21,16 +21,15 @@ using System.Data;
 
 namespace WebCore.Services
 {
-    public interface IWalletCustomerSpendingHistoryService : IEntityService<WalletCustomerSpendingHistory> { }
-    public class WalletCustomerSpendingHistoryService : EntityService<WalletCustomerSpendingHistory>, IWalletCustomerSpendingHistoryService
+    public interface IWalletDepositHistoryService : IEntityService<WalletDepositHistory> { }
+    public class WalletDepositHistoryService : EntityService<WalletDepositHistory>, IWalletDepositHistoryService
     {
-        public WalletCustomerSpendingHistoryService() : base() { }
-        public WalletCustomerSpendingHistoryService(System.Data.IDbConnection db) : base(db) { }
+        public WalletDepositHistoryService() : base() { }
+        public WalletDepositHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-
-
         public ActionResult DataList(SearchModel model)
         {
+            #region
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
@@ -57,14 +56,41 @@ namespace WebCore.Services
                 if (searchResult.Status == 1)
                     whereCondition = searchResult.Message;
                 else
-                    return Notifization.Invalid(searchResult.Message);
+                    return Notifization.Invalid(MessageText.Invalid);
             }
-            //
+            #endregion
+
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                // show all
+            }
+            else if (Helper.Current.UserLogin.IsAdminCustomerLogged() || Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                string customerId = CustomerService.GetCustomerIDByUserID(userId);
+                whereCondition += " AND ReceivedID = '" + customerId + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.IN;
+            }
+            else if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                if (Helper.Current.UserLogin.IsAdminSupplierLogged())
+                {
+                    string supplierCode = ClientLoginService.GetClientIDByUserID(userId);
+                    whereCondition += " AND SenderID = '" + supplierCode + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.OUT;
+                }
+                else
+                    whereCondition += " AND SenderUserID = '" + userId + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.OUT;
+            }
+            else
+            {
+                return Notifization.AccessDenied(MessageText.AccessDenied);
+            }
+            // 
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_WalletCustomerSpendingHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
-            var dtList = _connection.Query<WalletCustomerSpendingHistory>(sqlQuery, new { Query = query }).ToList();
+            string sqlQuery = @"SELECT * FROM App_TransactionDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
+            var dtList = _connection.Query<WalletDepositHistoryResult>(sqlQuery, new { Query = query, SenderID = userId }).ToList();
+            //
             if (dtList.Count == 0)
-                return Notifization.NotFound(MessageText.NotFound);
+                return Notifization.NotFound(MessageText.NotFound + sqlQuery);
             //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count <= 0 && page > 1)
@@ -81,15 +107,19 @@ namespace WebCore.Services
                 Total = dtList.Count,
                 Page = page
             };
-            //
-            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            //;
+            return Notifization.Data(MessageText.Success + whereCondition, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-        public TransactionHistoryMessageModel WalletCustomerSpendingHistoryCreate(WalletCustomerSpendingHistoryCreateModel model,IDbConnection dbConnection, IDbTransaction dbTransaction = null)
+        //##############################################################################################################################################################################################################################################################
+
+        public TransactionHistoryMessageModel WalletDepositHistoryCreate(WalletDepositHistoryCreateModel model, IDbConnection dbConnection, IDbTransaction dbTransaction = null)
         {
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string customerId = model.ReceivedID;
+            string senderUserId = model.SenderUserID;
+            string senderId = model.SenderID;
+            string receivedId = model.ReceivedID;
             double amount = model.Amount;
             double balance = model.NewBalance;
             int transType = model.TransactionType;
@@ -102,12 +132,14 @@ namespace WebCore.Services
             if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
                 transState = "-";
             //
-            string title = "TK hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
-            string summary = "Số dư hạn mức" + Helper.Page.Library.FormatCurrency(balance) + " đ.";
-            WalletCustomerSpendingHistoryService BalanceCustomerHistoryService = new WalletCustomerSpendingHistoryService(dbConnection);
-            var id = BalanceCustomerHistoryService.Create<string>(new WalletCustomerSpendingHistory()
+            string title = "Nạp tiền. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string summary = "";
+            WalletDepositHistoryService BalanceCustomerHistoryService = new WalletDepositHistoryService(dbConnection);
+            var id = BalanceCustomerHistoryService.Create<string>(new WalletDepositHistory()
             {
-                CustomerID = customerId,
+                SenderUserID = senderUserId,
+                SenderID = senderId,
+                ReceivedID = receivedId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,

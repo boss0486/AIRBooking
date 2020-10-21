@@ -10,7 +10,8 @@
         public enum TransactionOriginal
         {
             NONE = 0,
-            DEPOSIT = 1
+            DEPOSIT = 1,
+            SPENDING = 2
         }
     }
 }

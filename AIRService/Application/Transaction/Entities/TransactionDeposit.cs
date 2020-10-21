@@ -56,7 +56,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class TransactionCustomerDepositIDModel
+    public class TransactioDepositIDModel
     {
         public string ID { get; set; }
     }

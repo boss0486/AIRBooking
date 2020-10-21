@@ -14,22 +14,15 @@ namespace WebCore.Entities
         public double Balance { get; set; }
     }
 
-    public class WalletCustomerMessageModel
+    public class WalletClientMessageModel
     {
         public bool Status { get; set; }
         public string Message { get; set; }
+        //public string ClientID { get; set; }
+        //public int ClientType { get; set; }
+        public double InvestedAmount { get; set; }
         public double SpendingLimitBalance { get; set; }
         public double DepositBalance { get; set; }
         public double SpendingBalance { get; set; }
-    }
-
-    public class WalletCustomerModel
-    {
-        public double SpendingTotal { get; set; }
-        public double DepositTotal { get; set; }
-    }
-    public class WalletUserModel
-    {
-        public double SpendingTotal { get; set; }
     }
 }

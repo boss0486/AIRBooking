@@ -112,7 +112,7 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Invalid();
                     //
-                    string title = "Giao dịch cấp hạn mức";
+                    string title = "GD cấp hạn mức";
                     string summary = model.Summary;
                     string receivedId = model.CustomerID;
                     double amount = model.Amount;
@@ -121,7 +121,9 @@ namespace WebCore.Services
                     string userId = Helper.Current.UserLogin.IdentifierID;
                     string senderId = model.SupplierID;
                     if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+                    {
                         senderId = ClientLoginService.GetClientIDByUserID(userId);
+                    }
                     // 
                     if (string.IsNullOrWhiteSpace(senderId))
                         return Notifization.Invalid(MessageText.Invalid);
@@ -164,52 +166,83 @@ namespace WebCore.Services
                         Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
                     }, transaction: _transaction);
                     //
-                    // lich su cap ************************************************************************************************************************************
-                    // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
+                    // send history ************************************************************************************************************************************
+                    #region
+                    WalletClientMessageModel balanceSender = WalletService.GetBalanceByClientID(receivedId, dbConnection: _connection, dbTransaction: _transaction);
+                    if (!balanceSender.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    WalletClientMessageModel changeInvestmentBalance = WalletService.ChangeInvestmentBalance(new WalletClientChangeModel { ClientID = senderId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    if (!changeInvestmentBalance.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    TransactionHistoryMessageModel loggerWalletInvestmentHistory = LoggerHistoryService.LoggerWalletInvestmentHistory(new WalletInvestmentHistoryCreateModel
                     {
                         SenderUserID = userId,
-                        SenderID = ClientLoginService.GetClientIDByUserID(userId),
+                        SenderID = senderId,
                         ReceivedID = receivedId,
                         Amount = amount,
-                        NewBalance = 0,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN
+                        NewBalance = balanceSender.InvestedAmount + amount,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN,
+                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.SPENDING
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
-                    // 
-
-
-
-                    // lich su nhan ************************************************************************************************************************************
-                    WalletCustomerMessageModel balanceCustomer = WalletService.GetBalanceByCustomerID(receivedId, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!balanceCustomer.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
-                    // 
-                    var changeBalanceSpendingForCustomerStatus = WalletService.ChangeBalanceSpendingForCustomer(new WalletCustomerChangeModel { CustomerID = receivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!changeBalanceSpendingForCustomerStatus.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
-                    // create histories for balance changed
-                    var loggerWalletCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
+                    if (!loggerWalletInvestmentHistory.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    #endregion
+                    //
+                    // receive history ************************************************************************************************************************************
+                    #region
+                    WalletClientMessageModel balanceReceived = WalletService.GetBalanceByClientID(receivedId, dbConnection: _connection, dbTransaction: _transaction);
+                    if (!balanceReceived.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    WalletClientMessageModel changeBalanceSpendingLimit = WalletService.ChangeSpendingLimitBalance(new WalletClientChangeModel { ClientID = receivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    if (!changeBalanceSpendingLimit.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    TransactionHistoryMessageModel loggerWalletSpendingLimitHistory = LoggerHistoryService.LoggerWalletSpendingLimitHistory(new WalletSpendingLimitHistoryCreateModel
                     {
                         SenderUserID = userId,
-                        SenderID = ClientLoginService.GetClientIDByUserID(userId),
+                        SenderID = senderId,
                         ReceivedID = receivedId,
                         Amount = amount,
-                        NewBalance = balanceCustomer.SpendingLimitBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN
-                    }, dbConnection: _connection, dbTransaction: _transaction); 
+                        NewBalance = balanceReceived.SpendingLimitBalance + amount,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN,
+                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.SPENDING
+                    }, dbConnection: _connection, dbTransaction: _transaction);
                     //
-                    if (!loggerWalletCustomerHistoryStatus.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
-                    // end update balance ************************************************************************************************************************************
+                    if (!loggerWalletSpendingLimitHistory.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    WalletClientMessageModel changeBalanceSpending = WalletService.ChangeSpendingBalance(new WalletClientChangeModel { ClientID = receivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    if (!changeBalanceSpending.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    TransactionHistoryMessageModel loggerWalletSpendingHistory = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
+                    {
+                        SenderUserID = userId,
+                        SenderID = senderId,
+                        ReceivedID = receivedId,
+                        Amount = amount,
+                        NewBalance = balanceReceived.SpendingBalance + amount,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN,
+                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.SPENDING
+                    }, dbConnection: _connection, dbTransaction: _transaction);
+                    //
+                    if (!loggerWalletSpendingHistory.Status)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    #endregion
                     //commit
                     _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
                 }
-                catch
+                catch (Exception exx)
                 {
                     _transaction.Rollback();
-                    return Notifization.NotService;
+                    return Notifization.TEST(exx + "");
                 }
             }
         }

@@ -154,7 +154,7 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     // check han muc cua customer
-                    WalletCustomerMessageModel balanceCustomer = WalletService.GetBalanceByCustomerID(customerId, dbConnection: _connection, dbTransaction: _transaction);
+                    WalletClientMessageModel balanceCustomer = WalletService.GetBalanceByClientID(customerId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceCustomer.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     //
@@ -177,11 +177,11 @@ namespace WebCore.Services
                     // #1. giam han muc tong (customer) 
                     // update balance ************************************************************************************************************************************
 
-                    var changeBalanceSpendingForCustomerStatus = WalletService.ChangeBalanceSpendingForCustomer(new WalletCustomerChangeModel { CustomerID = customerId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.OUT }, dbConnection: _connection, dbTransaction: _transaction);
+                    var changeBalanceSpendingForCustomerStatus = WalletService.ChangeSpendingLimitBalance(new WalletClientChangeModel { ClientID = customerId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.OUT }, dbConnection: _connection, dbTransaction: _transaction);
                     if (!changeBalanceSpendingForCustomerStatus.Status)
                         return Notifization.Error("Không thể cập nhật giao dịch");
                     // create histories for balance changed
-                    var balanceCustomerHistoryStatus = TransactionHistoryService.LoggerWalletCustomerSpendingHistory(new WalletCustomerSpendingHistoryCreateModel
+                    var balanceCustomerHistoryStatus = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
                     {
                         ReceivedID = currentUserId,
                         Amount = amount,
@@ -201,7 +201,7 @@ namespace WebCore.Services
                         return Notifization.Error("Không thể cập nhật giao dịch");
 
                     // create histories for balance changed
-                    var balanceUserHistoryStatus = TransactionHistoryService.LoggerWalletUserSpendingHistory(new WalletUserHistoryCreateModel
+                    var balanceUserHistoryStatus = LoggerHistoryService.LoggerWalletUserSpendingHistory(new WalletUserHistoryCreateModel
                     {
                         CustomerID = customerId,
                         UserID = receivedUserId,

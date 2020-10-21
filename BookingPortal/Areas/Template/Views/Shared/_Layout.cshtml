@@ -17,7 +17,7 @@
     @{
         string currController = Helper.Page.MetaSEO.ControllerText;
         string currAction = Helper.Page.MetaSEO.ActionText;
-        string currPath = Request.RawUrl;
+        string userId = Helper.Current.UserLogin.IdentifierID;
     }
 </head>
 <body class="theme-blue">
@@ -307,14 +307,15 @@
                             double spendingBalance = 0;
                             double depositBalance = 0;
                             // check if is booker
-                            string userId = Helper.Current.UserLogin.IdentifierID;
+
                             if (Helper.Current.UserLogin.IsAdminCustomerLogged())
                             {
-                                WebCore.Entities.WalletCustomerMessageModel walletCustomerMessageModel = WalletService.GetBalanceOfCustomerByUserID(userId);
+                                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                                WebCore.Entities.WalletClientMessageModel walletCustomerMessageModel = WalletService.GetBalanceByClientID(clientId);
                                 if (walletCustomerMessageModel.Status)
                                 {
                                     spendingLimitBalance = walletCustomerMessageModel.SpendingLimitBalance;
-                                    depositBalance = walletCustomerMessageModel.SpendingBalance;
+                                    spendingBalance = walletCustomerMessageModel.SpendingBalance;
                                     depositBalance = walletCustomerMessageModel.DepositBalance;
                                 }
                                 <ul class="nav navbar-group">
@@ -338,11 +339,17 @@
                         }
                         else if (Helper.Current.UserLogin.IsSupplierLogged())
                         {
+                            string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                            double investedBalance = 0;
                             if (Helper.Current.UserLogin.IsAdminSupplierLogged())
                             {
+                                WebCore.Entities.WalletClientMessageModel walletUserMessageModel = WalletService.GetBalanceByClientID(clientId);
+                                if (walletUserMessageModel.Status)
+                                {
+                                    investedBalance = walletUserMessageModel.InvestedAmount;
+                                }
                                 <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">Tài khoản: 0 đ</a></li>
-                                    <li><a class="bg-red">Hạn mức: 0 đ</a></li>
+                                    <li><a class="bg-teal">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
                                 </ul>
                             }
                             else

@@ -9,10 +9,10 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_TransactionDepositHistory")]
-    public partial class TransactionDepositHistory : WEBModel
+    [Table("App_WalletDepositHistory")]
+    public partial class WalletDepositHistory : WEBModel
     {
-        public TransactionDepositHistory()
+        public WalletDepositHistory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -34,7 +34,7 @@ namespace WebCore.Entities
     }
 
     // model
-    public class TransactionDepositHistoryCreateModel
+    public class WalletDepositHistoryCreateModel
     {
         public string SenderUserID { get; set; }
         public string SenderID { get; set; }
@@ -45,16 +45,16 @@ namespace WebCore.Entities
         public int TransactionOriginal { get; set; }
         public string TransactionOriginalID { get; set; }
     }
-    public class TransactionDepositHistoryUpdateModel : TransactionDepositHistoryCreateModel
+    public class WalletDepositHistoryUpdateModel : WalletDepositHistoryCreateModel
     {
         public string ID { get; set; }
     }
-    public class TransactionDepositHistoryIDModel
+    public class WalletDepositHistoryIDModel
     {
         public string ID { get; set; }
     }
     //
-    public partial class TransactionDepositHistoryResult : WEBModelResult
+    public partial class WalletDepositHistoryResult : WEBModelResult
     {
         public string ID { get; set; }
 
