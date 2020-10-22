@@ -8,41 +8,44 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_WalletUserHistory")]
-    public partial class WalletUserHistory : WEBModel
+    [Table("App_WalletUserSpendingHistory")]
+    public partial class WalletUserSpendingHistory : WEBModel
     {
-        public WalletUserHistory()
+        public WalletUserSpendingHistory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
-        public string UserID { get; set; }
+        public string SenderID { get; set; }
+        public string SenderUserID { get; set; }
+        public string ReceivedID { get; set; }
+        public string ReceivedUserID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
         public int Status { get; set; }
-
     }
-
     // model
-    public class WalletUserHistoryCreateModel
+    public class WalletUserSpendingHistoryCreateModel
     {
-        public string CustomerID { get; set; }
-        public string UserID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
+        public string SenderID { get; set; }
+        public string SenderUserID { get; set; }
+        public string ReceivedID { get; set; }
+        public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public double NewBalance { get; set; }
         public int TransactionType { get; set; }
+        public int TransactionOriginal { get; set; }
         public int Status { get; set; }
 
     }
-    public class WalletUserHistoryUpdateModel : WalletUserHistoryCreateModel
+    public class WalletUserSpendingHistoryUpdateModel : WalletUserSpendingHistoryCreateModel
     {
         public string ID { get; set; }
     }
@@ -51,16 +54,19 @@ namespace WebCore.Entities
         public string ID { get; set; }
     }
     //
-    public partial class WalletUserHistoryResult : WEBModelResult
+    public partial class WalletUserSpendingHistoryResult : WEBModelResult
     {
         public string ID { get; set; }
-        public string CustomerID { get; set; }
-        public string UserID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string SenderID { get; set; }
+        public string SenderUserID { get; set; }
+        public string ReceivedID { get; set; }
+        public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
+        public int TransactionOriginal { get; set; }
         public int Status { get; set; }
     }
 }

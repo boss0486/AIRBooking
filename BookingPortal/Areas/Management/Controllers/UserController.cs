@@ -112,14 +112,14 @@ namespace WebApplication.Management.Controllers
         // #######################################################################################################################################
 
         [HttpPost]
-        [Route("Action/GetUserIsHasRoleBooker")]
+        [Route("Action/GetEmployeeIsBooker")]
         [IsManage(skip: true)]
-        public ActionResult GetUserIsHasRoleBooker(UserIDModel model)
+        public ActionResult GetEmployeeIsBooker(UserIDModel model)
         {
             try
             {
                 using (var service = new UserClientService())
-                    return service.GetUserIsHasRoleBooker(model);
+                    return Notifization.Data(MessageText.Success, service.GetEmployeeByClientID(model.ID));
             }
             catch (Exception ex)
             {

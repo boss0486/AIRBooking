@@ -82,9 +82,9 @@ namespace WebCore.Services
             string languageId = Helper.Current.UserLogin.LanguageID;
             //
             string transState = "x";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT)
+            if (transType == (int)TransactionEnum.TransactionType.IN)
                 transState = "+";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
+            if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
             string title = "Giao dịch thanh toán. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";

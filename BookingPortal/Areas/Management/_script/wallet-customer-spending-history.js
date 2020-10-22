@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/Wallet-Customer-Spending-History/Action";
-var URLA = "/Management/WalletCustomerSpendingHistory";
+var URLC = "/Management/Wallet-Spending-History/Action";
+var URLA = "/Management/WalletSpendingHistory";
 var WalletCustomerSpendingHistoryController = {
     init: function () {
         WalletCustomerSpendingHistoryController.registerEvent();

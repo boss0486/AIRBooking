@@ -180,6 +180,8 @@ namespace WebCore.Services
                             var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID == clientId , transaction: _transaction).FirstOrDefault();
                             if (client == null)
                                 return Notifization.Invalid(clientName + " không hợp lệ");
+
+                            Tessssssssssssssssssssssssssssssssssssssss
                         }
                         else
                         {
@@ -559,33 +561,52 @@ namespace WebCore.Services
             }
         }
 
-        public ActionResult GetUserIsHasRoleBooker(UserIDModel model)
+        public List<EmployeeModel> GetEmployeeByClientID(string clientId)
         {
-            if (model == null)
-                return Notifization.Invalid(MessageText.Invalid);
-
-            string clientId = model.ID;
+            if (string.IsNullOrWhiteSpace(clientId))
+                return new List<EmployeeModel>();
+            //
             using (var service = new UserClientService())
             {
                 var _connection = service._connection;
                 if (string.IsNullOrWhiteSpace(clientId))
-                    return Notifization.Invalid(MessageText.Invalid);
+                    return new List<EmployeeModel>();
                 //
                 string sqlQuery = @"  SELECT uf.UserID, uf.FullName, ur.RoleID FROM UserInfo as uf
                                           INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
                                           LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
                                           INNER JOIN [Role] as r On r.ID = ur.RoleID
                                           where r.IsAllowSpend = 1 AND client.ClientType = @ClientType AND client.ClientID = @ClientID";
-                var data = _connection.Query<UserIsHasRoleBookerModel>(sqlQuery, new { ClientID = clientId, ClientType = (int)ClientLoginEnum.ClientType.Customer }).ToList();
+                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId, ClientType = (int)ClientLoginEnum.ClientType.Customer }).ToList();
                 if (data.Count == 0)
-                    return Notifization.Invalid(MessageText.Invalid);
+                    return new List<EmployeeModel>();
                 //
-                return Notifization.Data(MessageText.Success, data);
+                return data;
             }
         }
 
         //##############################################################################################################################################################################################################################################################
+        public static string DropdownListEmployee(string clientId, string id)
+        {
+            string result = string.Empty;
+            using (var service = new CustomerService())
+            {
+                UserClientService userClientService = new UserClientService();
+                List<EmployeeModel> dtList = userClientService.GetEmployeeByClientID(clientId);
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.UserID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.UserID + "' " + select + ">" + item.FullName + "</option>";
+                    }
+                }
+                return result;
+            }
 
+        }
 
         //##############################################################################################################################################################################################################################################################
 

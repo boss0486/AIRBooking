@@ -348,7 +348,7 @@
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingHistory.cs" />
-    <Compile Include="Application\History\Entities\WalletUserHistory.cs" />
+    <Compile Include="Application\History\Entities\WalletUserSpendingHistory.cs" />
     <Compile Include="Application\History\Enum\WalletHistoryEnum.cs" />
     <Compile Include="Application\History\Services\WalletDepositHistoryService.cs" />
     <Compile Include="Application\History\Services\TransactionPaymentHistoryService.cs" />

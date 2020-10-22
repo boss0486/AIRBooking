@@ -33,16 +33,16 @@ namespace WebCore.Services
                 dbConnection = DbConnect.Connection.CMS;
             //
             var service = new WalletUserService(dbConnection);
-            string customerId = model.CustomerID.ToLower();
+            string customerId = model.ClientID.ToLower();
             double amount = model.Amount;
             string userId = model.UserID.ToLower();
             int transType = model.TransactionType;
-            WalletUser balanceUser = service.GetAlls(m => m.CustomerID == customerId && m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
+            WalletUser balanceUser = service.GetAlls(m => m.ClientID == customerId && m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
             if (balanceUser == null)
             {
                 service.Create<string>(new WalletUser()
                 {
-                    CustomerID = customerId,
+                    ClientID = customerId,
                     UserID = userId,
                     Amount = amount
                 }, transaction: dbTransaction);

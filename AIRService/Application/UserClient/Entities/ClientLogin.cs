@@ -26,4 +26,11 @@ namespace WebCore.Entities
         public int ClientType { get; set; }
         public bool IsSuper { get; set; }
     }
+
+    public class ClientOption
+    {
+        public string ID { get; set; }
+        public string Title { get; set; }
+        public string CodeID { get; set; }
+    }
 }

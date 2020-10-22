@@ -18,7 +18,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
+        public string ClientID { get; set; }
         public string UserID { get; set; }
         public double Amount { get; set; }
     }
@@ -26,7 +26,7 @@ namespace WebCore.Entities
     // model
     public class WalletUserChangeModel
     {
-        public string CustomerID { get; set; }
+        public string ClientID { get; set; }
         public string UserID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }

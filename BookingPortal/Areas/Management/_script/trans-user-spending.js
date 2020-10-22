@@ -182,7 +182,7 @@ var TransactionSpendingController = {
             enabled = 1;
         //
         var model = {
-            CustomerID: ddlCustomer,
+            SenderID: ddlCustomer,
             ReceivedUserID: ddlEmployee,
             Amount: txtAmount,
             Summary: txtSummary,
@@ -293,7 +293,7 @@ var TransactionSpendingController = {
         Confirm.Delete(id, TransactionSpendingController.Delete, null, null);
 
     },
-    GetEmployeeIsHasRoleBooker(id) { 
+    GetEmployeeIsBooker(id) { 
         var option = `<option value="">-Lựa chọn-</option>`;
         $('#ddlEmployee').html(option);
         $('#ddlEmployee').selectpicker('refresh');
@@ -301,7 +301,7 @@ var TransactionSpendingController = {
             ID: id
         };
         AjaxFrom.POST({
-            url: '/Management/User/Action/GetUserIsHasRoleBooker',
+            url: '/Management/User/Action/GetEmployeeIsBooker',
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -342,7 +342,7 @@ $(document).on("change", "#ddlCustomer", function () {
         $('#lblCustomer').html('');
         var codeid = $(this).find(':selected').data('codeid');
         $('#lblCustomerCodeID').html(codeid);
-        TransactionSpendingController.GetEmployeeIsHasRoleBooker(ddlCustomer);
+        TransactionSpendingController.GetEmployeeIsBooker(ddlCustomer);
     }
 });
 // emloyee

@@ -160,7 +160,7 @@
     <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletUserSpendingHistoryController.cs" />
-    <Compile Include="Areas\Management\Controllers\WalletCustomerSpendingHistoryController.cs" />
+    <Compile Include="Areas\Management\Controllers\WalletSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Template\TemplateAreaRegistration.cs" />
@@ -848,8 +848,7 @@
     <Content Include="Areas\Management\Views\User\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\Details.cshtml" />
     <Content Include="Areas\Management\Views\User\Update.cshtml" />
-    <Content Include="Areas\Management\Views\WalletCustomerDepositHistory\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\WalletCustomerSpendingHistory\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\WalletSpendingHistory\DataList.cshtml" />
     <Content Include="Areas\Management\Views\web.config" />
     <Content Include="Areas\Management\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Template\Views\Shared\_Layout.cshtml" />

@@ -631,7 +631,7 @@
     ]
   },
   {
-    "KeyID": "WalletCustomerSpendingHistory",
+    "KeyID": "WalletSpendingHistory",
     "Title": "Lịch sử hạn mức (KH)",
     "OrderID": 20,
     "Action": [

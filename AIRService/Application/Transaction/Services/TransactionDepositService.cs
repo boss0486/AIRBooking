@@ -58,7 +58,21 @@ namespace WebCore.Services
                     return Notifization.Invalid(searchResult.Message);
             }
             #endregion
-            //
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                // show all
+            }
+            else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                whereCondition += " AND (SenderID = '" + clientId + "' OR ReceivedID = '" + clientId + "')";
+            }
+            else
+            {
+                return Notifization.AccessDenied(MessageText.AccessDenied);
+            }
+            // 
             string areaId = model.AreaID;
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_TransactionDeposit WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR dbo.Uni2NONE(TransactionCode) LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
@@ -212,7 +226,7 @@ namespace WebCore.Services
                         LanguageID = languageId,
                         Enabled = enabled,
                     }, transaction: _transaction);
-                    
+
                     // send history ************************************************************************************************************************************
                     #region
                     WalletClientMessageModel balanceSender = WalletService.GetBalanceByClientID(senderId, dbConnection: _connection, dbTransaction: _transaction);
@@ -256,7 +270,7 @@ namespace WebCore.Services
                         ReceivedID = receivedId,
                         Amount = amount,
                         NewBalance = balanceReceived.DepositBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN,
+                        TransactionType = (int)TransactionEnum.TransactionType.OUT,
                         TransactionOriginal = (int)TransactionEnum.TransactionOriginal.DEPOSIT
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //

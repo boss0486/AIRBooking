@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("Wallet-Customer-Spending-History")]
-    public class WalletCustomerSpendingHistoryController : CMSController
+    [RoutePrefix("Wallet-Spending-History")]
+    public class WalletSpendingHistoryController : CMSController
     {
         // GET: Management/WalletHistory
         public ActionResult DataList()

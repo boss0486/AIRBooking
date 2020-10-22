@@ -44,7 +44,7 @@
 
                 <a href="javascript:void(0);" class="bars"></a>
                 <a href="javascript:void(0);" class="navbar-toggle right collapsed" data-toggle="collapse" data-target="#navbar-collapse"></a>
-                <a class="navbar-brand" href="index.html">ADMIN-ARIBOOKING</a>
+                <a class="navbar-brand" href="index.html">ADMIN-AIRBOOKING</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -303,13 +303,11 @@
                     <div class="row">
                         @if (Helper.Current.UserLogin.IsCustomerLogged())
                         {
-                            double spendingLimitBalance = 0;
-                            double spendingBalance = 0;
-                            double depositBalance = 0;
-                            // check if is booker
-
                             if (Helper.Current.UserLogin.IsAdminCustomerLogged())
                             {
+                                double spendingLimitBalance = 0;
+                                double spendingBalance = 0;
+                                double depositBalance = 0;
                                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
                                 WebCore.Entities.WalletClientMessageModel walletCustomerMessageModel = WalletService.GetBalanceByClientID(clientId);
                                 if (walletCustomerMessageModel.Status)
@@ -321,19 +319,19 @@
                                 <ul class="nav navbar-group">
                                     <li><a class="bg-teal">Nạp: @Helper.Page.Library.FormatCurrency(depositBalance) đ</a></li>
                                     <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(spendingBalance) đ</a></li>
-                                    <li><a class="bg-red">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
+                                    <li><a class="bg-pink">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
                                 </ul>
                             }
                             else
                             {
-                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUserByUserID(userId);
+                                double blance = 0;
+                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUser(userId);
                                 if (walletUserMessageModel.Status)
                                 {
-                                    spendingLimitBalance = walletUserMessageModel.Balance;
+                                    blance = walletUserMessageModel.Balance;
                                 }
                                 <ul class="nav navbar-group">
-                                    <li><a class="bg-green">TK: 0 11đ</a></li>
-                                    <li><a class="bg-red">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
+                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(blance)đ</a></li>
                                 </ul>
                             }
                         }
@@ -349,15 +347,20 @@
                                     investedBalance = walletUserMessageModel.InvestedAmount;
                                 }
                                 <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">TK: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
-                                    <li><a class="bg-secondary">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
+                                    <li><a class="bg-green">TK: Unlimited</a></li>
+                                    <li><a class="bg-pink">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
                                 </ul>
                             }
                             else
                             {
+                                double blance = 0;
+                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUser(userId);
+                                if (walletUserMessageModel.Status)
+                                {
+                                    blance = walletUserMessageModel.Balance;
+                                }
                                 <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">Tài khoản: 0 đ</a></li>
-                                    <li><a class="bg-red">Hạn mức: 0 đ</a></li>
+                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(blance) đ</a></li>
                                 </ul>
                             }
                         }

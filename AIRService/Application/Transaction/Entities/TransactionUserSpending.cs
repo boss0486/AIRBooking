@@ -18,11 +18,12 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string SendUserID { get; set; }
+        public string SenderID { get; set; }
+        public string SenderUserID { get; set; }
+        public string ReceivedID { get; set; }
         public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
@@ -31,9 +32,9 @@ namespace WebCore.Entities
     // model
     public class TransactionUserSpendingCreateModel
     {
-        public string CustomerID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
+        public string SenderID { get; set; }
         public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public int Enabled { get; set; }
@@ -55,7 +56,9 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string SenderID { get; set; }
         public string SendUserID { get; set; }
+        public string ReceivedID { get; set; }
         public string ReceivedUserID { get; set; }
         public double Amount { get; set; }
         public bool Status { get; set; }

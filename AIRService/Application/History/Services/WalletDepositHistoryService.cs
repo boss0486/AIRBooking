@@ -58,27 +58,16 @@ namespace WebCore.Services
                 else
                     return Notifization.Invalid(MessageText.Invalid);
             }
-            #endregion
-
+            #endregion 
             string userId = Helper.Current.UserLogin.IdentifierID;
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
                 // show all
             }
-            else if (Helper.Current.UserLogin.IsAdminCustomerLogged() || Helper.Current.UserLogin.IsCustomerLogged())
+            else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
             {
-                string customerId = CustomerService.GetCustomerIDByUserID(userId);
-                whereCondition += " AND ReceivedID = '" + customerId + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.IN;
-            }
-            else if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                if (Helper.Current.UserLogin.IsAdminSupplierLogged())
-                {
-                    string supplierCode = ClientLoginService.GetClientIDByUserID(userId);
-                    whereCondition += " AND SenderID = '" + supplierCode + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.OUT;
-                }
-                else
-                    whereCondition += " AND SenderUserID = '" + userId + "' AND TransactionType = " + (int)TransactionEnum.TransactionType.OUT;
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                whereCondition += " AND (SenderID = '" + clientId + "' OR ReceivedID = '" + clientId + "' OR )";
             }
             else
             {
@@ -86,7 +75,8 @@ namespace WebCore.Services
             }
             // 
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
+            string sqlQuery = @"SELECT * FROM App_WalletDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
+   
             var dtList = _connection.Query<WalletDepositHistoryResult>(sqlQuery, new { Query = query, SenderID = userId }).ToList();
             //
             if (dtList.Count == 0)
@@ -127,9 +117,9 @@ namespace WebCore.Services
             string languageId = Helper.Current.UserLogin.LanguageID;
             //
             string transState = "x";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT)
+            if (transType == (int)TransactionEnum.TransactionType.IN)
                 transState = "+";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
+            if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
             string title = "Nạp tiền. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";

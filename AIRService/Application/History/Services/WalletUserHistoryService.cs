@@ -21,8 +21,8 @@ using System.Data;
 
 namespace WebCore.Services
 {
-    public interface IWalletUserHistoryService : IEntityService<WalletUserHistory> { }
-    public class WalletUserHistoryService : EntityService<WalletUserHistory>, IWalletUserHistoryService
+    public interface IWalletUserHistoryService : IEntityService<WalletUserSpendingHistory> { }
+    public class WalletUserHistoryService : EntityService<WalletUserSpendingHistory>, IWalletUserHistoryService
     {
         public WalletUserHistoryService() : base() { }
         public WalletUserHistoryService(System.Data.IDbConnection db) : base(db) { }
@@ -60,7 +60,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_WalletUserHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
-            var dtList = _connection.Query<WalletUserHistory>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<WalletUserSpendingHistory>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -84,30 +84,30 @@ namespace WebCore.Services
         }
 
 
-        public TransactionHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserHistoryCreateModel model,IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public TransactionHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string customerId = model.CustomerID;
-            string userId = model.UserID;
+            string customerId = model.SenderID;
+            string userId = model.ReceivedUserID;
             double amount = model.Amount;
             double balance = model.NewBalance;
             int transType = model.TransactionType;
             //
             string transState = "x";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT)
+            if (transType == (int)TransactionEnum.TransactionType.IN)
                 transState = "+";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
+            if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
-            string title = "TK hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
-            string summary = "Số dư hạn mức" + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string title = "TK thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string summary = "";
             WalletUserHistoryService balanceUserHistoryService = new WalletUserHistoryService(dbConnection);
-            var id = balanceUserHistoryService.Create<string>(new WalletUserHistory()
+            balanceUserHistoryService.Create<string>(new WalletUserSpendingHistory()
             {
-                CustomerID = customerId,
-                UserID = userId,
+                SenderID = customerId,
+                ReceivedID = userId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,

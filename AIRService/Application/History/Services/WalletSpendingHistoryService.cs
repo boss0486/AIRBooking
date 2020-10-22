@@ -84,7 +84,7 @@ namespace WebCore.Services
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-        public TransactionHistoryMessageModel WalletCustomerSpendingHistoryCreate(WalletSpendingHistoryCreateModel model,IDbConnection dbConnection, IDbTransaction dbTransaction = null)
+        public TransactionHistoryMessageModel WalletSpendingHistoryCreate(WalletSpendingHistoryCreateModel model,IDbConnection dbConnection, IDbTransaction dbTransaction = null)
         {
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
@@ -97,9 +97,9 @@ namespace WebCore.Services
             string languageId = Helper.Current.UserLogin.LanguageID;
             //
             string transState = "x";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.INPUT)
+            if (transType == (int)TransactionEnum.TransactionType.IN)
                 transState = "+";
-            if (transType == (int)WalletHistoryEnum.WalletHistoryTransactionType.OUTPUT)
+            if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
             string title = "Số dư thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";

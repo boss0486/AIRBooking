@@ -37,9 +37,43 @@ namespace WebCore.Services
                 return customer.ClientID;
 
             }
+        }
+
+        public List<ClientOption> GetAllAgent()
+        {
+            string sqlQuery = @"SELECT s.ID,s.CodeID, s.Title FROM App_Supplier as s WHERE s.Enabled = 1 
+                         Union
+                         SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
+
+            List<ClientOption> clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
+            if (clientOptions.Count == 0)
+                return new List<ClientOption>();
+            //
+            return clientOptions;
+        }
+
+
+        public static string DropdownListAgent(string id)
+        {
+            string result = string.Empty;
+            using (var service = new CustomerService())
+            {
+                ClientLoginService clientLoginService = new ClientLoginService();
+                List<ClientOption> dtList = clientLoginService.GetAllAgent();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+            }
 
         }
+
     }
-
-
 }
