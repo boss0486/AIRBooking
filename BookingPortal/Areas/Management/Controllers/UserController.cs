@@ -50,7 +50,7 @@ namespace WebApplication.Management.Controllers
 
         // #######################################################################################################################################
         [HttpPost]
-        [Route("Action/DataList")] 
+        [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try
@@ -119,7 +119,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 using (var service = new UserClientService())
-                    return service.GetUserIsHasRoleBooker(model);
+                    return Notifization.Data(MessageText.Success, service.GetEmployeeByClientID(model.ID));
             }
             catch (Exception ex)
             {

@@ -326,7 +326,7 @@
                             }
                             else
                             {
-                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUserByUserID(userId);
+                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUser(userId);
                                 if (walletUserMessageModel.Status)
                                 {
                                     spendingLimitBalance = walletUserMessageModel.Balance;
@@ -349,8 +349,8 @@
                                     investedBalance = walletUserMessageModel.InvestedAmount;
                                 }
                                 <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">TK: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
-                                    <li><a class="bg-secondary">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
+                                    <li><a class="bg-teal">TK: unlimited</a></li>
+                                    <li><a class="bg-green">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
                                 </ul>
                             }
                             else

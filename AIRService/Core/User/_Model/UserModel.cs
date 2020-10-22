@@ -120,7 +120,7 @@ namespace WebCore.Entities
         public string ReNewPinCode { get; set; }
     }
 
-    public class UserIsHasRoleBookerModel
+    public class EmployeeModel
     {
         public string UserID { get; set; }
         public string FullName { get; set; }

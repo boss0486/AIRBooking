@@ -37,6 +37,7 @@ namespace WebCore.Entities
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
         public string Path { get; set; }
+        public string RegisterID { get; set; }
     }
 
     public class SupplierResultModel : WEBModelResult
