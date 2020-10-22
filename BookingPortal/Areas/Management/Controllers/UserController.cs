@@ -50,7 +50,7 @@ namespace WebApplication.Management.Controllers
 
         // #######################################################################################################################################
         [HttpPost]
-        [Route("Action/DataList")] 
+        [Route("Action/DataList")]
         public ActionResult DataList(SearchModel model)
         {
             try

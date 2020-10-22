@@ -306,8 +306,9 @@ namespace WebCore.Services
                         //
                         ContactName = contactName,
                         ContactEmail = contactEmail,
-                        ContactPhone = contactPhone,
+                        ContactPhone = contactPhone, 
                         //
+                        RegisterID = userId,
                         Enabled = enabled
                     }, transaction: _transaction);
 
@@ -326,6 +327,7 @@ namespace WebCore.Services
                         InvestedAmount = 0,
                         ClientType = (int)ClientLoginEnum.ClientType.Supplier,
                         SpendingLimitAmount = 0,
+                        SpendingAmount = 0,
                         DepositAmount = 0
 
                     }, transaction: _transaction);

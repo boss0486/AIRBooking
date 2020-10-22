@@ -177,7 +177,7 @@ namespace WebCore.Services
                             }
                             // 
                             clientId = clientId.ToLower();
-                            var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID == clientId , transaction: _transaction).FirstOrDefault();
+                            var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID == clientId, transaction: _transaction).FirstOrDefault();
                             if (client == null)
                                 return Notifization.Invalid(clientName + " không hợp lệ");
 
