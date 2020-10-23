@@ -156,6 +156,11 @@ namespace WebCore.Services
                         UserService userService = new UserService(_connection);
                         if (!userService.IsClientLogged(crrUserId, _connection, _transaction))
                         {
+                            var clientLogin = clientLoginService.GetAlls(m => m.UserID == Helper.Current.UserLogin.IdentifierID).FirstOrDefault();
+                            if (clientLogin == null)
+                                return Notifization.Invalid(MessageText.Invalid);
+                            //
+
                             if (clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer && clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Supplier)
                                 return Notifization.Invalid("Loại người dùng không hợp lệ");
                             //
@@ -176,17 +181,16 @@ namespace WebCore.Services
                                 clientName = "Nhà cung cấp";
                             }
                             // 
-                            clientId = clientId.ToLower();
-                            var client = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ClientID == clientId, transaction: _transaction).FirstOrDefault();
-                            if (client == null)
-                                return Notifization.Invalid(clientName + " không hợp lệ");
-
-                            Tessssssssssssssssssssssssssssssssssssssss
+                            clientId = clientLogin.ClientID;
                         }
                         else
                         {
-                            clientId = crrUserId;
+                            var clientLogin = clientLoginService.GetAlls(m => m.ClientID == clientId).FirstOrDefault();
+                            if (clientLogin == null)
+                                return Notifization.Invalid(MessageText.Invalid);
+                            //
                         }
+
                         // full name valid
                         if (string.IsNullOrWhiteSpace(fullName))
                             return Notifization.Invalid("Không được để trống họ/tên");
