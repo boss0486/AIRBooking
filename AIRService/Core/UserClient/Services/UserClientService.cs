@@ -156,7 +156,7 @@ namespace WebCore.Services
                         UserService userService = new UserService(_connection);
                         if (!userService.IsClientLogged(crrUserId, _connection, _transaction))
                         {
-                            var clientLogin = clientLoginService.GetAlls(m => m.UserID == Helper.Current.UserLogin.IdentifierID).FirstOrDefault();
+                            var clientLogin = clientLoginService.GetAlls(m => m.UserID == Helper.Current.UserLogin.IdentifierID, transaction: _transaction).FirstOrDefault();
                             if (clientLogin == null)
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
@@ -185,7 +185,7 @@ namespace WebCore.Services
                         }
                         else
                         {
-                            var clientLogin = clientLoginService.GetAlls(m => m.ClientID == clientId).FirstOrDefault();
+                            var clientLogin = clientLoginService.GetAlls(m => m.ClientID == clientId, transaction: _transaction).FirstOrDefault();
                             if (clientLogin == null)
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
