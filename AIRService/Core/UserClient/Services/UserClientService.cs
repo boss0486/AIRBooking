@@ -154,13 +154,8 @@ namespace WebCore.Services
                         string crrUserId = Helper.Current.UserLogin.IdentifierID;
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         UserService userService = new UserService(_connection);
-                        if (!userService.IsClientLogged(crrUserId, _connection, _transaction))
-                        {
-                            var clientLogin = clientLoginService.GetAlls(m => m.UserID == Helper.Current.UserLogin.IdentifierID, transaction: _transaction).FirstOrDefault();
-                            if (clientLogin == null)
-                                return Notifization.Invalid(MessageText.Invalid);
-                            //
-
+                        if (!Helper.Current.UserLogin.IsClientInApplication())
+                        { 
                             if (clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer && clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Supplier)
                                 return Notifization.Invalid("Loại người dùng không hợp lệ");
                             //
@@ -180,17 +175,24 @@ namespace WebCore.Services
                                 //
                                 clientName = "Nhà cung cấp";
                             }
-                            // 
-                            clientId = clientLogin.ClientID;
-                        }
-                        else
-                        {
+                            //
                             var clientLogin = clientLoginService.GetAlls(m => m.ClientID == clientId, transaction: _transaction).FirstOrDefault();
                             if (clientLogin == null)
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
                         }
-
+                        else
+                        {
+                            var clientLogin = clientLoginService.GetAlls(m => m.UserID == crrUserId, transaction: _transaction).FirstOrDefault();
+                            if (clientLogin == null)
+                                return Notifization.Invalid(MessageText.Invalid);
+                            //
+                            clientId = clientLogin.ClientID;
+                        }
+                        if (string.IsNullOrWhiteSpace(clientId))
+                        {
+                            return Notifization.Invalid(MessageText.Invalid);
+                        }
                         // full name valid
                         if (string.IsNullOrWhiteSpace(fullName))
                             return Notifization.Invalid("Không được để trống họ/tên");
