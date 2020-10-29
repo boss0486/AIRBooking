@@ -229,10 +229,8 @@ namespace WebCore.Services
                     // create histories for balance changed
                     var balanceUserHistoryStatus = LoggerHistoryService.LoggerWalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
                     {
-                        SenderID = senderId,
-                        SenderUserID = sendUserId,
-                        ReceivedID = received,
-                        ReceivedUserID = receivedUserId,
+                        ClientID = received,
+                        UserID = receivedUserId,
                         Amount = amount,
                         NewBalance = balanceReceived.Balance + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN,

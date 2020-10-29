@@ -89,8 +89,8 @@ namespace WebCore.Services
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string customerId = model.SenderID;
-            string userId = model.ReceivedUserID;
+            string clientId = model.ClientID;
+            string userId = model.UserID;
             double amount = model.Amount;
             double balance = model.NewBalance;
             int transType = model.TransactionType;
@@ -106,8 +106,8 @@ namespace WebCore.Services
             WalletUserHistoryService balanceUserHistoryService = new WalletUserHistoryService(dbConnection);
             balanceUserHistoryService.Create<string>(new WalletUserSpendingHistory()
             {
-                SenderID = customerId,
-                ReceivedID = userId,
+                UserID =  userId,
+                ClientID = clientId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,

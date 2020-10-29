@@ -521,39 +521,14 @@ namespace WebCore.Services
                     var supplier = supplierService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (supplier == null)
                         return Notifization.NotFound();
-                    // get all user
-
                     //
-                    // check data reference
-                    // #1. Customer
                     string sqlCustomer = @"SELECT ID FROM App_Customer WHERE SupplierID = @SupplierID";
                     var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { SupplierID = id }, transaction: _transaction).ToList();
                     if (customerId.Count > 0)
                         return Notifization.Error("Vui lòng xóa tất cả khách hàng trước");
-                    // delete wallet
-                    string sqlWallet = @"DELETE App_WalletClient WHERE ClientType = 2 AND ClientID = @ClientID";
-                    _connection.Execute(sqlWallet, new { ClientID = supplier.ID }, transaction: _transaction);
                     //
-                    string sqlWalletDeposit = @"DELETE App_WalletDepositHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
-                    _connection.Execute(sqlWalletDeposit, new { ClientID = supplier.ID }, transaction: _transaction);
-                    //
-                    string sqlWalletInvestment = @"DELETE App_WalletInvestmentHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
-                    _connection.Execute(sqlWalletInvestment, new { ClientID = supplier.ID }, transaction: _transaction);
-                    //
-                    string sqlWalletSpending = @"DELETE App_WalletSpendingHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
-                    _connection.Execute(sqlWalletSpending, new { ClientID = supplier.ID }, transaction: _transaction);
-                    //
-                    string sqlWalletSpendingLimit = @"DELETE App_WalletSpendingLimitHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
-                    _connection.Execute(sqlWalletSpendingLimit, new { ClientID = supplier.ID }, transaction: _transaction);
-                    // transaction
-                    //
-                    // user transaction
-                    // user wallett
-                    // user wallet history
-
-                    // 
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).ToList();
+                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id, transaction: _transaction).ToList();
                     if (clientLogin.Count > 0)
                     {
                         string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
@@ -570,26 +545,37 @@ namespace WebCore.Services
                                 }
                             }
                         }
-
-
-
-
                         _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Supplier }, transaction: _transaction);
-                        //
                         _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
                         _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
                         _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+                        _connection.Execute("DELETE UserRole WHERE UserID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
                         //
                     }
-                    supplierService.Remove(id, transaction: _transaction);
 
-                    // delete in client table
-                    // get all 
-                    //string sqlLogin = "UPDATE UserSetting SET Enabled = -1 WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
-                    //_connection.Execute(sqlLogin, transaction: _transaction);
-                    //supplier.Enabled = (int)ModelEnum.Enabled.NONE;
-                    //supplierService.Update(supplier, transaction: _transaction);
+                    // client wallet **************************************************************************************************
+                    string sqlWallet = @"DELETE App_WalletClient WHERE AND ClientID = @ClientID";
+                    _connection.Execute(sqlWallet, new { ClientID = supplier.ID }, transaction: _transaction);
                     //
+                    string sqlWalletDeposit = @"DELETE App_WalletDepositHistory WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletDeposit, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletInvestment = @"DELETE App_WalletInvestmentHistory WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletInvestment, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletSpending = @"DELETE App_WalletSpendingHistory WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletSpending, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletSpendingLimit = @"DELETE App_WalletSpendingLimitHistory WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletSpendingLimit, new { ClientID = supplier.ID }, transaction: _transaction);
+                    // user wallet **************************************************************************************************
+                    string sqlWalletUser = @"DELETE App_WalletUser WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletUser, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletUserSpending = @"DELETE App_WalletUserSpendingHistory WHERE ClientID = @ClientID";
+                    _connection.Execute(sqlWalletUserSpending, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    supplierService.Remove(id, transaction: _transaction);
                     _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }

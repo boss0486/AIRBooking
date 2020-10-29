@@ -178,9 +178,7 @@ namespace WebCore.Services
                     //
                     TransactionHistoryMessageModel loggerWalletInvestmentHistory = LoggerHistoryService.LoggerWalletInvestmentHistory(new WalletInvestmentHistoryCreateModel
                     {
-                        SenderUserID = userId,
-                        SenderID = senderId,
-                        ReceivedID = receivedId,
+                        ClientID = receivedId,
                         Amount = amount,
                         NewBalance = balanceSender.InvestedAmount + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN,
@@ -204,9 +202,7 @@ namespace WebCore.Services
                     //
                     TransactionHistoryMessageModel loggerWalletSpendingLimitHistory = LoggerHistoryService.LoggerWalletSpendingLimitHistory(new WalletSpendingLimitHistoryCreateModel
                     {
-                        SenderUserID = userId,
-                        SenderID = senderId,
-                        ReceivedID = receivedId,
+                        ClientID = receivedId,
                         Amount = amount,
                         NewBalance = balanceReceived.SpendingLimitBalance + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN,
@@ -222,9 +218,7 @@ namespace WebCore.Services
                     //
                     TransactionHistoryMessageModel loggerWalletSpendingHistory = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
                     {
-                        SenderUserID = userId,
-                        SenderID = senderId,
-                        ReceivedID = receivedId,
+                        ClientID = receivedId,
                         Amount = amount,
                         NewBalance = balanceReceived.SpendingBalance + amount,
                         TransactionType = (int)TransactionEnum.TransactionType.IN,

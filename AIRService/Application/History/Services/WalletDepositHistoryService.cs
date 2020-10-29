@@ -67,7 +67,7 @@ namespace WebCore.Services
             else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                whereCondition += " AND (SenderID = '" + clientId + "' OR ReceivedID = '" + clientId + "' OR )";
+                whereCondition += " AND ClientID = '" + clientId + "'";
             }
             else
             {
@@ -107,9 +107,7 @@ namespace WebCore.Services
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string senderUserId = model.SenderUserID;
-            string senderId = model.SenderID;
-            string receivedId = model.ReceivedID;
+            string receivedId = model.ClientID;
             double amount = model.Amount;
             double balance = model.NewBalance;
             int transType = model.TransactionType;
@@ -127,9 +125,7 @@ namespace WebCore.Services
             WalletDepositHistoryService BalanceCustomerHistoryService = new WalletDepositHistoryService(dbConnection);
             var id = BalanceCustomerHistoryService.Create<string>(new WalletDepositHistory()
             {
-                SenderUserID = senderUserId,
-                SenderID = senderId,
-                ReceivedID = receivedId,
+                ClientID = receivedId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,
