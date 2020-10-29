@@ -11,7 +11,8 @@
         {
             NONE = 0,
             DEPOSIT = 1,
-            SPENDING = 2
+            SPENDING = 2,
+            USER_SPENDING = 3
         }
     }
 }

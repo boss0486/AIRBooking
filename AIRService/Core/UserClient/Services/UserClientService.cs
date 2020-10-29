@@ -188,6 +188,7 @@ namespace WebCore.Services
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
                             clientId = clientLogin.ClientID;
+                            clientType = clientLogin.ClientType;
                         }
                         if (string.IsNullOrWhiteSpace(clientId))
                         {
@@ -582,8 +583,8 @@ namespace WebCore.Services
                                           INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
                                           LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
                                           INNER JOIN [Role] as r On r.ID = ur.RoleID
-                                          where r.IsAllowSpend = 1 AND client.ClientType = @ClientType AND client.ClientID = @ClientID";
-                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId, ClientType = (int)ClientLoginEnum.ClientType.Customer }).ToList();
+                                          where r.IsAllowSpend = 1 AND client.ClientID = @ClientID AND client.UserID != @UserID";
+                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId , UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
                 if (data.Count == 0)
                     return new List<EmployeeModel>();
                 //

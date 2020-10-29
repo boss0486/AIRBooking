@@ -89,6 +89,24 @@ namespace AIRService.Service
 
                 //string _flightGo = model.OriginLocation;
                 //string _flightTo = model.DestinationLocation;
+
+                var abc = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
+                {
+                    Token = _token,
+                    ConversationID = _conversationId,
+                    DepartureDateTime = _departureDateTime,
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation
+                });
+                //
+
+
+                return Notifization.Data("ok", abc);
+
+
+
+
+
                 WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRS dataAirAvail = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
                 {
                     Token = _token,
@@ -406,6 +424,219 @@ namespace AIRService.Service
                 return Notifization.Data("OK -> IsRoundTrip: true ", response_FlightSearch);
             }
         }
+
+
+
+        //public List<Response_FlightSearch> Search02(FlightSearchModel model)
+        //{
+        //    TokenModel tokenModel = VNA_AuthencationService.GetSession();
+        //    // create session 
+        //    if (tokenModel == null)
+        //        return new List<Response_FlightSearch>();
+        //    using (var sessionService = new VNA_SessionService(tokenModel))
+        //    {
+        //        // check model
+        //        if (model == null)
+        //            return new List<Response_FlightSearch>();
+
+        //        int _adt = model.ADT; // Adults
+        //        int _cnn = model.CNN; // minors
+        //        int _inf = model.INF; // Infant
+
+        //        bool _isRoundTrip = model.IsRoundTrip;
+        //        string _destinationLocation = model.DestinationLocation;
+        //        string _originLocation = model.OriginLocation;
+        //        DateTime _departureDateTime = model.DepartureDateTime;
+        //        DateTime? _returnDateTime = model.ReturnDateTime;
+        //        string airlineType = model.AirlineType;
+
+        //        if (_isRoundTrip && _departureDateTime > Convert.ToDateTime(_returnDateTime))
+        //            return new List<Response_FlightSearch>();
+        //        //
+        //        if (_adt <= 0)
+        //            return new List<Response_FlightSearch>();
+        //        //
+        //        if (_inf > _adt)
+        //            return new List<Response_FlightSearch>();
+
+        //        // get token
+        //        string _token = tokenModel.Token;
+        //        string _conversationId = tokenModel.ConversationID;
+        //        if (string.IsNullOrWhiteSpace(_token))
+        //            return new List<Response_FlightSearch>();
+        //        // seach data in web service
+        //        VNA_AirAvailLLSRQService airAvailLLSRQService = new VNA_AirAvailLLSRQService();
+        //        VNAFareLLSRQService vnaFareLLSRQService = new VNAFareLLSRQService();
+        //        // Flight >> go
+        //        // ****************************************************************************************************************************
+        //        //
+        //        string _currencyCode = "VND";
+        //        List<FlightSegment> lstFlightSegment = new List<FlightSegment>();
+        //        List<FlightSearch> lstFlightSearch = new List<FlightSearch>();
+
+        //        //string _flightGo = model.OriginLocation;
+        //        //string _flightTo = model.DestinationLocation;
+        //        // attachment INF (em bé)
+        //        int _passengerTotal = model.ADT + model.CNN + model.INF;
+        //        //  passenger total is availability 
+        //        int _availabilityTotal = model.ADT + model.CNN;
+        //        //
+        //        int _year = _departureDateTime.Year;
+        //        AirTicketCondition04Service airTicketCondition04Service = new AirTicketCondition04Service();
+        //        AirTicketCondition05Service airTicketCondition05Service = new AirTicketCondition05Service();
+        //        //
+        //        AirTicketCondition04 airTicketCondition04 = airTicketCondition04Service.GetAlls(m => m.IsApplied).FirstOrDefault();
+        //        //
+        //        for (int i = 0; i < 3; i++)
+        //        {
+        //            WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRS dataAirAvailGo = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
+        //            {
+        //                Token = _token,
+        //                ConversationID = _conversationId,
+        //                DepartureDateTime = _departureDateTime,
+        //                DestinationLocation = _destinationLocation,
+        //                OriginLocation = _originLocation
+        //            });
+
+        //            //string json = JsonConvert.SerializeObject(dataAirAvail);
+        //            //string fileName = "search-test.json";
+        //            //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+        //            ////write string to file
+        //            //System.IO.File.WriteAllText(urlFile, json);
+        //            //return Notifization.TEST("Test");
+
+
+        //            // tim chuyen bay
+        //            if (dataAirAvailGo == null)
+        //                continue;
+        //            // danh sach chuyen bay
+        //            List<WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOption> originDestinationOptionGoList = dataAirAvailGo.OriginDestinationOptions.OriginDestinationOption.ToList();
+        //            if (originDestinationOptionGoList.Count == 0)
+        //                continue;
+        //            //var _availabilityData =   List<>
+        //            FareLLSModel fareLLSModelGo = new FareLLSModel
+        //            {
+        //                Token = _token,
+        //                ConversationID = _conversationId,
+        //                DepartureDateTime = _departureDateTime,
+        //                DestinationLocation = _destinationLocation,
+        //                OriginLocation = _originLocation,
+        //                AirlineCode = "VN",
+        //                PassengerType = new List<string>(),
+
+        //            };
+        //            if (model.ADT > 0)
+        //                fareLLSModelGo.PassengerType.Add("ADT");
+        //            if (model.CNN > 0)
+        //                fareLLSModelGo.PassengerType.Add("CNN");
+        //            if (model.INF > 0)
+        //                fareLLSModelGo.PassengerType.Add("INF");
+
+        //            fareLLSModelGo.CurrencyCode = _currencyCode;
+
+        //            // fareRSFareBasis
+        //            List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBasesGo = vnaFareLLSRQService.FareLLS(fareLLSModelGo);
+        //            if (fareRSFareBasesGo == null)
+        //                continue;
+        //            // get tax 
+        //            string flightLocation = _originLocation + "-" + _destinationLocation;
+        //            AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls(m => m.IsApplied && m.FlightLocationID == flightLocation).FirstOrDefault();
+
+        //            //string json = JsonConvert.SerializeObject(fareRSFareBases);
+        //            //string fileName = "fa-test.json";
+        //            //var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+        //            ////write string to file
+        //            //System.IO.File.WriteAllText(urlFile, json);
+
+
+        //            foreach (var originDestinationOption in originDestinationOptionGoList)
+        //            {
+        //                //#1. Availability: get all Flight is Availability
+        //                //#2.
+        //                List<WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOptionFlightSegment> _lstFlightSegment = originDestinationOption.FlightSegment.ToList();
+        //                if (_lstFlightSegment.Count() == 0)
+        //                    continue;
+        //                // gioi han du lieu , do du lieu tra ve nhieu chang
+        //                _lstFlightSegment = _lstFlightSegment.Where(m => m.OriginLocation.LocationCode == _originLocation && m.DestinationLocation.LocationCode == _destinationLocation).ToList();
+        //                foreach (var flightSegment in _lstFlightSegment)
+        //                {
+        //                    int planeNo = Convert.ToInt32(flightSegment.FlightNumber);
+        //                    DateTime _datedepart = DateTime.Parse(_year + "-" + flightSegment.DepartureDateTime + ":00");
+        //                    DateTime _arrivalDateTime = _datedepart;
+        //                    // lay tat ca hang ghe dang ban (maketting) has Availability > 0 va >= tong so luong hanh khach (adt + cnn)
+        //                    List<string> _lstResBookDesigCode = flightSegment.BookingClassAvail.Where(m => Convert.ToInt32(m.Availability) > 0 && Convert.ToInt32(m.Availability) >= _availabilityTotal).Select(m => m.ResBookDesigCode).ToList();
+        //                    if (_lstResBookDesigCode.Count() == 0)
+        //                        continue;
+        //                    // 
+        //                    List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModelGo, fareRSFareBasesGo, new FlightAirTicketCondition
+        //                    {
+        //                        OriginLocation = _originLocation,
+        //                        DestinationLocation = _destinationLocation,
+        //                        DepartureDateTime = _departureDateTime,
+        //                        ArrivalDateTime = _arrivalDateTime,
+        //                        AirEquipType = Convert.ToInt32(flightSegment.Equipment.AirEquipType),
+        //                        FlightNo = planeNo,
+        //                        AirlineType = airlineType,
+
+        //                        AirTicketCondition04 = airTicketCondition04,
+        //                        AirTicketCondition05 = airTicketCondition05,
+        //                    }, tokenModel);
+        //                    if (fareDetails.Count() == 0)
+        //                        continue;
+
+        //                    if (flightSegment.FlightDetails.TotalTravelTime != null)
+        //                        _arrivalDateTime = _datedepart.AddMinutes(double.Parse(flightSegment.FlightDetails.TotalTravelTime));
+        //                    //
+        //                    lstFlightSegment.Add(new FlightSegment
+        //                    {
+        //                        AirEquipType = flightSegment.Equipment.AirEquipType,
+        //                        ArrivalDateTime = _arrivalDateTime.ToString("dd/MM/yyyy HH:mm:ss"),
+        //                        DepartureDateTime = _datedepart.ToString("dd/MM/yyyy HH:mm:ss"),
+        //                        DestinationLocation = _destinationLocation,
+        //                        FlightNo = planeNo,
+        //                        FlightType = (int)VNAEnum.FlightDirection.FlightGo,
+        //                        NumberInParty = _availabilityTotal,
+        //                        OriginLocation = _originLocation,
+        //                        FareDetails = fareDetails,
+        //                        RPH = flightSegment.RPH
+        //                    });
+        //                }
+        //            }
+
+        //        }
+        //        // group by time
+        //        List<Response_FlightSearch> response_FlightSearch = new List<Response_FlightSearch>();
+        //        var lstFlightSegmentGroupByTime = lstFlightSegment.GroupBy(m => new { m.DepartureDateTime, m.ArrivalDateTime }).Select(m => new { m.Key.ArrivalDateTime, m.Key.DepartureDateTime }).ToList();
+        //        // 
+        //        foreach (var item in lstFlightSegmentGroupByTime)
+        //        {
+        //            foreach (var flightSegment in lstFlightSegment)
+        //            {
+        //                if (item.DepartureDateTime == flightSegment.DepartureDateTime && item.ArrivalDateTime == flightSegment.ArrivalDateTime)
+        //                {
+        //                    response_FlightSearch.Add(new Response_FlightSearch
+        //                    {
+        //                        AirEquipType = flightSegment.AirEquipType,
+        //                        ArrivalDateTime = flightSegment.ArrivalDateTime,
+        //                        DepartureDateTime = flightSegment.DepartureDateTime,
+        //                        DestinationLocation = _destinationLocation,
+        //                        FlightNo = flightSegment.FlightNo,
+        //                        FlightType = flightSegment.FlightType,
+        //                        NumberInParty = _availabilityTotal,
+        //                        OriginLocation = _originLocation,
+        //                        FareDetails = flightSegment.FareDetails,
+        //                        RPH = flightSegment.RPH
+        //                    });
+        //                }
+        //            }
+        //        }
+        //        //
+        //        if (response_FlightSearch.Count() == 0)
+        //            return new List<Response_FlightSearch>();
+        //        //
+        //        return response_FlightSearch;
+        //    }
+        //}
 
         // Get list ResBookDesigCode is valid
         public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBasis, FlightAirTicketCondition flightAirTicketCondition, TokenModel tokenModel)

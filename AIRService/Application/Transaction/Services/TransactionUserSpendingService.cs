@@ -90,6 +90,9 @@ namespace WebCore.Services
         public ActionResult Create(TransactionUserSpendingCreateModel model)
         {
             _connection.Open();
+            string sendUserId = Helper.Current.UserLogin.IdentifierID;
+            string currentUserId = Helper.Current.UserLogin.IdentifierID;
+            string languageId = Helper.Current.UserLogin.LanguageID;
             using (var _transaction = _connection.BeginTransaction())
             {
                 try
@@ -100,34 +103,15 @@ namespace WebCore.Services
                     string title = "Thay đổi hạn mức";
                     string summary = model.Summary;
                     string senderId = model.SenderID;
-                    string sendUserId = Helper.Current.UserLogin.IdentifierID;
+
                     string receivedUserId = model.ReceivedUserID;
                     double amount = model.Amount;
                     int enabled = model.Enabled;
-                    string languageId = Helper.Current.UserLogin.LanguageID;
                     //
-                    string currentUserId = Helper.Current.UserLogin.IdentifierID;
                     CustomerService customerService = new CustomerService(_connection);
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
-                    // kiểm tra khách hàng còn hạn mức hay ko
-                    //
-                    var userService = new UserService();
-                    if (!userService.IsCustomerLogged(currentUserId, _connection, _transaction))
-                    {
-                        if (string.IsNullOrWhiteSpace(senderId))
-                        {
-                            return Notifization.Invalid("Vui lòng chọn khách hàng");
-                        }
-                    }
-                    else
-                    {
-                        var currClient = clientLoginService.GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
-                        if (currClient == null)
-                            return Notifization.NotFound("Khách hàng không hợp lệ");
-                        //
-                        senderId = currClient.ClientID;
-                    }
+                    UserService userService = new UserService(_connection);
                     //
                     senderId = senderId.ToLower();
                     var customer = customerService.GetAlls(m => m.ID == senderId, transaction: _transaction).FirstOrDefault();
@@ -155,14 +139,24 @@ namespace WebCore.Services
                         if (summary.Length < 1 || summary.Length > 120)
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
-                    // check han muc cua customer
-                    WalletClientMessageModel balanceSender = WalletService.GetBalanceByClientID(senderId, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!balanceSender.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
                     //
-                    if (amount > balanceSender.SpendingBalance)
-                        return Notifization.Invalid("Số dư không đủ để giao dịch");
-                    //
+                    if (userService.IsCustomerLogged(currentUserId, _connection, _transaction))
+                    {
+                        // check han muc cua customer
+                        WalletClientMessageModel balanceSender = WalletService.GetBalanceByClientID(senderId, dbConnection: _connection, dbTransaction: _transaction);
+                        if (!balanceSender.Status)
+                            return Notifization.Error("Không thể cập nhật giao dịch");
+                        //
+                        if (amount > balanceSender.SpendingBalance)
+                            return Notifization.Invalid("Số dư không đủ để giao dịch");
+                        //
+                    }
+                    else if (userService.IsSupplierLogged(currentUserId, _connection, _transaction))
+                    {
+
+
+                    }
+
                     TransactionUserSpendingService transactionUserSpendingService = new TransactionUserSpendingService(_connection);
                     var Id = transactionUserSpendingService.Create<string>(new TransactionUserSpending()
                     {
@@ -170,7 +164,7 @@ namespace WebCore.Services
                         Summary = summary,
                         SenderID = senderId,
                         SenderUserID = sendUserId,
-                        ReceivedID = received, 
+                        ReceivedID = received,
                         ReceivedUserID = receivedUserId,
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
@@ -178,21 +172,52 @@ namespace WebCore.Services
                         Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
                     }, transaction: _transaction);
                     // #1. sender ************************************************************************************************************************************
-                    var changeSpendingBalance = WalletService.ChangeSpendingBalance(new WalletClientChangeModel { ClientID = senderId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.OUT }, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!changeSpendingBalance.Status)
-                        return Notifization.Error("Không thể cập nhật giao dịch");
-                    // create histories for balance changed
-                    var balanceCustomerHistoryStatus = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
-                    {
-                        SenderID = senderId,
-                        SenderUserID = sendUserId,
-                        ReceivedID = receivedUserId, 
-                        Amount = amount,
-                        NewBalance = balanceSender.SpendingBalance - amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.OUT,
-                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.SPENDING
-                    }, dbConnection: _connection, dbTransaction: _transaction);
-                    //
+
+                    // Cấp hạn mức người dùng
+                    // + Thay đổi tài khoản người dùng
+                    // + Lịch sử ví chi tiêu của người dùng
+                    // * Nhà cung cấp:
+                    //     -Thay đổi ví đầu tư
+                    //     -Lịch sử ví đầu tư
+                    //   *Khách hàng:
+                    //   -Thay đổi Tài khoản chính
+                    //   -Lịch sử tài khoản chính
+
+                    //if (userService.IsCustomerLogged(currentUserId, _connection, _transaction))
+                    //{
+                    //    var changeSpendingBalance = WalletService.ChangeSpendingBalance(new WalletClientChangeModel { ClientID = senderId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.OUT }, dbConnection: _connection, dbTransaction: _transaction);
+                    //    if (!changeSpendingBalance.Status)
+                    //        return Notifization.Error("Không thể cập nhật giao dịch");
+                    //    // create histories for balance changed
+                    //    var balanceCustomerHistoryStatus = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
+                    //    {
+                    //        SenderID = senderId,
+                    //        SenderUserID = sendUserId,
+                    //        ReceivedID = receivedUserId,
+                    //        Amount = amount,
+                    //        NewBalance = balanceSender.SpendingBalance - amount,
+                    //        TransactionType = (int)TransactionEnum.TransactionType.OUT,
+                    //        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.SPENDING
+                    //    }, dbConnection: _connection, dbTransaction: _transaction);
+                    //}
+                    //else if (userService.IsSupplierLogged(currentUserId, _connection, _transaction))
+                    //{
+                    //    var changeSpendingBalance = WalletService.ChangeInvestmentBalance(new WalletClientChangeModel { ClientID = senderId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
+                    //    if (!changeSpendingBalance.Status)
+                    //        return Notifization.Error("Không thể cập nhật giao dịch");
+                    //    // create histories for balance changed
+                    //    var balanceCustomerHistoryStatus = LoggerHistoryService.LoggerWalletInvestmentHistory(new WalletInvestmentHistoryCreateModel
+                    //    {
+                    //        SenderID = senderId,
+                    //        SenderUserID = sendUserId,
+                    //        ReceivedID = receivedUserId,
+                    //        Amount = amount,
+                    //        NewBalance = balanceSender.SpendingBalance + amount,
+                    //        TransactionType = (int)TransactionEnum.TransactionType.IN,
+                    //        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.USER_SPENDING
+                    //    }, dbConnection: _connection, dbTransaction: _transaction);
+                    //}
+
                     // #2. receive ************************************************************************************************************************************
                     WalletUserMessageModel balanceReceived = WalletService.GetBalanceOfUser(receivedUserId, dbConnection: _connection, dbTransaction: _transaction);
                     if (!balanceReceived.Status)

@@ -306,7 +306,7 @@ namespace WebCore.Services
                         //
                         ContactName = contactName,
                         ContactEmail = contactEmail,
-                        ContactPhone = contactPhone, 
+                        ContactPhone = contactPhone,
                         //
                         RegisterID = userId,
                         Enabled = enabled
@@ -514,7 +514,7 @@ namespace WebCore.Services
                 try
                 {
                     if (model == null)
-                        return Notifization.Error(MessageText.Invalid);
+                        return Notifization.Error(MessageText.Invalid + "01");
                     //
                     string id = model.ID.ToLower();
                     SupplierService supplierService = new SupplierService(_connection);
@@ -522,37 +522,65 @@ namespace WebCore.Services
                     if (supplier == null)
                         return Notifization.NotFound();
                     // get all user
-                    ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).ToList();
-                    if (clientLogin.Count == 0)
-                        return Notifization.Error(MessageText.Invalid);
+
                     //
-                    string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
-                    var userResult = _connection.Query<UserResult>(sqlQuery, transaction: _transaction).ToList();
-                    if (userResult.Count == 0)
-                        return Notifization.Error(MessageText.Invalid);
                     // check data reference
                     // #1. Customer
                     string sqlCustomer = @"SELECT ID FROM App_Customer WHERE SupplierID = @SupplierID";
                     var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { SupplierID = id }, transaction: _transaction).ToList();
                     if (customerId.Count > 0)
                         return Notifization.Error("Vui lòng xóa tất cả khách hàng trước");
+                    // delete wallet
+                    string sqlWallet = @"DELETE App_WalletClient WHERE ClientType = 2 AND ClientID = @ClientID";
+                    _connection.Execute(sqlWallet, new { ClientID = supplier.ID }, transaction: _transaction);
                     //
-                    // get all file
-                    List<string> lstImgFile = userResult.Select(m => m.ImageFile).ToList();
-                    if (lstImgFile.Count > 0)
+                    string sqlWalletDeposit = @"DELETE App_WalletDepositHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
+                    _connection.Execute(sqlWalletDeposit, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletInvestment = @"DELETE App_WalletInvestmentHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
+                    _connection.Execute(sqlWalletInvestment, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletSpending = @"DELETE App_WalletSpendingHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
+                    _connection.Execute(sqlWalletSpending, new { ClientID = supplier.ID }, transaction: _transaction);
+                    //
+                    string sqlWalletSpendingLimit = @"DELETE App_WalletSpendingLimitHistory WHERE SenderID = @ClientID OR ReceivedID = @ClientID";
+                    _connection.Execute(sqlWalletSpendingLimit, new { ClientID = supplier.ID }, transaction: _transaction);
+                    // transaction
+                    //
+                    // user transaction
+                    // user wallett
+                    // user wallet history
+
+                    // 
+                    ClientLoginService clientLoginService = new ClientLoginService(_connection);
+                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).ToList();
+                    if (clientLogin.Count > 0)
                     {
-                        foreach (var item in lstImgFile)
+                        string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
+                        var userResult = _connection.Query<UserResult>(sqlQuery, transaction: _transaction).ToList();
+                        if (userResult.Count > 0)
                         {
-                            AttachmentFile.DeleteFile(item, transaction: _transaction);
+                            // get all file
+                            List<string> lstImgFile = userResult.Select(m => m.ImageFile).ToList();
+                            if (lstImgFile.Count > 0)
+                            {
+                                foreach (var item in lstImgFile)
+                                {
+                                    AttachmentFile.DeleteFile(item, transaction: _transaction);
+                                }
+                            }
                         }
+
+
+
+
+                        _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Supplier }, transaction: _transaction);
+                        //
+                        _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+                        _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+                        _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+                        //
                     }
-                    _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Supplier }, transaction: _transaction);
-                    //
-                    _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    //
                     supplierService.Remove(id, transaction: _transaction);
 
                     // delete in client table

@@ -43,7 +43,7 @@
                         @if (Helper.Current.UserLogin.IsSupplierLogged() || Helper.Current.UserLogin.IsCustomerLogged())
                         {
                             string clientId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
-                            Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
+                            @Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
                         }
                     </select>
                     <span id="lblEmployee" class="message msg-box"></span>
