@@ -90,19 +90,60 @@ namespace AIRService.Service
                 //string _flightGo = model.OriginLocation;
                 //string _flightTo = model.DestinationLocation;
 
-                var abc = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
-                {
-                    Token = _token,
-                    ConversationID = _conversationId,
-                    DepartureDateTime = _departureDateTime,
-                    DestinationLocation = _destinationLocation,
-                    OriginLocation = _originLocation
-                });
-                //
+                //var abc = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
+                //{
+                //    Token = _token,
+                //    ConversationID = _conversationId,
+                //    DepartureDateTime = _departureDateTime,
+                //    DestinationLocation = _destinationLocation,
+                //    OriginLocation = _originLocation
+                //});
+                //if (abc.Contains("ApplicationResults status=\"Complete\""))
+                //{
+                //    var abcd = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                //    {
+                //        Token = _token,
+                //        ConversationID = _conversationId,
+                //        DepartureDateTime = _departureDateTime,
+                //        DestinationLocation = _destinationLocation,
+                //        OriginLocation = _originLocation
+                //    });
+                //    var abcd2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                //    {
+                //        Token = _token,
+                //        ConversationID = _conversationId,
+                //        DepartureDateTime = _departureDateTime,
+                //        DestinationLocation = _destinationLocation,
+                //        OriginLocation = _originLocation
+                //    });
+                //    var abcd3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                //    {
+                //        Token = _token,
+                //        ConversationID = _conversationId,
+                //        DepartureDateTime = _departureDateTime,
+                //        DestinationLocation = _destinationLocation,
+                //        OriginLocation = _originLocation
+                //    });
 
+                //    return Notifization.Data(abc, abcd + abcd2 + abcd3);
+                //}
+                
 
-                return Notifization.Data("ok", abc);
+                //if (!string.IsNullOrWhiteSpace(abc))
+                //{
+                //    var abcd = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                //    {
+                //        Token = _token,
+                //        ConversationID = _conversationId,
+                //        DepartureDateTime = _departureDateTime,
+                //        DestinationLocation = _destinationLocation,
+                //        OriginLocation = _originLocation
+                //    });
 
+                //    return Notifization.Data(abcd, abc);
+                //}
+
+               
 
 
 
@@ -115,9 +156,26 @@ namespace AIRService.Service
                     DestinationLocation = _destinationLocation,
                     OriginLocation = _originLocation
                 });
+
+
+
                 // tim chuyen bay
                 if (dataAirAvail == null)
                     return Notifization.NotFound("Không tìm thấy chuyến bay nào phù hợp");
+
+                WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRS dataAirAvail2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQC1(new AirAvailLLSRQModel
+                {
+                    Token = _token,
+                    ConversationID = _conversationId,
+                    DepartureDateTime = _departureDateTime,
+                    DestinationLocation = _destinationLocation,
+                    OriginLocation = _originLocation
+                });
+
+                return Notifization.Data("ok", dataAirAvail2);
+
+
+
                 // danh sach chuyen bay
                 List<WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRSOriginDestinationOptionsOriginDestinationOption> originDestinationOptionList = dataAirAvail.OriginDestinationOptions.OriginDestinationOption.ToList();
                 if (originDestinationOptionList.Count == 0)

@@ -147,10 +147,11 @@
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
     <Compile Include="Application\ApiReport\Entities\ApiReport.cs" />
     <Compile Include="Application\ApiReport\Services\ApiReportService.cs" />
+    <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingLimitHistory.cs" />
     <Compile Include="Application\History\Entities\WalletInvestmentHistory.cs" />
     <Compile Include="Application\History\Services\WalletSpendingLimitHistoryService.cs" />
-    <Compile Include="Application\History\Services\WalletWalletInvestmentHistoryService.cs" />
+    <Compile Include="Application\History\Services\WalletInvestmentHistoryService.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentCoupon.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentTaxes.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentAmount.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummaryDetailsService.cs" />
     <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummaryClosedService.cs" />
     <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummarySSFopService.cs" />
+    <Compile Include="Application\Transaction\Entities\TransactionPayment.cs" />
+    <Compile Include="Application\Transaction\Services\TransactionPaymentService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -346,12 +349,10 @@
     <Compile Include="Application\Customer\Services\CustomerTypeService.cs" />
     <Compile Include="Application\History\Entities\WalletDepositHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
-    <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingHistory.cs" />
     <Compile Include="Application\History\Entities\WalletUserSpendingHistory.cs" />
     <Compile Include="Application\History\Enum\WalletHistoryEnum.cs" />
     <Compile Include="Application\History\Services\WalletDepositHistoryService.cs" />
-    <Compile Include="Application\History\Services\TransactionPaymentHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletSpendingHistoryService.cs" />
     <Compile Include="Application\History\Services\LoggerHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />

@@ -554,7 +554,7 @@ namespace WebCore.Services
                     }
 
                     // client wallet **************************************************************************************************
-                    string sqlWallet = @"DELETE App_WalletClient WHERE AND ClientID = @ClientID";
+                    string sqlWallet = @"DELETE App_WalletClient WHERE ClientID = @ClientID";
                     _connection.Execute(sqlWallet, new { ClientID = supplier.ID }, transaction: _transaction);
                     //
                     string sqlWalletDeposit = @"DELETE App_WalletDepositHistory WHERE ClientID = @ClientID";
@@ -654,9 +654,5 @@ namespace WebCore.Services
 
         }
         //##############################################################################################################################################################################################################################################################
-
-
-        //##############################################################################################################################################################################################################################################################
-
     }
 }
