@@ -54,8 +54,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var userGroupService = new RoleService())
-                    return userGroupService.DataList(model);
+                using (var service = new RoleService())
+                    return service.DataList(model);
             }
             catch (Exception ex)
             {
@@ -69,31 +69,9 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var roleService = new RoleService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid(MessageText.Invalid);
-
-                    string title = model.Title;
-                    string summary = model.Summary;
-                    if (string.IsNullOrWhiteSpace(title))
-                        return Notifization.Invalid("Không được để trống tên nhóm quyền ");
-                    title = title.Trim();
-                    if (!Validate.TestText(title))
-                        return Notifization.Invalid("Tên nhóm quyền không hợp lệ");
-                    if (title.Length < 2 || title.Length > 80)
-                        return Notifization.Invalid("Tên nhóm quyền giới hạn 2-80 ký tự");
-                    // summary valid
-                    if (!string.IsNullOrWhiteSpace(summary))
-                    {
-                        if (!Validate.TestAlphabet(summary))
-                            return Notifization.Invalid("Mô tả không hợp lệ");
-                        if (summary.Length < 1 || summary.Length > 120)
-                            return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
-                        summary = summary.Trim();
-                    };
-
-                    return roleService.Create(model);
+                using (var service = new RoleService())
+                { 
+                    return service.Create(model);
                 }
             }
             catch (Exception ex)
@@ -108,9 +86,9 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var roleService = new RoleService())
+                using (var service = new RoleService())
                 {
-                    return roleService.Update(model);
+                    return service.Update(model);
                 }
             }
             catch (Exception ex)
@@ -125,11 +103,11 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var roleService = new RoleService())
+                using (var service = new RoleService())
                 {
                     if (model == null)
                         return Notifization.Invalid();
-                    return roleService.Delete(model.ID);
+                    return service.Delete(model.ID);
                 }
             }
             catch (Exception)
@@ -139,9 +117,9 @@ namespace WebApplication.Management.Controllers
         }
         //##############################################################################################################################################################################################################################################################
         [HttpPost]
-        [Route("Action/DropDownList")]
+        [Route("Action/GetDataOption")]
         [IsManage(skip: true)]
-        public ActionResult DropDownList()
+        public ActionResult GetDataOption()
         {
             try
             {

@@ -244,32 +244,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DDLRoleLevel(string id)
-        {
-            try
-            {
-                string result = string.Empty;
-                using (var roleService = new CMSRoleService())
-                {
-                    var dtList = roleService.DataOption();
-                    if (dtList.Count > 0)
-                    {
-                        foreach (var item in dtList)
-                        {
-                            string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                                select = "selected";
-                            result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
-                        }
-                    }
-                    return result;
-                }
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+
         public List<RoleOption> DataOption()
         {
             try
@@ -310,11 +285,7 @@ namespace WebCore.Services
                             string strIndex = cnt + "";
                             if (cnt < 10)
                                 strIndex = "0" + cnt;
-                            //
-                            string strLevel = item.Level + "";
-                            if (item.Level < 10)
-                                strLevel = "0" + item.Level;
-                            //
+                            // 
 
                             string active = string.Empty;
                             if (arrData != null && arrData.Count() > 0)
@@ -327,7 +298,7 @@ namespace WebCore.Services
                             {
                                 result += "<a class='list-group-item'>";
                                 result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + " />";
-                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + "</label>";
                                 result += "</a>";
                             }
                             else
@@ -335,7 +306,7 @@ namespace WebCore.Services
 
                                 result += "<a class='list-group-item " + active + "'>";
                                 result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + "  disabled />";
-                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + "</label>";
                                 result += "</a>";
                             }
                             cnt++;

@@ -20,6 +20,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
+        public string ParentID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
@@ -29,16 +30,20 @@ namespace WebCore.Entities
     public partial class RoleResult : WEBModelResult
     {
         public string ID { get; set; }
+        public string ParentID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
         public bool IsAllowSpend { get; set; }
-
         public int Level { get; set; }
+        public List<RoleResult> SubRoles { get; set; }
+
     }
+
     // model
     public class RoleCreateModel : WEBModel
     {
+        public string ParentID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public bool IsAllowSpend { get; set; }
@@ -53,29 +58,13 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class RsRole : WEBModelResult
-    {
-        public string ID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Alias { get; set; }
-        public int Level { get; set; }
-    }
+
     public class RoleOption
     {
         public string ID { get; set; }
+        public string ParentID { get; set; }
         public string Title { get; set; }
-        public string Alias { get; set; }
         public bool IsAllowSpend { get; set; }
-        public int Level { get; set; }
-    }
-
-    public class RoleOptionByUser
-    {
-        public string ID { get; set; }
-        public string Title { get; set; }
-        public string Alias { get; set; }
-        public int Level { get; set; }
-        public int IsAllow { get; set; }
+        public List<RoleOption> SubOption { get; set; }
     }
 }

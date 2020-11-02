@@ -4,21 +4,15 @@
 @using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
-<div class="row">
-    <div class="col-md-4">
-        <div class="form-group role-group list-select">
-            <label for="">Nhóm người dùng:</label>
-            <div class="list-group item-title" style="margin-bottom: 0px;">
-                <div class="list-group-item">
-                    <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span></label>
-                </div>
-            </div>
-            <div id="ddlRole" class="role list-group data-group scroll-height" style="height: 257px;margin-bottom: 0;">
-                @Html.Raw(WebCore.Services.RoleService.DDLListRoleMultiSelect(null, true))
-            </div>
-        </div>
-    </div>
+<div class="row"> 
     <div class="col-md-6">
+        <div class="form-group">
+            <label for="">Danh mục:</label>
+            <select id="ddlCategory" name="ddlCategory" class="form-control show-tick" data-live-search="true">
+                <option value="">-@Helper.Language.Resource.Label.OptionNew-</option>
+                @Html.Raw(WebCore.Services.RoleService.DropdownList(""))
+            </select>
+        </div>
         <div class="form-group">
             <label class="form-label">Tiêu đề</label>
             <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" />
@@ -29,11 +23,11 @@
             <textarea id="txtSummary" name="txtSummary" class="form-control default"></textarea>
             <span id="lblSummary" class="message msg-box"></span>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="form-label">Cấp độ:</label>
             <input id="txtLevel" name="txtLevel" maxlength="50" type="text" class="form-control" />
             <span id="lblLevel" class="message msg-box"></span>
-        </div>
+        </div>*@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group m-t-5">

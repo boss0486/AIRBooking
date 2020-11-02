@@ -101,63 +101,6 @@ var _PermissionController = {
     ConfirmDelete: function (id) {
         _PermissionController.Delete(id);
     },
-    RoleOptionList: function (id, page) {
-        var model = {
-            Query: '',
-            Page: 1,
-            Status: -1
-        };
-        AjaxFrom.POST({
-            url: '/Management/Role/Action/DropDownList',
-            data: model,
-            success: function (result) {
-                $('ul#Role').html('');
-                if (result !== null) {
-                    if (result.status === 200) {
-                        var rowData = '';
-                        $.each(result.data, function (index, item) {
-                            index = index + 1;
-                            //
-                            var strIndex = index;
-                            if (index < 10)
-                                strIndex = "0" + index;
-                            //
-                            var level = parseInt(item.Level);
-                            var strLevel = level;
-                            if (level < 10)
-                                strLevel = "0" + level;
-                            //
-                            var active = '';
-                            if (id != undefined && id == item.ID) {
-                                active = 'active';
-                            }
-                            var id = item.ID;
-                            rowData += `                
-                              <a class="list-group-item">                                     
-                                    <input id="${id}" data-CategoryID='${id}' type="checkbox" class="filled-in action-item-input  " value="${id}" />
-                                    <label style="margin:0px;" for="${id}">${strIndex}. ${item.Title} <span class="badge badge-primary badge-pill ${active}">Cấp: ${strLevel}</span></label>
-                              </a>`;
-                        });
-                        $('ul#Role').html(rowData);
-                        $('ul#Role a.list-group-item:first input[type="checkbox"]').prop('checked', true);
-                        setTimeout(function () {
-                            $('ul#Role a.list-group-item:first input[type="checkbox"]').change();
-                        }, 500);
-                        return;
-                    }
-                    else {
-                        Notifization.Error(result.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (result) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
-    },
     FuncGroup: function (roleId, _activeId) {
         // model
         var model = {
@@ -192,7 +135,7 @@ var _PermissionController = {
                             var actionState = 'disabled';
                             if (item.Status) {
                                 staController = "checked";
-                                  actionState = '';
+                                actionState = '';
                             }
                             if (actionData != null) {
                                 $.each(actionData, function (actIndex, actItem) {
@@ -217,7 +160,7 @@ var _PermissionController = {
                                     actionHtml += `<div style='width:80px;display: inline-block;'> 
                                                         <input id="cbx-actall-${index}" data-val="" type="checkbox" class="filled-in all-action" ${checkAllAction}  ${actionState} />
                                                         <label for="cbx-actall-${index}">Tất cả</label>
-                                                   </div>` + actionTemp; 
+                                                   </div>` + actionTemp;
                                 }
                             }
                             //
@@ -246,6 +189,91 @@ var _PermissionController = {
             }
         });
     },
+    GetRoleCategory: function (_id, _envent) {
+        // model 
+        var _option_default = ``;
+        var model = {};
+        AjaxFrom.POST({
+            url: '/Management/Role/Action/GetDataOption',
+            data: model,
+            success: function (result) {
+                $('ul#Role').html(_option_default);
+                if (result !== null) {
+                    if (result.status === 200) {
+                        var rowData = '';
+                       
+                        if (result.data.length > 0) {
+
+                            $.each(result.data, function (index, item) {
+                                index = index + 1;
+                                var id = item.ID;
+                                if (id.length > 0)
+                                    id = id.trim();
+                                var _title = SubStringText.SubTitle(item.Title);
+                                var subMenu = item.SubOption;
+
+      
+                                var isChecked = "";
+                                if (id !== null && id === _id)
+                                    isChecked = "checked";
+                                var _level = 0;
+                                rowData += `<li>
+                                        <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} />
+                                        <label for="cbxItem${id}">${_title}</label>`;
+                                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                                    rowData += MenuItemController.GetSubRoleCategory(index, subMenu, _level, _id);
+                                }
+                                rowData += '</li>';
+
+
+                            });
+                        }
+
+                        $('ul#Role').html(_option_default + rowData);
+                        return;
+                    }
+                }
+                //Message.Error(MessageText.NOTSERVICES);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    GetSubRoleCategory: function (_index, lstModel, _level, _id) {
+        var rowData = '';
+        //
+        if (lstModel.length > 0) {
+            _level += 1;
+            rowData += `<ul>`;
+            $.each(lstModel, function (index, item) {
+                index = index + 1;
+                var id = item.ID;
+                if (id.length > 0)
+                    id = id.trim();
+
+                var _title = SubStringText.SubTitle(item.Title);
+                var subMenu = item.SubOption;
+                var isChecked = "";
+                if (id !== null && id === _id)
+                    isChecked = "checked";
+                //
+                var pading = _level * 38;
+
+                rowData += `<li>
+                               <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} />
+                               <label for="cbxItem${id}">${_title}</label>`;
+
+                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                    rowData += MenuItemController.GetSubRoleCategory(_index, subMenu, _level, _id);
+                }
+                rowData += '</li>';
+            });
+            rowData += `</ul>`;
+        }
+        return rowData;
+    }
 };
 _PermissionController.init();
 //

@@ -63,7 +63,14 @@ namespace WebCore.Services
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+
+            List<RoleResult> roleResults = dtList.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+            List<RoleResult> result = roleResults.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+
+            foreach (var item in result)
+            {
+                item.SubRoles = dtList.Where(m => m.ParentID == item.ID).ToList();
+            }
             if (result.Count == 0 && page > 1)
             {
                 page -= 1;
@@ -71,7 +78,7 @@ namespace WebCore.Services
             }
             if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
+            //
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {
                 PageSize = Helper.Pagination.Paging.PAGESIZE,
@@ -88,13 +95,20 @@ namespace WebCore.Services
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
+            string parentId = model.ParentID;
             string title = model.Title;
             string summary = model.Summary;
             int level = model.Level;
             bool isAllowSpend = model.IsAllowSpend;
+            //
+            if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
+                parentId = null;
+            else
+                parentId = parentId.ToLower();
             // 
             if (string.IsNullOrWhiteSpace(title))
                 return Notifization.Invalid("Không được để trống tên nhóm quyền");
+            //
             title = title.Trim();
             if (!Validate.TestText(title))
                 return Notifization.Invalid("Tên nhóm quyền không hợp lệ");
@@ -111,17 +125,18 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
             }
             RoleService roleService = new RoleService(_connection);
-            var role = roleService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).ToList();
+            var role = roleService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower() && m.ParentID == parentId).ToList();
             if (role.Count > 0)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             //
             var id = roleService.Create<string>(new Role()
             {
+                ParentID = parentId,
                 Title = title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(title),
                 Summary = summary,
                 IsAllowSpend = isAllowSpend,
-                Level = model.Level,
+                //Level = model.Level,
                 LanguageID = Helper.Current.UserLogin.LanguageID,
                 Enabled = model.Enabled,
             });
@@ -137,14 +152,21 @@ namespace WebCore.Services
             RoleService roleService = new RoleService(_connection);
             string id = model.ID.ToLower();
             var role = roleService.GetAlls(m => m.ID == id).FirstOrDefault();
+            //
             if (role == null)
                 return Notifization.NotFound(MessageText.NotFound);
-
+            //
+            string parentId = model.ParentID;
             string title = model.Title;
             string summary = model.Summary;
             int level = model.Level;
             bool isAllowSpend = model.IsAllowSpend;
-
+            //
+            if (string.IsNullOrWhiteSpace(parentId) || parentId.Length != 36)
+                parentId = null;
+            else
+                parentId = parentId.ToLower();
+            //
             if (string.IsNullOrWhiteSpace(title))
                 return Notifization.Invalid("Không được để trống tên nhóm quyền");
             title = title.Trim();
@@ -161,35 +183,29 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                 summary = summary.Trim();
             }
-
-            var roleName = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
+            //
+            var roleName = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ParentID == parentId && m.ID != id).FirstOrDefault();
             if (roleName != null)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             // update user information
+            role.ParentID = parentId;
             role.Title = title;
             role.Alias = Helper.Page.Library.FormatToUni2NONE(title);
             role.Summary = model.Summary;
             role.IsAllowSpend = isAllowSpend;
-            role.Level = model.Level;
+            //role.Level = model.Level;
             role.Enabled = model.Enabled;
             roleService.Update(role);
             return Notifization.Success(MessageText.UpdateSuccess);
         }
-        public Role GetRoleModel(string Id)
+        public Role GetRoleModel(string id)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(Id))
-                    return null;
-                string query = string.Empty;
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM Role WHERE ID = @Query";
-                return _connection.Query<Role>(sqlQuery, new { Query = Id }).FirstOrDefault();
-            }
-            catch
-            {
+            if (string.IsNullOrWhiteSpace(id))
                 return null;
-            }
+            string query = string.Empty;
+            string langID = Helper.Current.UserLogin.LanguageID;
+            string sqlQuery = @"SELECT TOP (1) * FROM Role WHERE ID = @ID";
+            return _connection.Query<Role>(sqlQuery, new { ID = id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(string id)
@@ -199,53 +215,60 @@ namespace WebCore.Services
             //
             id = id.ToLower();
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
-                    RoleService roleService = new RoleService(_connection);
-                    var role = roleService.GetAlls(m => m.ID == id, transaction: transaction).FirstOrDefault();
+                    RoleService service = new RoleService(_connection);
+                    var role = service.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (role == null)
                         return Notifization.NotFound();
-                    roleService.Remove(role.ID, transaction: transaction);
+                    //
+                    var parentList = service.GetAlls(m => m.ParentID == id, transaction: _transaction).ToList();
+                    if (parentList.Count > 0)
+                    {
+                        string sqlQuery = "DELETE Role WHERE ParentID = @ParentID";
+                        service.Execute(sqlQuery, new { ParentID = id }, transaction: _transaction);
+                    }
+                    service.Remove(role.ID, transaction: _transaction);
                     // remover seo
-                    transaction.Commit();
+                    _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
                 }
                 catch
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     return Notifization.NotService;
                 }
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownList(string id)
-        {
-            try
-            {
-                string result = string.Empty;
-                using (var service = new RoleService())
-                {
-                    var dtList = service.DataOption();
-                    if (dtList.Count > 0)
-                    {
-                        foreach (var item in dtList)
-                        {
-                            string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                                select = "selected";
-                            result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
-                        }
-                    }
-                    return result;
-                }
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+        //public static string DropdownList(string id)
+        //{
+        //    try
+        //    {
+        //        string result = string.Empty;
+        //        using (var service = new RoleService())
+        //        {
+        //            var dtList = service.DataOption();
+        //            if (dtList.Count > 0)
+        //            {
+        //                foreach (var item in dtList)
+        //                {
+        //                    string select = string.Empty;
+        //                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+        //                        select = "selected";
+        //                    result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
+        //                }
+        //            }
+        //            return result;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return string.Empty;
+        //    }
+        //}
         //##############################################################################################################################################################################################################################################################
         public static string DDLRoleLevel(string id)
         {
@@ -278,6 +301,14 @@ namespace WebCore.Services
             try
             {
                 string sqlQuery = @"SELECT * FROM Role WHERE Enabled = 1 ORDER BY Level, Title ASC";
+                List<RoleOption> roleOptions = _connection.Query<RoleOption>(sqlQuery).ToList();
+                List<RoleOption> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+                 
+                foreach (var item in roleResults)
+                {
+                    item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).ToList();
+                }
+
                 return _connection.Query<RoleOption>(sqlQuery).ToList();
             }
             catch
@@ -314,11 +345,6 @@ namespace WebCore.Services
                             if (cnt < 10)
                                 strIndex = "0" + cnt;
                             //
-                            string strLevel = item.Level + "";
-                            if (item.Level < 10)
-                                strLevel = "0" + item.Level;
-                            //
-
                             string active = string.Empty;
                             if (arrData != null && arrData.Count() > 0)
                             {
@@ -330,7 +356,7 @@ namespace WebCore.Services
                             {
                                 result += "<a class='list-group-item'>";
                                 result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + " />";
-                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + "</label>";
                                 result += "</a>";
                             }
                             else
@@ -338,7 +364,7 @@ namespace WebCore.Services
 
                                 result += "<a class='list-group-item " + active + "'>";
                                 result += "   <input id='" + item.ID + "' type='checkbox' class='filled-in action-item-input  ' value='" + item.ID + "' " + active + "  disabled />";
-                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + " <span class='badge badge-primary badge-pill pull-right'>Cấp: " + strLevel + "</span></label>";
+                                result += "   <label style='margin:0px;' for='" + item.ID + "'>" + strIndex + ". " + item.Title + "</label>";
                                 result += "</a>";
                             }
                             cnt++;

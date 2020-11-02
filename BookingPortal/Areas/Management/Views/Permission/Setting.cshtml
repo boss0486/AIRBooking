@@ -6,12 +6,9 @@
     <div class="col-md-3">
         <div class="form-group role-group">
             <label for="">Nhóm người dùng:</label>
-            <div  class="all-list-group list-group check-option" style="margin-bottom: 0px;">
-                <div class="list-group-item">
-                    <label> <i data-option="0" class="fa fa-cog" aria-hidden="true"></i><span>&nbsp;Lựa chọn</span><a href="/management/role/create" class="badge badge-primary badge-pill active">Tạo mới</a></label>
-                </div>
+            <div class=" vatical-menu">
+                <ul id="Role" class='role list-group check-option list-group-customize'></ul>
             </div>
-            <ul id="Role" class='role list-group check-option list-group-customize'></ul>
         </div>
     </div>
     <div class="col-md-9">
@@ -43,7 +40,7 @@
     <script src="~/Areas/Management/_script/permission.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            _PermissionController.RoleOptionList();
+            _PermissionController.GetRoleCategory();
         });
 
         $(document).on('change', '#Role input[type="checkbox"]', function (index, item) {
@@ -73,7 +70,7 @@
             }
             else {
                 $(trControl).find('input.inp-action').not(this).prop('checked', false);
-            } 
+            }
         });
         // ckeck item action
         $(document).on('change', '#TblFunction tr .inp-action', function () {

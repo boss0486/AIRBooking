@@ -14,6 +14,7 @@ namespace WebApplication
                 "~/_themes/library/plugins/bootstrap/css/bootstrap.css",
                 //
                 "~/_themes/fonts/awesome/css/all.css",
+                "~/_themes/library/plugins/menu-vetical/css/vetical-menu.css",
                 "~/_themes/library/plugins/toastr/toastr.min.css",
                 "~/_themes/library/plugins/loading/style.css",
                 "~/_themes/library/plugins/file-manage/file-manage.css",

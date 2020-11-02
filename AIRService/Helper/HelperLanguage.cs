@@ -57,6 +57,7 @@ namespace Helper.Language
             public static string Status { get; set; } = "Trạng thái";
             public static string State { get; set; } = "Tình trạng";
             public static string Option { get; set; } = "Lựa chọn";
+            public static string OptionNew { get; set; } = "Tạo mới";
             public static string Photo { get; set; } = "Hình ảnh";
             public static string Title { get; set; } = "Tiêu đề";
             public static string Alias { get; set; } = "Đường dẫn";

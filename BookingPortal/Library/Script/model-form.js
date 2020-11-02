@@ -88,6 +88,22 @@ class HelperModel {
         }
         return result;
     }
+    static StateIcon(_status) {
+        var result = '';
+        switch (_status) {
+            case false:
+                result = "<i class='fa fa-toggle-off'></i>";
+                break;
+            case true:
+                result = "<i class='fa fa-toggle-on'></i>";
+                break;
+            default:
+                result = "";
+                break;
+        }
+        return result;
+    }
+
     static RolePermission(role, _controlInit, id) {
         if (role !== undefined && role !== null) {
             var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;

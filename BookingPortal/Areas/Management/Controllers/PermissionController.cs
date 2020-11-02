@@ -62,37 +62,6 @@ namespace WebApplication.Management.Controllers
 
         //##############################################################################################################################################################################################################################################################
 
-
-        //  Permission by user
-        //[HttpPost]
-        //[Route("Action/RoleListByUser")]
-        //public ActionResult RoleListByUser(RoleIDModel model)
-        //{
-        //    try
-        //    {
-        //        // call service
-        //        using (var userRoleService = new UserRoleService())
-        //            return userRoleService.RoleListByUserID(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Notifization.TEST(">>" + ex);
-        //    }
-        //}
-        //[HttpPost]
-        //[Route("Action/RoleUserSetting")]
-        //public ActionResult RoleUserSetting(UserRoleModel model)
-        //{
-        //    try
-        //    {
-        //        // call service
-        //        using (var userRoleService = new UserRoleService())
-        //            return userRoleService.RoleUserSettingByUserID(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Notifization.TEST(">>" + ex);
-        //    }
-        //}
+         
     }
 }

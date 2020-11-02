@@ -27,19 +27,6 @@ var UserGroupController = {
                 $('#lblTitle').html('');
             }
 
-            var txtLevel = $('#txtLevel').val();
-            if (txtLevel === '') {
-                $('#lblLevel').html('Không được để trống cấp độ');
-                flg = false;
-            }
-            else if (!FormatNumber.test(txtLevel)) {
-                $('#lblLevel').html('Xin vui lòng sử dụng số 0-9');
-                flg = false;
-            }
-            else {
-                $('#lblLevel').html('');
-            }
-
             if (txtSummary !== '') {
                 if (txtSummary.length > 120) {
                     $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
@@ -88,20 +75,6 @@ var UserGroupController = {
             else {
                 $('#lblTitle').html('');
             }
-
-            var txtLevel = $('#txtLevel').val();
-            if (txtLevel === '') {
-                $('#lblLevel').html('Không được để trống cấp độ');
-                flg = false;
-            }
-            else if (!FormatNumber.test(txtLevel)) {
-                $('#lblLevel').html('Xin vui lòng sử dụng số 0-9');
-                flg = false;
-            }
-            else {
-                $('#lblLevel').html('');
-            }
-
             if (txtSummary !== '') {
                 if (txtSummary.length > 120) {
                     $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
@@ -123,7 +96,7 @@ var UserGroupController = {
                 UserGroupController.Update();
             }
             else {
-                Notifization.Error(MessageText.DATAMISSING);
+                Notifization.Error(MessageText.Datamissing);
             }
         });
     },
@@ -164,7 +137,7 @@ var UserGroupController = {
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
-                            //  role
+                            //  role 
                             var action = HelperModel.RolePermission(result.role, "UserGroupController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
@@ -172,12 +145,31 @@ var UserGroupController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${item.Title}</td>                                  
-                                 <td>${item.Summary}</td>                                  
+                                 <td class="text-center">${HelperModel.StateIcon(item.IsAllowSpend)}</td>                                  
                                  <td>${item.CreatedBy}</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
+
+                            var cnt = 1;
+                            var subRoles = item.SubRoles;
+                            if (subRoles != null && subRoles.length > 0) {
+                                $.each(subRoles, function (subIndex, subItem) {
+                                    var subAction = HelperModel.RolePermission(result.role, "UserGroupController", subItem.ID);
+                                    rowData += `<tr>
+                                          <td>&nbsp;</td>
+                                          <td style='padding-left:30px;'>${cnt}. ${subItem.Title}</td>                                  
+                                          <td class="text-center">${HelperModel.StateIcon(subItem.IsAllowSpend)}</td>                                
+                                          <td>${subItem.CreatedBy}</td>                                  
+                                          <td class="text-center">${HelperModel.StatusIcon(subItem.Enabled)}</td>
+                                          <td class="text-center">${subItem.CreatedDate}</td>
+                                          <td class="tbcol-action">${subAction}</td>
+                                     </tr>`;
+                                    cnt++;
+                                });
+                            }
+
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
@@ -199,22 +191,26 @@ var UserGroupController = {
         });
     },
     Create: function () {
+        var ddlCategory = $('#ddlCategory').val();
         var txtTitle = $('#txtTitle').val();
         var txtSummary = $('#txtSummary').val();
-        var txtLevel = $('#txtLevel').val();
         var isAllowSpend = false;
         if ($('input[name="cbxIsAllowSpend"]').is(":checked"))
             isAllowSpend = true;
         //
+        if (ddlCategory == null || ddlCategory == undefined) {
+            ddlCategory = "";
+        }
         var enabled = 0;
         if ($('input[name="cbxActive"]').is(":checked"))
             enabled = 1;
         //
         var model = {
+            ParentID: ddlCategory,
             Title: txtTitle,
             Summary: txtSummary,
             IsAllowSpend: isAllowSpend,
-            Level: txtLevel,
+            Level: 0,
             Enabled: enabled
         };
         AjaxFrom.POST({
@@ -242,11 +238,14 @@ var UserGroupController = {
 
     },
     Update: function () {
+        var ddlCategory = $('#ddlCategory').val();
         var txtTitle = $('#txtTitle').val();
         var txtSummary = $('#txtSummary').val();
-        var txtLevel = $('#txtLevel').val();
         var id = $('#txtID').val();
         //
+        if (ddlCategory == null || ddlCategory == undefined) {
+            ddlCategory = "";
+        }
         var isAllowSpend = false;
         if ($('input[name="cbxIsAllowSpend"]').is(":checked"))
             isAllowSpend = true;
@@ -257,10 +256,11 @@ var UserGroupController = {
         //
         var model = {
             ID: id,
+            ParentID: ddlCategory,
             Title: txtTitle,
             Summary: txtSummary,
             IsAllowSpend: isAllowSpend,
-            Level: txtLevel,
+            Level: 0,
             Enabled: enabled
         };
         AjaxFrom.POST({
@@ -271,7 +271,7 @@ var UserGroupController = {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
 
-                        UserGroupController.ViewLevel(parseInt(txtLevel), 1);
+                        //UserGroupController.ViewLevel(parseInt(txtLevel), 1);
                         return;
                     }
                     else {
@@ -454,19 +454,7 @@ $(document).on('keyup', '#txtSummary', function () {
     }
 });
 
-$(document).on('keyup', '#txtLevel', function () {
-    var txtLevel = $(this).val();
-    if (txtLevel === '') {
-        $('#lblLevel').html('Không được để trống cấp độ');
-    }
-    else if (!FormatNumber.test(txtLevel)) {
-        $('#lblLevel').html('Xin vui lòng sử dụng số 0-9');
-    }
-    else {
-        $('#lblLevel').html('');
-    }
 
-});
 $(document).on('click', '#cbxActive', function () {
     if ($(this).hasClass('actived')) {
         // remove
