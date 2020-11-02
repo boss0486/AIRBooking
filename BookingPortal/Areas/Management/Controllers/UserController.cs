@@ -22,13 +22,22 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-
         public ActionResult Create()
         {
             return View();
         }
 
         public ActionResult Update(string id)
+        {
+            UserClientService service = new UserClientService();
+            UserClientResult model = service.GetUserModel(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
+        }
+
+        public ActionResult UserRole(string id)
         {
             UserClientService service = new UserClientService();
             UserClientResult model = service.GetUserModel(id);
@@ -102,6 +111,20 @@ namespace WebApplication.Management.Controllers
             {
                 using (var service = new UserClientService())
                     return service.Delete(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(">>" + ex);
+            }
+        }
+        [HttpPost]
+        [Route("Action/UserRole")]
+        public ActionResult UserRoleSetting(UserRoleSettingModel model)
+        {
+            try
+            {
+                using (var service = new UserClientService())
+                    return service.UserRoleSetting(model);
             }
             catch (Exception ex)
             {

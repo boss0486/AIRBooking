@@ -201,35 +201,39 @@ var _PermissionController = {
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
-                       
+
                         if (result.data.length > 0) {
 
                             $.each(result.data, function (index, item) {
-                                index = index + 1;
-                                var id = item.ID;
-                                if (id.length > 0)
-                                    id = id.trim();
-                                var _title = SubStringText.SubTitle(item.Title);
-                                var subMenu = item.SubOption;
 
-      
-                                var isChecked = "";
-                                if (id !== null && id === _id)
-                                    isChecked = "checked";
-                                var _level = 0;
-                                rowData += `<li>
-                                        <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} />
+                                if (item.ParentID == null || item.ParentID == "") {
+
+
+                                    index = index + 1;
+                                    var id = item.ID;
+                                    if (id.length > 0)
+                                        id = id.trim();
+                                    var _title = SubStringText.SubTitle(item.Title);
+                                    var subMenu = item.SubOption;
+                                    var isChecked = "";
+                                    if (id !== null && id === _id)
+                                        isChecked = "checked";
+                                    var _level = 0;
+                                    rowData += `<li>
+                                        <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
                                         <label for="cbxItem${id}">${_title}</label>`;
-                                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                                    rowData += MenuItemController.GetSubRoleCategory(index, subMenu, _level, _id);
+                                    if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                                        rowData += _PermissionController.GetSubRoleCategory(index, subMenu, _level, _id);
+                                    }
+                                    rowData += '</li>';
                                 }
-                                rowData += '</li>';
-
-
                             });
                         }
 
                         $('ul#Role').html(_option_default + rowData);
+                        if (_envent) {
+                            $('ul#Role > li:first-child label').click();
+                        }
                         return;
                     }
                 }
@@ -262,11 +266,11 @@ var _PermissionController = {
                 var pading = _level * 38;
 
                 rowData += `<li>
-                               <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} />
+                               <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
                                <label for="cbxItem${id}">${_title}</label>`;
 
                 if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
-                    rowData += MenuItemController.GetSubRoleCategory(_index, subMenu, _level, _id);
+                    rowData += _PermissionController.GetSubRoleCategory(_index, subMenu, _level, _id);
                 }
                 rowData += '</li>';
             });

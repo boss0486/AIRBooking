@@ -18,38 +18,37 @@
     string createdDate = "";
     string strIsAllowSpend = "";
     string enabled = "";
- 
-        if (Model != null)
+
+    if (Model != null)
+    {
+        id = Model.ID;
+        title = Model.Title;
+        summary = Model.Summary;
+        parentId = Model.ParentID;
+        level = Model.Level;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = Convert.ToString(Model.CreatedDate);
+
+        if (Model.IsAllowSpend)
         {
-            id = Model.ID;
-            title = Model.Title;
-            summary = Model.Summary;
-            parentId = Model.ParentID;
-            level = Model.Level;
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
-
-            if (Model.IsAllowSpend)
-            {
-                strIsAllowSpend = "checked";
-            }
-
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "checked";
-            }
+            strIsAllowSpend = "checked";
         }
- 
+
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "checked";
+        }
+    }
+
 }
 <div class="row">
- 
-    <div class="col-md-6">
+    <div class="col-md-7">
         <div class="form-group">
             <label for="">Danh mục:</label>
             <select id="ddlCategory" name="ddlCategory" class="form-control show-tick" data-live-search="true">
                 <option value="">-@Helper.Language.Resource.Label.OptionNew-</option>
-                @Html.Raw(WebCore.Services.RoleService.DropdownList(parentId))
+                @Html.Raw(WebCore.Services.RoleService.RoleCategory(parentId))
             </select>
         </div>
         <div class="form-group">

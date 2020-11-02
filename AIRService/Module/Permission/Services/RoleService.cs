@@ -12,6 +12,8 @@ using System.Web;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 using Helper.Page;
+using System.Data;
+using AIRService.WebService.VNA_KT_AsrServices;
 
 namespace WebCore.Services
 {
@@ -58,13 +60,13 @@ namespace WebCore.Services
             if (status > 0)
                 whereCondition += " AND Enabled = @Enabled";
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM Role WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [Level] ASC";
+            string sqlQuery = @"SELECT * FROM Role WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [OrderID] ASC";
             var dtList = _connection.Query<RoleResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
 
-            List<RoleResult> roleResults = dtList.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+            List<RoleResult> roleResults = dtList.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).OrderBy(m => m.OrderID).ToList();
             List<RoleResult> result = roleResults.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
 
             foreach (var item in result)
@@ -129,6 +131,7 @@ namespace WebCore.Services
             if (role.Count > 0)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             //
+            int _max = roleService.GetAlls().Max(m => m.OrderID) + 1;
             var id = roleService.Create<string>(new Role()
             {
                 ParentID = parentId,
@@ -137,6 +140,7 @@ namespace WebCore.Services
                 Summary = summary,
                 IsAllowSpend = isAllowSpend,
                 //Level = model.Level,
+                OrderID = _max,
                 LanguageID = Helper.Current.UserLogin.LanguageID,
                 Enabled = model.Enabled,
             });
@@ -183,17 +187,23 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                 summary = summary.Trim();
             }
-            //
+            // 
             var roleName = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ParentID == parentId && m.ID != id).FirstOrDefault();
             if (roleName != null)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             // update user information
+            if (parentId != role.ParentID)
+                parentId = model.ParentID;
+            //
+            int _max = roleService.GetAlls(m => m.ParentID == parentId).Max(m => m.OrderID) + 1;
+            // 
             role.ParentID = parentId;
             role.Title = title;
             role.Alias = Helper.Page.Library.FormatToUni2NONE(title);
             role.Summary = model.Summary;
             role.IsAllowSpend = isAllowSpend;
             //role.Level = model.Level;
+            role.OrderID = _max;
             role.Enabled = model.Enabled;
             roleService.Update(role);
             return Notifization.Success(MessageText.UpdateSuccess);
@@ -243,32 +253,32 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        //public static string DropdownList(string id)
-        //{
-        //    try
-        //    {
-        //        string result = string.Empty;
-        //        using (var service = new RoleService())
-        //        {
-        //            var dtList = service.DataOption();
-        //            if (dtList.Count > 0)
-        //            {
-        //                foreach (var item in dtList)
-        //                {
-        //                    string select = string.Empty;
-        //                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-        //                        select = "selected";
-        //                    result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
-        //                }
-        //            }
-        //            return result;
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return string.Empty;
-        //    }
-        //}
+        public static string RoleCategory(string id)
+        {
+            try
+            {
+                string result = string.Empty;
+                using (var service = new RoleService())
+                {
+                    var dtList = service.DataOption().Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+                    if (dtList.Count > 0)
+                    {
+                        foreach (var item in dtList)
+                        {
+                            string select = string.Empty;
+                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                                select = "selected";
+                            result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
+                        }
+                    }
+                    return result;
+                }
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
         //##############################################################################################################################################################################################################################################################
         public static string DDLRoleLevel(string id)
         {
@@ -300,32 +310,43 @@ namespace WebCore.Services
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM Role WHERE Enabled = 1 ORDER BY Level, Title ASC";
+                string sqlQuery = @"SELECT * FROM Role WHERE Enabled = 1 ORDER BY OrderID, Title ASC";
                 List<RoleOption> roleOptions = _connection.Query<RoleOption>(sqlQuery).ToList();
                 List<RoleOption> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
-                 
+
                 foreach (var item in roleResults)
                 {
-                    item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).ToList();
+                    item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).OrderBy(m => m.OrderID).ToList();
                 }
+                return roleResults;
 
-                return _connection.Query<RoleOption>(sqlQuery).ToList();
             }
             catch
             {
                 return new List<RoleOption>();
             }
         }
-        public static List<string> GetRoleForUser(string userId)
+        public List<RoleOptionForUser> GetRoleForUser(string userId)
         {
-            using (var service = new RoleService())
+            List<RoleOptionForUser> roleOptions = new List<RoleOptionForUser>();
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
-                if (string.IsNullOrWhiteSpace(userId))
-                    return null;
+                string whereCondition = ",Active = 0 ";
+                if (!string.IsNullOrWhiteSpace(userId))
+                    whereCondition = @", Active = CASE WHEN (select count(u.ID) from UserRole as u where u.RoleID =  r.ID AND u.UserID = @UserID) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END";
                 //
-                string sqlQuery = @"SELECT RoleID FROM UserRole WHERE UserID = @UserID";
-                return service.Query<string>(sqlQuery, new { UserID = userId }).ToList();
+                string sqlQuery = @"SELECT r.ID, r.Title, r.ParentID, r.OrderID " + whereCondition + " FROM [Role] as r WHERE [Enabled] = 1 ORDER BY OrderID, Title ASC";
+                roleOptions = _connection.Query<RoleOptionForUser>(sqlQuery, new { UserID = userId }).ToList();
             }
+            if (roleOptions.Count == 0)
+                return new List<RoleOptionForUser> ();
+            //
+            List<RoleOptionForUser> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+            foreach (var item in roleResults)
+            {
+                item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).OrderBy(m => m.OrderID).ToList();
+            }
+            return roleResults;
         }
         public static string DDLListRoleMultiSelect(List<string> arrData = null, bool isNotcheck = false)
         {
@@ -377,6 +398,122 @@ namespace WebCore.Services
             {
                 return string.Empty;
             }
+        }
+        //SORT##############################################################################################################################################################################################################################################################
+        public ActionResult SortUp(RoleIDModel model)
+        {
+            _connection.Open();
+            using (var _transaction = _connection.BeginTransaction())
+            {
+                try
+                {
+                    string id = model.ID.ToLower();
+                    RoleService roleService = new RoleService(_connection);
+                    var menu = roleService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (menu == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    int _orderId = menu.OrderID;
+                    string _parentId = menu.ParentID;
+                    // list first
+                    Role lastRole = roleService.GetAlls(m => m.ParentID == _parentId && m.OrderID < _orderId, transaction: _transaction).OrderBy(m => m.OrderID).LastOrDefault();
+                    if (lastRole != null)
+                    {
+                        int lastOrderID = lastRole.OrderID;
+                        lastRole.OrderID = _orderId;
+                        // update last menu
+                        roleService.Update(lastRole, transaction: _transaction);
+                        // update current menu
+                        menu.OrderID = lastOrderID;
+                        roleService.Update(menu, transaction: _transaction);
+                    }
+                    _transaction.Commit();
+                    return Notifization.Success(MessageText.UpdateSuccess);
+                }
+                catch (Exception)
+                {
+                    _transaction.Rollback();
+                    return Notifization.Error(MessageText.NotService);
+                }
+            }// end transaction
+        }
+        public ActionResult SortDown(RoleIDModel model)
+        {
+            _connection.Open();
+            using (var _transaction = _connection.BeginTransaction())
+            {
+                try
+                {
+                    string id = model.ID.ToLower();
+                    RoleService roleService = new RoleService(_connection);
+                    var menu = roleService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    if (menu == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    int _orderId = menu.OrderID;
+                    string _parentId = menu.ParentID;
+                    // list first
+                    Role firstRole = roleService.GetAlls(m => m.ParentID == _parentId && m.OrderID > _orderId, transaction: _transaction).OrderBy(m => m.OrderID).FirstOrDefault();
+                    if (firstRole != null)
+                    {
+                        int firstOrderID = firstRole.OrderID;
+                        firstRole.OrderID = _orderId;
+                        // update last menu
+                        roleService.Update(firstRole, transaction: _transaction);
+                        // update current menu
+                        menu.OrderID = firstOrderID;
+                        roleService.Update(menu, transaction: _transaction);
+                    }
+                    _transaction.Commit();
+                    return Notifization.Success(MessageText.UpdateSuccess);
+                }
+                catch (Exception)
+                {
+                    _transaction.Rollback();
+                    return Notifization.Error(MessageText.NotService);
+                }
+            }// end transaction
+        }
+
+        public bool RoleAutoSort(IDbTransaction _transaction = null)
+        {
+            string sqlQuery = @"SELECT * FROM [Role] ORDER BY CreatedBy ASC ";
+            var allData = _connection.Query<Role>(sqlQuery, _transaction).ToList();
+            if (allData.Count == 0)
+                return false;
+            // 
+            var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+            if (dtList.Count > 0)
+            {
+                int _cnt = 1;
+                foreach (var item in dtList)
+                {
+                    var subMenus = SubRoleAutoSort(item.ID, allData, _transaction);
+                    //
+                    sqlQuery = @"UPDATE [Role] SET OrderID =" + _cnt + " WHERE ID = @ID";
+                    _connection.Execute(sqlQuery, new { ID = item.ID }, transaction: _transaction);
+                    _cnt++;
+                }
+                return true;
+            }
+            return false;
+        }
+        public List<Role> SubRoleAutoSort(string parentId, List<Role> allData, IDbTransaction _transaction = null)
+        {
+            if (allData.Count == 0)
+                return new List<Role>();
+            //
+            List<Role> dtList = allData.Where(m => m.ParentID == parentId).ToList();
+            if (dtList.Count == 0)
+                return new List<Role>();
+            //
+            int _cnt = 1;
+            foreach (var item in dtList)
+            {
+                var menuLists = SubRoleAutoSort(item.ID, allData, _transaction);
+                string sqlQuery = @"UPDATE [Role] SET OrderID =" + _cnt + " WHERE ID = @ID";
+                _connection.Execute(sqlQuery, new { item.ID }, transaction: _transaction);
+                _cnt++;
+            }
+            return dtList;
         }
         //##############################################################################################################################################################################################################################################################
     }

@@ -123,12 +123,18 @@ class HelperModel {
                 //}
 
 
+                if (item.KeyID == "UserRole")
+                    action += `<a href='${URLA}/UserRole/${id}' target="_blank"><i class='fas fa-user-cog'></i>&nbsp;${item.Title}</a>`;
+                //
                 if (item.KeyID == "Update")
                     action += `<a href='${URLA}/Update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;${item.Title}</a>`;
+                //
                 if (item.KeyID == "Delete")
                     action += `<a onclick="${_controlInit}.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;${item.Title}</a>`;
+                //
                 if (item.KeyID == "Details")
                     action += `<a href='${URLA}/Details/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
+                //
                 if (item.KeyID == "Profile")
                     action += `<a href='${URLA}/Profile/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
                 //

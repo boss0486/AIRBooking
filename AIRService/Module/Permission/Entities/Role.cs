@@ -25,6 +25,7 @@ namespace WebCore.Entities
         public string Summary { get; set; }
         public string Alias { get; set; }
         public int Level { get; set; }
+        public int OrderID { get; set; }
         public bool IsAllowSpend { get; set; }
     }
     public partial class RoleResult : WEBModelResult
@@ -36,6 +37,8 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public bool IsAllowSpend { get; set; }
         public int Level { get; set; }
+        public int OrderID { get; set; }
+
         public List<RoleResult> SubRoles { get; set; }
 
     }
@@ -47,8 +50,9 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public bool IsAllowSpend { get; set; }
-
         public int Level { get; set; }
+        public int OrderID { get; set; }
+
     }
     public class RoleUpdateModel : RoleCreateModel
     {
@@ -63,8 +67,21 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
         public string ParentID { get; set; }
+        public int OrderID { get; set; }
         public string Title { get; set; }
         public bool IsAllowSpend { get; set; }
+        [NotMapped]
         public List<RoleOption> SubOption { get; set; }
+    }
+    public class RoleOptionForUser
+    {
+        public string ID { get; set; }
+        public string ParentID { get; set; }
+        public int OrderID { get; set; }
+        public string Title { get; set; }
+        public bool Active { get; set; }
+        [NotMapped]
+        public List<RoleOptionForUser> SubOption { get; set; }
+
     }
 }

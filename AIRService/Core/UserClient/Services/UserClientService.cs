@@ -142,7 +142,7 @@ namespace WebCore.Services
                         //
                         string loginId = model.LoginID;
                         string password = model.Password;
-                        string roleId = model.RoleID;
+                        //////string roleId = model.RoleID;
                         //
                         int clientType = model.ClientType;
                         string clientId = model.ClientID;
@@ -289,14 +289,14 @@ namespace WebCore.Services
                         if (userLogin != null)
                             return Notifization.Error("Địa chỉ email đã được sử dụng");
                         //
-                        RoleService roleService = new RoleService(_connection);
-                        if (!string.IsNullOrWhiteSpace(roleId))
-                        {
-                            roleId = roleId.ToLower();
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
-                            if (role == null)
-                                return Notifization.Error("Nhóm quyền không hợp lệ");
-                        }
+                        //////RoleService roleService = new RoleService(_connection);
+                        //////if (!string.IsNullOrWhiteSpace(roleId))
+                        //////{
+                        //////    roleId = roleId.ToLower();
+                        //////    var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
+                        //////    if (role == null)
+                        //////        return Notifization.Error("Nhóm quyền không hợp lệ");
+                        //////}
                         //
                         UserLoginService userLoginService = new UserLoginService(_connection);
                         UserInfoService userInfoService = new UserInfoService(_connection);
@@ -339,14 +339,14 @@ namespace WebCore.Services
                             LanguageID = languageId,
                         }, transaction: _transaction);
                         // role
-                        if (!string.IsNullOrWhiteSpace(roleId))
-                        {
-                            userRoleService.Create<string>(new UserRole()
-                            {
-                                RoleID = roleId,
-                                UserID = userId
-                            }, transaction: _transaction);
-                        }
+                        //////if (!string.IsNullOrWhiteSpace(roleId))
+                        //////{
+                        //////    userRoleService.Create<string>(new UserRole()
+                        //////    {
+                        //////        RoleID = roleId,
+                        //////        UserID = userId
+                        //////    }, transaction: _transaction);
+                        //////}
                         // user for client
                         clientLoginService.Create<string>(new ClientLogin()
                         {
@@ -390,7 +390,7 @@ namespace WebCore.Services
                         string address = model.Address;
                         string nickName = model.NickName;
                         //
-                        string roleId = model.RoleID;
+                        //string roleId = model.RoleID;
                         string languageId = model.LanguageID;
                         bool isBlock = model.IsBlock;
                         int enabled = model.Enabled;
@@ -410,14 +410,14 @@ namespace WebCore.Services
                         if (userLogin == null)
                             return Notifization.Invalid(MessageText.Invalid);
                         //
-                        RoleService roleService = new RoleService(_connection);
-                        if (!string.IsNullOrWhiteSpace(roleId))
-                        {
-                            roleId = roleId.ToLower();
-                            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
-                            if (role == null)
-                                return Notifization.Error("Nhóm quyền không hợp lệ");
-                        }
+                        //////RoleService roleService = new RoleService(_connection);
+                        //////if (!string.IsNullOrWhiteSpace(roleId))
+                        //////{
+                        //////    roleId = roleId.ToLower();
+                        //////    var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == roleId, transaction: _transaction);
+                        //////    if (role == null)
+                        //////        return Notifization.Error("Nhóm quyền không hợp lệ");
+                        //////}
                         var _uId = userLogin.ID;
                         var userInfo = userInfoService.GetAlls(m => !string.IsNullOrWhiteSpace(m.UserID) && m.UserID == _uId, transaction: _transaction).FirstOrDefault();
                         if (userInfo == null)
@@ -456,24 +456,24 @@ namespace WebCore.Services
                         userSetting.LanguageID = model.LanguageID;
                         userSettingService.Update(userSetting, transaction: _transaction);
                         //
-                        if (!string.IsNullOrWhiteSpace(roleId))
-                        {
-                            // delete role cũ
-                            var userRole = userRoleService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
-                            if (userRole == null)
-                            {
-                                userRoleService.Create<string>(new UserRole()
-                                {
-                                    RoleID = roleId,
-                                    UserID = _uId
-                                }, transaction: _transaction);
-                            }
-                            else
-                            {
-                                userRole.RoleID = roleId;
-                                userRoleService.Update(userRole, transaction: _transaction);
-                            }
-                        }
+                        //if (!string.IsNullOrWhiteSpace(roleId))
+                        //{
+                        //    // delete role cũ
+                        //    var userRole = userRoleService.GetAlls(m => m.UserID == _uId, transaction: _transaction).FirstOrDefault();
+                        //    if (userRole == null)
+                        //    {
+                        //        userRoleService.Create<string>(new UserRole()
+                        //        {
+                        //            RoleID = roleId,
+                        //            UserID = _uId
+                        //        }, transaction: _transaction);
+                        //    }
+                        //    else
+                        //    {
+                        //        userRole.RoleID = roleId;
+                        //        userRoleService.Update(userRole, transaction: _transaction);
+                        //    }
+                        //}
                         _transaction.Commit();
                         return Notifization.Success(MessageText.UpdateSuccess);
                     }
@@ -522,6 +522,44 @@ namespace WebCore.Services
                     }
                 }
             }
+        }
+
+        public ActionResult UserRoleSetting(UserRoleSettingModel model)
+        {
+            var service = new UserClientService();
+            string roleId = model.RoleID;
+            string userId = model.UserID;
+            if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(userId))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            roleId = roleId.ToLower();
+            RoleService roleService = new RoleService(_connection);
+            UserRoleService userRoleService = new UserRoleService(_connection);
+            UserLoginService userLoginService = new UserLoginService(_connection);
+            Role role = roleService.GetAlls(m => m.ID == roleId).FirstOrDefault();
+            if (role == null)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            userId = userId.ToLower();
+            UserLogin userLogin = userLoginService.GetAlls(m => m.ID == userId).FirstOrDefault();
+            if (userLogin == null)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            UserRole userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault();
+            if (userRole == null)
+            {
+                userRoleService.Create<string>(new UserRole()
+                {
+                    RoleID = roleId,
+                    UserID = userId
+                });
+            }
+            else
+            {
+                userRole.RoleID = roleId;
+                userRoleService.Update(userRole);
+            }
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Details(string id)
@@ -584,7 +622,7 @@ namespace WebCore.Services
                                           LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
                                           INNER JOIN [Role] as r On r.ID = ur.RoleID
                                           where r.IsAllowSpend = 1 AND client.ClientID = @ClientID AND client.UserID != @UserID";
-                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId , UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
+                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
                 if (data.Count == 0)
                     return new List<EmployeeModel>();
                 //

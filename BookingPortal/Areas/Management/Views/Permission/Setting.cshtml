@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-md-3">
         <div class="form-group role-group">
-            <label for="">Nhóm người dùng:</label>
+            <label for="">Nhóm quyền:</label>
             <div class=" vatical-menu">
                 <ul id="Role" class='role list-group check-option list-group-customize'></ul>
             </div>
@@ -40,7 +40,7 @@
     <script src="~/Areas/Management/_script/permission.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            _PermissionController.GetRoleCategory();
+            _PermissionController.GetRoleCategory("",true);
         });
 
         $(document).on('change', '#Role input[type="checkbox"]', function (index, item) {

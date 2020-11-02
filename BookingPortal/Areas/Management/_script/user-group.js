@@ -137,6 +137,13 @@ var UserGroupController = {
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
+                            //
+                            var _title = SubStringText.SubTitle(item.Title);
+                            // icon sort
+                            var _level = 0;
+                            var _orderId = item.OrderID;
+                            var _actionSort = `<i data-sortup='btn-sort-up' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-up icon-mnsort'></i> <i data-sortdown ='btn-sort-down' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-down icon-mnsort'></i>`;
+                            //
                             //  role 
                             var action = HelperModel.RolePermission(result.role, "UserGroupController", id);
                             //
@@ -144,32 +151,18 @@ var UserGroupController = {
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${item.Title}</td>                                  
+                                 <td>${_title}</td>                                  
                                  <td class="text-center">${HelperModel.StateIcon(item.IsAllowSpend)}</td>                                  
+                                 <td class="text-center">${_actionSort}</td>                                  
                                  <td>${item.CreatedBy}</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
-
-                            var cnt = 1;
-                            var subRoles = item.SubRoles;
-                            if (subRoles != null && subRoles.length > 0) {
-                                $.each(subRoles, function (subIndex, subItem) {
-                                    var subAction = HelperModel.RolePermission(result.role, "UserGroupController", subItem.ID);
-                                    rowData += `<tr>
-                                          <td>&nbsp;</td>
-                                          <td style='padding-left:30px;'>${cnt}. ${subItem.Title}</td>                                  
-                                          <td class="text-center">${HelperModel.StateIcon(subItem.IsAllowSpend)}</td>                                
-                                          <td>${subItem.CreatedBy}</td>                                  
-                                          <td class="text-center">${HelperModel.StatusIcon(subItem.Enabled)}</td>
-                                          <td class="text-center">${subItem.CreatedDate}</td>
-                                          <td class="tbcol-action">${subAction}</td>
-                                     </tr>`;
-                                    cnt++;
-                                });
+                            var subMenu = item.SubRoles;
+                            if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                                rowData += UserGroupController.GetSubRoleList(index, subMenu, _level, result.role);
                             }
-
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
@@ -189,6 +182,49 @@ var UserGroupController = {
                 console.log('::' + MessageText.NotService);
             }
         });
+    },
+    GetSubRoleList: function (_index, lstModel, _level, _role) {
+        var rowData = '';
+        //
+        if (lstModel.length > 0) {
+            _level += 1;
+            $.each(lstModel, function (index, item) {
+                index = index + 1;
+                var id = item.ID;
+                if (id.length > 0)
+                    id = id.trim();
+                var action = '';
+                var role = _role;
+                //  role
+                var action = HelperModel.RolePermission(role, "UserGroupController", id);
+                //
+                // icon sort
+                var _orderId = item.OrderID;
+                var _actionSort = `<i data-sortup='btn-sort-up' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-up icon-mnsort'></i> <i data-sortdown ='btn-sort-down' data-id='${id}' data-order'${_orderId}' class='fas fa-arrow-circle-down icon-mnsort'></i>`;
+                //
+                var _title = SubStringText.SubTitle(item.Title);
+                //var _summary = SubStringText.SubSummary(item.Summary);
+                //var _cratedDate = LibDateTime.ConvertUnixTimestampToDate(item.CreatedDate, '-', 'en');
+                var rowNum = ''; //parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                var pading = _level * 20;
+                rowData += `
+                            <tr>
+                                 <td class="text-right">${rowNum}&nbsp;</td>
+                                 <td class='text-left'><div style='padding-left:${pading}px'>- ${_title}</div></td>                            
+                                 <td class="text-center">${HelperModel.StateIcon(item.IsAllowSpend)}</td>                                  
+                                 <td class="text-center">${_actionSort}</td>                                  
+                                 <td>${item.CreatedBy}</td>                                  
+                                 <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
+                                 <td class="text-center">${item.CreatedDate}</td>
+                                 <td class="tbcol-action">${action}</td>
+                            </tr>`;
+                var subMenu = item.SubRoles;
+                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                    rowData += UserGroupController.GetSubRoleList(_index, subMenu, _level, _role);
+                }
+            });
+        }
+        return rowData;
     },
     Create: function () {
         var ddlCategory = $('#ddlCategory').val();
@@ -367,56 +403,7 @@ var UserGroupController = {
     },
     ConfirmDelete: function (id) {
         Confirm.Delete(id, UserGroupController.Delete, null, null);
-    },
-    ViewLevel: function (id, page) {
-        var model = {
-            Query: '',
-            Page: 1,
-            Status: -1
-        };
-        AjaxFrom.POST({
-            url: URLC + '/DropDownList',
-            data: model,
-            success: function (result) {
-                $('#ListGroup').html('');
-                if (result !== null) {
-                    if (result.status === 200) {
-                        var rowData = '';
-                        $.each(result.data, function (index, item) {
-                            index = index + 1;
-                            //
-                            var strIndex = index;
-                            if (index < 10)
-                                strIndex = "0" + index;
-                            //
-                            var level = parseInt(item.Level);
-                            var strLevel = level;
-                            if (level < 10)
-                                strLevel = "0" + level;
-                            //
-                            var active = '';
-                            if (id != undefined && id == item.ID) {
-                                active = 'active';
-                            }
-                            rowData += `                
-                              <a class="list-group-item">
-                               ${strIndex}. ${item.Title} <span class="badge badge-primary badge-pill ${active}">Cấp: ${strLevel}</span>
-                              </a>`;
-                        });
-                        $('#ListGroup').html(rowData);
-                        return;
-                    }
-                    else {
-                        return;
-                    }
-                }
-                return;
-            },
-            error: function (result) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
-    },
+    }
 };
 UserGroupController.init();
 $(document).on('keyup', '#txtTitle', function () {
@@ -454,20 +441,62 @@ $(document).on('keyup', '#txtSummary', function () {
     }
 });
 
-
-$(document).on('click', '#cbxActive', function () {
-    if ($(this).hasClass('actived')) {
-        // remove
-        $(this).children('i').removeClass('fa-check-square');
-        $(this).children('i').addClass('fa-square');
-        $(this).removeClass('actived');
-    }
-    else {
-        $(this).children('i').addClass('fa-check-square');
-        $(this).children('i').removeClass('fa-square');
-        $(this).addClass('actived');
-    }
+// menu sort
+$(document).on('click', '[data-sortup]', function () {
+    var id = $(this).data('id');
+    var model = {
+        ID: id
+    };
+    AjaxFrom.POST({
+        url: URLC + '/sortup',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    UserGroupController.DataList(pageIndex);
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NotService);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
 });
-
+$(document).on('click', '[data-sortdown]', function () {
+    var id = $(this).data('id');
+    var model = {
+        ID: id
+    };
+    AjaxFrom.POST({
+        url: URLC + '/sortdown',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    UserGroupController.DataList(pageIndex);
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NotService);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+});
 
 

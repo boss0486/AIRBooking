@@ -31,28 +31,31 @@ namespace WebCore.Services
 
         public ActionResult SettingPermission(RoleSettingRequest model)
         {
-            if (model == null)
-                return Notifization.Invalid(MessageText.Invalid);
-            //
-            string roleId = model.RoleID;
-            string routeArea = model.RouteArea;
-            //
-            if (string.IsNullOrWhiteSpace(roleId))
-                return Notifization.Invalid("Vui lòng chọn nhóm người dùng");
-            roleId = roleId.ToLower();
-            //
-            List<RoleSettingController> controllerList = model.Controllers;
-            if (controllerList == null)
-            {
-                return Notifization.Invalid(MessageText.Invalid);
-            }
-            //
             DateTime _date = DateTime.Now;
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
+                    if (model == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    string roleId = model.RoleID;
+                    string routeArea = model.RouteArea;
+                    //
+                    if (string.IsNullOrWhiteSpace(roleId))
+                        return Notifization.Invalid("Vui lòng chọn nhóm người dùng");
+                    roleId = roleId.ToLower();
+                    //
+                    RoleService roleService = new RoleService(_connection);
+                    Role role = roleService.GetAlls(m => m.ID == roleId, transaction: _transaction).FirstOrDefault();
+                    if (role == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+
+                    List<RoleSettingController> controllerList = model.Controllers;
+                    if (controllerList == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
                     // xoa tat ca controller ko co trong model
                     List<string> lstController = controllerList.Select(m => m.ID).ToList();
                     //#1. Delete action in controller, in Role

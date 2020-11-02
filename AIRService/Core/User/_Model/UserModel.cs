@@ -69,7 +69,7 @@ namespace WebCore.Entities
         public string RoleID { get; set; }
         public bool IsBlock { get; set; }
         public int Enabled { get; set; }
-    } 
+    }
     //
     public class UserUpdateModel : UserCreateModel
     {
@@ -80,6 +80,11 @@ namespace WebCore.Entities
     public class UserIDModel
     {
         public string ID { get; set; }
+    }
+    public class UserRoleSettingModel
+    {
+        public string UserID { get; set; }
+        public string RoleID { get; set; }
     }
     //
     public class UserOption

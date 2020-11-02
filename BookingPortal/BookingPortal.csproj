@@ -1240,6 +1240,7 @@
     <Content Include="Areas\Management\Views\AreaGeographical\Details.cshtml" />
     <Content Include="Areas\Management\Views\AreaGeographical\Update.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDepositHistory\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\User\UserRole.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

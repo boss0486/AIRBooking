@@ -65,7 +65,7 @@
         "KeyID": "AccountInfo",
         "Method": "AccountInfo",
         "APIRouter": "Action/AccountInfo",
-        "Title": "Truy cập"
+        "Title": "TT.Truy cập"
       },
       {
         "OrderID": 8,
@@ -581,27 +581,34 @@
       },
       {
         "OrderID": 2,
+        "KeyID": "UserRole",
+        "Method": "UserRole",
+        "APIRouter": "Action/UserRole",
+        "Title": "Quyền"
+      },
+      {
+        "OrderID": 3,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
+        "OrderID": 4,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
+        "OrderID": 5,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
+        "OrderID": 6,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",

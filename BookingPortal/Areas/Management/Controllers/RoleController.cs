@@ -115,6 +115,36 @@ namespace WebApplication.Management.Controllers
                 return Notifization.NotService;
             }
         }
+
+        [HttpPost]
+        [Route("Action/SortUp")]
+        public ActionResult SortUp(RoleIDModel model)
+        {
+            try
+            {
+                using (var service = new RoleService())
+                    return service.SortUp(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+        //
+        [HttpPost]
+        [Route("Action/SortDown")]
+        public ActionResult SortDown(RoleIDModel model)
+        {
+            try
+            {
+                using (var service = new RoleService())
+                    return service.SortDown(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
         //##############################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/GetDataOption")]
@@ -126,6 +156,28 @@ namespace WebApplication.Management.Controllers
                 using (var service = new RoleService())
                 {
                     var dtList = service.DataOption();
+                    if (dtList.Count == 0)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    //
+                    return Notifization.Data(MessageText.Success, dtList);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(">>" + ex);
+            }
+        }
+        
+        [HttpPost]
+        [Route("Action/GetRoleForUser")]
+        [IsManage(skip: true)]
+        public ActionResult GetRoleForUser(UserIDModel userIDModel)
+        {
+            try
+            {
+                using (var service = new RoleService())
+                {
+                    var dtList = service.GetRoleForUser(userIDModel.ID);
                     if (dtList.Count == 0)
                         return Notifization.NotFound(MessageText.NotFound);
                     //

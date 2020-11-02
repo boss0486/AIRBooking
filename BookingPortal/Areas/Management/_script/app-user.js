@@ -380,10 +380,10 @@ var AppUserController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
-        if (ddlRoleId == null || ddlRoleId == undefined ) {
-            ddlRoleId = "";
-        }
+        //var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
+        //if (ddlRoleId == null || ddlRoleId == undefined ) {
+        //    ddlRoleId = "";
+        //}
         //
         var typeLogin = $('#typeLogin').val();
         var clientId = "";
@@ -412,7 +412,6 @@ var AppUserController = {
             Address: txtAddress,
             LoginID: txtLoginID,
             Password: txtPassword,
-            RoleID: ddlRoleId,
             //
             ClientID: clientId,
             ClientType: clientType,
@@ -421,7 +420,7 @@ var AppUserController = {
             IsBlock: isBlock,
             Enabled: enabled
         };
-        
+
         // form
         AjaxFrom.POST({
             url: URLC + '/Create',
@@ -447,14 +446,13 @@ var AppUserController = {
         });
     },
     Update: function () {
-        var id = $('#txtID').val(); 
+        var id = $('#txtID').val();
         var txtFullName = $('#txtFullName').val();
         var txtBirthday = $('#txtBirthday').val();
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
-        //
+        //var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
         var typeLogin = $('#typeLogin').val();
         var clientId = "";
         var clientType = "";
@@ -480,8 +478,6 @@ var AppUserController = {
             Email: txtEmail,
             Phone: txtPhone,
             Address: txtAddress,
-            //
-            RoleID: ddlRoleId,
             //
             ClientID: clientId,
             ClientType: clientType,
@@ -511,7 +507,7 @@ var AppUserController = {
                 console.log('::' + MessageText.NotService);
             }
         });
-    }, 
+    },
     ConfirmDelete: function (id) {
         Confirm.Delete(id, AppUserController.Delete, null, null);
     },
@@ -667,6 +663,96 @@ var AppUserController = {
                 console.log('::' + MessageText.NotService);
             }
         });
+    },
+    GetRoleForUser: function (_id, _event) { 
+        var _option_default = ``;
+        var model = {
+            ID: _id
+        };
+        AjaxFrom.POST({
+            url: '/Management/Role/Action/GetRoleForUser',
+            data: model,
+            success: function (result) {
+                $('ul#Role').html(_option_default);
+                if (result !== null) {
+                    if (result.status === 200) {
+                        var rowData = '';
+
+                        if (result.data.length > 0) {
+
+                            $.each(result.data, function (index, item) {
+
+                                if (item.ParentID == null || item.ParentID == "") {
+
+
+                                    index = index + 1;
+                                    var id = item.ID;
+                                    if (id.length > 0)
+                                        id = id.trim();
+                                    var _title = SubStringText.SubTitle(item.Title);
+                                    var subMenu = item.SubOption;
+                                    var isChecked = "";
+                                    var isActive = item.Active;
+                                    if (isActive)
+                                        isChecked = "checked";
+
+                                    var _level = 0;
+                                    rowData += `<li>
+                                        <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
+                                        <label for="cbxItem${id}">${_title}</label>`;
+                                    if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                                        rowData += AppUserController.GetSubRoleCategory(index, subMenu, _level, _id);
+                                    }
+                                    rowData += '</li>';
+                                }
+                            });
+                        }
+
+                        $('ul#Role').html(_option_default + rowData);
+                        return;
+                    }
+                }
+                //Message.Error(MessageText.NOTSERVICES);
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    GetSubRoleCategory: function (_index, lstModel, _level, _id) {
+        var rowData = '';
+        //
+        if (lstModel.length > 0) {
+            _level += 1;
+            rowData += `<ul>`;
+            $.each(lstModel, function (index, item) {
+                index = index + 1;
+                var id = item.ID;
+                if (id.length > 0)
+                    id = id.trim();
+
+                var _title = SubStringText.SubTitle(item.Title);
+                var subMenu = item.SubOption;
+                var isChecked = "";
+                var isActive = item.Active;
+                if (isActive)
+                    isChecked = "checked";
+                //
+                var pading = _level * 38;
+
+                rowData += `<li>
+                               <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
+                               <label for="cbxItem${id}">${_title}</label>`;
+
+                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                    rowData += AppUserController.GetSubRoleCategory(_index, subMenu, _level, _id);
+                }
+                rowData += '</li>';
+            });
+            rowData += `</ul>`;
+        }
+        return rowData;
     }
 };
 AppUserController.init();
@@ -836,7 +922,6 @@ $(document).on("change", "#ddlClient", function () {
 //
 $(document).on("change", "input[name='rdoClientType']", function () {
     $("#lblClient").html("");
-    console.log("ok");
     var ddlClientType = $(this).val();
     // change text
     var text = $(this).data('text');
@@ -848,6 +933,39 @@ $(document).on("change", "input[name='rdoClientType']", function () {
     else {
         SupplierOption("", true, false);
     }
+});
+
+$(document).on("click", "#btnRoleSetting", function () {
+    var roleActive = $('#Role input[type="checkbox"]:checkbox:checked');
+    var roleId = $(roleActive).val();
+    var userId = $("#txtID").val();
+    var model = {
+        RoleId: roleId,
+        UserID: userId
+    };
+    // form
+    AjaxFrom.POST({
+        url: URLC + '/UserRole',
+        data: model,
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    Notifization.Success(response.message);
+                    return;
+                }
+                else {
+                    Notifization.Error(response.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NotService);
+            return;
+        },
+        error: function (response) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+
 });
 //
 function CustomerOption(_id, isdefault, isChangeEvent) {
