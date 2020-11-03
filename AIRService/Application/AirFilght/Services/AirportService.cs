@@ -82,7 +82,11 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult Create(AirportCreateModel model)
         {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
             AirportService flightService = new AirportService(_connection);
+            double axfee = model.AxFee;
             var flight = flightService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
             if (flight != null)
                 return Notifization.Invalid("Tên chuyến bay đã được sử dụng");
@@ -91,13 +95,17 @@ namespace WebCore.Services
             if (flight != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
             //
+            if (axfee > 0)
+                return Notifization.Invalid("Phí sân bay không hợp lệ");
+            //
             flightService.Create<string>(new Entities.Airport()
             {
                 Title = model.Title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
                 Summary = model.Summary,
-                IATACode = model.IATACode.ToUpper(),
                 AreaID = model.AreaID,
+                IATACode = model.IATACode.ToUpper(),
+                AxFee = axfee,
                 Enabled = model.Enabled
             });
             return Notifization.Success(MessageText.CreateSuccess);
@@ -105,7 +113,11 @@ namespace WebCore.Services
         //##############################################################################################################################################################################################################################################################
         public ActionResult Update(AirportUpdateModel model)
         {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
             string id = model.ID;
+            double axfee = model.AxFee;
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound(MessageText.NotFound);
             id = id.ToLower();
@@ -123,11 +135,15 @@ namespace WebCore.Services
             if (flightValid != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
             //
+            if (axfee > 0)
+                return Notifization.Invalid("Phí sân bay không hợp lệ");
+            //
             flight.Title = title;
             flight.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
             flight.Summary = model.Summary;
-            flight.IATACode = model.IATACode.ToUpper();
             flight.AreaID = model.AreaID;
+            flight.IATACode = model.IATACode.ToUpper();
+            flight.AxFee = axfee;
             flight.Enabled = model.Enabled;
             flightService.Update(flight);
             //

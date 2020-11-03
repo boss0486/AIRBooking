@@ -243,6 +243,35 @@ namespace AIRService.WS.Helper
                 return (T)ser.Deserialize(sr);
             }
         }
+         public static T Deserialize2<T>(string input) where T : class
+        {
+            var serializer = new XmlSerializer(typeof(T)); 
+            using (TextReader reader = new StringReader(input))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
+        }
+
+        public static T ConvertNode<T>(XmlNode node, string xmlRootElement) where T : class
+        {
+            MemoryStream stm = new MemoryStream();
+
+            StreamWriter stw = new StreamWriter(stm);
+            stw.Write(node.OuterXml);
+            stw.Flush();
+
+            stm.Position = 0;
+            XmlRootAttribute xRoot = new XmlRootAttribute("callArgs")
+            {
+                ElementName = "name",
+                Namespace = "http://webservice.api.cabaret.com/",
+                IsNullable = true
+            };
+            XmlSerializer ser = new XmlSerializer(typeof(T), xRoot);
+            T result = (ser.Deserialize(stm) as T);
+
+            return result;
+        }
 
         public static string Serialize<T>(T ObjectToSerialize)
         {

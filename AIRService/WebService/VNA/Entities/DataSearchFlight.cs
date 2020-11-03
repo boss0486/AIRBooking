@@ -78,7 +78,7 @@ namespace ApiPortalBooking.Models
     {
         public int FlightNo { get; set; }
         public string AirlineType { get; set; }
-        public int AirEquipType { get; set; }
+        public string AirEquipType { get; set; }
         public DateTime DepartureDateTime { get; set; }
         public string DestinationLocation { get; set; }
         public string OriginLocation { get; set; }

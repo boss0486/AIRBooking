@@ -677,14 +677,9 @@ var AppUserController = {
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
-
                         if (result.data.length > 0) {
-
                             $.each(result.data, function (index, item) {
-
                                 if (item.ParentID == null || item.ParentID == "") {
-
-
                                     index = index + 1;
                                     var id = item.ID;
                                     if (id.length > 0)
@@ -731,7 +726,7 @@ var AppUserController = {
                 var id = item.ID;
                 if (id.length > 0)
                     id = id.trim();
-
+                //
                 var _title = SubStringText.SubTitle(item.Title);
                 var subMenu = item.SubOption;
                 var isChecked = "";
@@ -740,7 +735,6 @@ var AppUserController = {
                     isChecked = "checked";
                 //
                 var pading = _level * 38;
-
                 rowData += `<li>
                                <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
                                <label for="cbxItem${id}">${_title}</label>`;

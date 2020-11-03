@@ -149,6 +149,8 @@ var flightBookingController = {
                     var htmlReturn = '';
                     var cntGo = false;
                     var cntReturn = false;
+                    var intGo = 1;
+                    var intRt = 1;
                     $.each(response.data, function (index, item) {
                         index = index + 1;
                         //var id = item.ID;
@@ -169,16 +171,12 @@ var flightBookingController = {
                         var departureTime = LibDateTime.GetTime(departureDateTime);
                         var arrivalTime = LibDateTime.GetTime(arrivalDateTime);
                         var fareDetails = item.FareDetails;
-
                         var special_Price = 0;
                         var special_pesBookDesigCode = "";
                         var special_rph = "";
                         var special_code = "";
                         var arrFare = [];
-
-                        var fareItemCount = ":";
-
-
+                        //
                         if (fareDetails !== undefined && fareDetails.length > 0) {
                             $.each(fareDetails, function (indexFare, itemFare) {
 
@@ -300,8 +298,6 @@ var flightBookingController = {
                                 //
                             });
                         }
-
-                        console.log("::" + fareItemCount);
                         //
                         var _active = "";
                         var special = `<label name='special-tag'><span data-ResBookDesigCode=''> </span>: <span data-AdtAmount=''>0.0 ${unit}</span></label>`;
@@ -321,11 +317,15 @@ var flightBookingController = {
                             });
                         }
                         if (parseInt(flightType) === 1) {
+                            var strCnt = intGo;
+                            if (intGo < 10) {
+                                strCnt = "0" + intGo;
+                            }
                             if (cntGo === true)
                                 _active = "active";
                             htmlGo = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
-                                <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
+                                <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> ${strCnt}</td>
                                 <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
                                 <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
@@ -333,15 +333,21 @@ var flightBookingController = {
                                 <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
                             </tr>`;
                             cntGo = false;
+                            intGo++;
                             $('tbody#TblGoData').append(htmlGo);
                         }
 
                         if (parseInt(ddlFlightType) === 2 && parseInt(flightType) === 2) {
+                            var strCnt = intRt;
+                            if (intRt < 10) {
+                                strCnt = "0" + intRt;
+                            }
+                            //
                             if (cntReturn === true)
                                 _active = "active";
                             htmlReturn = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
-                                <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> VNA</td>
+                                <td class='td-firm'><i class="fa fa-plane" aria-hidden="true"></i> ${strCnt}</td>
                                 <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
                                 <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
                                 <td class='td-time'>${departureTime} - ${arrivalTime}</td>
@@ -349,6 +355,7 @@ var flightBookingController = {
                                 <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
                             </tr>`;
                             cntReturn = false;
+                            intRt++;
                             $('tbody#TblReturnData').append(htmlReturn);
 
                         }

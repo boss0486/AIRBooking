@@ -24,8 +24,9 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string IATACode { get; set; }
         public string AreaID { get; set; }
+        public string IATACode { get; set; }
+        public double AxFee { get; set; }
     }
 
     public class AirportIDModel
@@ -38,8 +39,9 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string IATACode { get; set; }
         public string AreaID { get; set; }
+        public string IATACode { get; set; }
+        public double AxFee { get; set; }
         public int Enabled { get; set; }
     }
 
@@ -53,7 +55,6 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string IATACode { get; set; }
         public string AreaID { get; set; }
 
         [NotMapped]
@@ -64,6 +65,9 @@ namespace WebCore.Entities
                 return AreaGeographicalService.GetAreaName(AreaID); ;
             }
         }
+        public string IATACode { get; set; }
+        public double AxFee { get; set; }
+
     }
     public class AirportOption
     {
@@ -75,7 +79,7 @@ namespace WebCore.Entities
     public class AirportFromToOption
     {
         public string ID { get; set; }
-        public string Departure { get; set; } 
+        public string Departure { get; set; }
         public string Destination { get; set; } 
     }
 

@@ -8,12 +8,14 @@ var flightController = {
     },
     registerEvent: function () {
         $(document).ready(function () {
-             
+
         });
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
             // Area
             var ddlArea = $('#ddlAreaID').val();
+            var axFee = $('#txtAxFee').val();
+            //
             if (ddlArea === "-" || ddlArea === '') {
                 $('#lblAreaID').html('Vui lòng chọn vùng/miền');
                 flg = false;
@@ -38,6 +40,16 @@ var flightController = {
             else {
                 $('#lblIataCode').html('');
             }
+
+            $('#lblAxFee').html('');
+            if (axFee !== "") {
+                if (!FormatNumber.test(axFee)) {
+                    $('#lblAxFee').html('Phí sân bay không hợp lệ');
+                    flg = false;
+                }
+            }
+            
+
             // title
             var title = $('#txtTitle').val();
             if (title === '') {
@@ -77,7 +89,7 @@ var flightController = {
             if (flg)
                 flightController.Create();
             else
-                Notifization.Error(MessageText.DATAMISSING);
+                Notifization.Error(MessageText.Datamissing);
         });
         $('#btnSearch').off('click').on('click', function () {
             flightController.DataList(1);
@@ -86,6 +98,8 @@ var flightController = {
             var flg = true;
             // Area
             var ddlArea = $('#ddlAreaID').val();
+            var axFee = $('#txtAxFee').val();
+            //
             if (ddlArea === "-" || ddlArea === '') {
                 $('#lblAreaID').html('Vui lòng chọn vùng/miền');
                 flg = false;
@@ -109,6 +123,14 @@ var flightController = {
             }
             else {
                 $('#lblIataCode').html('');
+            }
+
+            $('#lblAxFee').html('');
+            if (axFee != "") {
+                if (!FormatNumber.test(axFee)) {
+                    $('#lblAxFee').html('Phí sân bay không hợp lệ');
+                    flg = false;
+                }
             }
             // title
             var title = $('#txtTitle').val();
@@ -150,12 +172,12 @@ var flightController = {
                 flightController.Update();
             }
             else {
-                Notifization.Error(MessageText.DATAMISSING);
+                Notifization.Error(MessageText.Datamissing);
             }
         });
     },
     DataList: function (page) {
-        //       
+        //   
         var _ariaId = $('#ddlAreaID').val();
         var _province = $('#ddlProvince').val();
         var ddlTimeExpress = $('#ddlTimeExpress').val();
@@ -237,6 +259,7 @@ var flightController = {
     },
     Create: function () {
         var iataCode = $('#txtIataCode').val();
+        var axFee = $('#txtAxFee').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var ddlArea = $('#ddlAreaID').val();
@@ -248,6 +271,7 @@ var flightController = {
             CategoryID: ddlArea,
             Title: title,
             IataCode: iataCode,
+            AxFee: axFee,
             Summary: summary,
             Enabled: enabled
         };
@@ -276,6 +300,7 @@ var flightController = {
     Update: function () {
         var id = $('#txtID').val();
         var iataCode = $('#txtIataCode').val();
+        var axFee = $('#txtAxFee').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var ddlArea = $('#ddlAreaID').val();
@@ -288,6 +313,7 @@ var flightController = {
             AreaID: ddlArea,
             Title: title,
             IataCode: iataCode,
+            AxFee: axFee,
             Summary: summary,
             Enabled: enabled
         };
@@ -460,6 +486,7 @@ $(document).on('keyup', '#txtPriceListed', function () {
         $('#lblPriceListed').html('');
     }
 });
+
 $(document).on("change", "#ddlAreaID", function () {
     var txtCtl = $(this).val();
     if (txtCtl === "-" || txtCtl === "") {
@@ -470,8 +497,15 @@ $(document).on("change", "#ddlAreaID", function () {
     }
 });
 //
- 
-//
 $(document).on('', '.img-caption-text', function () {
     $('.new-box-preview img').click();
+});
+$(document).on('keyup', '#txtAxFee', function () {
+    var axFee = $(this).val();
+    $('#lblAxFee').html('');
+    if (axFee !== "") {
+        if (!FormatNumber.test(axFee)) {
+            $('#lblAxFee').html('Phí sân bay không hợp lệ');
+        } 
+    }
 });
