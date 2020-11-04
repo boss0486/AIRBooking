@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>OTA_AirAvailLLSRQ</eb:Service>
+      <eb:Action>OTA_AirAvailLLSRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>717015315930510213</eb:MessageId>
+        <eb:Timestamp>2020-11-04T08:46:33</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESH!ICESMSLB\/RES.LB!1604479589319!173!281!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <OTA_AirAvailRS xmlns="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stl="http://services.sabre.com/STL/v01" Version="2.4.0">
+      <stl:ApplicationResults status="Complete">
+        <stl:Success timeStamp="2020-11-04T02:46:33-06:00">
+          <stl:SystemSpecificResults>
+            <stl:HostCommand LNIATA="222222">1*</stl:HostCommand>
+          </stl:SystemSpecificResults>
+        </stl:Success>
+      </stl:ApplicationResults>
+      <OriginDestinationOptions OriginTimeZone="Z7" TimeZoneDifference="0">
+        <OriginDestinationOption RPH="1">
+          <FlightSegment ArrivalDateTime="01-20T08:20" DOT_Ind="N" DepartureDateTime="01-20T06:10" FlightNumber="127" RPH="1" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" RPH="2" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" RPH="3" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" RPH="4" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" RPH="6" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" RPH="9" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" RPH="10" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" RPH="11" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" RPH="12" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" RPH="13" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" RPH="14" ResBookDesigCode="J" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="VJ" FlightNumber="127" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="2">
+          <FlightSegment ArrivalDateTime="01-20T08:20" DOT_Ind="Y" DepartureDateTime="01-20T06:10" FlightNumber="4104" RPH="2" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="1" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="2" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="4" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="6" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="7" ResBookDesigCode="G" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="10" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="11" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="12" ResBookDesigCode="K" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="32S" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="H1" FlightNumber="4104" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="3">
+          <FlightSegment ArrivalDateTime="01-20T10:00" DOT_Ind="N" DepartureDateTime="01-20T07:50" FlightNumber="131" RPH="3" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" RPH="2" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" RPH="3" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" RPH="4" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" RPH="6" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" RPH="9" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" RPH="10" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" RPH="11" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" RPH="12" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" RPH="13" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" RPH="14" ResBookDesigCode="J" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="VJ" FlightNumber="131" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="4">
+          <FlightSegment ArrivalDateTime="01-20T10:00" DOT_Ind="Y" DepartureDateTime="01-20T07:50" FlightNumber="4214" RPH="4" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="1" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="2" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="4" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="6" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="7" ResBookDesigCode="G" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="10" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="11" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="12" ResBookDesigCode="K" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="32S" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="H1" FlightNumber="4214" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="5">
+          <FlightSegment ArrivalDateTime="01-20T10:20" DOT_Ind="N" DepartureDateTime="01-20T08:10" FlightNumber="129" RPH="5" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" RPH="2" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" RPH="3" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" RPH="4" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" RPH="6" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" RPH="9" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" RPH="10" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" RPH="11" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" RPH="12" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" RPH="13" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" RPH="14" ResBookDesigCode="J" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="VJ" FlightNumber="129" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="6">
+          <FlightSegment ArrivalDateTime="01-20T10:20" DOT_Ind="Y" DepartureDateTime="01-20T08:10" FlightNumber="5752" RPH="6" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="4" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="5" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="6" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="7" ResBookDesigCode="V" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="8" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="10" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="11" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="12" ResBookDesigCode="G" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" TrafficRestrictionCode="Q" />
+            <MarketingAirline Code="JL" FlightNumber="5752" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="7">
+          <FlightSegment ArrivalDateTime="01-20T10:20" DOT_Ind="Y" DepartureDateTime="01-20T08:10" FlightNumber="4105" RPH="7" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="1" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="2" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="4" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="6" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="7" ResBookDesigCode="G" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="10" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="11" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="12" ResBookDesigCode="K" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="32S" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="H1" FlightNumber="4105" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="8">
+          <FlightSegment ArrivalDateTime="01-20T11:00" DOT_Ind="N" DepartureDateTime="01-20T08:50" FlightNumber="195" RPH="8" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" RPH="2" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" RPH="3" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" RPH="4" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" RPH="6" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" RPH="9" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" RPH="10" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" RPH="11" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" RPH="12" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" RPH="13" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" RPH="14" ResBookDesigCode="J" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="VJ" FlightNumber="195" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="9">
+          <FlightSegment ArrivalDateTime="01-20T11:00" DOT_Ind="Y" DepartureDateTime="01-20T08:50" FlightNumber="4441" RPH="9" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="1" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="2" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="4" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="6" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="7" ResBookDesigCode="G" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="10" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="11" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="12" ResBookDesigCode="K" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="32S" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="H1" FlightNumber="4441" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="10">
+          <FlightSegment ArrivalDateTime="01-20T11:40" DOT_Ind="N" DepartureDateTime="01-20T09:30" FlightNumber="137" RPH="10" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" RPH="2" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" RPH="3" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" RPH="4" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" RPH="6" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" RPH="9" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" RPH="10" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" RPH="11" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" RPH="12" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" RPH="13" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" RPH="14" ResBookDesigCode="J" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="VJ" FlightNumber="137" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="11">
+          <FlightSegment ArrivalDateTime="01-20T11:40" DOT_Ind="Y" DepartureDateTime="01-20T09:30" FlightNumber="4215" RPH="11" SmokingAllowed="false" StopQuantity="0" eTicket="false">
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="1" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="2" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="3" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="4" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="5" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="6" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="7" ResBookDesigCode="G" />
+            <BookingClassAvail AggregatedContent="false" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="10" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="11" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="9" RPH="12" ResBookDesigCode="K" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VJ" CompanyShortName="VIETJET AIR">
+              <Text>OPERATED BY VIETJET AIR</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="32S" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="130" />
+            <MarketingAirline Code="H1" FlightNumber="4215" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="12">
+          <FlightSegment ArrivalDateTime="01-20T11:15" DOT_Ind="Y" DepartureDateTime="01-20T09:00" FlightNumber="9611" RPH="12" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="1" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="2" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="VN" CompanyShortName="VIETNAM AIRLINES">
+              <Text>OPERATED BY VIETNAM AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="359" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="0" TotalTravelTime="135" />
+            <MarketingAirline Code="GA" FlightNumber="9611" ParticipationLevel="DCA" />
+            <Meal MealCode="S" />
+            <OriginLocation LocationCode="HAN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+      </OriginDestinationOptions>
+    </OTA_AirAvailRS>
+  </soap-env:Body>
+</soap-env:Envelope>

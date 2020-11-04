@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -307,6 +308,28 @@ namespace AIRService.WS.Helper
                 }
             }
             return sw.ToString();
+        }
+
+
+        //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(8) + "search2.xml", soapEnvelopeXml);
+        public static void WriteXml(string fileName, XmlDocument soapEnvelopeXml)
+        {
+            // Save the document to a file and auto-indent the output.
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true
+            };
+            var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+            XmlWriter writer = XmlWriter.Create(urlFile, settings);
+            soapEnvelopeXml.Save(writer);
+        }
+
+        public static string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string result = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+            return result;
         }
     }
 }

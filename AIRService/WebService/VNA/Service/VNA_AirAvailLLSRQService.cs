@@ -101,7 +101,10 @@ namespace AIRService.WS.Service
             XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
             var stringXML = "";
             stringXML += "<ns:OTA_AirAvailRQ ReturnHostCommand='true'  Version='2.4.0'  xmlns:ns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
-            stringXML += " <ns:OriginDestinationInformation>";
+            stringXML += "  <ns:OptionalQualifiers>";
+            stringXML += "      <ns:FlightQualifiers DirectOnly='true'/>";
+            stringXML += "  </ns:OptionalQualifiers>";
+            stringXML += "  <ns:OriginDestinationInformation>";
             stringXML += "        <ns:FlightSegment DepartureDateTime='" + model.DepartureDateTime.ToString("MM-dd") + "' ResBookDesigCode=''>";
             stringXML += "            <ns:DestinationLocation LocationCode='" + model.DestinationLocation + "' />";
             stringXML += "            <ns:OriginLocation LocationCode='" + model.OriginLocation + "' />";
@@ -160,8 +163,21 @@ namespace AIRService.WS.Service
             soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
             XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
             var stringXML = "";
+
             stringXML += "<ns:OTA_AirAvailRQ ReturnHostCommand='true' Version='2.4.0'  xmlns:ns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
             stringXML += "	<ns:OptionalQualifiers>";
+            //stringXML += "      <ns:FlightQualifiers Charters='true' DirectOnly='true' ExcludeCodeshares='true' OnlineOnly='true' Scan='true'>";
+            //stringXML += "          <ns:AlliancePartner>";
+            //stringXML += "              <ns:Group>*A</ns:Group>";
+            //stringXML += "          </ns:AlliancePartner>";
+            //stringXML += "          <ns:Cabin Exclude='true'>";
+            //stringXML += "              <ns:Designator>YB</ns:Designator>";
+            //stringXML += "          </ns:Cabin>";
+            //stringXML += "          <ns:VendorPrefs DirectAccess='false' Exclude='true'>";
+            //stringXML += "              <ns:Airline Code='VN' />";
+            //stringXML += "              <ns:Airline Code='VN' />";
+            //stringXML += "          </ns:VendorPrefs>";
+            //stringXML += "      </ns:FlightQualifiers>";
             stringXML += "		<ns:AdditionalAvailability Ind='true' />";
             stringXML += "	</ns:OptionalQualifiers>";
             stringXML += "</ns:OTA_AirAvailRQ>";
@@ -197,7 +213,7 @@ namespace AIRService.WS.Service
             #endregion
         }
     }
-    
+
 }
 
 namespace XMLObject.AirAvailLLSRQ

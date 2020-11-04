@@ -45,13 +45,13 @@ namespace AIRService.Service
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
-                return Notifization.Error("Cannot create session");
+                return Notifization.Invalid(MessageText.Invalid);
             using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 // check model
                 if (model == null)
                     return Notifization.Invalid(MessageText.Invalid);
-
+                //
                 int _adt = model.ADT; // Adults
                 int _cnn = model.CNN; // minors
                 int _inf = model.INF; // Infant
@@ -230,7 +230,8 @@ namespace AIRService.Service
                         XMLObject.AirAvailLLSRQ.FlightSegment _lstFlightSegment = originDestinationOption.FlightSegment;
                         if (_lstFlightSegment == null)
                             continue;
-
+                        if (_lstFlightSegment.MarketingAirline.Code != "VN")
+                            continue;
                         // gioi han du lieu , do du lieu tra ve nhieu chang
                         // _lstFlightSegment = _lstFlightSegment.Where(m => m.OriginLocation.LocationCode == _originLocation && m.DestinationLocation.LocationCode == _destinationLocation).ToList();
                         int planeNo = Convert.ToInt32(_lstFlightSegment.FlightNumber);
@@ -406,12 +407,13 @@ namespace AIRService.Service
                     //
                     int _year = _departureDateTime.Year;
                     foreach (var originDestinationOption in originDestinationOptionListReturn)
-                    {
-
+                    { 
                         //#1. Availability: get all Flight is Availability
                         //#2.
                         XMLObject.AirAvailLLSRQ.FlightSegment _lstFlightSegment = originDestinationOption.FlightSegment;
                         if (_lstFlightSegment == null)
+                            continue;
+                        if (_lstFlightSegment.MarketingAirline.Code != "VN")
                             continue;
                         // 
                         int planeNo = Convert.ToInt32(_lstFlightSegment.FlightNumber);
@@ -482,7 +484,7 @@ namespace AIRService.Service
                 if (response_FlightSearch.Count() == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
-                response_FlightSearch = response_FlightSearch.OrderBy(m=> m.FlightType).OrderBy(m => m.DepartureDateTime).ToList();
+                response_FlightSearch = response_FlightSearch.OrderBy(m => m.FlightType).OrderBy(m => m.DepartureDateTime).ToList();
                 return Notifization.Data("OK -> IsRoundTrip: true ", response_FlightSearch);
             }
         }
