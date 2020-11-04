@@ -280,32 +280,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DDLRoleLevel(string id)
-        {
-            try
-            {
-                string result = string.Empty;
-                using (var roleService = new RoleService())
-                {
-                    var dtList = roleService.DataOption();
-                    if (dtList.Count > 0)
-                    {
-                        foreach (var item in dtList)
-                        {
-                            string select = string.Empty;
-                            if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                                select = "selected";
-                            result += "<option value='" + item.ID + "'" + select + ">" + item.Title + "</option>";
-                        }
-                    }
-                    return result;
-                }
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+        
         public List<RoleOption> DataOption()
         {
             try
@@ -326,6 +301,31 @@ namespace WebCore.Services
                 return new List<RoleOption>();
             }
         }
+        public List<RoleOption> RoleForUserOption(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                    return new List<RoleOption>();
+                //
+                string sqlQuery = @"SELECT * FROM [Role] WHERE ID IN (select RoleID from UserRole where UserID = @UserID) AND Enabled = 1 ORDER BY OrderID, Title ASC";
+                List<RoleOption> roleOptions = _connection.Query<RoleOption>(sqlQuery).ToList();
+                List<RoleOption> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+
+                foreach (var item in roleResults)
+                {
+                    item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).OrderBy(m => m.OrderID).ToList();
+                }
+                return roleResults;
+
+            }
+            catch
+            {
+                return new List<RoleOption>();
+            }
+        }
+
+
         public List<RoleOptionForUser> GetRoleForUser(string userId)
         {
             List<RoleOptionForUser> roleOptions = new List<RoleOptionForUser>();
