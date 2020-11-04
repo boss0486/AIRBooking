@@ -31,6 +31,9 @@ namespace WebCore.Services
 
         public ActionResult SettingPermission(RoleSettingRequest model)
         {
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
+                return Notifization.AccessDenied(MessageText.AccessDenied);
+            //
             DateTime _date = DateTime.Now;
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())

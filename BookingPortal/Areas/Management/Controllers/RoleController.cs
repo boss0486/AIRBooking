@@ -155,11 +155,7 @@ namespace WebApplication.Management.Controllers
             {
                 using (var service = new RoleService())
                 {
-
-                    var dtList = service.RoleForUserOption();
-                    if (dtList.Count == 0)
-                        return Notifization.NotFound(MessageText.NotFound);
-                    //
+                    var dtList = service.RoleListByLogin(); 
                     return Notifization.Data(MessageText.Success, dtList);
                 }
             }

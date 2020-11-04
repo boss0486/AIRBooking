@@ -91,23 +91,43 @@ namespace WebCore.Services
             // 
             string langID = Helper.Current.UserLogin.LanguageID;
             string roleId = model.RoleID;
-            string sqlQuery = @" SELECT c.ID,c.KeyID,c.Title,Status = CASE WHEN (select count(s.ID) from RoleControllerSetting as s where s.RouteArea = c.RouteArea AND s.ControllerID = c.ID AND s.RoleID = @RoleID ) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            { 
+                string sqlQuery = @" SELECT c.ID,c.KeyID,c.Title,Status = CASE WHEN (select count(s.ID) from RoleControllerSetting as s where s.RouteArea = c.RouteArea AND s.ControllerID = c.ID AND s.RoleID = @RoleID ) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END
                 FROM MenuController as c WHERE c.RouteArea =  @RouteArea ORDER BY OrderID,Title  ";
-            List<MvcControllerForPermision> dtList = _connection.Query<MvcControllerForPermision>(sqlQuery, new { RouteArea = model.RouteArea, RoleID = roleId }).ToList();
-            if (dtList.Count == 0)
-                return new List<MvcControllerForPermision>();
-            // 
+                List<MvcControllerForPermision> dtList = _connection.Query<MvcControllerForPermision>(sqlQuery, new { RouteArea = model.RouteArea, RoleID = roleId }).ToList();
+                if (dtList.Count == 0)
+                    return new List<MvcControllerForPermision>();
+                // 
 
-            foreach (var item in dtList)
-            {
-                sqlQuery = @" SELECT a.ID,a.KeyID,a.Title, Status = CASE WHEN (select count(s.ID) from RoleActionSetting as s where s.RouteArea = a.RouteArea AND s.ControllerID = a.CategoryID AND s.RoleID = @RoleID AND s.ActionID = a.ID) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END 
+                foreach (var item in dtList)
+                {
+                    sqlQuery = @" SELECT a.ID,a.KeyID,a.Title, Status = CASE WHEN (select count(s.ID) from RoleActionSetting as s where s.RouteArea = a.RouteArea AND s.ControllerID = a.CategoryID AND s.RoleID = @RoleID AND s.ActionID = a.ID) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END 
                               FROM MenuAction as a WHERE a.RouteArea = @RouteArea AND a.CategoryID = @CategoryID ORDER BY a.OrderID";
-                List<MvcActionForPermision> actionList = _connection.Query<MvcActionForPermision>(sqlQuery, new { RouteArea = model.RouteArea, CategoryID = item.ID, RoleID = roleId }).ToList();
-                item.Actions = actionList;
+                    List<MvcActionForPermision> actionList = _connection.Query<MvcActionForPermision>(sqlQuery, new { RouteArea = model.RouteArea, CategoryID = item.ID, RoleID = roleId }).ToList();
+                    item.Actions = actionList;
+                }
+                return dtList;
             }
-            // return
-           
-            return dtList;
+            else
+            {
+                string sqlQuery = @" SELECT c.ID,c.KeyID,c.Title, Status = 1  FROM MenuController as c
+                INNER JOIN RoleControllerSetting as s ON s.ControllerID = c.ID  AND s.RoleID = @RoleID AND s.RouteArea = @RouteArea
+                ORDER BY OrderID,Title ";
+                List<MvcControllerForPermision> dtList = _connection.Query<MvcControllerForPermision>(sqlQuery, new { model.RouteArea, RoleID = roleId }).ToList();
+                if (dtList.Count == 0)
+                    return new List<MvcControllerForPermision>();
+                //  
+                foreach (var item in dtList)
+                {
+                    sqlQuery = @"SELECT a.ID,a.KeyID,a.Title, Status = 1 FROM MenuAction as a
+                    INNER JOIN RoleActionSetting as s ON s.ActionID  = a.ID AND s.ControllerID = a.CategoryID
+                    WHERE a.CategoryID = @CategoryID AND  s.RoleID = @RoleID AND s.RouteArea = @RouteArea";
+                    List<MvcActionForPermision> actionList = _connection.Query<MvcActionForPermision>(sqlQuery, new { model.RouteArea, CategoryID = item.ID, RoleID = roleId }).ToList();
+                    item.Actions = actionList;
+                }
+                return dtList;
+            }    
         }
 
 

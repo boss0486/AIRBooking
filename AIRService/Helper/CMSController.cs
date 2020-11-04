@@ -69,7 +69,7 @@ namespace WebCore.Core
             {
                 bool manageFilter = filterContext.ActionDescriptor.IsDefined(typeof(IsManage), true);
                 if (!manageFilter)
-                    return false;
+                    return true;
                 //
                 string actionName = filterContext.ActionDescriptor.ActionName;
                 var type = filterContext.Controller.GetType();

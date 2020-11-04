@@ -280,7 +280,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        
+
         public List<RoleOption> DataOption()
         {
             try
@@ -301,23 +301,38 @@ namespace WebCore.Services
                 return new List<RoleOption>();
             }
         }
-        public List<RoleOption> RoleForUserOption(string userId)
+        public List<RoleOption> RoleListByLogin()
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(userId))
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                string whereCondition = "";
+                if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+                {
+                    whereCondition = " AND ParentID IS NULL";
+                }
+                else
+                {
+                    whereCondition = " AND ID IN (select RoleID from UserRole where UserID = @UserID)";
+                }
+                //
+                string sqlQuery = @"SELECT * FROM [Role] WHERE Enabled = 1 " + whereCondition + " ORDER BY OrderID, Title ASC";
+                List<RoleOption> roleOptions = _connection.Query<RoleOption>(sqlQuery, new { UserID = userId }).ToList();
+                if (roleOptions.Count == 0)
                     return new List<RoleOption>();
                 //
-                string sqlQuery = @"SELECT * FROM [Role] WHERE ID IN (select RoleID from UserRole where UserID = @UserID) AND Enabled = 1 ORDER BY OrderID, Title ASC";
-                List<RoleOption> roleOptions = _connection.Query<RoleOption>(sqlQuery).ToList();
-                List<RoleOption> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
-
-                foreach (var item in roleResults)
+                foreach (var item in roleOptions)
                 {
-                    item.SubOption = roleOptions.Where(m => m.ParentID == item.ID).OrderBy(m => m.OrderID).ToList();
+                    // sub item
+                    sqlQuery = @"SELECT * FROM [Role] WHERE Enabled = 1 AND ParentID = @ParentID ORDER BY OrderID, Title ASC";
+                    List<RoleOption> subRoleOptions = _connection.Query<RoleOption>(sqlQuery, new { ParentID = item.ID }).ToList();
+                    if (subRoleOptions.Count > 0)
+                    {
+                        item.SubOption = subRoleOptions;
+                    }
                 }
-                return roleResults;
-
+                //
+                return roleOptions;
             }
             catch
             {
@@ -339,7 +354,7 @@ namespace WebCore.Services
                 roleOptions = _connection.Query<RoleOptionForUser>(sqlQuery, new { UserID = userId }).ToList();
             }
             if (roleOptions.Count == 0)
-                return new List<RoleOptionForUser> ();
+                return new List<RoleOptionForUser>();
             //
             List<RoleOptionForUser> roleResults = roleOptions.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
             foreach (var item in roleResults)

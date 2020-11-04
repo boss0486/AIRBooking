@@ -137,6 +137,10 @@ var _PermissionController = {
                                 staController = "checked";
                                 actionState = '';
                             }
+                            var activeEvent = 'disabled';
+                            if (!HelperModel.AccessInApplication == RoleEnum.IsCMSUser && !HelperModel.AccessInApplication == RoleEnum.IsAdminInApplication && actionState == "") {
+                                activeEvent = '';
+                            }
                             if (actionData != null) {
                                 $.each(actionData, function (actIndex, actItem) {
                                     var actId = actItem.ID;
@@ -145,9 +149,9 @@ var _PermissionController = {
                                     if (actItem.Status) {
                                         staAction = "checked";
                                         cntActionActive++;
-                                    }
+                                    } 
                                     actionTemp += `<div style='width:120px;display: inline-block;'> 
-                                                        <input id="cbx${actId}" data-val="${actId}" type="checkbox" class="filled-in inp-action" ${staAction} ${actionState} />
+                                                        <input id="cbx${actId}" data-val="${actId}" type="checkbox" class="filled-in inp-action" ${staAction} ${actionState} ${activeEvent} />
                                                         <label for="cbx${actId}">${actTitle}</label>
                                                    </div>`;
                                 });
@@ -157,17 +161,21 @@ var _PermissionController = {
                                     if (parseInt(cntActionActive) == parseInt(actionData.length)) {
                                         checkAllAction = 'checked';
                                     }
-                                    actionHtml += `<div style='width:80px;display: inline-block;'> 
+                                    // check all action
+                                    if (HelperModel.AccessInApplication == RoleEnum.IsCMSUser || HelperModel.AccessInApplication == RoleEnum.IsAdminInApplication) {
+                                        actionHtml += `<div style='width:80px;display: inline-block;'> 
                                                         <input id="cbx-actall-${index}" data-val="" type="checkbox" class="filled-in all-action" ${checkAllAction}  ${actionState} />
                                                         <label for="cbx-actall-${index}">Tất cả</label>
                                                    </div>` + actionTemp;
+                                    }
+                                    actionHtml = actionTemp;
                                 }
                             }
                             //
                             rowData += `
                             <tr data-rowid='w-${id}'> 
                                 <td class='text-left'>
-                                    <input id="cbx${id}" data-val="${id}" type="checkbox" class="filled-in inp-controler" ${staController} />
+                                    <input id="cbx${id}" data-val="${id}" type="checkbox" class="filled-in inp-controler" ${staController} ${activeEvent}  />
                                     <label for="cbx${id}">${rowNum}. ${_title}</label>
                                 </td>
                                 <td class='text-left'>${actionHtml}</td>     
@@ -201,14 +209,9 @@ var _PermissionController = {
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
-
                         if (result.data.length > 0) {
-
                             $.each(result.data, function (index, item) {
-
                                 if (item.ParentID == null || item.ParentID == "") {
-
-
                                     index = index + 1;
                                     var id = item.ID;
                                     if (id.length > 0)
@@ -216,8 +219,7 @@ var _PermissionController = {
                                     var _title = SubStringText.SubTitle(item.Title);
                                     var subMenu = item.SubOption;
                                     var isChecked = "";
-                                    if (id !== null && id === _id)
-                                        isChecked = "checked";
+
                                     var _level = 0;
                                     rowData += `<li>
                                         <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
@@ -229,10 +231,9 @@ var _PermissionController = {
                                 }
                             });
                         }
-
                         $('ul#Role').html(_option_default + rowData);
                         if (_envent) {
-                            $('ul#Role > li:first-child label').click();
+                            $('ul#Role > li:first > label').click();
                         }
                         return;
                     }

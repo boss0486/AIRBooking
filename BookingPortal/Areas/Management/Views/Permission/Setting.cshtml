@@ -31,16 +31,18 @@
         </div>
     </div>
 </div>
-
-<div class="form-group text-right">
-    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
-    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-</div>
+@if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+{
+    <div class="form-group text-right">
+        <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+    </div>
+}
 @section scripts{
     <script src="~/Areas/Management/_script/permission.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            _PermissionController.GetRoleCategory("",true);
+            _PermissionController.GetRoleCategory("", true);
         });
 
         $(document).on('change', '#Role input[type="checkbox"]', function (index, item) {
