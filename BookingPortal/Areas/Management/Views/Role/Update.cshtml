@@ -1,9 +1,10 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
 @model WebCore.Entities.Role
 
@@ -18,87 +19,93 @@
     string createdDate = "";
     string strIsAllowSpend = "";
     string enabled = "";
-
-    if (Model != null)
+    try
     {
-        id = Model.ID;
-        title = Model.Title;
-        summary = Model.Summary;
-        parentId = Model.ParentID;
-        level = Model.Level;
-        languageId = Model.LanguageID;
-        createdBy = Model.CreatedBy;
-        createdDate = Convert.ToString(Model.CreatedDate);
-
-        if (Model.IsAllowSpend)
+        if (Model != null)
         {
-            strIsAllowSpend = "checked";
-        }
+            id = Model.ID;
+            title = Model.Title;
+            summary = Model.Summary;
+            parentId = Model.ParentID;
+            level = Model.Level;
+            languageId = Model.LanguageID;
+            createdBy = Model.CreatedBy;
+            createdDate = Convert.ToString(Model.CreatedDate);
 
-        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-        {
-            enabled = "checked";
-        }
-    }
-
-}
-<div class="row">
-    <div class="col-md-7">
-        <div class="form-group">
-            <label for="">Danh mục:</label>
-            <select id="ddlCategory" name="ddlCategory" class="form-control show-tick" data-live-search="true">
-                <option value="">-@Helper.Language.Resource.Label.OptionNew-</option>
-                @Html.Raw(WebCore.Services.RoleService.RoleCategory(parentId))
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-label">Tiêu đề</label>
-            <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
-            <span id="lblTitle" class="message msg-box"></span>
-        </div>
-        <div class="form-group">
-            <label class="form-label">Mô tả</label>
-            <textarea id="txtSummary" name="txtSummary" class="form-control default">@summary</textarea>
-            <span id="lblSummary" class="message msg-box"></span>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group m-t-5">
-                    <input id="cbxIsAllowSpend" name="cbxIsAllowSpend" type="checkbox" class="filled-in" @strIsAllowSpend />
-                    <label for="cbxIsAllowSpend">Được phép chi tiêu</label>
-                    <span id="lblIsAllowSpend" class="message msg-box"></span>
-                    <hr />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group m-t-5">
-                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
-                    <label for="cbxActive">Kích hoạt</label>
-                    <span id="lblActive" class="message msg-box"></span>
-                    <hr />
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="col-md-10">
-        <div class="form-group text-right">
-            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
-        </div>
-        @{
-            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            if (Model.IsAllowSpend)
             {
-                <div class="form-group text-right att-data-list">
-                    <a href="@Helper.Page.Navigate.PathDataList()">
-                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
+                strIsAllowSpend = "checked";
+            }
+
+            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+            {
+                enabled = "checked";
             }
         }
-    </div>
-</div>
-<input id="txtID" type="hidden" value="@id" />
+
+        <div class="row">
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label for="">Danh mục:</label>
+                    <select id="ddlCategory" name="ddlCategory" class="form-control show-tick" data-live-search="true">
+                        <option value="">-@Helper.Language.Resource.Label.OptionNew-</option>
+                        @Html.Raw(WebCore.Services.RoleService.RoleCategory(parentId))
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tiêu đề</label>
+                    <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+                    <span id="lblTitle" class="message msg-box"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mô tả</label>
+                    <textarea id="txtSummary" name="txtSummary" class="form-control default">@summary</textarea>
+                    <span id="lblSummary" class="message msg-box"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group m-t-5">
+                            <input id="cbxIsAllowSpend" name="cbxIsAllowSpend" type="checkbox" class="filled-in" @strIsAllowSpend />
+                            <label for="cbxIsAllowSpend">Được phép chi tiêu</label>
+                            <span id="lblIsAllowSpend" class="message msg-box"></span>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group m-t-5">
+                            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+                            <label for="cbxActive">Kích hoạt</label>
+                            <span id="lblActive" class="message msg-box"></span>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-10">
+                <div class="form-group text-right">
+                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+                    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+                </div>
+                @{
+                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+                    {
+                        <div class="form-group text-right att-data-list">
+                            <a href="@Helper.Page.Navigate.PathDataList()">
+                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <input id="txtID" type="hidden" value="@id" />
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+}
 @section scripts{
     <script src="~/Areas/Management/_script/user-group.js"></script>
 }

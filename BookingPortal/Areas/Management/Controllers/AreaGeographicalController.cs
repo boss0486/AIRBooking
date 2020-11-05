@@ -43,7 +43,7 @@ namespace WebApplication.Management.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AreaGeographicalService service = new AreaGeographicalService();
-                AreaGeographical areaGeographical = service.GetAreaGeographicalByID(id);
+                AreaGeographicalResult areaGeographical = service.ViewAreaGeographicalByID(id);
                 if (areaGeographical != null)
                     return View(areaGeographical);
             }

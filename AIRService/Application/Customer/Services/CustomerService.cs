@@ -81,7 +81,7 @@ namespace WebCore.Services
             }
 
             string sqlQuery = @"SELECT * FROM App_Customer WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<CustomerResultModel>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
+            var dtList = _connection.Query<CustomerResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -604,16 +604,34 @@ namespace WebCore.Services
                 }
             }
         }
-        public Customer GetCustomerModel(string Id)
+        public Customer GetCustomerByID(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_Customer WHERE ID = @Query";
-                var model = _connection.Query<Customer>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                var model = _connection.Query<Customer>(sqlQuery, new { Query = id }).FirstOrDefault();
+                return model;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public CustomerResult ViewCustomerByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Customer WHERE ID = @Query";
+                var model = _connection.Query<CustomerResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch

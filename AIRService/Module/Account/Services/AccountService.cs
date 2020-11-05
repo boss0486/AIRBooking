@@ -440,26 +440,32 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Details(string id)
+
+        public UserModel GetUserByID(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                //
-                string langID = Helper.Current.UserLogin.LanguageID;
-                var data = GetUserModel(id);
-                if (data == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                return Notifization.Data(MessageText.Success, data: data, role: null, paging: null);
+                using (var service = new AccountService())
+                {
+                    _connection.Open();
+                    if (string.IsNullOrWhiteSpace(id))
+                        return null;
+                    //
+                    string sqlQuery = @"SELECT TOP (1) * FROM View_User WHERE ID = @ID";
+                    var data = _connection.Query<UserModel>(sqlQuery, new { ID = id }).FirstOrDefault();
+                    if (data == null)
+                        return null;
+                    //
+                    return data;
+                }
             }
             catch
             {
-                return Notifization.NotService;
+                return null;
             }
         }
 
-        public UserResult GetUserModel(string id)
+        public UserResult ViewUserByID(string id)
         {
             try
             {

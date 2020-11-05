@@ -32,7 +32,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Update(string id)
         {
             CustomerService service = new CustomerService();
-            var model = service.GetCustomerModel(id);
+            Customer model = service.GetCustomerByID(id);
             if (model != null)
                 return View(model);
             //
@@ -42,7 +42,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             CustomerService service = new CustomerService();
-            var model = service.GetCustomerModel(id);
+            CustomerResult model = service.ViewCustomerByID(id);
             if (model != null)
                 return View(model);
             //

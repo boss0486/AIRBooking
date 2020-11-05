@@ -41,7 +41,6 @@ namespace WebCore.Entities
     }
     public class ProductCategoryResult : WEBModelResult
     {
-
         public string ID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }

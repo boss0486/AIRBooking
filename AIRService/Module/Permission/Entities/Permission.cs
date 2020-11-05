@@ -29,15 +29,17 @@ namespace WebCore.Entities
     public class PerissionControllerModel
     {
         public string KeyID { get; set; }
-        public string Title { get; set; }
+        [NotMapped]
         public int OrderID { get; set; }
+        public string Title { get; set; }
 
         public List<PerissionActionModel> Action { get; set; }
     }
     public class PerissionActionModel
     {
-        public int OrderID { get; set; }
         public string KeyID { get; set; }
+        [NotMapped]
+        public int OrderID { get; set; }
         public string Method { get; set; }
         public string APIRouter { get; set; }
         public string Title { get; set; }

@@ -1,11 +1,11 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
-
-@model WebCore.Entities.Bank
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@model WebCore.Entities.AreaGeographicalResult
 
 @{
     try
@@ -16,7 +16,7 @@
         string languageId = "";
         string createdBy = "";
         string createdDate = "";
-        string enabled = "None";
+        string enabled = "";
 
         if (Model != null)
         {
@@ -25,18 +25,9 @@
             summary = Model.Summary;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
-            enabled = "None";
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "ENABLED";
-            }
-            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
-            {
-                enabled = "DISABLE";
-            }
+            enabled = Model.EnabledText;
+            createdDate = Model.CreatedFullDate;
         }
-
         <div class="row">
             <div class="col-md-8">
                 <div class="top-pic">
@@ -44,6 +35,7 @@
                 </div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Người tạo: @createdBy</div>
                 <div class="top-pic">
                     <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
                 </div>
@@ -62,7 +54,7 @@
             </div>
         </div>
     }
-    catch (Exception)
+    catch (Exception ex)
     {
         @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }

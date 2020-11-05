@@ -73,7 +73,7 @@ namespace WebCore.Services
             //
             string typeId = "";
             string sqlQuery = @"SELECT * FROM App_Supplier WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<SupplierResultModel>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
+            var dtList = _connection.Query<SupplierResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -488,16 +488,34 @@ namespace WebCore.Services
                 }
             }
         }
-        public Supplier GetSupplierModel(string Id)
+        public Supplier GetSupplierModel(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Id))
+                if (string.IsNullOrWhiteSpace(id))
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_Supplier WHERE ID = @Query";
-                var model = _connection.Query<Supplier>(sqlQuery, new { Query = Id }).FirstOrDefault();
+                var model = _connection.Query<Supplier>(sqlQuery, new { Query = id }).FirstOrDefault();
+                return model;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public SupplierResult ViewSupplierByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Supplier WHERE ID = @Query";
+                var model = _connection.Query<SupplierResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch

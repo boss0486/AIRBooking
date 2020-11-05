@@ -3,6 +3,7 @@ using Helper;
 using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
+using WebCore.Model.Services;
 
 namespace WebCore.Model.Entities
 {
@@ -27,20 +28,22 @@ namespace WebCore.Model.Entities
     {
         public string LanguageID { get; set; }
         public int Enabled { get; set; }
+        [NotMapped]
+        public string EnabledText => ModelService.ViewEnableState(Enabled);
         public string SiteID { get; set; }
-        private string _createdBy;
+        private string _createdById = string.Empty;
         public string CreatedBy
         {
             get
-            {
-                return Helper.User.InFormation.GetInfCreateBy(_createdBy);
+            { 
+                return Helper.User.InFormation.GetInfCreateBy(_createdById);
             }
             set
             {
-                _createdBy = value;
+                _createdById = value;
             }
         }
-
+         
         private string _createdDate;
         public string CreatedDate
         {
@@ -56,19 +59,8 @@ namespace WebCore.Model.Entities
             }
         }
         [NotMapped]
-        public string CreatedFullDate
-        {
-            get
-            {
-                if (_createdDate == null)
-                    return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDateTime(Convert.ToDateTime(_createdDate),  Helper.Language.LanguageCode.Vietnamese.ID);
-            }
-            set
-            {
-                _createdDate = value;
-            }
-        }
+        public string CreatedFullDate => Helper.Time.TimeHelper.FormatToDateTime(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+
 
     }
 
@@ -103,7 +95,7 @@ namespace WebCore.Model.Entities
     {
         public int Status { get; set; }
         public string Message { get; set; }
-        
+
     }
     public class StatusModel
     {

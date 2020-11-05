@@ -55,8 +55,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var flightService = new AirportService())
-                    return flightService.DataList(model);
+                using (var service = new AirportService())
+                    return service.DataList(model);
             }
             catch (Exception ex)
             {
@@ -72,8 +72,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var flightService = new AirportService())
-                    return flightService.Create(model);
+                using (var service = new AirportService())
+                    return service.Create(model);
             }
             catch (Exception ex)
             {
@@ -88,8 +88,9 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var flightService = new AirportService())
-                    return flightService.Update(model);
+
+                using (var service = new AirportService())
+                    return service.Update(model);
             }
             catch (Exception ex)
             {

@@ -1,9 +1,11 @@
-﻿@{
-    ViewBag.Title = Helper.MetaSEO.MetaTitle;
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-@using Webcore.Entities;
-@using Webcore.Services;
-@using Webcore.Model.Enum;
+@model WebCore.Entities.ProductResult
 @{
     var lstPhoto = new List<ViewAttachment>();
     string id = string.Empty;
@@ -29,177 +31,151 @@
     int state = 0;
     try
     {
-        id = this.Url.RequestContext.RouteData.Values["id"].ToString();
-
-        using (var productService = new ProductService())
+        var attachmentService = new AttachmentService();
+        lstPhoto = attachmentService.AttachmentrListByForID(id);
+        title = Model.Title;
+        summary = Model.Summary;
+        categoryId = Model.CategoryID;
+        warrantyId = Model.Warranty;
+        originateId = Model.Originate;
+        madeIn = Model.MadeIn;
+        alias = Model.Alias;
+        textId = Model.TextID;
+        htmlNote = Model.HtmlNote;
+        htmlText = Model.HtmlText;
+        tag = Model.Tag;
+        imageFile = Model.ImageFile;
+        viewTotal = Model.ViewTotal;
+        viewDate = Model.ViewDate;
+        price = Model.Price;
+        listedPrice = Model.PriceListed;
+        string cls = "fa-window-close";
+        int value = 0;
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
         {
-            var model = productService.UpdateForm(id);
-            if (model == null)
-            {
-                Response.Redirect("/not-found");
-            }
-            else
-            {
-                var attachmentService = new AttachmentService();
-                lstPhoto = attachmentService.AttachmentrListByForID(id);
-                title = model.Title;
-                summary = model.Summary;
-                categoryId = model.CategoryID;
-                warrantyId = model.Warranty;
-                originateId = model.Originate;
-                madeIn = model.MadeIn;
-                alias = model.Alias;
-                textId = model.TextID;
-                htmlNote = model.HtmlNote;
-                htmlText = model.HtmlText;
-                tag = model.Tag;
-                imageFile = model.ImageFile;
-                viewTotal = model.ViewTotal;
-                viewDate = model.ViewDate;
-                price = model.Price;
-                listedPrice = model.PriceListed;
-                string cls = "fa-window-close";
-                int value = 0;
-                if (model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-                {
-                    cls = "fa-check-circle";
-                    value = 1;
-                    clsEnabled = "actived";
-                }
-                enabled = "<i class='far " + cls + "' data-val='" + value + "'></i>";
-                imgFile = "<img class='img-responsive' src='" + Webcore.AttachmentFile.GetFile(imageFile) + "' data-id='" + imageFile + "'>";
-                state = model.State;
-            }
+            cls = "fa-check-circle";
+            value = 1;
+            clsEnabled = "actived";
         }
+        enabled = "<i class='far " + cls + "' data-val='" + value + "'></i>";
+        imgFile = "<img class='img-responsive' src='" + Helper.File.AttachmentFile.GetFile(imageFile) + "' data-id='" + imageFile + "'>";
+        state = Model.State;
     }
     catch (Exception)
     {
         Response.Redirect("/not-found");
     }
 }
-<div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header">
-                <div class="col-md-12">
-                    <h2>@Helper.MetaSEO.ControllerText | @Helper.MetaSEO.ActionText</h2>
-                </div>
+<div class="body detail">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Hình ảnh:</label>
             </div>
-            <div class="body detail">
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hình ảnh:</label>
-                        </div>
-                        <div class="file-preview">
-                            <div class="container-fuild modal-container-layout">
-                                <div class="pre-view">
-                                    <div class="col-md-12 img-avata">@Html.Raw(imgFile)</div>
-                                    @foreach (var item in lstPhoto)
-                                    {
-                                        <div class="col-md-2 col-sm-4 col-xs-6 pre-item-box">
-                                            <div class="item-image" data-actived="false">
-                                                <div class="image-box">
-                                                    <img class="thumbnail img-responsive" src="@item.ImagePath" />
-                                                </div>
-                                                <div class="note-box">
-                                                    ...@item.Title<br>
-                                                    @item.ContentLength k
-                                                </div>
-                                                <div class="file-info"><i class="fas fa-check-circle"></i></div>
-                                            </div>
-                                        </div>
-                                    }
+            <div class="file-preview">
+                <div class="container-fuild modal-container-layout">
+                    <div class="pre-view">
+                        <div class="col-md-12 img-avata">@Html.Raw(imgFile)</div>
+                        @foreach (var item in lstPhoto)
+                        {
+                            <div class="col-md-2 col-sm-4 col-xs-6 pre-item-box">
+                                <div class="item-image" data-actived="false">
+                                    <div class="image-box">
+                                        <img class="thumbnail img-responsive" src="@item.ImagePath" />
+                                    </div>
+                                    <div class="note-box">
+                                        ...@item.Title<br>
+                                        @item.ContentLength k
+                                    </div>
+                                    <div class="file-info"><i class="fas fa-check-circle"></i></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">@Resource.Label.IDNo</label>
-                            <div class="col-md-9">: <b style="color:#F00">@textId</b></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Tên sản phẩm</label>
-                            <div class="col-md-9">: <b style="color:#0BB2CA">@title</b></div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Mô tả:</label>
-                                <div>@summary</div>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Nhóm sản phẩm</label>
-                            <div class="col-md-9">: <span>@categoryId</span></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">TG.bảo hành</label>
-                            <div class="col-md-9">: <span>@warrantyId</span></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Nhà cung cấp</label>
-                            <div class="col-md-9">: <span>@madeIn</span></div>
-                        </div>
-
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Tình trạng</label>
-                            <div class="col-md-9">: <b style="color:#F00">@state</b></div>
-                        </div>
-
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin giá:</label>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Giá bán</label>
-                            <div class="col-md-9">: <b style="color:#F00">@price</b></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Giá khuyến mại</label>
-                            <div class="col-md-9">: <b style="color:#F00">@listedPrice</b></div>
-                        </div>
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông số kỹ thuật(html):</label>
-                        </div>
-                        <div class="form-group form-float">@Html.Raw(htmlNote)</div>
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Nội dung:</label>
-                        </div>
-                        <div class="form-group form-float">
-                            <div>@Html.Raw(htmlText)</div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-nomal ">
-                                <label class="form-label">Thẻ gán: @tag</label>
-                            </div>
-                        </div>
-                        <div class="top-pic">
-                            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thiết lập:</label>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Tổng view</label>
-                            <div class="col-md-9">: <span style="color:#0bb2ca">@viewTotal</span></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Ngày xuất</label>
-                            <div class="col-md-9">: <span style="color:#0bb2ca">@viewDate</span></div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="form-label col-md-3">Trạng thái</label>
-                            <div class="col-md-9">: <b style="color:#F00">@Html.Raw(enabled)</b></div>
-                        </div>
-
+                        }
                     </div>
-                    <hr  />
                 </div>
             </div>
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">@Helper.Language.Resource.Label.IDNo</label>
+                <div class="col-md-9">: <b style="color:#F00">@textId</b></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Tên sản phẩm</label>
+                <div class="col-md-9">: <b style="color:#0BB2CA">@title</b></div>
+            </div>
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <label class="form-label">Mô tả:</label>
+                    <div>@summary</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label col-md-3">Nhóm sản phẩm</label>
+                <div class="col-md-9">: <span>@categoryId</span></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">TG.bảo hành</label>
+                <div class="col-md-9">: <span>@warrantyId</span></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Nhà cung cấp</label>
+                <div class="col-md-9">: <span>@madeIn</span></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label col-md-3">Tình trạng</label>
+                <div class="col-md-9">: <b style="color:#F00">@state</b></div>
+            </div>
+
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin giá:</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Giá bán</label>
+                <div class="col-md-9">: <b style="color:#F00">@price</b></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Giá khuyến mại</label>
+                <div class="col-md-9">: <b style="color:#F00">@listedPrice</b></div>
+            </div>
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông số kỹ thuật(html):</label>
+            </div>
+            <div class="form-group form-float">@Html.Raw(htmlNote)</div>
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Nội dung:</label>
+            </div>
+            <div class="form-group form-float">
+                <div>@Html.Raw(htmlText)</div>
+            </div>
+            <div class="form-group form-float">
+                <div class="form-nomal ">
+                    <label class="form-label">Thẻ gán: @tag</label>
+                </div>
+            </div>
+            <div class="top-pic">
+                <i class="fas fa-file-invoice"></i>&nbsp;<label>Thiết lập:</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Tổng view</label>
+                <div class="col-md-9">: <span style="color:#0bb2ca">@viewTotal</span></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Ngày xuất</label>
+                <div class="col-md-9">: <span style="color:#0bb2ca">@viewDate</span></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label col-md-3">Trạng thái</label>
+                <div class="col-md-9">: <b style="color:#F00">@Html.Raw(enabled)</b></div>
+            </div>
+
         </div>
+        <hr />
     </div>
-    
 </div>
-<input id="txtID" type="hidden" value="@id" />
 @section scripts{
     <script src="~/Areas/BackEnd/_script/product.js"></script>
 }

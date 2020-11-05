@@ -1,9 +1,10 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 <div class="row">
     <div class="col-md-7">
         <div class="form-group">
@@ -24,10 +25,10 @@
             <span id="lblSummary" class="message msg-box"></span>
         </div>
         @*<div class="form-group">
-            <label class="form-label">Cấp độ:</label>
-            <input id="txtLevel" name="txtLevel" maxlength="50" type="text" class="form-control" />
-            <span id="lblLevel" class="message msg-box"></span>
-        </div>*@
+                <label class="form-label">Cấp độ:</label>
+                <input id="txtLevel" name="txtLevel" maxlength="50" type="text" class="form-control" />
+                <span id="lblLevel" class="message msg-box"></span>
+            </div>*@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group m-t-5">

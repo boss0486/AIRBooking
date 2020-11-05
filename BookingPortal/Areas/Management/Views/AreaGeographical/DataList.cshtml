@@ -1,10 +1,9 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-
+﻿@using WebCore.Model.Services;
 @using WebCore.Services;
 @using WebCore.Model.Services;
-@using WebCore.Model.Services;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
 @Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
 @* control ******************************************************************************************************@
@@ -28,10 +27,10 @@
 </div>
 <div id="Pagination"></div>
 @section scripts{
-    <script src="~/Areas/Management/_script/bank.js"></script>
+    <script src="~/Areas/Management/_script/area-geographical.js"></script>
     <script type="text/javascript">
         $(function () {
-            BankController.DataList(1);
+            AreaGeographicalController.DataList(1);
         });
     </script>
 }

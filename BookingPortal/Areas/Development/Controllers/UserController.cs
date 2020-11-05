@@ -31,7 +31,7 @@ namespace WebApplication.Development.Controllers
         public ActionResult Update(string id)
         {
             UserService service = new UserService();
-            UserModel model = service.GetUserModel(id);
+            UserModel model = service.GetUserByID(id);
             if (model != null)
                 return View(model);
             //
@@ -41,7 +41,7 @@ namespace WebApplication.Development.Controllers
         public ActionResult Details(string id)
         {
             AccountService service = new AccountService();
-            UserResult model = service.GetUserModel(id);
+            UserResult model = service.ViewUserByID(id);
             if (model != null)
                 return View(model);
             //

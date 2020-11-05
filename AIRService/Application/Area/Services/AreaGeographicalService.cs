@@ -153,6 +153,14 @@ namespace WebCore.Services
             string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
             return _connection.Query<AreaGeographical>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
+        public AreaGeographicalResult ViewAreaGeographicalByID(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
+            return _connection.Query<AreaGeographicalResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+        }
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(AreaGeographicalIDModel model)
         {

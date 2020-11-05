@@ -23,18 +23,18 @@ namespace WebCore.Services
 {
     public class CMSUserService : IDisposable
     {
-        private IDbConnection _connecion;
+        private IDbConnection _connection;
         private bool _disposed = false;
 
         public CMSUserService(IDbConnection dbConnection = null)
         {
 
             if (dbConnection != null)
-                _connecion = dbConnection;
+                _connection = dbConnection;
             else
             {
-                _connecion = DbConnect.Connection.CMS;
-                _connecion.Open();
+                _connection = DbConnect.Connection.CMS;
+                _connection.Open();
             }
         }
 
@@ -49,7 +49,7 @@ namespace WebCore.Services
             if (!_disposed)
             {
                 if (disposing)
-                    _connecion.Close();
+                    _connection.Close();
                 //
                 _disposed = true;
             }
@@ -94,7 +94,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM View_CMSUser WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
-            var dtList = _connecion.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -122,7 +122,7 @@ namespace WebCore.Services
         {
             using (var service = new CMSUserService())
             {
-                var _connection = service._connecion;
+                var _connection = service._connection;
                 using (var transaction = _connection.BeginTransaction())
                 {
                     try
@@ -297,7 +297,7 @@ namespace WebCore.Services
         {
             using (var service = new CMSUserService())
             {
-                var _connection = service._connecion;
+                var _connection = service._connection;
                 using (var _transaction = _connection.BeginTransaction())
                 {
                     try
@@ -401,7 +401,7 @@ namespace WebCore.Services
         {
             using (var service = new CMSUserService())
             {
-                var _connection = service._connecion;
+                var _connection = service._connection;
                 using (var _transaction = _connection.BeginTransaction())
                 {
                     try
@@ -442,7 +442,7 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                var data = GetUserModel(id);
+                var data = GetUserByID(id);
                 if (data == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 return Notifization.Data(MessageText.Success, data: data, role: null, paging: null);
@@ -454,23 +454,42 @@ namespace WebCore.Services
         }
 
 
-        public UserResult GetUserModel(string id)
+        public UserModel GetUserByID(string id)
         {
             try
             {
                 using (var service = new CMSUserService())
                 {
-                    var _connection = service._connecion;
+                    var _connection = service._connection;
                     if (string.IsNullOrWhiteSpace(id))
                         return null;
                     //
                     string sqlQuery = @"SELECT TOP (1) * FROM View_CMSUser WHERE ID = @ID";
-                    var data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
+                    var data = _connection.Query<UserModel>(sqlQuery, new { ID = id }).FirstOrDefault();
                     if (data == null)
                         return null;
                     //
                     return data;
                 }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public UserResult ViewUserByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                //
+                string sqlQuery = @"SELECT TOP (1) * FROM View_CMSUser WHERE ID = @ID";
+                UserResult data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
+                if (data == null)
+                    return null;
+                //
+                return data;
             }
             catch
             {
@@ -519,7 +538,7 @@ namespace WebCore.Services
             {
                 using (var service = new CMSUserService())
                 {
-                    var _connection = service._connecion;
+                    var _connection = service._connection;
                     if (string.IsNullOrWhiteSpace(id))
                         return string.Empty;
                     //

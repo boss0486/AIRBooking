@@ -74,7 +74,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_Product WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ViewProduct>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
+            var dtList = _connection.Query<ProductResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound + sqlQuery);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -351,16 +351,39 @@ namespace WebCore.Services
                 }
             }
         }
-        public ViewProduct UpdateForm(string id)
+        public Product GetProductByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                //
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Product WHERE ID = @Query";
+                var item = _connection.Query<Product>(sqlQuery, new { Query = id }).FirstOrDefault();
+                if (item == null)
+                    return new Product();
+                //
+                return item;
+            }
+            catch
+            {
+                return new Product();
+            }
+        }
+
+        public ProductResult ViewGetProductByID(string id)
         {
             try
             {
                 if (string.IsNullOrEmpty(id))
-                    return null;
+                    return new ProductResult();
+                //
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT TOP (1) * FROM App_Product WHERE ID = @Query";
-                var item = _connection.Query<ViewProduct>(sqlQuery, new { Query = id }).FirstOrDefault();
+                var item = _connection.Query<ProductResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 // get attachment
                 var attachmentService = new AttachmentService(_connection);
                 List<ViewAttachment> lstPhoto = attachmentService.AttachmentrListByForID(id);
@@ -411,7 +434,7 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT * FROM App_Product WHERE ID = @ID";
-                var item = _connection.Query<ViewProduct>(sqlQuery, new { ID = id }).FirstOrDefault();
+                var item = _connection.Query<ProductResult>(sqlQuery, new { ID = id }).FirstOrDefault();
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 // get attachment

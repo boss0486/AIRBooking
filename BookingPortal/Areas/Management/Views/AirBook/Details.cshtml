@@ -1,7 +1,8 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
-@using WebCore.Model.Services
 @using WebCore.ENM
+@using WebCore.Model.Services
+
 @model  WebCore.Entities.BookTicketOrderDetails
 @{
     try
@@ -340,15 +341,14 @@
                 }
             </div>
         </div>
-        @{
-            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-            {
-                <div class="form-group text-right att-data-list">
-                    <a href="@Helper.Page.Navigate.PathDataList()">
-                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            }
+
+        if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+        {
+            <div class="form-group text-right att-data-list">
+                <a href="@Helper.Page.Navigate.PathDataList()">
+                    @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
         }
     }
     catch (Exception)

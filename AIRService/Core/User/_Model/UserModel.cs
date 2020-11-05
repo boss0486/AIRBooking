@@ -18,7 +18,7 @@ namespace WebCore.Entities
         public string ImageFile { get; set; }
         public string FullName { get; set; }
         public string Nickname { get; set; }
-        public string Birthday { get; set; }
+        public DateTime Birthday { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
@@ -37,7 +37,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_birthday), Helper.Language.LanguageCode.Vietnamese.ID);
+                return Helper.Time.TimeHelper.FormatToDate(_birthday, Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {

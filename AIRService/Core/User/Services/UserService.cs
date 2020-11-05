@@ -678,7 +678,7 @@ namespace WebCore.Services
                     return Notifization.NotFound(MessageText.Invalid);
                 //
                 string langID = Helper.Current.UserLogin.LanguageID;
-                var data = GetUserModel(id);
+                var data = GetUserByID(id);
                 if (data == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 return Notifization.Data(MessageText.Success, data: data, role: null, paging: null);
@@ -689,7 +689,7 @@ namespace WebCore.Services
             }
         }
 
-        public UserModel GetUserModel(string id)
+        public UserModel GetUserByID(string id)
         {
             try
             {

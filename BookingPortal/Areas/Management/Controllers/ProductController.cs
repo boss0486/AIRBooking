@@ -30,13 +30,23 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-        public ActionResult Update()
+        public ActionResult Update(string id)
         {
-            return View();
+            ProductService service = new ProductService();
+            Product model = service.GetProductByID(id);
+            if (model != null)
+                return View(model);
+            //
+            return View(model);
         }
-        public ActionResult Detail()
+        public ActionResult Detail(string id)
         {
-            return View();
+            ProductService service = new ProductService();
+            Product model = service.GetProductByID(id);
+            if (model != null)
+                return View(model);
+            //
+            return View(model);
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]

@@ -92,7 +92,7 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             string roleId = model.RoleID;
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-            { 
+            {
                 string sqlQuery = @" SELECT c.ID,c.KeyID,c.Title,Status = CASE WHEN (select count(s.ID) from RoleControllerSetting as s where s.RouteArea = c.RouteArea AND s.ControllerID = c.ID AND s.RoleID = @RoleID ) > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END
                 FROM MenuController as c WHERE c.RouteArea =  @RouteArea ORDER BY OrderID,Title  ";
                 List<MvcControllerForPermision> dtList = _connection.Query<MvcControllerForPermision>(sqlQuery, new { RouteArea = model.RouteArea, RoleID = roleId }).ToList();
@@ -127,7 +127,7 @@ namespace WebCore.Services
                     item.Actions = actionList;
                 }
                 return dtList;
-            }    
+            }
         }
 
 
@@ -377,6 +377,7 @@ namespace WebCore.Services
                 List<PerissionControllerModel> perissionControllerModel = JsonConvert.DeserializeObject<List<PerissionControllerModel>>(json);
                 if (perissionControllerModel != null && perissionControllerModel.Count > 0)
                 {
+                    int ctrlOrderId = 1;
                     foreach (var ctrlItem in perissionControllerModel)
                     {
                         List<MvcActionModel> actions = new List<MvcActionModel>();
@@ -384,18 +385,20 @@ namespace WebCore.Services
 
                         if (ctrlItem.Action != null || ctrlItem.Action.Count > 0)
                         {
+                            int actOrderId = 1;
                             foreach (var actItem in ctrlItem.Action)
                             {
                                 actions.Add(new MvcActionModel
                                 {
                                     ControllerID = ctrlItem.KeyID,
                                     RouteArea = routeArea,
-                                    OrderID = actItem.OrderID,
+                                    OrderID = actOrderId,
                                     KeyID = actItem.KeyID,
                                     Title = actItem.Title,
                                     Method = actItem.Method,
                                     APIRouter = actItem.APIRouter
                                 });
+                                actOrderId++;
                             }
                         }
                         //
@@ -405,9 +408,10 @@ namespace WebCore.Services
                             RoutePrefix = "--",
                             KeyID = ctrlItem.KeyID,
                             Title = ctrlItem.Title,
-                            OrderID = ctrlItem.OrderID,
+                            OrderID = ctrlOrderId,
                             Actions = actions,
                         });
+                        ctrlOrderId++;
                     }
                 }
             }

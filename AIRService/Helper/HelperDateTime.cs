@@ -52,31 +52,25 @@ namespace Helper.Time
 
             }
         }
-        public static string FormatToDate(string _strDate)
+        public static string FormatToDate(string _strDate, string languageCode)
         {
             try
             {
                 // Check for empty string.
                 if (string.IsNullOrEmpty(_strDate))
                     return string.Empty;
-
+                //
                 bool isDateTime = DateTime.TryParse(_strDate, out _);
                 if (isDateTime)
                 {
                     DateTime dateTime = Convert.ToDateTime(_strDate);
-                    string _month = Convert.ToString(dateTime.Month);
-                    string _day = Convert.ToString(dateTime.Day);
-                    if (_month.Length == 1)
-                        _month = "0" + _month;
-                    if (_day.Length == 1)
-                        _day = "0" + _day;
-                    return _day + "/" + _month + "/" + dateTime.Year;
+                    return Helper.Time.TimeHelper.FormatToDate(dateTime, languageCode);
                 }
-                return "00/00/0000";
+                return string.Empty;
             }
             catch (Exception)
             {
-                return "00/00/0000";
+                return string.Empty;
             }
         }
         public static string FormatToDateTime(DateTime dtime, string languageCode)
@@ -95,6 +89,30 @@ namespace Helper.Time
 
             }
         }
+        public static string FormatToDateTime(string _strDate, string languageCode)
+        {
+            try
+            {
+                // Check for empty string.
+                if (string.IsNullOrEmpty(_strDate))
+                    return string.Empty;
+                //
+                bool isDateTime = DateTime.TryParse(_strDate, out _);
+                if (isDateTime)
+                {
+                    DateTime dateTime = Convert.ToDateTime(_strDate);
+                    return Helper.Time.TimeHelper.FormatToDateTime(dateTime, languageCode);
+                }
+                return string.Empty;
+
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+
+            }
+        }
+
         public static string FormatToNewsDate(DateTime dtime)
         {
             try

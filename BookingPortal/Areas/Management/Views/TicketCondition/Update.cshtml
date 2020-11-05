@@ -1,7 +1,9 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
-@using Helper.Language;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
 @{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 @{
     try
@@ -24,7 +26,7 @@
         bool isApplied04 = false;
         string conditionId04 = string.Empty;
         //
-        AirTicketCondition04Service  airTicketCondition04Service = new AirTicketCondition04Service();
+        AirTicketCondition04Service airTicketCondition04Service = new AirTicketCondition04Service();
         AirTicketCondition04 airTicketConditionFee04 = airTicketCondition04Service.GetAirTicketConditionByConditionID("04");
         if (airTicketConditionFee04 != null)
         {
@@ -101,11 +103,11 @@
         </div>
         <div class="row">
 
-           @{ 
-               string id = "";
-               bool isApplied05 = false;
-               string resbookDesigCode = "";
-           }
+            @{
+                string id = "";
+                bool isApplied05 = false;
+                string resbookDesigCode = "";
+            }
 
             <div id="form05" class="col-md-6 m-t-30">
                 <div class="top-pic mgb-10">
@@ -167,7 +169,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Thời gian xuất vé (d):</label>
-                            <input type="text" class="form-control" id="txtTimeBookHolder05" maxlength="10"  value="0"/>
+                            <input type="text" class="form-control" id="txtTimeBookHolder05" maxlength="10" value="0" />
                             <span id="lblTimeBookHolder05" class="message msg-box"></span>
                         </div>
                     </div>
@@ -187,8 +189,7 @@
     }
     catch (Exception)
     {
-
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 
 }
@@ -201,6 +202,6 @@
             $("select#ddlFlightLocation05")[0].selectedIndex = 1;
             $("#ddlFlightLocation05").change();
         })
-        
+
     </script>
 }

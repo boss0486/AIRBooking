@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using Helper;
@@ -30,9 +31,11 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-        public ActionResult Details()
+        public ActionResult Details(string id)
         {
-            return View();
+            ProductCategoryService productCategoryService = new ProductCategoryService();
+            ProductCategoryResult productCategoryResult = productCategoryService.ViewProductCategoryByID(id);
+            return View(productCategoryResult);
         }
         //##########################################################################################################################################################################################################################################################
         [HttpPost]

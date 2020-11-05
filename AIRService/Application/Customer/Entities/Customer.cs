@@ -44,7 +44,7 @@ namespace WebCore.Entities
         public string RegisterID { get; set; }
     }
 
-    public class CustomerResultModel : WEBModelResult
+    public class CustomerResult : WEBModelResult
     {
         public string ID { get; set; }
         private string _supplierId;

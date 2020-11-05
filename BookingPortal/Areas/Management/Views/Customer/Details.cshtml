@@ -1,11 +1,11 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
-
-@model WebCore.Entities.Customer
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+@model WebCore.Entities.CustomerResult
 @{
     try
     {
@@ -37,10 +37,8 @@
         if (Model != null)
         {
             id = Model.ID;
-            customerType = CustomerService.GetInforType(Model.TypeID, Model.Path);
-            customerCode = Model.CodeID;
-
-
+            customerType =  Model.TypeID;
+            customerCode = Model.CodeID; 
             parentID = Model.ParentID;
             title = Model.Title;
             alias = Model.Alias;

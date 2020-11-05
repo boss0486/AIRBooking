@@ -241,6 +241,41 @@ namespace WebCore.Model.Services
                 throw;
             }
         }
+
+        public static string ViewEnableState(int state)
+        {
+            string result = string.Empty;
+            switch (state)
+            {
+                case 1:
+                    result = "Hoạt động";
+                    break;
+                case 2:
+                    result = "Không hoạt động";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+        
+        public static string ViewActiveState(bool state)
+        {
+            string result = string.Empty;
+            switch (state)
+            {
+                case true:
+                    result = "Đã kích hoạt";
+                    break;
+                case false:
+                    result = "Chưa kích hoạt";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+
     }
 
 }

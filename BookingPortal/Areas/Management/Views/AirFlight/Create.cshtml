@@ -1,7 +1,10 @@
-﻿@using WebCore.Services;
-@using WebCore.Model.Services;
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 }
 <div class="row">
     <div class="col-md-6">
@@ -29,7 +32,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="form-label">Phí sân bay(Ax)</label>
-                    <input id="txtAxFee" name="txtAxFee" maxlength="7" type="text" class="form-control" value=""/>
+                    <input id="txtAxFee" name="txtAxFee" maxlength="7" type="text" class="form-control" value="0" data-currency="true" />
                     <span id="lblAxFee" class="message msg-box"></span>
                 </div>
             </div>

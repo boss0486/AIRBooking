@@ -2,9 +2,9 @@
 var URLC = "/Management/AirFlight/Action";
 var URLA = "/Management/AirFlight";
 var arrFile = [];
-var flightController = {
+var FlightController = {
     init: function () {
-        flightController.registerEvent();
+        FlightController.registerEvent();
     },
     registerEvent: function () {
         $(document).ready(function () {
@@ -43,7 +43,8 @@ var flightController = {
 
             $('#lblAxFee').html('');
             if (axFee !== "") {
-                if (!FormatNumber.test(axFee)) {
+                axFee = LibCurrencies.ConvertToCurrency(axFee);
+                if (!FormatCurrency.test(axFee)) {
                     $('#lblAxFee').html('Phí sân bay không hợp lệ');
                     flg = false;
                 }
@@ -87,12 +88,12 @@ var flightController = {
             }
             // submit form
             if (flg)
-                flightController.Create();
+                FlightController.Create();
             else
                 Notifization.Error(MessageText.Datamissing);
         });
         $('#btnSearch').off('click').on('click', function () {
-            flightController.DataList(1);
+            FlightController.DataList(1);
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
@@ -127,7 +128,8 @@ var flightController = {
 
             $('#lblAxFee').html('');
             if (axFee != "") {
-                if (!FormatNumber.test(axFee)) {
+                axFee = LibCurrencies.ConvertToCurrency(axFee);
+                if (!FormatCurrency.test(axFee)) {
                     $('#lblAxFee').html('Phí sân bay không hợp lệ');
                     flg = false;
                 }
@@ -169,7 +171,7 @@ var flightController = {
             }
             // submit form
             if (flg) {
-                flightController.Update();
+                FlightController.Update();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
@@ -224,7 +226,7 @@ var flightController = {
                             var _iatacode = item.IATACode;
                             var _area = item.AreaName;
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "CustomerController", id);
+                            var action = HelperModel.RolePermission(result.role, "FlightController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
@@ -239,7 +241,7 @@ var flightController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, flightController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, FlightController.DataList);
                         }
                         return;
                     }
@@ -259,7 +261,7 @@ var flightController = {
     },
     Create: function () {
         var iataCode = $('#txtIataCode').val();
-        var axFee = $('#txtAxFee').val();
+        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());    
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var ddlArea = $('#ddlAreaID').val();
@@ -300,17 +302,17 @@ var flightController = {
     Update: function () {
         var id = $('#txtID').val();
         var iataCode = $('#txtIataCode').val();
-        var axFee = $('#txtAxFee').val();
+        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());    
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var ddlArea = $('#ddlAreaID').val();
         var enabled = 0;
-        if ($('#cbxActive').hasClass('actived'))
+        if ($('input[name="cbxActive"]').is(":checked"))
             enabled = 1;
         //
         var model = {
             ID: id,
-            AreaID: ddlArea,
+            CategoryID: ddlArea,
             Title: title,
             IataCode: iataCode,
             AxFee: axFee,
@@ -351,7 +353,7 @@ var flightController = {
                 }
                 if (response.status === 200) {
                     Notifization.Success(response.message);
-                    flightController.DataList(pageIndex);
+                    FlightController.DataList(pageIndex);
                     return;
                 }
                 Notifization.Error(response.message);
@@ -363,11 +365,11 @@ var flightController = {
         });
     },
     ConfirmDelete: function (id) {
-        flightController.Delete(id);
+        Confirm.Delete(id, FlightController.Delete, null, null);
     }
 };
 //
-flightController.init();
+FlightController.init();
 //
 $(document).on('keyup', '#txtTitle', function () {
     var title = $(this).val();
@@ -504,7 +506,8 @@ $(document).on('keyup', '#txtAxFee', function () {
     var axFee = $(this).val();
     $('#lblAxFee').html('');
     if (axFee !== "") {
-        if (!FormatNumber.test(axFee)) {
+        axFee = LibCurrencies.ConvertToCurrency(axFee);
+        if (!FormatCurrency.test(axFee)) {
             $('#lblAxFee').html('Phí sân bay không hợp lệ');
         } 
     }

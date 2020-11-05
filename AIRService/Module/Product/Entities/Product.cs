@@ -76,14 +76,14 @@ namespace WebCore.Entities
         public string ID { get; set; }
     }
 
-    public class ViewProduct : WEBModel
+    public class ProductResult : WEBModelResult
     {
-        public ViewProduct()
+        public ProductResult()
         {
             ImageFile = AttachmentFile.GetFile(ImageFile);
 
         }
-        public ViewProduct(string id, string categoryID, string categoryName, string categoryAlias, string title, string alias, string textID, string imgFile, string summary, string htmlNote, string htmlText, double price, double priceListed, string priceText, string originate, string madeIn, string warranty, int state, string tag, int viewTotal, string viewDate, string languageID, int enabled, string siteID, string createdBy, DateTime createdDate)
+        public ProductResult(string id, string categoryID, string categoryName, string categoryAlias, string title, string alias, string textID, string imgFile, string summary, string htmlNote, string htmlText, double price, double priceListed, string priceText, string originate, string madeIn, string warranty, int state, string tag, int viewTotal, string viewDate, string languageID, int enabled, string siteID, string createdBy, DateTime createdDate)
         {
             ID = id;
             CategoryID = categoryID;
@@ -109,8 +109,6 @@ namespace WebCore.Entities
             this.LanguageID = languageID;
             this.Enabled = enabled;
             this.SiteID = siteID;
-            this.CreatedBy = createdBy;
-            this.CreatedDate = createdDate;
         }
         public string ID { get; set; }
         public string CategoryID { get; set; }

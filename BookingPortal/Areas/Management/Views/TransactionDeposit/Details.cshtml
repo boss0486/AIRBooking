@@ -1,9 +1,10 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
 @model WebCore.Entities.TransactionDepositResult
 
@@ -34,7 +35,7 @@
         {
             id = Model.ID;
 
-            customerId = Model.CustomerID;
+            customerId = Model.ID;
             title = Model.Title;
             alias = Model.Alias;
             summary = Model.Summary;

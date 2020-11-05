@@ -1,11 +1,12 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
-@model WebCore.Entities.CardCredit
+@model WebCore.Entities.CardCreditResult
 
 @{
     try
@@ -26,15 +27,7 @@
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
             createdDate = Convert.ToString(Model.CreatedDate);
-            enabled = "None";
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "ENABLED";
-            }
-            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
-            {
-                enabled = "DISABLE";
-            }
+            enabled = Model.EnabledText;
         }
 
         <div class="row">

@@ -29,8 +29,13 @@ namespace WebApplication.Development.Controllers
         {
             return View();
         }
-        public ActionResult Update()
+        public ActionResult Update(string id)
         {
+            MenuItemService menuItemService = new MenuItemService();
+            var model = menuItemService.GetMenuItemByID(id);
+            if (model != null)
+                return View(model);
+            // 
             return View();
         }
 

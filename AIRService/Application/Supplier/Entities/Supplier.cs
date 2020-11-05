@@ -40,7 +40,7 @@ namespace WebCore.Entities
         public string RegisterID { get; set; }
     }
 
-    public class SupplierResultModel : WEBModelResult
+    public class SupplierResult : WEBModelResult
     {
         public string ID { get; set; }
         public string TypeID { get; set; }

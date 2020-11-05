@@ -1,4 +1,8 @@
-﻿@{
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services 
+@{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 @using WebCore.Entities;
@@ -39,15 +43,7 @@
             createdFullDate = Model.CreatedFullDate;
             createdBy = Model.CreatedBy;
             createdDate = Model.CreatedDate;
-            enabled = "None";
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "ENABLED";
-            }
-            else if (Model.Enabled == (int)ModelEnum.Enabled.DISABLE)
-            {
-                enabled = "DISABLE";
-            }
+            enabled = Model.EnabledText;
 
             if (transactionType == 1)
             {
@@ -66,7 +62,7 @@
             }
 
             CustomerService customerService = new CustomerService();
-            var customer = customerService.GetCustomerModel(Model.CustomerID);
+            var customer = customerService.Get(Model.CustomerID);
             if (customer != null)
             {
                 customerName = customer.Title;

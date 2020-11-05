@@ -1,12 +1,12 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
 @model WebCore.Entities.AirAgentFeeResult
-
 @{
     try
     {
@@ -18,8 +18,6 @@
             id = Model.ID;
             amount = Model.Amount;
             agentId = Model.AgentID;
-
-
         }
         <div class="row">
             <div class="col-md-5">
@@ -58,14 +56,11 @@
             </div>
         </div>
         <input id="txtID" type="hidden" value="@id" />
-
     }
     catch (Exception)
     {
-
-
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
-
 }
 
 @section scripts{

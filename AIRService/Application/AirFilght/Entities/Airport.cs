@@ -24,7 +24,7 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string AreaID { get; set; }
+        public string CategoryID { get; set; }
         public string IATACode { get; set; }
         public double AxFee { get; set; }
     }
@@ -39,7 +39,7 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string AreaID { get; set; }
+        public string CategoryID { get; set; }
         public string IATACode { get; set; }
         public double AxFee { get; set; }
         public int Enabled { get; set; }
@@ -55,14 +55,14 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string AreaID { get; set; }
+        public string CategoryID { get; set; }
 
         [NotMapped]
         public string AreaName
         {
             get
             {
-                return AreaGeographicalService.GetAreaName(AreaID); ;
+                return AreaGeographicalService.GetAreaName(CategoryID); ;
             }
         }
         public string IATACode { get; set; }

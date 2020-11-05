@@ -2,10 +2,8 @@
   {
     "KeyID": "Home",
     "Title": "Trang chủ",
-    "OrderID": 1,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "Index",
         "Method": "Index",
         "APIRouter": "",
@@ -16,59 +14,50 @@
   {
     "KeyID": "Account",
     "Title": "Tài khoản",
-    "OrderID": 2,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
         "Title": "Xem"
       },
       {
-        "OrderID": 6,
         "KeyID": "Profile",
         "Method": "Profile",
         "APIRouter": "Action/Profile",
         "Title": "Hồ sơ"
       },
       {
-        "OrderID": 7,
         "KeyID": "AccountInfo",
         "Method": "AccountInfo",
         "APIRouter": "Action/AccountInfo",
         "Title": "TT.Truy cập"
       },
       {
-        "OrderID": 8,
         "KeyID": "ChangePassword",
         "Method": "ChangePassword",
         "APIRouter": "Action/ChangePassword",
@@ -79,24 +68,20 @@
   {
     "KeyID": "AgentFee",
     "Title": "Phí đại lý",
-    "OrderID": 3,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Thiết lập"
       },
       {
-        "OrderID": 3,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -107,24 +92,20 @@
   {
     "KeyID": "AirBook",
     "Title": "Dịch vụ booking",
-    "OrderID": 4,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "Search",
         "Method": "Search",
         "APIRouter": "Action/Search",
         "Title": "Tìm kiếm"
       },
       {
-        "OrderID": 2,
         "KeyID": "Booking",
         "Method": "Booking",
         "APIRouter": "Action/Booking",
         "Title": "Đặt vé"
       },
       {
-        "OrderID": 3,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -135,17 +116,14 @@
   {
     "KeyID": "VNAReport",
     "Title": "VNA Báo cáo",
-    "OrderID": 5,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -154,40 +132,70 @@
     ]
   },
   {
-    "KeyID": "AirFlight",
-    "Title": "Sân bay",
-    "OrderID": 6,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ],
+    "KeyID": "AreaGeographical",
+    "Title": "Khu vực địa lý"
+  },
+  {
+    "KeyID": "AirFlight",
+    "Title": "Sân bay",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -198,38 +206,32 @@
   {
     "KeyID": "Bank",
     "Title": "Ngân hàng",
-    "OrderID": 7,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -240,38 +242,32 @@
   {
     "KeyID": "CardCredit",
     "Title": "Thẻ tín dụng",
-    "OrderID": 8,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -282,38 +278,32 @@
   {
     "KeyID": "Customer",
     "Title": "Khách hàng",
-    "OrderID": 9,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -324,10 +314,8 @@
   {
     "KeyID": "Permission",
     "Title": "Phân quyền",
-    "OrderID": 10,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "Setting",
         "Method": "Setting",
         "APIRouter": "Action/Setting",
@@ -338,38 +326,32 @@
   {
     "KeyID": "Report",
     "Title": "Báo cáo",
-    "OrderID": 11,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -380,38 +362,32 @@
   {
     "KeyID": "Role",
     "Title": "Nhóm quyền",
-    "OrderID": 12,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -422,38 +398,32 @@
   {
     "KeyID": "Supplier",
     "Title": "Nhà cung cấp",
-    "OrderID": 13,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 4,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -464,17 +434,14 @@
   {
     "KeyID": "TicketCondition",
     "Title": "Điều kiện vé",
-    "OrderID": 14,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "",
         "Title": "Thiết lập"
       },
       {
-        "OrderID": 2,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -485,24 +452,20 @@
   {
     "KeyID": "TransactionCustomerSpending",
     "Title": "G.D hạn mức(Khách hàng)",
-    "OrderID": 15,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -513,24 +476,20 @@
   {
     "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
-    "OrderID": 16,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 3,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -541,24 +500,20 @@
   {
     "KeyID": "TransactionUserSpending",
     "Title": "G.D hạn mức(Người dùng)",
-    "OrderID": 17,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 5,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -569,45 +524,38 @@
   {
     "KeyID": "User",
     "Title": "Người dùng",
-    "OrderID": 18,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "UserRole",
         "Method": "UserRole",
         "APIRouter": "Action/UserRole",
         "Title": "Quyền"
       },
       {
-        "OrderID": 3,
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
         "Title": "Tạo"
       },
       {
-        "OrderID": 4,
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "Action/Update",
         "Title": "Sửa"
       },
       {
-        "OrderID": 5,
         "KeyID": "Delete",
         "Method": "",
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
       {
-        "OrderID": 6,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -618,17 +566,14 @@
   {
     "KeyID": "TransactionDepositHistory",
     "Title": "Lịch sử nạp tiền",
-    "OrderID": 19,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -639,17 +584,14 @@
   {
     "KeyID": "WalletSpendingHistory",
     "Title": "Lịch sử hạn mức (KH)",
-    "OrderID": 20,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
@@ -660,17 +602,14 @@
   {
     "KeyID": "WalletUserSpendingHistory",
     "Title": "Lịch sử hạn mức (Người dùng)",
-    "OrderID": 21,
     "Action": [
       {
-        "OrderID": 1,
         "KeyID": "DataList",
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
       },
       {
-        "OrderID": 2,
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",

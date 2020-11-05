@@ -188,7 +188,23 @@ namespace WebCore.Services
                 }
             }
         }
-        public ProductCategoryResult ProductCategoryByID(string id)
+        public ProductCategory GetProductCategoryByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ProductCategory WHERE ID = @Query";
+                return _connection.Query<ProductCategory>(sqlQuery, new { Query = id }).FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public ProductCategoryResult ViewProductCategoryByID(string id)
         {
             try
             {

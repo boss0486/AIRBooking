@@ -41,7 +41,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             SupplierService service = new SupplierService();
-            var model = service.GetSupplierModel(id);
+            SupplierResult model = service.ViewSupplierByID(id);
             if (model != null)
                 return View(model);
             //

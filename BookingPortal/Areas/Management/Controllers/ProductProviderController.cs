@@ -39,7 +39,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             ProductProviderService service = new ProductProviderService();
-            ProductProvider model = service.ProductProviderByID(id);
+            ProductProviderResult model = service.ViewProductProviderByID(id);
             if (model != null)
                 return View(model);
             //

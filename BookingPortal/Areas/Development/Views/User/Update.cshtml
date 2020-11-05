@@ -32,10 +32,7 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            if (!string.IsNullOrWhiteSpace(Model.Birthday))
-            {
-                birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.Birthday), Helper.Language.LanguageCode.Vietnamese.ID);
-            }
+            birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.Birthday), Helper.Language.LanguageCode.Vietnamese.ID);
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;

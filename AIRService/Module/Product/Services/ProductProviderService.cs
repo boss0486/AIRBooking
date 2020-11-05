@@ -161,6 +161,24 @@ namespace WebCore.Services
                 return null;
             }
         }
+        
+        public ProductProviderResult ViewProductProviderByID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                //
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_ProductProvider WHERE ID = @Query";
+                return _connection.Query<ProductProviderResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(string id)
         {
