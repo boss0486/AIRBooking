@@ -187,6 +187,7 @@
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\Views\AirBook\Details.txt" />
     <Content Include="Areas\Management\_script\account.js" />
+    <Content Include="Areas\Management\_script\app-flight-booking - Copy.js" />
     <Content Include="Areas\Management\_script\area-geographical.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />

@@ -179,21 +179,22 @@ var flightBookingController = {
                         //
                         if (fareDetails !== undefined && fareDetails.length > 0) {
                             $.each(fareDetails, function (indexFare, itemFare) {
+
+                                console.log(itemFare.ResBookDesigCode + "::" + JSON.stringify(itemFare.FareItem));
+                                console.log("-------------------------------------");
+
                                 var adtRph = 0;
                                 var adtCode = "";
                                 var adtAmount = 0;
-                                var adtAmountTotal = 0;
+                                var adtAmount = 0;
 
                                 var cnnRph = 0;
                                 var cnnCode = " ";
                                 var cnnAmount = 0;
-                                var cnnAmountTotal = 0;
-
 
                                 var infRph = 0;
                                 var infCode = " ";
                                 var infAmount = 0;
-                                var infAmountTotal = 0;
 
                                 var fareItem = itemFare.FareItem;
                                 // lấy giá 
@@ -205,14 +206,12 @@ var flightBookingController = {
                                         if (itemFareItem.PassengerType === "ADT") {
                                             if (adtAmount === 0) {
                                                 adtAmount = itemFareItem.FareAmount;
-                                                adtAmountTotal = itemFareItem.FareTotal;
                                                 adtRph = itemFareItem.RPH;
                                                 adtCode = itemFareItem.Code;
                                             }
                                             //
                                             if (adtAmount > itemFareItem.FareAmount) {
                                                 adtAmount = itemFareItem.FareAmount;
-                                                adtAmountTotal = itemFareItem.FareTotal;
                                                 adtRph = itemFareItem.RPH;
                                                 adtCode = itemFareItem.Code;
                                             }
@@ -220,14 +219,12 @@ var flightBookingController = {
                                         if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType === "CNN") {
                                             if (cnnAmount === 0) {
                                                 cnnAmount = itemFareItem.FareAmount;
-                                                cnnAmountTotal = itemFareItem.FareTotal;
                                                 cnnRph = itemFareItem.RPH;
                                                 cnnCode = itemFareItem.Code;
                                             }
                                             //
                                             if (cnnAmount > itemFareItem.FareAmount) {
                                                 cnnAmount = itemFareItem.FareAmount;
-                                                cnnAmountTotal = itemFareItem.FareTotal;
                                                 cnnRph = itemFareItem.RPH;
                                                 cnnCode = itemFareItem.Code;
                                             }
@@ -235,14 +232,12 @@ var flightBookingController = {
                                         if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType === "INF") {
                                             if (infAmount === 0) {
                                                 infAmount = itemFareItem.FareAmount;
-                                                infAmountTotal = itemFareItem.FareTotal;
                                                 infRph = itemFareItem.RPH;
                                                 infCode = itemFareItem.Code;
                                             }
                                             //
                                             if (infAmount > itemFareItem.FareAmount) {
                                                 infAmount = itemFareItem.FareAmount;
-                                                infAmountTotal = itemFareItem.FareTotal;
                                                 infRph = itemFareItem.RPH;
                                                 infCode = itemFareItem.Code;
                                             }
@@ -298,7 +293,6 @@ var flightBookingController = {
                                     Code: strCode,
                                     Fare: strAmount,
                                     AdtAmount: adtAmount,
-                                    AdtAmountTotal: adtAmountTotal,
                                     ResBookDesigCode: itemFare.ResBookDesigCode,
                                     Params: strParam
                                 });
@@ -307,7 +301,7 @@ var flightBookingController = {
                         }
                         //
                         var _active = "";
-                        var special = ``;
+                        var special = `<label name='special-tag'><span data-ResBookDesigCode=''> </span>: <span data-AdtAmount=''>0.0 ${unit}</span></label>`;
                         // 
                         var priceDetails = "";
                         if (arrFare.length > 0) {
@@ -315,17 +309,12 @@ var flightBookingController = {
                                 var strPrice = "";
                                 var rbsc = item.ResBookDesigCode;
                                 var active = "";
-                                var salePrice = item.AdtAmountTotal;
-                                if (!isHasTax)
-                                    salePrice = item.AdtAmount;
-                                //
                                 if (rbsc === special_pesBookDesigCode) {
-                                    //
-                                    special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' >${LibCurrencies.FormatToCurrency(salePrice)}.0 ${unit}</span></label>`
+                                    special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare' >${LibCurrencies.FormatToCurrency(item.AdtAmount)}.0 ${unit}</span></label>`
                                     active = "on";
                                 }
                                 //
-                                priceDetails += `<label class='fare-item'  data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' data-AdtAmount='${item.AdtAmount}'><span class='${active} resbook'>${rbsc}</span></label>`;
+                                priceDetails += `<label class='fare-item'  data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}' data-AdtAmount='${item.AdtAmount}'><span class='${active} resbook'>${rbsc}</span></label>`;
                             });
                         }
                         if (parseInt(flightType) === 1) {
@@ -503,24 +492,18 @@ $(document).on('click', '#btnNextToInf', function () {
 //
 $(document).on('click', '.lbl-list label.fare-item', function () {
     var unit = "đ";
-    //
-    var adtAmount = $(this).data("faretotal");
-    if (!$('input[name="cbxHasTax"]').is(":checked"))
-        adtAmount = $(this).data("farebasic");
-    //
+    var adtAmount = $(this).data("adtamount");
     var param = $(this).data("param");
     var flightNo = $(this).data("FlightNo");
     var airEquipType = $(this).data("AirEquipType");
     var flightRph = $(this).data("flightrph");
     var resbookdesigcode = $(this).data("resbookdesigcode");
-    var fareBasic = $(this).data("farebasic");
-    var fareTotal = $(this).data("faretotal");
-
+    //
     var tr = $(this).closest('tr');
     $(tr).find(".fare-item span.resbook").removeClass("on");
     $(this).find("span.resbook").addClass("on");
-    //
-    var _html = `<label class='lbl-special-item' data-param='${param}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${resbookdesigcode}'><span class='resbook'>${resbookdesigcode}:</span><span class='fare' data-fareBasic='${fareBasic}' data-fareTotal='${fareTotal}'>${LibCurrencies.FormatToCurrency(adtAmount)}.0 ${unit}</span></label>`
+
+    var _html = `<label class='lbl-special-item' data-param='${param}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${resbookdesigcode}'><span class='resbook'>${resbookdesigcode}:</span><span class='fare'>${LibCurrencies.FormatToCurrency(adtAmount)}.0 ${unit}</span></label>`
     $(tr).find("label.lbl-special").html(_html);
 });
 //
@@ -621,6 +604,7 @@ $(document).on('click', '#btnBooking', function () {
         return;
     }
     var order = JSON.parse(cookiData);
+
     if (order == null) {
         Notifization.Error("Dữ liệu không hợp lệ");
         return;
@@ -1399,32 +1383,5 @@ $(document).on('keyup', '#txtEmail', function () {
         $("#lblEmail").html("Địa chỉ email không hợp lệ");
         flg = false;
     }
-});
-// valid email address
-$(document).on('change', '#cbxHasTax', function () {
-    var unit = " đ";
-    var fareAmount = 0;
-    var cbxHasTax = $('input[name="cbxHasTax"]').is(":checked");
-
-    var dataGo = $('#TblFlightGo').find('.lbl-special-item');
-    $.each(dataGo, function (index, item) {
-        var fare = $(item).find('.fare');
-        if (cbxHasTax)
-            fareAmount = $(fare).data("faretotal");
-        else
-            fareAmount = $(fare).data("farebasic");
-        //
-        $(fare).html(LibCurrencies.FormatToCurrency(fareAmount) + ".0" + unit);
-    });
-    var dataReturn = $('#TblReturnData').find('.lbl-special-item');
-    $.each(dataReturn, function (index, item) {
-        var fare = $(item).find('.fare');
-        if (cbxHasTax)
-            fareAmount = $(fare).data("faretotal");
-        else
-            fareAmount = $(fare).data("farebasic");
-        //
-        $(fare).html(LibCurrencies.FormatToCurrency(fareAmount) + ".0" + unit);
-    });
 });
 

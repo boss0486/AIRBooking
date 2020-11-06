@@ -14,6 +14,7 @@ namespace ApiPortalBooking.Models
         public string DestinationLocation { get; set; }
         public string AirlineCode { get; set; }
         public string CurrencyCode { get; set; }
+        public Double AxFee { get; set; }
     }
     public class FareItem
     {
@@ -25,8 +26,10 @@ namespace ApiPortalBooking.Models
         //public double ChargeDomesticFee { get; set; }
         //public double ScreeningFee { get; set; }
         public double FareAmount { get; set; }
+        public double FareTotal { get; set; }
         public string Code { get; set; }
         public bool IsActive { get; set; }
         public string Test { get; set; }
+
     }
 }

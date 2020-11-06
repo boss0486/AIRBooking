@@ -5562,7 +5562,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     border: 1px solid #ABDED4;
 }
 
-@media screen and (max-width: 767px) {
+@media (min-width: 328px) and (max-width: 991px)  {
     .table-responsive > .table {
          min-width:1200px;
     }

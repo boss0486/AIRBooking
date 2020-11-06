@@ -408,9 +408,20 @@ namespace Helper.Page
                 return string.Empty;
             }
             //
-
         }
 
+
+
+        public static double FormatNumberRoundUp(double value, int digits)
+        {
+            return Math.Ceiling(value / 1000) * 1000;
+        }
+        //
+        public static double FormatNumberRoundDown(double value)
+        {
+            return value - value % 10;
+        }
+        //
         public static string FormatCurrencyUnit(string unit, bool isText = true)
         {
             try
@@ -638,7 +649,7 @@ namespace Helper.Page
                 }
                 catch (Exception ex)
                 {
-                    return string.Empty +  ex;
+                    return string.Empty + ex;
                 }
             }
         }

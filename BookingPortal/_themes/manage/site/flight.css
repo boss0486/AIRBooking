@@ -37,12 +37,14 @@
 
 
 
-    .flight table .td-firm {
+    .flight table tr td.td-firm {
         font-weight: 400;
+        width: 65px;
     }
 
 
-    .flight table .td-flightNo b {
+    .flight table .td-flightNo {
+        width: 120px;
         font-weight: 400;
     }
 
@@ -53,6 +55,10 @@
     }
 
     .flight table .td-itinerary {
+        width: 90px;
+    }
+    .flight table .td-time {
+        width: 120px;
     }
 
     .flight table .td-price {
@@ -61,6 +67,7 @@
     }
 
     .flight table .td-action {
+        width: 60px;
         font-weight: 400;
         text-align: center;
         cursor: pointer;
@@ -161,12 +168,9 @@
             width: 120px;
         }
 
-
+ 
 /**/
-
-
 .book-in table {
-     
 }
 
     .book-in table.table-bordered tr td, .book-in table.table-bordered tr th {
