@@ -1,10 +1,8 @@
-﻿
-var pageIndex = 1;
+﻿var pageIndex = 1;
 var URLC = "/Management/AirBook/Action";
 var URLA = "/Management/AirBook";
 var arrFile = [];
 //
-
 var flightBookingController = {
     init: function () {
         flightBookingController.registerEvent();
@@ -19,11 +17,11 @@ var flightBookingController = {
             var ddlDestinationLocation = $('#ddlDestinationLocation').val();
             var ddlOriginLocation = $('#ddlOriginLocation').val();
             //
-            if (ddlOriginLocation === "-" || ddlOriginLocation === '') {
+            if (ddlOriginLocation == "-" || ddlOriginLocation == '') {
                 $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
                 flg = false;
             }
-            else if (ddlOriginLocation === ddlDestinationLocation) {
+            else if (ddlOriginLocation == ddlDestinationLocation) {
                 $('#lblOriginLocation').html('Nơi đi và nơi đến không được trùng nhau');
                 flg = false;
             }
@@ -31,11 +29,11 @@ var flightBookingController = {
                 $('#lblOriginLocation').html('');
             }
             // Flight to
-            if (ddlDestinationLocation === "-" || ddlDestinationLocation === '') {
+            if (ddlDestinationLocation == "-" || ddlDestinationLocation == '') {
                 $('#lblDestinationLocation').html('Vui lòng chọn nơi đến');
                 flg = false;
             }
-            else if (ddlOriginLocation === ddlDestinationLocation) {
+            else if (ddlOriginLocation == ddlDestinationLocation) {
                 $('#lblDestinationLocation').html('Nơi đi và nơi đến không được trùng nhau');
                 flg = false;
             }
@@ -45,16 +43,16 @@ var flightBookingController = {
             //
             $('#lblDepartureDateTime').html('');
             var dateGo = $("#DepartureDateTime").val();
-            if (dateGo === "") {
+            if (dateGo == "") {
                 $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
             }
             //  
             $('#lblReturnDateTime').html('');
             var ddlFlightType = $('#ddlFlightType').val();
-            if (parseInt(ddlFlightType) === 2) {
+            if (parseInt(ddlFlightType) == 2) {
                 var returnDateTime = $('#ReturnDateTime').val();
 
-                if (returnDateTime === "") {
+                if (returnDateTime == "") {
                     $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
                     flg = false;
                 }
@@ -82,12 +80,10 @@ var flightBookingController = {
         var cnn = parseInt($("#ddlChd").val());
         var inf = parseInt($("#ddlInf").val());
         var isRoundTrip = "False";
-        if (parseInt(ddlFlightType) === 2) {
+        if (parseInt(ddlFlightType) == 2) {
             isRoundTrip = "True";
         }
         var ddlAirlineType = $('#ddlAirlineType').val();
-
-        //
         // set information in title
         $('.flight-go .flight-name').html(ddlOriginLocation + " - " + ddlDestinationLocation);
         $('.flight-go .flight-date').html(departureDateTime);
@@ -97,19 +93,6 @@ var flightBookingController = {
         $('.flight-to .flight-date').html(returnDateTime);
         $('.flight-to .flight-adt-total').html(adt);
         // go
-        //var cookiData = {
-        //    OriginLocation: ddlOriginLocation,
-        //    DestinationLocation: ddlDestinationLocation,
-        //    DepartureDateTime: departureDateTime,
-        //    ReturnDateTime: returnDateTime,
-        //    ADT: adt,
-        //    CNN: cnn,
-        //    INF: inf,
-        //    IsRoundTrip: isRoundTrip
-        //};
-        //cookiData = `{"OriginLocation":"HAN1","DestinationLocation":"SGN","DepartureDateTime":"06/30/2020","ReturnDateTime":"06/30/2020""ADT": 1,"CNN": 0,"INF":0,"IsRoundTrip":true}`;
-        //Cookies.SetCookie("FlightSearch1", JSON.stringify(cookiData));
-        //
         departureDateTime = LibDateTime.FormatDateForAPI(departureDateTime);
         returnDateTime = LibDateTime.FormatDateForAPI(returnDateTime);
         var modelGo = {
@@ -128,11 +111,11 @@ var flightBookingController = {
             url: URLC + '/search',
             data: modelGo,
             success: function (response) {
-                if (response === null || response.status === undefined) {
+                if (response == null || response.status == undefined) {
                     Notifization.Error(MessageText.NotService);
                     return;
                 }
-                if (response.status === 200) {
+                if (response.status == 200) {
                     $('tbody#TblGoData').html('');
                     $('tbody#TblReturnData').html('');
                     $('#PaginationGo').html('');
@@ -183,27 +166,21 @@ var flightBookingController = {
                                 var adtCode = "";
                                 var adtAmount = 0;
                                 var adtAmountTotal = 0;
-
                                 var cnnRph = 0;
                                 var cnnCode = " ";
                                 var cnnAmount = 0;
                                 var cnnAmountTotal = 0;
-
-
                                 var infRph = 0;
                                 var infCode = " ";
                                 var infAmount = 0;
                                 var infAmountTotal = 0;
-
                                 var fareItem = itemFare.FareItem;
-                                // lấy giá 
-
-                                //fareItemCount += itemFare.ResBookDesigCode + ":" + fareItem.length + " ";
+                                // get fare
                                 if (fareItem !== null && fareItem.length > 0) {
                                     $.each(fareItem, function (indexFareItem, itemFareItem) {
 
-                                        if (itemFareItem.PassengerType === "ADT") {
-                                            if (adtAmount === 0) {
+                                        if (itemFareItem.PassengerType == "ADT") {
+                                            if (adtAmount == 0) {
                                                 adtAmount = itemFareItem.FareAmount;
                                                 adtAmountTotal = itemFareItem.FareTotal;
                                                 adtRph = itemFareItem.RPH;
@@ -217,8 +194,8 @@ var flightBookingController = {
                                                 adtCode = itemFareItem.Code;
                                             }
                                         }
-                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType === "CNN") {
-                                            if (cnnAmount === 0) {
+                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "CNN") {
+                                            if (cnnAmount == 0) {
                                                 cnnAmount = itemFareItem.FareAmount;
                                                 cnnAmountTotal = itemFareItem.FareTotal;
                                                 cnnRph = itemFareItem.RPH;
@@ -232,8 +209,8 @@ var flightBookingController = {
                                                 cnnCode = itemFareItem.Code;
                                             }
                                         }
-                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType === "INF") {
-                                            if (infAmount === 0) {
+                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "INF") {
+                                            if (infAmount == 0) {
                                                 infAmount = itemFareItem.FareAmount;
                                                 infAmountTotal = itemFareItem.FareTotal;
                                                 infRph = itemFareItem.RPH;
@@ -250,10 +227,10 @@ var flightBookingController = {
                                     });
 
                                 }
-
+                                //
+                                // get min fare
                                 var strActive = '';
-                                // gán mặc định cho min     || set lại giá trị min
-                                if (indexFare === 0) {
+                                if (indexFare == 0) {
                                     special_rph = adtRph;
                                     special_code = adtCode;
                                     special_Price = adtAmount;
@@ -267,7 +244,6 @@ var flightBookingController = {
                                     special_pesBookDesigCode = itemFare.ResBookDesigCode;
                                     strActive = special_pesBookDesigCode;
                                 }
-
                                 // active hightlight
                                 var strRph = ``;
                                 var strCode = ``;
@@ -319,7 +295,7 @@ var flightBookingController = {
                                 if (!isHasTax)
                                     salePrice = item.AdtAmount;
                                 //
-                                if (rbsc === special_pesBookDesigCode) {
+                                if (rbsc == special_pesBookDesigCode) {
                                     //
                                     special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' >${LibCurrencies.FormatToCurrency(salePrice)}.0 ${unit}</span></label>`
                                     active = "on";
@@ -328,12 +304,12 @@ var flightBookingController = {
                                 priceDetails += `<label class='fare-item'  data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' data-AdtAmount='${item.AdtAmount}'><span class='${active} resbook'>${rbsc}</span></label>`;
                             });
                         }
-                        if (parseInt(flightType) === 1) {
+                        if (parseInt(flightType) == 1) {
                             var strCnt = intGo;
                             if (intGo < 10) {
                                 strCnt = "0" + intGo;
                             }
-                            if (cntGo === true)
+                            if (cntGo == true)
                                 _active = "active";
                             htmlGo = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
@@ -348,14 +324,14 @@ var flightBookingController = {
                             intGo++;
                             $('tbody#TblGoData').append(htmlGo);
                         }
-
-                        if (parseInt(ddlFlightType) === 2 && parseInt(flightType) === 2) {
+                        //
+                        if (parseInt(ddlFlightType) == 2 && parseInt(flightType) == 2) {
                             var strCnt = intRt;
                             if (intRt < 10) {
                                 strCnt = "0" + intRt;
                             }
                             //
-                            if (cntReturn === true)
+                            if (cntReturn == true)
                                 _active = "active";
                             //
                             htmlReturn = `
@@ -370,21 +346,16 @@ var flightBookingController = {
                             cntReturn = false;
                             intRt++;
                             $('tbody#TblReturnData').append(htmlReturn);
-
                         }
                     });
-                    //$('tbody#TblGoData').html(htmlGo);
-
                     // display
                     $('.flight-wcontent-go').addClass('active');
                     //
-                    if (parseInt(ddlFlightType) === 2) {
-                        // $('tbody#TblReturnData').html(htmlReturn);
+                    if (parseInt(ddlFlightType) == 2) {
                         $('.flight-wcontent-return').addClass('active');
                     }
                     //
                     $('#btnDataTab').click();
-
                     //Loading.HideLoading();
                     //$('#TblFlightGo').DataTable();
                     //if (parseInt(totalPage) > 1) {
@@ -413,7 +384,7 @@ $(document).on('click', '#TblFlightGo td.td-action', function () {
     var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
     var _mgtop = $(window).height() / 4;
-    if ($(flightReturnInfo) === undefined || $(flightReturnInfo).length === 0) {
+    if ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0) {
         $([document.documentElement, document.body]).animate({
             scrollTop: $("#TblFlightReturn").offset().top - _mgtop
         }, 2000);
@@ -438,7 +409,7 @@ $(document).on('click', '#TblFlightReturn td.td-action', function () {
     var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
     var _mgtop = $(window).height() / 4;
-    if ($(flightGoInfo) === undefined || $(flightGoInfo).length === 0) {
+    if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
         $([document.documentElement, document.body]).animate({
             scrollTop: $("#TblFlightGo").offset().top - _mgtop
         }, 2000);
@@ -464,7 +435,7 @@ $(document).on('click', '#btnNextToInf', function () {
     var ddlFlightType = parseInt($('#ddlFlightType').val());
     var _mgtop = $(window).height() / 4;
     //    
-    if (ddlFlightType === 2 && ($(flightGoInfo) === undefined || $(flightGoInfo).length === 0) && ($(flightReturnInfo) === undefined || $(flightReturnInfo).length === 0)) {
+    if (ddlFlightType == 2 && ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) && ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)) {
         htmlError = "Vui lòng chọn chuyến bay đi và chuyến bay về";
         setTimeout(function () {
             $([document.documentElement, document.body]).animate({
@@ -472,14 +443,14 @@ $(document).on('click', '#btnNextToInf', function () {
             }, 3000);
         }, 1000);
     }
-    else if ($(flightGoInfo) === undefined || $(flightGoInfo).length === 0) {
+    else if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
         htmlError = "Vui lòng chọn chuyến bay đi";
         setTimeout(function () {
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#TblFlightGo").offset().top - _mgtop
             }, 3000);
         }, 1000);
-    } else if (ddlFlightType === 2 && $(flightReturnInfo) === undefined || $(flightReturnInfo).length === 0) {
+    } else if (ddlFlightType == 2 && $(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0) {
         htmlError = "Vui lòng chọn chuyến bay về";
         setTimeout(function () {
             $([document.documentElement, document.body]).animate({
@@ -496,6 +467,8 @@ $(document).on('click', '#btnNextToInf', function () {
     BookingOrder();
     // rediect
     Notifization.Success("Tiến hành đặt vé, xin chờ...");
+    Loading.ShowLoading();
+    //
     setTimeout(function () {
         location.href = "/management/airbook/booking";
     }, 2000);
@@ -526,10 +499,20 @@ $(document).on('click', '.lbl-list label.fare-item', function () {
 //
 $(document).on('click', '#btnBooking', function () {
     var flg = true;
+    //
+    var ddlPassengerGroup = $("#ddlPassengerGroup").val();
+    var ddlCompany = $("#ddlCompany").val();
+    $("#lblCompany").html("");
+    if (parseInt(ddlPassengerGroup) == 2) {
+        if (ddlCompany == "") {
+            $("#lblCompany").html("Vui lòng chọn công ty");
+            flg = false;
+        }
+    }
     // valid full name
     $("#BookingForm input[name='txtFullName']").each(function (index, item) {
         var _wtrl = $(this).closest("div");
-        if ($(this).val() === "") {
+        if ($(this).val() == "") {
             $(_wtrl).find("span[name='lblFullName']").html("Không được để trống họ tên");
             flg = false;
         }
@@ -548,7 +531,7 @@ $(document).on('click', '#btnBooking', function () {
     // valid birthday
     $("#BookingForm input[name='txtBirthDay']").each(function (index, item) {
         var _wtrl = $(this).closest("div");
-        if ($(this).val() === "") {
+        if ($(this).val() == "") {
             $(_wtrl).find("span[name='lblBirthDay']").html("Không được để trống ngày sinh");
             flg = false;
         }
@@ -565,13 +548,13 @@ $(document).on('click', '#btnBooking', function () {
     // valid name of passengers
     var name = $("#txtName").val();
     $("#lblName").html("");
-    if (name === "") {
+    if (name == "") {
         $("#lblName").html("Không được để trống họ tên liên hệ");
         flg = false;
     }
     // valid phone number
     var phone = $("#txtPhone").val();
-    if (phone === "") {
+    if (phone == "") {
         $("#lblPhone").html("Không được để trống số điện thoại");
         flg = false;
     }
@@ -610,13 +593,13 @@ $(document).on('click', '#btnBooking', function () {
             });
         }
     });
-    if (lPassenger.length === 0) {
+    if (lPassenger.length == 0) {
         Notifization.Error("Dữ liệu không hợp lệ");
         return;
     }
     // get flight data
     var cookiData = Cookies.GetCookie("FlightOrder");
-    if (cookiData === undefined || cookiData === "") {
+    if (cookiData == undefined || cookiData == "") {
         Notifization.Error("Dữ liệu không hợp lệ");
         return;
     }
@@ -653,7 +636,7 @@ $(document).on('click', '#btnBooking', function () {
         OriginLocation: _originLocation
     });
     // return data
-    if (_type === 2) {
+    if (_type == 2) {
         orderReturn = order.Flight[1];
         _arrivalDateTime = orderReturn.ArrivalDateTime;
         _departureDateTime = orderReturn.DepartureDateTime;
@@ -678,9 +661,6 @@ $(document).on('click', '#btnBooking', function () {
             OriginLocation: _originLocation
         });
     }
-
-    // mode
-
     //  copntact of passengers
     var lContact = [];
     var contact = {
@@ -690,21 +670,22 @@ $(document).on('click', '#btnBooking', function () {
     };
     lContact.push(contact);
     var bookModel = {
+        PassengerGroup: ddlPassengerGroup,
+        CompanyID: ddlCompany,
         Contacts: lContact,
         Passengers: lPassenger,
         Flights: lFlight
     };
-    console.log(JSON.stringify(bookModel));
     // call api
     AjaxFrom.POST({
         url: URLC + '/booking',
         data: bookModel,
         success: function (response) {
-            if (response === null || response.status === undefined) {
+            if (response == null || response.status == undefined) {
                 Notifization.Error(MessageText.message);
                 return;
             }
-            if (response.status === 200) {
+            if (response.status == 200) {
                 Notifization.Success(response.message);
                 //location.href = response.data;
                 return;
@@ -720,10 +701,8 @@ $(document).on('click', '#btnBooking', function () {
 });
 
 $(document).on('click', '#btnRelease', function () {
-
-    console.log('::ok');
     var pnrCode = $('#lblPNRCode').data("pnr");
-    if (pnrCode === undefined || pnrCode === "") {
+    if (pnrCode == undefined || pnrCode == "") {
         Notifization.Error("Không thể xuất vé với PNR này.");
         return;
     }
@@ -731,11 +710,11 @@ $(document).on('click', '#btnRelease', function () {
         url: URLC + '/ExTicket',
         data: { PNR: pnrCode },
         success: function (response) {
-            if (response === null || response.status === undefined) {
+            if (response == null || response.status == undefined) {
                 Notifization.Error(MessageText.NotService);
                 return;
             }
-            if (response.status === 200) {
+            if (response.status == 200) {
                 Notifization.Success(response.message);
                 //location.href = response.data;
                 return;
@@ -773,7 +752,7 @@ function BookingOrder() {
         var arrivalDateTime = $(trGo).data("arrivaldatetime");
         var departureDateTime = $(trGo).data("departuredatetime");
         var numberInParty = $(trGo).data("numberinparty");
-
+        //
         var resBookDesigCode = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("resbookdesigcode");
         var flightrph = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("flightrph");
         var param = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("param");
@@ -793,7 +772,7 @@ function BookingOrder() {
     }
     //
     var trReturn = $(flightReturnInfo).closest('tr');
-    if (ddlFlightType === 2 && $(trReturn) !== undefined && $(trReturn).length > 0) {
+    if (ddlFlightType == 2 && $(trReturn) !== undefined && $(trReturn).length > 0) {
         //
         flightNumber = $(trReturn).data("flightnumber");
         airequiptype = $(trReturn).data("airequiptype");
@@ -829,6 +808,7 @@ function BookingOrder() {
 //
 function BookingOrderLoad() {
     var cookiData = Cookies.GetCookie("FlightOrder");
+    console.log("" + JSON.stringify(cookiData));
     if (cookiData !== undefined && cookiData !== "") {
         var order = JSON.parse(cookiData);
         if (order !== null) {
@@ -857,14 +837,6 @@ function BookingOrderLoad() {
             var departureTime = LibDateTime.GetTime(_departureDateTime);
             var arrivalTime = LibDateTime.GetTime(_arrivalDateTime);
             // show data
-            //var trGo = $('#TblRowGo');
-            //$(trGo).find("td .lblTrademark").html("VNA");
-            //$(trGo).find("td .lblFlightNo").html(`VN${_flightNumber}`);
-            //$(trGo).find("td .lblItinerary").html(`<span class='lblItinerary-location'>${_originLocation} - ${_destinationLocation}</span>, <span class='lblItinerary-date'>${departureDateTime}</span>`);
-            //$(trGo).find("td .lblItineraryTime").html(`${departureTime} - ${arrivalTime}`);
-            //$(trGo).find("td .lblResbookdesigcode").html(`${_resBookDesigCode}`);
-            // get feeBase
-
             var labelTbl = [];
             if (_adt > 0) {
                 labelTbl.push({
@@ -885,8 +857,8 @@ function BookingOrderLoad() {
                 });
             }
             //
-
-            var arrPassengerBase = [];
+            var arrPassengerBaseGo = [];
+            var arrPassengerBaseReturn = [];
             if (_fareBaseGo.includes("##")) {
                 var arrParam = _fareBaseGo.split("##");
                 if (arrParam.length > 0) {
@@ -902,18 +874,18 @@ function BookingOrderLoad() {
                                 var passengerType = item.split(":")[0];
                                 var passengerFare = item.split(":")[1];
                                 var passengerFareInfo = passengerFare.split(",");
-                                if (passengerType === "ADT")
+                                if (passengerType == "ADT")
                                     quantity = _adt;
-                                if (passengerType === "CNN")
+                                if (passengerType == "CNN")
                                     quantity = _cnn;
-                                if (passengerType === "INF")
+                                if (passengerType == "INF")
                                     quantity = _inf;
                                 //
                                 rph = parseFloat(passengerFareInfo[0]);
                                 amount = parseFloat(passengerFareInfo[1]);
                                 code = passengerFareInfo[2];
                             }
-                            arrPassengerBase.push({
+                            arrPassengerBaseGo.push({
                                 RPH: rph,
                                 PassengerType: passengerType,
                                 Quantity: quantity,
@@ -927,35 +899,33 @@ function BookingOrderLoad() {
             else {
                 var arrParam = _fareBaseGo;
                 if (arrParam.length > 0 && arrParam.includes(",")) {
-                    console.log("1::" + item);
                     var passengerType = '';
                     var quantity = 0;
                     var amount = 0;
                     var rph = 0;
                     var code = 0;
-                    if (item.includes(":")) {
-                        var passengerType = item.split(":")[0];
-                        var passengerFare = item.split(":")[1];
+                    if (arrParam.includes(":")) {
+                        var passengerType = arrParam.split(":")[0];
+                        var passengerFare = arrParam.split(":")[1];
                         var passengerFareInfo = passengerFare.split(",");
-                        if (passengerType === "ADT")
+                        if (passengerType == "ADT")
                             quantity = _adt;
-                        if (passengerType === "CNN")
+                        if (passengerType == "CNN")
                             quantity = _cnn;
-                        if (passengerType === "INF")
+                        if (passengerType == "INF")
                             quantity = _inf;
                         //
                         rph = parseFloat(passengerFareInfo[0]);
                         amount = parseFloat(passengerFareInfo[1]);
                         code = passengerFareInfo[2];
                     }
-                    arrPassengerBase.push({
+                    arrPassengerBaseGo.push({
                         RPH: rph,
                         PassengerType: passengerType,
                         Quantity: quantity,
                         Amount: amount,
                         FareBaseCode: code
                     });
-
                 }
             }
             //
@@ -967,7 +937,7 @@ function BookingOrderLoad() {
                 DepartureDateTime: LibDateTime.FormatDateForAPI(_departureDateTime),
                 ArrivalDateTime: LibDateTime.FormatDateForAPI(_arrivalDateTime),
                 AirEquipType: _airEquipType,
-                FareBase: arrPassengerBase,
+                FareBase: arrPassengerBaseGo,
                 ResBookDesigCode: _resBookDesigCode,
                 FlightNumber: _flightNumber,
                 CurrencyCode: "VND"
@@ -975,7 +945,7 @@ function BookingOrderLoad() {
             // add array
             feeTaxModel.push(feeBaseGo);
             //
-            if (_type === 2) {
+            if (_type == 2) {
                 var orderReturn = order.Flight[1];
                 _rphFlight = orderReturn.RPH;
                 _arrivalDateTime = orderReturn.ArrivalDateTime;
@@ -988,7 +958,6 @@ function BookingOrderLoad() {
                 _originLocation = orderReturn.DestinationLocation;
                 var _fareBaseReturn = orderReturn.FareBase;
                 _test = orderReturn.FareBase;
-                arrPassengerBase = [];
                 if (_fareBaseReturn.includes("##")) {
                     var arrParam = _fareBaseReturn.split("##");
                     if (arrParam.length > 0) {
@@ -1002,18 +971,18 @@ function BookingOrderLoad() {
                                 var passengerType = item.split(":")[0].trim();
                                 var passengerFare = item.split(":")[1].trim();
                                 var passengerFareInfo = passengerFare.split(",");
-                                if (passengerType === "ADT")
+                                if (passengerType == "ADT")
                                     quantity = _adt;
-                                if (passengerType === "CNN")
+                                if (passengerType == "CNN")
                                     quantity = _cnn;
-                                if (passengerType === "INF")
+                                if (passengerType == "INF")
                                     quantity = _inf;
                                 //
                                 rph = parseFloat(passengerFareInfo[0]);
                                 amount = parseFloat(passengerFareInfo[1]);
                                 code = passengerFareInfo[2];
                             }
-                            arrPassengerBase.push({
+                            arrPassengerBaseReturn.push({
                                 RPH: rph,
                                 PassengerType: passengerType,
                                 Quantity: quantity,
@@ -1023,10 +992,38 @@ function BookingOrderLoad() {
                         });
                     }
                 }
-
-                console.log("::" + JSON.stringify(arrPassengerBase));
-
-
+                else {
+                    var arrParam = _fareBaseReturn;
+                    if (arrParam.length > 0 && arrParam.includes(",")) {
+                        var passengerType = '';
+                        var quantity = 0;
+                        var amount = 0;
+                        var rph = 0;
+                        var code = 0;
+                        if (arrParam.includes(":")) {
+                            var passengerType = arrParam.split(":")[0];
+                            var passengerFare = arrParam.split(":")[1];
+                            var passengerFareInfo = passengerFare.split(",");
+                            if (passengerType == "ADT")
+                                quantity = _adt;
+                            if (passengerType == "CNN")
+                                quantity = _cnn;
+                            if (passengerType == "INF")
+                                quantity = _inf;
+                            //
+                            rph = parseFloat(passengerFareInfo[0]);
+                            amount = parseFloat(passengerFareInfo[1]);
+                            code = passengerFareInfo[2];
+                        }
+                        arrPassengerBaseReturn.push({
+                            RPH: rph,
+                            PassengerType: passengerType,
+                            Quantity: quantity,
+                            Amount: amount,
+                            FareBaseCode: code
+                        });
+                    }
+                }
                 //
                 var feeBaseReturn = {
                     RPH: _rphFlight,
@@ -1035,7 +1032,7 @@ function BookingOrderLoad() {
                     DepartureDateTime: LibDateTime.FormatDateForAPI(_departureDateTime),
                     ArrivalDateTime: LibDateTime.FormatDateForAPI(_arrivalDateTime),
                     AirEquipType: _airEquipType,
-                    FareBase: arrPassengerBase,
+                    FareBase: arrPassengerBaseReturn,
                     ResBookDesigCode: _resBookDesigCode,
                     FlightNumber: _flightNumber,
                     CurrencyCode: "VND"
@@ -1047,25 +1044,22 @@ function BookingOrderLoad() {
                 url: URLC + '/GetFeeBasic',
                 data: { models: feeTaxModel },
                 success: function (response) {
-                    if (response === null || response.status === undefined) {
+                    if (response == null || response.status == undefined) {
                         Notifization.Error(MessageText.NotService);
                         return;
                     }
-                    if (response.status === 200) {
+                    if (response.status == 200) {
                         var _rowPrice = "";
                         $("#TblGoPriceInfo").html(`<tr><td>Đang cập nhật...</td></tr>`);
                         var fareAmount = _fareBaseGo.Amount;
                         var _fareAllTotal = 0;
-
                         // flight 
                         var _fareFlight = 0;
-
                         $("#TblFlight tbody").html('');
                         $.each(feeTaxModel, function (index, item) {
                             var mdRph = parseInt(item.RPH);
                             var mdAirEquipType = parseInt(item.AirEquipType);
                             var mdFlightNumber = parseInt(item.FlightNumber);
-
                             var mdArrivalDateTime = item.ArrivalDateTime;
                             var mdDepartureDateTime = item.DepartureDateTime;
                             var mdNumberInParty = item.NumberInParty;
@@ -1075,46 +1069,39 @@ function BookingOrderLoad() {
                             var mdFareBaseCode = item.FareBasisCode;
                             var mdFareBase = item.FareBase;
                             var mdDepartureDate = LibDateTime.GetDate(mdDepartureDateTime);
-                            var mdArrivalDate = LibDateTime.GetDate(mdArrivalDateTime);
-
+                            var mdArrivalDate = LibDateTime.GetDate(mdArrivalDateTime)
                             var mdDepartureTime = LibDateTime.GetTime(mdDepartureDateTime);
                             var mdArrivalTime = LibDateTime.GetTime(mdArrivalDateTime);
-
                             // tax for flight   
                             var fareRound = 0;
                             var _taxRow = '<tr><td>Đang cập nhật..1.</td></tr>';
                             if (response.data.length > 0) {
                                 _taxRow = '';
-
                                 $.each(response.data, function (indexFlight, itemFilght) {
-                                    if (parseInt(itemFilght.RPH) === mdRph && itemFilght.AirEquipType === mdAirEquipType && itemFilght.FlightNumber === mdFlightNumber) {
+                                    if (parseInt(itemFilght.RPH) == mdRph && itemFilght.AirEquipType == mdAirEquipType && itemFilght.FlightNumber == mdFlightNumber) {
                                         var flightTaxInfos = itemFilght.FlightTaxInfos;
-                                        if (flightTaxInfos.length > 0) {
-
-
+                                        if (flightTaxInfos != null) {
                                             $.each(flightTaxInfos, function (indexTax, itemTax) {
                                                 //
                                                 var _quantities = 0;
                                                 var passengerType = itemTax.PassengerType.Code;
-
-
                                                 var taxOfType = itemTax.Total;
                                                 var feeTax = 0;
                                                 var flightAmount = 0;
                                                 $.each(mdFareBase, function (indexFareBase, itemFareBase) {
-                                                    if (itemFareBase.PassengerType === passengerType) {
+                                                    if (itemFareBase.PassengerType == passengerType) {
                                                         flightAmount = itemFareBase.Amount;
                                                         return;
                                                     }
                                                 });
-                                                if (passengerType === "ADT") {
+                                                if (passengerType == "ADT") {
                                                     _quantities = _adt;
                                                 }
                                                 //
-                                                if (passengerType === "CNN")
+                                                if (passengerType == "CNN")
                                                     _quantities = _cnn;
                                                 //
-                                                if (passengerType === "INF") {
+                                                if (passengerType == "INF") {
                                                     _quantities = _inf;
                                                 }
                                                 //
@@ -1182,28 +1169,12 @@ function BookingOrderLoad() {
                             </tr>`
                         // add row to table
                         $("#TblFlight > tbody").append(_flightRow);
-
-
-
-
-
                     }
                 },
                 error: function (response) {
                     console.log('::' + MessageText.NotService);
                 }
             });
-            //
-            //lFlight.push({
-            //    DepartureDateTime: _departureDateTime,
-            //    ArrivalDateTime: _arrivalDateTime,
-            //    FlightNumber: _flightNumber,
-            //    NumberInParty: _numberInParty,
-            //    ResBookDesigCode: _resBookDesigCode,
-            //    AirEquipType: _airEquipType,
-            //    DestinationLocation: _destinationLocation,
-            //    OriginLocation: _originLocation
-            //});
         }
     }
 }
@@ -1213,7 +1184,7 @@ function BookingOrderLoad() {
 //###################################################################################################################################################
 $(document).on('keyup', '#txtTitle', function () {
     var title = $(this).val();
-    if (title === '') {
+    if (title == '') {
         $('#lblTitle').html('Không được để trống tiêu đề');
     }
     else if (title.length < 1 || title.length > 80) {
@@ -1229,7 +1200,7 @@ $(document).on('keyup', '#txtTitle', function () {
 //
 $(document).on('keyup', '#txtIataCode', function () {
     var iataCode = $(this).val();
-    if (iataCode === '') {
+    if (iataCode == '') {
         $('#lblIataCode').html('Không được để trống mã chuyến bay');
     }
     else if (iataCode.length < 1 || iataCode.length > 5) {
@@ -1264,7 +1235,7 @@ $(document).on('keyup', '#txtSummary', function () {
 $(document).on('blur', '#DepartureDateTime', function () {
     var dateGo = $(this).val();
     $('#lblDepartureDateTime').html('');
-    if (dateGo === "") {
+    if (dateGo == "") {
         $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
     }
 });
@@ -1273,8 +1244,8 @@ $(document).on('blur', '#ReturnDateTime', function () {
     var dateReturn = $(this).val();
     $('#lblReturnDateTime').html('');
     var ddlFlightType = $('#ddlFlightType').val();
-    if (parseInt(ddlFlightType) === 2) {
-        if (dateReturn === "") {
+    if (parseInt(ddlFlightType) == 2) {
+        if (dateReturn == "") {
             $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
         }
     }
@@ -1284,10 +1255,10 @@ $(document).on("change", "#ddlOriginLocation", function () {
     var ddlDestinationLocation = $('#ddlDestinationLocation').val();
     var txtCtl = $(this).val();
     $('#lblOriginLocation').html('');
-    if (txtCtl === "-" || txtCtl === "") {
+    if (txtCtl == "-" || txtCtl == "") {
         $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
     }
-    else if (txtCtl === ddlDestinationLocation && ddlDestinationLocation !== "" && ddlDestinationLocation !== "-") {
+    else if (txtCtl == ddlDestinationLocation && ddlDestinationLocation !== "" && ddlDestinationLocation !== "-") {
         $('#lblOriginLocation').html('Nơi đi và nơi đến không được trùng nhau');
         $('#lblDestinationLocation').html('');
     }
@@ -1297,10 +1268,10 @@ $(document).on("change", "#ddlDestinationLocation", function () {
     var ddlOriginLocation = $('#ddlOriginLocation').val();
     var txtCtl = $(this).val();
     $('#lblDestinationLocation').html('');
-    if (txtCtl === "-" || txtCtl === "") {
+    if (txtCtl == "-" || txtCtl == "") {
         $('#lblDestinationLocation').html('Vui lòng chọn nơi đến');
     }
-    else if (ddlOriginLocation === txtCtl && ddlOriginLocation !== "" && ddlOriginLocation !== "-") {
+    else if (ddlOriginLocation == txtCtl && ddlOriginLocation !== "" && ddlOriginLocation !== "-") {
         $('#lblDestinationLocation').html('Nơi đi và nơi đến không được trùng nhau');
         $('#lblOriginLocation').html('');
     }
@@ -1309,10 +1280,10 @@ $(document).on("change", "#ddlDestinationLocation", function () {
 $(document).on("change", "#ddlFlightType", function () {
     $('#lblReturnDateTime').html('');
     var txtCtl = $(this).val();
-    if (parseInt(txtCtl) === 2) {
+    if (parseInt(txtCtl) == 2) {
         // Flight to
         var DepartureDateTime = $('#DepartureDateTime').val();
-        if (DepartureDateTime === "") {
+        if (DepartureDateTime == "") {
             $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
         }
     }
@@ -1341,7 +1312,7 @@ $(document).on('', '.img-caption-text', function () {
 // valid full name
 $(document).on('keyup', 'input[name="txtFullName"]', function () {
     var _wtrl = $(this).closest("div");
-    if ($(this).val() === "") {
+    if ($(this).val() == "") {
         $(_wtrl).find("span[name='lblFullName']").html("Không được để trống họ tên");
     }
     else if ($(this).val().length < 5 || $(this).val().length > 30) {
@@ -1358,7 +1329,7 @@ $(document).on('keyup', 'input[name="txtFullName"]', function () {
 // valid birthday
 $(document).on('keyup', 'input[name="txtBirthDay"]', function () {
     var _wtrl = $(this).closest("div");
-    if ($(this).val() === "") {
+    if ($(this).val() == "") {
         $(_wtrl).find("span[name='lblBirthDay']").html("Không được để trống ngày sinh");
     }
     else if (!LibDateTime.ValidDate($(this).val(), "vn")) {
@@ -1372,7 +1343,7 @@ $(document).on('keyup', 'input[name="txtBirthDay"]', function () {
 // valid name in contact
 $(document).on('keyup', '#txtName', function () {
     var name = $(this).val();
-    if (name === "") {
+    if (name == "") {
         $("#lblName").html("Không được để trống họ tên liên hệ");
     }
     else {
@@ -1381,7 +1352,7 @@ $(document).on('keyup', '#txtName', function () {
 });// valid phone number
 $(document).on('keyup', '#txtPhone', function () {
     var phone = $(this).val();
-    if (phone === "") {
+    if (phone == "") {
         $("#lblPhone").html("Không được để trống số điện thoại");
     }
     else if (!ValidData.ValidPhoneNumber(phone, "vn")) {
@@ -1427,4 +1398,56 @@ $(document).on('change', '#cbxHasTax', function () {
         $(fare).html(LibCurrencies.FormatToCurrency(fareAmount) + ".0" + unit);
     });
 });
+
+$(document).on("change", "#ddlPassengerGroup", function () {
+    var passengerGroup = parseInt($(this).val());
+    // comp
+    var option = `<option value="">-Lựa chọn-</option>`;
+    $('#ddlCompany').html(option);
+    $('#ddlCompany').selectpicker('refresh');
+    if (passengerGroup == 2) {
+        // load provicer
+        var _id = "";
+        var model = {
+        };
+        AjaxFrom.POST({
+            url: URLC + '/GetCompany',
+            data: model,
+            async: true,
+            success: function (result) {
+                if (result !== null) {
+                    if (result.status == 200) {
+                        var attrSelect = '';
+                        if (result.data == null || result.data == undefined)
+                            return;
+                        //
+                        $.each(result.data, function (index, item) {
+                            var id = item.ID;
+                            if (_id !== undefined && _id != "" && _id == item.ID) {
+                                attrSelect = "selected";
+                            }
+                            option += `<option value='${id}' ${attrSelect}>${item.CodeID}: ${item.Title}</option>`;
+                        });
+                        $('#ddlCompany').html(option);
+                        $('#ddlCompany').selectpicker('refresh');
+                        return;
+                    }
+                }
+                return;
+            },
+            error: function (result) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    }
+    else {
+        var option = `<option value="">-Lựa chọn-</option>`;
+        $('#ddlProvider').html(option);
+        $('#ddlProvider').selectpicker('refresh');
+        $('#ddlCompany').html(option);
+        $('#ddlCompany').selectpicker('refresh');
+    }
+});
+
+
 

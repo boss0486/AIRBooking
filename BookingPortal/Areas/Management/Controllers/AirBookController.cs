@@ -116,11 +116,30 @@ namespace WebApplication.Management.Controllers
             return View(model);
         }
 
+        // GET: ******************************************************************************************************************************
+        [HttpPost]
+        [Route("Action/GetProvider")]
+        public ActionResult GetProviceByLogin()
+        {
+            ClientLoginService clientLoginService = new ClientLoginService();
+            List<ClientOption> dtList = clientLoginService.GetAllProvider();
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            return Notifization.Data("", dtList);
+        }
+               
+        [HttpPost]
+        [Route("Action/GetCompany")]
+        public ActionResult GetCompany()
+        {
+            ClientLoginService clientLoginService = new ClientLoginService();
+            List<ClientOption> dtList = clientLoginService.GetCompany();
+            return Notifization.Data("", dtList);
+        }
+
+        // GET: Booking ******************************************************************************************************************************
 
 
-        // ******************************************************************************************************************************
 
-        // GET: Booking
         [HttpPost]
         [Route("Action/Test")]
         public ActionResult Test()
@@ -363,6 +382,6 @@ namespace WebApplication.Management.Controllers
         {
             return Notifization.Data(":::", VNA_AuthencationService.GetSession());
         }
-         
+
     }
 }

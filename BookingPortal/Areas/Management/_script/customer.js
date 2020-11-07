@@ -1073,3 +1073,94 @@ $(document).on("keyup", "#txtTermPayment", function () {
         $('#lblTermPayment').html('');
     }
 });
+
+function CustomerOption(_id, isdefault, isChangeEvent) {
+    var option = `<option value="">-Lựa chọn-</option>`;
+    var model = {
+    };
+    AjaxFrom.POST({
+        url: '/Management/Customer/Action/DropDownList',
+        data: model,
+        async: true,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    var attrSelect = '';
+                    $.each(result.data, function (index, item) {
+                        var id = item.ID;
+                        if (_id !== undefined && _id != "" && _id === item.ID) {
+                            attrSelect = "selected";
+                        } else if (isdefault != undefined && isdefault && index == 0) {
+                            attrSelect = "selected";
+                        }
+                        else {
+                            attrSelect = '--';
+                        }
+                        option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
+                    });
+                    console.log('::' + attrSelect);
+                    $('#ddlClient').html(option);
+                    $('#ddlClient').selectpicker('refresh');
+                    if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
+                        $('#ddlClient').change();
+                    }
+                    return;
+                }
+                else {
+                    console.log('::' + result.message);
+                    return;
+                }
+            }
+            console.log('::' + result.message);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+}
+function SupplierOption(_id, isdefault, isChangeEvent) {
+    var option = `<option value="">-Lựa chọn-</option>`;
+    var model = {
+    };
+    AjaxFrom.POST({
+        url: '/Management/Supplier/Action/DropDownList',
+        data: model,
+        async: true,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    var attrSelect = '';
+                    $.each(result.data, function (index, item) {
+                        var id = item.ID;
+                        if (_id !== undefined && _id != "" && _id === item.ID) {
+                            attrSelect = "selected";
+                        }
+                        else if (isdefault != undefined && isdefault && index == 0) {
+                            attrSelect = "selected";
+                        }
+                        else {
+                            attrSelect = '--';
+                        }
+                        option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
+                    });
+                    console.log('::' + attrSelect);
+                    $('#ddlClient').html(option);
+                    $('#ddlClient').selectpicker('refresh');
+                    if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
+                        $('#ddlClient').change();
+                    }
+                    return;
+                }
+                else {
+                    console.log('::' + result.message);
+                    return;
+                }
+            }
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+}

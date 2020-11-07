@@ -166,6 +166,8 @@
     <Compile Include="Application\ReportSaleSummary\Services\ReportSaleSummarySSFopService.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionPayment.cs" />
     <Compile Include="Application\Transaction\Services\TransactionPaymentService.cs" />
+    <Compile Include="Application\UserClient\Entities\ClientComp.cs" />
+    <Compile Include="Application\UserClient\Services\ClientCompService.cs" />
     <Compile Include="Connected Services\WebService.Mbay.WSGds_SearchFlightV2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

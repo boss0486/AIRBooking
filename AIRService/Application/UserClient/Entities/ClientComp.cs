@@ -11,10 +11,10 @@ namespace WebCore.Entities
 {
 
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_ClientLogin")]
-    public partial class ClientLogin
+    [Table("App_ClientComp")]
+    public partial class ClientComp
     {
-        public ClientLogin()
+        public ClientComp()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -27,7 +27,7 @@ namespace WebCore.Entities
         public bool IsSuper { get; set; }
     }
 
-    public class ClientOption
+    public class ClientCompOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

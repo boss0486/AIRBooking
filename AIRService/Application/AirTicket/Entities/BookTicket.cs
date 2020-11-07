@@ -178,6 +178,8 @@ namespace WebCore.Entities
     // 
     public class Request_BookModel
     {
+        public int PassengerGroup { get; set; }
+        public string CompanyID { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public List<BookContactModel> Contacts { get; set; }

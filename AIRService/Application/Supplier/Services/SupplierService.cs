@@ -642,6 +642,24 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
+        public static string GetSupplierID(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return string.Empty;
+                string query = string.Empty;
+                string langID = Helper.Current.UserLogin.LanguageID;
+                string sqlQuery = @"SELECT TOP (1) * FROM App_Supplier WHERE ID = @Query";
+                SupplierService supplierService = new SupplierService();
+                var model = supplierService.Query<Supplier>(sqlQuery, new { Query = id }).FirstOrDefault();
+                return model.ID;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
         //##############################################################################################################################################################################################################################################################
 
         public static string DropdownList(string id)

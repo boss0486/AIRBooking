@@ -16,40 +16,43 @@
         {
             typeLogin = 1;
             <div class="top-pic special">
-                <label><i class="fas fa-building"></i>&nbsp;<span>Loại người dùng:</span></label>
+                <label><i class="fas fa-building"></i>&nbsp;<span>Cung cấp dịch vụ:</span></label>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group client-group m-t-15">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientCustomer" value="1" data-text="Khách hàng" checked />
-                                <label class="form-check-label" for="rdoClientCustomer">Khách hàng</label>
-                                <hr style="margin-top: 10px;">
-                            </div>
-                            <div class="col-md-6">
-                                <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientSupplier" value="2" data-text="Nhà cung cấp" />
-                                <label class="form-check-label" for="rdoClientSupplier">Nhà cung cấp</label>
-                                <hr style="margin-top: 10px;">
-                            </div>
-                        </div>
-                        <span id="lblClientType" class="message msg-box"></span>
+                <div class="form-group client-group m-t-15">
+                    <div class="col-md-6">
+                        <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientCustomer" value="1" data-text="Khách hàng" checked />
+                        <label class="form-check-label" for="rdoClientCustomer">Khách hàng</label>
+                        <hr style="margin-top: 10px;">
                     </div>
+                    <div class="col-md-6">
+                        <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientSupplier" value="2" data-text="Nhà cung cấp" />
+                        <label class="form-check-label" for="rdoClientSupplier">Nhà cung cấp</label>
+                        <hr style="margin-top: 10px;">
+                    </div>
+                    <span id="lblClientType" class="message msg-box"></span>
                 </div>
-                <div class="col-md-6">
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
                     <div class="form-group">
-                        <label class="form-label" id="LblClientText">Khách hàng:</label>
+                        <label class="form-label" id="LblClientText">Nhà cung cấp:</label>
                         <select id="ddlClient" name="ddlClient" class="form-control show-tick" data-live-search="true">
                             <option value="">-Lựa chọn-</option>
                         </select>
                         <span id="lblClient" class="message msg-box"></span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Mã nhà cung cấp:</label> #
+                        <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">---</label></div>
+                    </div>
+                </div>
             </div>
-
-
-
         }
+
         <div class="top-pic special">
             <label><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;<span>Tài khoản:</span></label>
         </div>

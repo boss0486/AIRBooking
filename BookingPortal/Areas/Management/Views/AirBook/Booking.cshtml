@@ -1,16 +1,24 @@
-﻿@using WebCore.Services;
-@using WebCore.Model.Services
-@model List<ApiPortalBooking.Models.FlightPassengerTypeInfo>
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services;
+@using WebCore.ENM;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
+@model List<ApiPortalBooking.Models.FlightPassengerTypeInfo>
 @section styles{
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
+}
+@{
+    string userId = Helper.Current.UserLogin.IdentifierID;
+    string clientId = string.Empty;
+    List<CustomerOption> customerOptions = new List<CustomerOption>();
 }
 <section class="book-in">
     <div id="BookingForm">
         <div class="top-pic special">
-            <label><i class="fas fa-info-circle" aria-hidden="true"></i>&nbsp;<span>Thông tin hành trình:</span></label>
+            <label><i class="fas fa-plane-departure"></i>&nbsp;<span>Thông tin hành trình:</span></label>
         </div>
         <div class="table-responsive mgt-40">
             <table id="TblFlight" class="table table-bordered">
@@ -88,6 +96,68 @@
 
         </div>
 
+        <div class="top-pic special">
+            <label><i class="fas fa-shield-alt"></i>&nbsp;<span>Thông tin bảo hộ:</span></label>
+        </div>
+        @*Ensurer*@
+        @if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication || Helper.Current.UserLogin.IsSupplierLogged() || Helper.Current.UserLogin.IsAdminCustomerLogged())
+        {
+
+        } 
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Nhà cung cấp:</label>
+                    <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblddlProvider" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="form-label">Nhà cung cấp:</label>
+                    <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblddlProvider" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Loại khách hàng:</label>
+                    <select id="ddlPassengerGroup" name="ddlPassengerGroup" class="form-control show-tick" data-live-search="true">
+                        <option value="1">Khách lẻ</option>
+                        <option value="2">Công ty</option>
+                    </select>
+                    <span id="lblPassengerGroup" class="message msg-box"></span>
+                </div>
+            </div>
+            @*<div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Nhà cung cấp:</label>
+                        <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
+                            <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                        </select>
+                        <span id="lblddlProvider" class="message msg-box"></span>
+                    </div>
+                </div>*@
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="form-label">Công ty:</label>
+                    <select id="ddlCompany" name="ddlCompany" class="form-control show-tick" data-live-search="true">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                    </select>
+                    <span id="lblCompany" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
         <div class="top-pic special">
             <label><i class="fas fa-info-circle" aria-hidden="true"></i>&nbsp;<span>Thông tin hành khách:</span></label>
         </div>
@@ -194,13 +264,13 @@
         }
     </div>
 </section>
-
-
 @section scripts{
     <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             BookingOrderLoad();
+
+            $("#ddlPassengerGroup").change();
         });
     </script>
 }

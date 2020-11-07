@@ -8,5 +8,11 @@
             Customer = 1,
             Supplier = 2,
         }
+
+        public enum PassengerGroup 
+        {
+            Nomal = 1,
+            Comp = 2,
+        }
     }
 }
