@@ -1073,13 +1073,52 @@ $(document).on("keyup", "#txtTermPayment", function () {
         $('#lblTermPayment').html('');
     }
 });
+//
 
-function CustomerOption(_id, isdefault, isChangeEvent) {
+$(document).on("change", "input[name='rdoClientType']", function () {
+    console.log(':>:');
+    $("#lblSupplier").html("");
+    $("#lblProviderCodeID").html("");
+    var ddlClientType = $(this).val();
+    // change text
+    var text = $(this).data('text');
+    $('#LblClientText').html(text);
+    // load data
+    if (parseInt(ddlClientType) === 1) {
+        CustomerAgentOption("", true, false);
+        //
+        var htmlComp = `<option value="">-Lựa chọn-</option><option value="comp">Công ty</option>`;
+        $('#ddlCustomerType').html(htmlComp);
+        $('#ddlCustomerType').selectpicker('refresh');
+    }
+    else {
+        SupplierOption("", true, false);
+        var htmlComp = `<option value="">-Lựa chọn-</option><option value="agent">Đại lý</option><option value="comp">Công ty</option> `;
+        $('#ddlCustomerType').html(htmlComp);
+        $('#ddlCustomerType').selectpicker('refresh');
+    }
+});
+
+$(document).on("change", "#ddlSupplier", function () {
+    $("#lblSupplier").html("");
+    $('#lblProviderCodeID').html("");
+    var ddlSupplier = $("#ddlSupplier").val();
+    if (ddlSupplier == "") {
+        $("#lblSupplier").html("Vui lòng chọn nhà cung cấp");
+        return;
+    }
+    var codeid = $(this).find(':selected').data('codeid');
+    $('#lblProviderCodeID').html(codeid);
+    // 
+});
+
+
+function CustomerAgentOption(_id, isdefault, isChangeEvent) {
     var option = `<option value="">-Lựa chọn-</option>`;
     var model = {
     };
     AjaxFrom.POST({
-        url: '/Management/Customer/Action/DropDownList',
+        url: '/Management/Customer/Action/AgentData',
         data: model,
         async: true,
         success: function (result) {
@@ -1088,30 +1127,24 @@ function CustomerOption(_id, isdefault, isChangeEvent) {
                     var attrSelect = '';
                     $.each(result.data, function (index, item) {
                         var id = item.ID;
+                        var codeId = item.CodeID;
                         if (_id !== undefined && _id != "" && _id === item.ID) {
                             attrSelect = "selected";
-                        } else if (isdefault != undefined && isdefault && index == 0) {
-                            attrSelect = "selected";
                         }
-                        else {
-                            attrSelect = '--';
-                        }
-                        option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
-                    });
-                    console.log('::' + attrSelect);
-                    $('#ddlClient').html(option);
-                    $('#ddlClient').selectpicker('refresh');
-                    if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
-                        $('#ddlClient').change();
+                        option += `<option value='${id}' data-codeid ='${codeId}' ${attrSelect}>${item.Title}</option>`;
+                    })
+                    $('#ddlSupplier').html(option);
+                    $('#ddlSupplier').selectpicker('refresh');
+                    if (isChangeEvent !== undefined && isChangeEvent == true) {
+                        $('#ddlSupplier').change();
                     }
                     return;
                 }
                 else {
-                    console.log('::' + result.message);
+                    Notifization.Error(response.message);
                     return;
                 }
             }
-            console.log('::' + result.message);
             return;
         },
         error: function (result) {
@@ -1133,22 +1166,16 @@ function SupplierOption(_id, isdefault, isChangeEvent) {
                     var attrSelect = '';
                     $.each(result.data, function (index, item) {
                         var id = item.ID;
+                        var codeId = item.CodeID;
                         if (_id !== undefined && _id != "" && _id === item.ID) {
                             attrSelect = "selected";
                         }
-                        else if (isdefault != undefined && isdefault && index == 0) {
-                            attrSelect = "selected";
-                        }
-                        else {
-                            attrSelect = '--';
-                        }
-                        option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
+                        option += `<option value='${id}' data-codeid ='${codeId}' ${attrSelect}>${item.Title}</option>`;
                     });
-                    console.log('::' + attrSelect);
-                    $('#ddlClient').html(option);
-                    $('#ddlClient').selectpicker('refresh');
-                    if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
-                        $('#ddlClient').change();
+                    $('#ddlSupplier').html(option);
+                    $('#ddlSupplier').selectpicker('refresh');
+                    if (isChangeEvent !== undefined && isChangeEvent) {
+                        $('#ddlSupplier').change();
                     }
                     return;
                 }

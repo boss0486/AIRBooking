@@ -311,12 +311,16 @@ namespace WebCore.Services
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
                     //
+                    var supplier1 = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
+                    if (supplier1 != null)
+                        return Notifization.Invalid("Mã khách hàng đã được sử dụng");
+
                     var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (customer != null)
                         return Notifization.Invalid("Mã khách hàng đã được sử dụng");
-
-                    customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
-                    if (customer != null)
+                    //
+                    var customerTitle = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
+                    if (customerTitle != null)
                         return Notifization.Invalid("Tên khách hàng đã được sử dụng");
                     //
                     // account
@@ -422,7 +426,6 @@ namespace WebCore.Services
                         UserID = userId,
                         IsSuper = true
                     }, transaction: _transaction);
-
 
                     // update path
                     if (!string.IsNullOrWhiteSpace(path))
@@ -641,9 +644,6 @@ namespace WebCore.Services
         }
 
         //########################################################################tttt######################################################################################################################################################################################
-       
-        
-
         public ActionResult Delete(SupplierIDModel model)
         {
             _connection.Open();
@@ -721,10 +721,6 @@ namespace WebCore.Services
                 }
             }
         }
- 
-
-
-
         public ActionResult Delete(CustomerIDModel model)
         {
             _connection.Open();
@@ -782,6 +778,66 @@ namespace WebCore.Services
                     return Notifization.TEST("::" + ex);
                 }
             }
+        }
+        //##############################################################################################################################################################################################################################################################
+        public List<ClientOption> GetAgentData()
+        {
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            List<ClientOption> clientOptions = new List<ClientOption>();
+            string sqlQuery;
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' ORDER BY c.CodeID";
+                //
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
+            }
+            else if (Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND SupplierID = @ClientID ORDER BY c.CodeID";
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+            }
+            else if (Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ParentID = @ClientID ORDER BY c.CodeID";
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+            }
+            //
+            if (clientOptions.Count == 0)
+                return new List<ClientOption>();
+            //
+            return clientOptions;
+        }
+
+        public List<ClientOption> GetCompanyData()
+        {
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            List<ClientOption> clientOptions = new List<ClientOption>();
+            string sqlQuery;
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' ORDER BY c.CodeID";
+                //
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
+            }
+            else if (Helper.Current.UserLogin.IsSupplierLogged())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+            }
+            else if (Helper.Current.UserLogin.IsCustomerLogged())
+            {
+                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
+                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+            }
+            //
+            if (clientOptions.Count == 0)
+                return new List<ClientOption>();
+            //
+            return clientOptions;
         }
         //##############################################################################################################################################################################################################################################################
         public static string DropdownList(string id)
@@ -881,64 +937,7 @@ namespace WebCore.Services
             }
 
         }
-
-
-        //##############################################################################################################################################################################################################################################################
-        ////public static string DropdownListCustomerChildByLogin(string id)
-        ////{
-        ////    try
-        ////    {
-        ////        string result = string.Empty;
-        ////        using (var service = new CustomerService())
-        ////        {
-        ////            string whereCondition = string.Empty;
-        ////            if (Helper.Current.UserLogin.IsCustomerLogged())
-        ////            {
-        ////                // get customer
-        ////                string sqlQuery = @"SELECT TOP 1 * FROM App_ClientLogin where UserID = @UserID AND ClientType = 1";
-        ////                var clientLogin = service.Query<ClientLogin>(sqlQuery, new { }).FirstOrDefault();
-        ////                if (clientLogin == null)
-        ////                    return string.Empty;
-        ////                //
-        ////                string customerId = clientLogin.ClientID;
-        ////                sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID = @ParentID AND Enabled = 1 ORDER BY Title ASC";
-        ////                var customer = service.Query<CustomerOption>(sqlQuery, new { ParentID = customerId }).ToList();
-        ////                if (customer.Count == 0)
-        ////                    return string.Empty;
-        ////                //
-        ////                foreach (var item in customer)
-        ////                {
-        ////                    string select = string.Empty;
-        ////                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-        ////                        select = "selected";
-        ////                    result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-        ////                }
-        ////                return result;
-        ////            }
-        ////            else
-        ////            {
-        ////                string sqlQuery = @"SELECT * FROM App_Customer WHERE ParentID IS NULL AND Enabled = 1 ORDER BY Title ASC";
-        ////                var customer = service.Query<CustomerOption>(sqlQuery, new { }).ToList();
-        ////                if (customer.Count == 0)
-        ////                    return string.Empty;
-        ////                //
-        ////                foreach (var item in customer)
-        ////                {
-        ////                    string select = string.Empty;
-        ////                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-        ////                        select = "selected";
-        ////                    result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-        ////                }
-        ////                return result;
-        ////            }
-        ////        }
-        ////    }
-        ////    catch (Exception)
-        ////    {
-        ////        return string.Empty;
-        ////    }
-        ////}
-
+         
         //##############################################################################################################################################################################################################################################################
         public static string GetCustomerCodeID(string id)
         {

@@ -6,9 +6,6 @@ var _PermissionController = {
         _PermissionController.registerEvent();
     },
     registerEvent: function () {
-        $(document).ready(function () {
-            $("#Role li:first-child a:first-child").click();
-        });
     },
     PermissionList: function () {
         //
@@ -111,6 +108,10 @@ var _PermissionController = {
             data: model,
             success: function (result) {
                 $('#TblFunction > tbody').html('');
+                //var activeEvent = 'disabled';
+                //if (HelperModel.AccessInApplication() == RoleEnum.IsCMSUser || HelperModel.AccessInApplication() == RoleEnum.IsAdminInApplication) {
+                //    activeEvent = '';
+                //}
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
@@ -137,10 +138,7 @@ var _PermissionController = {
                                 staController = "checked";
                                 actionState = '';
                             }
-                            var activeEvent = 'disabled';
-                            if (!HelperModel.AccessInApplication == RoleEnum.IsCMSUser && !HelperModel.AccessInApplication == RoleEnum.IsAdminInApplication && actionState == "") {
-                                activeEvent = '';
-                            }
+
                             if (actionData != null) {
                                 $.each(actionData, function (actIndex, actItem) {
                                     var actId = actItem.ID;
@@ -149,9 +147,9 @@ var _PermissionController = {
                                     if (actItem.Status) {
                                         staAction = "checked";
                                         cntActionActive++;
-                                    } 
+                                    }
                                     actionTemp += `<div style='width:120px;display: inline-block;'> 
-                                                        <input id="cbx${actId}" data-val="${actId}" type="checkbox" class="filled-in inp-action" ${staAction} ${actionState} ${activeEvent} />
+                                                        <input id="cbx${actId}" data-val="${actId}" type="checkbox" class="filled-in inp-action" ${staAction} ${actionState} />
                                                         <label for="cbx${actId}">${actTitle}</label>
                                                    </div>`;
                                 });
@@ -175,7 +173,7 @@ var _PermissionController = {
                             rowData += `
                             <tr data-rowid='w-${id}'> 
                                 <td class='text-left'>
-                                    <input id="cbx${id}" data-val="${id}" type="checkbox" class="filled-in inp-controler" ${staController} ${activeEvent}  />
+                                    <input id="cbx${id}" data-val="${id}" type="checkbox" class="filled-in inp-controler" ${staController} />
                                     <label for="cbx${id}">${rowNum}. ${_title}</label>
                                 </td>
                                 <td class='text-left'>${actionHtml}</td>     

@@ -38,47 +38,52 @@ namespace WebCore.Services
             }
         }
         //
-        public List<ClientOption> GetAllProvider()
+        
+
+        public List<ClientProviderOption> GetAllProvider()
         {
             string userId = Helper.Current.UserLogin.IdentifierID;
             string sqlQuery = "";
-            List<ClientOption> clientOptions = new List<ClientOption>();
+            List<ClientProviderOption> clientOptions = new List<ClientProviderOption>();
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
                 sqlQuery = @"
-                         SELECT s.ID,s.CodeID, s.Title FROM App_Supplier as s WHERE s.Enabled = 1 
+                         SELECT s.ID,s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 
                          Union
-                         SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
+                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
                 //
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
+                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { }).ToList();
             }
             else if (Helper.Current.UserLogin.IsSupplierLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT s.ID, s.CodeID, s.Title FROM App_Supplier as s WHERE s.Enabled = 1 AND ID = @ClientID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+                sqlQuery = @"SELECT s.ID, s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 AND ID = @ClientID";
+                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID, c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ID = @ClientID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
+                sqlQuery = @"SELECT c.ID, c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ID = @ClientID";
+                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             //
             if (clientOptions.Count == 0)
-                return new List<ClientOption>();
+                return new List<ClientProviderOption>();
             //
             return clientOptions;
         }
+        //##############################################################################################################################################################################################################################################################
+         
+        
 
-
-        public static string DropdownListAgent(string id)
+        
+        public static string DropdownAllProvider(string id)
         {
             string result = string.Empty;
             using (var service = new CustomerService())
             {
                 ClientLoginService clientLoginService = new ClientLoginService();
-                List<ClientOption> dtList = clientLoginService.GetAllProvider();
+                List<ClientProviderOption> dtList = clientLoginService.GetAllProvider();
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)
@@ -86,63 +91,11 @@ namespace WebCore.Services
                         string select = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='"+ item.IsSupplier +"' " + select + ">" + item.Title + "</option>";
                     }
                 }
                 return result;
             }
-
-        }
-        public static string DropdownProvider(string id)
-        {
-            string result = string.Empty;
-            using (var service = new CustomerService())
-            {
-                ClientLoginService clientLoginService = new ClientLoginService();
-                List<ClientOption> dtList = clientLoginService.GetAllProvider();
-                if (dtList.Count > 0)
-                {
-                    foreach (var item in dtList)
-                    {
-                        string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                            select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-                    }
-                }
-                return result;
-            }
-        }
-
-
-        public List<ClientOption> GetCompany()
-        {
-            string userId = Helper.Current.UserLogin.IdentifierID;
-            string sqlQuery = "";
-            List<ClientOption> clientOptions = new List<ClientOption>();
-            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-            {
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' ORDER BY c.CodeID";
-                //
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsCustomerLogged())
-            {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            //
-            if (clientOptions.Count == 0)
-                return new List<ClientOption>();
-            //
-            return clientOptions;
         }
     }
 }

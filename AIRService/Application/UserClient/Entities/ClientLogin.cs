@@ -33,5 +33,11 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string CodeID { get; set; }
     }
-     
+    public class ClientProviderOption
+    {
+        public string ID { get; set; }
+        public string Title { get; set; }
+        public string CodeID { get; set; }
+        public bool IsSupplier { get; set; }
+    }
 }

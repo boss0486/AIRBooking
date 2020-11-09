@@ -126,7 +126,8 @@ namespace WebCore.Services
                     //
                     int enabled = model.Enabled;
                     SupplierService supplierService = new SupplierService(_connection);
-
+                    CustomerService customerService = new CustomerService(_connection);
+                    //
                     string alias = Helper.Page.Library.FormatToUni2NONE(title);
                     if (model == null)
                         return Notifization.Invalid();
@@ -195,7 +196,7 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(contactEmail))
                         return Notifization.Invalid("Không được để trống e-mail liên hệ");
                     //
-                    contactEmail = contactEmail.Trim();
+                    contactEmail = contactEmail.ToLower().Trim();
                     if (!Validate.TestEmail(contactEmail))
                         return Notifization.Invalid("E-mail liên hệ không hợp lệ");
 
@@ -229,6 +230,14 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     // 
+                    var modelEmail = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ContactEmail) && m.ContactEmail.ToLower() == contactEmail, transaction: _transaction).FirstOrDefault();
+                    if (modelEmail != null)
+                        return Notifization.Invalid("Địa chỉ e-mail liên hệ đã được sử dụng");
+                    //
+                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
+                    if (customer != null)
+                        return Notifization.Invalid("Mã khách hàng đã được sử dụng");
+
                     var supplier = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (supplier != null)
                         return Notifization.Invalid("Mã nhà cung cấp đã được sử dụng");
@@ -435,7 +444,7 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(contactEmail))
                         return Notifization.Invalid("Không được để trống e-mail liên hệ");
                     //
-                    contactEmail = contactEmail.Trim();
+                    contactEmail = contactEmail.ToLower().Trim();
                     if (!Validate.TestEmail(contactEmail))
                         return Notifization.Invalid("E-mail không hợp lệ");
 
@@ -454,7 +463,11 @@ namespace WebCore.Services
                     var modelTitle = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (modelTitle != null)
                         return Notifization.Invalid("Tên nhà cung cấp đã được sử dụng");
-
+                    //
+                    var modelEmail = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ContactEmail) && m.ContactEmail.ToLower() == contactEmail && m.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (modelEmail != null)
+                        return Notifization.Invalid("Địa chỉ e-mail đã được sử dụng");
+                    //
                     var supplierId = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
                     if (supplierId != null)
                         return Notifization.Invalid("Mã nhà cung cấp đã được sử dụng");

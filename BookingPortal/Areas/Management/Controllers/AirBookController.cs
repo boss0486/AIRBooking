@@ -54,7 +54,7 @@ namespace WebApplication.Management.Controllers
         }
 
         public ActionResult Booking()
-        {
+        {   
             List<FlightPassengerTypeInfo> flightPassengerTypeInfos = new List<FlightPassengerTypeInfo>();
             try
             {
@@ -117,22 +117,22 @@ namespace WebApplication.Management.Controllers
         }
 
         // GET: ******************************************************************************************************************************
-        [HttpPost]
-        [Route("Action/GetProvider")]
-        public ActionResult GetProviceByLogin()
-        {
-            ClientLoginService clientLoginService = new ClientLoginService();
-            List<ClientOption> dtList = clientLoginService.GetAllProvider();
-            string userId = Helper.Current.UserLogin.IdentifierID;
-            return Notifization.Data("", dtList);
-        }
-               
+        //[HttpPost]
+        //[Route("Action/GetProvider")]
+        //public ActionResult GetCustomerAgent()
+        //{
+        //    ClientLoginService clientLoginService = new ClientLoginService();
+        //    List<ClientOption> dtList = clientLoginService.GetAllProvider();
+        //    string userId = Helper.Current.UserLogin.IdentifierID;
+        //    return Notifization.Data("", dtList);
+        //}
+
         [HttpPost]
         [Route("Action/GetCompany")]
         public ActionResult GetCompany()
         {
-            ClientLoginService clientLoginService = new ClientLoginService();
-            List<ClientOption> dtList = clientLoginService.GetCompany();
+            CustomerService customerService = new CustomerService();
+            List<ClientOption> dtList = customerService.GetCompanyData();
             return Notifization.Data("", dtList);
         }
 
@@ -266,6 +266,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
+                return Notifization.TEST(":::");
                 var vNASearchService = new VNA_SearchService();
                 return vNASearchService.TicketOrder(model);
             }
