@@ -9,10 +9,10 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_BookPNRCode")]
-    public partial class BookPNRCode : WEBModel
+    [Table("App_BookOrder")]
+    public partial class BookOrder : WEBModel
     {
-        public BookPNRCode()
+        public BookOrder()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -24,12 +24,15 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string TicketingID { get; set; }
+        public string TicketingName { get; set; }
+        public string ClientID { get; set; }
+        public string ClientCode { get; set; }
         public int Status { get; set; }
-
     }
 
     // model
-    public class BookPNRCodeCreateModel
+    public class BookOrderCreateModel
     {
         public string OrderID { get; set; }
         public string AirlineID { get; set; }
@@ -38,15 +41,15 @@ namespace WebCore.Entities
         public int Status { get; set; }
         public int Enabled { get; set; }
     }
-    public class BookPNRCodeUpdateModel : BookPNRCodeCreateModel
+    public class BookOrderUpdateModel : BookOrderCreateModel
     {
         public string ID { get; set; }
     }
-    public class BookPNRCodeIDModel
+    public class BookOrderIDModel
     {
         public string ID { get; set; }
     }
-    public class BookPNRCodeOption
+    public class BookOrderOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

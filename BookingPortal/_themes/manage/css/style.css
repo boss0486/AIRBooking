@@ -6108,7 +6108,11 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     padding-bottom: 21px;
     position: relative;
 }
-
+.form-group hr {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    position: relative;
+}
 
 .input-group {
     width: 100%;
@@ -6143,6 +6147,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
 
 textarea.form-control {
     height: 68px;
+    max-width:100%;
 }
 
     textarea.form-control.default {

@@ -21,9 +21,13 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string PNR { get; set; }
+        public string BookOrderID { get; set; }
+        public int ContactType { get; set; }
         public string Name { get; set; }
         public string Email { get; set; } 
         public string Phone { get; set; }
+        public string CompanyID { get; set; }
+        public string CompanyCode { get; set; }
     }
     // model
     public class BookContactCreateModel
@@ -32,6 +36,8 @@ namespace WebCore.Entities
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string CompanyID { get; set; }
+        public string CompanyCode { get; set; }
     }
     public class BookContactUpdateModel : BookContactCreateModel
     {

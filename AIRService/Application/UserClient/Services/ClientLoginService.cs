@@ -88,10 +88,13 @@ namespace WebCore.Services
                 {
                     foreach (var item in dtList)
                     {
-                        string select = string.Empty;
+                        string strSelect = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                            select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='"+ item.IsSupplier +"' " + select + ">" + item.Title + "</option>";
+                            strSelect = "selected";
+                        else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
+                            strSelect = "selected";
+                        //
+                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='"+ item.IsSupplier +"' " + strSelect + ">" + item.Title + "</option>";
                     }
                 }
                 return result;

@@ -11,6 +11,7 @@ using Helper;
 using System.Web;
 using WebCore.Entities;
 using AIRService.WebService.VNA.Enum;
+using WebCore.ENM;
 
 namespace WebCore.Services
 {
@@ -65,7 +66,7 @@ namespace WebCore.Services
         public string BookTicket(BookTicketOrder model)
         {
             _connection.Open();
-            using (var transaction = _connection.BeginTransaction())
+            using (var _transaction = _connection.BeginTransaction())
             {
                 try
                 {
@@ -83,17 +84,26 @@ namespace WebCore.Services
                     var bookTickId = "";
                     int cnt = 0;
                     var fareFlights = model.FareFlights;
-                    string pnrId = bookPNRCodeService.Create<string>(new BookPNRCode
+
+                    BookTicketingInfoModel bookTicketing = model.TiketingInfo; 
+                    UserInfoService userInfoService = new UserInfoService(_connection);
+                    string ticketingId = bookTicketing.TiketingID;
+                    UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId.ToLower(), transaction: _transaction).FirstOrDefault();
+                    string pnrId = bookPNRCodeService.Create<string>(new BookOrder
                     {
                         OrderID = model.OrderID,
                         AirlineID = "VNA",
                         Title = pnr,
                         Alias = "VNA-" + pnr,
-                        Summary = "Viet nam Airline",
+                        Summary = model.Summary,
+                        ClientID = bookTicketing.ProviderID,
+                        ClientCode = bookTicketing.ProviderID,
+                        TicketingID = bookTicketing.TiketingID,
+                        TicketingName = userInfo.FullName,
                         Status = (int)ENM.BookTicketEnum.BookPNRCodeStatus.Booking,
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         SiteID = "-"
-                    }, transaction: transaction);
+                    }, transaction: _transaction);
 
                     foreach (var flight in flights)
                     {
@@ -124,13 +134,13 @@ namespace WebCore.Services
                             FareBase = 0,
                             ReturnID = bookTickId,
                             Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED
-                        }, transaction: transaction);
+                        }, transaction: _transaction);
                         // price 
                         foreach (var price in fareFlights)
                         {
                             if (price.FlightType == direction)
                             {
-                                var fareId = bookPriceService.Create<string>(new BookPrice
+                                bookPriceService.Create<string>(new BookPrice
                                 {
                                     PNR = pnr,
                                     FlightType = price.FlightType,
@@ -139,7 +149,7 @@ namespace WebCore.Services
                                     Title = "Fare Price",
                                     Amount = price.Amount,
                                     Unit = "VND"
-                                }, transaction: transaction);
+                                }, transaction: _transaction);
                             }
                         }
                         cnt++;
@@ -157,7 +167,7 @@ namespace WebCore.Services
                                 FullName = passenger.FullName,
                                 Gender = passenger.Gender,
                                 DateOfBirth = passenger.DateOfBirth,
-                            }, transaction: transaction);
+                            }, transaction: _transaction);
                         }
                     }
                     // tax
@@ -166,7 +176,7 @@ namespace WebCore.Services
                     {
                         foreach (var item in booFareTaxs)
                         {
-                            var fareId = bookFareService.Create<string>(new BookTax
+                            bookFareService.Create<string>(new BookTax
                             {
                                 PNR = pnr,
                                 PassengerType = item.PassengerType,
@@ -174,32 +184,53 @@ namespace WebCore.Services
                                 TaxCode = item.TaxCode,
                                 Amount = item.Amount,
                                 Unit = "VND"
-                            }, transaction: transaction);
+                            }, transaction: _transaction);
                         }
                     }
                     // contact
-                    var bookContacts = model.Contacts;
-                    if (bookContacts.Count > 0)
+                    BookTicketingInfoModel ticketingInfo = model.TiketingInfo;
+                    BookContactModel Contacts = model.Contacts;
+                    //
+                    int passengerGroup = ticketingInfo.PassengerGroup;
+                    //
+                    if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
                     {
-                        foreach (var item in bookContacts)
+                        BookCompanyContactModel bookCompanyContact = Contacts.BookCompanyContact;
+                        CustomerService customerService = new CustomerService();
+                        Customer customer = customerService.GetAlls(m => m.ID == bookCompanyContact.CompanyID, transaction: _transaction).FirstOrDefault();
+                        bookContactService.Create<string>(new BookContact
                         {
-                            var fareId = bookContactService.Create<string>(new BookContact
-                            {
-                                PNR = pnr,
-                                Name = item.Name,
-                                Email = item.Email,
-                                Phone = item.Phone,
-                            }, transaction: transaction);
-                        }
+                            PNR = pnr,
+                            BookOrderID = pnrId,
+                            CompanyID = customer.ID,
+                            CompanyCode = customer.CodeID,
+                            Name = null,
+                            Email = null,
+                            Phone = null
+                        }, transaction: _transaction);
+                    }
+                    if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
+                    {
+                        BookKhachLeContactModel bookKhachLe = Contacts.BookKhachLeContact;
+                        bookContactService.Create<string>(new BookContact
+                        {
+                            PNR = pnr,
+                            BookOrderID = pnrId,
+                            CompanyID = null,
+                            CompanyCode = null,
+                            Name = bookKhachLe.Name,
+                            Email = bookKhachLe.Email,
+                            Phone = bookKhachLe.Phone
+                        }, transaction: _transaction);
                     }
                     //
-                    transaction.Commit();
+                    _transaction.Commit();
                     _connection.Close();
                     return bookTickId;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    _transaction.Rollback();
                     _connection.Close();
                     return string.Empty + ex;
                 }

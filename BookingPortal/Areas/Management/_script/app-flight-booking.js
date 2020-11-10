@@ -499,14 +499,7 @@ $(document).on('click', '.lbl-list label.fare-item', function () {
 //
 $(document).on('click', '#btnBooking', function () {
     var flg = true;
-    //
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val(); 
-    var ddlCompany = $("#ddlCompany").val();
-    $("#lblCompany").html("");
-    if (parseInt(rdoCustomerType) == 2 && ddlCompany == "") {
-        $("#lblCompany").html("Vui lòng chọn công ty");
-        flg = false;
-    }
+    // 
     // valid full name
     $("#BookingForm input[name='txtFullName']").each(function (index, item) {
         var _wtrl = $(this).closest("div");
@@ -543,14 +536,33 @@ $(document).on('click', '#btnBooking', function () {
     });
 
     // FOR CONTACT ************************************************************************************************
-    // valid name of passengers 
-    
+    // valid name of passengers   
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    var ddlProvider = $("#ddlProvider").val();
+    var ddlEmployee = $("#ddlEmployee").val();
+    var ddlCompany = $("#ddlCompany").val();
     var name = $("#txtName").val();
+    // comp
     $("#lblCompany").html("");
+    // Khach le
     $("#lblName").html("");
     $("#txtPhone").html("");
     $("#lblEmail").html("");
-    if (parseInt(rdoCustomerType) == 1) {
+    $("#lblCompany").html("");
+    $("#lblProvider").html("");
+    $("#lblEmployee").html("");
+    if (ddlProvider == "") {
+        $("#lblProvider").html("Vui lòng chọn công nhà cung cấp");
+        flg = false;
+    }
+    if (ddlEmployee == "") {
+        $("#lblEmployee").html("Vui lòng chọn nhân viên");
+        flg = false;
+    }
+
+    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.KhachLe) {
+
+        //
         $("#lblName").html("");
         if (name == "") {
             $("#lblName").html("Không được để trống họ tên liên hệ");
@@ -576,11 +588,8 @@ $(document).on('click', '#btnBooking', function () {
             $("#lblEmail").html("Địa chỉ email không hợp lệ");
             flg = false;
         }
-
-
     }
-    else if (parseInt(rdoCustomerType) == 2) {
-        var ddlCompany = $("#ddlCompany").val();
+    else if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
         if (ddlCompany == "") {
             $("#lblCompany").html("Vui lòng chọn công ty");
             flg = false;
@@ -589,10 +598,19 @@ $(document).on('click', '#btnBooking', function () {
     else {
         flg = false;
     }
-
-
-
     // 
+    var txtMessage = $("#txtMessage").val();
+    $("#lblMessage").html("");
+    if (txtMessage !== '') {
+        if (txtMessage.length > 120) {
+            $('#lblMessage').html('Nội dung giới hạn từ 1-> 120 ký tự');
+            flg = false;
+        }
+        else if (!FormatKeyword.test(txtMessage)) {
+            $('#lblMessage').html('Nội dung không hợp lệ');
+            flg = false;
+        }
+    }
     var lPassenger = [];
     $("#BookingForm [data-PassengerType]").each(function (index, item) {
         var type = $(item).data("passengertype");
@@ -681,20 +699,44 @@ $(document).on('click', '#btnBooking', function () {
             OriginLocation: _originLocation
         });
     }
+    //
+    if (ddlProvider == undefined)
+        ddlProvider = "";
+    //
+    if (ddlEmployee == undefined)
+        ddlEmployee = "";
+    //
+    if (ddlCompany == undefined)
+        ddlCompany = "";
     //  copntact of passengers
-    var lContact = [];
-    var contact = {
+    var ticketingInfo = {
+        PassengerGroup: rdoPassengerGroup,
+        ProviderID: ddlProvider,
+        TiketingID: ddlEmployee
+    };
+    
+    var khachLe = {
         Name: name,
         Email: email,
         Phone: phone
     };
-    lContact.push(contact);
+    var company = {
+        CompanyID: name
+    };
+    //
+    
+
+    var lContact = {
+        BookKhachLeContact: khachLe,
+        BookCompanyContact: company,
+    };
+    //
     var bookModel = {
-        PassengerGroup: rdoCustomerType,
-        CompanyID: ddlCompany,
+        TicketingInfo: ticketingInfo,
         Contacts: lContact,
         Passengers: lPassenger,
-        Flights: lFlight
+        Flights: lFlight,
+        Summary: txtMessage
     };
     // call api
     if (flg) {
@@ -1199,56 +1241,6 @@ function BookingOrderLoad() {
     }
 }
 //###################################################################################################################################################
-$(document).on('keyup', '#txtTitle', function () {
-    var title = $(this).val();
-    if (title == '') {
-        $('#lblTitle').html('Không được để trống tiêu đề');
-    }
-    else if (title.length < 1 || title.length > 80) {
-        $('#lblTitle').html('Tiêu đề giới hạn từ 1-> 80 characters');
-    }
-    else if (!FormatKeyword.test(title)) {
-        $('#lblTitle').html('Tiêu đề không hợp lệ');
-    }
-    else {
-        $('#lblTitle').html('');
-    }
-});
-//
-$(document).on('keyup', '#txtIataCode', function () {
-    var iataCode = $(this).val();
-    if (iataCode == '') {
-        $('#lblIataCode').html('Không được để trống mã chuyến bay');
-    }
-    else if (iataCode.length < 1 || iataCode.length > 5) {
-        $('#lblIataCode').html('Mã chuyến bay giới hạn từ 5 characters');
-    }
-    else if (!FormatKeyId.test(iataCode)) {
-        $('#lblIataCode').html('Mã chuyến bay không hợp lệ');
-    }
-    else {
-        $('#lblIataCode').html('');
-    }
-});
-//
-$(document).on('keyup', '#txtSummary', function () {
-    var summary = $(this).val();
-    if (summary !== '') {
-        if (summary.length < 1 || summary.length > 120) {
-            $('#lblSummary').html('Tiêu đề giới hạn từ 1-> 80 characters');
-        }
-        else if (!FormatKeyword.test(summary)) {
-            $('#lblSummary').html('Mô tả không hợp lệ');
-        }
-        else {
-            $('#lblSummary').html('');
-        }
-    }
-    else {
-        $('#lblSummary').html('');
-    }
-});
-//
 $(document).on('blur', '#DepartureDateTime', function () {
     var dateGo = $(this).val();
     $('#lblDepartureDateTime').html('');
@@ -1305,24 +1297,7 @@ $(document).on("change", "#ddlFlightType", function () {
         }
     }
 });
-//
-$(document).on('click', '#cbxActive', function () {
-    if ($(this).hasClass('actived')) {
-        // remove
-        $(this).children('i').removeClass('fa-check-square');
-        $(this).children('i').addClass('fa-square');
-        $(this).removeClass('actived');
-    }
-    else {
-        $(this).children('i').addClass('fa-check-square');
-        $(this).children('i').removeClass('fa-square');
-        $(this).addClass('actived');
-    }
-});
-//
-$(document).on('', '.img-caption-text', function () {
-    $('.new-box-preview img').click();
-});
+
 //###################################################################################################################################################
 // valid full name
 $(document).on('keyup', 'input[name="txtFullName"]', function () {
@@ -1353,12 +1328,77 @@ $(document).on('keyup', 'input[name="txtBirthDay"]', function () {
         $(_wtrl).find("span[name='lblBirthDay']").html("");
     }
 });
-// valid name in contact
+//KHACH LE **********************************************************************************************************************************
+// valid ddlProvider
+$(document).on('change', '#ddlProvider', function () {
+    var ddlProvider = $(this).val();
+    $("#lblProvider").html("");
+    if (ddlProvider == "") {
+        $("#lblProvider").html("Vui lòng chọn nhà cung cấp");
+    }
+    var option = `<option value="">-Lựa chọn-</option>`;
+    $('#ddlEmployee').html(option);
+    $('#ddlEmployee').selectpicker('refresh');
+
+    $('select#ddlEmployee').html(option);
+    $('select#ddlEmployee').selectpicker('refresh');
+    var model = {
+        ID: ddlProvider
+    };
+
+    //GetTicketing
+    AjaxFrom.POST({
+        url: '/Management/User/Action/GetTicketing',
+        data: model,
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    $.each(response.data, function (index, item) {
+                        index = index + 1;
+                        //
+                        var strIndex = '';
+                        if (index < 10)
+                            strIndex += "0" + index;
+                        //
+                        var id = item.UserID;
+                        var title = item.FullName;
+                        option += `<option value='${id}'>${title}</option>`;
+                    });
+                    $('select#ddlEmployee').html(option);
+                    $('select#ddlEmployee').selectpicker('refresh');
+                    return;
+                }
+            }
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+
+
+
+});
+
+
+
+
+$(document).on('change', '#ddlEmployee', function () {
+    var ddlEmployee = $(this).val();
+    $("#lblEmployee").html("");
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.KhachLe) {
+        if (ddlEmployee == "") {
+            $("#lblEmployee").html("Vui lòng chọn nhân viên");
+        }
+    }
+});
+
 $(document).on('keyup', '#txtName', function () {
     var name = $(this).val();
     $("#lblName").html("");
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val();
-    if (parseInt(rdoCustomerType) == 1) {
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    if (parseInt(rdoPassengerGroup) == 1) {
         if (name == "") {
             $("#lblName").html("Không được để trống họ tên liên hệ");
         }
@@ -1368,8 +1408,8 @@ $(document).on('keyup', '#txtName', function () {
 $(document).on('keyup', '#txtPhone', function () {
     var phone = $(this).val();
     $("#lblPhone").html("");
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val();
-    if (parseInt(rdoCustomerType) == 1) {
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    if (parseInt(rdoPassengerGroup) == 1) {
         if (phone == "") {
             $("#lblPhone").html("Không được để trống số điện thoại");
         }
@@ -1383,25 +1423,47 @@ $(document).on('keyup', '#txtPhone', function () {
 $(document).on('keyup', '#txtEmail', function () {
     var email = $(this).val();
     $("#lblEmail").html("");
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val();
-    if (parseInt(rdoCustomerType) == 1) {
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    if (parseInt(rdoPassengerGroup) == 1) {
         if (email !== "" && !ValidData.ValidEmail(email)) {
             $("#lblEmail").html("Địa chỉ email không hợp lệ");
         }
     }
 });
-// valid company
+
+//COMP **********************************************************************************************************************************
 $(document).on('change', '#ddlCompany', function () {
     var ddlCompany = $(this).val();
     $("#lblCompany").html("");
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val();
-    if (parseInt(rdoCustomerType) == 2) {
-        if (email !== "" && !ValidData.ValidEmail(ddlCompany)) {
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
+        if (ddlCompany == "") {
             $("#lblCompany").html("Vui lòng chọn công ty");
         }
     }
+    var codeid = $(this).find(':selected').data('codeid');
+    $("#lblCompanyCodeID").html(codeid);
+
 });
-// valid email address
+
+
+$(document).on('keyup', '#txtMessage', function () {
+    var txtMessage = $(this).val();
+    $("#lblMessage").html("");
+    if (txtMessage !== '') {
+        if (txtMessage.length > 120) {
+            $('#lblMessage').html('Nội dung giới hạn từ 1-> 120 ký tự');
+        }
+        else if (!FormatKeyword.test(txtMessage)) {
+            $('#lblMessage').html('Nội dung không hợp lệ');
+        }
+    }
+});
+
+
+
+
+// chage tax checkbox
 $(document).on('change', '#cbxHasTax', function () {
     var unit = " đ";
     var fareAmount = 0;
@@ -1429,17 +1491,17 @@ $(document).on('change', '#cbxHasTax', function () {
     });
 });
 // 
-$(document).on("change", "input[name='rdoCustomerType']", function () {
+$(document).on("change", "input[name='rdoPassengerGroup']", function () {
     $("#lblCompany").html("");
     $("#lblName").html("");
     $("#txtPhone").html("");
-    $("#lblEmail").html(""); 
-    var rdoCustomerType = $("input[name='rdoCustomerType']:checked").val();
+    $("#lblEmail").html("");
+    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
     // comp
     var option = `<option value="">-Lựa chọn-</option>`;
     $('#ddlCompany').html(option);
     $('#ddlCompany').selectpicker('refresh');
-    if (parseInt(rdoCustomerType) == 2) { 
+    if (parseInt(rdoPassengerGroup) == 2) {
         var _id = "";
         var model = {
         };
@@ -1459,7 +1521,7 @@ $(document).on("change", "input[name='rdoCustomerType']", function () {
                             if (_id !== undefined && _id != "" && _id == item.ID) {
                                 attrSelect = "selected";
                             }
-                            option += `<option value='${id}' ${attrSelect}>${item.CodeID}: ${item.Title}</option>`;
+                            option += `<option value='${id}' ${attrSelect} data-codeid='${item.CodeID}'>${item.CodeID}: ${item.Title}</option>`;
                         });
                         $('#ddlCompany').html(option);
                         $('#ddlCompany').selectpicker('refresh');
@@ -1475,8 +1537,6 @@ $(document).on("change", "input[name='rdoCustomerType']", function () {
     }
     else {
         var option = `<option value="">-Lựa chọn-</option>`;
-        $('#ddlProvider').html(option);
-        $('#ddlProvider').selectpicker('refresh');
         $('#ddlCompany').html(option);
         $('#ddlCompany').selectpicker('refresh');
     }

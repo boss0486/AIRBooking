@@ -18,7 +18,7 @@ class AjaxFrom {
         //.fail(function () {
         //    console.log('::111111111111' + MessageText.NotService);
         //})
-    } 
+    }
 }
 $(document).ajaxStart(function () {
     Loading.ShowLoading();
@@ -164,4 +164,9 @@ class RoleEnum {
     static IsSupplierLogged = 4;
     static IsAdminCustomerLogged = 5;
     static IsCustomerLogged = 6;
+}
+
+class PassengerGroupEnum { 
+    static KhachLe = 1;
+    static Company = 2;
 }

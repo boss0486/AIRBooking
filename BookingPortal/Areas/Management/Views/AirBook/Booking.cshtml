@@ -11,8 +11,7 @@
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
 }
 @{
-    string userId = Helper.Current.UserLogin.IdentifierID;
-    string clientId = string.Empty;
+    string userId = Helper.Current.UserLogin.IdentifierID; 
     List<CustomerOption> customerOptions = new List<CustomerOption>();
 }
 <section class="book-in">
@@ -144,61 +143,129 @@
         }
 
         <div class="top-pic special">
+            <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Nhân viên đặt vé:</span></label>
+        </div>
+        @{
+            ClientLoginService clientLoginService = new ClientLoginService();
+            List<ClientProviderOption> clientProviderOptions = clientLoginService.GetAllProvider();
+            string clientId = string.Empty;
+        }
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label class="form-label">Nhà cung cấp:</label>
+                            <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @if (clientProviderOptions.Count() > 0)
+                                {
+                                    foreach (var item in clientProviderOptions)
+                                    {
+                                        string selected = "";
+                                        if (item.ID == clientProviderOptions[0].ID)
+                                        {
+                                            selected = "selected";
+                                            clientId = item.ID;
+                                        }
+                                        <option value="@item.ID" data-codeid="@item.CodeID" @selected>@item.Title</option>
+
+                                    }
+                                }
+                            </select>
+                            <span id="lblProvider" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="form-label">Nhân viên:</label>
+                            <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
+                            </select>
+                            <span id="lblEmployee" class="message msg-box"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="top-pic special">
             <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Thông tin liên hệ:</span></label>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="form-group">
-                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerSingle" value="1" data-text="Khách lẻ" checked />
+                    <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCustomerSingle" value="1" data-text="Khách lẻ" checked />
                     <label class="form-check-label" for="rdoCustomerSingle">Khách lẻ</label>
                     <hr style="margin-top: 10px;">
-                    <span id="lblClientType" class="message msg-box"></span>
                 </div>
-                    <div class="form-group ">
-                        <label class="form-label">Tên khách hàng:</label>
-                        <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
-                        <span id="lblName" class="message msg-box"></span>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group ">
+                            <label class="form-label">Tên khách hàng:</label>
+                            <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
+                            <span id="lblName" class="message msg-box"></span>
+                        </div>
                     </div>
-                    <div class="form-group ">
-                        <label class="form-label">Số đ.thoại:</label>
-                        <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
-                        <span id="lblPhone" class="message msg-box"></span>
+                    <div class="col-md-5">
+                        <div class="form-group ">
+                            <label class="form-label">Số đ.thoại:</label>
+                            <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
+                            <span id="lblPhone" class="message msg-box"></span>
+                        </div>
                     </div>
-
-                    <div class="form-group ">
-                        <label class="form-label">Địa chỉ email:</label>
-                        <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
-                        <span id="lblEmail" class="message msg-box"></span>
-                    </div>
-            </div> 
-        <div class="col-md-5">
-            <div class="form-group">
-                <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCompany" value="2" data-text="Công ty" />
-                <label class="form-check-label" for="rdoCompany">Công ty</label>
-                <hr style="margin-top: 10px;">
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Địa chỉ email:</label>
+                    <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
+                    <span id="lblEmail" class="message msg-box"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="form-label">Công ty:</label>
-                <select id="ddlCompany" name="ddlCompany" class="form-control show-tick" data-live-search="true">
-                    <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                </select>
-                <span id="lblCompany" class="message msg-box"></span>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCompany" value="2" data-text="Công ty" />
+                    <label class="form-check-label" for="rdoCompany">Công ty</label>
+                    <hr style="margin-top: 10px;">
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label class="form-label">Công ty:</label>
+                            <select id="ddlCompany" name="ddlCompany" class="form-control show-tick" data-live-search="true">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                            </select>
+                            <span id="lblCompany" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="form-label">Mã công ty:</label>
+                            <div class="form-control disabled" style="background: #FFE5F1"><label id="lblCompanyCodeID">---</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="form-label">Nội dung:</label>
+                    <textarea id="txtMessage" class="content-area form-control default"></textarea>
+                    <span id="lblMessage" class="message msg-box"></span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-group text-right m-t-30">
-        <a href="/Management/AirBook/Search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
-        <button id="btnBooking" class="btn btn-primary -w-100" type="button"><i class="fas fa-arrow-circle-right"></i> Đặt vé</button>
-        <hr />
-    </div>
-    <div class="form-group">
-        <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
-        <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
-        <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra thông tin khách hàng.</p>
-        <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Đặt vé" để thực hiện lệnh đặt vé.</p>
-        <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "đặt vé" hoàn tất.</p>
-    </div>
+        <div class="form-group text-right m-t-30">
+            <a href="/Management/AirBook/Search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+            <button id="btnBooking" class="btn btn-primary -w-100" type="button"><i class="fas fa-arrow-circle-right"></i> Đặt vé</button>
+            <hr />
+        </div>
+        <div class="form-group">
+            <p class="-warning"> <label class="form-label">Lưu ý:</label></p>
+            <p class="-warning"><i class="far fa-hand-point-right"></i> 1. Kiểm tra thông tin vé, lịch trình bay.</p>
+            <p class="-warning"><i class="far fa-hand-point-right"></i> 2. Kiểm tra thông tin khách hàng.</p>
+            <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Đặt vé" để thực hiện lệnh đặt vé.</p>
+            <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "đặt vé" hoàn tất.</p>
+        </div>
 
 
 

@@ -135,7 +135,7 @@ namespace WebApplication.Management.Controllers
         // #######################################################################################################################################
 
         [HttpPost]
-        [Route("Action/GetEmployeeIsBooker")]
+        [Route("Action/GetTicketing")]
         [IsManage(skip: true)]
         public ActionResult GetEmployeeIsBooker(UserIDModel model)
         {

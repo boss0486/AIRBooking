@@ -134,7 +134,7 @@
     <Compile Include="Application\AirTicket\Entities\BookTax.cs" />
     <Compile Include="Application\AirTicket\Entities\BookPassenger.cs" />
     <Compile Include="Application\AirTicket\Entities\BookTicket.cs" />
-    <Compile Include="Application\AirTicket\Entities\BookPNRCode.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookOrder.cs" />
     <Compile Include="Application\AirTicket\Enum\BookTicket.cs" />
     <Compile Include="Application\AirTicket\Services\BookEmailService.cs" />
     <Compile Include="Application\AirTicket\Services\BookContactService.cs" />

@@ -924,14 +924,45 @@ namespace AIRService.Service
                 string _conversationId = tokenModel.ConversationID;
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
-                // 
-                string companyId = model.CompanyID;
-                int passengerGroup = model.PassengerGroup;
+                // ticketing & contact  ************************************************************************************************
+                BookTicketingInfoModel ticketingInfo = model.TicketingInfo;
+                BookContactModel Contacts = model.Contacts;
+                if (ticketingInfo == null || Contacts == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                int passengerGroup = ticketingInfo.PassengerGroup;
                 //
                 if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
                 {
+                    BookCompanyContactModel bookCompanyContact = Contacts.BookCompanyContact;
+                    if (bookCompanyContact == null)
+                        return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
+                    //
+                    string companyId = bookCompanyContact.CompanyID;
                     if (string.IsNullOrWhiteSpace(companyId))
                         return Notifization.Invalid("Vui lòng chọn công ty");
+                    //
+                }
+                else if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
+                {
+                    BookKhachLeContactModel bookKhachLeContact = Contacts.BookKhachLeContact;
+                    string name = bookKhachLeContact.Name;
+                    string phone = bookKhachLeContact.Phone;
+                    string email = bookKhachLeContact.Email;
+                    if (string.IsNullOrWhiteSpace(name))
+                        return Notifization.Invalid("Không được để trống tên liên hệ");
+                    //
+                    if (string.IsNullOrWhiteSpace(phone))
+                        return Notifization.Invalid("Không được để trống số đ.thoại");
+                    //
+                    if (!Validate.TestPhone(phone))
+                        return Notifization.Invalid("Số đ.thoại không hợp lệ");
+                    //
+                    if (!string.IsNullOrWhiteSpace(email))
+                    {
+                        if (!Validate.TestEmail(email))
+                            return Notifization.Invalid("Địa chỉ e-mail không hợp lệ");
+                    }
                 }
                 //
                 foreach (var item in model.Passengers)
@@ -1022,22 +1053,22 @@ namespace AIRService.Service
                             airPriceData = JsonConvert.DeserializeObject<PricingInPNR_Test>(json);
                         }
                         //
-                        double feeTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
-                        // check blance
-                        if (Helper.Current.UserLogin.IsCustomerLogged())
-                        {
-                            var currentUserId = Helper.Current.UserLogin.IdentifierID;
-                            WalletUserService walletUserService = new WalletUserService();
+                        //////////double feeTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
+                        //////////// check blance
+                        //////////if (Helper.Current.UserLogin.IsCustomerLogged())
+                        //////////{
+                        //////////    var currentUserId = Helper.Current.UserLogin.IdentifierID;
+                        //////////    WalletUserService walletUserService = new WalletUserService();
 
-                            WalletUserMessageModel walletMessageModel = walletUserService.GetBalanceByUserID(currentUserId);
-                            double balanceUser = walletMessageModel.Balance;
-                            if (!walletMessageModel.Status)
-                                return Notifization.Invalid("Lỗi kiểm tra số dư hạn mức");
-                            // 
-                            if (balanceUser < feeTotal)
-                                return Notifization.TEST("Số dư hạn mức không đủ");
-                        }
-                        return Notifization.TEST("Test");
+                        //////////    WalletUserMessageModel walletMessageModel = walletUserService.GetBalanceByUserID(currentUserId);
+                        //////////    double balanceUser = walletMessageModel.Balance;
+                        //////////    if (!walletMessageModel.Status)
+                        //////////        return Notifization.Invalid("Lỗi kiểm tra số dư hạn mức");
+                        //////////    // 
+                        //////////    if (balanceUser < feeTotal)
+                        //////////        return Notifization.TEST("Số dư hạn mức không đủ");
+                        //////////}
+                        //////////return Notifization.TEST("Test");
 
 
                         // #3. Get PNA code - **************************************************************************************************************************************************
@@ -1112,7 +1143,7 @@ namespace AIRService.Service
                         };
                         //call service  passenger details in ws.service
                         VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
-                        //string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
+                        string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
                         //End transaction 
                         var pnrCode = "PNR-00001";
                         vnaTransaction.EndTransaction();
@@ -1195,17 +1226,11 @@ namespace AIRService.Service
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
                             FareFlights = fareFlights,
-                            Contacts = model.Contacts
+                            TiketingInfo = model.TicketingInfo,
+                            Contacts = model.Contacts,
+                            Summary = model.Summary
                         });
-                        result.TicketID = bookTicketId;
-
-                        if (!string.IsNullOrWhiteSpace(bookTicketId))
-                        {
-                            // update user balance
-
-                        }
-
-
+                        result.TicketID = bookTicketId; 
                         //
                         return Notifization.Data("Đặt chỗ thành công:" + bookTicketId + " PNR: " + pnrCode, result); // "/backend/flightbook/details/" + bookIdFist
                     } // end using tran session

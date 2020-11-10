@@ -617,11 +617,11 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(clientId))
                     return new List<EmployeeModel>();
                 //
-                string sqlQuery = @"  SELECT uf.UserID, uf.FullName, ur.RoleID FROM UserInfo as uf
-                                          INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
-                                          LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
-                                          INNER JOIN [Role] as r On r.ID = ur.RoleID
-                                          where r.IsAllowSpend = 1 AND client.ClientID = @ClientID AND client.UserID != @UserID";
+                string sqlQuery = @"SELECT uf.UserID, uf.FullName, ur.RoleID FROM UserInfo as uf
+                                    INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
+                                    LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
+                                    INNER JOIN [Role] as r On r.ID = ur.RoleID
+                                    where r.IsAllowSpend = 1 AND client.ClientID = @ClientID AND client.UserID != @UserID";
                 List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
                 if (data.Count == 0)
                     return new List<EmployeeModel>();
@@ -642,10 +642,13 @@ namespace WebCore.Services
                 {
                     foreach (var item in dtList)
                     {
-                        string select = string.Empty;
+                        string strSelect = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.UserID == id.ToLower())
-                            select = "selected";
-                        result += "<option value='" + item.UserID + "' " + select + ">" + item.FullName + "</option>";
+                            strSelect = "selected"; 
+                        else if (string.IsNullOrWhiteSpace(id) && item.UserID == dtList[0].UserID)
+                            strSelect = "selected";
+                        //
+                        result += "<option value='" + item.UserID + "' " + strSelect + ">" + item.FullName + "</option>";
                     }
                 }
                 return result;

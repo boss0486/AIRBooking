@@ -266,7 +266,6 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                return Notifization.TEST(":::");
                 var vNASearchService = new VNA_SearchService();
                 return vNASearchService.TicketOrder(model);
             }

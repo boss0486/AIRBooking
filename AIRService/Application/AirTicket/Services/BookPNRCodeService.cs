@@ -13,8 +13,8 @@ using WebCore.Entities;
 
 namespace WebCore.Services
 {
-    public interface IBookPNRCodeService : IEntityService<BookPNRCode> { }
-    public class BookPNRCodeService : EntityService<BookPNRCode>, IBookPNRCodeService
+    public interface IBookPNRCodeService : IEntityService<BookOrder> { }
+    public class BookPNRCodeService : EntityService<BookOrder>, IBookPNRCodeService
     {
         public BookPNRCodeService() : base() { }
         public BookPNRCodeService(System.Data.IDbConnection db) : base(db) { }
