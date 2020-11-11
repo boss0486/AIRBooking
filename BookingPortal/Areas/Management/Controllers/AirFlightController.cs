@@ -62,7 +62,6 @@ namespace WebApplication.Management.Controllers
             {
                 return Notifization.TEST("::" + ex);
             }
-
         }
 
 

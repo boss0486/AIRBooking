@@ -34,12 +34,12 @@
                 lstPassengerType = bookFares.GroupBy(m => new { m.PassengerType }).Select(m => m.Key.PassengerType).ToList();
             }
             bookContacs = Model.Contacts;
-            BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
-            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
+            BookOrderService bookOrderService = new BookOrderService();
+            var bookOrder = bookOrderService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
 
-            if (bookPNRCode != null)
+            if (bookOrder != null)
             {
-                bookPNRCodeStatus = bookPNRCode.Status;
+                bookPNRCodeStatus = bookOrder.Status;
             }
         }
 

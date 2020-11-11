@@ -19,7 +19,11 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string OrderID { get; set; }
+        public string PNR { get; set; }
+        [IgnoreInsert]
+        [IgnoreUpdate]
+        public int IndenID { get; set; }
+        public string CodeID { get; set; }
         public string AirlineID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
@@ -49,10 +53,36 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+    public partial class BookOrderResult : WEBModelResult
+    {
+        public string ID { get; set; }
+        public string PNR { get; set; }
+        public int IndenID { get; set; }
+        public string CodeID { get; set; }
+        public string AirlineID { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Alias { get; set; }
+        public string TicketingID { get; set; }
+        public string TicketingName { get; set; }
+        public string ClientID { get; set; }
+        public string ClientCode { get; set; }
+        public double TotalAmount { get; set; }
+        public string ContactName { get; set; }
+        public int Status { get; set; }
+
+
+    }
+
     public class BookOrderOption
     {
         public string ID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
+    }
+
+    public class BookOrderSerch : SearchModel
+    {
+        
     }
 }

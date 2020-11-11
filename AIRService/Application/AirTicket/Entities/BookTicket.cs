@@ -23,7 +23,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string CategoryID { get; set; }
+        public string BookOrderID { get; set; }
         public string PNR { get; set; }
         public string Summary { get; set; }
         public int ADT { get; set; }
@@ -82,15 +82,36 @@ namespace WebCore.Entities
 
     public class BookTicketOrder
     {
-        public string OrderID { get; set; }
         public string PNR { get; set; }
-        public string Summary { get; set; }       
-        public BookTicketingInfoModel TiketingInfo { get; set; }
-        public BookContactModel Contacts { get; set; }
+        public string Summary { get; set; }
+        public int PassengerGroup { get; set; }
+        public BookTicketingInfo TiketingInfo { get; set; }
+        public BookTicketOrderContact Contacts { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
         public List<FareFlight> FareFlights { get; set; }
+    }
+    public class BookTicketingInfo
+    {
+        public int PassengerGroup { get; set; }
+        public string ClientID { get; set; }
+        public string ClientCode { get; set; }
+        public string TiketingID { get; set; }
+        public string TiketingName { get; set; }
+    }
+    public class BookTicketOrderContact
+    {
+        public BookKhachLeRqContact BookKhachLeContact { get; set; }
+        public BookCompanyContactModel BookCompanyContact { get; set; }
+    }
+    public class BookCompanyContactModel
+    {
+        public string CompanyID { get; set; }
+        public string CompanyCode { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 
     public class BookTicketPassenger
@@ -100,28 +121,32 @@ namespace WebCore.Entities
         public int Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
-    public class BookTicketingInfoModel
+    public class BookTicketingRq
     {
-        public int PassengerGroup { get; set; }
         public string ProviderID { get; set; }
         public string TiketingID { get; set; }
-    } 
-    public class BookContactModel
-    {
-        public BookKhachLeContactModel BookKhachLeContact { get; set; }
-        public BookCompanyContactModel BookCompanyContact { get; set; }
     }
-    public class BookKhachLeContactModel
+
+
+
+    public class BookContactRqModel
+    {
+        public BookKhachLeRqContact BookKhachLeContact { get; set; }
+        public BookCompanyRqContact BookCompanyContact { get; set; }
+    }
+    public class BookKhachLeRqContact
     {
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }
 
-    public class BookCompanyContactModel
+    public class BookCompanyRqContact
     {
         public string CompanyID { get; set; }
     }
+
+
     public class BookTicketDetails
     {
         public string PNR { get; set; }
@@ -196,10 +221,11 @@ namespace WebCore.Entities
     public class Request_BookModel
     {
         public string Summary { get; set; }
-        public BookTicketingInfoModel TicketingInfo { get; set; }
+        public int PassengerGroup { get; set; }
+        public BookTicketingRq TicketingInfo { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
-        public BookContactModel Contacts { get; set; }
+        public BookContactRqModel Contacts { get; set; }
     }
 
 }

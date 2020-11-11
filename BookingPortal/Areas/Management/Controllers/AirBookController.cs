@@ -99,6 +99,10 @@ namespace WebApplication.Management.Controllers
             }
             return View(flightPassengerTypeInfos);
         }
+        public ActionResult BookList()
+        {
+            return View();
+        }
 
         public ActionResult Details()
         {
@@ -127,6 +131,21 @@ namespace WebApplication.Management.Controllers
         //    return Notifization.Data("", dtList);
         //}
 
+        [HttpPost]
+        [Route("Action/BookList")]
+        public ActionResult BookList(BookOrderSerch model)
+        {
+            try
+            {
+                using (var service = new BookOrderService())
+                    return service.DataList(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+        
         [HttpPost]
         [Route("Action/GetCompany")]
         public ActionResult GetCompany()

@@ -103,7 +103,7 @@ span {
         width: 300px;
     }
 }
- 
+
 
 @media (max-width: 480px) {
     .nav.navbar-group {
@@ -5546,6 +5546,11 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
         padding: 6px 8px;
     }
 
+        .table-bordered tbody tr td .btn {
+            padding: 0px 5px;
+            height: auto;
+        }
+
 .table-inline tr td, .table-inline tr th {
     white-space: nowrap;
 }
@@ -5562,9 +5567,9 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     border: 1px solid #ABDED4;
 }
 
-@media (min-width: 328px) and (max-width: 991px)  {
+@media (min-width: 328px) and (max-width: 991px) {
     .table-responsive > .table {
-         min-width:1200px;
+        min-width: 1200px;
     }
 }
 /* Panel ======================================= */
@@ -6107,12 +6112,23 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     margin-bottom: 0px;
     padding-bottom: 21px;
     position: relative;
+    clear: both;
 }
-.form-group hr {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    position: relative;
-}
+
+    .form-group hr {
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        position: relative;
+        margin-top: 8px;
+        margin-bottom: 0px;
+        border: 0;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .form-group .inp-check {
+        padding-top: 8px;
+        position: relative;
+    }
 
 .input-group {
     width: 100%;
@@ -6147,7 +6163,7 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
 
 textarea.form-control {
     height: 68px;
-    max-width:100%;
+    max-width: 100%;
 }
 
     textarea.form-control.default {
@@ -9475,7 +9491,6 @@ html.ie11 .bs-searchbox .form-control {
     transition: 0.5s;
     background: #FFF;
     padding-bottom: 200px;
-     
 }
 
     .main-content .top-pic {
@@ -9874,5 +9889,5 @@ th, td .none {
 
 
 .w-50 {
-    width:50%;
+    width: 50%;
 }

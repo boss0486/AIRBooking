@@ -709,19 +709,18 @@ $(document).on('click', '#btnBooking', function () {
     if (ddlCompany == undefined)
         ddlCompany = "";
     //  copntact of passengers
-    var ticketingInfo = {
-        PassengerGroup: rdoPassengerGroup,
+    var ticketingInfo = { 
         ProviderID: ddlProvider,
         TiketingID: ddlEmployee
     };
-    
+    //
     var khachLe = {
         Name: name,
         Email: email,
         Phone: phone
     };
     var company = {
-        CompanyID: name
+        CompanyID: ddlCompany
     };
     //
     
@@ -732,6 +731,7 @@ $(document).on('click', '#btnBooking', function () {
     };
     //
     var bookModel = {
+        PassengerGroup: rdoPassengerGroup,
         TicketingInfo: ticketingInfo,
         Contacts: lContact,
         Passengers: lPassenger,
@@ -1495,13 +1495,18 @@ $(document).on("change", "input[name='rdoPassengerGroup']", function () {
     $("#lblCompany").html("");
     $("#lblName").html("");
     $("#txtPhone").html("");
-    $("#lblEmail").html("");
+
     var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
     // comp
     var option = `<option value="">-Lựa chọn-</option>`;
     $('#ddlCompany').html(option);
     $('#ddlCompany').selectpicker('refresh');
-    if (parseInt(rdoPassengerGroup) == 2) {
+    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
+        //
+        $("#txtName").val("");
+        $("#txtPhone").val("");
+        $("#txtEmail").val("");
+        //
         var _id = "";
         var model = {
         };
@@ -1539,6 +1544,7 @@ $(document).on("change", "input[name='rdoPassengerGroup']", function () {
         var option = `<option value="">-Lựa chọn-</option>`;
         $('#ddlCompany').html(option);
         $('#ddlCompany').selectpicker('refresh');
+
     }
 });
 

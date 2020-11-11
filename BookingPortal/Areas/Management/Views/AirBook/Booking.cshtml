@@ -11,7 +11,7 @@
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
 }
 @{
-    string userId = Helper.Current.UserLogin.IdentifierID; 
+    string userId = Helper.Current.UserLogin.IdentifierID;
     List<CustomerOption> customerOptions = new List<CustomerOption>();
 }
 <section class="book-in">
@@ -197,7 +197,7 @@
                 <div class="form-group">
                     <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCustomerSingle" value="1" data-text="Khách lẻ" checked />
                     <label class="form-check-label" for="rdoCustomerSingle">Khách lẻ</label>
-                    <hr style="margin-top: 10px;">
+                    <hr />
                 </div>
                 <div class="row">
                     <div class="col-md-7">
@@ -221,12 +221,19 @@
                     <span id="lblEmail" class="message msg-box"></span>
                 </div>
             </div>
+
+        </div>
+        <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
                     <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCompany" value="2" data-text="Công ty" />
                     <label class="form-check-label" for="rdoCompany">Công ty</label>
-                    <hr style="margin-top: 10px;">
+                    <hr />
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group">
@@ -245,6 +252,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
                     <label class="form-label">Nội dung:</label>
@@ -253,7 +262,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group text-right m-t-30">
             <a href="/Management/AirBook/Search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
             <button id="btnBooking" class="btn btn-primary -w-100" type="button"><i class="fas fa-arrow-circle-right"></i> Đặt vé</button>
@@ -266,10 +274,6 @@
             <p class="-warning"><i class="far fa-hand-point-right"></i> 3. Nhấn button "Đặt vé" để thực hiện lệnh đặt vé.</p>
             <p class="-warning"><i class="far fa-hand-point-right"></i> 4. Hệ thống sẽ tự động chuyển hướng sau khi lệnh "đặt vé" hoàn tất.</p>
         </div>
-
-
-
-
     </div>
 </section>
 @section scripts{

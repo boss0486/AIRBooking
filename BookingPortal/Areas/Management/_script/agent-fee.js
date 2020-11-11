@@ -143,7 +143,7 @@ var AgentFeeConfigController = {
             Amount: LibCurrencies.ConvertToCurrency(txtAmount)
         };
         AjaxFrom.POST({
-            url: URLC + '/Agent-FeeConfig',
+            url: URLC + '/Update',
             data: model,
             success: function (response) {
                 if (response !== null) {

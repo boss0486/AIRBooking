@@ -925,16 +925,38 @@ namespace AIRService.Service
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
                 // ticketing & contact  ************************************************************************************************
-                BookTicketingInfoModel ticketingInfo = model.TicketingInfo;
-                BookContactModel Contacts = model.Contacts;
+                BookTicketingRq ticketingInfo = model.TicketingInfo;
+                BookContactRqModel Contacts = model.Contacts;
+                BookCompanyContactModel bookCompany = new BookCompanyContactModel();
                 if (ticketingInfo == null || Contacts == null)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-                int passengerGroup = ticketingInfo.PassengerGroup;
+                string ticketingId = Helper.Current.UserLogin.IdentifierID;
+                string ticketingName = string.Empty;
+                if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication || Helper.Current.UserLogin.IsSupplierLogged() || Helper.Current.UserLogin.IsAdminCustomerLogged())
+                {
+                    ticketingId = ticketingInfo.TiketingID;
+                    //
+                    UserInfoService userInfoService = new UserInfoService();
+                    ticketingName = userInfoService.GetFullName(ticketingId);
+                }
+                if (string.IsNullOrWhiteSpace(ticketingId))
+                    return Notifization.Invalid("Lỗi xác định thông tin nhân viên đặt vé");
+                //
+                string clientId = ClientLoginService.GetClientIDByUserID(ticketingId);
+                ClientLoginService clientLoginService = new ClientLoginService();
+                string clientCode = clientLoginService.GetClientCodeByID(clientId);
+                int passengerGroup = model.PassengerGroup;
+                // call service get PNR code 
+                string strEmail = string.Empty;
+                string strPhone = string.Empty;
+                // 
+                if (model.Contacts == null)
+                    return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
                 //
                 if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
                 {
-                    BookCompanyContactModel bookCompanyContact = Contacts.BookCompanyContact;
+                    BookCompanyRqContact bookCompanyContact = Contacts.BookCompanyContact;
                     if (bookCompanyContact == null)
                         return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
                     //
@@ -942,27 +964,45 @@ namespace AIRService.Service
                     if (string.IsNullOrWhiteSpace(companyId))
                         return Notifization.Invalid("Vui lòng chọn công ty");
                     //
+                    CustomerService customerService = new CustomerService();
+                    Customer customerComp = customerService.GetAlls(m => m.ID == companyId).FirstOrDefault();
+                    if (customerComp == null)
+                        return Notifization.Invalid("Thông tin công ty không tồn tại");
+                    // 
+                    strEmail = customerComp.ContactEmail;
+                    strPhone = customerComp.ContactPhone;
+                    //
+                    bookCompany.CompanyID = customerComp.ID;
+                    bookCompany.CompanyCode = customerComp.CodeID;
+                    bookCompany.Email = strEmail;
+                    bookCompany.Phone = strPhone;
+                    bookCompany.Name = customerComp.ContactName;
+
                 }
                 else if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
                 {
-                    BookKhachLeContactModel bookKhachLeContact = Contacts.BookKhachLeContact;
+                    BookKhachLeRqContact bookKhachLeContact = Contacts.BookKhachLeContact;
                     string name = bookKhachLeContact.Name;
-                    string phone = bookKhachLeContact.Phone;
-                    string email = bookKhachLeContact.Email;
+                    string contactPhone = bookKhachLeContact.Phone;
+                    string contactEmail = bookKhachLeContact.Email;
                     if (string.IsNullOrWhiteSpace(name))
                         return Notifization.Invalid("Không được để trống tên liên hệ");
                     //
-                    if (string.IsNullOrWhiteSpace(phone))
+                    if (string.IsNullOrWhiteSpace(contactPhone))
                         return Notifization.Invalid("Không được để trống số đ.thoại");
                     //
-                    if (!Validate.TestPhone(phone))
+                    if (!Validate.TestPhone(contactPhone))
                         return Notifization.Invalid("Số đ.thoại không hợp lệ");
                     //
-                    if (!string.IsNullOrWhiteSpace(email))
+                    if (!string.IsNullOrWhiteSpace(contactEmail))
                     {
-                        if (!Validate.TestEmail(email))
+                        if (!Validate.TestEmail(contactEmail))
                             return Notifization.Invalid("Địa chỉ e-mail không hợp lệ");
+                        else
+                            strEmail = contactEmail;
                     }
+                    //
+                    strPhone = contactPhone;
                 }
                 //
                 foreach (var item in model.Passengers)
@@ -972,16 +1012,18 @@ namespace AIRService.Service
                     //
                 }
                 //
+                BookEmailConfig bookEmailConfig = new BookEmailConfig();
+                if (string.IsNullOrWhiteSpace(strEmail))
+                    strEmail = bookEmailConfig.Email;
+                //
+                if (string.IsNullOrWhiteSpace(strPhone))
+                    strPhone = bookEmailConfig.Phone;
+                //
                 using (var sessionService = new VNA_SessionService(tokenModel))
                 {
                     if (string.IsNullOrWhiteSpace(_token))
                         return Notifization.Invalid("Can not create token");
                     //
-                    BookEmailService appBookEmailService = new BookEmailService();
-                    var appBookEmail = appBookEmailService.GetAlls(m => m.IsActive).FirstOrDefault();
-                    if (appBookEmail == null)
-                        return Notifization.Error("Thông tin đại lý chưa được cấu hình");
-
                     using (var vnaTransaction = new VNA_EndTransaction(tokenModel))
                     {
                         var airBookModel = new AirBookModel
@@ -1003,14 +1045,13 @@ namespace AIRService.Service
                             ConversationID = _conversationId,
                             Token = _token
                         });
-
+                        //
                         if (ota_AirBookRS.ApplicationResults.Success == null)
                             return Notifization.Invalid("AirBook invalid");
-
+                        //
                         var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
                         if (_originDestinationOption.Count == 0)
                             return Notifization.NotFound(MessageText.NotFound);
-
                         // #2. Get price - ***************************************************************************************************************************************************
                         airBookModel.Segments = model.Flights;
                         var airPriceModel = new AirPriceModel
@@ -1019,7 +1060,7 @@ namespace AIRService.Service
                             Token = _token,
                             lFlight = model.Flights
                         };
-
+                        //
                         foreach (var item in model.Passengers)
                         {
                             if (item.PassengerType.ToUpper() == "ADT")
@@ -1040,11 +1081,8 @@ namespace AIRService.Service
                         }
                         //VNA_WSOTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_WSOTA_AirPriceLLSRQService();
                         //var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
-
-
-
                         // #3. Get PNA code - **************************************************************************************************************************************************
-
+                        //
                         string file = HttpContext.Current.Server.MapPath(@"/Team/temp.json");
                         PricingInPNR_Test airPriceData = new PricingInPNR_Test();
                         using (StreamReader r = new StreamReader(file))
@@ -1112,12 +1150,11 @@ namespace AIRService.Service
                                 });
                             }
                         }
-
+                        //
                         result.FareTaxs = fareTaxs;
                         result.FareFlights = fareFlights;
                         result.FareTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
                         model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
-
                         // create model passenger details model
                         List<PassengerDetailsRQ> passengerDetailsRQ = new List<PassengerDetailsRQ>();
                         List<BookTicketPassenger> Request_Passengers = model.Passengers;
@@ -1131,19 +1168,22 @@ namespace AIRService.Service
                                 Gender = item.Gender
                             });
                         }
-                        // call service get PNR code
+
+
+
+                        //
                         var passengerDetailModel = new DetailsRQ
                         {
-                            Email = appBookEmail.Email,
-                            Phone = appBookEmail.Phone,
+                            Email = bookEmailConfig.Email,
+                            Phone = bookEmailConfig.Phone,
                             ConversationID = _conversationId,
                             Token = _token,
                             Passengers = passengerDetailsRQ,
                             AirBook = ota_AirBookRS
                         };
                         //call service  passenger details in ws.service
-                        VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
-                        string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
+                        //VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
+                        //string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
                         //End transaction 
                         var pnrCode = "PNR-00001";
                         vnaTransaction.EndTransaction();
@@ -1183,7 +1223,7 @@ namespace AIRService.Service
                                 Unit = "VND",
                             });
                         }
-
+                        //
                         foreach (var item in fareTaxs)
                         {
                             requestOrderTaxModels.Add(new RequestOrderTaxModel
@@ -1195,15 +1235,6 @@ namespace AIRService.Service
                                 Unit = "VND",
                             });
                         }
-                        // call save order
-                        var orderTicketId = orderTicketService.BookOrder(new Request_OrderTicketModel
-                        {
-                            Flights = requestOrderFlightModels,
-                            PriceFare = requestOrderPriceModels,
-                            TaxFare = requestOrderTaxModels
-                        });
-
-
                         // save book information | output data ***************************************************************************************************
                         BookTicketService bookTicketService = new BookTicketService();
                         List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
@@ -1220,17 +1251,28 @@ namespace AIRService.Service
                         // call save booking
                         var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
                         {
-                            OrderID = orderTicketId,
+
                             PNR = result.PNR,
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
                             FareFlights = fareFlights,
-                            TiketingInfo = model.TicketingInfo,
-                            Contacts = model.Contacts,
+                            PassengerGroup = model.PassengerGroup,
+                            TiketingInfo = new BookTicketingInfo
+                            {
+                                ClientID = clientId,
+                                ClientCode = clientCode,
+                                TiketingID = ticketingId,
+                                TiketingName = ticketingName
+                            },
+                            Contacts = new BookTicketOrderContact
+                            {
+                                BookKhachLeContact = model.Contacts.BookKhachLeContact,
+                                BookCompanyContact = bookCompany
+                            },
                             Summary = model.Summary
                         });
-                        result.TicketID = bookTicketId; 
+                        result.TicketID = bookTicketId;
                         //
                         return Notifization.Data("Đặt chỗ thành công:" + bookTicketId + " PNR: " + pnrCode, result); // "/backend/flightbook/details/" + bookIdFist
                     } // end using tran session
@@ -1241,265 +1283,7 @@ namespace AIRService.Service
                 return Notifization.TEST("OK" + ex);
             }
         }
-        public ActionResult BookVeTest(Request_BookModel model)
-        {
-            try
-            {
-                ////using (var sessionService = new VNA_SessionService())
-                ////{
-                ////////var tokenModel = new TokenModel();
-                ////////var _session = sessionService.GetSession();
-                ////////if (_session == null)
-                ////////    return Notifization.Invalid("Can not create session");
-                //////////
-                ////////string _token = _session.Token;
-                ////////string _conversationId = _session.ConversationID;
-                ////////if (string.IsNullOrWhiteSpace(_token))
-                ////////    return Notifization.Invalid("Can not create token");
-                //
-                BookEmailService appBookEmailService = new BookEmailService();
-                var appBookEmail = appBookEmailService.GetAlls(m => m.IsActive).FirstOrDefault();
-                if (appBookEmail == null)
-                    return Notifization.Error("Thông tin đại lý chưa được cấu hình");
 
-                //using (var vnaTransaction = new VNA_EndTransaction(_session))
-                //{
-                ////////var airBookModel = new AirBookModel
-                ////////{
-                ////////    ConversationID = _conversationId,
-                ////////    Token = _token
-                ////////};
-                //seach data in web service
-
-                // #1. flight information - ***********************************************************************************************************************************
-                ////////VNA_WSOTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_WSOTA_AirBookLLSRQSevice();
-                ////////List<BookSegmentModel> lstSegments = model.Flights;
-                ////////if (lstSegments == null || lstSegments.Count == 0)
-                ////////    return Notifization.Invalid("Segments information invalid");
-                //////////
-                ////////AIRService.WebService.WSOTA_AirBookLLSRQ.OTA_AirBookRS oTA_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
-                ////////{
-                ////////    Segments = lstSegments,
-                ////////    ConversationID = _conversationId,
-                ////////    Token = _token
-                ////////});
-
-                ////////if (oTA_AirBookRS.ApplicationResults.Success == null)
-                ////////    return Notifization.Data("AirBook invalid", oTA_AirBookRS);
-                //
-                ////////var _originDestinationOption = oTA_AirBookRS.OriginDestinationOption.ToList();
-                ////////if (_originDestinationOption.Count == 0)
-                ////////    return Notifization.NotFound(MessageText.NotFound);
-
-                // #2. Get price - ***************************************************************************************************************************************************
-                ////////airBookModel.Segments = model.Flights;
-                var airPriceModel = new AirPriceModel();
-                ////////var airPriceModel = new AirPriceModel
-                ////////{
-                ////////    ConversationID = _conversationId,
-                ////////    Token = _token,
-                ////////    lFlight = model.Flights
-                ////////};
-
-                foreach (var item in model.Passengers)
-                {
-                    if (item.PassengerType.ToUpper() == "ADT")
-                    {
-                        airPriceModel.ADT++;
-                        continue;
-                    }
-                    if (item.PassengerType.ToUpper() == "CNN")
-                    {
-                        airPriceModel.CNN++;
-                        continue;
-                    }
-                    if (item.PassengerType.ToUpper() == "INF")
-                    {
-                        airPriceModel.INF++;
-                        continue;
-                    }
-                }
-                ////////VNA_WSOTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_WSOTA_AirPriceLLSRQService();
-                ////////var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
-
-                // #3. Get PNA code - **************************************************************************************************************************************************
-
-                string file = HttpContext.Current.Server.MapPath(@"/Team/temp.json");
-                PricingInPNR_Test airPriceData = new PricingInPNR_Test();
-                using (StreamReader r = new StreamReader(file))
-                {
-                    string json = r.ReadToEnd();
-                    airPriceData = JsonConvert.DeserializeObject<PricingInPNR_Test>(json);
-                }
-                // var a = airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo[0];
-
-                // #3. Get PNA code - **************************************************************************************************************************************************
-                var result = new BookVeResult
-                {
-                    Passengers = new List<PassengerFare>()
-                };
-                List<FareTax> fareTaxs = new List<FareTax>();
-                List<FareFlight> fareFlights = new List<FareFlight>();
-                foreach (var item in airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo)
-                {
-                    string passengerType = item.PassengerTypeQuantity.Code;
-                    int bkIndex = 0;
-                    foreach (var fareBreakdown in item.PTC_FareBreakdown)
-                    {
-                        //
-                        int flightType = (int)VNAEnum.FlightDirection.None;
-                        if (bkIndex == 0)
-                            flightType = (int)VNAEnum.FlightDirection.FlightGo;
-                        if (bkIndex == 1)
-                            flightType = (int)VNAEnum.FlightDirection.FlightReturn;
-                        //
-                        fareFlights.Add(new FareFlight
-                        {
-                            FlightType = flightType,
-                            PassengerType = passengerType,
-                            Code = fareBreakdown.FareBasis.Code,
-                            Amount = Convert.ToDouble(fareBreakdown.FareBasis.FareAmount)
-                        });
-                        bkIndex++;
-                    }
-                    // add tax
-                    foreach (var tax in item.ItinTotalFare.Taxes.Tax)
-                    {
-                        fareTaxs.Add(new FareTax
-                        {
-                            PassengerType = passengerType,
-                            Text = tax.TaxName,
-                            TaxCode = tax.TaxCode,
-                            Amount = double.Parse(tax.Amount)
-                        });
-                    }
-                }
-                result.FareTaxs = fareTaxs;
-                result.FareFlights = fareFlights;
-                result.FareTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
-                model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
-
-                // create model passenger details model
-                List<PassengerDetailsRQ> passengerDetailsRQ = new List<PassengerDetailsRQ>();
-                List<BookTicketPassenger> Request_Passengers = model.Passengers;
-                foreach (var item in Request_Passengers)
-                {
-                    passengerDetailsRQ.Add(new PassengerDetailsRQ
-                    {
-                        PassengerType = item.PassengerType,
-                        FullName = item.FullName,
-                        DateOfBirth = item.DateOfBirth,
-                        Gender = item.Gender
-                    });
-                }
-                // call service get PNR code
-                ////////var passengerDetailModel = new DetailsRQ
-                ////////{
-                ////////    Email = appBookEmail.Email,
-                ////////    Phone = appBookEmail.Phone,
-                ////////    ConversationID = _conversationId,
-                ////////    Token = _token,
-                ////////    Passengers = passengerDetailsRQ,
-                ////////    AirBook = oTA_AirBookRS
-                ////////};
-                //////////call service  passenger details in ws.service
-                ////////VNA_WSPassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_WSPassengerDetailsRQService();
-                ////////string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
-                //////////End transaction
-                ////////vnaTransaction.EndTransaction();
-                ////////if (string.IsNullOrWhiteSpace(pnrCode))
-                ////////    return Notifization.Invalid("Cannot get PNA code");
-                //set PNR code
-                var pnrCode = "PNR-00001";
-                result.PNR = pnrCode;
-                ////////sessionService.CloseSession(_session);
-
-                // save order | input data ***************************************************************************************************
-                OrderTicketService orderTicketService = new OrderTicketService();
-                List<RequestOrderFlightModel> requestOrderFlightModels = new List<RequestOrderFlightModel>();
-                List<RequestOrderPriceModel> requestOrderPriceModels = new List<RequestOrderPriceModel>();
-                List<RequestOrderTaxModel> requestOrderTaxModels = new List<RequestOrderTaxModel>();
-                foreach (var item in model.Flights)
-                {
-                    requestOrderFlightModels.Add(new RequestOrderFlightModel
-                    {
-                        ADT = airPriceModel.ADT,
-                        CNN = airPriceModel.CNN,
-                        INF = airPriceModel.INF,
-                        NumberInParty = item.NumberInParty,
-                        OriginLocation = item.OriginLocation,
-                        DestinationLocation = item.DestinationLocation,
-                        DepartureDateTime = item.DepartureDateTime,
-                        ArrivalDateTime = item.ArrivalDateTime,
-                        ResBookDesigCode = item.ResBookDesigCode,
-                        FlightNumber = item.FlightNumber,
-                        AirEquipType = item.AirEquipType
-                    });
-                }
-                foreach (var item in fareFlights)
-                {
-                    requestOrderPriceModels.Add(new RequestOrderPriceModel
-                    {
-                        FlightType = item.FlightType,
-                        PassengerType = item.PassengerType,
-                        Amount = item.Amount,
-                        Unit = "VND",
-                    });
-                }
-
-                foreach (var item in fareTaxs)
-                {
-                    requestOrderTaxModels.Add(new RequestOrderTaxModel
-                    {
-                        PassengerType = item.PassengerType,
-                        Title = item.Text,
-                        TaxCode = item.TaxCode,
-                        Amount = item.Amount,
-                        Unit = "VND",
-                    });
-                }
-                // call save order
-                var orderTicketId = orderTicketService.BookOrder(new Request_OrderTicketModel
-                {
-                    Flights = requestOrderFlightModels,
-                    PriceFare = requestOrderPriceModels,
-                    TaxFare = requestOrderTaxModels
-                });
-
-                // save book information | output data ***************************************************************************************************
-                BookTicketService bookTicketService = new BookTicketService();
-                List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
-                foreach (var item in model.Passengers)
-                {
-                    bookTicketPassengers.Add(new BookTicketPassenger
-                    {
-                        DateOfBirth = item.DateOfBirth,
-                        FullName = item.FullName,
-                        Gender = item.Gender,
-                        PassengerType = item.PassengerType
-                    });
-                }
-                // call save booking
-                var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
-                {
-                    OrderID = orderTicketId,
-                    PNR = result.PNR,
-                    Flights = model.Flights,
-                    Passengers = bookTicketPassengers,
-                    FareTaxs = result.FareTaxs,
-                    FareFlights = fareFlights,
-                    Contacts = model.Contacts
-                });
-                result.TicketID = bookTicketId;
-                return Notifization.Data("Đặt chỗ thành công:" + bookTicketId + " PNR: " + pnrCode, result); // "/backend/flightbook/details/" + bookIdFist
-                                                                                                             ////    } // end using tran session
-                                                                                                             ////} // end using session
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
-            }
-        }
         /// <summary>
         /// Xuất vé
         /// </summary>
@@ -1622,7 +1406,7 @@ namespace AIRService.Service
                         var end = vNATransaction.EndTransaction(tokenModel);
                         if (end.ApplicationResults.Success != null)
                         {
-                            BookPNRCodeService bookPNRCodeService = new BookPNRCodeService();
+                            BookOrderService bookPNRCodeService = new BookOrderService();
                             var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
                             if (bookPNRCode != null)
                             {

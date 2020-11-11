@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.Model.Services;
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchForHistoryPatial.cshtml", null)
+@* control ******************************************************************************************************@
+<div class="table-responsive">
+    <table class="table table-bordered table-inline">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-none">Hãng/PNR</th>
+                <th class="tbcol-none">Mã đơn hàng</th> 
+                <th class="tbcol-none">NCC/MKH-Nhân viên</th> 
+                <th class="tbcol-active">LKH</th> 
+                <th class="tbcol-none">Khách hàng</th> 
+                <th class="tbcol-none">Tổng thanh toán</th>
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-active">Booking</th>
+                <th class="tbcol-action">
+                    ACT
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+@section scripts{
+    <script src="~/Areas/Management/_script/app-flight-manager.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            BookingManagerController.DataList(1);
+        });
+    </script>
+}

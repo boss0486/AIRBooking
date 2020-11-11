@@ -967,7 +967,7 @@ function CustomerOption(_id, isdefault, isChangeEvent) {
     var model = {
     };
     AjaxFrom.POST({
-        url: '/Management/Customer/Action/DropDownList',
+        url: '/Management/Customer/Action/AgentData',
         data: model,
         async: true,
         success: function (result) {
@@ -985,8 +985,7 @@ function CustomerOption(_id, isdefault, isChangeEvent) {
                             attrSelect = '--';
                         }
                         option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
-                    });
-                    console.log('::' + attrSelect);
+                    }); 
                     $('#ddlClient').html(option);
                     $('#ddlClient').selectpicker('refresh');
                     if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {

@@ -211,7 +211,7 @@ namespace WebCore.Services
             string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC ";
             var allData = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea }).ToList();
 
-            var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+            var dtList = allData.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).OrderBy(m=> m.OrderID).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 

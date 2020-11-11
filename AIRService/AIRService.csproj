@@ -142,7 +142,7 @@
     <Compile Include="Application\AirTicket\Services\BookTaxService.cs" />
     <Compile Include="Application\AirTicket\Services\BookPassengerService.cs" />
     <Compile Include="Application\AirTicket\Services\BookTicketService.cs" />
-    <Compile Include="Application\AirTicket\Services\BookPNRCodeService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookOrderService.cs" />
     <Compile Include="Application\AirFilght\Entities\Airport.cs" />
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
     <Compile Include="Application\ApiReport\Entities\ApiReport.cs" />

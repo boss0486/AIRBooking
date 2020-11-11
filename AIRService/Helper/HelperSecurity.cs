@@ -74,6 +74,30 @@ namespace Helper.Security
 
             }
         }
+        public static string KEYTEXT(string _val)
+        {
+            int lenDefault = 8;
+            if (!string.IsNullOrWhiteSpace(_val))
+            {
+                int lenVal = _val.Length;
+                if (lenDefault > lenVal)
+                    return null;
+                //
+                int lenCode = lenDefault - lenVal;
+                //
+                string strCode = "";
+                if (lenCode > 0)
+                {
+                    for (int i = 0; i < lenCode; i++)
+                    {
+                        strCode += "0";
+                    }
+                }
+                return strCode + _val;
+            }
+            return null;
+        }
+
         //
         public Image GenerateQRCode(string text)
         {

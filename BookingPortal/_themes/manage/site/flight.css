@@ -91,11 +91,11 @@
             }
 
     .flight #TblGoData .td-firm i {
-        transform: rotate(-45deg);
+        transform: rotate(0deg);
     }
 
     .flight #TblReturnData .td-firm i {
-        transform: rotate(45deg);
+        transform: rotate(180deg);
     }
 
     

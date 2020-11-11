@@ -21,24 +21,23 @@ namespace WebCore.Services
         public ClientLoginService() : base() { }
         public ClientLoginService(System.Data.IDbConnection db) : base(db) { }
 
-        public static string GetClientIDByUserID(string userId)
+
+        //
+        public string GetClientCodeByID(string clientId)
         {
-            if (string.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(clientId))
                 return string.Empty;
             //
-            userId = userId.ToLower();
-            using (var service = new ClientLoginService())
-            {
-                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID == userId).FirstOrDefault();
-                if (customer == null)
-                    return string.Empty;
-                //
-                return customer.ClientID;
-
-            }
+            string sqlQuery = @"SELECT s.ID,s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 AND s.ID = @ClientID
+                         Union
+                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND c.ID = @ClientID";
+            //
+            ClientProviderOption clientOption = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).FirstOrDefault();
+            if (clientOption == null)
+                return string.Empty;
+            //
+            return clientOption.CodeID;
         }
-        //
-        
 
         public List<ClientProviderOption> GetAllProvider()
         {
@@ -73,10 +72,25 @@ namespace WebCore.Services
             return clientOptions;
         }
         //##############################################################################################################################################################################################################################################################
-         
-        
 
-        
+        public static string GetClientIDByUserID(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return string.Empty;
+            //
+            userId = userId.ToLower();
+            using (var service = new ClientLoginService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID == userId).FirstOrDefault();
+                if (customer == null)
+                    return string.Empty;
+                //
+                return customer.ClientID;
+
+            }
+        }
+
+
         public static string DropdownAllProvider(string id)
         {
             string result = string.Empty;
@@ -94,7 +108,7 @@ namespace WebCore.Services
                         else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
                             strSelect = "selected";
                         //
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='"+ item.IsSupplier +"' " + strSelect + ">" + item.Title + "</option>";
+                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='" + item.IsSupplier + "' " + strSelect + ">" + item.Title + "</option>";
                     }
                 }
                 return result;

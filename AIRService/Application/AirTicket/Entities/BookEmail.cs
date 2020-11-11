@@ -43,4 +43,10 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+
+    public class BookEmailConfig
+    {
+        public string Email = "vietnt.itt@gmail.com";
+        public string Phone = "0983498218";
+    }
 }

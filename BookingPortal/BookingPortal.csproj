@@ -187,6 +187,7 @@
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\Views\AirBook\Details.txt" />
     <Content Include="Areas\Management\_script\account.js" />
+    <Content Include="Areas\Management\_script\app-flight-manager.js" />
     <Content Include="Areas\Management\_script\area-geographical.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />
@@ -1241,6 +1242,7 @@
     <Content Include="Areas\Management\Views\AreaGeographical\Update.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDepositHistory\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\UserRole.cshtml" />
+    <Content Include="Areas\Management\Views\AirBook\BookList.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

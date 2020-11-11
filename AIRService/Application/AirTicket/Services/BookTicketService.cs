@@ -70,7 +70,7 @@ namespace WebCore.Services
             {
                 try
                 {
-                    BookPNRCodeService bookPNRCodeService = new BookPNRCodeService(_connection);
+                    BookOrderService bookOrderService = new BookOrderService(_connection);
                     BookTicketService bookTicketService = new BookTicketService(_connection);
                     BookPassengerService bookPassengerService = new BookPassengerService(_connection);
                     BookTaxService bookFareService = new BookTaxService(_connection);
@@ -85,21 +85,22 @@ namespace WebCore.Services
                     int cnt = 0;
                     var fareFlights = model.FareFlights;
 
-                    BookTicketingInfoModel bookTicketing = model.TiketingInfo; 
+                    BookTicketingInfo bookTicketing = model.TiketingInfo;
                     UserInfoService userInfoService = new UserInfoService(_connection);
-                    string ticketingId = bookTicketing.TiketingID;
-                    UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId.ToLower(), transaction: _transaction).FirstOrDefault();
-                    string pnrId = bookPNRCodeService.Create<string>(new BookOrder
+ 
+                    string orderCode = "PO-" + pnr;
+                    string bookOrderId = bookOrderService.Create<string>(new BookOrder
                     {
-                        OrderID = model.OrderID,
+                        CodeID = orderCode,
                         AirlineID = "VNA",
-                        Title = pnr,
-                        Alias = "VNA-" + pnr,
+                        Title = orderCode,
+                        PNR = pnr,
+                        Alias = orderCode.ToLower(),
                         Summary = model.Summary,
-                        ClientID = bookTicketing.ProviderID,
-                        ClientCode = bookTicketing.ProviderID,
+                        ClientID = bookTicketing.ClientID,
+                        ClientCode = bookTicketing.ClientCode,
                         TicketingID = bookTicketing.TiketingID,
-                        TicketingName = userInfo.FullName,
+                        TicketingName = bookTicketing.TiketingName,
                         Status = (int)ENM.BookTicketEnum.BookPNRCodeStatus.Booking,
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         SiteID = "-"
@@ -114,8 +115,7 @@ namespace WebCore.Services
                         // flight
                         bookTickId = bookTicketService.Create<string>(new BookTicket
                         {
-
-                            CategoryID = pnrId,
+                            BookOrderID = bookOrderId,
                             PNR = pnr,
                             Summary = "",
                             ADT = passengers.Where(m => m.PassengerType == "ADT").Count(),
@@ -154,7 +154,6 @@ namespace WebCore.Services
                         }
                         cnt++;
                     }
-
                     // Passenger
                     if (passengers.Count > 0)
                     {
@@ -188,39 +187,39 @@ namespace WebCore.Services
                         }
                     }
                     // contact
-                    BookTicketingInfoModel ticketingInfo = model.TiketingInfo;
-                    BookContactModel Contacts = model.Contacts;
+                    BookTicketingInfo ticketingInfo = model.TiketingInfo;
+                    BookTicketOrderContact contact = model.Contacts;
                     //
-                    int passengerGroup = ticketingInfo.PassengerGroup;
+                    int passengerGroup = model.PassengerGroup;
                     //
                     if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
                     {
-                        BookCompanyContactModel bookCompanyContact = Contacts.BookCompanyContact;
-                        CustomerService customerService = new CustomerService();
-                        Customer customer = customerService.GetAlls(m => m.ID == bookCompanyContact.CompanyID, transaction: _transaction).FirstOrDefault();
+                        BookCompanyContactModel bookCompanyContact = contact.BookCompanyContact;
                         bookContactService.Create<string>(new BookContact
                         {
                             PNR = pnr,
-                            BookOrderID = pnrId,
-                            CompanyID = customer.ID,
-                            CompanyCode = customer.CodeID,
-                            Name = null,
-                            Email = null,
-                            Phone = null
+                            BookOrderID = bookOrderId,
+                            CompanyID = bookCompanyContact.CompanyID,
+                            CompanyCode = bookCompanyContact.CompanyCode,
+                            Name = bookCompanyContact.Name,
+                            Email = bookCompanyContact.Email,
+                            Phone = bookCompanyContact.Phone,
+                            ContactType = (int)ClientLoginEnum.PassengerGroup.Comp
                         }, transaction: _transaction);
                     }
                     if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
                     {
-                        BookKhachLeContactModel bookKhachLe = Contacts.BookKhachLeContact;
+                        BookKhachLeRqContact bookKhachLe = contact.BookKhachLeContact;
                         bookContactService.Create<string>(new BookContact
                         {
                             PNR = pnr,
-                            BookOrderID = pnrId,
+                            BookOrderID = bookOrderId,
                             CompanyID = null,
                             CompanyCode = null,
                             Name = bookKhachLe.Name,
                             Email = bookKhachLe.Email,
-                            Phone = bookKhachLe.Phone
+                            Phone = bookKhachLe.Phone,
+                            ContactType = (int)ClientLoginEnum.PassengerGroup.Nomal
                         }, transaction: _transaction);
                     }
                     //
