@@ -104,21 +104,16 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult Details()
+        public ActionResult Details(string id)
         {
-            BookTicketOrderDetails model = null;
-            try
-            {
-                BookTicketService appBookTicketService = new BookTicketService();
-                string id = this.Url.RequestContext.RouteData.Values["id"].ToString();
-                model = appBookTicketService.BookTicketDetails(id);
-            }
-            catch
-            {
-                //
-            }
-            return View(model);
+            BookOrderService bookOrderService = new BookOrderService();
+            ViewBookOrder model = bookOrderService.ViewBookOrderByID(id);
+            if (model != null)
+                return View(model);
+            //
+            return View();
         }
+        
 
         // GET: ******************************************************************************************************************************
         //[HttpPost]
@@ -380,20 +375,7 @@ namespace WebApplication.Management.Controllers
             }
         }
         // API MAY BAY ********************************************************************************************************************************************
-
-        public ActionResult Order(string id)
-        {
-            try
-            {
-                var service = new BookTicketService();
-                return Notifization.Data(":::", service.BookTicketDetails(id));
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(":::" + ex);
-                //return Notifization.NotService;
-            }
-        }
+         
         ///
         [HttpPost]
         [Route("Action/TestLogin")]

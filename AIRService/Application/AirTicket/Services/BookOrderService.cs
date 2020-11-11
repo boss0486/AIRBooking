@@ -80,5 +80,32 @@ namespace WebCore.Services
             // reusult
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
+
+        public ViewBookOrder ViewBookOrderByID(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            string sqlQuery = @"SELECT TOP (1) * FROM App_BookOrder WHERE ID = @ID";
+            ViewBookOrder data = _connection.Query<ViewBookOrder>(sqlQuery, new { ID = id }).FirstOrDefault();
+            if (data == null)
+                return null;
+            //
+            BookTicketService bookTicketService = new BookTicketService(_connection);
+            List<BookTicket> bookTickets = bookTicketService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            data.BookTickets = bookTickets;
+            // 
+            BookPassengerService bookPassengerService = new BookPassengerService(_connection);
+            data.BookPassengers = bookPassengerService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            //
+            BookPriceService bookPriceService = new BookPriceService(_connection);
+            data.BookPrices = bookPriceService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            //
+            BookContactService bookContactService = new BookContactService(_connection);
+            data.BookContacts = bookContactService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            //
+            return data;
+        }
+
     }
 }

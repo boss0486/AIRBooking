@@ -70,10 +70,8 @@ namespace WebCore.Entities
         public double TotalAmount { get; set; }
         public string ContactName { get; set; }
         public int Status { get; set; }
-
-
     }
-
+    
     public class BookOrderOption
     {
         public string ID { get; set; }
@@ -85,4 +83,27 @@ namespace WebCore.Entities
     {
         
     }
+
+    //details ***************************************************************************************************************
+    public partial class ViewBookOrder : WEBModelResult
+    {
+        public string ID { get; set; }
+        public string PNR { get; set; }
+        public int IndenID { get; set; }
+        public string CodeID { get; set; }
+        public string AirlineID { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string TicketingID { get; set; }
+        public string TicketingName { get; set; }
+        public string ClientID { get; set; }
+        public string ClientCode { get; set; }
+        public int Status { get; set; }
+        public List<BookTicket> BookTickets { get; set; }
+        public List<BookPassenger> BookPassengers { get; set; }
+        public List<BookContact> BookContacts { get; set; }
+        public List<BookPrice> BookPrices { get; set; }
+        public List<BookTax> BookTaxs { get; set; }
+    }
+
 }

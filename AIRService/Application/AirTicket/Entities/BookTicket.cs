@@ -187,6 +187,7 @@ namespace WebCore.Entities
 
     public class BookTicketOrderDetails
     {
+
         public List<BookTicketDetails> BookTickets { get; set; }
         public List<BookPassengerDetails> BookPassengers { get; set; }
         public List<BookFareDetails> BookFares { get; set; }

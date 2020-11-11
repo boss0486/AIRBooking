@@ -87,7 +87,7 @@ namespace WebCore.Services
 
                     BookTicketingInfo bookTicketing = model.TiketingInfo;
                     UserInfoService userInfoService = new UserInfoService(_connection);
- 
+
                     string orderCode = "PO-" + pnr;
                     string bookOrderId = bookOrderService.Create<string>(new BookOrder
                     {
@@ -142,6 +142,7 @@ namespace WebCore.Services
                             {
                                 bookPriceService.Create<string>(new BookPrice
                                 {
+                                    BookOrderID = bookOrderId,
                                     PNR = pnr,
                                     FlightType = price.FlightType,
                                     TicketID = bookTickId,
@@ -161,6 +162,7 @@ namespace WebCore.Services
                         {
                             var passengerId = bookPassengerService.Create<string>(new BookPassenger
                             {
+                                BookOrderID = bookOrderId,
                                 PNR = pnr,
                                 PassengerType = passenger.PassengerType,
                                 FullName = passenger.FullName,
@@ -177,6 +179,7 @@ namespace WebCore.Services
                         {
                             bookFareService.Create<string>(new BookTax
                             {
+                                BookOrderID = bookOrderId,
                                 PNR = pnr,
                                 PassengerType = item.PassengerType,
                                 Title = item.Text,
@@ -236,114 +239,117 @@ namespace WebCore.Services
             }
         }
 
-        public BookTicketOrderDetails BookTicketDetails(string pnr)
-        {
-            BookTicketOrderDetails bookTicketOrderDetails = new BookTicketOrderDetails();
-            List<BookTicketDetails> bookTicketDetails = new List<BookTicketDetails>();
-            //try
-            //{
-            if (string.IsNullOrWhiteSpace(pnr))
-                return bookTicketOrderDetails;
-            //
-            pnr = pnr.ToLower();
-            BookTicketService bookTicketService = new BookTicketService(_connection);
-            BookPassengerService bookPassengerService = new BookPassengerService(_connection);
-            BookTaxService bookFareService = new BookTaxService(_connection);
-            BookContactService bookContactService = new BookContactService(_connection);
+        //////public BookTicketOrderDetails BookTicketDetails(string orderId)
+        //////{
+
+        //////    BookTicketOrderDetails bookTicketOrderDetails = new BookTicketOrderDetails();
+        //////    List<BookTicketDetails> bookTicketDetails = new List<BookTicketDetails>();
+        //////    try
+        //////    {
+        //////        if (string.IsNullOrWhiteSpace(orderId))
+        //////            return bookTicketOrderDetails;
+
+        //////        orderId = orderId.ToLower();
+        //////        BookOrderService bookOrderService = new BookOrderService();
+        //////        BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
 
 
-            BookPriceService bookPriceService = new BookPriceService(_connection);
-            var bookTickets = bookTicketService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).OrderBy(m => m.Direction).ToList();
-            if (bookTickets.Count == 0)
-                return bookTicketOrderDetails;
+        //////        ////BookTicketService bookTicketService = new BookTicketService(_connection);
+        //////        ////BookPassengerService bookPassengerService = new BookPassengerService(_connection);
+        //////        ////BookTaxService bookFareService = new BookTaxService(_connection);
+        //////        ////BookContactService bookContactService = new BookContactService(_connection);
+        //////        ////BookPriceService bookPriceService = new BookPriceService(_connection);
+        //////        ////var bookTickets = bookTicketService.GetAlls(m => m.ID == orderId).OrderBy(m => m.Direction).ToList();
+        //////        ////if (bookTickets.Count == 0)
+        //////        ////    return bookTicketOrderDetails;
+        //////        //////
+        //////        ////List<BookPassengerDetails> bookPassengerDetails = new List<BookPassengerDetails>();
+        //////        ////foreach (var item in bookTickets)
+        //////        ////{
+        //////        ////    bookTicketDetails.Add(new BookTicketDetails
+        //////        ////    {
+        //////        ////        PNR = item.PNR,
+        //////        ////        Direction = item.Direction,
+        //////        ////        NumberInParty = item.NumberInParty,
+        //////        ////        OriginLocation = item.OriginLocation,
+        //////        ////        DestinationLocation = item.DestinationLocation,
+        //////        ////        DepartureDateTime = item.DepartureDateTime,
+        //////        ////        ArrivalDateTime = item.ArrivalDateTime,
+        //////        ////        ResBookDesigCode = item.ResBookDesigCode,
+        //////        ////        FlightNumber = item.FlightNumber,
+        //////        ////        AirEquipType = item.AirEquipType,
+        //////        ////        Amount = item.Amount,
+        //////        ////        BookFares = null
+        //////        ////    });
+        //////        ////    // add ticket
+        //////        ////}
 
-            List<BookPassengerDetails> bookPassengerDetails = new List<BookPassengerDetails>();
-            foreach (var item in bookTickets)
-            {
-                bookTicketDetails.Add(new BookTicketDetails
-                {
-                    PNR = item.PNR,
-                    Direction = item.Direction,
-                    NumberInParty = item.NumberInParty,
-                    OriginLocation = item.OriginLocation,
-                    DestinationLocation = item.DestinationLocation,
-                    DepartureDateTime = item.DepartureDateTime,
-                    ArrivalDateTime = item.ArrivalDateTime,
-                    ResBookDesigCode = item.ResBookDesigCode,
-                    FlightNumber = item.FlightNumber,
-                    AirEquipType = item.AirEquipType,
-                    Amount = item.Amount,
-                    BookFares = null
-                });
-                // add ticket
-            }
+        //////        ////var bookPassengers = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == orderId).ToList();
+        //////        ////if (bookPassengers.Count > 0)
+        //////        ////{
+        //////        ////    foreach (var item in bookPassengers)
+        //////        ////    {
+        //////        ////        bookPassengerDetails.Add(new BookPassengerDetails
+        //////        ////        {
+        //////        ////            FullName = item.FullName,
+        //////        ////            PassengerType = item.PassengerType,
+        //////        ////            Gender = item.Gender,
+        //////        ////            DateOfBirth = Helper.Time.TimeHelper.FormatToDate(item.DateOfBirth, languageCode: Helper.Language.LanguageCode.Vietnamese.ID)
+        //////        ////        });
+        //////        ////    }
 
-            var bookPassengers = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).ToList();
-            if (bookPassengers.Count > 0)
-            {
-                foreach (var item in bookPassengers)
-                {
-                    bookPassengerDetails.Add(new BookPassengerDetails
-                    {
-                        FullName = item.FullName,
-                        PassengerType = item.PassengerType,
-                        Gender = item.Gender,
-                        DateOfBirth = Helper.Time.TimeHelper.FormatToDate(item.DateOfBirth, languageCode: Helper.Language.LanguageCode.Vietnamese.ID)
-                    });
-                }
-
-            }
-            //
-            List<BookFareDetails> lstbookFareDetails = new List<BookFareDetails>();
-            var passengerType = bookPassengerDetails.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }).ToList();
-            foreach (var item in passengerType)
-            {
-                int passengerQty = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PassengerType) && m.PassengerType == item.PassengerType).Count();
-                double priceTotal = bookPriceService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
+        //////        ////}
+        //////        //////
+        //////        ////List<BookFareDetails> lstbookFareDetails = new List<BookFareDetails>();
+        //////        ////var passengerType = bookPassengerDetails.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }).ToList();
+        //////        ////foreach (var item in passengerType)
+        //////        ////{
+        //////        ////    int passengerQty = bookPassengerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PassengerType) && m.PassengerType == item.PassengerType).Count();
+        //////        ////    double priceTotal = bookPriceService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
 
 
-                List<BookTax> bookTaxs = bookFareService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr && m.PassengerType == item.PassengerType).ToList();
-                double taxTotal = bookTaxs.Sum(m => m.Amount);
-                List<BookTax> bookFareTaxs = new List<BookTax>();
+        //////        ////    List<BookTax> bookTaxs = bookFareService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == orderId && m.PassengerType == item.PassengerType).ToList();
+        //////        ////    double taxTotal = bookTaxs.Sum(m => m.Amount);
+        //////        ////    List<BookTax> bookFareTaxs = new List<BookTax>();
 
-                lstbookFareDetails.Add(new BookFareDetails
-                {
-                    PassengerType = item.PassengerType,
-                    PassengerQty = passengerQty,
-                    PriceTotal = priceTotal,
-                    TaxTotal = taxTotal,
-                    FareTaxs = bookTaxs
-                });
-            }
-            // contact
-            List<BookContacDetails> bookContacDetails = new List<BookContacDetails>();
-            var contactList = bookContactService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr).ToList();
-            if (contactList.Count > 0)
-            {
-                foreach (var item in contactList)
-                {
-                    bookContacDetails.Add(new BookContacDetails
-                    {
-                        Name = item.Name,
-                        Email = item.Email,
-                        Phone = item.Phone
-                    });
-                }
+        //////        ////    lstbookFareDetails.Add(new BookFareDetails
+        //////        ////    {
+        //////        ////        PassengerType = item.PassengerType,
+        //////        ////        PassengerQty = passengerQty,
+        //////        ////        PriceTotal = priceTotal,
+        //////        ////        TaxTotal = taxTotal,
+        //////        ////        FareTaxs = bookTaxs
+        //////        ////    });
+        //////        ////}
+        //////        ////// contact
+        //////        ////List<BookContacDetails> bookContacDetails = new List<BookContacDetails>();
+        //////        ////var contactList = bookContactService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == orderId).ToList();
+        //////        ////if (contactList.Count > 0)
+        //////        ////{
+        //////        ////    foreach (var item in contactList)
+        //////        ////    {
+        //////        ////        bookContacDetails.Add(new BookContacDetails
+        //////        ////        {
+        //////        ////            Name = item.Name,
+        //////        ////            Email = item.Email,
+        //////        ////            Phone = item.Phone
+        //////        ////        });
+        //////        ////    }
 
-            }
+        //////        ////}
 
-            lstbookFareDetails = lstbookFareDetails.OrderBy(m => m.PassengerType).ToList();
-            bookTicketOrderDetails.BookTickets = bookTicketDetails;
-            bookTicketOrderDetails.BookFares = lstbookFareDetails;
-            bookTicketOrderDetails.BookPassengers = bookPassengerDetails.OrderBy(m => m.PassengerType).ToList();
-            bookTicketOrderDetails.Contacts = bookContacDetails;
-            return bookTicketOrderDetails;
-            //}
-            //catch (Exception)
-            //{
-            //    return response_AppBookDetails;
-            //}
-        }
+        //////        //lstbookFareDetails = lstbookFareDetails.OrderBy(m => m.PassengerType).ToList();
+        //////        ////bookTicketOrderDetails.BookTickets = bookTicketDetails;
+        //////        ////bookTicketOrderDetails.BookFares = lstbookFareDetails;
+        //////        ////bookTicketOrderDetails.BookPassengers = bookPassengerDetails.OrderBy(m => m.PassengerType).ToList();
+        //////        ////bookTicketOrderDetails.Contacts = bookContacDetails;
+        //////        return bookTicketOrderDetails;
+        //////    }
+        //////    catch (Exception)
+        //////    {
+        //////        return new BookTicketOrderDetails();
+        //////    }
+        //////}
 
         public static int ConvertGenderToNumber(string str)
         {

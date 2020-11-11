@@ -12,57 +12,7 @@ var BookingManagerController = {
             // $('[data-dateDefault="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
         });
         $('#btnSearch').off('click').on('click', function () {
-            var flg = true;
-            // Flight go
-            var ddlDestinationLocation = $('#ddlDestinationLocation').val();
-            var ddlOriginLocation = $('#ddlOriginLocation').val();
-            //
-            if (ddlOriginLocation == "-" || ddlOriginLocation == '') {
-                $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
-                flg = false;
-            }
-            else if (ddlOriginLocation == ddlDestinationLocation) {
-                $('#lblOriginLocation').html('Nơi đi và nơi đến không được trùng nhau');
-                flg = false;
-            }
-            else {
-                $('#lblOriginLocation').html('');
-            }
-            // Flight to
-            if (ddlDestinationLocation == "-" || ddlDestinationLocation == '') {
-                $('#lblDestinationLocation').html('Vui lòng chọn nơi đến');
-                flg = false;
-            }
-            else if (ddlOriginLocation == ddlDestinationLocation) {
-                $('#lblDestinationLocation').html('Nơi đi và nơi đến không được trùng nhau');
-                flg = false;
-            }
-            else {
-                $('#lblDestinationLocation').html('');
-            }
-            //
-            $('#lblDepartureDateTime').html('');
-            var dateGo = $("#DepartureDateTime").val();
-            if (dateGo == "") {
-                $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
-            }
-            //  
-            $('#lblReturnDateTime').html('');
-            var ddlFlightType = $('#ddlFlightType').val();
-            if (parseInt(ddlFlightType) == 2) {
-                var returnDateTime = $('#ReturnDateTime').val();
-
-                if (returnDateTime == "") {
-                    $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
-                    flg = false;
-                }
-            }
-            // submit form
-            if (flg) {
-                flightBookingController.Search();
-            }
-            else
-                Notifization.Error(MessageText.Datamissing);
+            BookingManagerController.DataList(1);
         });
     },
     DataList: function (page) {
@@ -115,7 +65,6 @@ var BookingManagerController = {
                             var amount = item.TotalAmount;
                             var contactName = item.ContactName;
                             var _unit = 'đ';
-
                             //  role
                             var action = HelperModel.RolePermission(result.role, "FlightController", id);
                             //
@@ -132,7 +81,7 @@ var BookingManagerController = {
                                  <td class="text-center">${BookOrderStatus(item.Status)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>                                                                                                                                                                                                                                                                       
                                  <td class='tbcol-left'>
-                                     <button type="button" class="btn btn-primary btn-sm">Xuất vé</button>
+                                     <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất vé</button>
                                  </td>                                  
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
@@ -161,9 +110,12 @@ var BookingManagerController = {
 //
 BookingManagerController.init();
 
-
-
-
+//*******************************************************
+$(document).on("click", ".btn-export", function () {
+    var id = $(this).data("id");
+    console.log(":::" + id );
+})
+//*******************************************************
 function BookOrderStatus(_status) {
     var result = '';
     switch (_status) {

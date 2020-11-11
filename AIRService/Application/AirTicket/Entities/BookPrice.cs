@@ -20,6 +20,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
+        public string BookOrderID { get; set; }
         public string PNR { get; set; }
         public string TicketID { get; set; }
         public int FlightType { get; set; }
