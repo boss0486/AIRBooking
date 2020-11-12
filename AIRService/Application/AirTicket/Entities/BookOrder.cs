@@ -5,6 +5,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using WebCore.Model.Entities;
+using WebCore.Services;
 
 namespace WebCore.Entities
 {
@@ -86,6 +87,9 @@ namespace WebCore.Entities
                 _orderDate = value;
             }
         }
+        private int ItineraryType { get; set; }
+        [NotMapped]
+        public string ItineraryText => BookOrderService.ViewOrderCustomerType(ItineraryType);
         private string TimeBooking
         {
             get
@@ -123,12 +127,22 @@ namespace WebCore.Entities
         public string TicketingName { get; set; }
         public string AgentID { get; set; }
         public string AgentCode { get; set; }
+        private int ItineraryType { get; set; }
+        [NotMapped]
+        public string ItineraryText => BookOrderService.ViewOrderCustomerType(ItineraryType);
+
         public int Status { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }
         public List<BookContact> BookContacts { get; set; }
         public List<BookPrice> BookPrices { get; set; }
         public List<BookTax> BookTaxs { get; set; }
+    }
+
+    public class BookItineraryType
+    {
+        public static string KhachLe = "Khách lẻ";
+        public static string Company = "Công ty";
     }
 
 }

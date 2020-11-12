@@ -109,6 +109,21 @@ namespace WebCore.Services
             //
             return data;
         }
-
+        public static string ViewOrderCustomerType(int state)
+        {
+            string result = string.Empty;
+            switch (state)
+            {
+                case 1:
+                    result = "Khách lẻ";
+                    break;
+                case 2:
+                    result = "Công ty";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
     }
 }

@@ -62,6 +62,7 @@ var BookingManagerController = {
                             var ticketingName = item.TicketingName;
                             var agentCode = item.AgentCode;
                             var amount = item.TotalAmount;
+                            var itineraryText = item.ItineraryText;
                             var contactName = item.ContactName;
                             var _unit = 'đ';
                             //  role
@@ -73,7 +74,7 @@ var BookingManagerController = {
                                  <td class="text-right">${rowNum}&nbsp;</td>  
                                  <td class='tbcol-photo'>${airlineId} - ${pnr}</td>  
                                  <td class='tbcol-photo'>${agentCode}</td>  
-                                 <td class='text-left'>-${ticketingName}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-left'>${itineraryText}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-left bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-left'>${contactName}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

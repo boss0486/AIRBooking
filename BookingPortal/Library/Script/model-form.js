@@ -103,7 +103,6 @@ class HelperModel {
         }
         return result;
     }
-
     static RolePermission(role, _controlInit, id) {
         if (role !== undefined && role !== null) {
             var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;
@@ -170,3 +169,5 @@ class PassengerGroupEnum {
     static KhachLe = 1;
     static Company = 2;
 }
+
+ 
