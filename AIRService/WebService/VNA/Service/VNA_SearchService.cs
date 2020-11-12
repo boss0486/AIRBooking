@@ -62,7 +62,7 @@ namespace AIRService.Service
                 string _originLocation = model.OriginLocation;
                 DateTime _departureDateTime = model.DepartureDateTime;
                 DateTime? _returnDateTime = model.ReturnDateTime;
-                string airlineType = model.AirlineType;
+                int itineraryType = model.ItineraryType;
 
                 if (_isRoundTrip && _departureDateTime > Convert.ToDateTime(_returnDateTime))
                     return Notifization.Invalid("Ngày đi phải nhỏ hơn ngày về");
@@ -227,7 +227,7 @@ namespace AIRService.Service
                             ArrivalDateTime = _arrivalDateTime,
                             AirEquipType = _lstFlightSegment.Equipment.AirEquipType,
                             FlightNo = planeNo,
-                            AirlineType = airlineType,
+                            ItineraryType = itineraryType,
                             AirTicketCondition04 = airTicketCondition04,
                             AirTicketCondition05 = airTicketCondition05,
                         }, tokenModel);
@@ -409,7 +409,7 @@ namespace AIRService.Service
                             ArrivalDateTime = _arrivalDateTime,
                             AirEquipType = _lstFlightSegment.Equipment.AirEquipType,
                             FlightNo = planeNo,
-                            AirlineType = airlineType,
+                            ItineraryType = itineraryType,
                             AirTicketCondition04 = airTicketCondition04,
                             AirTicketCondition05 = airTicketCondition05
                         }, tokenModel);
@@ -511,8 +511,7 @@ namespace AIRService.Service
             int rbdcEnum = VNALibrary.GetResbookDesigCodeIDByKey(rbdc);
             List<FareItem> fareDetailsModels = new List<FareItem>();
             //string test = ""; 
-            // check condition 04
-            string airlineType = flightAirTicketCondition.AirlineType;
+            // check condition 04 
             int planeNo = flightAirTicketCondition.FlightNo;
             bool conditionState04 = false;
             bool conditionState05 = false;
@@ -924,6 +923,8 @@ namespace AIRService.Service
                 string _conversationId = tokenModel.ConversationID;
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
+                //
+                string timeZoneLocal = model.TimeZoneLocal;
                 // ticketing & contact  ************************************************************************************************
                 BookTicketingRq ticketingInfo = model.TicketingInfo;
                 BookContactRqModel Contacts = model.Contacts;
@@ -1143,6 +1144,7 @@ namespace AIRService.Service
                             {
                                 fareTaxs.Add(new FareTax
                                 {
+                                    FlightType = 0,
                                     PassengerType = passengerType,
                                     Text = tax.TaxName,
                                     TaxCode = tax.TaxCode,
@@ -1168,8 +1170,6 @@ namespace AIRService.Service
                                 Gender = item.Gender
                             });
                         }
-
-
 
                         //
                         var passengerDetailModel = new DetailsRQ
@@ -1253,11 +1253,15 @@ namespace AIRService.Service
                         {
 
                             PNR = result.PNR,
+                            PassengerGroup = model.PassengerGroup,
+                            Summary = model.Summary,
+                            ItineraryType = model.ItineraryType,
+                            OrderDate = Convert.ToDateTime(Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal)),
+
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
                             FareFlights = fareFlights,
-                            PassengerGroup = model.PassengerGroup,
                             TiketingInfo = new BookTicketingInfo
                             {
                                 ClientID = clientId,
@@ -1269,8 +1273,7 @@ namespace AIRService.Service
                             {
                                 BookKhachLeContact = model.Contacts.BookKhachLeContact,
                                 BookCompanyContact = bookCompany
-                            },
-                            Summary = model.Summary
+                            }
                         });
                         result.TicketID = bookTicketId;
                         //

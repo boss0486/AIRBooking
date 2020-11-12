@@ -72,10 +72,10 @@ var VNAReportController = {
                                          <td class="tbcol-none">${item.PnrLocator}</td>
                                          <td class="tbcol-none">${item.PassengerName}</td>
                                          <td class="tbcol-none">${reportDate}</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${item.TransactionTime}</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(item.FareAmount)} đ</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(item.TaxAmount)} đ</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(item.TotalAmount)} đ</td>
+                                         <td class="text-right bg-danger">${item.TransactionTime}</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(item.FareAmount)} đ</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(item.TaxAmount)} đ</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(item.TotalAmount)} đ</td>
                                          <td class="tbcol-action">${action} </td>
                                     </tr>`;
                         });
@@ -137,10 +137,10 @@ var VNAReportController = {
                                          <td>${itemEmp.EmpNumber}-${id}</td>                                                               
                                          <td class="tbcol-none">${item.PnrLocator}</td>
                                          <td class="tbcol-none">${item.PassengerName}</td> 
-                                         <td class="text-right" style = "background: #fee1ee;">${item.TransactionTime}</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(fee.FareAmount)} đ</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(fee.TaxAmount)} đ</td>
-                                         <td class="text-right" style = "background: #fee1ee;">${LibCurrencies.FormatToCurrency(fee.TotalAmount)} đ</td>
+                                         <td class="text-right bg-danger">${item.TransactionTime}</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.FareAmount)} đ</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.TaxAmount)} đ</td>
+                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.TotalAmount)} đ</td>
                                          <td class="tbcol-action"><a href='${URLA}/RpDetails/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Chi tiết</a></td>
                                     </tr>`;
                                     _stt += 1;

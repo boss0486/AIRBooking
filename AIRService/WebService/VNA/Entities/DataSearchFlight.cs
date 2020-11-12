@@ -77,7 +77,7 @@ namespace ApiPortalBooking.Models
     public class FlightAirTicketCondition
     {
         public int FlightNo { get; set; }
-        public string AirlineType { get; set; }
+        public int ItineraryType { get; set; }
         public string AirEquipType { get; set; }
         public DateTime DepartureDateTime { get; set; }
         public string DestinationLocation { get; set; }

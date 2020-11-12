@@ -25,14 +25,16 @@ namespace WebCore.Entities
         public int IndenID { get; set; }
         public string CodeID { get; set; }
         public string AirlineID { get; set; }
+        public int ItineraryType { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
         public string TicketingID { get; set; }
         public string TicketingName { get; set; }
-        public string ClientID { get; set; }
-        public string ClientCode { get; set; }
+        public string AgentID { get; set; }
+        public string AgentCode { get; set; }
         public int Status { get; set; }
+        public DateTime OrderDate { get; set; }
     }
 
     // model
@@ -65,13 +67,36 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public string TicketingID { get; set; }
         public string TicketingName { get; set; }
-        public string ClientID { get; set; }
-        public string ClientCode { get; set; }
+        public string AgentID { get; set; }
+        public string AgentCode { get; set; }
         public double TotalAmount { get; set; }
         public string ContactName { get; set; }
         public int Status { get; set; }
+        private string _orderDate;
+        public string OrderDate
+        {
+            get
+            {
+                if (_orderDate == null)
+                    return "../" + "../" + "..";
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _orderDate = value;
+            }
+        }
+        private string TimeBooking
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_orderDate))
+                    return "../" + "../" + "..";
+                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+        }
     }
-    
+
     public class BookOrderOption
     {
         public string ID { get; set; }
@@ -81,7 +106,7 @@ namespace WebCore.Entities
 
     public class BookOrderSerch : SearchModel
     {
-        
+
     }
 
     //details ***************************************************************************************************************
@@ -96,8 +121,8 @@ namespace WebCore.Entities
         public string Summary { get; set; }
         public string TicketingID { get; set; }
         public string TicketingName { get; set; }
-        public string ClientID { get; set; }
-        public string ClientCode { get; set; }
+        public string AgentID { get; set; }
+        public string AgentCode { get; set; }
         public int Status { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }

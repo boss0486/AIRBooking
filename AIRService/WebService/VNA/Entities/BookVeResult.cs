@@ -26,6 +26,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
 
     public class FareTax
     {
+        public int FlightType { get; set; }
         public string PassengerType { get; set; }
         public string Text { get; set; }
         public string TaxCode { get; set; }

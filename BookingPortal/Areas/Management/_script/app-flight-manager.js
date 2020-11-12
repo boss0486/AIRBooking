@@ -57,11 +57,10 @@ var BookingManagerController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //
-                            var pnr = item.PNR;
-                            var codeId = item.CodeID;
+                            var pnr = item.PNR; 
                             var airlineId = item.AirlineID;
                             var ticketingName = item.TicketingName;
-                            var clientCode = item.ClientCode;
+                            var agentCode = item.AgentCode;
                             var amount = item.TotalAmount;
                             var contactName = item.ContactName;
                             var _unit = 'đ';
@@ -73,13 +72,13 @@ var BookingManagerController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>  
                                  <td class='tbcol-photo'>${airlineId} - ${pnr}</td>  
-                                 <td class='tbcol-photo'>${codeId}</td>  
-                                 <td class='text-left'>${clientCode}-${ticketingName}</td>                                                                                                                                                                                                                                                                         
-                                 <td class='text-left'>COM</td>                                                                                                                                                                                                                                                                         
+                                 <td class='tbcol-photo'>${agentCode}</td>  
+                                 <td class='text-left'>-${ticketingName}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-left bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-left'>${contactName}</td>                                                                                                                                                                                                                                                                         
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                         
-                                 <td class="text-center">${BookOrderStatus(item.Status)}</td>
-                                 <td class="text-center">${item.CreatedDate}</td>                                                                                                                                                                                                                                                                       
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                 <td class='text-left'></td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-left bg-danger'>${pnr}</td>                                                                                                                                                                                                                                                                         
                                  <td class='tbcol-left'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất vé</button>
                                  </td>                                  

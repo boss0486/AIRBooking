@@ -97,12 +97,14 @@ namespace WebCore.Services
                         PNR = pnr,
                         Alias = orderCode.ToLower(),
                         Summary = model.Summary,
-                        ClientID = bookTicketing.ClientID,
-                        ClientCode = bookTicketing.ClientCode,
+                        AgentID = bookTicketing.ClientID,
+                        AgentCode = bookTicketing.ClientCode,
                         TicketingID = bookTicketing.TiketingID,
                         TicketingName = bookTicketing.TiketingName,
                         Status = (int)ENM.BookTicketEnum.BookPNRCodeStatus.Booking,
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
+                        ItineraryType = model.ItineraryType,
+                        OrderDate = model.OrderDate,
                         SiteID = "-"
                     }, transaction: _transaction);
 

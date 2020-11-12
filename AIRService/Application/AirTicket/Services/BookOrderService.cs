@@ -101,6 +101,9 @@ namespace WebCore.Services
             BookPriceService bookPriceService = new BookPriceService(_connection);
             data.BookPrices = bookPriceService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //
+            BookTaxService bookTaxService = new BookTaxService(_connection);
+            data.BookTaxs = bookTaxService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            //
             BookContactService bookContactService = new BookContactService(_connection);
             data.BookContacts = bookContactService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //

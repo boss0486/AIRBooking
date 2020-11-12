@@ -85,12 +85,14 @@ namespace WebCore.Entities
         public string PNR { get; set; }
         public string Summary { get; set; }
         public int PassengerGroup { get; set; }
+        public int ItineraryType { get; set; }
+        public DateTime OrderDate { get; set; }
         public BookTicketingInfo TiketingInfo { get; set; }
         public BookTicketOrderContact Contacts { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
-        public List<FareFlight> FareFlights { get; set; }
+        public List<FareFlight> FareFlights { get; set; } 
     }
     public class BookTicketingInfo
     {
@@ -222,11 +224,13 @@ namespace WebCore.Entities
     public class Request_BookModel
     {
         public string Summary { get; set; }
+        public int ItineraryType { get; set; }
         public int PassengerGroup { get; set; }
         public BookTicketingRq TicketingInfo { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public BookContactRqModel Contacts { get; set; }
+        public string TimeZoneLocal { get; set; } 
     }
 
 }

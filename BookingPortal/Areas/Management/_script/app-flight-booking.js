@@ -71,6 +71,8 @@ var flightBookingController = {
         if ($('input[name="cbxHasTax"]').is(":checked"))
             isHasTax = true;
         //
+        var ddlItineraryType = $('#ddlItineraryType').val();
+        var ddlAirlineType = $('#ddlAirlineType').val();
         var ddlOriginLocation = $('#ddlOriginLocation').val();
         var ddlDestinationLocation = $('#ddlDestinationLocation').val();
         var departureDateTime = $("#DepartureDateTime").val();
@@ -83,7 +85,7 @@ var flightBookingController = {
         if (parseInt(ddlFlightType) == 2) {
             isRoundTrip = "True";
         }
-        var ddlAirlineType = $('#ddlAirlineType').val();
+       
         // set information in title
         $('.flight-go .flight-name').html(ddlOriginLocation + " - " + ddlDestinationLocation);
         $('.flight-go .flight-date').html(departureDateTime);
@@ -105,7 +107,9 @@ var flightBookingController = {
             INF: inf,
             IsRoundTrip: isRoundTrip,
             IsHasTax: isHasTax,
-            AirlineType: ddlAirlineType
+            ItineraryType: ddlItineraryType,
+            AirlineType: ddlAirlineType,
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
         AjaxFrom.POST({
             url: URLC + '/search',
@@ -649,6 +653,10 @@ $(document).on('click', '#btnBooking', function () {
     var totalItineraryPrice = 0;
     var lFlight = [];
     var _type = parseInt(order.FlightType);
+    var ddlAirlineType = order.AirlineType; 
+    var ddlItineraryType = order.ItineraryType; 
+    //
+
     // go data 
     var orderGo = order.Flight[0];
     var _arrivalDateTime = orderGo.ArrivalDateTime;
@@ -709,7 +717,7 @@ $(document).on('click', '#btnBooking', function () {
     if (ddlCompany == undefined)
         ddlCompany = "";
     //  copntact of passengers
-    var ticketingInfo = { 
+    var ticketingInfo = {
         ProviderID: ddlProvider,
         TiketingID: ddlEmployee
     };
@@ -723,7 +731,7 @@ $(document).on('click', '#btnBooking', function () {
         CompanyID: ddlCompany
     };
     //
-    
+
 
     var lContact = {
         BookKhachLeContact: khachLe,
@@ -731,6 +739,8 @@ $(document).on('click', '#btnBooking', function () {
     };
     //
     var bookModel = {
+        ItineraryType: ddlItineraryType,
+        AirlineType: ddlAirlineType,
         PassengerGroup: rdoPassengerGroup,
         TicketingInfo: ticketingInfo,
         Contacts: lContact,
@@ -798,6 +808,8 @@ function BookingOrder() {
     var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
     var htmlError = "";
+    var ddlItineraryType = parseInt($('#ddlItineraryType').val());
+    var ddlAirlineType = $('#ddlAirlineType').val();
     var ddlFlightType = parseInt($('#ddlFlightType').val());
     //
     var adt = parseInt($("#ddlAdt").val());
@@ -805,6 +817,7 @@ function BookingOrder() {
     var inf = parseInt($("#ddlInf").val());
     var lFlight = [];
     //
+
     var ddlOriginLocation = $('#ddlOriginLocation').val();
     var ddlDestinationLocation = $('#ddlDestinationLocation').val();
     var trGo = $(flightGoInfo).closest('tr');
@@ -862,7 +875,10 @@ function BookingOrder() {
         CNN: cnn,
         INF: inf,
         Flight: lFlight,
-        FlightType: ddlFlightType
+        FlightType: ddlFlightType,
+        ItineraryType: ddlItineraryType,
+        AirlineType: ddlAirlineType,
+        TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
     };
     // create session
     Cookies.SetCookie("FlightOrder", JSON.stringify(orderInfo));
