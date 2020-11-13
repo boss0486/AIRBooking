@@ -22,8 +22,7 @@ namespace AIRService.WS.Service
             //if (string.IsNullOrWhiteSpace(_token))
             //    return null;
             //handle
-            try
-            {
+             
                 // header info
                 WebService.VNA_OTA_AirBookLLSRQ.MessageHeader messageHeader = new WebService.VNA_OTA_AirBookLLSRQ.MessageHeader();
                 messageHeader.MessageData = new WebService.VNA_OTA_AirBookLLSRQ.MessageData();
@@ -79,12 +78,7 @@ namespace AIRService.WS.Service
                 //sessionService.CloseSession(_session);
                 // return data *********************************************************************************************************************************************
                 return data;
-            }
-            catch (Exception)
-            {
-                //sessionService.CloseSession(_session);
-                return null;
-            }
+            
         }
     }
 }

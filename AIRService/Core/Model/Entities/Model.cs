@@ -35,7 +35,7 @@ namespace WebCore.Model.Entities
         public string CreatedBy
         {
             get
-            { 
+            {
                 return Helper.User.InFormation.GetInfCreateBy(_createdById);
             }
             set
@@ -43,7 +43,7 @@ namespace WebCore.Model.Entities
                 _createdById = value;
             }
         }
-         
+
         private string _createdDate;
         public string CreatedDate
         {
@@ -85,9 +85,9 @@ namespace WebCore.Model.Entities
 
         public int ID { get; set; }
         public string Title { get; set; }
-        public SearchExpressOption(int Id, string title)
+        public SearchExpressOption(int id, string title)
         {
-            ID = Id;
+            ID = id;
             Title = title;
         }
     }
@@ -101,9 +101,9 @@ namespace WebCore.Model.Entities
     {
         public int ID { get; set; }
         public string Title { get; set; }
-        public StatusModel(int Id, string title)
+        public StatusModel(int id, string title)
         {
-            ID = Id;
+            ID = id;
             Title = title;
         }
     }

@@ -34,8 +34,12 @@ namespace WebCore.Entities
         public string TicketingName { get; set; }
         public string AgentID { get; set; }
         public string AgentCode { get; set; }
+        public double AgentFee { get; set; }
+        public double Amount { get; set; }
         public int Status { get; set; }
         public DateTime OrderDate { get; set; }
+        public int MailStatus { get; set; }
+        public int OrderStatus { get; set; }
     }
 
     // model
@@ -60,17 +64,17 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
         public string PNR { get; set; }
-        public int IndenID { get; set; }
         public string CodeID { get; set; }
         public string AirlineID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string TicketingID { get; set; }
         public string TicketingName { get; set; }
-        public string AgentID { get; set; }
         public string AgentCode { get; set; }
-        public double TotalAmount { get; set; }
+        public double AgentFee { get; set; }
+        public double Amount { get; set; }
+        [NotMapped]
+        public double TotalAmount => AgentFee + Amount;
         public string ContactName { get; set; }
         public int Status { get; set; }
         private string _orderDate;
@@ -88,8 +92,13 @@ namespace WebCore.Entities
             }
         }
         private int ItineraryType { get; set; }
+        public int MailStatus { get; set; }
+        public int OrderStatus { get; set; }
+
         [NotMapped]
-        public string ItineraryText => BookOrderService.ViewOrderCustomerType(ItineraryType);
+        public string CustomerTypeText => BookOrderService.ViewOrderCustomerType(BookContactService.GetBookContactTypeByOrderID(ID));
+        [NotMapped]
+        public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
         private string TimeBooking
         {
             get
@@ -110,9 +119,15 @@ namespace WebCore.Entities
 
     public class BookOrderSerch : SearchModel
     {
-
+        public int OrderStatus { get; set; }
+        public int ItineraryType { get; set; }
+        public string AgentID { get; set; }
+        public string CompanyID { get; set; }
     }
-
+    public class BookAgentID
+    {
+        public string AgentID { get; set; }
+    }
     //details ***************************************************************************************************************
     public partial class ViewBookOrder : WEBModelResult
     {
@@ -127,10 +142,11 @@ namespace WebCore.Entities
         public string TicketingName { get; set; }
         public string AgentID { get; set; }
         public string AgentCode { get; set; }
+        public double AgentFee { get; set; }
         private int ItineraryType { get; set; }
+        public int OrderStatus { get; set; }
         [NotMapped]
         public string ItineraryText => BookOrderService.ViewOrderCustomerType(ItineraryType);
-
         public int Status { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }
@@ -138,11 +154,4 @@ namespace WebCore.Entities
         public List<BookPrice> BookPrices { get; set; }
         public List<BookTax> BookTaxs { get; set; }
     }
-
-    public class BookItineraryType
-    {
-        public static string KhachLe = "Khách lẻ";
-        public static string Company = "Công ty";
-    }
-
 }

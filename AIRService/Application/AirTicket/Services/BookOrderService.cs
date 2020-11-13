@@ -20,7 +20,7 @@ namespace WebCore.Services
         public BookOrderService() : base() { }
         public BookOrderService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult DataList(BookOrderSerch model)
+        public ActionResult BookOrder(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -31,18 +31,17 @@ namespace WebCore.Services
                 query = "";
             //
             string whereCondition = string.Empty;
-            //
             SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
             {
                 Query = model.Query,
                 TimeExpress = model.TimeExpress,
-                Status = model.Status,
+                Status = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
                 Page = model.Page,
                 AreaID = model.AreaID,
                 TimeZoneLocal = model.TimeZoneLocal
-            });
+            }, dateColumn: "OrderDate");
             if (searchResult != null)
             {
                 if (searchResult.Status == 1)
@@ -50,18 +49,32 @@ namespace WebCore.Services
                 else
                     return Notifization.Invalid(searchResult.Message);
             }
+            // 
+            if (orderStatus == (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None && model.OrderStatus != (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None)
+            {
+                whereCondition += " AND o.OrderStatus = @OrderStatus";
+                orderStatus = model.OrderStatus;
+            }
             //
-            string areaId = model.AreaID;
-            if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
-                whereCondition += " AND AreaID = @AreaID ";
+            if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
+                whereCondition += " AND o.ItineraryType = @ItineraryType";
+            //
+            string agentId = model.AgentID;
+            if (!string.IsNullOrWhiteSpace(agentId))
+                whereCondition += " AND o.AgentID = @AgentID";
+            //
+            string compId = model.CompanyID;
+            if (!string.IsNullOrWhiteSpace(compId))
+                whereCondition += " AND c.CompanyID = @CompanyID";
             // query
-            string sqlQuery = @"SELECT * 
-            ,(SELECT SUM(Amount) FROM App_BookPrice WHERE PNR = o.PNR) as TotalAmount  
-            ,(SELECT Top 1 Name FROM App_BookContact WHERE  App_BookContact.BookOrderID = o.ID) as ContactName 
-            FROM App_BookOrder as o WHERE o.Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY o.[Title] ASC";
-            var dtList = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
+            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName'  
+            FROM App_BookOrder as o LEFT JOIN App_BookContact as c ON c.BookOrderID = o.ID
+            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%')  
+            " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
+            var dtList = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
+            //
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count == 0 && page > 1)
             {
@@ -78,8 +91,10 @@ namespace WebCore.Services
                 Page = page
             };
             // reusult
-            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
+
+
 
         public ViewBookOrder ViewBookOrderByID(string id)
         {
@@ -124,6 +139,85 @@ namespace WebCore.Services
                     break;
             }
             return result;
+        }
+        public static string ViewOrderItineraryTypeText(int state)
+        {
+            string result = string.Empty;
+            switch (state)
+            {
+                case 1:
+                    result = "Nội địa";
+                    break;
+                case 2:
+                    result = "Quốc tế";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+        //##############################################################################################################################################################################################################################################################
+
+        public static string DropdownListBookOrderStatus(int id)
+        {
+            try
+            {
+                BookOrderService bookOrderService = new BookOrderService();
+                List<StatusModel> orderStatusModels = bookOrderService.OrderStatusData();
+                string result = string.Empty;
+                foreach (var item in orderStatusModels)
+                {
+                    string selected = string.Empty;
+                    if (item.ID == id)
+                        selected = "selected";
+                    result += "<option value='" + item.ID + "' " + selected + ">" + item.Title + "</option>";
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        public static string DropdownListOrderItinerary(int id)
+        {
+            try
+            {
+                BookOrderService bookOrderService = new BookOrderService();
+                List<StatusModel> dataList = bookOrderService.OrderItineraryData();
+                string result = string.Empty;
+                foreach (var item in dataList)
+                {
+                    string selected = string.Empty;
+                    if (item.ID == id)
+                        selected = "selected";
+                    result += "<option value='" + item.ID + "' " + selected + ">" + item.Title + "</option>";
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        //##############################################################################################################################################################################################################################################################
+        public List<StatusModel> OrderStatusData()
+        {
+            return new List<StatusModel>{
+                    new StatusModel(-1, "Giữ chỗ"),
+                    new StatusModel(2, "Hủy chỗ"),
+                    new StatusModel(3, "Xuất vé"),
+                };
+        }
+
+        public List<StatusModel> OrderItineraryData()
+        {
+            return new List<StatusModel>{
+                    new StatusModel(1, "Nội địa"),
+                    new StatusModel(2, "Quốc tế")
+                };
         }
     }
 }

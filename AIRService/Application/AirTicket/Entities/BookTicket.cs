@@ -37,9 +37,7 @@ namespace WebCore.Entities
         public DateTime ArrivalDateTime { get; set; }
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
-        public int AirEquipType { get; set; }
-        public double FareBase { get; set; }
-        public double Amount { get; set; }
+        public int AirEquipType { get; set; } 
         public string ReturnID { get; set; }
     }
     // model
@@ -60,7 +58,6 @@ namespace WebCore.Entities
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
         public int AirEquipType { get; set; }
-        public double Amount { get; set; }
         public string ReturnID { get; set; }
         public int Enabled { get; set; }
     }
@@ -87,22 +84,23 @@ namespace WebCore.Entities
         public int PassengerGroup { get; set; }
         public int ItineraryType { get; set; }
         public DateTime OrderDate { get; set; }
-        public BookTicketingInfo TiketingInfo { get; set; }
-        public BookTicketOrderContact Contacts { get; set; }
+        public BookAgentInfo AgentInfo { get; set; }
+        public BookOrderContact Contacts { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
         public List<FareFlight> FareFlights { get; set; } 
     }
-    public class BookTicketingInfo
+    public class BookAgentInfo
     {
         public int PassengerGroup { get; set; }
-        public string ClientID { get; set; }
-        public string ClientCode { get; set; }
+        public string AgentID { get; set; }
+        public string AgentCode { get; set; }
         public string TiketingID { get; set; }
         public string TiketingName { get; set; }
+        public double AgentFee { get; set; }
     }
-    public class BookTicketOrderContact
+    public class BookOrderContact
     {
         public BookKhachLeRqContact BookKhachLeContact { get; set; }
         public BookCompanyContactModel BookCompanyContact { get; set; }

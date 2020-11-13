@@ -86,7 +86,7 @@ namespace WebCore.Services
                         Title = "VNA-" + keyCode,
                         Alias = "VNA-" + keyCode,
                         Summary = "Viet nam Airline",
-                        Status = (int)ENM.BookTicketEnum.BookPNRCodeStatus.Booking,
+                        Status = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         SiteID = "-"
                     }, transaction: transaction);

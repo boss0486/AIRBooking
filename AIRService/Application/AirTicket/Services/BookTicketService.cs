@@ -81,13 +81,12 @@ namespace WebCore.Services
                     var flights = model.Flights;
                     var direction = (int)VNAEnum.FlightDirection.None;
                     var passengers = model.Passengers;
-                    var bookTickId = "";
+                    var bookTickId = string.Empty;
                     int cnt = 0;
                     var fareFlights = model.FareFlights;
-
-                    BookTicketingInfo bookTicketing = model.TiketingInfo;
-                    UserInfoService userInfoService = new UserInfoService(_connection);
-
+                    var fareTaxes = model.FareTaxs;
+                    //
+                    BookAgentInfo bookAgentInfo = model.AgentInfo;
                     string orderCode = "PO-" + pnr;
                     string bookOrderId = bookOrderService.Create<string>(new BookOrder
                     {
@@ -97,14 +96,17 @@ namespace WebCore.Services
                         PNR = pnr,
                         Alias = orderCode.ToLower(),
                         Summary = model.Summary,
-                        AgentID = bookTicketing.ClientID,
-                        AgentCode = bookTicketing.ClientCode,
-                        TicketingID = bookTicketing.TiketingID,
-                        TicketingName = bookTicketing.TiketingName,
-                        Status = (int)ENM.BookTicketEnum.BookPNRCodeStatus.Booking,
+                        AgentID = bookAgentInfo.AgentID,
+                        AgentCode = bookAgentInfo.AgentCode,
+                        AgentFee = bookAgentInfo.AgentFee,
+                        TicketingID = bookAgentInfo.TiketingID,
+                        TicketingName = bookAgentInfo.TiketingName,
+                        Amount = bookAgentInfo.AgentFee + fareFlights.Sum(m => m.Amount) + fareTaxes.Sum(m => m.Amount),
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         ItineraryType = model.ItineraryType,
+                        MailStatus = (int)ENM.BookOrderEnum.BookMailStatus.None,
                         OrderDate = model.OrderDate,
+                        OrderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
                         SiteID = "-"
                     }, transaction: _transaction);
 
@@ -132,8 +134,6 @@ namespace WebCore.Services
                             ResBookDesigCode = flight.ResBookDesigCode,
                             FlightNumber = flight.FlightNumber,
                             AirEquipType = flight.AirEquipType,
-                            Amount = 0,
-                            FareBase = 0,
                             ReturnID = bookTickId,
                             Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED
                         }, transaction: _transaction);
@@ -147,7 +147,6 @@ namespace WebCore.Services
                                     BookOrderID = bookOrderId,
                                     PNR = pnr,
                                     FlightType = price.FlightType,
-                                    TicketID = bookTickId,
                                     PassengerType = price.PassengerType,
                                     Title = "Fare Price",
                                     Amount = price.Amount,
@@ -173,11 +172,10 @@ namespace WebCore.Services
                             }, transaction: _transaction);
                         }
                     }
-                    // tax
-                    var booFareTaxs = model.FareTaxs;
-                    if (booFareTaxs.Count > 0)
+                    // tax 
+                    if (fareTaxes.Count > 0)
                     {
-                        foreach (var item in booFareTaxs)
+                        foreach (var item in fareTaxes)
                         {
                             bookFareService.Create<string>(new BookTax
                             {
@@ -192,8 +190,8 @@ namespace WebCore.Services
                         }
                     }
                     // contact
-                    BookTicketingInfo ticketingInfo = model.TiketingInfo;
-                    BookTicketOrderContact contact = model.Contacts;
+                    BookAgentInfo ticketingInfo = model.AgentInfo;
+                    BookOrderContact contact = model.Contacts;
                     //
                     int passengerGroup = model.PassengerGroup;
                     //

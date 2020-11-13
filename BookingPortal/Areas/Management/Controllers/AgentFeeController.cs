@@ -29,7 +29,7 @@ namespace WebApplication.Management.Controllers
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 string customerId = CustomerService.GetCustomerIDByUserID(userId);
                 AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
-                var airFeeAgentResult = airFeeAgentService.GetAgentFeeByCustomerID(customerId);
+                var airFeeAgentResult = airFeeAgentService.GetAgentFee(customerId);
                 if (airFeeAgentResult != null)
                 {
                     return View(airFeeAgentResult);

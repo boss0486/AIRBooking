@@ -54,7 +54,7 @@ namespace WebApplication.Management.Controllers
         }
 
         public ActionResult Booking()
-        {   
+        {
             List<FlightPassengerTypeInfo> flightPassengerTypeInfos = new List<FlightPassengerTypeInfo>();
             try
             {
@@ -99,7 +99,7 @@ namespace WebApplication.Management.Controllers
             }
             return View(flightPassengerTypeInfos);
         }
-        public ActionResult BookList()
+        public ActionResult DataList()
         {
             return View();
         }
@@ -113,43 +113,39 @@ namespace WebApplication.Management.Controllers
             //
             return View();
         }
-        
-
-        // GET: ******************************************************************************************************************************
-        //[HttpPost]
-        //[Route("Action/GetProvider")]
-        //public ActionResult GetCustomerAgent()
-        //{
-        //    ClientLoginService clientLoginService = new ClientLoginService();
-        //    List<ClientOption> dtList = clientLoginService.GetAllProvider();
-        //    string userId = Helper.Current.UserLogin.IdentifierID;
-        //    return Notifization.Data("", dtList);
-        //}
+        // api ******************************************************************************************************************************
 
         [HttpPost]
-        [Route("Action/BookList")]
+        [Route("Action/DataList")]
         public ActionResult BookList(BookOrderSerch model)
         {
             try
             {
                 using (var service = new BookOrderService())
-                    return service.DataList(model);
+                    return service.BookOrder(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
             }
             catch (Exception ex)
             {
                 return Notifization.TEST("::" + ex);
             }
         }
-        
+
         [HttpPost]
         [Route("Action/GetCompany")]
-        public ActionResult GetCompany()
+        public ActionResult GetCompanyByLogin()
         {
             CustomerService customerService = new CustomerService();
-            List<ClientOption> dtList = customerService.GetCompanyData();
+            List<ClientOption> dtList = customerService.GetCompanyByLogin();
             return Notifization.Data("", dtList);
         }
-
+        [HttpPost]
+        [Route("Action/GetCompByAgentID")]
+        public ActionResult GetCompByAgentID(BookAgentID bookAgentId)
+        {
+            CustomerService customerService = new CustomerService();
+            List<ClientOption> dtList = customerService.GetCompByAgentID(bookAgentId.AgentID);
+            return Notifization.Data("", dtList);
+        }
         // GET: Booking ******************************************************************************************************************************
 
 
@@ -375,7 +371,7 @@ namespace WebApplication.Management.Controllers
             }
         }
         // API MAY BAY ********************************************************************************************************************************************
-         
+
         ///
         [HttpPost]
         [Route("Action/TestLogin")]

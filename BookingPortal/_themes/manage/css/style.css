@@ -8349,8 +8349,11 @@ textarea.form-control {
 .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
     position: absolute;
     display: inline-block;
-    right: 18px;
-    margin-top: 7px;
+    right: 14px;
+    margin-top: 4px;
+}
+.bootstrap-select.show-tick .dropdown-menu li a span.text {
+    margin-right: 15px;
 }
 
 .dropdown-menu.inner li.selected a span {
@@ -8470,7 +8473,7 @@ textarea.form-control {
     transition: all 0.3s;
     height: 32px;
     display: block;
-    padding: 7px 15px;
+    padding: 7px 8px;
     clear: both;
     color: #333333;
     white-space: nowrap;

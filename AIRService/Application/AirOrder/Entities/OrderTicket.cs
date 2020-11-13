@@ -87,7 +87,7 @@ namespace WebCore.Entities
         public DateTime ArrivalDateTime { get; set; }
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
-        public int AirEquipType { get; set; }
+        public int AirEquipType { get; set; } 
     }
 
     public class RequestOrderPriceModel

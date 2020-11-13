@@ -135,6 +135,7 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AreaGeographicalController.cs" />
     <Compile Include="Areas\Management\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Management\Controllers\ProductController.cs" />
@@ -185,9 +186,9 @@
     <Content Include="Areas\Development\_script\menu.js" />
     <Content Include="Areas\Development\_script\setup-password.js" />
     <Content Include="Areas\Development\_script\user.js" />
-    <Content Include="Areas\Management\Views\AirBook\Details.txt" />
     <Content Include="Areas\Management\_script\account.js" />
-    <Content Include="Areas\Management\_script\app-flight-manager.js" />
+    <Content Include="Areas\Management\_script\app-order.js" />
+    <Content Include="Areas\Management\_script\app-book.js" />
     <Content Include="Areas\Management\_script\area-geographical.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />
@@ -1242,7 +1243,11 @@
     <Content Include="Areas\Management\Views\AreaGeographical\Update.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDepositHistory\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\UserRole.cshtml" />
-    <Content Include="Areas\Management\Views\AirBook\BookList.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewSearchForOrderPatial.cshtml" />
+    <Content Include="Areas\Management\Views\AirOrder\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\AirOrder\Details.cshtml" />
+    <Content Include="Areas\Management\Views\AirBook\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewSearchForBookPatial.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

@@ -944,9 +944,9 @@ namespace AIRService.Service
                 if (string.IsNullOrWhiteSpace(ticketingId))
                     return Notifization.Invalid("Lỗi xác định thông tin nhân viên đặt vé");
                 //
-                string clientId = ClientLoginService.GetClientIDByUserID(ticketingId);
+                string agentId = ClientLoginService.GetClientIDByUserID(ticketingId);
                 ClientLoginService clientLoginService = new ClientLoginService();
-                string clientCode = clientLoginService.GetClientCodeByID(clientId);
+                string agentCode = clientLoginService.GetClientCodeByID(agentId);
                 int passengerGroup = model.PassengerGroup;
                 // call service get PNR code 
                 string strEmail = string.Empty;
@@ -978,7 +978,6 @@ namespace AIRService.Service
                     bookCompany.Email = strEmail;
                     bookCompany.Phone = strPhone;
                     bookCompany.Name = customerComp.ContactName;
-
                 }
                 else if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
                 {
@@ -1046,7 +1045,7 @@ namespace AIRService.Service
                             ConversationID = _conversationId,
                             Token = _token
                         });
-                        //
+                        // 
                         if (ota_AirBookRS.ApplicationResults.Success == null)
                             return Notifization.Invalid("AirBook invalid");
                         //
@@ -1091,6 +1090,12 @@ namespace AIRService.Service
                             string json = r.ReadToEnd();
                             airPriceData = JsonConvert.DeserializeObject<PricingInPNR_Test>(json);
                         }
+                        //
+                        double airAgentFeeAmount = 0;
+                        AirAgentFeeService airAgentFeeService = new AirAgentFeeService();
+                        AirAgentFee airAgentFee = airAgentFeeService.GetAgentFee(agentId);
+                        if (airAgentFee != null)
+                            airAgentFeeAmount = airAgentFee.Amount;
                         //
                         //////////double feeTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
                         //////////// check blance
@@ -1185,7 +1190,7 @@ namespace AIRService.Service
                         //VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
                         //string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
                         //End transaction 
-                        var pnrCode = "PNR-00001";
+                        var pnrCode =  Helper.Security.Library.OTPCode;
                         vnaTransaction.EndTransaction();
                         if (string.IsNullOrWhiteSpace(pnrCode))
                             return Notifization.Invalid("Cannot get PNA code");
@@ -1210,7 +1215,7 @@ namespace AIRService.Service
                                 ArrivalDateTime = item.ArrivalDateTime,
                                 ResBookDesigCode = item.ResBookDesigCode,
                                 FlightNumber = item.FlightNumber,
-                                AirEquipType = item.AirEquipType
+                                AirEquipType = item.AirEquipType,
                             });
                         }
                         foreach (var item in fareFlights)
@@ -1248,28 +1253,27 @@ namespace AIRService.Service
                                 PassengerType = item.PassengerType
                             });
                         }
-                        // call save booking
+                        // call save booking 
                         var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
                         {
-
                             PNR = result.PNR,
                             PassengerGroup = model.PassengerGroup,
                             Summary = model.Summary,
                             ItineraryType = model.ItineraryType,
                             OrderDate = Convert.ToDateTime(Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal)),
-
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
                             FareFlights = fareFlights,
-                            TiketingInfo = new BookTicketingInfo
+                            AgentInfo = new BookAgentInfo
                             {
-                                ClientID = clientId,
-                                ClientCode = clientCode,
+                                AgentID = agentId,
+                                AgentCode = agentCode,
                                 TiketingID = ticketingId,
-                                TiketingName = ticketingName
+                                TiketingName = ticketingName,
+                                AgentFee = airAgentFeeAmount
                             },
-                            Contacts = new BookTicketOrderContact
+                            Contacts = new BookOrderContact
                             {
                                 BookKhachLeContact = model.Contacts.BookKhachLeContact,
                                 BookCompanyContact = bookCompany
@@ -1413,7 +1417,7 @@ namespace AIRService.Service
                             var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
                             if (bookPNRCode != null)
                             {
-                                bookPNRCode.Enabled = (int)BookTicketEnum.BookPNRCodeStatus.ExTicket;
+                                bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.ExTicket;
                                 bookPNRCodeService.Update(bookPNRCode);
                             }
                         }

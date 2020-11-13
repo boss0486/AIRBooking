@@ -91,7 +91,7 @@ namespace WebCore.Services
         }
 
 
-        public static string DropdownAllProvider(string id)
+        public static string DropdownAllProvider(string id,  bool showCode = false)
         {
             string result = string.Empty;
             using (var service = new CustomerService())
@@ -105,16 +105,23 @@ namespace WebCore.Services
                         string strSelect = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             strSelect = "selected";
-                        else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
-                            strSelect = "selected";
+                        //else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
+                        //    strSelect = "selected";
                         //
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='" + item.IsSupplier + "' " + strSelect + ">" + item.Title + "</option>";
+                        string title = item.Title;
+                        if (showCode)
+                        {
+                            title = item.CodeID;
+                        }
+                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='" + item.IsSupplier + "' " + strSelect + ">" + title + "</option>";
                     }
                 }
                 return result;
             }
         }
+
+ 
         //##############################################################################################################################################################################################################################################################
-        
+
     }
 }

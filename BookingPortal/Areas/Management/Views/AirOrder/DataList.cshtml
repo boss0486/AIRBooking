@@ -6,22 +6,21 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 
-@Html.Partial("~/Areas/Management/Views/_ViewSearchForHistoryPatial.cshtml", null)
+@Html.Partial("~/Areas/Management/Views/_ViewSearchForOrderPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered table-inline">
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-created">Ngày đặt</th>
+                <th class="tbcol-date">Ngày đặt</th>
                 <th class="tbcol-active">M.DL</th>
-                <th class="tbcol-none">Loại K.Hàng</th>
+                <th class="tbcol-date">Loại K.Hàng</th>
                 <th class="tbcol-active">Hãng</th>
                 <th class="tbcol-active">L.Hành trình</th>
-                <th class="tbcol-none">Tổng chi phí</th>
-                <th class="tbcol-date">T.G xuất vé</th>
                 <th class="tbcol-date">PNR</th>
-                <th class="tbcol-active">Booking</th>
+                <th class="tbcol-none">Số vé</th>
+                <th class="tbcol-none">Tổng chi phí</th>
                 <th class="tbcol-action">
                     ACT
                 </th>
@@ -32,10 +31,10 @@
 </div>
 <div id="Pagination"></div>
 @section scripts{
-    <script src="~/Areas/Management/_script/app-flight-manager.js"></script>
+    <script src="~/Areas/Management/_script/app-order.js"></script>
     <script type="text/javascript">
         $(function () {
-            BookingManagerController.DataList(1);
+            AirOrderController.DataList(1);
         });
     </script>
 }

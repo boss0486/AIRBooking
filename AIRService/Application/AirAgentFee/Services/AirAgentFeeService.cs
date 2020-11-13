@@ -141,13 +141,13 @@ namespace WebCore.Services
             return Notifization.Data("OK", airAirFeeAgent);
         }
         //##############################################################################################################################################################################################################################################################
-        public AirAgentFeeResult GetAgentFeeByCustomerID(string id)
+        public AirAgentFee GetAgentFee(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
             string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgentFee WHERE AgentID = @AgentID";
-            AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { AgentID = id }).FirstOrDefault();
+            AirAgentFee airAirFeeAgent = _connection.Query<AirAgentFee>(sqlQuery, new { AgentID = id }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
                 return null;

@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.Model.Services;
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchForBookPatial.cshtml", null)
+@* control ******************************************************************************************************@
+<div class="table-responsive">
+    <table class="table table-bordered table-inline">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-date">Ngày đặt</th>
+                <th class="tbcol-active">M.DL</th>
+                <th class="tbcol-none">Nhân viên</th>
+                <th class="tbcol-none">Khách hàng</th>
+                <th class="tbcol-date">Loại KH</th>
+                <th class="tbcol-active">Hãng</th>
+                <th class="tbcol-active">L.Hành trình</th>
+                <th class="tbcol-none">Tổng chi phí</th>
+                <th class="tbcol-date">T.G xuất vé</th>
+                <th class="tbcol-date">PNR</th>
+                <th class="tbcol-none">Booking</th>
+                <th class="tbcol-action">
+                    ACT
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+@section scripts{
+<script src="~/Areas/Management/_script/app-book.js"></script>
+<script type="text/javascript">
+    $(function () {
+        AirBookController.DataList(1);
+    });
+</script>
+}

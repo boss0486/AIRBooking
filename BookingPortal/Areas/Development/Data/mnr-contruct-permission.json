@@ -91,7 +91,7 @@
   },
   {
     "KeyID": "AirBook",
-    "Title": "Dịch vụ booking",
+    "Title": "Đặt vé",
     "Action": [
       {
         "KeyID": "Search",
@@ -101,9 +101,45 @@
       },
       {
         "KeyID": "Booking",
-        "Method": "Booking",
+        "Method": "TicketOrder",
         "APIRouter": "Action/Booking",
-        "Title": "Đặt vé"
+        "Title": "Giữ chỗ"
+      },
+      {
+        "KeyID": "ExTicket",
+        "Method": "ExTicket",
+        "APIRouter": "Action/ExTicket",
+        "Title": "Xuất vé"
+      },
+      {
+        "KeyID": "BookLuggage",
+        "Method": "BookLuggage",
+        "APIRouter": "Action/BookLuggage",
+        "Title": "Hành lý"
+      },
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "Xem"
+      }
+    ]
+  },
+  {
+    "KeyID": "AirOrder",
+    "Title": "Đơn hàng",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
       },
       {
         "KeyID": "Details",

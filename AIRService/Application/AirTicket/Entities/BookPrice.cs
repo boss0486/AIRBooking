@@ -22,7 +22,6 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string BookOrderID { get; set; }
         public string PNR { get; set; }
-        public string TicketID { get; set; }
         public int FlightType { get; set; }
         public string PassengerType { get; set; }      
         public string Title { get; set; }
@@ -33,7 +32,7 @@ namespace WebCore.Entities
     public class BookPriceCreateModel
     {
         public string PNR { get; set; }
-        public string TicketID { get; set; }
+        public string BookOrderID { get; set; }
         public string PassengerType { get; set; }
         public string Title { get; set; }
         public double Amount { get; set; }

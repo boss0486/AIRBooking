@@ -810,7 +810,7 @@ namespace WebCore.Services
             return clientOptions;
         }
 
-        public List<ClientOption> GetCompanyData()
+        public List<ClientOption> GetCompanyByLogin()
         {
             string userId = Helper.Current.UserLogin.IdentifierID;
             List<ClientOption> clientOptions = new List<ClientOption>();
@@ -839,6 +839,19 @@ namespace WebCore.Services
             //
             return clientOptions;
         }
+
+
+        public List<ClientOption> GetCompByAgentID(string agentId)
+        {
+            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND  (ParentID = @AgentID OR SupplierID = @AgentID) ORDER BY c.CodeID";
+            List<ClientOption> clientOptions = _connection.Query<ClientOption>(sqlQuery, new { AgentID = agentId }).ToList();
+            //
+            if (clientOptions.Count == 0)
+                return new List<ClientOption>();
+            //
+            return clientOptions;
+        }
+
         //##############################################################################################################################################################################################################################################################
         public static string DropdownList(string id)
         {
@@ -937,7 +950,7 @@ namespace WebCore.Services
             }
 
         }
-         
+
         //##############################################################################################################################################################################################################################################################
         public static string GetCustomerCodeID(string id)
         {
