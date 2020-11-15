@@ -43,7 +43,7 @@ namespace WebCore.Services
             //
             if (!string.IsNullOrWhiteSpace(eventStart))
             {
-                if (!Helper.Page.Validate.TestDateVN(eventStart))
+                if (!Helper.Page.Validate.TestDate(eventStart))
                 {
                     return Notifization.Invalid("Thời gian bắt đầu không hợp lệ");
                 }
@@ -51,7 +51,7 @@ namespace WebCore.Services
             //
             if (!string.IsNullOrWhiteSpace(eventEnd))
             {
-                if (!Helper.Page.Validate.TestDateVN(eventEnd))
+                if (!Helper.Page.Validate.TestDate(eventEnd))
                 {
                     return Notifization.Invalid("Thời gian kết thúc không hợp lệ");
                 }

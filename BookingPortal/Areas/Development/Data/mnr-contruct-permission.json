@@ -168,6 +168,8 @@
     ]
   },
   {
+    "KeyID": "AreaGeographical",
+    "Title": "Khu vực địa lý",
     "Action": [
       {
         "KeyID": "DataList",
@@ -199,9 +201,7 @@
         "APIRouter": "Action/Details",
         "Title": "Xem"
       }
-    ],
-    "KeyID": "AreaGeographical",
-    "Title": "Khu vực địa lý"
+    ]
   },
   {
     "KeyID": "AirFlight",

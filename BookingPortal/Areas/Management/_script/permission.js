@@ -108,10 +108,6 @@ var _PermissionController = {
             data: model,
             success: function (result) {
                 $('#TblFunction > tbody').html('');
-                //var activeEvent = 'disabled';
-                //if (HelperModel.AccessInApplication() == RoleEnum.IsCMSUser || HelperModel.AccessInApplication() == RoleEnum.IsAdminInApplication) {
-                //    activeEvent = '';
-                //}
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
@@ -160,13 +156,15 @@ var _PermissionController = {
                                         checkAllAction = 'checked';
                                     }
                                     // check all action
-                                    if (HelperModel.AccessInApplication == RoleEnum.IsCMSUser || HelperModel.AccessInApplication == RoleEnum.IsAdminInApplication) {
-                                        actionHtml += `<div style='width:80px;display: inline-block;'> 
+                                    if (HelperModel.AccessInApplication() == RoleEnum.IsCMSUser || HelperModel.AccessInApplication() == RoleEnum.IsAdminInApplication) {
+                                        actionHtml += `<div style='width:50px;display: inline-block;'> 
                                                         <input id="cbx-actall-${index}" data-val="" type="checkbox" class="filled-in all-action" ${checkAllAction}  ${actionState} />
-                                                        <label for="cbx-actall-${index}">Tất cả</label>
+                                                        <label for="cbx-actall-${index}"> | </label>
                                                    </div>` + actionTemp;
                                     }
-                                    actionHtml = actionTemp;
+                                    else {
+                                        actionHtml += actionTemp
+                                    }
                                 }
                             }
                             //
@@ -351,14 +349,6 @@ $(document).on('click', '#btnUpdate', function () {
         });
 
     }
-
-
-    // var controllers = $('#TblFunction input.inp-controler').is(":checked");
-    //  console.log('::' + controllers.length);
-
-
-
-
 });
 //
 function CheckAllForFunction() {

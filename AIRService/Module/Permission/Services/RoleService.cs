@@ -13,7 +13,6 @@ using WebCore.Entities;
 using WebCore.Model.Entities;
 using Helper.Page;
 using System.Data;
-using AIRService.WebService.VNA_KT_AsrServices;
 
 namespace WebCore.Services
 {
@@ -127,11 +126,15 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
             }
             RoleService roleService = new RoleService(_connection);
-            var role = roleService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower() && m.ParentID == parentId).ToList();
-            if (role.Count > 0)
+            var role = roleService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == model.Title.ToLower() && m.ParentID == parentId).FirstOrDefault();
+            if (role != null)
                 return Notifization.Invalid("Tên nhóm quyền đã được sử dụng");
             //
-            int _max = roleService.GetAlls().Max(m => m.OrderID) + 1;
+            int _maxOrder = 1;
+            List<Role> _roleMaxs = roleService.GetAlls(m => m.ParentID == parentId).OrderBy(m => m.OrderID).ToList();
+            if (_roleMaxs.Count > 0)
+                _maxOrder = _roleMaxs.Max(m => m.OrderID) + 1;
+            // 
             var id = roleService.Create<string>(new Role()
             {
                 ParentID = parentId,
@@ -140,7 +143,7 @@ namespace WebCore.Services
                 Summary = summary,
                 IsAllowSpend = isAllowSpend,
                 //Level = model.Level,
-                OrderID = _max,
+                OrderID = _maxOrder,
                 LanguageID = Helper.Current.UserLogin.LanguageID,
                 Enabled = model.Enabled,
             });
@@ -194,16 +197,13 @@ namespace WebCore.Services
             // update user information
             if (parentId != role.ParentID)
                 parentId = model.ParentID;
-            //
-            int _max = roleService.GetAlls(m => m.ParentID == parentId).Max(m => m.OrderID) + 1;
             // 
             role.ParentID = parentId;
             role.Title = title;
             role.Alias = Helper.Page.Library.FormatToUni2NONE(title);
             role.Summary = model.Summary;
             role.IsAllowSpend = isAllowSpend;
-            //role.Level = model.Level;
-            role.OrderID = _max;
+            //role.Level = model.Level; 
             role.Enabled = model.Enabled;
             roleService.Update(role);
             return Notifization.Success(MessageText.UpdateSuccess);
@@ -230,17 +230,16 @@ namespace WebCore.Services
                 try
                 {
                     RoleService service = new RoleService(_connection);
-                    var role = service.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
-                    if (role == null)
+                    //
+                    List<Role> roles = service.GetAlls(m => m.ID == id || m.ParentID == id, transaction: _transaction).ToList();
+                    if (roles.Count() == 0)
                         return Notifization.NotFound();
                     //
-                    var parentList = service.GetAlls(m => m.ParentID == id, transaction: _transaction).ToList();
-                    if (parentList.Count > 0)
-                    {
-                        string sqlQuery = "DELETE Role WHERE ParentID = @ParentID";
-                        service.Execute(sqlQuery, new { ParentID = id }, transaction: _transaction);
-                    }
-                    service.Remove(role.ID, transaction: _transaction);
+                    List<string> roleIds = roles.Select(m => m.ID).ToList();
+                    service.Execute("DELETE RoleControllerSetting WHERE RoleID IN ('" + string.Join("','", roleIds) + "')", new { ID = id }, transaction: _transaction);
+                    service.Execute("DELETE RoleActionSetting WHERE RoleID IN ('" + string.Join("','", roleIds) + "')", new { ID = id }, transaction: _transaction);
+                    service.Execute("DELETE UserRole WHERE RoleID IN ('" + string.Join("','", roleIds) + "')", new { ID = id }, transaction: _transaction);
+                    service.Execute("DELETE Role WHERE ID IN ('" + string.Join("','", roleIds) + "')", new { ID = id }, transaction: _transaction);
                     // remover seo
                     _transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -280,7 +279,6 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-
         public List<RoleOption> DataOption()
         {
             try
@@ -339,8 +337,6 @@ namespace WebCore.Services
                 return new List<RoleOption>();
             }
         }
-
-
         public List<RoleOptionForUser> GetRoleForUser(string userId)
         {
             List<RoleOptionForUser> roleOptions = new List<RoleOptionForUser>();
@@ -487,7 +483,6 @@ namespace WebCore.Services
                 }
             }// end transaction
         }
-
         public bool RoleAutoSort(IDbTransaction _transaction = null)
         {
             string sqlQuery = @"SELECT * FROM [Role] ORDER BY CreatedBy ASC ";

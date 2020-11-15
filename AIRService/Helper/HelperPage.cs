@@ -11,7 +11,6 @@ using Dapper;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Drawing;
-using QRCoder;
 using WebCore.Services;
 
 namespace Helper.Page
@@ -52,10 +51,10 @@ namespace Helper.Page
         public static string RegexTel = @"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,3})|(\(?\d{2,3}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$";
         public static string RegexEmail = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
         public static string RegexRoll = @"[a-zA-Z0-9]+$";
-        public static string RegexDateVN = @"^([0]?[0-9]|[12][0-9]|[3][01])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$";
-        public static string RegexDate = @"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"; // yyyy-MM-dd
+        public static string RegexDate_DDMMYY = @"^([0]?[0-9]|[12][0-9]|[3][01])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$";
+        public static string RegexDate_YYMMDD = @"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"; // yyyy-MM-dd
         public static string RegexDate2 = @"^(0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19[5-9][0-9]|20[0-4][0-9]|2050)$"; // yyyy-MM-dd
-        public static string RegexDate_MMDDYYYY = @"^([0]?[1-9]|[1][0-2])[./-]([0]?[0-9]|[12][0-9]|[3][01])[./-]([0-9]{4}|[0-9]{2})$"; //mm/dd/yyyy
+        public static string RegexDate_MMDDYY = @"^([0]?[1-9]|[1][0-2])[./-]([0]?[0-9]|[12][0-9]|[3][01])[./-]([0-9]{4}|[0-9]{2})$"; //mm/dd/yyyy
         public static string RegexTimekeeper = @"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"; // yyyy-MM-dd
         private const string RegexYoutube = "(?:.+?)?(?:\\/v\\/|watch\\/|\\?v=|\\&v=|youtu\\.be\\/|\\/v=|^youtu\\.be\\/)([a-zA-Z0-9_-]{11})+";
         // librari extensions file
@@ -181,13 +180,19 @@ namespace Helper.Page
         {
             return System.Text.RegularExpressions.Regex.Match(number, RegexTel).Success;
         }
-        public static bool TestDateVN(string param)
+        public static bool TestDate(string param, string languageCode = null)
         {
-            return System.Text.RegularExpressions.Regex.Match(param, RegexDateVN).Success;
+            if (string.IsNullOrWhiteSpace(languageCode))
+                languageCode = Language.LanguageCode.Vietnamese.ID;
+            //
+            if (languageCode == Language.LanguageCode.Vietnamese.ID)
+                return System.Text.RegularExpressions.Regex.Match(param, RegexDate_DDMMYY).Success;
+            //
+            return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYY).Success;
         }
         public static bool TestDateSQL(string param)
         {
-            return System.Text.RegularExpressions.Regex.Match(param, RegexDate).Success;
+            return System.Text.RegularExpressions.Regex.Match(param, RegexDate_YYMMDD).Success;
         }
         public static bool TestDateTime(string text)
         {
@@ -205,7 +210,7 @@ namespace Helper.Page
 
         public static bool TestDate_MMDDYYYY(string param)
         {
-            return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYYYY).Success;
+            return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYY).Success;
         }
         public static bool TestGuid(string text)
         {
@@ -612,6 +617,9 @@ namespace Helper.Page
                 try
                 {
                     var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+                    if (routeValues == null)
+                        return string.Empty;
+                    //
                     if (routeValues.ContainsKey("controller"))
                         return (string)routeValues["controller"];
                     return string.Empty;

@@ -227,7 +227,7 @@ namespace WebCore.Services
                         // birthday
                         if (!string.IsNullOrWhiteSpace(birthday))
                         {
-                            if (!Validate.TestDateVN(birthday))
+                            if (!Validate.TestDate(birthday))
                                 return Notifization.Invalid("Ngày sinh không hợp lệ");
                         }
                         else

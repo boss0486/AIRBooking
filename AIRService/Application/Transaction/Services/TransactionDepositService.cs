@@ -167,7 +167,7 @@ namespace WebCore.Services
                         return Notifization.Invalid("Không được để trống ngày nhận tiền");
                     receivedDate = receivedDate.Trim();
 
-                    if (!Validate.TestDateVN(receivedDate))
+                    if (!Validate.TestDate(receivedDate))
                         return Notifization.Invalid("Ngày nhận tiền không hợp lệ");
                     //
                     title = "Nạp tiền vào tài khoản";
@@ -365,7 +365,7 @@ namespace WebCore.Services
                         return Notifization.Invalid("Không được để trống ngày nhận tiền");
                     receivedDate = receivedDate.Trim();
 
-                    if (!Validate.TestDateVN(receivedDate))
+                    if (!Validate.TestDate(receivedDate))
                         return Notifization.Invalid("Ngày nhận tiền không hợp lệ");
                     //
                     title = "Nạp tiền vào tài khoản";

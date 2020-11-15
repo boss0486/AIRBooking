@@ -141,7 +141,7 @@ namespace WebCore.Services
                     string viewDate = model.ViewDate;
                     if (!string.IsNullOrEmpty(viewDate))
                     {
-                        if (!Validate.TestDateVN(viewDate))
+                        if (!Validate.TestDate(viewDate))
                             return Notifization.Invalid("Ngày hiển thị không hợp lệ");
                     }
                     //
