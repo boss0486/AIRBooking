@@ -220,7 +220,7 @@ namespace WebCore.Services
                         BankIDSent = bankIDSent,
                         BankReceived = bankNameReceived,
                         BankIDReceived = bankIDReceived,
-                        ReceivedDate = Helper.Time.TimeHelper.FormatToDateSQL(receivedDate),
+                        ReceivedDate = Helper.Time.TimeHelper.FormatToSQLDate(receivedDate),
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -407,7 +407,7 @@ namespace WebCore.Services
                     TransactionPayment.BankIDSent = bankIDSent;
                     TransactionPayment.BankReceived = bankNameReceived;
                     TransactionPayment.BankIDReceived = bankIDReceived;
-                    TransactionPayment.ReceivedDate = Helper.Time.TimeHelper.FormatToDateSQL(receivedDate);
+                    TransactionPayment.ReceivedDate = Helper.Time.TimeHelper.FormatToSQLDate(receivedDate);
                     TransactionPayment.Status = (int)TransactionEnum.TransactionType.IN;
                     TransactionPayment.Amount = amount;
                     TransactionPayment.Enabled = enabled;

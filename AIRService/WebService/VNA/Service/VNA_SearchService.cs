@@ -685,7 +685,7 @@ namespace AIRService.Service
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
                 //
-                if (!Helper.Page.Validate.TestDateTime(model.DepartureDateTime))
+                if (!Helper.Page.Validate.IsDateTime(model.DepartureDateTime))
                     return Notifization.Invalid(MessageText.Invalid + "2");
                 //
                 using (var sessionService = new VNA_SessionService(tokenModel))

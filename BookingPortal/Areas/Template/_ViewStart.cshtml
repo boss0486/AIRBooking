@@ -1,3 +1,15 @@
 ﻿@{
     Layout = "~/Areas/Template/Views/Shared/_Layout.cshtml";
+    //
+    // Get language in client
+    string lgName = "";
+    string lgCode = "";
+    Helper.Language.LanguageCodeOption languageCodeOption = Helper.Security.Cookies.GetCookiForLanguage();
+    if (languageCodeOption == null)
+    {
+        lgName = Helper.Language.LanguageCode.Vietnamese.Name;
+        lgCode = Helper.Language.LanguageCode.Vietnamese.ID;
+        Helper.Security.Cookies.SetCookiForLanguage("VietNam", Helper.Language.LanguageCode.Vietnamese.ID);
+    }
+
 }

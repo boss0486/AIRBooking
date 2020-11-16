@@ -128,7 +128,7 @@ namespace Helper.Time
 
             }
         }
-        public static string FormatToDateTimeSQL(DateTime dtime, string ext = null)
+        public static string FormatToDateSQLTime(DateTime dtime, string ext = null)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Helper.Time
                 return dtime.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
-        public static string FormatToDateSQL(DateTime dtime)
+        public static string FormatToSQLDate(DateTime dtime)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Helper.Time
 
             }
         }
-        public static DateTime FormatToDateSQL(string dtime)
+        public static DateTime FormatToSQLDate(string dtime)
         {
             if (!string.IsNullOrWhiteSpace(dtime))
             {

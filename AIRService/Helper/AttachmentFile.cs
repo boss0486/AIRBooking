@@ -13,6 +13,7 @@ using WebCore.Entities;
 using WebCore.Model.Entities;
 using WebCore.Services;
 using Helper.Page;
+using System.Drawing;
 
 namespace Helper.File
 {
@@ -255,6 +256,42 @@ namespace Helper.File
             return new List<AttachmentResultFilesModel> {
                     new AttachmentResultFilesModel(200,"ok",lstFile)
                 };
+        }
+        //
+        public static string SaveImageFile(Image imgFile, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, int width = 0, int height = 0, IDbTransaction transaction = null, IDbConnection connection = null)
+        {
+            try
+            {
+                //Save file to system
+                DateTime now = DateTime.Now;
+                var year = now.Year;
+                var month = now.Month;
+                string fileFolderPath = HttpContext.Current.Server.MapPath("~/Files/Upload/Image/" + year + "/" + month + "/");
+                if (!System.IO.Directory.Exists(fileFolderPath))
+                    System.IO.Directory.CreateDirectory(fileFolderPath);
+                //
+                string fullPath = fileFolderPath + imgName;
+                imgFile.Save(fullPath, imgFormat);
+                FileInfo file = new FileInfo(fullPath);
+                // 
+
+                //Save file info to database
+                AttachmentService attachmentService = new AttachmentService(connection);
+                var guid = attachmentService.Create<string>(new Attachment()
+                {
+                    Title = "",
+                    Extension = file.Extension,
+                    ContentLength = file.Length,
+                    ContentType = "image/" + imgFormat,
+                    LanguageID = Language.LanguagePage.GetLanguageCode,
+                }, transaction: transaction);
+                //
+                return guid;
+            }
+            catch (Exception ex)
+            {
+                return "Lỗi tải tệp tin" + ex;
+            }
         }
 
 

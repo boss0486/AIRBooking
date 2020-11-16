@@ -34,7 +34,7 @@ namespace WebCore.Model.Services
                 DateTime today = Convert.ToDateTime(clientTime);
                 if (timeExpress == 1)
                 {
-                    string strDate = Helper.Time.TimeHelper.FormatToDateSQL(today);
+                    string strDate = Helper.Time.TimeHelper.FormatToSQLDate(today);
                     string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
                     whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
                 }

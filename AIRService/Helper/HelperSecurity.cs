@@ -15,6 +15,7 @@ using QRCoder;
 using WebCore.Services;
 using System.IO;
 using System.Windows.Media;
+using Helper.Language;
 
 namespace Helper.Security
 {
@@ -203,6 +204,7 @@ namespace Helper.Security
     }
     public class Cookies
     {
+        //Authen *****************************************************************************************************
         public static void SetCookiForAuthenzation(string _uid, string _pid)
         {
             HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Authenzation");
@@ -229,6 +231,49 @@ namespace Helper.Security
                 return cookie.Value;
             else
                 return string.Empty;
+        }
+        //Laguage *****************************************************************************************************
+        public static void SetCookiForLanguage(string _name, string _code)
+        {
+            HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Language");
+            if (cookie != null)
+            {
+                cookie.Values["LanguageName"] = _name;
+                cookie.Values["LanguageCode"] = _code;
+                cookie.Expires = DateTime.Now.AddDays(10);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+            else
+            {
+                cookie = new HttpCookie("Language");
+                cookie.Values["LanguageName"] = _name;
+                cookie.Values["LanguageCode"] = _code;
+                cookie.Expires = DateTime.Now.AddDays(10);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+        }
+        public static LanguageCodeOption GetCookiForLanguage()
+        {
+            HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Language");
+            LanguageCodeOption languageCodeOption = new LanguageCodeOption();
+            if (cookie != null)
+            {
+                string id = string.Empty;
+                string name = string.Empty;
+                //
+                if (HttpContext.Current.Request.Cookies["LanguageCode"] != null)
+                    id = HttpContext.Current.Request.Cookies["LanguageCode"].Value;
+                //
+                if (HttpContext.Current.Request.Cookies["LanguageName"] != null)
+                    name = HttpContext.Current.Request.Cookies["LanguageName"].Value;
+                //
+                if (string.IsNullOrWhiteSpace(id))
+                    languageCodeOption = new LanguageCodeOption { ID = id, Name = name };
+                //
+                return languageCodeOption;
+            }
+            //
+            return new LanguageCodeOption();
         }
     }
 }

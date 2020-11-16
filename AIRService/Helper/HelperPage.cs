@@ -52,9 +52,11 @@ namespace Helper.Page
         public static string RegexEmail = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
         public static string RegexRoll = @"[a-zA-Z0-9]+$";
         public static string RegexDate_DDMMYY = @"^([0]?[0-9]|[12][0-9]|[3][01])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$";
+        public static string RegexDate_DDMMYY_HHMMSS = @"^([0]?[0-9]|[12][0-9]|[3][01])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2}) (20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d$";
         public static string RegexDate_YYMMDD = @"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"; // yyyy-MM-dd
-        public static string RegexDate2 = @"^(0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19[5-9][0-9]|20[0-4][0-9]|2050)$"; // yyyy-MM-dd
         public static string RegexDate_MMDDYY = @"^([0]?[1-9]|[1][0-2])[./-]([0]?[0-9]|[12][0-9]|[3][01])[./-]([0-9]{4}|[0-9]{2})$"; //mm/dd/yyyy
+        public static string RegexDate_MMDDYY_HHMMSS = @"^([0]?[1-9]|[1][0-2])[./-]([0]?[0-9]|[12][0-9]|[3][01])[./-]([0-9]{4}|[0-9]{2}) (20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d$"; //mm/dd/yyyy
+        public static string RegexDate2 = @"^(0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19[5-9][0-9]|20[0-4][0-9]|2050)$"; // yyyy-MM-dd
         public static string RegexTimekeeper = @"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"; // yyyy-MM-dd
         private const string RegexYoutube = "(?:.+?)?(?:\\/v\\/|watch\\/|\\?v=|\\&v=|youtu\\.be\\/|\\/v=|^youtu\\.be\\/)([a-zA-Z0-9_-]{11})+";
         // librari extensions file
@@ -190,11 +192,25 @@ namespace Helper.Page
             //
             return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYY).Success;
         }
+
+        public static bool TestDateTime(string param, string languageCode = null)
+        {
+            if (string.IsNullOrWhiteSpace(languageCode))
+                languageCode = Language.LanguageCode.Vietnamese.ID;
+            //
+            if (languageCode == Language.LanguageCode.Vietnamese.ID)
+                return System.Text.RegularExpressions.Regex.Match(param, RegexDate_DDMMYY_HHMMSS).Success;
+            //
+            return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYY_HHMMSS).Success;
+        }
+
+
+
         public static bool TestDateSQL(string param)
         {
             return System.Text.RegularExpressions.Regex.Match(param, RegexDate_YYMMDD).Success;
         }
-        public static bool TestDateTime(string text)
+        public static bool IsDateTime(string text)
         {
 
             // Check for empty string.
