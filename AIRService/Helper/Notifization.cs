@@ -23,6 +23,7 @@ namespace Helper
         public const string CancelSuccess = "Đã hủy";
         public const string AsyncSuccess = "Đã đồng bộ";
         public const string Success = "Ok";
+        public const string DownLoad = "Xin chờ...";
 
         //
 
@@ -201,7 +202,7 @@ namespace Helper
             }, JsonRequestBehavior.AllowGet);
 
         }
-         public ActionResult AccessResult(string message, string data)
+        public ActionResult AccessResult(string message, string data)
         {
 
             return Json(new

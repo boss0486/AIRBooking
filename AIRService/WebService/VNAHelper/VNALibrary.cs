@@ -1,6 +1,7 @@
 ﻿using AIRService.WS.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -72,6 +73,7 @@ namespace AIRService.WS.Helper
         {
             return date.ToString("yyyy-MM-dd'T'HH:mm:ss");
         }
+        
         /// <summary>
         /// 
         /// </summary>
@@ -187,7 +189,7 @@ namespace AIRService.WS.Helper
         }
 
         public static int GetResbookDesigCodeIDByKey(string key)
-        { 
+        {
             VNAResbookDesigCode vnaResbookDesigCode = VNALibrary.ListVNAResbookDesigCode().Where(m => m.Title == key).FirstOrDefault();
             if (vnaResbookDesigCode != null)
                 return vnaResbookDesigCode.ID;
@@ -244,9 +246,9 @@ namespace AIRService.WS.Helper
                 return (T)ser.Deserialize(sr);
             }
         }
-         public static T Deserialize2<T>(string input) where T : class
+        public static T Deserialize2<T>(string input) where T : class
         {
-            var serializer = new XmlSerializer(typeof(T)); 
+            var serializer = new XmlSerializer(typeof(T));
             using (TextReader reader = new StringReader(input))
             {
                 return (T)serializer.Deserialize(reader);
@@ -319,7 +321,7 @@ namespace AIRService.WS.Helper
             {
                 Indent = true
             };
-            var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+            var urlFile = HttpContext.Current.Server.MapPath(@"~/Team/" + fileName);
             XmlWriter writer = XmlWriter.Create(urlFile, settings);
             soapEnvelopeXml.Save(writer);
         }

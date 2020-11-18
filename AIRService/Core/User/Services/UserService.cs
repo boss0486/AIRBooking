@@ -654,7 +654,7 @@ namespace WebCore.Services
                         if (cmsUserResult == null)
                             return Notifization.Error(MessageText.Invalid);
                         // delete
-                        AttachmentFile.DeleteFile(cmsUserResult.ImageFile, transaction: _transaction);
+                        AttachmentFile.DeleteFile(cmsUserResult.ImageFile, dbTransaction: _transaction);
                         _connection.Execute("DELETE UserInfo WHERE UserID = @UserID", new { UserID = id }, transaction: _transaction);
                         _connection.Execute("DELETE UserSetting WHERE UserID = @UserID", new { UserID = id }, transaction: _transaction);
                         _connection.Execute("DELETE UserLogin WHERE ID = @ID", new { ID = id }, transaction: _transaction);

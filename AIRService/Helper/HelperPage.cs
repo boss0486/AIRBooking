@@ -192,7 +192,7 @@ namespace Helper.Page
             //
             return System.Text.RegularExpressions.Regex.Match(param, RegexDate_MMDDYY).Success;
         }
-
+        
         public static bool TestDateTime(string param, string languageCode = null)
         {
             if (string.IsNullOrWhiteSpace(languageCode))

@@ -94,7 +94,7 @@ namespace WebCore.Services
                             return Notifization.NotFound();
 
                         attachmentService.Remove(id, transaction: _transaction);
-                        AttachmentFile.DeleteFile(id, transaction: _transaction);
+                        AttachmentFile.DeleteFile(id, dbTransaction: _transaction);
                         // remover seo
                         _transaction.Commit();
                         return Notifization.Success(MessageText.DeleteSuccess);

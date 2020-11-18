@@ -412,7 +412,7 @@ namespace WebCore.Services
                     if (Product == null)
                         return Notifization.NotFound();
                     // delete
-                    AttachmentFile.DeleteFile(Product.ImageFile, transaction: _transaction);
+                    AttachmentFile.DeleteFile(Product.ImageFile, dbTransaction: _transaction);
                     ProductService.Remove(Product.ID, transaction: _transaction);
                     // remover seo
                     _transaction.Commit();

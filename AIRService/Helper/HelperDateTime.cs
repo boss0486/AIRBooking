@@ -128,7 +128,7 @@ namespace Helper.Time
 
             }
         }
-        public static string FormatToDateSQLTime(DateTime dtime, string ext = null)
+        public static string FormatToSQLDateTime(DateTime dtime, string ext = null)
         {
             try
             {
@@ -138,6 +138,47 @@ namespace Helper.Time
             {
                 dtime = DateTime.Now;
                 return dtime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+        }
+        public static DateTime FormatToSQLDateTime(string dtime, string languageCode)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(dtime))
+                {
+                    dtime = dtime.Trim();
+                    string[] arrDtime = dtime.Split(' ');
+                    //
+                    string arrDate = arrDtime[0];
+                    string arrTime = arrDtime[1];
+                    // date
+                    if (languageCode == Helper.Language.LanguageCode.Vietnamese.ID)
+                    {
+                        if (arrDate.Contains('-'))
+                        {
+                            string[] arrtime = arrDate.Split('-');
+                            string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                            return Convert.ToDateTime(dateTime);
+                        }
+                        if (arrDate.Contains('/'))
+                        {
+                            string[] arrtime = arrDate.Split('/');
+                            string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                            return Convert.ToDateTime(dateTime);
+                        }
+                    }
+                    else
+                    {
+                        return Convert.ToDateTime(dtime);
+                    }
+
+                }
+                return DateTime.Now;
+
+            }
+            catch (Exception)
+            {
+                return DateTime.Now;
             }
         }
         public static string FormatToSQLDate(DateTime dtime)
@@ -186,6 +227,14 @@ namespace Helper.Time
                 return string.Empty;
             }
         }
+
+        public static string Format_TDateTimeToFullDateTime(string dtime)
+        {
+            var dateTime = DateTimeOffset.ParseExact(dtime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+
         public static string FormatDateTimeToYYMM(DateTime dtime)
         {
             try

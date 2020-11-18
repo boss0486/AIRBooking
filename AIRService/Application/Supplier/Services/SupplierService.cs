@@ -572,7 +572,7 @@ namespace WebCore.Services
                             {
                                 foreach (var item in lstImgFile)
                                 {
-                                    AttachmentFile.DeleteFile(item, transaction: _transaction);
+                                    AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
                                 }
                             }
                         }

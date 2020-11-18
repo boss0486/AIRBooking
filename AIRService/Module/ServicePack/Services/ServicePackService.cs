@@ -338,7 +338,7 @@ namespace WebCore.Services
                             if (servicePack == null)
                                 return Notifization.NotFound();
                             // delete
-                            AttachmentFile.DeleteFile(servicePack.ImageFile, transaction: _transaction);
+                            AttachmentFile.DeleteFile(servicePack.ImageFile, dbTransaction: _transaction);
                             servicePackService.Remove(servicePack.ID, transaction: _transaction);
                             // remover seo
                             _transaction.Commit();

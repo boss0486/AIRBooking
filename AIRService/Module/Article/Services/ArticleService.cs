@@ -281,7 +281,7 @@ namespace WebCore.Services
                         if (article == null)
                             return Notifization.NotFound();
                         // delete
-                        AttachmentFile.DeleteFile(article.ImageFile, transaction: _transaction);
+                        AttachmentFile.DeleteFile(article.ImageFile, dbTransaction: _transaction);
                         articleService.Remove(article.ID, transaction: _transaction);
                         // remover seo
                         _transaction.Commit();

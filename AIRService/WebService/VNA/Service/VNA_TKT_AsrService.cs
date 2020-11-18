@@ -61,6 +61,9 @@ namespace AIRService.WS.Service
             {
                 soapEnvelopeXml.Save(stream);
             }
+
+
+
             using (WebResponse response = request.GetResponse())
             {
                 using (StreamReader rd = new StreamReader(response.GetResponseStream()))
@@ -68,6 +71,8 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
+                    //
+                    XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-employee.xml", soapEnvelopeXml);
                     //
                     XmlNode agentListRSNode = soapEnvelopeXml.GetElementsByTagName("asr:AgentListRS")[0];
                     var nodeList = agentListRSNode.ChildNodes;
@@ -313,7 +318,7 @@ namespace AIRService.WS.Service
                     tokenModel = transactionModel.TokenModel;
                 else
                 {
-                   
+
                     tokenModel = VNA_AuthencationService.GetSession();
                 }
                 return null;
@@ -384,7 +389,7 @@ namespace AIRService.WS.Service
                     tokenModel = transactionModel.TokenModel;
                 else
                 {
-                   
+
                     tokenModel = VNA_AuthencationService.GetSession();
                 }
                 HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
@@ -566,6 +571,8 @@ namespace AIRService.WS.Service
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
+                        XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
+
                         //
                         ////// Save the document to a file and auto-indent the output.
                         ////XmlWriterSettings settings = new XmlWriterSettings();
@@ -587,6 +594,9 @@ namespace AIRService.WS.Service
                             string fareBasis = string.Empty;
                             string startLocation = string.Empty;
                             string endLocation = string.Empty;
+                            string startDateTime = string.Empty;
+                            string endDateTime = string.Empty;
+                            //
                             string bookingStatus = string.Empty;
                             string currentStatus = string.Empty;
                             string systemDateTime = string.Empty;
@@ -613,6 +623,12 @@ namespace AIRService.WS.Service
                                         //
                                         if (localName == "EndLocation")
                                             endLocation = item.InnerText;
+                                        //
+                                        if (localName == "StartDateTime")
+                                            startDateTime = item.InnerText;
+                                        //
+                                        if (localName == "EndDateTime")
+                                            endDateTime = item.InnerText;
                                         //
                                         if (localName == "BookingStatus")
                                             bookingStatus = item.InnerText;
@@ -642,6 +658,8 @@ namespace AIRService.WS.Service
                                         FareBasis = fareBasis,
                                         StartLocation = startLocation,
                                         EndLocation = endLocation,
+                                        StartDateTime = startDateTime,
+                                        EndDateTime = endDateTime,
                                         BookingStatus = bookingStatus,
                                         CurrentStatus = currentStatus,
                                         FlownCoupon_DepartureDateTime = flownCoupon_DepartureDateTime

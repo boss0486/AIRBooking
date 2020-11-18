@@ -30,8 +30,8 @@
                         <th>MarketingFlightNumber</th>
                         <th>ClassOfService</th>
                         <th>FareBasis</th>
-                        <th>StartLocation</th>
-                        <th>EndLocation</th>
+                        <th>StartLocation/EndLocation</th>
+                        <th>StartDateTime/EndDateTime</th>
                         <th>BookingStatus</th>
                         <th>CurrentStatus</th>
                         <th>DepartureDateTime</th>
@@ -43,12 +43,15 @@
 
                         foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
                         {
+                            string _startDateTime = Helper.Time.TimeHelper.Format_TDateTimeToFullDateTime(item.StartDateTime);
+                            string _endDateTime = Helper.Time.TimeHelper.Format_TDateTimeToFullDateTime(item.EndDateTime);
+
                             <tr>
                                 <td>@item.MarketingFlightNumber</td>
                                 <td>@item.ClassOfService</td>
                                 <td>@item.FareBasis</td>
-                                <td>@item.StartLocation</td>
-                                <td>@item.EndLocation</td>
+                                <td>@item.StartLocation - @item.EndLocation</td>
+                                <td>@_startDateTime - @_endDateTime</td>
                                 <td>@item.BookingStatus</td>
                                 <td>@item.CurrentStatus</td>
                                 <td>@item.FlownCoupon_DepartureDateTime</td>
@@ -83,7 +86,7 @@
                             double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
                             double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
                             //
-                        <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
+                            <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(nonRefundable) @unit</td>
@@ -127,8 +130,9 @@
             </a>
         </div>
     }
-    catch
+    catch (Exception ex)
     {
+        @ex
         @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }

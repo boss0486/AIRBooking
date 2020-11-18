@@ -14,12 +14,13 @@ using WebCore.Model.Entities;
 using WebCore.Services;
 using Helper.Page;
 using System.Drawing;
+using System.IO.Compression;
 
 namespace Helper.File
 {
     public class AttachmentFile
     {
-        public static string SaveFile(HttpPostedFileBase file, string siteId, string userId, bool isImage = false, int width = 0, int height = 0, IDbTransaction transaction = null, IDbConnection connection = null)
+        public static string SaveFile(HttpPostedFileBase file, DateTime dateTime, string siteId, string userId, bool isImage = false, int imgWidth = 0, int imgHeight = 0, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
             try
             {
@@ -42,106 +43,36 @@ namespace Helper.File
                 }
                 if (file.ContentLength / 1048576 > 5)
                     return "Tệp tin phải < 5M";
-
-                DateTime now = DateTime.Now;
                 //Save file info to database
-                AttachmentService attachmentService = new AttachmentService(connection);
+                AttachmentService attachmentService = new AttachmentService(dbConnection);
                 var guid = attachmentService.Create<string>(new Attachment()
                 {
-                    Title = "",
+                    Title = null,
                     Extension = extension,
                     ContentLength = file.ContentLength,
-                    ContentType = file.ContentType,
-                    LanguageID = "vn",
+                    ContentType = file.ContentType.ToLower(),
+                    LanguageID = Helper.Language.LanguagePage.GetLanguageCode,
 
-                }, transaction: transaction);
+                }, transaction: dbTransaction);
                 //Save file to system
-                var year = now.Year;
-                var month = now.Month;
+                var year = dateTime.Year;
+                var month = dateTime.Month;
                 string fileFolderPath = HttpContext.Current.Server.MapPath("~/Files/Upload/" + year + "/" + month + "/");
                 if (!System.IO.Directory.Exists(fileFolderPath))
                     System.IO.Directory.CreateDirectory(fileFolderPath);
-
-                if (width > 0)
+                //
+                if (imgWidth > 0)
                 {
                     WebImage webImage = new WebImage(file.InputStream);
                     double imageWidth = webImage.Width;
 
-                    if (height == 0)
+                    if (imgHeight == 0)
                     {
                         int imageHeight = webImage.Height;
-                        height = (int)(width * 1.0 * imageHeight / imageWidth);
+                        imgHeight = (int)(imgWidth * 1.0 * imageHeight / imageWidth);
                     }
 
-                    webImage.Resize(width, height);
-                    webImage.Save(fileFolderPath + guid + extension);
-                }
-                else
-                {
-                    file.SaveAs(fileFolderPath + guid + extension);
-                }
-                return guid;
-
-            }
-            catch (Exception ex)
-            {
-                return "Lỗi tải tệp tin" + ex;
-            }
-        }
-        public static string SaveFile(HttpPostedFileBase file, string siteId, string userId, bool isImage = false, int width = 0, int height = 0)
-        {
-            try
-            {
-                if (file == null || file.ContentLength == 0)
-                    return string.Empty;
-                string fileName = file.FileName;
-                if (string.IsNullOrEmpty(fileName))
-                    return "Tệp tin không hợp lệ";
-                //Check allowed file
-                string extension = System.IO.Path.GetExtension(fileName);
-                if (isImage)
-                {
-                    if (!Helper.Page.Validate.TestImageFile(extension))
-                        return "Tệp tin  không hợp lệ";
-                }
-                else
-                {
-                    if (!IsAllowedFile(extension))
-                        return "Tệp tin  không hợp lệ";
-                }
-                if (file.ContentLength / 1048576 > 5)
-                    return "Tệp tin phải < 5M";
-
-                DateTime now = DateTime.Now;
-                //Save file info to database
-                AttachmentService attachmentService = new AttachmentService();
-                var guid = attachmentService.Create<string>(new Attachment()
-                {
-                    Title = file.FileName,
-                    Extension = extension,
-                    ContentLength = file.ContentLength,
-                    ContentType = file.ContentType,
-                    LanguageID = "vn",
-                });
-                //Save file to system
-                var year = now.Year;
-                var month = now.Month;
-                string fileFolderPath = HttpContext.Current.Server.MapPath("~/Files/Upload/" + year + "/" + month + "/");
-                if (!System.IO.Directory.Exists(fileFolderPath))
-                    System.IO.Directory.CreateDirectory(fileFolderPath);
-
-                if (width > 0)
-                {
-                    WebImage webImage = new WebImage(file.InputStream);
-                    double imageWidth = webImage.Width;
-
-                    if (height == 0)
-                    {
-                        int imageHeight = webImage.Height;
-                        height = (int)(width * 1.0 * imageHeight / imageWidth);
-                    }
-
-                    webImage.Resize(width, height);
+                    webImage.Resize(imgWidth, imgHeight);
                     webImage.Save(fileFolderPath + guid + extension);
                 }
                 else
@@ -157,17 +88,15 @@ namespace Helper.File
             }
         }
 
-        public static string DeleteFile(string guid, IDbTransaction transaction = null, IDbConnection connection = null)
+        public static string DeleteFile(string guid, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
             try
             {
-                DateTime now = DateTime.Now;
-                //Save file info to database
-                AttachmentService attachmentService = new AttachmentService(connection);
+                AttachmentService attachmentService = new AttachmentService(dbConnection);
                 if (!Validate.TestGuid(guid))
                     return string.Empty;
 
-                var attachment = attachmentService.Find(guid, transaction: transaction);
+                var attachment = attachmentService.Find(guid, transaction: dbTransaction);
                 if (attachment != null)
                 {
                     var date = attachment.CreatedDate;
@@ -176,7 +105,7 @@ namespace Helper.File
                     string fileFolderPath = HttpContext.Current.Server.MapPath("~/files/upload/" + year + "/" + month + "/" + guid + attachment.Extension);
                     if (System.IO.File.Exists(fileFolderPath))
                         System.IO.File.Delete(fileFolderPath);
-                    attachmentService.Remove(guid, transaction: transaction);
+                    attachmentService.Remove(guid, transaction: dbTransaction);
                     return string.Empty;
                 }
                 return string.Empty;
@@ -186,7 +115,40 @@ namespace Helper.File
                 return "Lỗi xóa tệp tin";
             }
         }
-        public static List<AttachmentResultFilesModel> SaveFiles(IEnumerable<HttpPostedFileBase> files, string siteId, string userId, bool isImage = false, int width = 0, int height = 0, IDbTransaction transaction = null, IDbConnection connection = null)
+
+        public static string DeleteMultiFile(List<string> idList, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
+        {
+            try
+            {
+                AttachmentService attachmentService = new AttachmentService(dbConnection);
+                foreach (var item in idList)
+                {
+                    string guid = item;
+                    if (!Validate.TestGuid(guid))
+                        continue;
+                    //
+                    var attachment = attachmentService.Find(guid, transaction: dbTransaction);
+                    if (attachment != null)
+                    {
+                        var date = attachment.CreatedDate;
+                        var year = date.Year;
+                        var month = date.Month;
+                        string fileFolderPath = HttpContext.Current.Server.MapPath("~/files/upload/" + year + "/" + month + "/" + guid + attachment.Extension);
+                        if (System.IO.File.Exists(fileFolderPath))
+                            System.IO.File.Delete(fileFolderPath);
+                        //
+                    }
+                }
+                string sqlQuery = "DELETE Attachment WHERE ID IN  ('" + String.Join("','", idList) + "')";
+                attachmentService.Execute(sqlQuery, transaction: dbTransaction);
+                return string.Empty;
+            }
+            catch (Exception)
+            {
+                return "Lỗi xóa tệp tin";
+            }
+        }
+        public static List<AttachmentResultFilesModel> SaveFiles(IEnumerable<HttpPostedFileBase> files, DateTime dateTime, string siteId, string userId, bool isImage = false, int width = 0, int height = 0, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
             if (files.Count() > 0)
             {
@@ -222,25 +184,24 @@ namespace Helper.File
             }
 
             List<string> lstFile = new List<string>();
-            DateTime now = DateTime.Now;
             //Save file info to database
-            var attachmentService = new AttachmentService(connection);
+            var attachmentService = new AttachmentService(dbConnection);
             foreach (var file in files)
             {
                 string fileName = file.FileName;
                 string extension = System.IO.Path.GetExtension(fileName);
                 string guid = attachmentService.Create<string>(new Attachment()
                 {
-                    Title = "",
+                    Title = null,
                     Extension = extension,
                     ContentLength = file.ContentLength,
-                    ContentType = file.ContentType,
-                    LanguageID = "vn",
-                }, transaction: transaction);
+                    ContentType = file.ContentType.ToLower(),
+                    LanguageID = Helper.Language.LanguagePage.GetLanguageCode,
+                }, transaction: dbTransaction);
 
                 //Save file to system
-                var year = now.Year;
-                var month = now.Month;
+                var year = dateTime.Year;
+                var month = dateTime.Month;
                 string fileFolderPath = HttpContext.Current.Server.MapPath("~/files/upload/" + year + "/" + month + "/");
                 if (!System.IO.Directory.Exists(fileFolderPath))
                     System.IO.Directory.CreateDirectory(fileFolderPath);
@@ -258,42 +219,44 @@ namespace Helper.File
                 };
         }
         //
-        public static string SaveImageFile(Image imgFile, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, int width = 0, int height = 0, IDbTransaction transaction = null, IDbConnection connection = null)
+        public static string SaveImageFile(Image imgFile, DateTime dateTime, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
-            try
-            {
-                //Save file to system
-                DateTime now = DateTime.Now;
-                var year = now.Year;
-                var month = now.Month;
-                string fileFolderPath = HttpContext.Current.Server.MapPath("~/Files/Upload/Image/" + year + "/" + month + "/");
-                if (!System.IO.Directory.Exists(fileFolderPath))
-                    System.IO.Directory.CreateDirectory(fileFolderPath);
-                //
-                string fullPath = fileFolderPath + imgName;
-                imgFile.Save(fullPath, imgFormat);
-                FileInfo file = new FileInfo(fullPath);
-                // 
 
-                //Save file info to database
-                AttachmentService attachmentService = new AttachmentService(connection);
-                var guid = attachmentService.Create<string>(new Attachment()
-                {
-                    Title = "",
-                    Extension = file.Extension,
-                    ContentLength = file.Length,
-                    ContentType = "image/" + imgFormat,
-                    LanguageID = Language.LanguagePage.GetLanguageCode,
-                }, transaction: transaction);
-                //
-                return guid;
-            }
-            catch (Exception ex)
+            //Save file to system
+            var year = dateTime.Year;
+            var month = dateTime.Month;
+            string fileFolderPath = HttpContext.Current.Server.MapPath("~/Files/Upload/Image/");
+            if (!System.IO.Directory.Exists(fileFolderPath))
+                System.IO.Directory.CreateDirectory(fileFolderPath);
+            //  
+            AttachmentService attachmentService = new AttachmentService(dbConnection);
+            string contentType = "image/" + imgFormat;
+            var guid = attachmentService.Create<string>(new Attachment()
             {
-                return "Lỗi tải tệp tin" + ex;
-            }
+                Title = null,
+                Extension = "." + imgFormat.ToString().ToLower(),
+                ContentLength = 0,
+                ContentType = contentType.ToLower(),
+                LanguageID = Language.LanguagePage.GetLanguageCode,
+            }, transaction: dbTransaction);
+
+            Attachment attachment = attachmentService.GetAlls(m => m.ID == guid, transaction: dbTransaction).FirstOrDefault();
+            string fullPath = fileFolderPath + imgName;
+            imgFile.Save(fullPath, imgFormat);
+            FileInfo file = new FileInfo(fullPath);
+            attachment.ContentLength = file.Length;
+            attachmentService.Update(attachment, transaction: dbTransaction);
+            //
+
+            return guid;
+
         }
-
+        //
+        public static string ZipDirectoryFile(string inputDirectory, string zipPath)
+        {
+            ZipFile.CreateFromDirectory(inputDirectory, zipPath);
+            return zipPath;
+        }
 
         private List<string> GetImagesInHTMLString(string htmlString)
         {

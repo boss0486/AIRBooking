@@ -13,7 +13,12 @@
     @RenderSection("styles", required: false)
     <link href="~/_themes/library/css/materialize.css" rel="stylesheet" />
     <link href="~/_themes/fonts/metarial/material-icon.css" rel="stylesheet" />
-
+    @{
+        // Get language in client
+        string lgName = Helper.Language.LanguageCode.Vietnamese.Name;
+        string lgCode = Helper.Language.LanguageCode.Vietnamese.ID;
+        Helper.Security.Cookies.SetCookiForLanguage(lgName, lgCode);
+    }
     @{
         string currController = Helper.Page.MetaSEO.ControllerText;
         string currAction = Helper.Page.MetaSEO.ActionText;
@@ -371,9 +376,7 @@
                         <h2><i class="fas fa-ellipsis-v"></i> @Helper.Page.MetaSEO.SiteMap</h2>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <hr />
         <div class="container-fluid">

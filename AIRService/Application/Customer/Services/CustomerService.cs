@@ -679,7 +679,7 @@ namespace WebCore.Services
                             {
                                 foreach (var item in lstImgFile)
                                 {
-                                    AttachmentFile.DeleteFile(item, transaction: _transaction);
+                                    AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
                                 }
                             }
                         }
@@ -759,7 +759,7 @@ namespace WebCore.Services
                     {
                         foreach (var item in lstImgFile)
                         {
-                            AttachmentFile.DeleteFile(item, transaction: _transaction);
+                            AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
                         }
                     }
                     _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Customer }, transaction: _transaction);

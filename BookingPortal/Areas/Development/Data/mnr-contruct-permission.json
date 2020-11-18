@@ -164,6 +164,18 @@
         "Method": "Details",
         "APIRouter": "Action/Details",
         "Title": "Xem"
+      },
+      {
+        "KeyID": "Search",
+        "Method": "Search",
+        "APIRouter": "Action/EPR-Search",
+        "Title": "Tìm kiếm"
+      },
+      {
+        "KeyID": "RpDetails",
+        "Method": "RpDetails",
+        "APIRouter": "",
+        "Title": "EPR-Xem"
       }
     ]
   },

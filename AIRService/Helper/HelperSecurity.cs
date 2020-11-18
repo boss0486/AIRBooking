@@ -23,10 +23,27 @@ namespace Helper.Security
     {
         private static readonly byte[] LEVEL1_SALT = new byte[] { 56, 3, 5, 64, 95, 6, 6, 2, 54, 3, 54, 86, 4, 98, 65, 46, 48, 64, 6, 87, 46 };
         private static readonly byte[] LEVEL2_SALT = new byte[] { 121, 219, 95, 76, 5, 36, 9, 22, 3, 8, 64, 31, 8, 64, 172, 199, 100, 200 };
-        // 
-
-
+        //  
+        public static string InputKey(string _inp, int _len = 20)
+        {
+            if (string.IsNullOrWhiteSpace(_inp))
+                return string.Empty;
+            //
+            if (_inp.Length > _len)
+                return string.Empty;
+            //
+            int _ranLen = _len - _inp.Length;
+            string result = "";
+            for (int i = 0; i < _ranLen; i++)
+                result += "0";
+            // 
+            return result + _inp;
+        }
         //
+        public static string IDCode(int lent = 6)
+        {
+            return RandomString(lent);
+        }
         public static string OTPCode
         {
             get
@@ -104,17 +121,18 @@ namespace Helper.Security
         {
             try
             {
-                var qrGenerator = new QRCodeGenerator();
-                var QRCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCode(QRCodeData);
-                var qrCodeImage = qrCode.GetGraphic(1);
-                return qrCodeImage;
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData QRCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.H);
+                QRCode qrCode = new QRCode(QRCodeData);
+                Bitmap bitmap = qrCode.GetGraphic(20);
+                return bitmap;
             }
             catch (Exception)
             {
                 return null;
             }
         }
+
         //
 
         public static string Encryption256(string strRaw)
@@ -261,13 +279,13 @@ namespace Helper.Security
                 string id = string.Empty;
                 string name = string.Empty;
                 //
-                if (HttpContext.Current.Request.Cookies["LanguageCode"] != null)
-                    id = HttpContext.Current.Request.Cookies["LanguageCode"].Value;
+                if (HttpContext.Current.Request.Cookies["Language"] != null)
+                {
+                    id = cookie.Values["LanguageCode"];
+                    name = cookie.Values["LanguageName"];
+                }
                 //
-                if (HttpContext.Current.Request.Cookies["LanguageName"] != null)
-                    name = HttpContext.Current.Request.Cookies["LanguageName"].Value;
-                //
-                if (string.IsNullOrWhiteSpace(id))
+                if (!string.IsNullOrWhiteSpace(id))
                     languageCodeOption = new LanguageCodeOption { ID = id, Name = name };
                 //
                 return languageCodeOption;

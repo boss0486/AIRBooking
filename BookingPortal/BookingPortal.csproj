@@ -1253,10 +1253,7 @@
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Team\backup-booking-10-01-2020-01.bak" />
     <Content Include="Views\Home\Test.cshtml" />
-    <Content Include="Team\backup-booking-10-02-2020-01.bak" />
-    <Content Include="Team\backup-booking-10-05-2020-01.bak" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AIRService\AIRService.csproj">

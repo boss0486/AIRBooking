@@ -108,6 +108,8 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string FareBasis { get; set; }
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
         public string BookingStatus { get; set; }
         public string CurrentStatus { get; set; }
         public string SystemDateTime { get; set; }

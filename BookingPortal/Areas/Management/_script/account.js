@@ -352,7 +352,7 @@ var AccountController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val(); 
+        var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
         //  
         var ddlLanguage = ''; //$('#ddlLanguage').val();
         var enabled = 0;
@@ -409,7 +409,7 @@ var AccountController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
+        var ddlRoleId = $('#Role input[type="checkbox"]:checkbox:checked').val();
         //  
         var ddlLanguage = ''; //$('#ddlLanguage').val();
         var enabled = 0;
@@ -698,60 +698,89 @@ var AccountController = {
             }
         });
     },
-    GetRoleByUser: function (id) {
+    GetRoleForUser: function (_id, _event) {
+        var _option_default = ``;
         var model = {
-            ID: id
+            ID: _id
         };
         AjaxFrom.POST({
-            url: '/Management/Role/Action/GetRoleByUser',
+            url: '/Management/Role/Action/GetRoleForUser',
             data: model,
-            success: function (response) {
-                $('#ddlRole').html('');
-                if (response !== null) {
-                    if (response.status === 200) {
+            success: function (result) {
+                $('ul#Role').html(_option_default);
+                if (result !== null) {
+                    if (result.status === 200) {
                         var rowData = '';
-                        $.each(response.data, function (index, item) {
-                            index = index + 1;
-                            //
-                            var strIndex = '';
-                            if (index < 10)
-                                strIndex += "0" + index;
-                            //
-                            var strLevel = '';
-                            if (item.Level < 10)
-                                strLevel += "0" + item.Level;
-                            //
-                            var active = '';
-                            if (id != undefined && id == item.ID) {
-                                active = 'active';
-                            }
-                            var id = item.ID;
-                            var isAllow = item.IsAllow;
-                            var _allow = '';
-                            if (isAllow) {
-                                _allow = 'checked';
-                            }
-                            rowData += `                
-                              <a class="list-group-item">                                     
-                                    <input id="${id}" data-CategoryID='${id}' type="checkbox" class="filled-in action-item-input  " value="${id}" ${_allow} />
-                                    <label style="margin:0px;" for="${id}">${strIndex}. ${item.Title} <span class="badge badge-primary badge-pill ${active}">Cấp: ${strLevel}</span></label>
-                              </a>`;
-                        });
-                        $('#ddlRole').html(rowData);
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
+                        if (result.data.length > 0) {
+                            $.each(result.data, function (index, item) {
+                                if (item.ParentID == null || item.ParentID == "") {
+                                    index = index + 1;
+                                    var id = item.ID;
+                                    if (id.length > 0)
+                                        id = id.trim();
+                                    var _title = SubStringText.SubTitle(item.Title);
+                                    var subMenu = item.SubOption;
+                                    var isChecked = "";
+                                    var isActive = item.Active;
+                                    if (isActive)
+                                        isChecked = "checked";
+
+                                    var _level = 0;
+                                    rowData += `<li>
+                                        <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
+                                        <label for="cbxItem${id}">${_title}</label>`;
+                                    if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                                        rowData += AccountController.GetSubRoleCategory(index, subMenu, _level, _id);
+                                    }
+                                    rowData += '</li>';
+                                }
+                            });
+                        }
+
+                        $('ul#Role').html(_option_default + rowData);
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NotService);
+                //Message.Error(MessageText.NOTSERVICES);
                 return;
             },
             error: function (result) {
                 console.log('::' + MessageText.NotService);
             }
         });
+    },
+    GetSubRoleCategory: function (_index, lstModel, _level, _id) {
+        var rowData = '';
+        //
+        if (lstModel.length > 0) {
+            _level += 1;
+            rowData += `<ul>`;
+            $.each(lstModel, function (index, item) {
+                index = index + 1;
+                var id = item.ID;
+                if (id.length > 0)
+                    id = id.trim();
+                //
+                var _title = SubStringText.SubTitle(item.Title);
+                var subMenu = item.SubOption;
+                var isChecked = "";
+                var isActive = item.Active;
+                if (isActive)
+                    isChecked = "checked";
+                //
+                var pading = _level * 38;
+                rowData += `<li>
+                               <input id="cbxItem${id}" type="checkbox" class="filled-in" data-id='${id}' ${isChecked} value='${id}' />
+                               <label for="cbxItem${id}">${_title}</label>`;
+
+                if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
+                    rowData += AppUserController.GetSubRoleCategory(_index, subMenu, _level, _id);
+                }
+                rowData += '</li>';
+            });
+            rowData += `</ul>`;
+        }
+        return rowData;
     }
 };
 AccountController.init();
