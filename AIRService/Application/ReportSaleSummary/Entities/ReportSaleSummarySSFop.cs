@@ -12,7 +12,7 @@ namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
     [Table("App_ReportSaleSummarySSFop")]
-    public partial class ReportSaleSummarySSFop : WEBModel
+    public partial class ReportSaleSummarySSFop 
     {
         public ReportSaleSummarySSFop()
         {

@@ -228,13 +228,18 @@ namespace Helper.Time
             }
         }
 
-        public static string Format_TDateTimeToFullDateTime(string dtime)
+        public static string Format_TDateTimeToDateTime(string dtime)
         {
-            var dateTime = DateTimeOffset.ParseExact(dtime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            try
+            {
+                var dateTime = DateTimeOffset.Parse(dtime);
+                return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }          
         }
-
-
         public static string FormatDateTimeToYYMM(DateTime dtime)
         {
             try

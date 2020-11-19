@@ -12,7 +12,7 @@ namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
     [Table("App_ReportTicketingDocument_Coupon")]
-    public partial class ReportTicketingDocumentCoupon : WEBModel
+    public partial class ReportTicketingDocumentCoupon 
     {
         public ReportTicketingDocumentCoupon()
         {
@@ -21,8 +21,6 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
         public DateTime ReportDate { get; set; }
         public string DocumentNumber { get; set; }
         public string MarketingFlightNumber { get; set; }
@@ -30,6 +28,8 @@ namespace WebCore.Entities
         public string FareBasis { get; set; }
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
         public string BookingStatus { get; set; }
         public string CurrentStatus { get; set; }
         public string SystemDateTime { get; set; }

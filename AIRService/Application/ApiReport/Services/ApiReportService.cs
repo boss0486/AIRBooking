@@ -44,9 +44,6 @@ namespace WebCore.Services
         //###############################################################################################################################
         public async Task<ActionResult> APIReportDataAsync(APIDailyReportModel model)
         {
-            //return Notifization.Success(MessageText.UpdateSuccess); 
-
-
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
@@ -173,8 +170,6 @@ namespace WebCore.Services
                                                     {
                                                         reportTicketingDocumentCouponService.Create<string>(new ReportTicketingDocumentCoupon
                                                         {
-                                                            Title = null,
-                                                            Summary = null,
                                                             ReportDate = reportDate,
                                                             DocumentNumber = docummentNumber,
                                                             MarketingFlightNumber = item.MarketingFlightNumber,
@@ -182,6 +177,8 @@ namespace WebCore.Services
                                                             FareBasis = item.FareBasis,
                                                             StartLocation = item.StartLocation,
                                                             EndLocation = item.EndLocation,
+                                                            StartDateTime = item.StartDateTime,
+                                                            EndDateTime = item.EndDateTime,
                                                             BookingStatus = item.BookingStatus,
                                                             CurrentStatus = item.CurrentStatus,
                                                             SystemDateTime = item.SystemDateTime,

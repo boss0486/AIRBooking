@@ -16,6 +16,8 @@ using WebCore.Services;
 using System.IO;
 using System.Windows.Media;
 using Helper.Language;
+using ZXing;
+using System.Windows;
 
 namespace Helper.Security
 {
@@ -117,15 +119,39 @@ namespace Helper.Security
         }
 
         //
-        public Image GenerateQRCode(string text)
+        public Bitmap GenerateQRCode(string text)
         {
             try
             {
                 QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                QRCodeData QRCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.H);
+                QRCodeData QRCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
                 QRCode qrCode = new QRCode(QRCodeData);
-                Bitmap bitmap = qrCode.GetGraphic(20);
-                return bitmap;
+                Bitmap bitmap = qrCode.GetGraphic(10);
+                Bitmap bitmapRs = new Bitmap(bitmap, 300, 300);
+                return bitmapRs;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public Bitmap GenerateQRCodeLogo(string text)
+        {
+            try
+            {
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData QRCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(QRCodeData);
+                Bitmap bitmapIcon = new Bitmap($"{ HttpContext.Current.Server.MapPath("~/Files/default")}/logo.png");
+                var _background = System.Drawing.Color.White;
+                var _lightColor = System.Drawing.Color.Black;
+                Bitmap bitmap = qrCode.GetGraphic(10, _background, _lightColor, bitmapIcon, 15, 15, true);
+                Graphics graphics = Graphics.FromImage(bitmap);
+                int _w = (bitmap.Width - bitmapIcon.Width) / 2;
+                int _h = (bitmap.Height - bitmapIcon.Height) / 2;
+                graphics.DrawImage(bitmapIcon, new System.Drawing.Point(_w, _h));
+                Bitmap bitmapRs = new Bitmap(bitmap, 300, 300);
+                return bitmapRs;
             }
             catch (Exception)
             {
@@ -133,8 +159,31 @@ namespace Helper.Security
             }
         }
 
-        //
+        public Image GenerateZXING_QRCode(string _text)
+        {
 
+            ZXing.BarcodeWriter barcodeWriter = new ZXing.BarcodeWriter();
+            ZXing.Common.EncodingOptions encodingOptions = new ZXing.Common.EncodingOptions()
+            {
+                Width = 300,
+                Height = 300,
+                Margin = 5,
+                PureBarcode = false
+            };
+            encodingOptions.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.H);
+            barcodeWriter.Renderer = new ZXing.Rendering.BitmapRenderer();
+            barcodeWriter.Options = encodingOptions;
+            barcodeWriter.Format = ZXing.BarcodeFormat.QR_CODE;
+            Bitmap bitmap = barcodeWriter.Write(_text);
+            Graphics graphics = Graphics.FromImage(bitmap);
+            Bitmap logo = new Bitmap($"{ HttpContext.Current.Server.MapPath("~/Files/default")}/delete-sign.png");
+            int _w = (bitmap.Width - logo.Width) / 2;
+            int _h = (bitmap.Height - logo.Height) / 2;
+            graphics.DrawImage(logo, new System.Drawing.Point(_w, _h));
+            return bitmap;
+
+        }
+        //
         public static string Encryption256(string strRaw)
         {
             var sha256Hash = System.Security.Cryptography.SHA256.Create();

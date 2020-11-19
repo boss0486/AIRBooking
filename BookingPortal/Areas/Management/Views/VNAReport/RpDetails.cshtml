@@ -40,15 +40,14 @@
                 <tbody>
                     @if (vna_ReportSaleSummaryTicketingDocuments != null && vna_ReportSaleSummaryTicketingDocuments.Count > 0)
                     {
-
                         foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
                         {
-                            string _startDateTime = Helper.Time.TimeHelper.Format_TDateTimeToFullDateTime(item.StartDateTime);
-                            string _endDateTime = Helper.Time.TimeHelper.Format_TDateTimeToFullDateTime(item.EndDateTime);
+                            string _startDateTime = Helper.Time.TimeHelper.Format_TDateTimeToDateTime(item.StartDateTime);
+                            string _endDateTime = Helper.Time.TimeHelper.Format_TDateTimeToDateTime(item.EndDateTime);
 
                             <tr>
                                 <td>@item.MarketingFlightNumber</td>
-                                <td>@item.ClassOfService</td>
+                                <td class="text-center">@item.ClassOfService</td>
                                 <td>@item.FareBasis</td>
                                 <td>@item.StartLocation - @item.EndLocation</td>
                                 <td>@_startDateTime - @_endDateTime</td>
@@ -70,6 +69,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th class="tbcol-id">#</th>
                         <th>Amount</th>
                         <th>TotalTax</th>
                         <th>Total</th>
@@ -86,6 +86,7 @@
                             double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
                             double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
                             //
+                            <td class="text-right">1</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
                             <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
@@ -103,6 +104,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th class="tbcol-id">#</th>
                         <th>Tax code</th>
                         <th>Amount</th>
                         <th>Unit</th>
@@ -111,14 +113,17 @@
                 <tbody>
                     @if (vna_ReportSaleSummaryTicketingDocumentTaxes != null && vna_ReportSaleSummaryTicketingDocumentTaxes.Count > 0)
                     {
+                        int _cnt = 1;
                         foreach (var item in vna_ReportSaleSummaryTicketingDocumentTaxes)
                         {
                             string unit = Helper.Page.Library.FormatCurrencyUnit(item.Unit);
                             <tr>
+                                <td class="text-right">@_cnt</td>
                                 <td>@item.TaxCode</td>
                                 <td class="text-right">@Helper.Page.Library.FormatCurrency(item.Amount)</td>
-                                <td>@item.Unit</td>
+                                <td>@unit</td>
                             </tr>
+                            _cnt++;
                         }
                     }
                 </tbody>
