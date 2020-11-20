@@ -22,6 +22,7 @@ using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using WebCore.Core;
 using WebCore.Model.Entities;
 using AIRService.WebService.VNA.Authen;
+using Helper.TimeData;
 
 namespace WebApplication.Management.Controllers
 {
@@ -86,76 +87,24 @@ namespace WebApplication.Management.Controllers
         public async System.Threading.Tasks.Task<ActionResult> EPRSearchAsync(ReportEprSearchModel model)
         {
             try
-            { 
+            {
                 if (model == null)
                     return Notifization.Invalid(MessageText.Invalid);
-                //
-                string inputDate = model.ReportDate;
+                // 
                 string query = model.Query;
-                //
-                if (!Helper.Page.Validate.TestDateSQL(inputDate))
+                if (!Helper.Page.Validate.TestDateSQL(model.ReportDate))
                     return Notifization.Invalid(MessageText.Invalid);
                 // chuan date
-                inputDate = Convert.ToDateTime(inputDate).ToString("yyyy-MM-dd");
-                //
-
+                string inputDate = Convert.ToDateTime(model.ReportDate).ToString("yyyy-MM-dd");
+                DateTime dtimeRequest = Convert.ToDateTime(model.ReportDate);
                 // kiem tra ngay tim kiem có phải là hom nay hay ko
-
-
-
-                // nếu ngày báo cáo < hiện tại => load tu csdl
-
-
-
-
-                // nếu ngày báo cáo >= cap nhat db và load từ csdl
-
-
-
-
-
-
-
-                DateTime reportDate = Convert.ToDateTime(inputDate);
-                VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
+                if (string.IsNullOrWhiteSpace(model.TimeZoneLocal))
+                    return Notifization.Invalid(MessageText.Invalid);
                 //
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                using (var sessionService = new VNA_SessionService(tokenModel))
-                {
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token
-                    };
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    // model
-                    VNA_EmpReportModel empReportModel = new VNA_EmpReportModel
-                    {
-                        Token = tokenModel.Token,
-                        ConversationID = tokenModel.ConversationID,
-                        ReportDate = reportDate
-                    };
-                    // 
-                    var data = vna_TKT_AsrService.GetEmployeeNumber(empReportModel);
-                    //
-                    if (data.Count() > 0)
-                    {
-                        List<VNA_ReportSaleSummaryResult> reportEprResult = new List<VNA_ReportSaleSummaryResult>();
-                        foreach (var employee in data)
-                        {
-                            string empNumber = employee.IssuingAgentEmployeeNumber;
-                            VNA_ReportSaleSummaryResult reportSaleSummaryResult = await vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
-                            {
-                                ReportDate = reportDate,
-                                EmpNumber = empNumber
-                            }, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
-                            reportEprResult.Add(reportSaleSummaryResult);
-                        }
-                        return Notifization.Data("Ok" + data.Count, reportEprResult);
-                    }
-                    return Notifization.NotFound("Data is not found");
-                }
+                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetForDate);
+                if (dateTime < dtimeRequest) // chua co =>  dong bo
+                    return Notifization.NotFound(MessageText.NotFound);
+                //
             }
             catch (Exception ex)
             {

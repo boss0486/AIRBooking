@@ -6,6 +6,7 @@ using WebCore.Model.Entities;
 using System.Web;
 using System.IO;
 using Newtonsoft.Json;
+using Helper.TimeData;
 
 namespace WebCore.Model.Services
 {
@@ -20,7 +21,7 @@ namespace WebCore.Model.Services
             string endDate = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
-            string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
+            string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
             string columName = "CreatedDate";
             if (!string.IsNullOrWhiteSpace(dateColumn))
             {
@@ -34,7 +35,7 @@ namespace WebCore.Model.Services
                 DateTime today = Convert.ToDateTime(clientTime);
                 if (timeExpress == 1)
                 {
-                    string strDate = Helper.Time.TimeHelper.FormatToSQLDate(today);
+                    string strDate = TimeFormat.FormatToSQLDate(today);
                     string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
                     whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
                 }

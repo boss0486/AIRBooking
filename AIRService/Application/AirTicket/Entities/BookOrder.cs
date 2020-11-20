@@ -2,6 +2,7 @@
 using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using Dapper;
+using Helper.TimeData;
 using System;
 using System.Collections.Generic;
 using WebCore.Model.Entities;
@@ -84,7 +85,7 @@ namespace WebCore.Entities
             {
                 if (_orderDate == null)
                     return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
@@ -105,7 +106,7 @@ namespace WebCore.Entities
             {
                 if (string.IsNullOrWhiteSpace(_orderDate))
                     return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
         }
     }

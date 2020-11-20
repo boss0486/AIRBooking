@@ -286,8 +286,7 @@ namespace Helper.Language
                 // set default
                 return string.Empty;
             }
-
-        }
+        } 
     }
 
 }

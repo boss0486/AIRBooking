@@ -15,6 +15,7 @@ using WebCore.Model.Entities;
 using WebCore.Model.Enum;
 using WebCore.ENM;
 using Helper.File;
+using Helper.TimeData;
 
 namespace WebCore.Services
 {
@@ -197,7 +198,7 @@ namespace WebCore.Services
             string endDate = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
-            string clientTime = Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal);
+            string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
             //
             string whereConditionSub1 = string.Empty;
             if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))
@@ -206,7 +207,7 @@ namespace WebCore.Services
                 DateTime today = Convert.ToDateTime(clientTime);
                 if (timeExpress == 1)
                 {
-                    string strDate = Helper.Time.TimeHelper.FormatToSQLDate(today);
+                    string strDate = TimeFormat.FormatToSQLDate(today);
                     string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
                     if (string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";

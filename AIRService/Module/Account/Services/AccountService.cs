@@ -18,6 +18,7 @@ using Helper.Page;
 using Helper.File;
 using WebCore.Model.Entities;
 using System.Data;
+using Helper.TimeData;
 
 namespace WebCore.Services
 {
@@ -247,7 +248,7 @@ namespace WebCore.Services
                             UserID = userId,
                             ImageFile = "",
                             FullName = model.FullName,
-                            Birthday = Helper.Time.TimeHelper.FormatToSQLDate(model.Birthday),
+                            Birthday = TimeFormat.FormatToSQLDate(model.Birthday),
                             Email = model.Email.ToLower(),
                             Phone = model.Phone,
                             Address = model.Address
@@ -362,7 +363,7 @@ namespace WebCore.Services
                         userInfo.ImageFile = imageFile;
                         userInfo.FullName = fullName;
                         userInfo.NickName = model.NickName;
-                        userInfo.Birthday = Helper.Time.TimeHelper.FormatToSQLDate(model.Birthday);
+                        userInfo.Birthday = TimeFormat.FormatToSQLDate(model.Birthday);
                         //userInfo.Email = model.Email.ToLower();
                         userInfo.Phone = model.Phone;
                         userInfo.Address = model.Address;

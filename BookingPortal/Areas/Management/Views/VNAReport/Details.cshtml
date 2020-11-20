@@ -1,10 +1,12 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
+@using Helper.Language;
+@using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 @model WebCore.Entities.ReportSaleSummaryModel
 
 @{
@@ -53,7 +55,7 @@
                 rps_decoupleItem = reportSaleSummary.DecoupleItem;
                 rps_ticketStatusCode = reportSaleSummary.TicketStatusCode;
                 rps_isElectronicTicket = reportSaleSummary.IsElectronicTicket;
-                rps_reportDate = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(reportSaleSummary.ReportDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                rps_reportDate = TimeFormat.FormatToDate(Convert.ToDateTime(reportSaleSummary.ReportDate), LanguagePage.GetLanguageCode);
             }
         }
 

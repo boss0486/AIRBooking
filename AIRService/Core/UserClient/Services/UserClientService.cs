@@ -21,6 +21,7 @@ using System.Data;
 using System.Web.Security;
 using System.Runtime.CompilerServices;
 using WebCore.ENM;
+using Helper.TimeData;
 
 namespace WebCore.Services
 {
@@ -323,7 +324,7 @@ namespace WebCore.Services
                             UserID = userId,
                             ImageFile = imageFile,
                             FullName = model.FullName,
-                            Birthday = Helper.Time.TimeHelper.FormatToSQLDate(birthday),
+                            Birthday = TimeFormat.FormatToSQLDate(birthday),
                             Email = model.Email.ToLower(),
                             Phone = model.Phone,
                             Address = model.Address
@@ -440,7 +441,7 @@ namespace WebCore.Services
                         userInfo.ImageFile = imageFile;
                         userInfo.FullName = fullName;
                         userInfo.NickName = model.NickName;
-                        userInfo.Birthday = Helper.Time.TimeHelper.FormatToSQLDate(model.Birthday);
+                        userInfo.Birthday = TimeFormat.FormatToSQLDate(model.Birthday);
                         //userInfo.Email = model.Email.ToLower();
                         userInfo.Phone = model.Phone;
                         userInfo.Address = model.Address;

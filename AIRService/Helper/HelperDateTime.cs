@@ -11,21 +11,71 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Helper.Time
+namespace Helper.TimeData
 {
-
     public class TimeHelper
+    {
+        public static string GetDateTime
+        {
+            get
+            {
+                string timeZoon = string.Empty;
+                string lgCode = Helper.Language.LanguagePage.GetLanguageCode;
+                // Vietnamese
+                if (lgCode == Language.LanguageCode.Vietnamese.ID)
+                    timeZoon = TimeZoneID.vn_zonetime;
+                // English
+                if (lgCode == Language.LanguageCode.English.ID)
+                    timeZoon = TimeZoneID.us_zonetime;
+                //*************************************************************
+                if (string.IsNullOrWhiteSpace(timeZoon))
+                    return string.Empty;
+                //
+                string strDateTime = TimeFormat.GetDateTimeByTimeZone(timeZoon);
+                return strDateTime;
+            }
+        }
+        //
+        public static string GetForDate
+        {
+            get
+            {
+                string strdTime = TimeHelper.GetDateTime;
+                if (string.IsNullOrWhiteSpace(strdTime))
+                    return string.Empty;
+                //
+                DateTime dateTime = Convert.ToDateTime(strdTime);
+                return TimeFormat.FormatToDate(dateTime, Helper.Language.LanguagePage.GetLanguageCode);
+            }
+        }
+        public static string GetForTime
+        {
+            get
+            {
+                string strdTime = TimeHelper.GetDateTime;
+                if (string.IsNullOrWhiteSpace(strdTime))
+                    return string.Empty;
+                //
+                DateTime dateTime = Convert.ToDateTime(strdTime);
+                return dateTime.ToString("HH:MM:ss");
+            }
+        }
+    }
+
+    public class TimeFormat
     {
         public static string GetDateByTimeZone(string strUtc)
         {
             try
             {
-                string zoneId = GetTimeZoonClient(strUtc);
+                string zoneId = GetTimeZoonName(strUtc);
+                if (string.IsNullOrWhiteSpace(zoneId))
+                    return string.Empty;
+                // 
                 var timezone = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
                 if (timezone == null)
-                {
                     return string.Empty;
-                }
+                //
                 var dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
                 string date = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 return date;
@@ -34,6 +84,39 @@ namespace Helper.Time
             {
                 return string.Empty;
             }
+        }
+        public static string GetDateTime
+        {
+            get
+            {
+                string timeZoon = string.Empty;
+                string lgCode = Helper.Language.LanguagePage.GetLanguageCode;
+                // Vietnamese
+                if (lgCode == Language.LanguageCode.Vietnamese.ID)
+                    timeZoon = TimeZoneID.vn_zonetime;
+                // English
+                if (lgCode == Language.LanguageCode.English.ID)
+                    timeZoon = TimeZoneID.us_zonetime;
+                //*************************************************************
+                if (string.IsNullOrWhiteSpace(timeZoon))
+                    return string.Empty;
+                //
+                string strDateTime = TimeFormat.GetDateTimeByTimeZone(timeZoon);
+                return strDateTime;
+            }
+        }
+        //
+        public static string GetDateTimeByTimeZone(string timeZoon)
+        {
+            if (string.IsNullOrWhiteSpace(timeZoon))
+                return string.Empty;
+            // 
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoon);
+            if (timeZoneInfo == null)
+                return string.Empty;
+            //
+            DateTime dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timeZoneInfo);
+            return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
         }
         // date time
         public static string FormatToDate(DateTime dtime, string languageCode)
@@ -64,7 +147,7 @@ namespace Helper.Time
                 if (isDateTime)
                 {
                     DateTime dateTime = Convert.ToDateTime(_strDate);
-                    return Helper.Time.TimeHelper.FormatToDate(dateTime, languageCode);
+                    return TimeFormat.FormatToDate(dateTime, languageCode);
                 }
                 return string.Empty;
             }
@@ -101,7 +184,7 @@ namespace Helper.Time
                 if (isDateTime)
                 {
                     DateTime dateTime = Convert.ToDateTime(_strDate);
-                    return Helper.Time.TimeHelper.FormatToDateTime(dateTime, languageCode);
+                    return TimeFormat.FormatToDateTime(dateTime, languageCode);
                 }
                 return string.Empty;
 
@@ -238,7 +321,7 @@ namespace Helper.Time
             catch (Exception)
             {
                 return string.Empty;
-            }          
+            }
         }
         public static string FormatDateTimeToYYMM(DateTime dtime)
         {
@@ -269,12 +352,11 @@ namespace Helper.Time
             }
         }
 
-        //
-        public static string GetTimeZoonClient(string strUtc)
+        // utc:  "Asia/Saigon", "Asia/Vientiane",
+        public static string GetTimeZoonName(string strUtc)
         {
-            string timeZoneDefault = TimeZoneID.vn_zonetime;
             if (string.IsNullOrWhiteSpace(strUtc))
-                return timeZoneDefault;
+                return string.Empty;
             //
             string file = HttpContext.Current.Server.MapPath(@"/library/script/timezones.json");
             using (StreamReader r = new StreamReader(file))
@@ -285,12 +367,12 @@ namespace Helper.Time
                 {
                     foreach (var item in timeZoonClientModels)
                     {
-                        List<string> lstUtc = item.utc;
+                        List<string> lstUtc = item.Utc;
                         if (lstUtc.Contains(strUtc))
-                            return item.value;
+                            return item.Value;
                     }
                 }
-                return timeZoneDefault;
+                return string.Empty;
             }
         }
     }
@@ -302,11 +384,11 @@ namespace Helper.Time
     }
     public class TimeZoonClientModel
     {
-        public string value { get; set; }
-        public string abbr { get; set; }
-        public string offset { get; set; }
-        public string isdst { get; set; }
-        public string text { get; set; }
-        public List<string> utc { get; set; }
+        public string Value { get; set; }
+        public string Abbr { get; set; }
+        public string Offset { get; set; }
+        public string Isdst { get; set; }
+        public string Text { get; set; }
+        public List<string> Utc { get; set; }
     }
 }

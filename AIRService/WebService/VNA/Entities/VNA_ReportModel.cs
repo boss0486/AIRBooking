@@ -93,6 +93,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
     {
         public string ReportDate { get; set; }
         public string Query { get; set; }
+        public string TimeZoneLocal { get; set; }
     }
     public class VNA_ReportSaleSummaryTicketing
     {

@@ -17,6 +17,7 @@ using WebCore.Services;
 using Helper.Page;
 using WebCore.Model.Entities;
 using WebCore.ENM;
+using Helper.TimeData;
 
 namespace WebCore.Services
 {
@@ -220,7 +221,7 @@ namespace WebCore.Services
                         BankIDSent = bankIDSent,
                         BankReceived = bankNameReceived,
                         BankIDReceived = bankIDReceived,
-                        ReceivedDate = Helper.Time.TimeHelper.FormatToSQLDate(receivedDate),
+                        ReceivedDate = TimeFormat.FormatToSQLDate(receivedDate),
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -407,7 +408,7 @@ namespace WebCore.Services
                     transactionDeposit.BankIDSent = bankIDSent;
                     transactionDeposit.BankReceived = bankNameReceived;
                     transactionDeposit.BankIDReceived = bankIDReceived;
-                    transactionDeposit.ReceivedDate = Helper.Time.TimeHelper.FormatToSQLDate(receivedDate);
+                    transactionDeposit.ReceivedDate = TimeFormat.FormatToSQLDate(receivedDate);
                     transactionDeposit.Status = (int)TransactionEnum.TransactionType.IN;
                     transactionDeposit.Amount = amount;
                     transactionDeposit.Enabled = enabled;

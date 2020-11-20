@@ -2,6 +2,7 @@
 using AL.NetFrame.Services;
 using Dapper;
 using Helper;
+using Helper.TimeData;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace WebCore.Services
                 }
             }
             //
-            if (Helper.Time.TimeHelper.FormatToSQLDate(eventEnd) < Helper.Time.TimeHelper.FormatToSQLDate(eventStart))
+            if (TimeFormat.FormatToSQLDate(eventEnd) < TimeFormat.FormatToSQLDate(eventStart))
             {
                 return Notifization.Invalid("Thời gian bắt đầu phải <= thời gian kết thúc");
             }
@@ -73,8 +74,8 @@ namespace WebCore.Services
                     ConditionID = conditionId,
                     PlaneNoFrom = planeNoFrom,
                     PlaneNoTo = planeNoTo,
-                    TimeStart = Helper.Time.TimeHelper.FormatToSQLDate(eventStart),
-                    TimeEnd = Helper.Time.TimeHelper.FormatToSQLDate(eventEnd),
+                    TimeStart = TimeFormat.FormatToSQLDate(eventStart),
+                    TimeEnd = TimeFormat.FormatToSQLDate(eventEnd),
                     IsApplied = true,
                     Enabled = 1
                 });
@@ -83,8 +84,8 @@ namespace WebCore.Services
             // update
             airTicketConditionFee.PlaneNoFrom = planeNoFrom;
             airTicketConditionFee.PlaneNoTo = planeNoTo;
-            airTicketConditionFee.TimeStart = Helper.Time.TimeHelper.FormatToSQLDate(eventStart);
-            airTicketConditionFee.TimeEnd = Helper.Time.TimeHelper.FormatToSQLDate(eventEnd);
+            airTicketConditionFee.TimeStart = TimeFormat.FormatToSQLDate(eventStart);
+            airTicketConditionFee.TimeEnd = TimeFormat.FormatToSQLDate(eventEnd);
             airTicketConditionFee.IsApplied = true;
             //
             airTicketConditionFeeService.Update(airTicketConditionFee);

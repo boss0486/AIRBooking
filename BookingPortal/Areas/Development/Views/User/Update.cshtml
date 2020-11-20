@@ -5,6 +5,9 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 
+@using Helper.Language;
+@using Helper.TimeData;
+
 @model WebCore.Entities.UserModel
 
 @{
@@ -32,7 +35,7 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            birthday = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(Model.Birthday), Helper.Language.LanguageCode.Vietnamese.ID);
+            birthday = TimeFormat.FormatToDate(Convert.ToDateTime(Model.Birthday),  LanguagePage.GetLanguageCode);
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;

@@ -2,6 +2,9 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
@@ -23,11 +26,12 @@
             planeNoTo04 = airTicketConditionFee04.PlaneNoTo;
             if (airTicketConditionFee04.TimeStart != null)
             {
-                eventStart04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), Helper.Language.LanguageCode.Vietnamese.ID);
+                eventStart04 = TimeFormat.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), LanguagePage.GetLanguageCode);
+
             }
             if (airTicketConditionFee04.TimeEnd != null)
             {
-                eventEnd04 = Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), Helper.Language.LanguageCode.Vietnamese.ID);
+                eventEnd04 = TimeFormat.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), LanguagePage.GetLanguageCode);
             }
             isApplied04 = airTicketConditionFee04.IsApplied;
             conditionId04 = airTicketConditionFee04.ConditionID;

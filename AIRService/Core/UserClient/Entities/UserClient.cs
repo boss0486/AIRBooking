@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using Helper.Language;
+using Helper.TimeData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +42,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_birthday), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_birthday), LanguagePage.GetLanguageCode);
             }
             set
             {

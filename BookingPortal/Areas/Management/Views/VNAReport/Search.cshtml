@@ -1,18 +1,19 @@
-﻿@{
+﻿@using WebCore.Services;
+@using WebCore.Model.Services;
+
+@using Helper.Language;
+@using Helper.TimeData;
+
+@{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-
-@using WebCore.Services;
-@using WebCore.Model.Services;
-@using WebCore.Model.Services;
-
 <div class="row" data-keyenter="#btnSearch" data-datesearch="true">
     <div class="col-md-2">
         <div class="form-group ">
-            <input id="txtReportDate" type="text" class="form-control" data-date="true" placeholder="dd-mm-yyyy" value="@DateTime.Now.ToString("dd-MM-yyyy")" />
+            <input id="txtReportDate" type="text" class="form-control" data-date="true" placeholder="dd-mm-yyyy" value="@TimeHelper.GetForDate" />
         </div>
     </div>
-    <div class="col-md-4 col-md-offset-5" data-keyenter="#btnSearch">
+    <div class="col-md-4 col-md-offset-6" data-keyenter="#btnSearch">
         <div class="input-group">
             <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
             <span id="btnEprReportSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>

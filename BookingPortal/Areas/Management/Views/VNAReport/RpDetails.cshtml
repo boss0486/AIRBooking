@@ -1,11 +1,14 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
-@using ApiPortalBooking.Models.VNA_WS_Model;
+@using WebCore.Model.Services
 
+@using Helper.Language;
+@using Helper.TimeData;
+@using ApiPortalBooking.Models.VNA_WS_Model;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 @model ApiPortalBooking.Models.VNA_WS_Model.VNA_ReportSaleSummaryTicketing
 @{
     try
@@ -42,8 +45,8 @@
                     {
                         foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
                         {
-                            string _startDateTime = Helper.Time.TimeHelper.Format_TDateTimeToDateTime(item.StartDateTime);
-                            string _endDateTime = Helper.Time.TimeHelper.Format_TDateTimeToDateTime(item.EndDateTime);
+                            string _startDateTime = TimeFormat.Format_TDateTimeToDateTime(item.StartDateTime);
+                            string _endDateTime = TimeFormat.Format_TDateTimeToDateTime(item.EndDateTime);
 
                             <tr>
                                 <td>@item.MarketingFlightNumber</td>

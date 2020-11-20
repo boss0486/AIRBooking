@@ -2,6 +2,9 @@
 @using WebCore.Services;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
@@ -31,14 +34,14 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            birthday = Helper.Time.TimeHelper.FormatToDate(Model.Birthday, Helper.Language.LanguageCode.Vietnamese.ID);
+            birthday = TimeFormat.FormatToDate(Model.Birthday, LanguagePage.GetLanguageCode);
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
             roleId = Model.RoleID;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Helper.Time.TimeHelper.FormatToDate(Model.CreatedDate, Helper.Language.LanguageCode.Vietnamese.ID);
+            createdDate = TimeFormat.FormatToDate(Model.CreatedDate, LanguagePage.GetLanguageCode);
             imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
             //
             if (Model.IsBlock)
@@ -162,7 +165,7 @@
                     }
                 }
             </div>
-        </div> 
+        </div>
         <input id="txtID" type="hidden" value="@id" />
     }
     catch (Exception)

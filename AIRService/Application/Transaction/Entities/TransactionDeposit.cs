@@ -2,6 +2,8 @@
 using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using Dapper;
+using Helper.Language;
+using Helper.TimeData;
 using System;
 using WebCore.Model.Entities;
 using WebCore.Services;
@@ -90,7 +92,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_receivedDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_receivedDate), LanguagePage.GetLanguageCode);
             }
             set
             {

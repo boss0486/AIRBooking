@@ -25,6 +25,7 @@ using System.Web.Helpers;
 using System.Web.UI.WebControls;
 using System.Xml;
 using AIRService.WS.Helper;
+using Helper.TimeData;
 
 namespace AIRService.Service
 {
@@ -1260,7 +1261,7 @@ namespace AIRService.Service
                             PassengerGroup = model.PassengerGroup,
                             Summary = model.Summary,
                             ItineraryType = model.ItineraryType,
-                            OrderDate = Convert.ToDateTime(Helper.Time.TimeHelper.GetDateByTimeZone(timeZoneLocal)),
+                            OrderDate = Convert.ToDateTime(TimeHelper.GetDateTime),
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,

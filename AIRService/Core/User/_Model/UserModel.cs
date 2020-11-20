@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Helper.Language;
+using Helper.TimeData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +39,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return Helper.Time.TimeHelper.FormatToDate(_birthday, Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(_birthday, LanguagePage.GetLanguageCode);
             }
             set
             {

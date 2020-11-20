@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using Helper;
+using Helper.Language;
+using Helper.TimeData;
 using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
@@ -51,7 +53,7 @@ namespace WebCore.Model.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
             }
             set
             {
@@ -59,7 +61,7 @@ namespace WebCore.Model.Entities
             }
         }
         [NotMapped]
-        public string CreatedFullDate => Helper.Time.TimeHelper.FormatToDateTime(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+        public string CreatedFullDate => TimeFormat.FormatToDateTime(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
 
 
     }

@@ -1,4 +1,7 @@
-﻿@using WebCore.Services
+﻿@using Helper.Language;
+@using Helper.TimeData;
+@using WebCore.Services
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -370,6 +373,7 @@
                             }
                         }
                     </div>
+                    <div>GMT: @Helper.Language.LanguagePage.GetLanguageCode  @TimeHelper.GetDateTime</div>
                 </div>
                 <div class="col-md-6 col-md-pull-6">
                     <div class="block-header">

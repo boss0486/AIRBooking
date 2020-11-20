@@ -3,6 +3,7 @@ using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using Dapper;
 using Helper.File;
+using Helper.TimeData;
 using System;
 using System.Collections.Generic;
 using System.Web;
@@ -60,7 +61,7 @@ namespace WebCore.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return Helper.Time.TimeHelper.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
