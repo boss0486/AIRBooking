@@ -11,14 +11,12 @@ using AIRService.WS.Entities;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
-using ApiPortalBooking.Models.VNA_WS_Model;
 using WebCore.Services;
 using WebCore.Entities;
 using System.IO;
 using System.Web;
 using WebCore.ENM;
 using Helper;
-using AIRService.WebService.VNA_OTA_AirTaxRQ;
 using WebCore.Core;
 using WebCore.Model.Entities;
 using AIRService.WebService.VNA.Authen;
@@ -83,28 +81,13 @@ namespace WebApplication.Management.Controllers
         // API search ********************************************************************************************************
 
         [HttpPost]
-        [Route("Action/EPR-Search")]
-        public async System.Threading.Tasks.Task<ActionResult> EPRSearchAsync(ReportEprSearchModel model)
+        [Route("Action/Search")]
+        public ActionResult EPRSearch(SearchModel model)
         {
             try
             {
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // 
-                string query = model.Query;
-                if (!Helper.Page.Validate.TestDateSQL(model.ReportDate))
-                    return Notifization.Invalid(MessageText.Invalid);
-                // chuan date
-                string inputDate = Convert.ToDateTime(model.ReportDate).ToString("yyyy-MM-dd");
-                DateTime dtimeRequest = Convert.ToDateTime(model.ReportDate);
-                // kiem tra ngay tim kiem có phải là hom nay hay ko
-                if (string.IsNullOrWhiteSpace(model.TimeZoneLocal))
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetForDate);
-                if (dateTime < dtimeRequest) // chua co =>  dong bo
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
+                ReportSaleSummaryService service = new ReportSaleSummaryService();
+                return service.DataListByDeparture(model);
             }
             catch (Exception ex)
             {

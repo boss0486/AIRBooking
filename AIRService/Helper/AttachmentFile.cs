@@ -219,9 +219,8 @@ namespace Helper.File
                 };
         }
         //
-        public static string SaveImageFile(Image imgFile, DateTime dateTime, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
+        public static string SaveImageFile(string id, Image _inpBitmap, DateTime dateTime, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
-
             //Save file to system
             var year = dateTime.Year;
             var month = dateTime.Month;
@@ -230,26 +229,13 @@ namespace Helper.File
                 System.IO.Directory.CreateDirectory(fileFolderPath);
             //  
             AttachmentService attachmentService = new AttachmentService(dbConnection);
-            string contentType = "image/" + imgFormat;
-            var guid = attachmentService.Create<string>(new Attachment()
-            {
-                Title = null,
-                Extension = "." + imgFormat.ToString().ToLower(),
-                ContentLength = 0,
-                ContentType = contentType.ToLower(),
-                LanguageID = Language.LanguagePage.GetLanguageCode,
-            }, transaction: dbTransaction);
-
-            Attachment attachment = attachmentService.GetAlls(m => m.ID == guid, transaction: dbTransaction).FirstOrDefault();
+            Attachment attachment = attachmentService.GetAlls(m => m.ID == id, transaction: dbTransaction).FirstOrDefault();
             string fullPath = fileFolderPath + imgName;
-            imgFile.Save(fullPath, imgFormat);
+            _inpBitmap.Save(fullPath, imgFormat);
             FileInfo file = new FileInfo(fullPath);
             attachment.ContentLength = file.Length;
             attachmentService.Update(attachment, transaction: dbTransaction);
-            //
-
-            return guid;
-
+            return id;
         }
         //
         public static string ZipDirectoryFile(string inputDirectory, string zipPath)
@@ -326,6 +312,12 @@ namespace Helper.File
                 return Helper.Page.Default.FileNoImange;
             }
         }
+        public static byte[] ImageToByte(Image img)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+        }
+
     }
     public class AttachmentResultFilesModel
     {

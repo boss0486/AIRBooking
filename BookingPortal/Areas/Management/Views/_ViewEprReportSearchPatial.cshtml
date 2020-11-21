@@ -1,0 +1,58 @@
+﻿@using WebCore.Services;
+@using WebCore.Model.Services;
+@*search control ******************************************************************************************************@
+
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+    <div class="col-md-1">
+        <div class="form-group">
+            <a href="" class="btn btn-primary w-100" style="width:100%">
+                <i class="fas fa-sync-alt"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <a href="" class="btn btn-primary w-100" style="width:100%">
+                <i class="fas fa-file-download"></i>.Exls
+            </a>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlTimeExpress" name="ddlTimeExpress" class="form-control show-tick" data-live-search="true">
+                <option value="0">-Giới hạn-</option>
+                @Html.Raw(ModelService.DropdownListSearchExpress(-1))
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlStatus" name="ddlStatus" class="form-control show-tick" data-live-search="true">
+                <option value="">-T.Thái-</option>
+                <option value="OK">OKOK</option>
+                <option value="CKIN">CKIN</option>
+                <option value="LFTD">LFTD</option>
+                <option value="USED">USED</option>
+                <option value="NOGO">NOGO</option>
+                <option value="VOID">VOID</option>
+                <option value="RFND">RFND</option>
+                <option value="EXCH">EXCH</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="input-daterange input-group" id="datepicker">
+            <input type="text" class="form-control" id="txtStartDate" placeholder="dd-mm-yyyy" maxlength="10" />
+            <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
+            <input type="text" class="form-control" id="txtEndDate" placeholder="dd-mm-yyyy" maxlength="10" />
+        </div>
+    </div>
+    <div class="col-md-3" data-keyenter="#btnEprSearch">
+        <div class="input-group">
+            <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+            <span id="btnEprSearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+</div>
+@*search control ******************************************************************************************************@
+

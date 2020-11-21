@@ -39,7 +39,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return TimeFormat.FormatToDate(_birthday, LanguagePage.GetLanguageCode);
+                return TimeFormat.FormatToViewDate(_birthday, LanguagePage.GetLanguageCode);
             }
             set
             {

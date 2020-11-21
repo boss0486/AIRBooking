@@ -58,7 +58,7 @@ namespace WebCore.Services
                 }
             }
             //
-            if (TimeFormat.FormatToSQLDate(eventEnd) < TimeFormat.FormatToSQLDate(eventStart))
+            if (TimeFormat.FormatToServerDate(eventEnd) < TimeFormat.FormatToServerDate(eventStart))
             {
                 return Notifization.Invalid("Thời gian bắt đầu phải <= thời gian kết thúc");
             }
@@ -74,8 +74,8 @@ namespace WebCore.Services
                     ConditionID = conditionId,
                     PlaneNoFrom = planeNoFrom,
                     PlaneNoTo = planeNoTo,
-                    TimeStart = TimeFormat.FormatToSQLDate(eventStart),
-                    TimeEnd = TimeFormat.FormatToSQLDate(eventEnd),
+                    TimeStart = TimeFormat.FormatToServerDate(eventStart),
+                    TimeEnd = TimeFormat.FormatToServerDate(eventEnd),
                     IsApplied = true,
                     Enabled = 1
                 });
@@ -84,8 +84,8 @@ namespace WebCore.Services
             // update
             airTicketConditionFee.PlaneNoFrom = planeNoFrom;
             airTicketConditionFee.PlaneNoTo = planeNoTo;
-            airTicketConditionFee.TimeStart = TimeFormat.FormatToSQLDate(eventStart);
-            airTicketConditionFee.TimeEnd = TimeFormat.FormatToSQLDate(eventEnd);
+            airTicketConditionFee.TimeStart = TimeFormat.FormatToServerDate(eventStart);
+            airTicketConditionFee.TimeEnd = TimeFormat.FormatToServerDate(eventEnd);
             airTicketConditionFee.IsApplied = true;
             //
             airTicketConditionFeeService.Update(airTicketConditionFee);

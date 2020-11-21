@@ -3,6 +3,7 @@ using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using Dapper;
 using Helper.File;
+using Helper.Language;
 using Helper.TimeData;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace WebCore.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return TimeFormat.FormatToDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
@@ -84,5 +85,54 @@ namespace WebCore.Entities
         public List<ReportTicketingDocumentCoupon> TicketingDocumentCoupons { get; set; }
         public ReportTicketingDocumentAmount TicketingDocumentAmount { get; set; }
         public List<ReportTicketingDocumentTaxes> TicketingDocumentTaxes { get; set; }
+    }
+
+    //
+    public class ReportEprSearchModel
+    {
+        public string ReportDate { get; set; }
+        public string Query { get; set; }
+        public string TimeZoneLocal { get; set; }
+    }
+    // search report
+
+
+    public partial class AirPassengerReult : WEBModelResult
+    {
+        public string ID { get; set; }
+        public string EmployeeNumber { get; set; }
+        public string DocumentType { get; set; }
+        public string DocumentNumber { get; set; }
+        public string PassengerName { get; set; }
+        public string PnrLocator { get; set; }
+        public string TicketPrinterLniata { get; set; }
+        public string TransactionTime { get; set; }
+        public bool ExceptionItem { get; set; }
+        public bool DecoupleItem { get; set; }
+        public string TicketStatusCode { get; set; }
+        public bool IsElectronicTicket { get; set; }
+        private string _createdDate;
+        public string ReportDate
+        {
+            get
+            {
+                if (_createdDate == null)
+                    return "../" + "../" + "..";
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+            set
+            {
+                _createdDate = value;
+            }
+        }
+        public string MarketingFlightNumber { get; set; }
+        public string ClassOfService { get; set; }
+        public string FareBasis { get; set; }
+        public string StartLocation { get; set; }
+        public string EndLocation { get; set; } 
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
+        public string BookingStatus { get; set; }
+        public string CurrentStatus { get; set; }
     }
 }

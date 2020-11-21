@@ -221,7 +221,7 @@ namespace WebCore.Services
                         BankIDSent = bankIDSent,
                         BankReceived = bankNameReceived,
                         BankIDReceived = bankIDReceived,
-                        ReceivedDate = TimeFormat.FormatToSQLDate(receivedDate),
+                        ReceivedDate = TimeFormat.FormatToServerDate(receivedDate),
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
                         LanguageID = languageId,
@@ -408,7 +408,7 @@ namespace WebCore.Services
                     transactionDeposit.BankIDSent = bankIDSent;
                     transactionDeposit.BankReceived = bankNameReceived;
                     transactionDeposit.BankIDReceived = bankIDReceived;
-                    transactionDeposit.ReceivedDate = TimeFormat.FormatToSQLDate(receivedDate);
+                    transactionDeposit.ReceivedDate = TimeFormat.FormatToServerDate(receivedDate);
                     transactionDeposit.Status = (int)TransactionEnum.TransactionType.IN;
                     transactionDeposit.Amount = amount;
                     transactionDeposit.Enabled = enabled;

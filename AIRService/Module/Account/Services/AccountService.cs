@@ -248,7 +248,7 @@ namespace WebCore.Services
                             UserID = userId,
                             ImageFile = "",
                             FullName = model.FullName,
-                            Birthday = TimeFormat.FormatToSQLDate(model.Birthday),
+                            Birthday = TimeFormat.FormatToServerDate(model.Birthday),
                             Email = model.Email.ToLower(),
                             Phone = model.Phone,
                             Address = model.Address
@@ -363,7 +363,7 @@ namespace WebCore.Services
                         userInfo.ImageFile = imageFile;
                         userInfo.FullName = fullName;
                         userInfo.NickName = model.NickName;
-                        userInfo.Birthday = TimeFormat.FormatToSQLDate(model.Birthday);
+                        userInfo.Birthday = TimeFormat.FormatToServerDate(model.Birthday);
                         //userInfo.Email = model.Email.ToLower();
                         userInfo.Phone = model.Phone;
                         userInfo.Address = model.Address;

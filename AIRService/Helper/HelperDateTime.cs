@@ -36,7 +36,7 @@ namespace Helper.TimeData
             }
         }
         //
-        public static string GetForDate
+        public static string GetViewDate
         {
             get
             {
@@ -45,10 +45,10 @@ namespace Helper.TimeData
                     return string.Empty;
                 //
                 DateTime dateTime = Convert.ToDateTime(strdTime);
-                return TimeFormat.FormatToDate(dateTime, Helper.Language.LanguagePage.GetLanguageCode);
+                return TimeFormat.FormatToViewDate(dateTime, Helper.Language.LanguagePage.GetLanguageCode);
             }
         }
-        public static string GetForTime
+        public static string GetViewTime
         {
             get
             {
@@ -119,7 +119,7 @@ namespace Helper.TimeData
             return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
         }
         // date time
-        public static string FormatToDate(DateTime dtime, string languageCode)
+        public static string FormatToViewDate(DateTime dtime, string languageCode)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Helper.TimeData
 
             }
         }
-        public static string FormatToDate(string _strDate, string languageCode)
+        public static string FormatToViewDate(string _strDate, string languageCode)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace Helper.TimeData
                 if (isDateTime)
                 {
                     DateTime dateTime = Convert.ToDateTime(_strDate);
-                    return TimeFormat.FormatToDate(dateTime, languageCode);
+                    return TimeFormat.FormatToViewDate(dateTime, languageCode);
                 }
                 return string.Empty;
             }
@@ -156,7 +156,7 @@ namespace Helper.TimeData
                 return string.Empty;
             }
         }
-        public static string FormatToDateTime(DateTime dtime, string languageCode)
+        public static string FormatToViewDateTime(DateTime dtime, string languageCode)
         {
             try
             {
@@ -172,7 +172,12 @@ namespace Helper.TimeData
 
             }
         }
-        public static string FormatToDateTime(string _strDate, string languageCode)
+        public static string FormatToTime(DateTime dtime)
+        {
+            return dtime.ToString("HH:mm:ss");
+        }
+
+        public static string FormatToViewDateTime(string _strDate, string languageCode)
         {
             try
             {
@@ -184,7 +189,7 @@ namespace Helper.TimeData
                 if (isDateTime)
                 {
                     DateTime dateTime = Convert.ToDateTime(_strDate);
-                    return TimeFormat.FormatToDateTime(dateTime, languageCode);
+                    return TimeFormat.FormatToViewDateTime(dateTime, languageCode);
                 }
                 return string.Empty;
 
@@ -211,7 +216,7 @@ namespace Helper.TimeData
 
             }
         }
-        public static string FormatToSQLDateTime(DateTime dtime, string ext = null)
+        public static string FormatToServerDateTime(DateTime dtime, string ext = null)
         {
             try
             {
@@ -223,7 +228,7 @@ namespace Helper.TimeData
                 return dtime.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
-        public static DateTime FormatToSQLDateTime(string dtime, string languageCode)
+        public static DateTime FormatToServerDateTime(string dtime, string languageCode)
         {
             try
             {
@@ -264,7 +269,7 @@ namespace Helper.TimeData
                 return DateTime.Now;
             }
         }
-        public static string FormatToSQLDate(DateTime dtime)
+        public static string FormatToServerDate(DateTime dtime)
         {
             try
             {
@@ -277,7 +282,7 @@ namespace Helper.TimeData
 
             }
         }
-        public static DateTime FormatToSQLDate(string dtime)
+        public static DateTime FormatToServerDate(string dtime)
         {
             if (!string.IsNullOrWhiteSpace(dtime))
             {

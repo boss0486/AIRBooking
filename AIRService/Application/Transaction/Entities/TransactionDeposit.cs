@@ -92,7 +92,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return TimeFormat.FormatToDate(Convert.ToDateTime(_receivedDate), LanguagePage.GetLanguageCode);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_receivedDate), LanguagePage.GetLanguageCode);
             }
             set
             {

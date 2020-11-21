@@ -85,7 +85,7 @@ namespace WebCore.Entities
             {
                 if (_orderDate == null)
                     return "../" + "../" + "..";
-                return TimeFormat.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
@@ -106,7 +106,7 @@ namespace WebCore.Entities
             {
                 if (string.IsNullOrWhiteSpace(_orderDate))
                     return "../" + "../" + "..";
-                return TimeFormat.FormatToDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_orderDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
         }
     }

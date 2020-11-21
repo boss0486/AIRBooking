@@ -114,9 +114,9 @@ namespace WebCore.Services
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
                 Page = model.Page,
-                AreaID = model.AreaID,
+                AreaID = "",
                 TimeZoneLocal = model.TimeZoneLocal
-            }, columName1: "StartDateTime", columName2: "EndDateTime");
+            }, columName1: "StartDateTime");
             //
             if (searchResult != null)
             {
@@ -132,12 +132,14 @@ namespace WebCore.Services
             //
             string typeId = "";
             string sqlQuery = @"
-             SELECT rps.*,rtdc.SystemDateTime, rtdc.EndDateTime  FROM App_ReportSaleSummary as rps 
+             SELECT rtdc.ID, rtdc.MarketingFlightNumber, rtdc.ClassOfService, rtdc.ClassOfService, rtdc.FareBasis, rtdc.StartLocation, rtdc.EndLocation, rtdc.StartLocation, rtdc.StartDateTime, rtdc.EndDateTime, rtdc.BookingStatus, rtdc.CurrentStatus  
+             ,rps.EmployeeNumber, rps.DocumentType, rps.DocumentNumber, rps.PassengerName, rps.PnrLocator, rps.TicketPrinterLniata, rps.TransactionTime, rps.ExceptionItem, rps.DecoupleItem, rps.TicketStatusCode, rps.IsElectronicTicket, rps.ReportDate 
+             FROM App_ReportSaleSummary as rps 
              INNER JOIN App_ReportTicketingDocument_Coupon as rtdc ON rtdc.DocumentNumber =  rps.DocumentNumber   
-             WHERE (dbo.Uni2NONE(rps.DocumentNumber) LIKE N'%'+ @Query +'%' OR DocumentNumber LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ReportSaleSummaryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
+             WHERE (dbo.Uni2NONE(rps.PassengerName) LIKE N'%'+ @Query +'%' OR rps.DocumentNumber LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY rps.[CreatedDate]";
+            var dtList = _connection.Query<AirPassengerReult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
-                return Notifization.NotFound(MessageText.NotFound);
+                return Notifization.NotFound(MessageText.NotFound + ":" + sqlQuery);
             //     
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (dtList.Count == 0 && page > 1)
@@ -155,7 +157,7 @@ namespace WebCore.Services
                 Page = page
             };
             //
-            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            return Notifization.Data(MessageText.Success + ":" + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         public ReportSaleSummaryModel GetReportSaleSummaryByDocumentNumber(string id)
@@ -207,9 +209,9 @@ namespace WebCore.Services
                 DateTime today = Convert.ToDateTime(clientTime);
                 if (timeExpress == 1)
                 {
-                    string strDate = TimeFormat.FormatToSQLDate(today);
+                    string strDate = TimeFormat.FormatToServerDate(today);
                     string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -218,7 +220,7 @@ namespace WebCore.Services
                 if (timeExpress == 2)
                 {
                     DateTime dtime = today.AddDays(-1);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -227,7 +229,7 @@ namespace WebCore.Services
                 if (timeExpress == 3)
                 {
                     DateTime dtime = today.AddDays(-3);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -236,7 +238,7 @@ namespace WebCore.Services
                 if (timeExpress == 4)
                 {
                     DateTime dtime = today.AddDays(-7);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -245,7 +247,7 @@ namespace WebCore.Services
                 if (timeExpress == 5)
                 {
                     DateTime dtime = today.AddMonths(-1);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -255,7 +257,7 @@ namespace WebCore.Services
                 if (timeExpress == 6)
                 {
                     DateTime dtime = today.AddMonths(-3);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -264,7 +266,7 @@ namespace WebCore.Services
                 if (timeExpress == 7)
                 {
                     DateTime dtime = today.AddMonths(-6);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -273,7 +275,7 @@ namespace WebCore.Services
                 if (timeExpress == 8)
                 {
                     DateTime dtime = today.AddYears(-1);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -290,7 +292,7 @@ namespace WebCore.Services
                 if (!string.IsNullOrWhiteSpace(startDate))
                 {
                     DateTime dtime = Convert.ToDateTime(startDate);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition += " AND cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
@@ -306,7 +308,7 @@ namespace WebCore.Services
                         };
                     //
                     DateTime dtime = Convert.ToDateTime(endDate);
-                    if (string.IsNullOrWhiteSpace(columName2))
+                    if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
                     whereCondition += " AND cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";

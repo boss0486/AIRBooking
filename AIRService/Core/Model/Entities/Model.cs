@@ -53,7 +53,7 @@ namespace WebCore.Model.Entities
             {
                 if (_createdDate == null)
                     return "../" + "../" + "..";
-                return TimeFormat.FormatToDate(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
             }
             set
             {
@@ -61,7 +61,7 @@ namespace WebCore.Model.Entities
             }
         }
         [NotMapped]
-        public string CreatedFullDate => TimeFormat.FormatToDateTime(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
+        public string CreatedFullDate => TimeFormat.FormatToViewDateTime(Convert.ToDateTime(_createdDate), LanguagePage.GetLanguageCode);
 
 
     }

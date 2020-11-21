@@ -9,17 +9,8 @@ var VNAReportController = {
         $('#btnSearch').off('click').on('click', function () {
             VNAReportController.DataList(1);
         });
-        $('#btnEprReportSearch').off('click').on('click', function () {
-            var txtReportDate = $('#txtReportDate').val();
-            if (txtReportDate == "") {
-                Notifization.Error("Không được để trống ngày báo cáo");
-                return;
-            }
-            if (!FormatDateVN.test(txtReportDate)) {
-                Notifization.Error("Ngày báo cáo không hợp lệ");
-                return;
-            }
-            VNAReportController.EprSearch();
+        $('#btnEprSearch').off('click').on('click', function () {
+            VNAReportController.EprSearch(1);
         });
     },
     DataList: function (page) {
@@ -100,54 +91,69 @@ var VNAReportController = {
         });
     },
     EprSearch: function (page) {
-        //
-        var txtQuery = $('#txtQuery').val();
-        var txtReportDate = LibDateTime.FormatToServerDate($('#txtReportDate').val());
+        var ddlTimeExpress = $('#ddlTimeExpress').val();
+        var txtStartDate = $('#txtStartDate').val();
+        var txtEndDate = $('#txtEndDate').val();
         var model = {
-            Query: txtQuery,
-            ReportDate: txtReportDate
+            Query: $('#txtQuery').val(),
+            Page: page,
+            TimeExpress: parseInt(ddlTimeExpress),
+            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
+            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            Status: -1
         };
         //
         AjaxFrom.POST({
-            url: URLC + '/EPR-Search',
+            url: URLC + '/Search',
             data: model,
             success: function (result) {
                 $('tbody#TblData').html('');
                 $('#Pagination').html('');
                 if (result !== null) {
                     if (result.status === 200) {
+                        var currentPage = 1;
+                        var pagination = result.paging;
+                        if (pagination !== null) {
+                            totalPage = pagination.TotalPage;
+                            currentPage = pagination.Page;
+                            pageSize = pagination.PageSize;
+                            pageIndex = pagination.Page;
+                        }
                         var rowData = '';
-                        var _stt = 1;
-                        //
+                        $.each(result.data, function (index, item) {
+                            index = index + 1;
+                            var id = item.ID;
+                            if (id.length > 0)
+                                id = id.trim();
+                            //  role
+                            var startTime = item.StartDateTime;
+                            var endTime = item.EndDateTime;
+                            var bookingStatus = item.BookingStatus;
+                            var currentStatus = item.CurrentStatus;
+                            //
+                            var action = HelperModel.RolePermission(result.role, "VNAReportController", id);
+                            //
+                            var reportDate = item.ReportDate;
 
-                        //
-                        $.each(result.data, function (indEmp, itemEmp) {
-
-                            var saleSummaryTransaction = itemEmp.SaleSummaryTransaction;
-
-                            if (saleSummaryTransaction != null) {
-                                $.each(saleSummaryTransaction, function (indTrans, item) {
-                                    var id = item.DocumentNumber;
-
-                                    // 
-                                    var fee = item.SaleSummaryTransactionSSFop;
-                                    rowData += `
+                            var _bookingStatus = EPRReportModel.BookingStatus(bookingStatus);
+                            var _currentStatus = EPRReportModel.CurrStatus(currentStatus); 
+                            var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                            rowData += `
                                     <tr>
-                                         <td class="text-right">${_stt}&nbsp;</td>                             
-                                         <td>${itemEmp.EmpNumber}-${id}</td>                                                               
-                                         <td class="tbcol-none">${item.PnrLocator}</td>
-                                         <td class="tbcol-none">${item.PassengerName}</td> 
-                                         <td class="text-right bg-danger">${item.TransactionTime}</td>
-                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.FareAmount)} đ</td>
-                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.TaxAmount)} đ</td>
-                                         <td class="text-right bg-danger">${LibCurrencies.FormatToCurrency(fee.TotalAmount)} đ</td>
-                                         <td class="tbcol-action"><a href='${URLA}/RpDetails/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;Chi tiết</a></td>
+                                         <td class="text-right">${rowNum}&nbsp;</td>                                                                                       
+                                         <td class="tbcol-none">${item.PnrLocator} / ${item.FareBasis}</td>
+                                         <td class="tbcol-none">${item.PassengerName}</td>
+                                         <td class="text-right">${startTime}</td>
+                                         <td class="text-center">${_bookingStatus}</td>
+                                         <td class="text-center">${_currentStatus}</td>
+                                         <td class="tbcol-action">${action} </td>
                                     </tr>`;
-                                    _stt += 1;
-                                });
-                            }
                         });
                         $('tbody#TblData').html(rowData);
+                        if (parseInt(totalPage) > 1) {
+                            Paging.Pagination("#Pagination", totalPage, currentPage, VNAReportController.EprSearch);
+                        }
                         return;
                     }
                     else {
@@ -168,3 +174,80 @@ var VNAReportController = {
 VNAReportController.init();
 
 
+class EPRReportModel {
+    static CurrStatus(_status) {
+        var result = '';
+        switch (_status) {
+            case "OK":
+                result = `<a class="btn btn-success btn-sm" style='width:100%;'>OK</a>`;
+                break;
+            case "CKIN":
+                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>CKIN</a>`;
+                break;
+            case "LFTD":
+                result = `<a class="btn btn-green btn-sm" style='width:100%;'>LFTD</a>`;
+                break;
+            case "USED":
+                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>USED</a>`;
+                break;
+            case "NOGO":
+                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>NOGO</a>`;
+                break;
+            case "VOID":
+                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>VOID</a>`;
+                break;
+            case "RFND":
+                result = `<a class="btn btn-info btn-sm" style='width:100%;'>RFND</a>`;
+                break;
+            case "EXCH":
+                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+                break;
+            default:
+                result = "";
+                break;
+        }
+        return result;
+    }
+       
+    static BookingStatus(_status) {
+        var result = '';
+        switch (_status) {
+            case "OK":
+                result = `<a class="btn btn-success btn-sm" style='width:100%;'>OK</a>`;
+                break;
+            case "HK":
+                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>CKIN</a>`;
+                break;
+            case "KL":
+                result = `<a class="btn btn-green btn-sm" style='width:100%;'>LFTD</a>`;
+                break;
+            case "UC":
+                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>USED</a>`;
+                break;
+            case "GN":
+                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>NOGO</a>`;
+                break;
+            case "JL":
+                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>VOID</a>`;
+                break;
+            case "HL":
+                result = `<a class="btn btn-info btn-sm" style='width:100%;'>RFND</a>`;
+                break;
+            case "WK":
+                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+            case "SC":
+                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+                break;
+            case "NS":
+                result = `<a class="btn btn-default btn-sm" style='width:100%;'>OK</a>`;
+                break;
+            case "RQ":
+                result = `<a class="btn btn-default btn-sm" style='width:100%;'>OK</a>`;
+                break;
+            default:
+                result = _status;
+                break;
+        }
+        return result;
+    }
+}
