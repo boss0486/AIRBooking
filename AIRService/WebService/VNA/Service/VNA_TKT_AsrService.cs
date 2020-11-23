@@ -503,27 +503,7 @@ namespace AIRService.WS.Service
             }
         }
         // ##########################################################################################################################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // ##########################################################################################################################################################################
-        public VNA_ReportSaleSummaryTicketing GetSaleReportTicketByDocNumber(string docNumber, TransactionModel transactionModel = null)
+        public VNA_ReportSaleSummaryTicketing GetTicketingDocumentByDocNumber(string docNumber, TransactionModel transactionModel = null)
         {
             try
             {
@@ -825,6 +805,224 @@ namespace AIRService.WS.Service
 
 
         }
+
+
+
+        public string GetTicketingDocumentStatusTest(List<string> docNumbers)
+        {
+            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = new List<VNA_ReportSaleSummaryTicketingDocument>();
+            if (docNumbers.Count() == 0)
+                return string.Empty;
+            // 
+            docNumbers = docNumbers.GroupBy(m => m).Select(m => m.Key).ToList();
+            string temp = "TT:" + docNumbers.Count() + ":";
+            List<string> docs = new List<string>();
+            List<string> docsIsHad = new List<string>();
+            int _cnt = 1;
+            foreach (var item in docNumbers)
+            {
+                docs.Add(item);
+                if (_cnt % 4 == 0)
+                {
+                    temp += string.Join<string>(",", docs) + "|";
+                    docsIsHad.AddRange(docs);
+                    docs = new List<string>();
+                }
+                _cnt++;
+            }
+            //
+            if (docsIsHad.ToList().Count > 0)
+            {
+                docsIsHad = docNumbers.Except(docsIsHad).ToList();
+                temp += string.Join<string>(",", docsIsHad) + ":";
+            }
+            return temp;
+        }
+        public List<VNA_ReportSaleSummaryTicketingDocument> GetTicketingDocumentStatusGroup(List<string> docNumbers)
+        {
+            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = new List<VNA_ReportSaleSummaryTicketingDocument>();
+            if (docNumbers.Count() == 0)
+                return vna_ReportSaleSummaryTicketingDocuments;
+            // 
+            docNumbers = docNumbers.OrderBy(m => m).ToList();
+            //
+            List<string> docs = new List<string>();
+            List<string> docsIsCompleted = new List<string>();
+            int _cnt = 1;
+            foreach (var item in docNumbers)
+            {
+                docs.Add(item);
+                if (_cnt % 4 == 0)
+                {
+                    vna_ReportSaleSummaryTicketingDocuments.AddRange(GetTicketingDocumentStatus(docs));
+                    docsIsCompleted.AddRange(docs);
+                    docs = new List<string>();
+                }
+                _cnt++;
+            }
+            //
+            if (docsIsCompleted.ToList().Count > 0)
+            {
+                docsIsCompleted = docNumbers.Except(docsIsCompleted).ToList();
+                vna_ReportSaleSummaryTicketingDocuments.AddRange(GetTicketingDocumentStatus(docsIsCompleted));
+            }
+            //
+            return vna_ReportSaleSummaryTicketingDocuments;
+        }
+        public List<VNA_ReportSaleSummaryTicketingDocument> GetTicketingDocumentStatus(List<string> docNumbers, TransactionModel transactionModel = null)
+        {
+            VNA_SessionService sessionService = null;
+            if (docNumbers.Count() == 0)
+                return new List<VNA_ReportSaleSummaryTicketingDocument>();
+            //
+            TokenModel tokenModel = null;
+            if (transactionModel != null)
+                tokenModel = transactionModel.TokenModel;
+            else
+            {
+                sessionService = new VNA_SessionService(tokenModel);
+                tokenModel = VNA_AuthencationService.GetSession();
+            }
+            HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+            soapEnvelopeXml.Load(path);
+            soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+            soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = tokenModel.Token;
+            soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = tokenModel.ConversationID;
+            XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+            var stringXML = "";
+            stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+            stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+            stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+            stringXML += "    <SearchParameters>";
+            stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+            //
+            foreach (var item in docNumbers)
+                stringXML += "        <DocumentNumber>" + item + "</DocumentNumber>";
+            //
+            stringXML += "    </SearchParameters>";
+            stringXML += "</GetTicketingDocumentRQ>";
+            child.InnerXml = stringXML;
+            soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+            using (Stream stream = request.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                {
+                    string soapResult = rd.ReadToEnd();
+                    soapEnvelopeXml = new XmlDocument();
+                    soapEnvelopeXml.LoadXml(soapResult);
+                    XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
+
+                    //
+                    ////// Save the document to a file and auto-indent the output.
+                    ////XmlWriterSettings settings = new XmlWriterSettings();
+                    ////settings.Indent = true;
+                    ////string fileName = docNumber + "_ticketingdocumentrq_details.xml";
+                    ////var urlFile = HttpContext.Current.Server.MapPath(@"~/WS/" + fileName);
+                    ////XmlWriter writer = XmlWriter.Create(urlFile, settings);
+                    ////soapEnvelopeXml.Save(writer);
+                    //
+                    // ********************************************************************************************
+                    //XmlNode ticketingDocumentNode = soapEnvelopeXml.GetElementsByTagName("TT:GetTicketingDocumentRS")[0];
+                    //XmlNode detailsNode = soapEnvelopeXml.GetElementsByTagName("TT:Details")[0];
+                    List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocument = new List<VNA_ReportSaleSummaryTicketingDocument>();
+                    XmlNodeList xmlNodeList = soapEnvelopeXml.GetElementsByTagName("TT:ServiceCoupon");
+                    if (xmlNodeList.Count > 0)
+                    {
+                        string marketingFlightNumber = string.Empty;
+                        string classOfService = string.Empty;
+                        string fareBasis = string.Empty;
+                        string startLocation = string.Empty;
+                        string endLocation = string.Empty;
+                        string startDateTime = string.Empty;
+                        string endDateTime = string.Empty;
+                        //
+                        string bookingStatus = string.Empty;
+                        string currentStatus = string.Empty;
+                        string systemDateTime = string.Empty;
+                        string flownCoupon_DepartureDateTime = string.Empty;
+                        foreach (XmlNode itemCoupon in xmlNodeList)
+                        {
+                            XmlNodeList xmlNode = itemCoupon.ChildNodes;
+                            if (xmlNode.Count > 0)
+                            {
+                                foreach (XmlNode item in xmlNode)
+                                {
+                                    string localName = item.LocalName;
+                                    if (localName == "MarketingFlightNumber")
+                                        marketingFlightNumber = item.InnerText;
+                                    //
+                                    if (localName == "ClassOfService")
+                                        classOfService = item.InnerText;
+                                    // 
+                                    if (localName == "FareBasis")
+                                        fareBasis = item.InnerText;
+                                    //
+                                    if (localName == "StartLocation")
+                                        startLocation = item.InnerText;
+                                    //
+                                    if (localName == "EndLocation")
+                                        endLocation = item.InnerText;
+                                    //
+                                    if (localName == "StartDateTime")
+                                        startDateTime = item.InnerText;
+                                    //
+                                    if (localName == "EndDateTime")
+                                        endDateTime = item.InnerText;
+                                    //
+                                    if (localName == "BookingStatus")
+                                        bookingStatus = item.InnerText;
+                                    //
+                                    if (localName == "CurrentStatus")
+                                        currentStatus = item.InnerText;
+                                    //     
+                                    if (localName == "FlownCoupon")
+                                    {
+                                        XmlNodeList childNodes = item.ChildNodes;
+                                        if (childNodes.Count > 0)
+                                        {
+                                            foreach (XmlNode itemChild in childNodes)
+                                            {
+                                                localName = itemChild.LocalName;
+                                                if (localName == "DepartureDateTime")
+                                                    flownCoupon_DepartureDateTime = itemChild.InnerText;
+                                                //
+                                            }
+                                        }
+                                    }
+                                }
+                                vna_ReportSaleSummaryTicketingDocument.Add(new VNA_ReportSaleSummaryTicketingDocument
+                                {
+                                    MarketingFlightNumber = marketingFlightNumber,
+                                    ClassOfService = classOfService,
+                                    FareBasis = fareBasis,
+                                    StartLocation = startLocation,
+                                    EndLocation = endLocation,
+                                    StartDateTime = startDateTime,
+                                    EndDateTime = endDateTime,
+                                    BookingStatus = bookingStatus,
+                                    CurrentStatus = currentStatus,
+                                    FlownCoupon_DepartureDateTime = flownCoupon_DepartureDateTime
+                                });
+                            }
+                        }
+                    }
+                    if (transactionModel == null)
+                        VNA_AuthencationService.CloseSession(tokenModel);
+                    //
+                    return vna_ReportSaleSummaryTicketingDocument;
+                }
+            }
+
+        }
+
     }
     public class EmployeeNumber
     {

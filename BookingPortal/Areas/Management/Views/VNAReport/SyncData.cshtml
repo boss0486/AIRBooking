@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@using WebCore.Model.Services;
+@{
+    DateTime start = Convert.ToDateTime("2020-10-01");
+    DateTime end = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
+    //
+    List<DateTime> dateTimes = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).ToList();
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#</th>
+                <th class="tbcol-date">Ngày báo cáo</th>
+                <th class="tbcol-none">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody id="TblData">
+            @if (dateTimes.Count() > 0)
+            {
+                int cnt = 1;
+                foreach (DateTime item in dateTimes)
+                {
+                    string strDate = Helper.TimeData.TimeFormat.FormatToViewDate(item, Helper.Language.LanguagePage.GetLanguageCode);
+
+                    <tr data-state="0" data-dreport="@item.ToString("yyyy-MM-dd")">
+                        <td class="text-right">@cnt</td>
+                        <td class="text-right">@strDate</td>
+                        <td class="bg-danger rp-status">-</td>
+                    </tr>
+                    cnt++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="form-group text-right">
+    <button id="btnGetReport" class="btn btn-primary">&nbsp; Xử lý &nbsp;</button>
+</div>
+<hr />
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).on("click", "#btnGetReport", function () {
+            GetReportAuto();
+        });
+        function GetReportAuto() {
+            var _row = $('table tbody#TblData tr[data-state="0"]').first();
+            $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-spinner"></i> Đang xử lý`);
+            var dtDate = $(_row).data("dreport");
+            console.log("::" + dtDate);
+            if (dtDate == null || dtDate == "") {
+                Notifization.Error("Data is completed!");
+                return;
+            }
+            //
+            var model = {
+                "UserName": "api-booking",
+                "Password": "***********",
+                "ReportDate": dtDate
+            }
+            //
+            AjaxFrom.POST({
+                url: '/APIBooking/Report/Action/EPR-Rpdata',
+                data: model,
+                success: function (response) {
+                    if (response !== null) {
+                        if (response.status === 200) {
+                            $(_row).data("state", "1");
+                            $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-check-circle"></i> ` + response.message);
+                            GetReportAuto();
+                            return;
+                        }
+                        else {
+                            Notifization.Error(response.message);
+                            return;
+                        }
+                    }
+                    Notifization.Error(MessageText.NotService);
+                    return;
+                },
+                error: function (response) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        }
+    </script>
+}

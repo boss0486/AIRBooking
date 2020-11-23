@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>TKT_AsrServicesRQ</eb:Service>
+      <eb:Action>TKT_AsrServicesRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>893305359225990711</eb:MessageId>
+        <eb:Timestamp>2020-11-23T09:58:42</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESH!ICESMSLB\/RES.LB!1606125521498!9513!289!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <asr:AgentListRS xmlns:asr="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" version="1.2.1" isQueryStillRunning="false">
+      <asr:Header messageID="TKTHLP636-13373-1390774174-1606125522866-11232505-asrws">
+        <OrchestrationID xmlns="http://services.sabre.com/STL/v01" xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01" seq="0">TKTHLP636-13373-1390774174-1606125522866-11232505-asrws</OrchestrationID>
+        <Results xmlns="http://services.sabre.com/STL/v01" xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+          <Success>
+            <System>T2-ASR</System>
+          </Success>
+        </Results>
+      </asr:Header>
+      <ns2:ALHeader xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:ReportDate>2020-10-01</ns2:ReportDate>
+        <ns2:StationName>LZJGS</ns2:StationName>
+        <ns2:StationStatusCode>CL</ns2:StationStatusCode>
+        <ns2:StationNumber>37959681</ns2:StationNumber>
+      </ns2:ALHeader>
+      <ns2:Agent xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:IssuingAgentEmployeeNumber>004242</ns2:IssuingAgentEmployeeNumber>
+        <ns2:IssuingAgentEprCity>LZJ</ns2:IssuingAgentEprCity>
+        <ns2:IssuingAgentDieSine>AMB</ns2:IssuingAgentDieSine>
+        <ns2:IssuingAgentShiftStatusCode>CL</ns2:IssuingAgentShiftStatusCode>
+        <ns2:CurrencyCode>VND</ns2:CurrencyCode>
+        <ns2:CreditTotalAmount numDocs="3" amountText="1990000" decimalPlace="0">1990000</ns2:CreditTotalAmount>
+      </ns2:Agent>
+      <ns2:Agent xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:IssuingAgentEmployeeNumber>004244</ns2:IssuingAgentEmployeeNumber>
+        <ns2:IssuingAgentEprCity>LZJ</ns2:IssuingAgentEprCity>
+        <ns2:IssuingAgentDieSine>AMH</ns2:IssuingAgentDieSine>
+        <ns2:IssuingAgentShiftStatusCode>CL</ns2:IssuingAgentShiftStatusCode>
+        <ns2:CurrencyCode>VND</ns2:CurrencyCode>
+        <ns2:CreditTotalAmount numDocs="51" amountText="57805000" decimalPlace="0">57805000</ns2:CreditTotalAmount>
+      </ns2:Agent>
+      <ns2:Agent xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:IssuingAgentEmployeeNumber>007845</ns2:IssuingAgentEmployeeNumber>
+        <ns2:IssuingAgentEprCity>LZJ</ns2:IssuingAgentEprCity>
+        <ns2:IssuingAgentDieSine>AJL</ns2:IssuingAgentDieSine>
+        <ns2:IssuingAgentShiftStatusCode>CL</ns2:IssuingAgentShiftStatusCode>
+        <ns2:CurrencyCode>VND</ns2:CurrencyCode>
+        <ns2:CreditTotalAmount numDocs="2" amountText="-1900000" decimalPlace="0">-1900000</ns2:CreditTotalAmount>
+      </ns2:Agent>
+      <ns2:Agent xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:IssuingAgentEmployeeNumber>007847</ns2:IssuingAgentEmployeeNumber>
+        <ns2:IssuingAgentEprCity>LZJ</ns2:IssuingAgentEprCity>
+        <ns2:IssuingAgentDieSine>AJY</ns2:IssuingAgentDieSine>
+        <ns2:IssuingAgentShiftStatusCode>CL</ns2:IssuingAgentShiftStatusCode>
+        <ns2:CurrencyCode>VND</ns2:CurrencyCode>
+        <ns2:CreditTotalAmount numDocs="5" amountText="6897000" decimalPlace="0">6897000</ns2:CreditTotalAmount>
+      </ns2:Agent>
+      <ns2:Agent xmlns:ns2="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://services.sabre.com/STL/v01" xmlns:ns4="http://www.sabre.com/ns/Ticketing/TTL/1.0" xmlns:ns3="http://services.sabre.com/STL/Catalog/v01">
+        <ns2:IssuingAgentEmployeeNumber>146067</ns2:IssuingAgentEmployeeNumber>
+        <ns2:IssuingAgentEprCity>LZJ</ns2:IssuingAgentEprCity>
+        <ns2:IssuingAgentDieSine>APQ</ns2:IssuingAgentDieSine>
+        <ns2:IssuingAgentShiftStatusCode>CL</ns2:IssuingAgentShiftStatusCode>
+        <ns2:CurrencyCode>VND</ns2:CurrencyCode>
+        <ns2:CreditTotalAmount numDocs="24" amountText="35293000" decimalPlace="0">35293000</ns2:CreditTotalAmount>
+      </ns2:Agent>
+    </asr:AgentListRS>
+  </soap-env:Body>
+</soap-env:Envelope>

@@ -16,6 +16,8 @@ using WebCore.Model.Enum;
 using WebCore.ENM;
 using Helper.File;
 using Helper.TimeData;
+using AIRService.WS.Service;
+using ApiPortalBooking.Models.VNA_WS_Model;
 
 namespace WebCore.Services
 {
@@ -150,6 +152,23 @@ namespace WebCore.Services
             if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
 
+            //
+            List<string> docList = result.Select(m => m.DocumentNumber).ToList();
+            VNA_TKT_AsrService asrService = new VNA_TKT_AsrService();
+            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = asrService.GetTicketingDocumentStatusGroup(docList);
+            if (vna_ReportSaleSummaryTicketingDocuments.Count() > 0)
+            {
+                foreach (var item in result)
+                {
+                    VNA_ReportSaleSummaryTicketingDocument vna_ReportSaleSummaryTicketingDocument = vna_ReportSaleSummaryTicketingDocuments.Find(m => m.StartDateTime == item.StartDateTime && m.EndDateTime == item.EndDateTime && m.StartLocation == item.StartLocation && m.EndLocation == item.EndLocation);
+                    if (vna_ReportSaleSummaryTicketingDocument != null)
+                    {
+                        item.BookingStatus = vna_ReportSaleSummaryTicketingDocument.BookingStatus;
+                        item.CurrentStatus = vna_ReportSaleSummaryTicketingDocument.CurrentStatus;
+                    }
+                }
+            }
+            //
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {
                 PageSize = Helper.Pagination.Paging.PAGESIZE,
@@ -157,19 +176,15 @@ namespace WebCore.Services
                 Page = page
             };
             //
-            return Notifization.Data(MessageText.Success + ":" + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
         public ReportSaleSummaryModel GetReportSaleSummaryByDocumentNumber(string id)
         {
-
             if (string.IsNullOrWhiteSpace(id))
                 return new ReportSaleSummaryModel();
             //
             id = id.ToLower();
-
-
-
             ReportSaleSummaryService reportSaleSummaryService = new ReportSaleSummaryService();
             ReportSaleSummary reportSaleSummary = reportSaleSummaryService.GetAlls(m => m.ID == id).FirstOrDefault();
             string docNumber = reportSaleSummary.DocumentNumber;
@@ -186,10 +201,8 @@ namespace WebCore.Services
                 TicketingDocumentAmount = reportTicketingDocumentAmount.GetAlls(m => m.DocumentNumber == docNumber).FirstOrDefault(),
                 TicketingDocumentTaxes = reportTicketingDocumentTaxes.GetAlls(m => m.DocumentNumber == docNumber).ToList()
             };
-
             return reportSaleSummaryTicketing;
         }
-
         //
         public SearchResult SearchReport(SearchModel model, string columName1 = "CreatedDate", string columName2 = null)
         {
@@ -230,27 +243,27 @@ namespace WebCore.Services
                 {
                     DateTime dtime = today.AddDays(-3);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 // SevenDayAgo
                 if (timeExpress == 4)
                 {
                     DateTime dtime = today.AddDays(-7);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 // OneMonthAgo
                 if (timeExpress == 5)
                 {
                     DateTime dtime = today.AddMonths(-1);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
 
                 // ThreeMonthAgo
@@ -258,27 +271,27 @@ namespace WebCore.Services
                 {
                     DateTime dtime = today.AddMonths(-3);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 // SixMonthAgo
                 if (timeExpress == 7)
                 {
                     DateTime dtime = today.AddMonths(-6);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 // OneYearAgo
                 if (timeExpress == 8)
                 {
                     DateTime dtime = today.AddYears(-1);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) >= cast('" + dtime + "' as Date)";
                     //
-                    whereCondition = " AND (cast(" + columName1 + " as Date) = cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition = " AND (cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 //
                 return new SearchResult()
@@ -311,7 +324,7 @@ namespace WebCore.Services
                     if (!string.IsNullOrWhiteSpace(columName2))
                         whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
                     //
-                    whereCondition += " AND cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition += " AND cast(" + columName1 + " as Date) <= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
                 }
                 //
                 return new SearchResult()

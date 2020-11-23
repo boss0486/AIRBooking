@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>TicketingDocumentServicesRQ</eb:Service>
+      <eb:Action>TicketingDocumentServicesRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>750335303281640342</eb:MessageId>
+        <eb:Timestamp>2020-11-23T08:25:28</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESE!ICESMSLB\/RES.LB!1606119917195!4801!273!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <TT:GetTicketingDocumentRS xmlns:TT="http://www.sabre.com/ns/Ticketing/DC" xmlns="http://services.sabre.com/STL/v01" xmlns:STL="http://services.sabre.com/STL/v01" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:str="http://sabre.com/ticketing/xslt/strings" xmlns:xs="http://www.w3.org/2001/XMLSchema" Version="3.12.0">
+      <STL:STL_Header.RS messageID="TKTHLP626-50170-130699280-1606119928408-6965837-tktdoc" timeStamp="2020-11-23T02:25:28">
+        <OrchestrationID seq="1">TKTHLP626-50170-130699280-1606119928408-6965837-tktdoc</OrchestrationID>
+        <DiagnosticData xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">Found</DiagnosticData>
+        <STL:Results>
+          <Success xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+            <System>T2</System>
+            <Source>DocumentServices</Source>
+          </Success>
+        </STL:Results>
+      </STL:STL_Header.RS>
+      <TT:Details>
+        <TT:Agent duty="4" sine="AMB" type="GSA">
+          <ns2:TicketingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" checkDigit="3" name="VIETNAM AIRLINES        " number="738">VN</ns2:TicketingProvider>
+          <ns2:StationLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">LZJGS</ns2:StationLocation>
+          <ns2:StationNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">37959681</ns2:StationNumber>
+          <TT:WorkLocation>LZJ</TT:WorkLocation>
+          <ns2:HomeLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">LZJ</ns2:HomeLocation>
+          <ns2:Lniata xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">1FB4C3</ns2:Lniata>
+          <ns2:IsoCountryCode xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:IsoCountryCode>
+          <TT:CompanyName>VIETNAM AIRLINES</TT:CompanyName>
+          <ns2:EmployeeNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">0004242</ns2:EmployeeNumber>
+          <ns2:ShiftStartDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-13T06:48:50</ns2:ShiftStartDateTime>
+          <TT:Session>
+            <ns2:AgentOpenType xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">AGT</ns2:AgentOpenType>
+            <ns2:AgentCloseType xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">SUP</ns2:AgentCloseType>
+            <ns2:StationCloseType xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">SUP</ns2:StationCloseType>
+          </TT:Session>
+        </TT:Agent>
+        <TT:TransactionInfo actionType="" category="C" code="" sequence="1" type="SALE">
+          <ns2:TCN xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">82988930214</ns2:TCN>
+          <ns2:LocalDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-13T07:31:27</ns2:LocalDateTime>
+          <ns2:SystemDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-12T19:31:27</ns2:SystemDateTime>
+          <ns2:SystemProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:SystemProvider>
+          <ns2:InputEntry xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">WFRFN1.1$S1</ns2:InputEntry>
+        </TT:TransactionInfo>
+        <TT:Ticket accountingCode="738" checkDigit="4" formNumber="24" number="7382446198551" serialNumber="46198551" service="A" type="TKT">
+          <TT:Indicators electronic="true" endorsable="false" exchangeable="false" historical="false" manualAdd="false" manualUpdate="false" netReporting="false" penaltyRestriction="false" presentCreditCard="false" refundCalculation="false" reservarionPurge="false" retransmit="false" reverseVoid="false" selfSale="false" />
+          <TT:Details>
+            <TT:Reservation>
+              <TT:Sabre createDate="2020-10-12T00:00:00" provider="VN">GBXGTS</TT:Sabre>
+            </TT:Reservation>
+            <ns2:SystemCreateDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-12T19:31:00</ns2:SystemCreateDateTime>
+            <TT:LocalIssueDateTime useTimeForPricing="true">2020-10-13T07:31:27</TT:LocalIssueDateTime>
+            <ns2:LastUpdate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-12T19:36:00</ns2:LastUpdate>
+            <ns2:ValidatingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" checkDigit="3" name="VIETNAM AIRLINES        " number="738">VN</ns2:ValidatingProvider>
+            <ns2:OriginCity xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">HAN</ns2:OriginCity>
+            <ns2:DestinationCity xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">HAN</ns2:DestinationCity>
+            <ns2:ExchTransactionType xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">X</ns2:ExchTransactionType>
+            <ns2:ExchTransactionDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-07-01</ns2:ExchTransactionDate>
+            <ns2:FareCalculationMode xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">1</ns2:FareCalculationMode>
+            <ns2:TicketingMode xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">/</ns2:TicketingMode>
+            <ns2:PriceCheckDigit xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">4</ns2:PriceCheckDigit>
+            <ns2:CouponText xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">FVVV</ns2:CouponText>
+            <ns2:CurrentActivity xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">E</ns2:CurrentActivity>
+            <TT:BaggageDisclosure disclosureIndicator="6" />
+          </TT:Details>
+          <TT:Customer>
+            <TT:Traveler nameId="1" nameNumber="1.1">
+              <TT:Name>LE/TIEN HAI</TT:Name>
+              <ns2:FirstName xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">TIEN HAI</ns2:FirstName>
+              <ns2:LastName xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">LE</ns2:LastName>
+              <TT:PassengerType>ADT</TT:PassengerType>
+              <ns2:Contact xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+                <ns2:Phone>2218288190824261</ns2:Phone>
+              </ns2:Contact>
+            </TT:Traveler>
+          </TT:Customer>
+          <TT:FlownServiceCoupon coupon="1">
+            <ns2:MarketingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" checkDigit="3" name="VIETNAM AIRLINES        " number="738">VN</ns2:MarketingProvider>
+            <ns2:MarketingFlightNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">356</ns2:MarketingFlightNumber>
+            <ns2:OperatingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:OperatingProvider>
+            <ns2:ClassOfService xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">R</ns2:ClassOfService>
+            <ns2:FareBasis xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">RAP2VN</ns2:FareBasis>
+            <ns2:StartLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">HAN</ns2:StartLocation>
+            <ns2:StartDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-08-24T01:20:00</ns2:StartDateTime>
+            <ns2:EndLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">FUK</ns2:EndLocation>
+            <ns2:EndTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">07:20:00</ns2:EndTime>
+            <ns2:NotValidBeforeDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-08-24</ns2:NotValidBeforeDate>
+            <ns2:NotValidAfterDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-08-24</ns2:NotValidAfterDate>
+            <ns2:StopOver xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">O</ns2:StopOver>
+            <TT:Indicators fareBreak="true" sideTripEnd="false" sideTripStart="false" unchargeableSurface="false" zeroFareAmount="false" />
+            <ns2:StartTimeText xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">0120</ns2:StartTimeText>
+            <ns2:FareBreakAmount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+              <ns2:Amount currencyCode="NUC" decimalPlace="2">250.00</ns2:Amount>
+              <ns2:Text>250.00</ns2:Text>
+            </ns2:FareBreakAmount>
+            <TT:FareComponent IATAAuthorisedIndicator="false" appendNonrefundableIndicator="false" flownIndicator="true" inboundIndicator="false" oneWayDirectionalIndicator="false" oneWayIndicator="false" roundTripIndicator="false" sequence="1">
+              <ns2:AssociatedFareBasis xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">RAP2VN</ns2:AssociatedFareBasis>
+            </TT:FareComponent>
+          </TT:FlownServiceCoupon>
+          <TT:ServiceCoupon coupon="1" entitlement="1">
+            <ns2:MarketingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" checkDigit="3" name="VIETNAM AIRLINES        " number="738">VN</ns2:MarketingProvider>
+            <ns2:MarketingFlightNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">357</ns2:MarketingFlightNumber>
+            <ns2:ClassOfService xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">N</ns2:ClassOfService>
+            <ns2:FareBasis xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">NAP1VN</ns2:FareBasis>
+            <ns2:StartLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">FUK</ns2:StartLocation>
+            <ns2:StartDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2021-05-20T10:30:00</ns2:StartDateTime>
+            <ns2:EndLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">HAN</ns2:EndLocation>
+            <ns2:EndDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2021-05-20T13:30:00</ns2:EndDateTime>
+            <ns2:NotValidBeforeDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2021-05-20</ns2:NotValidBeforeDate>
+            <ns2:NotValidAfterDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2021-05-20</ns2:NotValidAfterDate>
+            <ns2:BookingStatus xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">OK</ns2:BookingStatus>
+            <ns2:CurrentStatus xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">OK</ns2:CurrentStatus>
+            <ns2:BagAllowance xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">40K</ns2:BagAllowance>
+            <ns2:CouponUse xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">F</ns2:CouponUse>
+            <TT:Indicators fareBreak="true" sideTripEnd="false" sideTripStart="false" unchargeableSurface="false" zeroFareAmount="false" />
+            <ns2:ValidatingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:ValidatingProvider>
+            <ns2:StartTimeText xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">1030</ns2:StartTimeText>
+            <ns2:FareBreakAmount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+              <ns2:Amount currencyCode="NUC" decimalPlace="2">290.00</ns2:Amount>
+              <ns2:Text>290.00</ns2:Text>
+            </ns2:FareBreakAmount>
+            <TT:FareComponent IATAAuthorisedIndicator="false" appendNonrefundableIndicator="false" flownIndicator="false" inboundIndicator="false" oneWayDirectionalIndicator="false" oneWayIndicator="false" roundTripIndicator="false" sequence="2">
+              <ns2:AssociatedFareBasis xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">NAP1VN</ns2:AssociatedFareBasis>
+            </TT:FareComponent>
+          </TT:ServiceCoupon>
+          <TT:Amounts>
+            <TT:New>
+              <ns2:Base xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+                <ns2:Amount currencyCode="USD" decimalPlace="2">540.00</ns2:Amount>
+                <ns2:Text>540.00</ns2:Text>
+              </ns2:Base>
+              <ns2:Equivalent xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+                <ns2:Amount currencyCode="VND" decimalPlace="0">0</ns2:Amount>
+                <ns2:ValueCode>MULTI EQV</ns2:ValueCode>
+                <ns2:CurrencyConversion />
+              </ns2:Equivalent>
+              <TT:Total>
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">0</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">NO ADC</ns2:Text>
+              </TT:Total>
+              <ns2:Tax xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" code="YQ" exempt="false" sequence="1" status="PD">
+                <ns2:Amount currencyCode="VND" decimalPlace="0">1122000</ns2:Amount>
+                <ns2:Text>1122000</ns2:Text>
+              </ns2:Tax>
+              <ns2:Tax xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" code="YQ" exempt="false" sequence="2" status="PD">
+                <ns2:Amount currencyCode="VND" decimalPlace="0">188000</ns2:Amount>
+                <ns2:Text>188000</ns2:Text>
+              </ns2:Tax>
+              <ns2:Tax xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" code="YR" exempt="false" sequence="3" status="PD">
+                <ns2:Amount currencyCode="VND" decimalPlace="0">328000</ns2:Amount>
+                <ns2:Text>328000</ns2:Text>
+              </ns2:Tax>
+            </TT:New>
+            <TT:Other>
+              <ns2:ChangeFee xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+                <ns2:Amount currencyCode="VND" decimalPlace="0">0</ns2:Amount>
+                <ns2:Text>WAIVED-01</ns2:Text>
+              </ns2:ChangeFee>
+              <ns2:NUC xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">
+                <ns2:Amount currencyCode="NUC" decimalPlace="2">540.00</ns2:Amount>
+                <ns2:RateOfExchange decimalPlace="2">1.00</ns2:RateOfExchange>
+              </ns2:NUC>
+            </TT:Other>
+          </TT:Amounts>
+          <TT:Taxes>
+            <TT:New>
+              <TT:Tax code="YQF" exempt="false" sequence="1" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">1122000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">1122000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="YQI" exempt="false" sequence="2" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">188000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">188000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="YRI" exempt="false" sequence="3" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">328000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">328000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="JC" exempt="false" sequence="4" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">585000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">585000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="C4" exempt="false" sequence="5" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">47000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">47000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="SW" exempt="false" sequence="6" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">211000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">211000</ns2:Text>
+              </TT:Tax>
+              <TT:Tax code="TK" exempt="false" sequence="7" status="Y">
+                <ns2:Amount xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" currencyCode="VND" decimalPlace="0">217000</ns2:Amount>
+                <ns2:Text xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">217000</ns2:Text>
+              </TT:Tax>
+            </TT:New>
+          </TT:Taxes>
+          <TT:Remark>
+            <ns2:Endorsements xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" sequence="1">NON-END.NON RFN.RESTRICT MAY APPLY.211/TTBSP.THEO CV3158</ns2:Endorsements>
+            <ns2:Payment xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" sequence="2">EFBTXXXXXXXXXXXX9681</ns2:Payment>
+            <ns2:OriginalIssue xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" sequence="1">01JUL19LZJ37959681</ns2:OriginalIssue>
+          </TT:Remark>
+          <TT:AffiliatedAgent>
+            <TT:Booking duty="4" sine="AMB">
+              <TT:WorkLocation>LZJ</TT:WorkLocation>
+              <ns2:IataNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">37959681</ns2:IataNumber>
+              <ns2:HomeLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">LZJ</ns2:HomeLocation>
+            </TT:Booking>
+          </TT:AffiliatedAgent>
+          <TT:FareCalculation>
+            <TT:New>HAN VN FUK250.00RAP2VN VN HAN290.00NAP1VN NUC540.00END ROE1.00</TT:New>
+          </TT:FareCalculation>
+          <TT:RelatedDocument>
+            <TT:Original>
+              <ns2:Number xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">7382427870907</ns2:Number>
+              <ns2:Payment xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">EFBTXXXXXXXXXXXX9681</ns2:Payment>
+              <ns2:Coupon xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2</ns2:Coupon>
+              <ns2:IssueDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-07-01</ns2:IssueDate>
+              <TT:IssueTime>09:41:00</TT:IssueTime>
+              <TT:IssueCity>LZJ</TT:IssueCity>
+              <ns2:IataNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">37959681</ns2:IataNumber>
+              <TT:OriginalPayment paymentConfirmation="true" sequence="1" type="CC">
+                <TT:Total>
+                  <TT:Amount currencyCode="VND" decimalPlace="0">15318000</TT:Amount>
+                  <ns2:ApplyCreditInd xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">false</ns2:ApplyCreditInd>
+                </TT:Total>
+                <TT:Remarks>EFBTXXXXXXXXXXXX9681</TT:Remarks>
+                <TT:Card cardType="BT">
+                  <ns2:MaskedCardNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">XXXXXXXXXXXX9681</ns2:MaskedCardNumber>
+                  <ns2:ExpireDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">1219</ns2:ExpireDate>
+                  <TT:ApprovalCode type="Z">889710</TT:ApprovalCode>
+                  <ns2:CardBinNumber xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">873821</ns2:CardBinNumber>
+                </TT:Card>
+              </TT:OriginalPayment>
+            </TT:Original>
+            <TT:Exchange sequence="1">
+              <ns2:Number xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">7382427870907</ns2:Number>
+              <ns2:Payment xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">EFBTXXXXXXXXXXXX9681</ns2:Payment>
+              <ns2:CheckDigit xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">0</ns2:CheckDigit>
+              <ns2:Coupon xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2</ns2:Coupon>
+              <ns2:IssueDate xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2019-07-01</ns2:IssueDate>
+              <TT:IssueCity>LZJ</TT:IssueCity>
+              <ns2:Remark xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">7382427870907/2</ns2:Remark>
+            </TT:Exchange>
+          </TT:RelatedDocument>
+          <TT:PrintCoupon couponType="P" printerType="0" quantity="0" stockType="GF">
+            <ns2:Lniata xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">58BEAB</ns2:Lniata>
+          </TT:PrintCoupon>
+          <TT:Payment sequence="1" type="ET">
+            <TT:Base>
+              <TT:Amount currencyCode="VND" decimalPlace="0">12620000</TT:Amount>
+              <ns2:ApplyCreditInd xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">false</ns2:ApplyCreditInd>
+            </TT:Base>
+            <TT:Tax>
+              <TT:Amount currencyCode="VND" decimalPlace="0">2698000</TT:Amount>
+              <ns2:ApplyCreditInd xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">false</ns2:ApplyCreditInd>
+            </TT:Tax>
+            <TT:Total>
+              <TT:Amount currencyCode="VND" decimalPlace="0">15318000</TT:Amount>
+              <ns2:ApplyCreditInd xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">false</ns2:ApplyCreditInd>
+            </TT:Total>
+            <TT:TravelDocument />
+          </TT:Payment>
+          <TT:History code="DETN" number="48" sequence="2">
+            <TT:Agent>
+              <ns2:TicketingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:TicketingProvider>
+              <TT:WorkLocation>SYSSY</TT:WorkLocation>
+              <ns2:HomeLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">SYSSY</ns2:HomeLocation>
+            </TT:Agent>
+            <TT:TransactionInfo>
+              <ns2:SystemDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-12T19:36:00</ns2:SystemDateTime>
+              <ns2:SystemProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:SystemProvider>
+              <ns2:InputMessage xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">ADDED TO DETAIN BY VI/TE ASSOCIATION DEFERRAL              ASSOCIATION SUCESSFUL AFTER 01 RETRY</ns2:InputMessage>
+            </TT:TransactionInfo>
+            <TT:Details>
+              <ns2:SupportingDocument xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">7382446198551</ns2:SupportingDocument>
+              <ns2:OldReservation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">GBXGTS</ns2:OldReservation>
+              <ns2:AffectedCoupons xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">01</ns2:AffectedCoupons>
+            </TT:Details>
+          </TT:History>
+          <TT:History code="OC" number="9" sequence="1">
+            <TT:Agent duty="4" sine="AMB">
+              <ns2:TicketingProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:TicketingProvider>
+              <TT:WorkLocation>LZJ</TT:WorkLocation>
+              <ns2:HomeLocation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">LZJ</ns2:HomeLocation>
+            </TT:Agent>
+            <TT:TransactionInfo>
+              <ns2:LocalDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-13T07:31:27</ns2:LocalDateTime>
+              <ns2:SystemDateTime xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">2020-10-12T19:31:00</ns2:SystemDateTime>
+              <ns2:SystemProvider xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">VN</ns2:SystemProvider>
+              <ns2:InputMessage xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">WFRFN1.1$S1</ns2:InputMessage>
+            </TT:TransactionInfo>
+            <TT:Details>
+              <ns2:SupportingDocument xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">7382446198551</ns2:SupportingDocument>
+              <ns2:OldReservation xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">GBXGTS</ns2:OldReservation>
+              <ns2:AffectedCoupons xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC">01</ns2:AffectedCoupons>
+            </TT:Details>
+            <ns2:ServiceCouponHistory xmlns:ns2="http://www.sabre.com/ns/Ticketing/DC" coupon="1" sequence="1">
+              <ns2:CurrentStatus>OK</ns2:CurrentStatus>
+            </ns2:ServiceCouponHistory>
+          </TT:History>
+        </TT:Ticket>
+      </TT:Details>
+    </TT:GetTicketingDocumentRS>
+  </soap-env:Body>
+</soap-env:Envelope>

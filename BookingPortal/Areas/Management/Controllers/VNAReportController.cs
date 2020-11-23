@@ -19,8 +19,6 @@ using WebCore.ENM;
 using Helper;
 using WebCore.Core;
 using WebCore.Model.Entities;
-using AIRService.WebService.VNA.Authen;
-using Helper.TimeData;
 
 namespace WebApplication.Management.Controllers
 {
@@ -39,12 +37,16 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult SyncData()
+        {
+            return View();
+        }
 
         public ActionResult RpDetails(string id)
         {
             ViewData["DocummentNumber"] = id;
             VNA_TKT_AsrService service = new VNA_TKT_AsrService();
-            var model = service.GetSaleReportTicketByDocNumber(id);
+            var model = service.GetTicketingDocumentByDocNumber(id);
             if (model != null)
                 return View(model);
             //////

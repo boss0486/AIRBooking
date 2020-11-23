@@ -55,7 +55,7 @@
                 rps_decoupleItem = reportSaleSummary.DecoupleItem;
                 rps_ticketStatusCode = reportSaleSummary.TicketStatusCode;
                 rps_isElectronicTicket = reportSaleSummary.IsElectronicTicket;
-                rps_reportDate = TimeFormat.FormatToDate(Convert.ToDateTime(reportSaleSummary.ReportDate), LanguagePage.GetLanguageCode);
+                rps_reportDate = TimeFormat.FormatToViewDate(Convert.ToDateTime(reportSaleSummary.ReportDate), LanguagePage.GetLanguageCode);
             }
         }
 

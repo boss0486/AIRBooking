@@ -1249,6 +1249,7 @@
     <Content Include="Areas\Management\Views\AirBook\DataList.cshtml" />
     <Content Include="Areas\Management\Views\_ViewSearchForBookPatial.cshtml" />
     <Content Include="Areas\Management\Views\_ViewEprReportSearchPatial.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\SyncData.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

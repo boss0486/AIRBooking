@@ -156,7 +156,7 @@ namespace WebCore.Services
                                         string docummentNumber = itemTrans.DocumentNumber;
                                         if (itemTrans.DocumentType == ("TKT") && !string.IsNullOrWhiteSpace(docummentNumber))
                                         {
-                                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = vna_TKT_AsrService.GetSaleReportTicketByDocNumber(docummentNumber, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
+                                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = vna_TKT_AsrService.GetTicketingDocumentByDocNumber(docummentNumber, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
                                             if (vna_ReportSaleSummaryTicketing != null)
                                             {
                                                 List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = vna_ReportSaleSummaryTicketing.SaleSummaryTicketingDocument;
@@ -232,7 +232,7 @@ namespace WebCore.Services
                         }
 
                         _transaction.Commit();
-                        return Notifization.Success(MessageText.UpdateSuccess + "11");
+                        return Notifization.Success(MessageText.UpdateSuccess);
                     }
                 }
                 catch (Exception ex)

@@ -129,9 +129,30 @@ namespace WebCore.Entities
         public string ClassOfService { get; set; }
         public string FareBasis { get; set; }
         public string StartLocation { get; set; }
-        public string EndLocation { get; set; } 
+        public string EndLocation { get; set; }
+
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
+
+
+        private string _startDateTime;
+        [NotMapped]
+        public string StartDateTimeText
+        {
+            get
+            {
+                return TimeFormat.FormatToViewDateTime(StartDateTime, Helper.Language.LanguageCode.Vietnamese.ID);
+            }
+        }
+        private string _endDateTime;
+
+        [NotMapped]
+        public string EndDateTimeText {
+            get
+            {
+                return TimeFormat.FormatToViewDateTime(EndDateTime, Helper.Language.LanguageCode.Vietnamese.ID);
+            } 
+        }
         public string BookingStatus { get; set; }
         public string CurrentStatus { get; set; }
     }
