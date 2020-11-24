@@ -144,7 +144,7 @@ namespace WebCore.Services
                                         {
                                             await reportTransactionSSFopService.CreateAsync<string>(new ReportSaleSummarySSFop
                                             {
-                                                Title = ePRReportTransactionSSFop.FopCode,
+                                                FopCode = ePRReportTransactionSSFop.FopCode,
                                                 ReportTransactionID = reportTransactionId,
                                                 CurrencyCode = ePRReportTransactionSSFop.CurrencyCode,
                                                 FareAmount = ePRReportTransactionSSFop.FareAmount,

@@ -94,7 +94,7 @@ namespace WebCore.Services
             {
                 string sqlQuery = @"SELECT vu.*, c.ClientID, c.ClientType FROM View_User as vu LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
                                     WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.FullName,vu.CreatedDate ";
-                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
+                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //

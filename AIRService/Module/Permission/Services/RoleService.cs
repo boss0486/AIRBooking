@@ -60,7 +60,7 @@ namespace WebCore.Services
                 whereCondition += " AND Enabled = @Enabled";
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM Role WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [OrderID] ASC";
-            var dtList = _connection.Query<RoleResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), Enabled = status }).ToList();
+            var dtList = _connection.Query<RoleResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //

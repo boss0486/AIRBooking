@@ -88,11 +88,10 @@ namespace WebCore.Entities
     }
 
     //
-    public class ReportEprSearchModel
+    public class ReportEprSearchModel: SearchModel
     {
-        public string ReportDate { get; set; }
-        public string Query { get; set; }
-        public string TimeZoneLocal { get; set; }
+        public string ReportDate { get; set; } 
+        public string CurrentStatus { get; set; }
     }
     // search report
 
@@ -130,12 +129,8 @@ namespace WebCore.Entities
         public string FareBasis { get; set; }
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }
-
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
-
-
-        private string _startDateTime;
         [NotMapped]
         public string StartDateTimeText
         {
@@ -143,9 +138,7 @@ namespace WebCore.Entities
             {
                 return TimeFormat.FormatToViewDateTime(StartDateTime, Helper.Language.LanguageCode.Vietnamese.ID);
             }
-        }
-        private string _endDateTime;
-
+        } 
         [NotMapped]
         public string EndDateTimeText {
             get

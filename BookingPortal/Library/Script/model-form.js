@@ -5,29 +5,22 @@ class AjaxFrom {
         _form.dataType = 'json';
         _form.async = true;
         $.ajax(_form).done(function () {
-            if (!$(document).find("body")) {
-                Loading.ShowLoading();
-            }
-            else {
-                setTimeout(function () {
-                    Loading.HideLoading();
-                }, 1500);
-            }
-
+            setTimeout(function () {
+                Loading.HideLoading();
+            }, 1500);
         });
         //.fail(function () {
         //    console.log('::111111111111' + MessageText.NotService);
         //})
     }
 }
+// ************************************************************************************************
 $(document).ajaxStart(function () {
     Loading.ShowLoading();
 }).ajaxStop(function () {
-    //
+    // 
 });
-
-
-
+// ************************************************************************************************
 $(document).ready(function () {
 
     //var startDate = new Date('01/01/2019');
@@ -56,7 +49,7 @@ $(document).ready(function () {
     //    $('input[date-datepicker="1"]').datepicker('setEndDate', _startDate);
     //    });
 });
-
+// ************************************************************************************************
 class HelperModel {
     static Status(_status) {
         var result = '';
@@ -165,9 +158,8 @@ class RoleEnum {
     static IsCustomerLogged = 6;
 }
 
-class PassengerGroupEnum { 
+class PassengerGroupEnum {
     static KhachLe = 1;
     static Company = 2;
 }
 
- 

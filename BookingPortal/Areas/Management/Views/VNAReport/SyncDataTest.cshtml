@@ -49,9 +49,11 @@
 @section scripts{
     <script type="text/javascript">
         $(document).on("click", "#btnGetReport", function () {
-            GetReportAuto();
+            TestAjax(1);
         });
-        function GetReportAuto() {
+         
+        function TestAjax(page) {
+            //
             var _row = $('table tbody#TblData tr[data-state="0"]').first();
             $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-spinner"></i> Đang xử lý`);
             var dtDate = $(_row).data("dreport");
@@ -60,40 +62,6 @@
                 Notifization.Error("Data is completed!");
                 return;
             }
-            //
-            var model = {
-                "UserName": "api-booking",
-                "Password": "***********",
-                "ReportDate": dtDate
-            }
-            //
-            AjaxFrom.POST({
-                url: '/APIBooking/Report/Action/EPR-Rpdata',
-                data: model,
-                success: function (response) {
-                    if (response !== null) {
-                        if (response.status === 200) {
-                            $(_row).attr("data-state", "1");
-                            $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-check-circle"></i> ` + response.message);
-                            GetReportAuto();
-                            return;
-                        }
-                        else {
-                            Notifization.Error(response.message);
-                            return;
-                        }
-                    }
-                    Notifization.Error(MessageText.NotService);
-                    return;
-                },
-                error: function (response) {
-                    console.log('::' + MessageText.NotService);
-                }
-            });
-        }
-
-
-        function TestAjax() {
             //
             var ddlTimeExpress = 0;
             var txtStartDate = "";
@@ -109,14 +77,17 @@
             };
             //
             AjaxFrom.POST({
-                url: '/Management/VNAReport/Action/DataList',
+                url: '/Management/Bank/Action/DataList',
                 data: model,
                 success: function (response) {
                     if (response !== null) {
                         if (response.status === 200) {
                             $(_row).attr("data-state", "1");
                             $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-check-circle"></i> ` + response.message);
-                            TestAjax();
+                           
+                            setTimeout(function () {
+                                TestAjax(1);
+                            }, 3000);
                             return;
                         }
                         else {

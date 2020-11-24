@@ -387,10 +387,13 @@
             @RenderBody()
             <input id="txtAccessInApplication" type="hidden" value="@Helper.Current.UserLogin.UserRoleInApplication" />
         </div>
+
     </section>
 
     @Scripts.Render("~/library/js")
     @Scripts.Render("~/manage/js")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+    </script>
 </body>
 </html>

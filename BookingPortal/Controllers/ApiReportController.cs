@@ -52,7 +52,7 @@ namespace APIBooking.VNA.Controllers
         public async Task<ActionResult> APIReportDataAsync(APIDailyReportModel model)
         {
             try
-            {
+            { 
                 ApiReportService apiReportService = new ApiReportService();
                 return await apiReportService.APIReportDataAsync(model);
             }

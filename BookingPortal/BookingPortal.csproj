@@ -277,7 +277,6 @@
     <Content Include="Pages\not-found.html" />
     <Content Include="Pages\maintaince.html" />
     <Content Include="Pages\not-service.html" />
-    <Content Include="Team\DetailRS.xml" />
     <Content Include="Team\XMLFile1.xml" />
     <Content Include="Team\XMLFile2.xml" />
     <Content Include="Team\XMLFile3.xml" />
@@ -289,7 +288,6 @@
     <Content Include="WS\Xml\PassengerDetails.xml" />
     <Content Include="WS\Xml\PaymentRQ.xml" />
     <Content Include="WS\Xml\SabreCommandLLSRQ.xml" />
-    <Content Include="Team\SalesSummaryRS.xml" />
     <Content Include="_themes\authenzition\css\style.css" />
     <Content Include="_themes\authenzition\images\banner.jpg" />
     <Content Include="_themes\authenzition\images\tick.png" />
@@ -868,13 +866,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Team\json-fare.json" />
-    <Content Include="Team\search.json" />
-    <Content Include="Team\tax-pnr1.json" />
-    <Content Include="Team\tax-book.json" />
-    <Content Include="Team\tax-pna2.json" />
-    <Content Include="Team\test.json" />
-    <Content Include="Team\temp.json" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.eot" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.ttf" />
     <Content Include="_themes\fonts\awesome\webfonts\fa-brands-400.woff" />
@@ -1250,6 +1241,7 @@
     <Content Include="Areas\Management\Views\_ViewSearchForBookPatial.cshtml" />
     <Content Include="Areas\Management\Views\_ViewEprReportSearchPatial.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\SyncData.cshtml" />
+    <Content Include="Areas\Management\Views\VNAReport\SyncDataTest.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

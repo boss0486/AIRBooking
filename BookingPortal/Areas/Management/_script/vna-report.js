@@ -94,14 +94,15 @@ var VNAReportController = {
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
         var txtEndDate = $('#txtEndDate').val();
+        var currentStatus = $('#ddlCurrStatus').val();
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: LibDateTime.FormatToServerDate(txtStartDate),
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-            Status: -1
+            CurrentStatus: currentStatus,
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
         //
         AjaxFrom.POST({
@@ -216,33 +217,33 @@ class EPRReportModel {
                 result = `<a class="btn btn-success btn-sm" style='width:100%;'>OK</a>`;
                 break;
             case "HK":
-                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>CKIN</a>`;
+                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>HK</a>`;
                 break;
             case "KL":
-                result = `<a class="btn btn-green btn-sm" style='width:100%;'>LFTD</a>`;
+                result = `<a class="btn btn-green btn-sm" style='width:100%;'>KL</a>`;
                 break;
             case "UC":
-                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>USED</a>`;
+                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>UC</a>`;
                 break;
             case "GN":
-                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>NOGO</a>`;
+                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>GN</a>`;
                 break;
             case "JL":
-                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>VOID</a>`;
+                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>JL</a>`;
                 break;
             case "HL":
-                result = `<a class="btn btn-info btn-sm" style='width:100%;'>RFND</a>`;
+                result = `<a class="btn btn-info btn-sm" style='width:100%;'>HL</a>`;
                 break;
             case "WK":
-                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>WK</a>`;
             case "SC":
-                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>SC</a>`;
                 break;
             case "NS":
-                result = `<a class="btn btn-default btn-sm" style='width:100%;'>OK</a>`;
+                result = `<a class="btn btn-default btn-sm" style='width:100%;'>NS</a>`;
                 break;
             case "RQ":
-                result = `<a class="btn btn-default btn-sm" style='width:100%;'>OK</a>`;
+                result = `<a class="btn btn-default btn-sm" style='width:100%;'>RQ</a>`;
                 break;
             default:
                 result = _status;

@@ -21,8 +21,6 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
         public string ReportTransactionID { get; set; }
         public string FopCode { get; set; }
         public string CurrencyCode { get; set; }

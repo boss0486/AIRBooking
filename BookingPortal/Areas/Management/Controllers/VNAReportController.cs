@@ -42,6 +42,11 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
+        public ActionResult SyncDataTest()
+        {
+            return View();
+        }
+
         public ActionResult RpDetails(string id)
         {
             ViewData["DocummentNumber"] = id;
@@ -84,7 +89,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Search")]
-        public ActionResult EPRSearch(SearchModel model)
+        public ActionResult EPRSearch(ReportEprSearchModel model)
         {
             try
             {

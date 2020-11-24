@@ -14,23 +14,6 @@
     <script src="~/_themes/library/plugins/menu/sidebar-menu.js"></script>
 </head>
 <body class="theme-blue">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Please wait...</p>
-        </div>
-    </div>
-    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -790,15 +773,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="block-header" style="padding:0px 20px 0px 20px;">
-                    <h2>@Helper.Page.MetaSEO.PageTitle</h2>
+                    <h2><i class="fas fa-ellipsis-v"></i> @Helper.Page.MetaSEO.SiteMap</h2>
                     <hr />
                 </div>
             </div>
             <div class="row">
                 @RenderBody()
+                <input id="txtAccessInApplication" type="hidden" value="@Helper.Current.UserLogin.UserRoleInApplication" />
             </div>
-
-        </div>
+        </div> 
     </section>
 
     @Scripts.Render("~/library/js")

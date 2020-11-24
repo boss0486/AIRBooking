@@ -74,7 +74,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_Product WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ProductResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
+            var dtList = _connection.Query<ProductResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), CategoryId = categoryId, State = state, Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound + sqlQuery);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();

@@ -72,7 +72,7 @@ namespace AIRService.WS.Service
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
                     //
-                    XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-employee.xml", soapEnvelopeXml);
+                    //XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-employee.xml", soapEnvelopeXml);
                     //
                     XmlNode agentListRSNode = soapEnvelopeXml.GetElementsByTagName("asr:AgentListRS")[0];
                     var nodeList = agentListRSNode.ChildNodes;
@@ -551,7 +551,7 @@ namespace AIRService.WS.Service
                         string soapResult = rd.ReadToEnd();
                         soapEnvelopeXml = new XmlDocument();
                         soapEnvelopeXml.LoadXml(soapResult);
-                        XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
+                        //XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
 
                         //
                         ////// Save the document to a file and auto-indent the output.
@@ -861,9 +861,9 @@ namespace AIRService.WS.Service
                 _cnt++;
             }
             //
+            docsIsCompleted = docNumbers.Except(docsIsCompleted).ToList();
             if (docsIsCompleted.ToList().Count > 0)
             {
-                docsIsCompleted = docNumbers.Except(docsIsCompleted).ToList();
                 vna_ReportSaleSummaryTicketingDocuments.AddRange(GetTicketingDocumentStatus(docsIsCompleted));
             }
             //
@@ -918,9 +918,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
-
-                    //
+                    //XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
                     ////// Save the document to a file and auto-indent the output.
                     ////XmlWriterSettings settings = new XmlWriterSettings();
                     ////settings.Indent = true;

@@ -100,7 +100,7 @@ namespace WebCore.Model.Services
                 if (!string.IsNullOrWhiteSpace(startDate))
                 {
                     DateTime dtime = Convert.ToDateTime(startDate);
-                    whereCondition += " AND cast(CreatedDate as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition += " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
                 }
                 //
                 if (!string.IsNullOrWhiteSpace(endDate))
@@ -113,7 +113,7 @@ namespace WebCore.Model.Services
                         };
                     //
                     DateTime dtime = Convert.ToDateTime(endDate);
-                    whereCondition += " AND cast(CreatedDate as Date) <= cast('" + dtime + "' as Date)";
+                    whereCondition += " AND cast("+ columName + " as Date) <= cast('" + dtime + "' as Date)";
                 }
 
 
