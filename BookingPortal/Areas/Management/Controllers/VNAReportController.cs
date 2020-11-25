@@ -47,16 +47,6 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult RpDetails(string id)
-        {
-            ViewData["DocummentNumber"] = id;
-            VNA_TKT_AsrService service = new VNA_TKT_AsrService();
-            var model = service.GetTicketingDocumentByDocNumber(id);
-            if (model != null)
-                return View(model);
-            //////
-            return View();
-        }
         public ActionResult Details(string id)
         {
 

@@ -67,7 +67,7 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(compId))
                 whereCondition += " AND c.CompanyID = @CompanyID";
             // query
-            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName'  
+            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode  
             FROM App_BookOrder as o LEFT JOIN App_BookContact as c ON c.BookOrderID = o.ID
             WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%')  
             " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
@@ -155,6 +155,20 @@ namespace WebCore.Services
                     break;
             }
             return result;
+        }
+
+        public List<BookPassengerResult> ViewBookPassenger(string bookId)
+        {
+            if (string.IsNullOrWhiteSpace(bookId))
+                return null;
+            //
+            bookId = bookId.Trim().ToLower();
+            string sqlQuery = @"SELECT * FROM App_BookPassenger WHERE BookOrderID = @ID ORDER BY PassengerType";
+            List<BookPassengerResult> data = _connection.Query<BookPassengerResult>(sqlQuery, new { ID = bookId }).ToList();
+            if (data.Count == 0)
+                return new List<BookPassengerResult>();
+            //
+            return data;
         }
         //##############################################################################################################################################################################################################################################################
 

@@ -68,5 +68,22 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
+
+        [HttpPost]
+        [Route("Action/GetPassenger")]
+        public ActionResult GetPassenger(BookOrderIDModel model)
+        {
+            try
+            {
+                BookOrderService service = new BookOrderService();
+                return Notifization.Data(MessageText.Success, service.ViewBookPassenger(model.ID));
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+
     }
 }

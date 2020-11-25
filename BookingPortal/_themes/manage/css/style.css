@@ -22,6 +22,7 @@
 a {
     text-decoration: none;
     outline: none;
+    cursor:pointer;
 }
 
     a:hover, a:active, a:focus {
@@ -140,6 +141,7 @@ span {
     }
 
     .bars:before {
+        font-family: 'Material Icons';
         content: '\E5D2';
         -moz-transform: scale(1);
         -ms-transform: scale(1);
@@ -4958,27 +4960,34 @@ html, body {
 
 /* Modals ====================================== */
 .modal .modal-header {
-    border: none;
-    padding: 25px 25px 5px 25px;
+    padding: 10px 15px 10px 15px;
+    position: relative;
 }
 
     .modal .modal-header .modal-title {
-        font-weight: bold;
+        font-weight: 400;
         font-size: 16px;
     }
 
+    .modal .modal-header .close {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+    }
+
 .modal .modal-content {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    -ms-border-radius: 0;
-    border-radius: 0;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.31) !important;
-    border: none;
+    position: relative;
+    background-color: #fff;
+    background-clip: unset;
+    border: 1px solid #999;
+    border: 0;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: 0;
 }
 
     .modal .modal-content .modal-body {
-        color: #777;
-        padding: 15px 25px;
     }
 
 .modal .modal-footer {
@@ -5498,43 +5507,70 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     margin-bottom: 0;
 }
 
+/* button ====================================== */
+button, .btn {
+    outline: 0 !important;
+}
+
+    .btn:active, .btn.active {
+        background-image: none;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+.btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content [class*="col-"]:not(td) button, .main-content [class*="col-"]:not(td) .btn {
+        width: 100%;
+    }
+}
 /* Tables ====================================== */
-.table tbody tr.primary td, .table tbody tr.primary th {
-    background-color: #1f91f3;
-    color: #fff;
+
+table, .table {
+    min-width: 100%;
 }
 
-.table tbody tr.success td, .table tbody tr.success th {
-    background-color: #2b982b;
-    color: #fff;
-}
+    .table tbody tr.primary td, .table tbody tr.primary th {
+        background-color: #1f91f3;
+        color: #fff;
+    }
 
-.table tbody tr.info td, .table tbody tr.info th {
-    background-color: #00b0e4;
-    color: #fff;
-}
+    .table tbody tr.success td, .table tbody tr.success th {
+        background-color: #2b982b;
+        color: #fff;
+    }
 
-.table tbody tr.warning td, .table tbody tr.warning th {
-    background-color: #ff9600;
-    color: #fff;
-}
+    .table tbody tr.info td, .table tbody tr.info th {
+        background-color: #00b0e4;
+        color: #fff;
+    }
 
-.table tbody tr.danger td, .table tbody tr.danger th {
-    background-color: #fb483a;
-    color: #fff;
-}
+    .table tbody tr.warning td, .table tbody tr.warning th {
+        background-color: #ff9600;
+        color: #fff;
+    }
 
-.table thead tr th {
-    padding: 4px 8px;
-    border-bottom: none;
-    font-weight: 400;
-    padding: 8px 8px;
-    border-bottom: none;
-    font-weight: 400;
-    background: #D9F1EC;
-    border: 1px solid #ABDED4;
-    white-space: nowrap;
-}
+    .table tbody tr.danger td, .table tbody tr.danger th {
+        background-color: #fb483a;
+        color: #fff;
+    }
+
+    .table thead tr th {
+        padding: 4px 8px;
+        border-bottom: none;
+        font-weight: 400;
+        padding: 8px 8px;
+        border-bottom: none;
+        font-weight: 400;
+        background: #D9F1EC;
+        border: 1px solid #ABDED4;
+        white-space: nowrap;
+    }
 
 .table-bordered {
     border-color: #ABDED4;
@@ -5543,7 +5579,8 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     .table-bordered tbody tr td {
         white-space: nowrap;
         border-color: #ABDED4;
-        padding: 6px 8px;
+        padding: 6px 6px;
+        min-height: 32px;
     }
 
         .table-bordered tbody tr td .btn {
@@ -5567,11 +5604,28 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     border: 1px solid #ABDED4;
 }
 
-@media (min-width: 328px) and (max-width: 991px) {
-    .table-responsive > .table {
-        min-width: 1200px;
+.table-bordered tbody tr td .btn {
+    width: unset;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-y: hidden;
+    border: none;
+    padding-bottom: 15px;
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive > .table-bordered {
+        border: 1px solid #ABDED4;
     }
 }
+
+/*@media (min-width: 328px) and (max-width: 991px) {
+    .table-responsive > .table {
+        min-width: 100%;
+    }
+}*/
 /* Panel ======================================= */
 .panel-group .panel-col-red {
     border: 1px solid #F44336;
@@ -8352,6 +8406,7 @@ textarea.form-control {
     right: 14px;
     margin-top: 4px;
 }
+
 .bootstrap-select.show-tick .dropdown-menu li a span.text {
     margin-right: 15px;
 }
@@ -9857,24 +9912,6 @@ th, td .none {
     padding-left: 10px;
 }
 
-@media only screen and (max-width: 768px) {
-    .main-content [class*="col-"] button, .main-content [class*="col-"] .btn {
-        width: 100%;
-    }
-}
-
-.btn:active, .btn.active {
-    background-image: none;
-    outline: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.btn-group.open .dropdown-toggle {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
 /*select*/
 
 .bootstrap-select .dropdown-toggle:focus {
@@ -9893,4 +9930,8 @@ th, td .none {
 
 .w-50 {
     width: 50%;
+}
+
+.w-100 {
+    width: 100%;
 }

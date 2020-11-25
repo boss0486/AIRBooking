@@ -1,6 +1,7 @@
 ﻿using AL.NetFrame.Attributes;
 using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
+using ApiPortalBooking.Models.VNA_WS_Model;
 using Dapper;
 using Helper.File;
 using Helper.Language;
@@ -85,7 +86,8 @@ namespace WebCore.Entities
         public List<ReportTicketingDocumentCoupon> TicketingDocumentCoupons { get; set; }
         public ReportTicketingDocumentAmount TicketingDocumentAmount { get; set; }
         public List<ReportTicketingDocumentTaxes> TicketingDocumentTaxes { get; set; }
-    }
+        public List<VNA_ReportSaleSummaryTicketingDocument> TicketingDocumentStatus { get; set; }
+     }
 
     //
     public class ReportEprSearchModel: SearchModel
@@ -110,20 +112,21 @@ namespace WebCore.Entities
         public bool DecoupleItem { get; set; }
         public string TicketStatusCode { get; set; }
         public bool IsElectronicTicket { get; set; }
-        private string _createdDate;
+        private string _reportDate;
         public string ReportDate
         {
             get
             {
-                if (_createdDate == null)
+                if (_reportDate == null)
                     return "../" + "../" + "..";
-                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
+                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_reportDate), Helper.Language.LanguageCode.Vietnamese.ID);
             }
             set
             {
-                _createdDate = value;
+                _reportDate = value;
             }
         }
+        public string ReportSaleSummaryID { get; set; }
         public string MarketingFlightNumber { get; set; }
         public string ClassOfService { get; set; }
         public string FareBasis { get; set; }

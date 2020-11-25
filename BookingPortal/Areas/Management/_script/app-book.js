@@ -36,8 +36,8 @@ var AirBookController = {
             EndDate: LibDateTime.FormatToServerDate(txtEndDate),
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             ItineraryType: parseInt(ddlItinerary),
-            AgentID :  ddlAgentID,
-            CompanyID :  ddlCompanyID
+            AgentID: ddlAgentID,
+            CompanyID: ddlCompanyID
         };
         //
         AjaxFrom.POST({
@@ -71,8 +71,14 @@ var AirBookController = {
                             var amount = item.TotalAmount;
                             var itineraryText = item.ItineraryText;
                             var customerTypeText = item.CustomerTypeText;
+                            var companyId = item.CompanyID;
+                            var companyCode = item.CompanyCode;
                             var contactName = item.ContactName;
                             var mailStatus = item.MailStatus;
+                            if (companyCode == null) {
+                                companyCode = "-";
+                            }
+
                             var actMail = '';
                             if (mailStatus == 0) {
                                 actMail = `<button type="button" class="btn btn-success btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Email</button>`;
@@ -88,12 +94,12 @@ var AirBookController = {
                                  <td class=''>${orderDate}</td>  
                                  <td class='text-center bg-danger'>${agentCode}</td>  
                                  <td class=''>${ticketingName}</td>  
-                                 <td class=''>${contactName}</td>  
+                                 <td class=''><a class='btn-passenger' data-id='${id}'>${contactName}</a></td>  
+                                 <td class='text-center'><a class='btn-comp' data-id='${companyId}'>${companyCode}</a></td>  
                                  <td class=''>${customerTypeText}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
-                                  <td class=''>${itineraryText}</td>                                                                                                                                                                                                                                                        
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-                                 <td class='text-left'></td>                                                                                                                                                                                                                                                                         
+                                 <td class=''>${itineraryText}</td>                                                                                                                                                                                                                                                        
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-center bg-danger'>${pnr}</td>                                                                                                                                                                                                                                                                         
                                  <td class='tbcol-left'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
@@ -1084,3 +1090,114 @@ function BookOrderStatus(_status) {
     return result;
 }
 
+//*******************************************************
+
+$(document).on("click", ".btn-passenger", function () {
+    var id = $(this).data("id");
+    var model = {
+        ID: id
+    };
+    //
+    $('#PassengerModal tbody#TblModalData').html('');
+    AjaxFrom.POST({
+        url: '/Management/AirOrder/Action/GetPassenger',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    var rowData = '';
+                    var cnt = 1;
+                    $.each(result.data, function (index, item) {
+                        index = index + 1;
+                        var id = item.ID;
+                        if (id.length > 0)
+                            id = id.trim();
+                        //
+                        var name = item.FullName;
+                        var gender = item.GenderText;
+                        var dateOfBirth = item.DateOfBirth;
+                        var passengerType = item.PassengerType;
+                        // 
+                        rowData += `
+                            <tr>
+                                 <td class="text-right">${cnt}&nbsp;</td>  
+                                 <td>${name}</td>  
+                                 <td>${passengerType}</td>  
+                                 <td>${gender}</td>  
+                                 <td>${dateOfBirth}</td>   
+                            </tr>`;
+                        cnt++;
+                    });
+                    $('#PassengerModal tbody#TblModalData').html(rowData);
+                    $("#PassengerModal").modal();
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    console.log('::' + result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NOTSERVICES);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NOTSERVICES);
+        }
+    });
+})
+
+//$(document).on("click", ".btn-contact", function () {
+//    var id = $(this).data("id");
+//    var model = {
+//        ID: id
+//    };
+//    //
+//    $('#ContactModal tbody#TblModalData').html('');
+//    AjaxFrom.POST({
+//        url: '/Management/AirOrder/Action/GetCompany',
+//        data: model,
+//        success: function (result) {
+//            if (result !== null) {
+//                if (result.status === 200) {
+//                    var rowData = '';
+//                    var cnt = 1;
+//                    $.each(result.data, function (index, item) {
+//                        index = index + 1;
+//                        var id = item.ID;
+//                        if (id.length > 0)
+//                            id = id.trim();
+//                        //
+//                        var name = item.FullName;
+//                        var gender = item.GenderText;
+//                        var dateOfBirth = item.DateOfBirth;
+//                        var passengerType = item.PassengerType;
+//                        // 
+//                        rowData += `
+//                            <tr>
+//                                 <td class="text-right">${cnt}&nbsp;</td>  
+//                                 <td>${name}</td>  
+//                                 <td>${passengerType}</td>  
+//                                 <td>${gender}</td>  
+//                                 <td>${dateOfBirth}</td>   
+//                            </tr>`;
+//                        cnt++;
+//                    });
+//                    $('#ContactModal tbody#TblModalData').html(rowData);
+//                    $("#PassengerModal").modal();
+//                    return;
+//                }
+//                else {
+//                    Notifization.Error(result.message);
+//                    console.log('::' + result.message);
+//                    return;
+//                }
+//            }
+//            Notifization.Error(MessageText.NOTSERVICES);
+//            return;
+//        },
+//        error: function (result) {
+//            console.log('::' + MessageText.NOTSERVICES);
+//        }
+//    });
+//})

@@ -158,8 +158,8 @@
     <Compile Include="Areas\Management\Controllers\TransactionCustomerSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
-    <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositHistoryController.cs" />
+    <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletUserSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\WalletSpendingHistoryController.cs" />
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
@@ -269,6 +269,7 @@
     <Content Include="Files\upload\2019\9\ff4bab54-c41f-490a-9fe5-5066102eb9d3.png" />
     <Content Include="Global.asax" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="HtmlPage2.html" />
     <Content Include="WS\Xml\FareBasis.xml" />
     <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />
     <Content Include="Library\Script\model-form.js" />

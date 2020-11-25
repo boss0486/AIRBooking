@@ -140,7 +140,7 @@ namespace WebCore.Services
             //
             string sqlQuery = @"
              SELECT rtdc.ID, rtdc.MarketingFlightNumber, rtdc.ClassOfService, rtdc.ClassOfService, rtdc.FareBasis, rtdc.StartLocation, rtdc.EndLocation, rtdc.StartLocation, rtdc.StartDateTime, rtdc.EndDateTime, rtdc.BookingStatus, rtdc.CurrentStatus  
-             ,rps.EmployeeNumber, rps.DocumentType, rps.DocumentNumber, rps.PassengerName, rps.PnrLocator, rps.TicketPrinterLniata, rps.TransactionTime, rps.ExceptionItem, rps.DecoupleItem, rps.TicketStatusCode, rps.IsElectronicTicket, rps.ReportDate 
+             ,rps.ID as 'ReportSaleSummaryID', rps.EmployeeNumber, rps.DocumentType, rps.DocumentNumber, rps.PassengerName, rps.PnrLocator, rps.TicketPrinterLniata, rps.TransactionTime, rps.ExceptionItem, rps.DecoupleItem, rps.TicketStatusCode, rps.IsElectronicTicket, rps.ReportDate 
              FROM App_ReportSaleSummary as rps 
              INNER JOIN App_ReportTicketingDocument_Coupon as rtdc ON rtdc.DocumentNumber =  rps.DocumentNumber   
              WHERE (dbo.Uni2NONE(rps.PassengerName) LIKE N'%'+ @Query +'%' OR rps.DocumentNumber LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY rps.[CreatedDate]";
@@ -193,19 +193,27 @@ namespace WebCore.Services
             id = id.ToLower();
             ReportSaleSummaryService reportSaleSummaryService = new ReportSaleSummaryService();
             ReportSaleSummary reportSaleSummary = reportSaleSummaryService.GetAlls(m => m.ID == id).FirstOrDefault();
-            string docNumber = reportSaleSummary.DocumentNumber;
+            if (reportSaleSummary == null)
+                return new ReportSaleSummaryModel();
             //
-
+            string docNumber = reportSaleSummary.DocumentNumber;
+            // 
             ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
             ReportTicketingDocumentAmountService reportTicketingDocumentAmount = new ReportTicketingDocumentAmountService(_connection);
             ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
+            VNA_TKT_AsrService asrService = new VNA_TKT_AsrService();
+            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = asrService.GetTicketingDocumentStatusGroup(new List<string> {
+            docNumber
+            });
+
             // reuslt
             ReportSaleSummaryModel reportSaleSummaryTicketing = new ReportSaleSummaryModel
             {
                 ReportSaleSummary = reportSaleSummary,
                 TicketingDocumentCoupons = reportTicketingDocumentCouponService.GetAlls(m => m.DocumentNumber == docNumber).ToList(),
                 TicketingDocumentAmount = reportTicketingDocumentAmount.GetAlls(m => m.DocumentNumber == docNumber).FirstOrDefault(),
-                TicketingDocumentTaxes = reportTicketingDocumentTaxes.GetAlls(m => m.DocumentNumber == docNumber).ToList()
+                TicketingDocumentTaxes = reportTicketingDocumentTaxes.GetAlls(m => m.DocumentNumber == docNumber).ToList(),
+                TicketingDocumentStatus = vna_ReportSaleSummaryTicketingDocuments
             };
             return reportSaleSummaryTicketing;
         }

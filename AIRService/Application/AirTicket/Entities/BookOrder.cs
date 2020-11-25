@@ -77,6 +77,8 @@ namespace WebCore.Entities
         [NotMapped]
         public double TotalAmount => AgentFee + Amount;
         public string ContactName { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyID { get; set; } 
         public int Status { get; set; }
         private string _orderDate;
         public string OrderDate

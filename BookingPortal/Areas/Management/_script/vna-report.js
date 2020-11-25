@@ -128,12 +128,14 @@ var VNAReportController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
+                            var docId = item.DocumentNumber;
+                            var reportSaleSummaryId = item.ReportSaleSummaryID;
                             var startTime = item.StartDateTime;
                             var endTime = item.EndDateTime;
                             var bookingStatus = item.BookingStatus;
                             var currentStatus = item.CurrentStatus;
                             //
-                            var action = HelperModel.RolePermission(result.role, "VNAReportController", id);
+                            var action = HelperModel.RolePermission(result.role, "VNAReportController", reportSaleSummaryId);
                             //
                             var reportDate = item.ReportDate;
 
@@ -145,6 +147,7 @@ var VNAReportController = {
                                          <td class="text-right">${rowNum}&nbsp;</td>                                                                                       
                                          <td class="tbcol-none">${item.PnrLocator} / ${item.FareBasis}</td>
                                          <td class="tbcol-none">${item.PassengerName}</td>
+                                         <td class="tbcol-none">${docId}</td>
                                          <td class="text-right">${startTime}</td>
                                          <td class="text-center">${_bookingStatus}</td>
                                          <td class="text-center">${_currentStatus}</td>

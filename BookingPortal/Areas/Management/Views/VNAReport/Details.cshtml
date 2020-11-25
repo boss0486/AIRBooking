@@ -32,6 +32,7 @@
         List<ReportTicketingDocumentCoupon> ticketingDocumentCoupons = new List<ReportTicketingDocumentCoupon>();
         ReportTicketingDocumentAmount ticketingDocumentAmount = new ReportTicketingDocumentAmount();
         List<ReportTicketingDocumentTaxes> ticketingDocumentTaxes = new List<ReportTicketingDocumentTaxes>();
+
         if (Model != null)
         {
             reportSaleSummary = Model.ReportSaleSummary;
@@ -59,7 +60,6 @@
             }
         }
 
-
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
         </div>
@@ -73,7 +73,7 @@
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin vé:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <span class="col-red">@ViewBag.DocummentNumber</span> </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <span class="col-red">@rps_documentNumber</span> </div>
         <div class="table-responsive m-b-50">
             <table class="table table-bordered">
                 <thead>
@@ -91,18 +91,31 @@
                 <tbody>
                     @if (ticketingDocumentCoupons != null && ticketingDocumentCoupons.Count > 0)
                     {
-
+                        var ticketingDocumentStatus = Model.TicketingDocumentStatus;
                         foreach (var item in ticketingDocumentCoupons)
                         {
+                            string bookingStatus = item.BookingStatus;
+                            string currentStatus = item.CurrentStatus;
+                            string departureDateTime = item.FlownCoupon_DepartureDateTime;
+                            if (ticketingDocumentStatus.Count() > 0)
+                            {
+                                var ticketingDocumentCoupon = ticketingDocumentStatus.Where(m => m.MarketingFlightNumber == item.MarketingFlightNumber).FirstOrDefault();
+                                if (ticketingDocumentCoupon != null)
+                                {
+                                    bookingStatus = ticketingDocumentCoupon.BookingStatus;
+                                    currentStatus = ticketingDocumentCoupon.CurrentStatus;
+                                    departureDateTime = ticketingDocumentCoupon.StartDateTime; 
+                                }
+                            }
                             <tr>
                                 <td>@item.MarketingFlightNumber</td>
                                 <td>@item.ClassOfService</td>
                                 <td>@item.FareBasis</td>
                                 <td>@item.StartLocation</td>
                                 <td>@item.EndLocation</td>
-                                <td>@item.BookingStatus</td>
-                                <td>@item.CurrentStatus</td>
-                                <td>@item.FlownCoupon_DepartureDateTime</td>
+                                <td>@bookingStatus</td>
+                                <td>@currentStatus</td>
+                                <td>@departureDateTime</td>
                             </tr>
                         }
                     }

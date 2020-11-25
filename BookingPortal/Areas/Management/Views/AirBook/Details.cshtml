@@ -100,7 +100,8 @@
                                     {
                                         cnt++;
 
-                                        var gender = WebCore.Services.BookTicketService.ConvertToGenderName(list[i].Gender);
+                                        string gender = WebCore.Services.BookTicketService.ConvertToGenderName(list[i].Gender);
+                                        string birthDay = Helper.TimeData.TimeFormat.FormatToViewDate(list[i].DateOfBirth, Helper.Language.LanguagePage.GetLanguageCode);
                                         <tr>
                                             <td class="text-right">@cnt &nbsp;</td>
                                             @if (i == 0)
@@ -109,7 +110,7 @@
                                             }
                                             <td>@list[i].FullName</td>
                                             <td>@gender</td>
-                                            <td>@list[i].DateOfBirth</td>
+                                            <td>@birthDay</td>
                                         </tr>
                                     }
                                 }

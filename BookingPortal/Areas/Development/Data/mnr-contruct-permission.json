@@ -43,7 +43,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       },
       {
         "KeyID": "Profile",
@@ -85,7 +85,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -127,7 +127,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -145,7 +145,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -163,7 +163,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       },
       {
         "KeyID": "Search",
@@ -175,7 +175,7 @@
         "KeyID": "RpDetails",
         "Method": "RpDetails",
         "APIRouter": "",
-        "Title": "EPR-Xem"
+        "Title": "EPR-C.tiết"
       }
     ]
   },
@@ -211,7 +211,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -247,7 +247,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -283,7 +283,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -319,7 +319,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -355,7 +355,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -403,7 +403,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -439,7 +439,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -475,7 +475,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -493,7 +493,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -517,7 +517,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -541,7 +541,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -565,7 +565,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -607,7 +607,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -625,7 +625,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -643,7 +643,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   },
@@ -661,7 +661,7 @@
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",
-        "Title": "Xem"
+        "Title": "C.tiết"
       }
     ]
   }

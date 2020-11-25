@@ -6,6 +6,7 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 
+
 @Html.Partial("~/Areas/Management/Views/_ViewSearchForBookPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
@@ -17,11 +18,11 @@
                 <th class="tbcol-active">M.DL</th>
                 <th class="tbcol-none">Nhân viên</th>
                 <th class="tbcol-none">Khách hàng</th>
+                <th class="tbcol-none">COMP</th>
                 <th class="tbcol-date">Loại KH</th>
                 <th class="tbcol-active">Hãng</th>
                 <th class="tbcol-active">L.Hành trình</th>
                 <th class="tbcol-none">Tổng chi phí</th>
-                <th class="tbcol-date">T.G xuất vé</th>
                 <th class="tbcol-date">PNR</th>
                 <th class="tbcol-none">Booking</th>
                 <th class="tbcol-action">
@@ -33,11 +34,70 @@
     </table>
 </div>
 <div id="Pagination"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="PassengerModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="exampleModalLongTitle">Thông tin hành khách</div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="tbcol-id">#</th>
+                                <th>Họ và Tên</th>
+                                <th>Loại HK</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblModalData"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ContactModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="exampleModalLongTitle">Thông tin hành khách</div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="tbcol-id">#</th>
+                                <th>Họ và Tên</th>
+                                <th>Loại HK</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TblModalData"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
-<script src="~/Areas/Management/_script/app-book.js"></script>
-<script type="text/javascript">
-    $(function () {
-        AirBookController.DataList(1);
-    });
-</script>
+    <script src="~/Areas/Management/_script/app-book.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            AirBookController.DataList(1);
+        });
+    </script>
 }

@@ -98,7 +98,8 @@ class HelperModel {
     }
     static RolePermission(role, _controlInit, id) {
         if (role !== undefined && role !== null) {
-            var action = `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>`;
+            var action = ``;
+            var cnt = 0;
             $.each(role, function (index, item) {
 
                 //if (role.Block) {
@@ -115,24 +116,40 @@ class HelperModel {
                 //}
 
 
-                if (item.KeyID == "UserRole")
+                if (item.KeyID == "UserRole") {
+                    cnt++;
                     action += `<a href='${URLA}/UserRole/${id}' target="_blank"><i class='fas fa-user-cog'></i>&nbsp;${item.Title}</a>`;
+                }
+
                 //
-                if (item.KeyID == "Update")
+                if (item.KeyID == "Update") {
+                    cnt++;
                     action += `<a href='${URLA}/Update/${id}' target="_blank"><i class='fas fa-pen-square'></i>&nbsp;${item.Title}</a>`;
+                }
                 //
-                if (item.KeyID == "Delete")
+                if (item.KeyID == "Delete") {
+                    cnt++;
                     action += `<a onclick="${_controlInit}.ConfirmDelete('${id}')" target="_blank"><i class='fas fa-trash'></i>&nbsp;${item.Title}</a>`;
+                }
                 //
-                if (item.KeyID == "Details")
+                if (item.KeyID == "Details") {
+                    cnt++;
                     action += `<a href='${URLA}/Details/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
+                }
                 //
-                if (item.KeyID == "Profile")
+                if (item.KeyID == "Profile") {
+                    cnt++;
                     action += `<a href='${URLA}/Profile/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
+                }
                 //
-            });
-            action += `</div></div>`;
-            return action;
+            }); 
+
+            if (cnt > 1) {
+                return `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>${action}</div></div>`
+            }
+            else {
+                return action;
+            }
         }
         return "";
     }
