@@ -42,11 +42,6 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult SyncDataTest()
-        {
-            return View();
-        }
-
         public ActionResult Details(string id)
         {
 

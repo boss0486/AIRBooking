@@ -5,9 +5,7 @@ class AjaxFrom {
         _form.dataType = 'json';
         _form.async = true;
         $.ajax(_form).done(function () {
-            setTimeout(function () {
-                Loading.HideLoading();
-            }, 1500);
+           
         });
         //.fail(function () {
         //    console.log('::111111111111' + MessageText.NotService);
@@ -19,6 +17,9 @@ $(document).ajaxStart(function () {
     Loading.ShowLoading();
 }).ajaxStop(function () {
     // 
+    setTimeout(function () {
+        Loading.HideLoading();
+    }, 1500);
 });
 // ************************************************************************************************
 $(document).ready(function () {

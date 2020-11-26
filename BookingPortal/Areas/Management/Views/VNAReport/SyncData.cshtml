@@ -6,7 +6,7 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 @{
-    DateTime start = Convert.ToDateTime("2020-10-01");
+    DateTime start = Convert.ToDateTime("2020-11-24");
     DateTime end = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
     //
     List<DateTime> dateTimes = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).ToList();
@@ -87,47 +87,6 @@
                     return;
                 },
                 error: function (response) {
-                    console.log('::' + MessageText.NotService);
-                }
-            });
-        }
-
-
-        function TestAjax() {
-            //
-            var ddlTimeExpress = 0;
-            var txtStartDate = "";
-            var txtEndDate = "";
-            var model = {
-                Query: "",
-                Page: page,
-                TimeExpress: parseInt(ddlTimeExpress),
-                StartDate: LibDateTime.FormatToServerDate(txtStartDate),
-                EndDate: LibDateTime.FormatToServerDate(txtEndDate),
-                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-                Status: -1
-            };
-            //
-            AjaxFrom.POST({
-                url: '/Management/VNAReport/Action/DataList',
-                data: model,
-                success: function (response) {
-                    if (response !== null) {
-                        if (response.status === 200) {
-                            $(_row).attr("data-state", "1");
-                            $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-check-circle"></i> ` + response.message);
-                            TestAjax();
-                            return;
-                        }
-                        else {
-                            Notifization.Error(response.message);
-                            return;
-                        }
-                    }
-                    Notifization.Error(MessageText.NotService);
-                    return;
-                },
-                error: function (result) {
                     console.log('::' + MessageText.NotService);
                 }
             });
