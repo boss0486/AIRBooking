@@ -28,7 +28,6 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-
         public ActionResult Details(string id)
         {
             BookOrderService bookOrderService = new BookOrderService();
@@ -68,6 +67,28 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
+
+
+
+        // Data ****************************************************************************************************
+        [HttpPost]
+        [Route("Action/BookEmail")]
+        public ActionResult BookEmail(BookOrderIDModel model)
+        {
+            try
+            {
+                using (var service = new BookOrderService()) 
+                    return service.GetPdf(model.ID);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+
+
+        // Data ****************************************************************************************************
 
         [HttpPost]
         [Route("Action/GetPassenger")]

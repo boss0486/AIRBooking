@@ -81,7 +81,7 @@ var AirBookController = {
 
                             var actMail = '';
                             if (mailStatus == 0) {
-                                actMail = `<button type="button" class="btn btn-success btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Email</button>`;
+                                actMail = `<button type="button" class="btn btn-success btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
                             }
                             var _unit = 'đ';
                             //  role
@@ -104,7 +104,7 @@ var AirBookController = {
                                  <td class='tbcol-left'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
                                      ${actMail}
-                                     <button type="button" class="btn btn-danger btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Hủy</button>
+                                     <button type="button" class="btn btn-danger btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Hủy</button>
                                  </td>                                  
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
@@ -1201,3 +1201,32 @@ $(document).on("click", ".btn-passenger", function () {
 //        }
 //    });
 //})
+
+$(document).on("click", ".btn-email", function () {
+    var id = $(this).data("id"); 
+    var model = {
+        ID: id
+    };
+    //
+    AjaxFrom.POST({
+        url: '/Management/AirOrder/Action/BookEmail',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NOTSERVICES);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NOTSERVICES);
+        }
+    });
+})

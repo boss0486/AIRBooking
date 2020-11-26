@@ -76,9 +76,14 @@ namespace WebCore.Core
                 MemberInfo method = type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).Where(m => m.IsDefined(typeof(IsManage), true) && m.Name == actionName).FirstOrDefault();
                 var manage = (IsManage)Attribute.GetCustomAttribute(method, typeof(IsManage));
                 // return for api then -> return action result
-                if (manage != null && manage.Skip)
+                if (manage == null || manage.Skip)
                     return true;
                 //
+
+
+
+
+
                 return false;
             }
             catch (Exception)

@@ -19,13 +19,7 @@ namespace Helper.Email
 
     public class EMailService
     {
-        public static string TestMail(string _to)
-        {
-            string _content = "Test mail";
-            string _subject = "Mail suppost";
-            string status = MailExcuteTest(_to, _subject, _content);
-            return status;
-        }
+ 
         public static int SendOTP_ForGotPassword(string _to, string _subject, string otpCode)
         {
             string _content = "";
@@ -100,7 +94,7 @@ namespace Helper.Email
             //    return -1;
             //}
         }
-        public static string MailExcuteTest(string _to, string _subject, string _content)
+        public static string MailExcuteTest(string _to, string _subject, string _content, string attmPath)
         {
             try
             {
@@ -110,6 +104,10 @@ namespace Helper.Email
                 if (!Helper.Page.Validate.TestEmail(_to))
                     return "0";
 
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(attmPath);
+                msg.Attachments.Add(attachment);
+                //
                 msg.From = new MailAddress(mailModel.From, mailModel.Ident);
                 msg.To.Add(_to);
                 msg.Subject = _subject;

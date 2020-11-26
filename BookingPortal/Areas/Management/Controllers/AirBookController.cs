@@ -104,6 +104,7 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
+        [IsManage(skip: true)]
         public ActionResult Details(string id)
         {
             BookOrderService bookOrderService = new BookOrderService();
@@ -138,6 +139,7 @@ namespace WebApplication.Management.Controllers
             List<ClientOption> dtList = customerService.GetCompanyByLogin();
             return Notifization.Data("", dtList);
         }
+
         [HttpPost]
         [Route("Action/GetCompByAgentID")]
         public ActionResult GetCompByAgentID(BookAgentID bookAgentId)

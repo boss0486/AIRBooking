@@ -219,6 +219,28 @@ namespace Helper.File
                 };
         }
         //
+        public static string SaveFile(string savePath, string id, byte[] _file, DateTime dateTime, string fileName, string siteId, string userId, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
+        {
+            //Save file to system
+            var year = dateTime.Year;
+            var month = dateTime.Month;
+            if (string.IsNullOrWhiteSpace(savePath))
+                return string.Empty;
+            //
+            string fileFolderPath = HttpContext.Current.Server.MapPath(savePath + year + "/" + month + "/");
+            if (!System.IO.Directory.Exists(fileFolderPath))
+                System.IO.Directory.CreateDirectory(fileFolderPath);
+            // 
+            AttachmentService attachmentService = new AttachmentService(dbConnection);
+            Attachment attachment = attachmentService.GetAlls(m => m.ID == id, transaction: dbTransaction).FirstOrDefault();
+            string pathFile = fileFolderPath + "/" + fileName;
+            System.IO.File.WriteAllBytes(pathFile, _file);
+            FileInfo fileInfo = new FileInfo(pathFile);
+            attachment.ContentLength = fileInfo.Length;
+            attachmentService.Update(attachment, transaction: dbTransaction);
+            return id;
+        }
+
         public static string SaveImageFile(string id, Image _inpBitmap, DateTime dateTime, string imgName, System.Drawing.Imaging.ImageFormat imgFormat, string siteId, string userId, IDbTransaction dbTransaction = null, IDbConnection dbConnection = null)
         {
             //Save file to system

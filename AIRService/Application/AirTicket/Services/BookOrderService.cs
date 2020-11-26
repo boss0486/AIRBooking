@@ -2,12 +2,16 @@
 using AL.NetFrame.Services;
 using Dapper;
 using Helper;
+using OfficeOpenXml;
 using PagedList;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using WebCore.Entities;
 using WebCore.Model.Entities;
@@ -93,9 +97,6 @@ namespace WebCore.Services
             // reusult
             return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-
-
-
         public ViewBookOrder ViewBookOrderByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -156,7 +157,6 @@ namespace WebCore.Services
             }
             return result;
         }
-
         public List<BookPassengerResult> ViewBookPassenger(string bookId)
         {
             if (string.IsNullOrWhiteSpace(bookId))
@@ -169,6 +169,79 @@ namespace WebCore.Services
                 return new List<BookPassengerResult>();
             //
             return data;
+        }
+        //
+        public string BookEmail(string bookId)
+        {
+            if (string.IsNullOrWhiteSpace(bookId))
+                return null;
+            //
+            bookId = bookId.Trim().ToLower();
+
+
+
+
+
+
+            return string.Empty;
+        }
+
+        public ActionResult GetPdf(string id)
+        {
+            //// Validate the Model is correct and contains valid data
+            //// Generate your report output based on the model parameters
+            //// This can be an Excel, PDF, Word file - whatever you need.
+
+            //// As an example lets assume we've generated an EPPlus ExcelPackage
+
+            //ExcelPackage workbook = new ExcelPackage();
+            //// Do something to populate your workbook
+            //ExcelWorksheet ws = workbook.Workbook.Worksheets.Add("testsheet");
+            //// Generate a new unique identifier against which the file can be stored
+            //string handle = Guid.NewGuid().ToString();
+
+            //using (MemoryStream memoryStream = new MemoryStream())
+            //{
+            //    ws.Cells["B1"].Value = "Number of Used Agencies";
+            //    ws.Cells["C1"].Value = "Active Agencies";
+            //    ws.Cells["D1"].Value = "Inactive Agencies";
+            //    ws.Cells["E1"].Value = "Total Hours Volunteered";
+            //    ws.Cells["B1:E1"].Style.Font.Bold = true;
+            //    workbook.SaveAs(memoryStream);
+            //    memoryStream.Position = 0;
+            //    // Note we are returning a filename as well as the handle
+
+            //    return new DownLoadTest
+            //    {
+            //        GuidID = handle,
+            //        FileName = "TestReportOutput.xlsx",
+            //        DataFile = memoryStream.ToArray(),
+
+
+            //    };
+            //}
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            // 
+            var converter = new HtmlToPdf();
+
+
+            string urlPage = Helper.Page.WebPage.Domain + "/ExportFile/ExOrder/" + id;
+
+            var doc = converter.ConvertUrl(urlPage);
+            string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
+            var fileName = string.Format("{0}_ticketing.pdf", Guid.NewGuid() + "_1");
+            string pathFile = fileFolderPath + fileName;
+            //List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_ticketing.pdf")).ToList();
+            if (File.Exists(pathFile))
+                File.Delete(pathFile);
+            //
+            doc.Save(pathFile);
+            doc.Close();
+
+            string mailMessage = Helper.Email.EMailService.MailExcuteTest("vietnt.itt@gmail.com", "Thông tin đặt vé", "Đặt vé", pathFile);
+
+            return Notifization.DownLoadFile("ok:" + mailMessage, fileFolderPath);
         }
         //##############################################################################################################################################################################################################################################################
 
@@ -232,6 +305,14 @@ namespace WebCore.Services
                     new StatusModel(1, "Nội địa"),
                     new StatusModel(2, "Quốc tế")
                 };
+        }
+
+
+        public class DownLoadTest
+        {
+            public string GuidID { get; set; }
+            public string FileName { get; set; }
+            public byte[] DataFile { get; set; }
         }
     }
 }

@@ -1,0 +1,40 @@
+﻿@using Helper.Language;
+@using Helper.TimeData;
+@using WebCore.Services
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title </title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <script src="~/_themes/library/script/library.js"></script>
+    @Styles.Render("~/library/css")
+    @Scripts.Render("~/library/jquery")
+    @Styles.Render("~/manage/css")
+    @RenderSection("styles", required: false)
+    <link href="~/_themes/library/css/materialize.css" rel="stylesheet" />
+    <link href="~/_themes/fonts/metarial/material-icon.css" rel="stylesheet" />
+    @{
+        // Get language in client
+        string lgName = Helper.Language.LanguageCode.Vietnamese.Name;
+        string lgCode = Helper.Language.LanguageCode.Vietnamese.ID;
+        Helper.Security.Cookies.SetCookiForLanguage(lgName, lgCode);
+    }
+    @{
+        string currController = Helper.Page.MetaSEO.ControllerText;
+        string currAction = Helper.Page.MetaSEO.ActionText;
+        string userId = Helper.Current.UserLogin.IdentifierID;
+    }
+</head>
+<body>
+    <div class="container-fluid bg-white" style="border:solid 1px #ABDED4">
+       
+            @RenderBody()
+         
+    </div>
+    @Scripts.Render("~/library/js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
