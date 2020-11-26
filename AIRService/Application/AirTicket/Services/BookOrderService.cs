@@ -222,27 +222,28 @@ namespace WebCore.Services
             //}
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.Invalid(MessageText.Invalid);
-            // 
+            //
+
             var converter = new HtmlToPdf();
-
-
-            string urlPage = Helper.Page.WebPage.Domain + "/ExportFile/ExOrder/" + id;
-
-            var doc = converter.ConvertUrl(urlPage);
+            var doc = converter.ConvertUrl("https://localhost:44334/ExportFile/ExOrder/" + id);
             string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
-            var fileName = string.Format("{0}_ticketing.pdf", Guid.NewGuid() + "_1");
-            string pathFile = fileFolderPath + fileName;
-            //List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_ticketing.pdf")).ToList();
+            string pathFile = fileFolderPath + Guid.NewGuid() + ".pdf";
             if (File.Exists(pathFile))
                 File.Delete(pathFile);
             //
             doc.Save(pathFile);
             doc.Close();
+            Helper.Email.EMailService.MailExcuteTest("vietnt.itt@gmail.com", "ABC", "Nội dung", pathFile);
 
-            string mailMessage = Helper.Email.EMailService.MailExcuteTest("vietnt.itt@gmail.com", "Thông tin đặt vé", "Đặt vé", pathFile);
+            //var fileName = string.Format("{0}_ticketing.pdf", Guid.NewGuid() + "_1");
+            //string pathFile = fileFolderPath + fileName;
+            //List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_ticketing.pdf")).ToList();
 
-            return Notifization.DownLoadFile("ok:" + mailMessage, fileFolderPath);
+
+            return Notifization.DownLoadFile("ok", fileFolderPath);
         }
+
+
         //##############################################################################################################################################################################################################################################################
 
         public static string DropdownListBookOrderStatus(int id)
