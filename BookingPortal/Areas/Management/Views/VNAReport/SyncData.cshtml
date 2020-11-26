@@ -6,7 +6,7 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 @{
-    DateTime start = Convert.ToDateTime("2020-11-29");
+    DateTime start = Convert.ToDateTime("2020-03-29");
     DateTime end = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
     //
     List<DateTime> dateTimes = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).ToList();
@@ -78,8 +78,14 @@
                             GetReportAuto();
                             return;
                         }
+                        else if (response.status === 404) {
+                            $(_row).attr("data-state", "1");
+                            $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-danger").html(`<i class="fas fa-check-circle"></i> ` + response.message);
+                            GetReportAuto();
+                            return;
+                        }
                         else {
-                            Notifization.Error(response.message);
+                            Notifization.Error(response.message + 1);
                             return;
                         }
                     }
