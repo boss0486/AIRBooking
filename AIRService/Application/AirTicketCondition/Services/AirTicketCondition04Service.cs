@@ -2,6 +2,7 @@
 using AL.NetFrame.Services;
 using Dapper;
 using Helper;
+using Helper.Language;
 using Helper.TimeData;
 using PagedList;
 using System;

@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Drawing;
 using WebCore.Services;
+using Helper.Language;
 
 namespace Helper.Page
 {
@@ -185,7 +186,7 @@ namespace Helper.Page
         public static bool TestDate(string param, string languageCode = null)
         {
             if (string.IsNullOrWhiteSpace(languageCode))
-                languageCode = Language.LanguageCode.Vietnamese.ID;
+                languageCode = LanguagePage.GetLanguageCode;
             //
             if (languageCode == Language.LanguageCode.Vietnamese.ID)
                 return System.Text.RegularExpressions.Regex.Match(param, RegexDate_DDMMYY).Success;

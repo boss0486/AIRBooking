@@ -23,6 +23,7 @@ using AL.NetFrame.Attributes;
 using AL.NetFrame.Interfaces;
 using AL.NetFrame.Services;
 using System.Threading.Tasks;
+using WebCore.Model.Entities;
 
 namespace APIBooking.VNA.Controllers
 {
@@ -48,11 +49,27 @@ namespace APIBooking.VNA.Controllers
         /// #2. save data
 
         [HttpPost]
+        [Route("Action/EPR-Show")]
+        public ActionResult APIReportDate(SearchModel model)
+        {
+            try
+            {
+                ApiReportService apiReportService = new ApiReportService();
+                return apiReportService.APIReportDate(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+
+        [HttpPost]
         [Route("Action/EPR-Rpdata")]
         public async Task<ActionResult> APIReportDataAsync(APIDailyReportModel model)
         {
             try
-            { 
+            {
                 ApiReportService apiReportService = new ApiReportService();
                 return await apiReportService.APIReportDataAsync(model);
             }
@@ -62,17 +79,6 @@ namespace APIBooking.VNA.Controllers
             }
 
         }
-        [HttpPost]
-        [Route("Action/EPR-test")]
-        public async Task<ActionResult> APIReportTestAsync()
-        {
-            ApiReportService apiReportService = new ApiReportService();
-            var a = await apiReportService.APITest();
-            return Notifization.Data("ok", a);
-        }
-
-
-
 
         //        [HttpPost]
         //        [Route("Action/EPR-ReportClose")]

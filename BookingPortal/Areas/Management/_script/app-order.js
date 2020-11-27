@@ -16,8 +16,6 @@ var AirOrderController = {
         });
     },
     DataList: function (page) {
-        //   
-
         var ddlOrderStatus = $('#ddlOrderStatus').val();
         var ddlItinerary = $('#ddlItinerary').val();
         var ddlAgentID = $('#ddlAgentID').val();
@@ -30,8 +28,8 @@ var AirOrderController = {
             Query: $('#txtQuery').val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
-            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
-            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            StartDate: txtStartDate,
+            EndDate: txtEndDate,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             ItineraryType: 0,
             AgentID: ddlAgentID,

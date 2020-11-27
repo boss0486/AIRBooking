@@ -17,8 +17,8 @@ namespace WebCore.Model.Services
             string whereCondition = string.Empty;
             int status = model.Status;
             int timeExpress = model.TimeExpress;
-            string startDate = model.StartDate;
-            string endDate = model.EndDate;
+            string strTimeStart = model.StartDate;
+            string strTimeEnd = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
             string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
@@ -97,26 +97,27 @@ namespace WebCore.Model.Services
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(startDate))
+                if (!string.IsNullOrWhiteSpace(strTimeStart))
                 {
-                    DateTime dtime = Convert.ToDateTime(startDate);
-                    whereCondition += " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    DateTime dateTimeStart = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeStart);
+                    whereCondition += " AND cast(" + columName + " as Date) >= cast('" + dateTimeStart + "' as Date)";
                 }
                 //
-                if (!string.IsNullOrWhiteSpace(endDate))
+                if (!string.IsNullOrWhiteSpace(strTimeEnd))
                 {
-                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
+
+                    DateTime dateTimeStart = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeStart);
+                    DateTime dateTimeEnd = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeEnd);
+
+                    if (dateTimeStart > dateTimeEnd)
                         return new SearchResult()
                         {
                             Status = -1,
                             Message = "Thời gian kết thúc không hợp lệ"
                         };
                     //
-                    DateTime dtime = Convert.ToDateTime(endDate);
-                    whereCondition += " AND cast("+ columName + " as Date) <= cast('" + dtime + "' as Date)";
+                    whereCondition += " AND cast(" + columName + " as Date) <= cast('" + dateTimeEnd + "' as Date)";
                 }
-
-
                 //
                 if (status == (int)ModelEnum.Enabled.ENABLED)
                     whereCondition += " AND Enabled = 1 ";
@@ -259,7 +260,7 @@ namespace WebCore.Model.Services
             }
             return result;
         }
-        
+
         public static string ViewActiveState(bool state)
         {
             string result = string.Empty;

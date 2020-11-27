@@ -85,8 +85,8 @@ var TransactionSpendingController = {
             Query: $('#txtQuery').val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
-            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
-            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            StartDate: txtStartDate,
+            EndDate: txtEndDate,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             Status: parseInt($('#ddlStatus').val())
         };

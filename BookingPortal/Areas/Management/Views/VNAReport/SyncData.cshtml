@@ -6,12 +6,33 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 @{
-    DateTime start = Convert.ToDateTime("2020-03-29");
+    DateTime start = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
     DateTime end = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
     //
     List<DateTime> dateTimes = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).ToList();
 }
-
+<div class="row" data-keyenter="#btnSearch">
+    <div class="col-md-4">
+        <div class="form-group ">
+            <div class="input-daterange input-group" id="datepicker">
+                <input type="text" class="form-control" id="txtStartDate" data-date="true" placeholder="dd-mm-yyyy" value="" />
+                <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
+                <input type="text" class="form-control" id="txtEndDate" data-date="true" placeholder="dd-mm-yyyy" value="" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <button id="btnShowData" class="btn btn-primary w-100">&nbsp; Hiển thị &nbsp;</button>
+        </div>
+    </div>
+    <div class="col-md-2 col-md-offset-4">
+        <div class="form-group ">
+            <button id="btnGetReport" class="btn btn-danger w-100">&nbsp; Xử lý &nbsp;</button>
+        </div>
+    </div>
+</div>
+@*search control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -28,7 +49,6 @@
                 foreach (DateTime item in dateTimes)
                 {
                     string strDate = Helper.TimeData.TimeFormat.FormatToViewDate(item, Helper.Language.LanguagePage.GetLanguageCode);
-
                     <tr class="row_data" data-state="0" data-dreport="@item.ToString("yyyy-MM-dd")">
                         <td class="text-right">@cnt</td>
                         <td class="text-right">@strDate</td>
@@ -40,24 +60,75 @@
         </tbody>
     </table>
 </div>
-<div class="form-group text-right">
-    <button id="btnGetReport" class="btn btn-primary">&nbsp; Xử lý &nbsp;</button>
-</div>
 <hr />
 
 
 @section scripts{
     <script type="text/javascript">
+        $(document).on("click", "#btnShowData", function () {
+            $("table tbody#TblData").html("");
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            var model = {
+                Query: "",
+                Page: 1,
+                TimeExpress: 0,
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            // 
+            AjaxFrom.POST({
+                url: '/APIBooking/Report/Action/EPR-Show',
+                data: model,
+                success: function (response) {
+                    if (response !== null) {
+                        if (response.status === 200) {
+                            $.each(response.data, function (index, item) {
+                                var rowData = `
+                                         <tr class="row_data" data-state="0" data-dreport="${item}">
+                                            <td class="text-right">${index + 1}</td>
+                                            <td class="text-right">${item}</td>
+                                            <td class="bg-danger rp-status">-</td>
+                                         </tr>`
+                                $("table tbody#TblData").append(rowData);
+                            })
+                            return;
+                        }
+                        else {
+                            Notifization.Error(response.message);
+                            return;
+                        }
+                    }
+                    Notifization.Error(MessageText.NotService);
+                    return;
+                },
+                error: function (response) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
         $(document).on("click", "#btnGetReport", function () {
+            var data = $("table tbody#TblData").html();
+            if (data == null || data == "") {
+                Notifization.Error("Không tìm thấy dữ liệu");
+                return;
+            }
             GetReportAuto();
         });
         function GetReportAuto() {
+            var data = $("table tbody#TblData").html();
+            if (data == null || data == "") {
+                Notifization.Error("Không tìm thấy dữ liệu");
+                return;
+            }
+            //
             var _row = $('table tbody#TblData tr[data-state="0"]').first();
             $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-spinner"></i> Đang xử lý`);
             var dtDate = $(_row).data("dreport");
             console.log("::" + dtDate);
             if (dtDate == null || dtDate == "") {
-                Notifization.Error("Data is completed!");
+                Notifization.Error("Đã hoàn thành");
                 return;
             }
             //

@@ -1,5 +1,6 @@
 ﻿
 using Dapper;
+using Helper.Language;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -216,7 +217,7 @@ namespace Helper.TimeData
 
             }
         }
-        public static string FormatToServerDateTime(DateTime dtime, string ext = null)
+        public static string FormatToServerDateTime(DateTime dtime)
         {
             try
             {
@@ -230,44 +231,41 @@ namespace Helper.TimeData
         }
         public static DateTime FormatToServerDateTime(string dtime, string languageCode)
         {
-            try
+
+            if (!string.IsNullOrWhiteSpace(dtime))
             {
-                if (!string.IsNullOrWhiteSpace(dtime))
+                dtime = dtime.Trim();
+                string[] arrDtime = dtime.Split(' ');
+                if (arrDtime.Length == 0) 
+                    return DateTime.Now;
+                //
+                string arrDate = arrDtime[0];
+                string arrTime = string.Empty;
+                if (arrDtime.Length > 1)
+                    arrTime = arrDtime[1];
+                // date
+                if (languageCode == Helper.Language.LanguageCode.Vietnamese.ID)
                 {
-                    dtime = dtime.Trim();
-                    string[] arrDtime = dtime.Split(' ');
-                    //
-                    string arrDate = arrDtime[0];
-                    string arrTime = arrDtime[1];
-                    // date
-                    if (languageCode == Helper.Language.LanguageCode.Vietnamese.ID)
+                    if (arrDate.Contains('-'))
                     {
-                        if (arrDate.Contains('-'))
-                        {
-                            string[] arrtime = arrDate.Split('-');
-                            string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
-                            return Convert.ToDateTime(dateTime);
-                        }
-                        if (arrDate.Contains('/'))
-                        {
-                            string[] arrtime = arrDate.Split('/');
-                            string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
-                            return Convert.ToDateTime(dateTime);
-                        }
+                        string[] arrtime = arrDate.Split('-');
+                        string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                        return Convert.ToDateTime(dateTime);
                     }
-                    else
+                    if (arrDate.Contains('/'))
                     {
-                        return Convert.ToDateTime(dtime);
+                        string[] arrtime = arrDate.Split('/');
+                        string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                        return Convert.ToDateTime(dateTime);
                     }
-
                 }
-                return DateTime.Now;
+                else
+                {
+                    return Convert.ToDateTime(dtime);
+                }
 
             }
-            catch (Exception)
-            {
-                return DateTime.Now;
-            }
+            return DateTime.Now;
         }
         public static string FormatToServerDate(DateTime dtime)
         {
@@ -286,20 +284,28 @@ namespace Helper.TimeData
         {
             if (!string.IsNullOrWhiteSpace(dtime))
             {
-                dtime = dtime.Trim();
-                if (dtime.Contains('-'))
+                if (LanguagePage.GetLanguageCode == Helper.Language.LanguageCode.Vietnamese.ID)
                 {
-                    string[] arrtime = dtime.Split('-');
-                    string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                    return Convert.ToDateTime(date);
+                    dtime = dtime.Trim();
+                    if (dtime.Contains('-'))
+                    {
+                        string[] arrtime = dtime.Split('-');
+                        string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
+                        return Convert.ToDateTime(date);
+                    }
+                    if (dtime.Contains('/'))
+                    {
+                        dtime = dtime.Replace("/", "-");
+                        string[] arrtime = dtime.Split('-');
+                        string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
+                        return Convert.ToDateTime(date);
+                    }
                 }
-                if (dtime.Contains('/'))
+                else
                 {
-                    dtime = dtime.Replace("/", "-");
-                    string[] arrtime = dtime.Split('-');
-                    string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                    return Convert.ToDateTime(date);
+                    return Convert.ToDateTime(dtime);
                 }
+
             }
             // 19-05-2019
             return DateTime.Now;

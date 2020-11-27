@@ -22,8 +22,8 @@ var VNAReportController = {
             Query: $('#txtQuery').val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
-            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
-            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            StartDate: txtStartDate,
+            EndDate: txtEndDate,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             Status: -1
         };
@@ -99,8 +99,8 @@ var VNAReportController = {
             Query: $('#txtQuery').val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
-            StartDate: LibDateTime.FormatToServerDate(txtStartDate),
-            EndDate: LibDateTime.FormatToServerDate(txtEndDate),
+            StartDate: txtStartDate,
+            EndDate: txtEndDate,
             CurrentStatus: currentStatus,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };

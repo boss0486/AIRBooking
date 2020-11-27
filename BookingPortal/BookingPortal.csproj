@@ -282,9 +282,6 @@
     <Content Include="Pages\not-found.html" />
     <Content Include="Pages\maintaince.html" />
     <Content Include="Pages\not-service.html" />
-    <Content Include="Team\XMLFile1.xml" />
-    <Content Include="Team\XMLFile2.xml" />
-    <Content Include="Team\XMLFile3.xml" />
     <Content Include="WS\Xml\ClearSession.xml" />
     <Content Include="WS\Xml\DetailsRQ.xml" />
     <Content Include="WS\Xml\Common.xml" />
@@ -1010,6 +1007,7 @@
     <Folder Include="Files\Export\Order\" />
     <Folder Include="Files\Upload\news\" />
     <Folder Include="Files\Upload\product\" />
+    <Folder Include="Team\" />
     <Folder Include="_themes\fontend\js\" />
     <Folder Include="_themes\manage\images\image-gallery\thumb\" />
     <Folder Include="_themes\manage\plugins\ckeditor\adapters\" />

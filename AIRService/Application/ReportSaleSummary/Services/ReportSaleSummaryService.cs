@@ -223,8 +223,8 @@ namespace WebCore.Services
             string whereCondition = string.Empty;
             int status = model.Status;
             int timeExpress = model.TimeExpress;
-            string startDate = model.StartDate;
-            string endDate = model.EndDate;
+            string strTimeStart = model.StartDate;
+            string strTimeEnd = model.EndDate;
             string timeZoneLocal = model.TimeZoneLocal;
             //
             string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
@@ -316,29 +316,26 @@ namespace WebCore.Services
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(startDate))
+                if (!string.IsNullOrWhiteSpace(strTimeStart))
                 {
-                    DateTime dtime = Convert.ToDateTime(startDate);
+                    DateTime dateTimeStart = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeStart);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dateTimeStart + "' as Date)";
                     //
-                    whereCondition += " AND ( cast(" + columName1 + " as Date) >= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition += " AND ( cast(" + columName1 + " as Date) >= cast('" + dateTimeStart + "' as Date) " + whereConditionSub1 + ")";
                 }
                 //
-                if (!string.IsNullOrWhiteSpace(endDate))
+                if (!string.IsNullOrWhiteSpace(strTimeEnd))
                 {
-                    if (Convert.ToDateTime(endDate) < Convert.ToDateTime(startDate))
-                        return new SearchResult()
-                        {
-                            Status = -1,
-                            Message = "Thời gian kết thúc không hợp lệ"
-                        };
+                    DateTime dateTimeStart = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeStart);
+                    DateTime dateTimeEnd = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeEnd);
+                    if (dateTimeStart > dateTimeEnd)
+                        return new SearchResult() { Status = -1, Message = "Thời gian kết thúc không hợp lệ" };
                     //
-                    DateTime dtime = Convert.ToDateTime(endDate);
                     if (!string.IsNullOrWhiteSpace(columName2))
-                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dtime + "' as Date)";
+                        whereConditionSub1 = " OR cast(" + columName2 + " as Date) = cast('" + dateTimeEnd + "' as Date)";
                     //
-                    whereCondition += " AND ( cast(" + columName1 + " as Date) <= cast('" + dtime + "' as Date) " + whereConditionSub1 + ")";
+                    whereCondition += " AND ( cast(" + columName1 + " as Date) <= cast('" + dateTimeEnd + "' as Date) " + whereConditionSub1 + ")";
                 }
                 //
                 return new SearchResult()

@@ -1020,7 +1020,104 @@ namespace AIRService.WS.Service
             }
 
         }
+        // ***************************************************************************************************************************************************
+        public List<XMLObject.ReportSaleSummay.GetTicketingDocumentRS> GetTicketingDocumentGroup(List<string> docNumbers, TransactionModel transactionModel = null)
+        {
+            List<XMLObject.ReportSaleSummay.GetTicketingDocumentRS> vna_ReportSaleSummaryTicketingDocuments = new List<XMLObject.ReportSaleSummay.GetTicketingDocumentRS>();
+            if (docNumbers.Count() == 0)
+                return vna_ReportSaleSummaryTicketingDocuments;
+            // 
+            docNumbers = docNumbers.OrderBy(m => m).ToList();
+            //
+            List<string> docs = new List<string>();
+            List<string> docsIsCompleted = new List<string>();
+            int _cnt = 1;
+            foreach (var item in docNumbers)
+            {
+                docs.Add(item);
+                if (_cnt % 4 == 0)
+                {
+                    vna_ReportSaleSummaryTicketingDocuments.Add(GetTicketingDocument(docs, transactionModel));
+                    docsIsCompleted.AddRange(docs);
+                    docs = new List<string>();
+                }
+                _cnt++;
+            }
+            //
+            docsIsCompleted = docNumbers.Except(docsIsCompleted).ToList();
+            if (docsIsCompleted.ToList().Count > 0)
+            {
+                vna_ReportSaleSummaryTicketingDocuments.Add(GetTicketingDocument(docsIsCompleted, transactionModel));
+            }
+            //
+            return vna_ReportSaleSummaryTicketingDocuments;
+        }
+        public XMLObject.ReportSaleSummay.GetTicketingDocumentRS GetTicketingDocument(List<string> docNumbers, TransactionModel transactionModel = null)
+        {
+            VNA_SessionService sessionService = null;
+            if (docNumbers.Count() == 0)
+                return new XMLObject.ReportSaleSummay.GetTicketingDocumentRS();
+            //
+            TokenModel tokenModel = null;
+            if (transactionModel != null)
+                tokenModel = transactionModel.TokenModel;
+            else
+            {
+                sessionService = new VNA_SessionService(tokenModel);
+                tokenModel = VNA_AuthencationService.GetSession();
+            }
+            HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+            soapEnvelopeXml.Load(path);
+            soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+            soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "TicketingDocumentServicesRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "TicketingDocumentServicesRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = tokenModel.Token;
+            soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = tokenModel.ConversationID;
+            XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+            var stringXML = "";
+            stringXML += "<GetTicketingDocumentRQ Version='3.12.0' xmlns='http://www.sabre.com/ns/Ticketing/DC'>";
+            stringXML += "    <ns1:STL_Header.RQ xmlns:ns1='http://services.sabre.com/STL/v01' />";
+            stringXML += "    <ns2:POS xmlns:ns2='http://services.sabre.com/STL/v01' />";
+            stringXML += "    <SearchParameters>";
+            stringXML += "        <TicketingProvider>VN</TicketingProvider>";
+            //
+            foreach (var item in docNumbers)
+                stringXML += "        <DocumentNumber>" + item + "</DocumentNumber>";
+            //
+            stringXML += "    </SearchParameters>";
+            stringXML += "</GetTicketingDocumentRQ>";
+            child.InnerXml = stringXML;
+            soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+            using (Stream stream = request.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                {
+                    string soapResult = rd.ReadToEnd();
+                    soapEnvelopeXml = new XmlDocument();
+                    soapEnvelopeXml.LoadXml(soapResult);
+                    //
+                    //XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
+                    XMLObject.ReportSaleSummay.GetTicketingDocumentRS getTicketingDocumentRS = new XMLObject.ReportSaleSummay.GetTicketingDocumentRS();
+                    XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("GetTicketingDocumentRS")[0];
+                    if (xmlnode != null)
+                        getTicketingDocumentRS = XMLHelper.Deserialize<XMLObject.ReportSaleSummay.GetTicketingDocumentRS>(xmlnode.InnerXml);
+                    // 
+                    if (getTicketingDocumentRS == null)
+                        return new XMLObject.ReportSaleSummay.GetTicketingDocumentRS();
+                    //
+                    return getTicketingDocumentRS;
+                }
+            }
 
+        }
+
+        // ***************************************************************************************************************************************************
     }
     public class EmployeeNumber
     {

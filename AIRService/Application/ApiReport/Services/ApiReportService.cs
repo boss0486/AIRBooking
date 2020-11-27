@@ -32,6 +32,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web.Helpers;
 using AIRService.WebService.VNA.Authen;
+using Helper.Language;
+using Helper.TimeData;
 
 namespace WebCore.Services
 {
@@ -49,15 +51,18 @@ namespace WebCore.Services
             //
             string userName = model.UserName;
             string password = model.Password;
-            string rpDate = model.ReportDate;
+            string _rpDate = model.ReportDate;
 
-            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(rpDate))
-                return Notifization.Invalid(MessageText.Invalid);
-            //
             APIAuthenModel aPIAuthen = new APIAuthenModel();
             if (aPIAuthen.UserName != userName && aPIAuthen.Password != password)
                 return Notifization.Invalid(MessageText.AccessDenied);
+
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(_rpDate))
+                return Notifization.Invalid(MessageText.Invalid);
             //
+            if (!Helper.Page.Validate.TestDate(_rpDate))
+                return Notifization.Invalid(MessageText.Invalid);
+
             // var _conn = DbConnect.Connection.CMS;
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -66,20 +71,19 @@ namespace WebCore.Services
                 {
                     // check report
                     VNA_TKT_AsrService vna_TKT_AsrService = new VNA_TKT_AsrService();
-                    DateTime reportDate = Convert.ToDateTime(rpDate);
+                    DateTime dateTimeReport = Helper.TimeData.TimeFormat.FormatToServerDate(_rpDate);
                     // delete old report
                     ReportSaleSummaryService reportSaleSummaryService = new ReportSaleSummaryService(_connection);
-                    string sqlQuery = @"SELECT DocumentNumber FROM App_ReportSaleSummary WHERE cast(ReportDate as Date) = cast('" + reportDate + "' as Date)";
-                    List<string> lstDocmummentNumber = reportSaleSummaryService.Query<string>(sqlQuery, new { ReportDate = reportDate }, transaction: _transaction).ToList();
+                    string sqlQuery = @"SELECT DocumentNumber FROM App_ReportSaleSummary WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)";
+                    List<string> lstDocmummentNumber = reportSaleSummaryService.Query<string>(sqlQuery, new { ReportDate = dateTimeReport }, transaction: _transaction).ToList();
                     if (lstDocmummentNumber.Count > 0)
                     {
-                        reportSaleSummaryService.Execute("DELETE App_ReportSaleSummary WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Coupon WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Amount WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Taxes WHERE ReportDate = @ReportDate AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", new { ReportDate = reportDate }, transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportSaleSummary WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Coupon WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Amount WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Taxes WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
                     }
                     // 
-
                     TokenModel tokenModel = VNA_AuthencationService.GetSession();
                     using (var sessionService = new VNA_SessionService(tokenModel))
                     {
@@ -96,7 +100,7 @@ namespace WebCore.Services
                         {
                             Token = tokenModel.Token,
                             ConversationID = tokenModel.ConversationID,
-                            ReportDate = reportDate
+                            ReportDate = dateTimeReport
                         };
                         // 
                         var empData = vna_TKT_AsrService.GetEmployeeNumber(empReportModel);
@@ -108,8 +112,8 @@ namespace WebCore.Services
                             string empNumber = employee.IssuingAgentEmployeeNumber;
                             VNA_ReportSaleSummaryResult reportSaleSummaryResult = await vna_TKT_AsrService.ReportSaleSummaryReportAsync(new VNA_ReportModel
                             {
-                                ReportDate = reportDate,
-                                EmpNumber = empNumber
+                                ReportDate = dateTimeReport,
+                                EmpNumber = empNumber,
                             }, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
                             //get tickketing
                             List<string> docummentNunberForDetails = new List<string>();
@@ -121,7 +125,6 @@ namespace WebCore.Services
                                     foreach (var itemTrans in reportSaleSummaryTransactions)
                                     {
                                         // save sale summary
-
                                         App_ReportSaleSummarySSFopService reportTransactionSSFopService = new App_ReportSaleSummarySSFopService(_connection);
                                         string reportTransactionId = reportSaleSummaryService.Create<string>(new ReportSaleSummary
                                         {
@@ -137,7 +140,7 @@ namespace WebCore.Services
                                             DecoupleItem = itemTrans.DecoupleItem,
                                             TicketStatusCode = itemTrans.TicketStatusCode,
                                             IsElectronicTicket = itemTrans.IsElectronicTicket,
-                                            ReportDate = reportDate
+                                            ReportDate = dateTimeReport
                                         }, transaction: _transaction);
                                         ApiPortalBooking.Models.VNA_WS_Model.ReportSaleSummaryTransactionSSFop ePRReportTransactionSSFop = itemTrans.SaleSummaryTransactionSSFop;
                                         if (ePRReportTransactionSSFop != null)
@@ -152,81 +155,78 @@ namespace WebCore.Services
                                                 TotalAmount = ePRReportTransactionSSFop.TotalAmount,
                                             }, transaction: _transaction);
                                         }
-                                        // save tiketting with  documment type value = tkt
-                                        string docummentNumber = itemTrans.DocumentNumber;
-                                        if (itemTrans.DocumentType == ("TKT") && !string.IsNullOrWhiteSpace(docummentNumber))
+                                    }
+                                    // group doc 
+                                    List<string> docList = reportSaleSummaryTransactions.Where(m => m.DocumentType == "TKT").Select(m => m.DocumentNumber).ToList();
+                                    VNA_TKT_AsrService asrService = new VNA_TKT_AsrService();
+                                    List<XMLObject.ReportSaleSummay.GetTicketingDocumentRS> getTicketingDocumentRs = asrService.GetTicketingDocumentGroup(docList, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
+                                    // **************************************************************************************************************************************************************
+                                    if (getTicketingDocumentRs == null)
+                                        return Notifization.NotFound(MessageText.NotFound);
+                                    //
+                                    ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
+                                    ReportTicketingDocumentAmountService reportTicketingDocumentAmountService = new ReportTicketingDocumentAmountService(_connection);
+                                    ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
+
+                                    foreach (var itemTicketingDocument in getTicketingDocumentRs)
+                                    {
+                                        List<XMLObject.ReportSaleSummay.Details> details = itemTicketingDocument.Details;
+                                        if (details == null)
+                                            continue;
+                                        //
+                                        foreach (var itemDetail in details)
                                         {
-                                            VNA_ReportSaleSummaryTicketing vna_ReportSaleSummaryTicketing = vna_TKT_AsrService.GetTicketingDocumentByDocNumber(docummentNumber, new TransactionModel { TranactionState = true, TokenModel = tokenModel });
-                                            if (vna_ReportSaleSummaryTicketing != null)
+                                            string docNumber = itemDetail.Ticket.Number;
+                                            XMLObject.ReportSaleSummay.ServiceCoupon serviceCoupon = itemDetail.Ticket.ServiceCoupon;
+                                            reportTicketingDocumentCouponService.Create<string>(new ReportTicketingDocumentCoupon
                                             {
-                                                List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = vna_ReportSaleSummaryTicketing.SaleSummaryTicketingDocument;
-                                                VNA_ReportSaleSummaryTicketingDocumentAmount vna_ReportSaleSummaryTicketingDocumentAmount = vna_ReportSaleSummaryTicketing.SaleSummaryTicketingDocumentAmount;
-                                                List<VNA_ReportSaleSummaryTicketingDocumentTaxes> vna_ReportSaleSummaryTicketingDocumentTaxes = vna_ReportSaleSummaryTicketing.SaleSummaryTicketingDocumentTaxes;
-                                                //
-                                                if (vna_ReportSaleSummaryTicketingDocuments != null && vna_ReportSaleSummaryTicketingDocuments.Count > 0)
+                                                ReportDate = dateTimeReport,
+                                                DocumentNumber = docNumber,
+                                                MarketingFlightNumber = serviceCoupon.MarketingFlightNumber.Text,
+                                                ClassOfService = serviceCoupon.ClassOfService.Text,
+                                                FareBasis = serviceCoupon.FareBasis.Text,
+                                                StartLocation = serviceCoupon.StartLocation.Text,
+                                                EndLocation = serviceCoupon.EndLocation.Text,
+                                                StartDateTime = serviceCoupon.StartDateTime.Text,
+                                                EndDateTime = serviceCoupon.EndDateTime.Text,
+                                                BookingStatus = serviceCoupon.BookingStatus.Text,
+                                                CurrentStatus = serviceCoupon.CurrentStatus.Text,
+                                                SystemDateTime = itemDetail.TransactionInfo.SystemDateTime.Text,
+                                                FlownCoupon_DepartureDateTime = itemDetail.Ticket.ServiceCoupon.FlownCoupon.DepartureDateTime.Text
+                                            }, transaction: _transaction);
+                                            //
+                                            XMLObject.ReportSaleSummay.Amounts amount = itemDetail.Ticket.Amounts;
+                                            reportTicketingDocumentAmountService.Create<string>(new ReportTicketingDocumentAmount
+                                            {
+                                                ReportDate = dateTimeReport,
+                                                DocumentNumber = docNumber,
+                                                BaseAmount = Convert.ToDouble(amount.New.Base.Amount.Text),
+                                                Unit = amount.New.Base.Amount.CurrencyCode,
+                                                TotalTax = Convert.ToDouble(amount.New.TotalTax.Amount.Text),
+                                                Total = Convert.ToDouble(amount.New.Total.Amount.Text),
+                                                NonRefundable = Convert.ToDouble(amount.Other.NonRefundable.Amount.Text),
+                                            }, transaction: _transaction);
+                                            //
+                                            List<XMLObject.ReportSaleSummay.Tax> taxes = itemDetail.Ticket.Taxes.New.Tax;
+                                            foreach (var itemTax in taxes)
+                                            {
+                                                reportTicketingDocumentTaxes.Create<string>(new ReportTicketingDocumentTaxes
                                                 {
-                                                    ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
-                                                    foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
-                                                    {
-                                                        reportTicketingDocumentCouponService.Create<string>(new ReportTicketingDocumentCoupon
-                                                        {
-                                                            ReportDate = reportDate,
-                                                            DocumentNumber = docummentNumber,
-                                                            MarketingFlightNumber = item.MarketingFlightNumber,
-                                                            ClassOfService = item.ClassOfService,
-                                                            FareBasis = item.FareBasis,
-                                                            StartLocation = item.StartLocation,
-                                                            EndLocation = item.EndLocation,
-                                                            StartDateTime = item.StartDateTime,
-                                                            EndDateTime = item.EndDateTime,
-                                                            BookingStatus = item.BookingStatus,
-                                                            CurrentStatus = item.CurrentStatus,
-                                                            SystemDateTime = item.SystemDateTime,
-                                                            FlownCoupon_DepartureDateTime = item.FlownCoupon_DepartureDateTime
-                                                        }, transaction: _transaction);
-                                                    }
-                                                }
-                                                //
-                                                if (vna_ReportSaleSummaryTicketingDocumentAmount != null)
-                                                {
-                                                    ReportTicketingDocumentAmountService reportTicketingDocumentAmountService = new ReportTicketingDocumentAmountService(_connection);
-                                                    string unit = vna_ReportSaleSummaryTicketingDocumentAmount.Unit;
-                                                    double baseAmount = vna_ReportSaleSummaryTicketingDocumentAmount.BaseAmount;
-                                                    double totalTax = vna_ReportSaleSummaryTicketingDocumentAmount.TotalTax;
-                                                    double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
-                                                    double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
-                                                    //
-                                                    reportTicketingDocumentAmountService.Create<string>(new ReportTicketingDocumentAmount
-                                                    {
-                                                        ReportDate = reportDate,
-                                                        DocumentNumber = docummentNumber,
-                                                        BaseAmount = baseAmount,
-                                                        TotalTax = totalTax,
-                                                        Total = total,
-                                                        NonRefundable = nonRefundable,
-                                                        Unit = unit
-                                                    }, transaction: _transaction);
-                                                }
-                                                //
-                                                if (vna_ReportSaleSummaryTicketingDocumentTaxes != null && vna_ReportSaleSummaryTicketingDocumentTaxes.Count > 0)
-                                                {
-                                                    ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
-                                                    foreach (var item in vna_ReportSaleSummaryTicketingDocumentTaxes)
-                                                    {
-                                                        reportTicketingDocumentTaxes.Create<string>(new ReportTicketingDocumentTaxes
-                                                        {
-                                                            ReportDate = reportDate,
-                                                            DocumentNumber = docummentNumber,
-                                                            TaxCode = item.TaxCode,
-                                                            Amount = item.Amount,
-                                                            Unit = item.Unit
-                                                        }, transaction: _transaction);
-                                                    }
-                                                }
+                                                    ReportDate = dateTimeReport,
+                                                    DocumentNumber = docNumber,
+                                                    TaxCode = itemTax.Code,
+                                                    Amount = Convert.ToDouble(itemTax.Amount),
+                                                    Unit = itemTax.Amount.CurrencyCode
+                                                }, transaction: _transaction);
                                             }
                                         }
-
                                     }
+
+
+
+
+
+
                                 }
                             }
                         }
@@ -243,50 +243,29 @@ namespace WebCore.Services
             }
         }
 
-
-
-
-        public async Task<ActionResult> APITest()
+        public ActionResult APIReportDate(SearchModel model)
         {
-            try
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string _startDate = model.StartDate;
+            string _endDate = model.EndDate;
+            DateTime dateTimeStart = TimeFormat.FormatToServerDateTime(_startDate, LanguagePage.GetLanguageCode);
+            DateTime dateTimeEnd = TimeFormat.FormatToServerDateTime(_endDate, LanguagePage.GetLanguageCode);
+            if (dateTimeEnd < dateTimeStart)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            if (dateTimeEnd > Convert.ToDateTime(TimeHelper.GetDateTime))
+                return Notifization.Invalid("T.gian kết thúc phải < t.gian hiện tại");
+            //
+            List<DateTime> dateTimes = Enumerable.Range(0, 1 + dateTimeEnd.Subtract(dateTimeStart).Days).Select(offset => dateTimeStart.AddDays(offset)).ToList();
+            List<string> result = new List<string>();
+            //
+            foreach (var item in dateTimes)
             {
-
-
-                string reportDate = "2020-09-22";
-                // Update port # in the following line.
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                // var param = "{'UserName': 'api-booking','Password': '***********', 'ReportDate': '" + reportDate + "' }";
-
-                APIDailyReportModel apiDailyReportModel = new APIDailyReportModel
-                {
-                    UserName = "api-booking",
-                    Password = "***********",
-                    ReportDate = reportDate,
-                };
-                var param = JsonConvert.SerializeObject(apiDailyReportModel);
-                client.BaseAddress = new Uri("https://localhost:44334/");
-                HttpContent httpContent = new StringContent(param, UTF8Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("/APIBooking/Report/Action/EPR-Rpdata", httpContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    var a = response.Content.ReadAsStringAsync().Result;
-
-                    return Notifization.Data("OK" + Convert.ToString(response.Content.ReadAsStringAsync().Result), null);
-
-                    //string httpResponse = httpResponseMessage.Content.ReadAsStringAsync().Result;
-                    // return Notifization.Data("OK" + response.Content.ReadAsStringAsync().Result, null);
-                }
-                return Notifization.TEST("::111" + response.IsSuccessStatusCode);
-
+                result.Add(TimeFormat.FormatToViewDate(item, LanguagePage.GetLanguageCode));
             }
-            catch (Exception ex)
-            {
-
-                return Notifization.TEST("::" + ex);
-
-            }
+            return Notifization.Data(MessageText.Success, result);
         }
 
         //public async Task<string> APITest()
