@@ -149,11 +149,8 @@ namespace WebCore.Services
                     //return Notifization.TEST(":::" + Helper.Current.UserLogin.IdentifierID.ToLower());
                     string currentUserId = Helper.Current.UserLogin.IdentifierID;
                     UserService userService = new UserService(_connection);
-
-                    bool customerLoginStatus = userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction);
-                    bool supplierLoginStatus = userService.IsSupplierLogged(currentUserId, dbConnection: _connection, _transaction);
                     string suppId = string.Empty;
-
+                    
                     if (!string.IsNullOrWhiteSpace(supplierId))
                     {
                         var customer1 = customerService.GetAlls(m => m.ID == supplierId, transaction: _transaction).FirstOrDefault();
@@ -167,7 +164,9 @@ namespace WebCore.Services
                         else
                             path = customer1.Path;
                         //
-
+                        if (!string.IsNullOrWhiteSpace(customer1.ParentID) && model.TypeID == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                            return Notifization.Invalid("Cấp đại lý đã đạt giới hạn");
+                        //
                     }
                     else
                     {
@@ -175,18 +174,6 @@ namespace WebCore.Services
                             return Notifization.Invalid("Loại khách hàng không hợp lệ");
                         //
                     }
-
-
-
-
-                    // CHECK CREATE AGENT *************************************************************
-                    // 1.neu phai admin, admin app, nha cung cap, khach hang se ko dc tao khach hang
-                    // 1.neu la khach hang ko dc tao them dai ly, chỉ dc tạo comp
-                    if (string.is)
-                        return Notifization.Invalid("Không thể tạo khách hàng");
-                    // 
-                    if (Helper.Current.UserLogin.IsCustomerLogged() && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
-                        return Notifization.Invalid("Không thể tạo đại lý");
                     //
                     if (string.IsNullOrWhiteSpace(codeId))
                         return Notifization.Invalid("Không được để trống mã khách hàng");
@@ -281,23 +268,15 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     //
-                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                    if (string.IsNullOrWhiteSpace(supplierId) && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
-                    }
-                    else
-                    {
-                        depositAmount = 0;
-                    }
+                    } 
                     // 
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
-                    //
-                    //var supplier1 = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
-                    //if (supplier1 != null)
-                    //    return Notifization.Invalid("Mã khách hàng đã được sử dụng");
-
+                    // 
                     var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (customer != null)
                         return Notifization.Invalid("Mã khách hàng đã được sử dụng");
