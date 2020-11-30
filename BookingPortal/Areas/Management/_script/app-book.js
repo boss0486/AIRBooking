@@ -25,9 +25,14 @@ var AirBookController = {
         var ddlItinerary = $('#ddlItinerary').val();
         var ddlAgentID = $('#ddlAgentID').val();
         var ddlCompanyID = $('#ddlCompanyID').val();
+        var ddlContactType = $('#ddlContactType').val();
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
         var txtEndDate = $('#txtEndDate').val();
+        //
+        if (ddlContactType == "") {
+            ddlContactType = -1;
+        }
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
@@ -37,7 +42,8 @@ var AirBookController = {
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             ItineraryType: parseInt(ddlItinerary),
             AgentID: ddlAgentID,
-            CompanyID: ddlCompanyID
+            CompanyID: ddlCompanyID,
+            ContactType: ddlContactType
         };
         //
         AjaxFrom.POST({
@@ -1203,7 +1209,7 @@ $(document).on("click", ".btn-passenger", function () {
 //})
 
 $(document).on("click", ".btn-email", function () {
-    var id = $(this).data("id"); 
+    var id = $(this).data("id");
     var model = {
         ID: id
     };

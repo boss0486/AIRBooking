@@ -156,7 +156,6 @@
     <Compile Include="Areas\Management\Controllers\PermissionController.cs" />
     <Compile Include="Areas\Management\Controllers\ReportController.cs" />
     <Compile Include="Areas\Management\Controllers\RoleController.cs" />
-    <Compile Include="Areas\Management\Controllers\SupplierController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionCustomerSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
@@ -836,10 +835,6 @@
     <Content Include="Areas\Management\Views\Role\DataList.cshtml" />
     <Content Include="Areas\Management\Views\Role\Details.cshtml" />
     <Content Include="Areas\Management\Views\Role\Update.cshtml" />
-    <Content Include="Areas\Management\Views\Supplier\Create.cshtml" />
-    <Content Include="Areas\Management\Views\Supplier\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\Supplier\Details.cshtml" />
-    <Content Include="Areas\Management\Views\Supplier\Update.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDeposit\Create.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDeposit\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />

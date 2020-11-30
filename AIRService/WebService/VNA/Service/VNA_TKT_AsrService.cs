@@ -1104,7 +1104,7 @@ namespace AIRService.WS.Service
                     //
                     //XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-report-document.xml", soapEnvelopeXml);
                     XMLObject.ReportSaleSummay.GetTicketingDocumentRS getTicketingDocumentRS = new XMLObject.ReportSaleSummay.GetTicketingDocumentRS();
-                    XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("GetTicketingDocumentRS")[0];
+                    XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0]; 
                     if (xmlnode != null)
                         getTicketingDocumentRS = XMLHelper.Deserialize<XMLObject.ReportSaleSummay.GetTicketingDocumentRS>(xmlnode.InnerXml);
                     // 

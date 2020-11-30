@@ -166,6 +166,12 @@
         "Title": "C.tiết"
       },
       {
+        "KeyID": "SyncData",
+        "Method": "SyncData",
+        "APIRouter": "",
+        "Title": "Đồng bộ"
+      },
+      {
         "KeyID": "Search",
         "Method": "Search",
         "APIRouter": "Action/EPR-Search",

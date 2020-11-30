@@ -470,19 +470,24 @@ namespace WebCore.Services
         {
             try
             {
-                using (var service = new AccountService())
+                if (string.IsNullOrWhiteSpace(id))
+                    return null;
+                //
+                if (Helper.Current.UserLogin.IsCMSUser)
                 {
-                    _connection.Open();
-                    if (string.IsNullOrWhiteSpace(id))
+                    string sqlQueryCMS = @"SELECT TOP (1) * FROM View_CMSUser WHERE ID = @ID ";
+                    var dataCMS = _connection.Query<UserResult>(sqlQueryCMS, new { ID = id }).FirstOrDefault();
+                    if (dataCMS == null)
                         return null;
                     //
-                    string sqlQuery = @"SELECT TOP (1) * FROM View_User WHERE ID = @ID";
-                    var data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
-                    if (data == null)
-                        return null;
-                    //
-                    return data;
+                    return dataCMS;
                 }
+                string sqlQuery = @"SELECT TOP (1) * FROM View_User WHERE ID = @ID";
+                var data = _connection.Query<UserResult>(sqlQuery, new { ID = id }).FirstOrDefault();
+                if (data == null)
+                    return null;
+                //
+                return data;
             }
             catch
             {

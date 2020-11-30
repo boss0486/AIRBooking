@@ -196,12 +196,12 @@ namespace WebCore.Services
                     }
                     else
                     {
-                        SupplierService supplierService = new SupplierService();
-                        Supplier supplier = supplierService.GetAlls(m => m.ID == senderId).FirstOrDefault();
-                        if (supplier == null)
-                            return Notifization.Invalid("Nhà cung cấp không xác định");
+                        //SupplierService supplierService = new SupplierService();
+                        //Supplier supplier = supplierService.GetAlls(m => m.ID == senderId).FirstOrDefault();
+                        //if (supplier == null)
                     }
                     //
+                    return Notifization.Invalid("Nhà cung cấp không xác định");
                     CustomerService customerService = new CustomerService();
                     Customer customer = customerService.GetAlls(m => m.ID == receivedId).FirstOrDefault();
                     if (customer == null)

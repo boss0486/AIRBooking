@@ -160,8 +160,9 @@ namespace WebApplication.Management.Controllers
         [HttpPost]
         [Route("Action/GetCustomer-By-SuplierID")]
         [IsManage(skip: true)]
-        public ActionResult GetCustomerBySuplierID(SupplierIDModel model)
+        public ActionResult GetCustomerBySuplierID(CustomerIDModel model)
         {
+            return Notifization.TEST("::");
             try
             {
                 var service = new CustomerService();

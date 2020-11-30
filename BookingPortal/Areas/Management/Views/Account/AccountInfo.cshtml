@@ -36,7 +36,11 @@
         languageId = Model.LanguageID;
         createdBy = Model.CreatedBy;
         createdDate = Model.CreatedDate;
-        imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+
+        byte[] imgByte = Helper.File.AttachmentFile.ImageToByte(Helper.Security.Library.GenerateQRCode(id));
+        imageFile = Convert.ToBase64String(imgByte);
+
+
         //
         if (Model.IsBlock)
         {
@@ -75,8 +79,8 @@
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin Card/ID:</label>
         </div>
         <div class="form-group">
-            <div style="padding:10px 0px;">
-                <img src="@imageFile" class="img-responsive" style="width: 220px;height: 220px;border: solid 10px #d9e4d6;color: #F00;background: #F00;" />
+            <div style="width: 220px;height: 220px;border: solid 10px #d9e4d6;">
+                <img src="data:image/png;base64, @imageFile" class="img-responsive" />
             </div>
             <br />
             <label class="form-label">ID: <b style="color:#F00; text-transform:uppercase;">@id</b></label>

@@ -48,17 +48,8 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
         private string _supplierId;
-        public string SupplierID
-        {
-            get
-            {
-                return SupplierService.GetSupplierName(_supplierId);
-            }
-            set
-            {
-                _supplierId = value;
-            }
-        }
+        public string SupplierID { get; set; }
+
         private string _typeId;
         public string TypeID
         {

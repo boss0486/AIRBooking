@@ -415,9 +415,6 @@
     <Compile Include="Module\ServicePack\Entities\ServicePackCategory.cs" />
     <Compile Include="Module\ServicePack\Services\ServicePackCategoryService.cs" />
     <Compile Include="Module\ServicePack\Services\ServicePackService.cs" />
-    <Compile Include="Application\Supplier\Entities\Supplier.cs" />
-    <Compile Include="Application\Supplier\Enum\SupplierEnum.cs" />
-    <Compile Include="Application\Supplier\Services\SupplierService.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionDeposit.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionCustomerSpending.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionUserSpending.cs" />

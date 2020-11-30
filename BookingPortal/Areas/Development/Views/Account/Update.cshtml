@@ -35,13 +35,13 @@
             loginId = Model.LoginID;
             fullName = Model.FullName;
             nickname = Model.Nickname;
-            birthday = TimeFormat.FormatToDate(Convert.ToDateTime(Model.Birthday), LanguagePage.GetLanguageCode);
+            birthday = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.Birthday), LanguagePage.GetLanguageCode);
             email = Model.Email;
             phone = Model.Phone;
             address = Model.Address;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
+            createdDate = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.CreatedDate), LanguagePage.GetLanguageCode);
             imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
             //
             if (Model.IsBlock)
@@ -54,9 +54,6 @@
                 enabled = "checked";
             }
         }
-
-
-
         <div class="row">
             <div class="col-md-4">
                 <div class="top-pic special">

@@ -119,7 +119,7 @@ namespace Helper.Security
         }
 
         //
-        public Bitmap GenerateQRCode(string text)
+        public static Bitmap GenerateQRCode(string text)
         {
             try
             {

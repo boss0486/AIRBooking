@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using WebCore.Entities;
 
 namespace Helper.Email
 {
@@ -19,7 +20,7 @@ namespace Helper.Email
 
     public class EMailService
     {
- 
+
         public static int SendOTP_ForGotPassword(string _to, string _subject, string otpCode)
         {
             string _content = "";
@@ -62,7 +63,7 @@ namespace Helper.Email
             int status = MailExcute(_to, _subject, _content);
             return status;
         }
-        public static int MailExcute(string _to, string _subject, string _content)
+        public static int MailExcute(string _to, string _subject, string _content, string attmPath = null, string siteId = null)
         {
             //try
             //{
@@ -70,7 +71,12 @@ namespace Helper.Email
             EmailModel mailModel = new EmailModel();
             if (!Helper.Page.Validate.TestEmail(_to))
                 return 0;
-
+            //
+            if (!string.IsNullOrWhiteSpace(attmPath))
+            {
+                System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+                msg.Attachments.Add(attachment);
+            }
             msg.From = new MailAddress(mailModel.From, mailModel.Ident);
             msg.To.Add(_to);
             msg.Subject = _subject;
@@ -86,6 +92,36 @@ namespace Helper.Email
                 Credentials = new NetworkCredential(mailModel.From, mailModel.Password),
                 Timeout = 20000
             };
+            // contact
+            if (!string.IsNullOrWhiteSpace(siteId))
+            {
+                WebCore.Services.CustomerService customerService = new WebCore.Services.CustomerService();
+                Customer customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
+                string title = string.Empty;
+                string address = string.Empty;
+                string phone = string.Empty;
+                string email = string.Empty;
+                if (customer != null)
+                {
+                    title = customer.Title;
+                    address = customer.Address;
+                    phone = customer.ContactPhone;
+                    email = customer.ContactEmail;
+                }
+                _content += "<div style='width:100%;background-color:#ff017e;padding:15px 20px;color:#fff'>";
+                _content += "    <p style='margin:0px'>";
+                _content += "        <a style='font-weight:bold;text-decoration:none;color:#fff'>";
+                _content += "            <strong style='text-transform:uppercase;font-size:14px'>Phòng vé: " + title + "  </strong></a>";
+                _content += "    </p>";
+                _content += "    <p style='margin:0px'> - ĐC: " + address + ". <br> - ĐT: " + phone + "Email: " + email + " </p><br>";
+                _content += "</div>";
+            }
+            else
+            {
+                //
+
+            }
+
             smtp.Send(msg);
             return 1;
             //}
@@ -94,6 +130,9 @@ namespace Helper.Email
             //    return -1;
             //}
         }
+
+
+
         public static string MailExcuteTest(string _to, string _subject, string _content, string attmPath)
         {
             try
@@ -103,9 +142,8 @@ namespace Helper.Email
 
                 if (!Helper.Page.Validate.TestEmail(_to))
                     return "0";
-
-                System.Net.Mail.Attachment attachment;
-                attachment = new System.Net.Mail.Attachment(attmPath);
+                // 
+                System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
                 msg.Attachments.Add(attachment);
                 //
                 msg.From = new MailAddress(mailModel.From, mailModel.Ident);
@@ -123,6 +161,9 @@ namespace Helper.Email
                     Credentials = new NetworkCredential(mailModel.From, mailModel.Password),
                     Timeout = 20000
                 };
+
+
+
                 smtp.Send(msg);
                 return "1";
             }

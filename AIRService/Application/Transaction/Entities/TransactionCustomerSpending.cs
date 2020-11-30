@@ -56,13 +56,8 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public string SupplierID { get; set; }
         [NotMapped]
-        public string SupplierCodeID
-        {
-            get
-            {
-                return SupplierService.GetSupplierCodeID(SupplierID);
-            }
-        }
+        public string SupplierCodeID { get; set; }
+ 
         public string SupplierUserID { get; set; }
         public string CustomerID { get; set; }
         [NotMapped]

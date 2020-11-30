@@ -156,24 +156,6 @@ namespace WebCore.Services
             }
             if (result.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
-
-            //
-            List<string> docList = result.Select(m => m.DocumentNumber).ToList();
-            List<AirPassengerReult> rs = new List<AirPassengerReult>();
-            VNA_TKT_AsrService asrService = new VNA_TKT_AsrService();
-            List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = asrService.GetTicketingDocumentStatusGroup(docList);
-            if (vna_ReportSaleSummaryTicketingDocuments.Count() > 0)
-            {
-                foreach (var item in result)
-                {
-                    VNA_ReportSaleSummaryTicketingDocument vna_ReportSaleSummaryTicketingDocument = vna_ReportSaleSummaryTicketingDocuments.Find(m => Convert.ToDateTime(m.StartDateTime) == Convert.ToDateTime(item.StartDateTime) && Convert.ToDateTime(m.EndDateTime) == Convert.ToDateTime(item.EndDateTime) && m.StartLocation == item.StartLocation && m.EndLocation == item.EndLocation);
-                    if (vna_ReportSaleSummaryTicketingDocument != null)
-                    {
-                        item.BookingStatus = vna_ReportSaleSummaryTicketingDocument.BookingStatus;
-                        item.CurrentStatus = vna_ReportSaleSummaryTicketingDocument.CurrentStatus;
-                    }
-                }
-            }
             //
             Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
             {

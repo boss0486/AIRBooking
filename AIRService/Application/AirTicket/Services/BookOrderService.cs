@@ -70,8 +70,13 @@ namespace WebCore.Services
             string compId = model.CompanyID;
             if (!string.IsNullOrWhiteSpace(compId))
                 whereCondition += " AND c.CompanyID = @CompanyID";
+            // query        
+
+            int contactType = model.ContactType;
+            if (contactType != -1)
+                whereCondition += " AND c.ContactType = " + contactType + " ";
             // query
-            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode  
+            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode
             FROM App_BookOrder as o LEFT JOIN App_BookContact as c ON c.BookOrderID = o.ID
             WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%')  
             " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
@@ -125,16 +130,16 @@ namespace WebCore.Services
             //
             return data;
         }
-        public static string ViewOrderCustomerType(int state)
+        public static string ViewOrderContactType(int state)
         {
             string result = string.Empty;
             switch (state)
             {
                 case 1:
-                    result = "Khách lẻ";
+                    result = "Công ty";
                     break;
                 case 2:
-                    result = "Công ty";
+                    result = "Khách lẻ";
                     break;
                 default:
                     break;

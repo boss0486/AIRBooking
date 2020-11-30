@@ -140,7 +140,6 @@ namespace WebCore.Services
 
                     string path = string.Empty;
                     CustomerService customerService = new CustomerService(_connection);
-                    SupplierService supplierService = new SupplierService(_connection);
 
                     string alias = Helper.Page.Library.FormatToUni2NONE(title);
                     if (model == null)
@@ -149,57 +148,41 @@ namespace WebCore.Services
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     //return Notifization.TEST(":::" + Helper.Current.UserLogin.IdentifierID.ToLower());
                     string currentUserId = Helper.Current.UserLogin.IdentifierID;
-                    var userService = new UserService();
+                    UserService userService = new UserService(_connection);
 
                     bool customerLoginStatus = userService.IsCustomerLogged(currentUserId, dbConnection: _connection, _transaction);
                     bool supplierLoginStatus = userService.IsSupplierLogged(currentUserId, dbConnection: _connection, _transaction);
                     string suppId = string.Empty;
-                    if (customerLoginStatus)
+
+                    if (!string.IsNullOrWhiteSpace(supplierId))
                     {
-                        var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).FirstOrDefault();
-                        if (client == null)
-                            return Notifization.Invalid("Không thể xác định nhà cung cấp 01");
-                        //
-                        var customer1 = customerService.GetAlls(m => m.ID == client.ClientID, transaction: _transaction).FirstOrDefault();
+                        var customer1 = customerService.GetAlls(m => m.ID == supplierId, transaction: _transaction).FirstOrDefault();
                         if (customer1 == null)
-                            return Notifization.Invalid("Không thể xác định nhà cung cấp 02");
+                            return Notifization.Invalid("Đại lý cung cấp không hợp lệ");
                         //
-                        supplierId = customer1.SupplierID;
                         parentId = customer1.ID;
                         // path
                         if (string.IsNullOrWhiteSpace(customer1.Path))
                             path = customer1.ID;
                         else
                             path = customer1.Path;
-                    }
-                    else if (supplierLoginStatus)
-                    {
-                        var client = clientLoginService.GetAlls(m => m.UserID == currentUserId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, transaction: _transaction).FirstOrDefault();
-                        if (client == null)
-                            return Notifization.Invalid("Không thể xác định nhà cung cấp 03");
                         //
-                        var supplier = supplierService.GetAlls(m => m.ID == client.ClientID, transaction: _transaction).FirstOrDefault();
-                        if (supplier == null)
-                            return Notifization.Invalid("Không thể xác định nhà cung cấp 04");
-                        //
-                        supplierId = supplier.ID;
+
                     }
                     else
                     {
-                        if (string.IsNullOrWhiteSpace(supplierId))
-                            return Notifization.Invalid("Vui lòng chọn nhà cung cấp 05");
-                        //
-                        supplierId = supplierId.Trim().ToLower();
-                        //
-                        var supplier = supplierService.GetAlls(m => m.ID == supplierId, transaction: _transaction).FirstOrDefault();
-                        if (supplier == null)
-                            return Notifization.Invalid("Không thể xác định nhà cung cấp 06");
+                        if (model.TypeID == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.COMP))
+                            return Notifization.Invalid("Loại khách hàng không hợp lệ");
                         //
                     }
+
+
+
+
                     // CHECK CREATE AGENT *************************************************************
                     // 1.neu phai admin, admin app, nha cung cap, khach hang se ko dc tao khach hang
                     // 1.neu la khach hang ko dc tao them dai ly, chỉ dc tạo comp
-                    if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
+                    if (string.is)
                         return Notifization.Invalid("Không thể tạo khách hàng");
                     // 
                     if (Helper.Current.UserLogin.IsCustomerLogged() && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
@@ -311,9 +294,9 @@ namespace WebCore.Services
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
                     //
-                    var supplier1 = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
-                    if (supplier1 != null)
-                        return Notifization.Invalid("Mã khách hàng đã được sử dụng");
+                    //var supplier1 = supplierService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
+                    //if (supplier1 != null)
+                    //    return Notifization.Invalid("Mã khách hàng đã được sử dụng");
 
                     var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (customer != null)
@@ -644,7 +627,7 @@ namespace WebCore.Services
         }
 
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(SupplierIDModel model)
+        public ActionResult Delete(CustomerIDModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -721,64 +704,64 @@ namespace WebCore.Services
                 }
             }
         }
-        public ActionResult Delete(CustomerIDModel model)
-        {
-            _connection.Open();
-            using (var _transaction = _connection.BeginTransaction())
-            {
-                try
-                {
-                    if (model == null)
-                        return Notifization.Error(MessageText.Invalid);
-                    //
-                    string id = model.ID.ToLower();
-                    CustomerService customerService = new CustomerService(_connection);
-                    var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
-                    if (customer == null)
-                        return Notifization.NotFound();
-                    // get all user
-                    ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ClientID) && m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).ToList();
-                    if (clientLogin.Count == 0)
-                        return Notifization.Error(MessageText.Invalid);
-                    //
-                    string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
-                    var userResult = _connection.Query<UserResult>(sqlQuery, transaction: _transaction).ToList();
-                    if (userResult.Count == 0)
-                        return Notifization.Error(MessageText.Invalid);
-                    // check data reference
-                    // #1. Customer
-                    string sqlCustomer = @"SELECT ID FROM App_Customer WHERE ParentID = @ParentID";
-                    var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { ParentID = id }, transaction: _transaction).ToList();
-                    if (customerId.Count > 0)
-                        return Notifization.Error("Vui lòng xóa tất cả các khách hàng trước");
-                    //
-                    // get all file
-                    List<string> lstImgFile = userResult.Select(m => m.ImageFile).ToList();
-                    if (lstImgFile.Count > 0)
-                    {
-                        foreach (var item in lstImgFile)
-                        {
-                            AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
-                        }
-                    }
-                    _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Customer }, transaction: _transaction);
-                    //
-                    _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-                    //
-                    customerService.Remove(id, transaction: _transaction);
-                    _transaction.Commit();
-                    return Notifization.Success(MessageText.DeleteSuccess);
-                }
-                catch (Exception ex)
-                {
-                    _transaction.Rollback();
-                    return Notifization.TEST("::" + ex);
-                }
-            }
-        }
+        //public ActionResult Delete(CustomerIDModel model)
+        //{
+        //    _connection.Open();
+        //    using (var _transaction = _connection.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            if (model == null)
+        //                return Notifization.Error(MessageText.Invalid);
+        //            //
+        //            string id = model.ID.ToLower();
+        //            CustomerService customerService = new CustomerService(_connection);
+        //            var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
+        //            if (customer == null)
+        //                return Notifization.NotFound();
+        //            // get all user
+        //            ClientLoginService clientLoginService = new ClientLoginService(_connection);
+        //            var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ClientID) && m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).ToList();
+        //            if (clientLogin.Count == 0)
+        //                return Notifization.Error(MessageText.Invalid);
+        //            //
+        //            string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
+        //            var userResult = _connection.Query<UserResult>(sqlQuery, transaction: _transaction).ToList();
+        //            if (userResult.Count == 0)
+        //                return Notifization.Error(MessageText.Invalid);
+        //            // check data reference
+        //            // #1. Customer
+        //            string sqlCustomer = @"SELECT ID FROM App_Customer WHERE ParentID = @ParentID";
+        //            var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { ParentID = id }, transaction: _transaction).ToList();
+        //            if (customerId.Count > 0)
+        //                return Notifization.Error("Vui lòng xóa tất cả các khách hàng trước");
+        //            //
+        //            // get all file
+        //            List<string> lstImgFile = userResult.Select(m => m.ImageFile).ToList();
+        //            if (lstImgFile.Count > 0)
+        //            {
+        //                foreach (var item in lstImgFile)
+        //                {
+        //                    AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
+        //                }
+        //            }
+        //            _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Customer }, transaction: _transaction);
+        //            //
+        //            _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+        //            _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+        //            _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
+        //            //
+        //            customerService.Remove(id, transaction: _transaction);
+        //            _transaction.Commit();
+        //            return Notifization.Success(MessageText.DeleteSuccess);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            _transaction.Rollback();
+        //            return Notifization.TEST("::" + ex);
+        //        }
+        //    }
+        //}
         //##############################################################################################################################################################################################################################################################
         public List<ClientOption> GetAgentData()
         {

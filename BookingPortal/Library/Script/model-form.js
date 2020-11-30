@@ -177,7 +177,7 @@ class RoleEnum {
 }
 
 class PassengerGroupEnum {
-    static KhachLe = 1;
-    static Company = 2;
+    static Company = 1;
+    static KhachLe = 2;
 }
 

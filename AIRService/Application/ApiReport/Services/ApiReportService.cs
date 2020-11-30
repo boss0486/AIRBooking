@@ -74,14 +74,18 @@ namespace WebCore.Services
                     DateTime dateTimeReport = Helper.TimeData.TimeFormat.FormatToServerDate(_rpDate);
                     // delete old report
                     ReportSaleSummaryService reportSaleSummaryService = new ReportSaleSummaryService(_connection);
+                    App_ReportSaleSummarySSFopService reportTransactionSSFopService = new App_ReportSaleSummarySSFopService(_connection);
+                    ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
+                    ReportTicketingDocumentAmountService reportTicketingDocumentAmountService = new ReportTicketingDocumentAmountService(_connection);
+                    ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
                     string sqlQuery = @"SELECT DocumentNumber FROM App_ReportSaleSummary WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)";
                     List<string> lstDocmummentNumber = reportSaleSummaryService.Query<string>(sqlQuery, new { ReportDate = dateTimeReport }, transaction: _transaction).ToList();
                     if (lstDocmummentNumber.Count > 0)
                     {
                         reportSaleSummaryService.Execute("DELETE App_ReportSaleSummary WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)", transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Coupon WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Amount WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
-                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Taxes WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date) AND DocumentNumber IN ('" + String.Join("','", lstDocmummentNumber) + "')", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Coupon WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Amount WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)", transaction: _transaction);
+                        reportSaleSummaryService.Execute("DELETE App_ReportTicketingDocument_Taxes WHERE cast(ReportDate as Date) = cast('" + dateTimeReport + "' as Date)", transaction: _transaction);
                     }
                     // 
                     TokenModel tokenModel = VNA_AuthencationService.GetSession();
@@ -125,7 +129,6 @@ namespace WebCore.Services
                                     foreach (var itemTrans in reportSaleSummaryTransactions)
                                     {
                                         // save sale summary
-                                        App_ReportSaleSummarySSFopService reportTransactionSSFopService = new App_ReportSaleSummarySSFopService(_connection);
                                         string reportTransactionId = reportSaleSummaryService.Create<string>(new ReportSaleSummary
                                         {
                                             Title = empNumber,
@@ -163,11 +166,7 @@ namespace WebCore.Services
                                     // **************************************************************************************************************************************************************
                                     if (getTicketingDocumentRs == null)
                                         return Notifization.NotFound(MessageText.NotFound);
-                                    //
-                                    ReportTicketingDocumentCouponService reportTicketingDocumentCouponService = new ReportTicketingDocumentCouponService(_connection);
-                                    ReportTicketingDocumentAmountService reportTicketingDocumentAmountService = new ReportTicketingDocumentAmountService(_connection);
-                                    ReportTicketingDocumentTaxesService reportTicketingDocumentTaxes = new ReportTicketingDocumentTaxesService(_connection);
-
+                                    // 
                                     foreach (var itemTicketingDocument in getTicketingDocumentRs)
                                     {
                                         List<XMLObject.ReportSaleSummay.Details> details = itemTicketingDocument.Details;
@@ -178,6 +177,10 @@ namespace WebCore.Services
                                         {
                                             string docNumber = itemDetail.Ticket.Number;
                                             XMLObject.ReportSaleSummay.ServiceCoupon serviceCoupon = itemDetail.Ticket.ServiceCoupon;
+                                            string departureDateTime = string.Empty;
+                                            if (itemDetail.Ticket.ServiceCoupon.FlownCoupon != null)
+                                                departureDateTime = itemDetail.Ticket.ServiceCoupon.FlownCoupon.DepartureDateTime.Text;
+                                            //
                                             reportTicketingDocumentCouponService.Create<string>(new ReportTicketingDocumentCoupon
                                             {
                                                 ReportDate = dateTimeReport,
@@ -192,41 +195,57 @@ namespace WebCore.Services
                                                 BookingStatus = serviceCoupon.BookingStatus.Text,
                                                 CurrentStatus = serviceCoupon.CurrentStatus.Text,
                                                 SystemDateTime = itemDetail.TransactionInfo.SystemDateTime.Text,
-                                                FlownCoupon_DepartureDateTime = itemDetail.Ticket.ServiceCoupon.FlownCoupon.DepartureDateTime.Text
+                                                FlownCoupon_DepartureDateTime = departureDateTime
                                             }, transaction: _transaction);
                                             //
                                             XMLObject.ReportSaleSummay.Amounts amount = itemDetail.Ticket.Amounts;
+
+                                            double baseAmount = 0;
+                                            double totalTax = 0;
+                                            double total = 0;
+                                            double nonRefundable = 0;
+
+                                            if (amount.New.Base != null)
+                                                baseAmount = Convert.ToDouble(amount.New.Base.Amount.Text);
+                                            //
+                                            if (amount.New.TotalTax != null)
+                                                totalTax = Convert.ToDouble(amount.New.TotalTax.Amount.Text);
+                                            //
+                                            if (amount.New.Total != null)
+                                                total = Convert.ToDouble(amount.New.Total.Amount.Text);
+                                            //
+                                            if (amount.Other != null && amount.Other.NonRefundable != null)
+                                                nonRefundable = Convert.ToDouble(amount.Other.NonRefundable.Amount.Text);
+                                            //  
                                             reportTicketingDocumentAmountService.Create<string>(new ReportTicketingDocumentAmount
                                             {
                                                 ReportDate = dateTimeReport,
                                                 DocumentNumber = docNumber,
-                                                BaseAmount = Convert.ToDouble(amount.New.Base.Amount.Text),
+                                                BaseAmount = baseAmount,
                                                 Unit = amount.New.Base.Amount.CurrencyCode,
-                                                TotalTax = Convert.ToDouble(amount.New.TotalTax.Amount.Text),
-                                                Total = Convert.ToDouble(amount.New.Total.Amount.Text),
-                                                NonRefundable = Convert.ToDouble(amount.Other.NonRefundable.Amount.Text),
+                                                TotalTax = totalTax,
+                                                Total = total,
+                                                NonRefundable = nonRefundable,
                                             }, transaction: _transaction);
                                             //
                                             List<XMLObject.ReportSaleSummay.Tax> taxes = itemDetail.Ticket.Taxes.New.Tax;
                                             foreach (var itemTax in taxes)
                                             {
+                                                double amountTax = 0;
+                                                if (itemTax.Amount != null)
+                                                    amountTax = Convert.ToDouble(itemTax.Amount.Text);
+                                                //
                                                 reportTicketingDocumentTaxes.Create<string>(new ReportTicketingDocumentTaxes
                                                 {
                                                     ReportDate = dateTimeReport,
                                                     DocumentNumber = docNumber,
                                                     TaxCode = itemTax.Code,
-                                                    Amount = Convert.ToDouble(itemTax.Amount),
+                                                    Amount = amountTax,
                                                     Unit = itemTax.Amount.CurrencyCode
                                                 }, transaction: _transaction);
                                             }
                                         }
                                     }
-
-
-
-
-
-
                                 }
                             }
                         }

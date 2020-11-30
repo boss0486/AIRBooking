@@ -29,15 +29,7 @@ var CustomerController = {
 
             var txtDeposit = $('#txtDeposit').val();
             var txtTermPayment = $('#txtTermPayment').val();
-            //
-            if (ddlSupplier != undefined && ddlSupplier === "") {
-                $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
-                flg = false;
-            }
-            else {
-                $('#lblSupplier').html('');
-            }
-            //
+            // 
             if (ddlCustomerType === "") {
                 $('#lblCustomerType').html('Vui lòng chọn loại khách hàng');
                 flg = false;
@@ -819,15 +811,9 @@ var CustomerController = {
 CustomerController.init();
 
 $(document).on("change", "#ddlSupplier", function () {
-    var ddlSupplier = $(this).val();
-    if (ddlSupplier === "") {
-        $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
-    }
-    else {
-        $('#lblSupplier').html('');
-        var codeid = $(this).find(':selected').data('codeid');
-        $('#lblSupplierCodeID').html(codeid);
-    }
+    $('#lblSupplier').html('');
+    var codeid = $(this).find(':selected').data('codeid');
+    $('#lblSupplierCodeID').html(codeid);
 });
 
 $(document).on("change", "#ddlCustomerType", function () {
@@ -1099,18 +1085,18 @@ $(document).on("change", "input[name='rdoClientType']", function () {
     }
 });
 
-$(document).on("change", "#ddlSupplier", function () {
-    $("#lblSupplier").html("");
-    $('#lblProviderCodeID').html("");
-    var ddlSupplier = $("#ddlSupplier").val();
-    if (ddlSupplier == "") {
-        $("#lblSupplier").html("Vui lòng chọn nhà cung cấp");
-        return;
-    }
-    var codeid = $(this).find(':selected').data('codeid');
-    $('#lblProviderCodeID').html(codeid);
-    // 
-});
+//$(document).on("change", "#ddlSupplier", function () {
+//    $("#lblSupplier").html("");
+//    $('#lblProviderCodeID').html("");
+//    var ddlSupplier = $("#ddlSupplier").val();
+//    if (ddlSupplier == "") {
+//        $("#lblSupplier").html("Vui lòng chọn nhà cung cấp");
+//        return;
+//    }
+//    var codeid = $(this).find(':selected').data('codeid');
+//    $('#lblProviderCodeID').html(codeid);
+//    // 
+//});
 
 
 function CustomerAgentOption(_id, isdefault, isChangeEvent) {

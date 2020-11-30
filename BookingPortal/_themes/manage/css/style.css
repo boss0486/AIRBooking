@@ -19,10 +19,20 @@
     outline: none;
 }
 
+html, body {
+    transition: all 0.5s;
+    font-family: 'Roboto', sans-serif, monospace;
+    font-size: 13.5px;
+    color: #033248;
+    font-weight: 300;
+    letter-spacing: 0;
+    outline: none;
+}
+
 a {
     text-decoration: none;
     outline: none;
-    cursor:pointer;
+    cursor: pointer;
 }
 
     a:hover, a:active, a:focus {
@@ -3070,13 +3080,6 @@ span {
     }
 }
 
-/* General ===================================== */
-html, body {
-    transition: all 0.5s;
-    font-family: "Roboto", sans-serif;
-    background: #F5F5F5;
-}
-
 /* Dashboard =================================== */
 .dashboard-flot-chart {
     height: 275px;
@@ -3111,16 +3114,7 @@ html, body {
     top: 6px;
 }
 
-/* Buttons ===================================== */
-.btn {
-    border-radius: 0;
-    height: 32px;
-}
 
-    .btn:focus {
-        outline: 0;
-        box-shadow: unset;
-    }
 /* Bootstrap Tags Input ======================== */
 .bootstrap-tagsinput {
     -webkit-box-shadow: none !important;
@@ -4971,9 +4965,18 @@ html, body {
 
     .modal .modal-header .close {
         position: absolute;
-        right: 20px;
-        top: 10px;
+        right: 5px;
+        top: 5px;
+        width: 28px;
+        margin-top: 0;
+        opacity: 01;
+        font-size: inherit;
     }
+
+        .modal .modal-header .close span {
+            font-size: 21px;
+            line-height: 0.6;
+        }
 
 .modal .modal-content {
     position: relative;
@@ -5505,29 +5508,6 @@ input[type=checkbox].checkbox_1:checked + label.checkbox_1:before {
     -ms-border-radius: 0;
     border-radius: 0;
     margin-bottom: 0;
-}
-
-/* button ====================================== */
-button, .btn {
-    outline: 0 !important;
-}
-
-    .btn:active, .btn.active {
-        background-image: none;
-        outline: 0;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
-
-.btn-group.open .dropdown-toggle {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-@media only screen and (max-width: 768px) {
-    .main-content [class*="col-"]:not(td) button, .main-content [class*="col-"]:not(td) .btn {
-        width: 100%;
-    }
 }
 /* Tables ====================================== */
 
@@ -9926,6 +9906,96 @@ th, td .none {
     text-decoration: none;
     background-color: #007bff;
 }
+/* Buttons ===================================== */
+button, .btn {
+    border-radius: 0;
+    height: 32px;
+    outline: 0 !important;
+}
+
+    .button:active, .btn:active, .button.active, .btn.active {
+        background-image: none;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+.btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 0px;
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content [class*="col-"]:not(td) button, .main-content [class*="col-"]:not(td) .btn {
+        width: 100%;
+    }
+}
+
+.btn-green {
+    color: #fff;
+    background-color: #009688;
+    border-color: #028a7d;
+}
+
+    .btn-green:focus,
+    .btn-green.focus {
+        color: #fff;
+        background-color: #028a7d;
+        border-color: #02766b;
+    }
+
+    .btn-green:hover {
+        color: #fff;
+        background-color: #028a7d;
+        border-color: #02766b;
+    }
+
+    .btn-green:active,
+    .btn-green.active,
+    .open > .dropdown-toggle.btn-green {
+        color: #fff;
+        background-image: none;
+        background-color: #028a7d;
+        border-color: #02766b;
+    }
+
+        .btn-green:active:hover,
+        .btn-green.active:hover,
+        .open > .dropdown-toggle.btn-green:hover,
+        .btn-green:active:focus,
+        .btn-green.active:focus,
+        .open > .dropdown-toggle.btn-green:focus,
+        .btn-green:active.focus,
+        .btn-green.active.focus,
+        .open > .dropdown-toggle.btn-green.focus {
+            color: #fff;
+            background-color: #028a7d;
+            border-color: #02766b;
+        }
+
+    .btn-green.disabled:hover,
+    .btn-green[disabled]:hover,
+    fieldset[disabled] .btn-green:hover,
+    .btn-green.disabled:focus,
+    .btn-green[disabled]:focus,
+    fieldset[disabled] .btn-green:focus,
+    .btn-green.disabled.focus,
+    .btn-green[disabled].focus,
+    fieldset[disabled] .btn-green.focus {
+        background-color: #028a7d;
+        border-color: #02766b;
+    }
+
+    .btn-green .badge {
+        color: #337ab7;
+        background-color: #fff;
+    }
 
 
 .w-50 {
