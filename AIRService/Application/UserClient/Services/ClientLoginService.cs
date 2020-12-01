@@ -90,37 +90,7 @@ namespace WebCore.Services
             }
         }
 
-
-        public static string DropdownAllProvider(string id,  bool showCode = false)
-        {
-            string result = string.Empty;
-            using (var service = new CustomerService())
-            {
-                ClientLoginService clientLoginService = new ClientLoginService();
-                List<ClientProviderOption> dtList = clientLoginService.GetAllProvider();
-                if (dtList.Count > 0)
-                {
-                    foreach (var item in dtList)
-                    {
-                        string strSelect = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                            strSelect = "selected";
-                        //else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
-                        //    strSelect = "selected";
-                        //
-                        string title = item.Title;
-                        if (showCode)
-                        {
-                            title = item.CodeID;
-                        }
-                        result += "<option value='" + item.ID + "' data-codeid ='" + item.CodeID + "' data-isSupplier='" + item.IsSupplier + "' " + strSelect + ">" + title + "</option>";
-                    }
-                }
-                return result;
-            }
-        }
-
- 
+         
         //##############################################################################################################################################################################################################################################################
 
     }

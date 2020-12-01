@@ -171,6 +171,8 @@
     <Compile Include="Application\AirFilght\Services\AirportService.cs" />
     <Compile Include="Application\ApiReport\Entities\ApiReport.cs" />
     <Compile Include="Application\ApiReport\Services\ApiReportService.cs" />
+    <Compile Include="Application\Airline\Entities\Airline.cs" />
+    <Compile Include="Application\Airline\Services\AirlineService.cs" />
     <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingLimitHistory.cs" />
     <Compile Include="Application\History\Entities\WalletInvestmentHistory.cs" />

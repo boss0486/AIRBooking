@@ -15,11 +15,11 @@ using Helper.Page;
 
 namespace WebCore.Services
 {
-    public interface INationalService : IEntityService<National> { }
-    public class NationalService : EntityService<National>, INationalService
+    public interface IAirlineService : IEntityService<Airline> { }
+    public class AirlineService : EntityService<Airline>, IAirlineService
     {
-        public NationalService() : base() { }
-        public NationalService(System.Data.IDbConnection db) : base(db) { }
+        public AirlineService() : base() { }
+        public AirlineService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
@@ -56,8 +56,8 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
                 whereCondition += " AND AreaID = @AreaID ";
             // query
-            string sqlQuery = @"SELECT * FROM App_National WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
-            var dtList = _connection.Query<NationalResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
+            string sqlQuery = @"SELECT * FROM App_Airline WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            var dtList = _connection.Query<AirlineResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -80,7 +80,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(NationalCreateModel model)
+        public ActionResult Create(AirlineCreateModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
@@ -97,12 +97,12 @@ namespace WebCore.Services
                 return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
             //
             if (string.IsNullOrWhiteSpace(codeId))
-                return Notifization.Invalid("Không được để trống mã quốc gia");
+                return Notifization.Invalid("Không được để trống mã hàng không");
             codeId = codeId.Trim();
             if (!Validate.TestRoll(codeId))
-                return Notifization.Invalid("Mã quốc gia không hợp lệ");
+                return Notifization.Invalid("Mã hàng không không hợp lệ");
             if (codeId.Length < 2 || codeId.Length > 5)
-                return Notifization.Invalid("Mã quốc gia giới hạn 2-5 ký tự");
+                return Notifization.Invalid("Mã hàng không giới hạn 2-5 ký tự");
             // summary valid               
             if (!string.IsNullOrWhiteSpace(summary))
             {
@@ -114,16 +114,16 @@ namespace WebCore.Services
             }
             //
 
-            NationalService nationalService = new NationalService(_connection);
-            National appTitle = nationalService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
+            AirlineService airlineService = new AirlineService(_connection);
+            Airline appTitle = airlineService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
             if (appTitle != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
             //
-            National appCode = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower()).FirstOrDefault();
+            Airline appCode = airlineService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower()).FirstOrDefault();
             if (appCode != null)
-                return Notifization.Invalid("Mã quốc gia đã được sử dụng");
+                return Notifization.Invalid("Mã hàng không đã được sử dụng");
             //
-            var id = nationalService.Create<string>(new National()
+            var id = airlineService.Create<string>(new Airline()
             {
                 CodeID = codeId,
                 Title = title,
@@ -135,7 +135,7 @@ namespace WebCore.Services
             return Notifization.Success(MessageText.CreateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Update(NationalUpdateModel model)
+        public ActionResult Update(AirlineUpdateModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
@@ -152,12 +152,12 @@ namespace WebCore.Services
                 return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
             //
             if (string.IsNullOrWhiteSpace(codeId))
-                return Notifization.Invalid("Không được để trống mã quốc gia");
+                return Notifization.Invalid("Không được để trống mã hàng không");
             codeId = codeId.Trim();
             if (!Validate.TestRoll(codeId))
-                return Notifization.Invalid("Mã quốc gia không hợp lệ");
+                return Notifization.Invalid("Mã hàng không không hợp lệ");
             if (codeId.Length < 2 || codeId.Length > 5)
-                return Notifization.Invalid("Mã quốc gia giới hạn 2-5 ký tự");
+                return Notifization.Invalid("Mã hàng không giới hạn 2-5 ký tự");
             // summary valid               
             if (!string.IsNullOrWhiteSpace(summary))
             {
@@ -168,46 +168,47 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
             }
             //
-            var nationalService = new NationalService(_connection);
+            AirlineService airlineService = new AirlineService(_connection);
             string id = model.ID.ToLower();
-            National national = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
-            if (national == null)
+            Airline airline = airlineService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
+            if (airline == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            National nationalTitle = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
-            if (nationalTitle != null)
+            Airline airlineTitle = airlineService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
+            if (airlineTitle != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
 
-            National nationalCode = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id).FirstOrDefault();
-            if (nationalCode != null)
-                return Notifization.Invalid("Mã quốc gia đã được sử dụng");
+            Airline airlineCode = airlineService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id).FirstOrDefault();
+            if (airlineCode != null)
+                return Notifization.Invalid("Mã hàng không đã được sử dụng");
             // update user information
-            national.Title = title;
-            national.Alias = Helper.Page.Library.FormatToUni2NONE(title);
-            national.Summary = summary;
-            national.Enabled = model.Enabled;
-            nationalService.Update(national);
+            airline.CodeID = codeId;
+            airline.Title = title;
+            airline.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+            airline.Summary = summary;
+            airline.Enabled = model.Enabled;
+            airlineService.Update(airline);
             //
             return Notifization.Success(MessageText.UpdateSuccess);
         }
-        public National GetNationalByID(string id)
+        public Airline GetAirlineByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_National WHERE ID = @Query";
-            return _connection.Query<National>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Airline WHERE ID = @Query";
+            return _connection.Query<Airline>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
-        public NationalResult ViewNationalByID(string id)
+        public AirlineResult ViewAirlineByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_National WHERE ID = @Query";
-            return _connection.Query<NationalResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Airline WHERE ID = @Query";
+            return _connection.Query<AirlineResult>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(NationalIDModel model)
+        public ActionResult Delete(AirlineIDModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
@@ -222,12 +223,12 @@ namespace WebCore.Services
                 try
                 {
                     id = id.ToLower();
-                    NationalService nationalService = new NationalService(_connection);
-                    National national = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: transaction).FirstOrDefault();
-                    if (national == null)
+                    AirlineService airlineService = new AirlineService(_connection);
+                    Airline airline = airlineService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: transaction).FirstOrDefault();
+                    if (airline == null)
                         return Notifization.NotFound();
                     //
-                    nationalService.Remove(national.ID, transaction: transaction);
+                    airlineService.Remove(airline.ID, transaction: transaction);
                     // remover seo
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -245,7 +246,7 @@ namespace WebCore.Services
             try
             {
                 string result = string.Empty;
-                using (var AppAreaService = new NationalService())
+                using (var AppAreaService = new AirlineService())
                 {
                     var dtList = AppAreaService.DataOption(id);
                     if (dtList.Count > 0)
@@ -266,21 +267,21 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<NationalOptionModel> DataOption(string langID)
+        public List<AirlineOptionModel> DataOption(string langID)
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM App_National ORDER BY Title ASC";
-                return _connection.Query<NationalOptionModel>(sqlQuery, new { LangID = langID }).ToList();
+                string sqlQuery = @"SELECT * FROM App_Airline ORDER BY Title ASC";
+                return _connection.Query<AirlineOptionModel>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch
             {
-                return new List<NationalOptionModel>();
+                return new List<AirlineOptionModel>();
             }
         }
         //Static function
         // ##############################################################################################################################################################################################################################################################
-        public static string GetNationalName(string id)
+        public static string GetAirlineName(string id)
         {
             try
             {
@@ -288,7 +289,7 @@ namespace WebCore.Services
                     return string.Empty;
                 //
                 id = id.ToLower();
-                NationalService appAreaService = new NationalService();
+                AirlineService appAreaService = new AirlineService();
                 var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (appArea == null)
                     return string.Empty;

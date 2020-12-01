@@ -22,7 +22,7 @@
                         <label class="form-label">Nhà cung cấp:</label>
                         <select id="ddlSupplier" name="ddlSupplier" class="form-control show-tick" data-live-search="true">
                             <option value="">-Lựa chọn-</option>
-                            @Html.Raw(SupplierService.DropdownList(""))
+                  
                         </select>
                         <span id="lblSupplier" class="message msg-box"></span>
                     </div>
@@ -45,7 +45,7 @@
                     <label class="form-label">Khách hàng:</label>
                     <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
-                        @Html.Raw(CustomerService.DropdownListWithTypeID((int)WebCore.ENM.CustomerEnum.CustomerType.AGENT, ""))
+                        
                     </select>
                     <span id="lblCustomer" class="message msg-box"></span>
                 </div>

@@ -55,11 +55,13 @@ namespace WebCore.Services
                     {
                         ID = 1,
                         Title = "Nội địa",
+                        CodeID = "ILD"
                     },
                     new AirportTypeOption()
                     {
                         ID = 2,
                         Title = "Quốc tế",
+                        CodeID = "ITL"
                     }
                 };
                 return AirportTypeOptions;

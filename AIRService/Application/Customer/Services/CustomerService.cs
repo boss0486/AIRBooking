@@ -737,7 +737,9 @@ namespace WebCore.Services
             return clientOptions;
         }
 
-        public ActionResult GetAgentCustomerType(string customerType)
+
+
+        public ActionResult GetAgentForCustomerType(string customerType)
         {
             if (string.IsNullOrWhiteSpace(customerType))
                 return Notifization.NotFound(MessageText.NotFound);
@@ -759,6 +761,7 @@ namespace WebCore.Services
             //
             return Notifization.Option(MessageText.Success, clientOptions);
         }
+
 
         public List<ClientOption> GetCompanyByLogin()
         {
@@ -823,65 +826,37 @@ namespace WebCore.Services
             }
 
         }
-        public static string DropdownListBySuplierID(string id, string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
-        {
-            string result = string.Empty;
-            using (var service = new CustomerService())
-            {
-                var dtList = service.GetCustomerBySupplierIDOption(supplierId, customerType);
-                if (dtList.Count > 0)
-                {
-                    foreach (var item in dtList)
-                    {
-                        string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                            select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-                    }
-                }
-                return result;
-            }
 
-        }
         public List<CustomerOption> DataOption()
         {
             string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
             return _connection.Query<CustomerOption>(sqlQuery, new { }).ToList();
         }
 
-        public List<CustomerOption> GetCustomerBySupplierIDOption(string supplierId, int customerType = (int)CustomerEnum.CustomerType.NONE)
-        {
-            if (string.IsNullOrWhiteSpace(supplierId))
-                return new List<CustomerOption>();
-            //
-            string whereCondition = string.Empty;
 
 
-            if (customerType != (int)CustomerEnum.CustomerType.NONE)
-            {
-                whereCondition += " AND TypeID = '" + CustomerTypeService.GetCustomerTypeIDByType(customerType) + "'";
-            }
-            //
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE SupplierID = @SupplierID " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
-            return _connection.Query<CustomerOption>(sqlQuery, new { SupplierID = supplierId }).ToList();
-        }
-
-        public static string DropdownListWithTypeID(int typeEnum, string id)
+        public static string DropdownList(string id, int typeEnum)
         {
             string result = string.Empty;
             using (var service = new CustomerService())
             {
                 string typeId = CustomerTypeService.GetCustomerTypeIDByType(typeEnum);
-                if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+                if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsClientInApplication())
                     return result;
                 //
                 // limit by user login
                 string whereCondition = string.Empty;
-                if (Helper.Current.UserLogin.IsSupplierLogged())
+                if (Helper.Current.UserLogin.IsAdminCustomerLogged())
                 {
                     string userId = Helper.Current.UserLogin.IdentifierID;
-                    string supplierId = ClientLoginService.GetClientIDByUserID(userId);
-                    whereCondition += " AND SupplierID = '" + supplierId + "'";
+                    string agentCode = ClientLoginService.GetClientIDByUserID(userId);
+                    whereCondition = " AND (ID = '" + agentCode + "' OR ParentID = '" + agentCode + "')";
+                }
+                if (Helper.Current.UserLogin.IsCustomerLogged())
+                {
+                    string userId = Helper.Current.UserLogin.IdentifierID;
+                    string agentCode = ClientLoginService.GetClientIDByUserID(userId);
+                    whereCondition = " AND (ID = '" + agentCode + "')";
                 }
                 //
                 string sqlQuery = @"SELECT ID, Title, CodeID, ParentID FROM App_Customer WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";

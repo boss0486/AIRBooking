@@ -12,12 +12,12 @@ var AgentFeeConfigController = {
         $(document).ready(function () {
             // $('[data-dateDefault="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
         });
-        $('#btnFeeApply').off('click').on('click', function () {
+        $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
             // Flight go
             var ddlCustomer = $('#ddlCustomer').val();
             var txtAmount = $('#txtAmount').val();
-            if (HelperModel.AccessInApplication != RoleEnum.IsAdminSupplierLogged && HelperModel.AccessInApplication != RoleEnum.IsCustomerLogged) {
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
                 //
                 if (ddlCustomer === "") {
                     $('#lblCustomer').html('Vui lòng chọn khách hàng');
@@ -28,26 +28,35 @@ var AgentFeeConfigController = {
                 }
             }
 
-            //
-            if (txtAmount === '') {
-                $('#lblAmount').html('Không được để trống số tiền nạp');
-                flg = false;
-            }
-            else {
+            var strResBookDesig = [];
+            $('input[name="inpFee"]').each(function (index, item) {
+                var txtAmount = $(item).val();
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
                 if (!FormatCurrency.test(txtAmount)) {
-                    $('#lblAmount').html('Số tiền nạp không hợp lệ');
-                    flg = false;
+                    $('#lblFee').html('Phí không hợp lệ');
+                    $(item).addClass("error");
                 }
                 else if (parseFloat(txtAmount) < 0 || parseFloat(txtAmount) > 100000000) {
-                    $('#lblAmount').html('Số tiền giới hạn từ 0 - 100 000 000 đ');
-                    flg = false;
+                    $('#lblFee').html('Phí giới hạn từ 0 - 100 000 000 đ');
+                    $(item).addClass("error");
                 }
                 else {
-                    $('#lblAmount').html('');
+                    $('#lblFee').html('');
+                    $(item).removeClass("error");
                 }
-            }
+                strResBookDesig.push($(item).val());
+            });
+            //if (strResBookDesig.length <= 0) {
+            //    strResBookDesig = [];
+            //}
 
+
+
+
+
+
+
+             
             // submit form
             if (flg) {
                 AgentFeeConfigController.AgentFeeConfig();

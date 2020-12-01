@@ -86,7 +86,7 @@ namespace WebCore.Services
                 return Notifization.Invalid(MessageText.Invalid + "1");
             //
             string clientId = model.AgentID;
-            float amount = model.Amount;
+            float amount = model.InlandFee;
             if (amount < 0 && amount > 100000000)
                 return Notifization.Invalid("Số tiền giới hạn từ 0 - 100 000 000 đ");
             //
@@ -106,15 +106,14 @@ namespace WebCore.Services
                 // create
                 airFeeAgentService.Create<string>(new AirAgentFee
                 {
-                    Title = clientId,
                     AgentID = clientId,
-                    Amount = amount,
+                    InlandFee = amount,
                     Enabled = 1
                 });
                 return Notifization.Success(MessageText.CreateSuccess);
             }
             // update
-            airFeeAgent.Amount = amount;
+            airFeeAgent.InlandFee = amount;
             airFeeAgentService.Update(airFeeAgent);
             return Notifization.Success(MessageText.UpdateSuccess);
         }
@@ -135,7 +134,7 @@ namespace WebCore.Services
                 return Notifization.Data("OK", new AirAgentFeeResult
                 {
                     AgentID = agentId,
-                    Amount = 0
+                    InlandFee = 0
                 });
             //
             return Notifization.Data("OK", airAirFeeAgent);

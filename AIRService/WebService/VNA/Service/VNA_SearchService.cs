@@ -1096,7 +1096,7 @@ namespace AIRService.Service
                         AirAgentFeeService airAgentFeeService = new AirAgentFeeService();
                         AirAgentFee airAgentFee = airAgentFeeService.GetAgentFee(agentId);
                         if (airAgentFee != null)
-                            airAgentFeeAmount = airAgentFee.Amount;
+                            airAgentFeeAmount = airAgentFee.InlandFee;
                         //
                         //////////double feeTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
                         //////////// check blance

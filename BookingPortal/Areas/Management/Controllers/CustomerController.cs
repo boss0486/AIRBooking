@@ -158,14 +158,14 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [Route("Action/GetAgentByCustomerType")]
+        [Route("Action/GetAgentForCustomerType")]
         [IsManage(skip: true)]
-        public ActionResult GetAgentCustomerType(CustomerTypeModel model)
+        public ActionResult GetAgentForCustomerType(CustomerTypeModel model)
         {
             try
             {
                 var service = new CustomerService();
-                return service.GetAgentCustomerType(model.CustomerType);
+                return service.GetAgentForCustomerType(model.CustomerType);
             }
             catch (Exception ex)
             {

@@ -11,5 +11,6 @@ namespace WebCore.Entities
     {
         public int ID { get; set; }
         public string Title { get; set; }
+        public string CodeID { get; set; }
     }
 }

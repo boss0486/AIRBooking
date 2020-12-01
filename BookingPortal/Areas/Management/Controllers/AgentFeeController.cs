@@ -22,7 +22,7 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
-        public ActionResult Update()
+        public ActionResult Setting()
         {
             if (Helper.Current.UserLogin.IsCustomerLogged())
             {

@@ -1,0 +1,36 @@
+﻿@using WebCore.Model.Services;
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
+@* control ******************************************************************************************************@
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-action">Mã hàng không</th>
+                <th class="tbcol-none">Tiêu đề</th>
+                <th class="tbcol-none">Người tạo</th>
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-action">
+                    ACT
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+@section scripts{
+    <script src="~/Areas/Management/_script/app-airline.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            AirlineController.DataList(1);
+        });
+    </script>
+}

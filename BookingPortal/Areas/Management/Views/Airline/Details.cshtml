@@ -5,12 +5,13 @@
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-@model WebCore.Entities.NationalResult
+@model WebCore.Entities.AirlineResult
 
 @{
     try
     {
         string id = "";
+        string code = "";
         string title = "";
         string summary = "";
         string languageId = "";
@@ -21,6 +22,7 @@
         if (Model != null)
         {
             id = Model.ID;
+            code = Model.ID;
             title = Model.Title;
             summary = Model.Summary;
             languageId = Model.LanguageID;
@@ -33,6 +35,7 @@
                 <div class="top-pic">
                     <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
                 </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> Mã HK: @title</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Người tạo: @createdBy</div>

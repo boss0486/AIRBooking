@@ -21,11 +21,12 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string Title { get; set; }
-        public string Alias { get; set; }
-        public string Summary { get; set; }
         public string AgentID { get; set; }
-        public float Amount { get; set; }
+        public string AirlineID { get; set; }
+        public float InlandFee { get; set; }
+        public float InternationalFee { get; set; }
+
+
     }
 
     public class AirFeeAgentIDModel
@@ -36,7 +37,10 @@ namespace WebCore.Entities
     public class AirAgentFeeConfigModel
     {
         public string AgentID { get; set; }
-        public float Amount { get; set; }
+        public string AirlineID { get; set; }
+
+        public float InlandFee { get; set; }
+        public float InternationalFee { get; set; }
     }
 
     public class AirAgentFeeUpdateModel : AirAgentFeeConfigModel
@@ -46,8 +50,9 @@ namespace WebCore.Entities
     public class AirAgentFeeResult : WEBModelResult
     {
         public string ID { get; set; }
-        public string Title { get; set; }
         public string AgentID { get; set; }
+        public string AirlineID { get; set; }
+
         [NotMapped]
         public string AgentName
         {
@@ -56,8 +61,8 @@ namespace WebCore.Entities
                 return CustomerService.GetCustomerName(AgentID);
             }
         }
-        public float Amount { get; set; }
-
+        public float InlandFee { get; set; }
+        public float InternationalFee { get; set; }
     }
 
     public class AirAgentFeeModel

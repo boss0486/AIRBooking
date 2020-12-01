@@ -1,0 +1,167 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services;
+@using WebCore.Entities;
+@using WebCore.ENM;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@model WebCore.Entities.AirAgentFeeResult
+@{
+    try
+    {
+        string id = string.Empty;
+        string agentId = string.Empty;
+        float amount = 0;
+        if (Model != null)
+        {
+            id = Model.ID;
+            amount = Model.InlandFee;
+            agentId = Model.AgentID;
+        }
+        // column
+        AirportTypeService airportTypeService = new AirportTypeService();
+        List<AirportTypeOption> airportTypeOptions = airportTypeService.DataOption();
+        List<Airline> airlines = new List<Airline>();
+        List<AirAgentFee> airAgentFees = new List<AirAgentFee>();
+
+        //
+        <div class="row">
+            <div class="col-md-8">
+                @if (!Helper.Current.UserLogin.IsClientInApplication())
+                {
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="form-label">Đại lý:</label>
+                                <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick">
+                                    <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                    @Html.Raw(CustomerService.DropdownList(id, (int)CustomerEnum.CustomerType.AGENT))
+                                </select>
+                                <span id="lblCustomer" class="message msg-box"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Mã đại lý:</label> #
+                                <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCode">---</label></div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    // row
+                    AirlineService airlineService = new AirlineService();
+                    airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
+                    // data
+                    AirAgentFeeService airAgentFeeService = new AirAgentFeeService();
+                    airAgentFees = airAgentFeeService.GetAlls(m => m.AgentID == agentId).ToList();
+                }
+                <div class="form-group">
+                    <label class="form-label">Bảng phí dịch vụ: <span id="lblFee" class="msg-box"></span></label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mã HK</th>
+                                <th>Hãng hàng không</th>
+                                @{
+
+                                    if (airportTypeOptions.Count > 0)
+                                    {
+                                        foreach (var item in airportTypeOptions)
+                                        {
+                                            string actived = string.Empty;
+                                            if (item == airportTypeOptions[0])
+                                            {
+                                                actived = "checked";
+                                            }
+                                            string name = "rdoClientCustomer" + @item.ID;
+                                            <th>Nội địa</th>
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="TblFeeData">
+                            @{
+                                if (airlines.Count > 0)
+                                {
+                                    foreach (var item in airlines)
+                                    {
+                                        <tr>
+                                            <td style="background:#eafbf7">@item.CodeID</td>
+                                            <td style="background:#eafbf7">@item.Title</td>
+                                            @if (airportTypeOptions.Count > 0)
+                                            {
+                                                foreach (var _col in airportTypeOptions)
+                                                {
+                                                    string airportCode = _col.CodeID;
+                                                    string mapFee = string.Empty;
+
+
+                                                    double feeAmount = 0;
+                                                    if (airAgentFees.Count > 0)
+                                                    {
+                                                        AirAgentFee airAgentFee = airAgentFees.Where(m => m.AirlineID == item.ID).FirstOrDefault();
+                                                        if (airAgentFee != null)
+                                                        {
+                                                            if (airportCode == "ILD")
+                                                            {
+                                                                feeAmount = airAgentFee.InlandFee;
+                                                            }
+                                                            if (airportCode == "ITL")
+                                                            {
+                                                                feeAmount = airAgentFee.InternationalFee;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    <td style="padding:5px;"><input name="inpFee" data-type="@_col.CodeID" value="@feeAmount" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" /></td>
+                                                }
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                            }
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="form-group text-right">
+                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+                    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 m-t-30">
+                <label class="form-label">Lưu ý:</label>
+                <div class="form-group">
+                    <p>
+                        <i class="fas fa-check-circle"></i> Phí dịch vụ giới hạn từ 0 - 100 000 000 đ.
+                    </p>
+                    <p>
+                        <i class="fas fa-check-circle"></i> Phí dịch vụ sẽ được áp dụng sau khi bạn thực hiện thay đổi.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <input id="txtID" type="hidden" value="@id" />
+    }
+    catch (Exception)
+    {
+        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+    }
+}
+
+@section scripts{
+    <script src="~/Areas/Management/_script/agent-fee.js"></script>
+}

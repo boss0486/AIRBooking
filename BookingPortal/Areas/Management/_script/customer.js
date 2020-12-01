@@ -1093,7 +1093,7 @@ function LoadAgent(customerType) {
     };
     //GetTicketing
     AjaxFrom.POST({
-        url: URLC + '/GetAgentByCustomerType',
+        url: URLC + '/GetAgentForCustomerType',
         data: model,
         success: function (response) {
             if (response !== null) {
