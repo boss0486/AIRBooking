@@ -6153,7 +6153,7 @@ table, .table {
         margin-bottom: 0px;
         padding-bottom: 0px;
         position: relative;
-        margin-top: 8px;
+        margin-top: 1px;
         margin-bottom: 0px;
         border: 0;
         border-top: 1px solid #eeeeee;
@@ -6181,6 +6181,7 @@ table, .table {
     height: 32px;
     border: 1px solid #DDD;
     padding: 6px 8px;
+    line-height: 1.22857143;
 }
 
     .form-control.disabled {

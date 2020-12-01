@@ -12,10 +12,9 @@
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-none">Quốc gia</th>
-                <th class="tbcol-title">Tiêu đề</th>
-                <th class="tbcol-none">Mô tả</th>
-                <th class="tbcol-created">Người tạo</th>
+                <th class="tbcol-action">Mã Q.Gia</th>
+                <th class="tbcol-none">Tiêu đề</th>
+                <th class="tbcol-none">Người tạo</th>
                 <th class="tbcol-active">T.Thái</th>
                 <th class="tbcol-date">Ngày tạo</th>
                 <th class="tbcol-action">
@@ -27,12 +26,11 @@
     </table>
 </div>
 <div id="Pagination"></div>
-
 @section scripts{
-    <script src="~/Areas/Management/_script/area-geographical.js"></script>
+    <script src="~/Areas/Management/_script/national.js"></script>
     <script type="text/javascript">
         $(function () {
-            AreaGeographicalController.DataList(1);
+            NationalController.DataList(1);
         });
     </script>
 }

@@ -33,21 +33,14 @@ namespace Helper.Current
                 {
                     if (Helper.Current.UserLogin.IsCMSUser)
                         return 1;
-                    //
                     if (Helper.Current.UserLogin.IsAdminInApplication)
                         return 2;
                     //
-                    if (Helper.Current.UserLogin.IsAdminSupplierLogged())
+                    if (Helper.Current.UserLogin.IsAdminCustomerLogged())
                         return 3;
                     //
-                    if (Helper.Current.UserLogin.IsSupplierLogged())
-                        return 4;
-                    //
-                    if (Helper.Current.UserLogin.IsAdminCustomerLogged())
-                        return 5;
-                    //
                     if (Helper.Current.UserLogin.IsCustomerLogged())
-                        return 6;
+                        return 4;
                     //
                     return 0;
                 }

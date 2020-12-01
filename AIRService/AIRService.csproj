@@ -134,6 +134,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\AirFilght\Entities\AirportType.cs" />
+    <Compile Include="Application\AirFilght\Services\AirportTypeService.cs" />
     <Compile Include="Application\AirTicketCondition\Entities\AirTicketCondition05.cs" />
     <Compile Include="Application\AirTicketCondition\Entities\AirTicketCondition04.cs" />
     <Compile Include="Application\AirAgentFee\Services\AirAgentFeeService.cs" />
@@ -346,6 +348,8 @@
     <Compile Include="Helper\ValidData.cs" />
     <Compile Include="Module\Account\Entities\Account.cs" />
     <Compile Include="Module\Account\Services\AccountService.cs" />
+    <Compile Include="Module\National\Entities\National.cs" />
+    <Compile Include="Module\National\Services\NationalService.cs" />
     <Compile Include="Module\Article\Entities\Article.cs" />
     <Compile Include="Module\Article\Entities\ArticleCategory.cs" />
     <Compile Include="Module\Article\Services\ArticleCategoryService.cs" />
@@ -1819,6 +1823,7 @@
     <Folder Include="Core\Authorization\Enum\" />
     <Folder Include="Core\Authorization\Services\" />
     <Folder Include="Module\Account\_Model\" />
+    <Folder Include="Module\National\Enum\" />
     <Folder Include="Module\ServicePack\Enum\" />
   </ItemGroup>
   <ItemGroup>

@@ -29,8 +29,7 @@
                         <div class="form-group">
                             <label class="form-label">Loại hình:</label>
                             <select id="ddlItineraryType" name="ddlItineraryType" class="form-control show-tick" data-live-search="true">
-                                <option value="1" selected>Nội địa</option>
-                                <option value="2">Quốc tế</option>
+                                @Html.Raw(AirportTypeService.DropdownList(1))
                             </select>
                             <span id="lblItineraryType" class="message msg-box"></span>
                         </div>

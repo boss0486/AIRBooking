@@ -38,7 +38,13 @@ var CustomerController = {
                 $('#lblCustomerType').html('');
             }
             //
-
+            $('#lblSupplier').html('');
+            var ddlCustomerType = $("#ddlCustomerType").val();
+            if (ddlCustomerType == "comp" && ddlSupplier == "") {
+                $('#lblSupplier').html("Vui lòng chọn đại lý");
+                flg = false;
+            }
+            // 
             if (txtCodeID === '') {
                 $('#lblCodeID').html('Không được để trống MKH');
                 flg = false;
@@ -522,7 +528,7 @@ var CustomerController = {
                             //var _id = item.ID;
                             var _customerType = item.TypeID;
                             var _customerCode = item.CodeID;
-                            var _supplierCode = item.SupplierID;
+                            var _supplierCode = item.SupplierCode;
                             //var _parentID = item.ParentID;
                             var _title = item.Title;
                             //var _alias = item.Alias;
@@ -552,7 +558,7 @@ var CustomerController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${_customerCode}</td>
-                                 <td>${_supplierCode}</td>
+                                 <td class='bg-danger'>${_supplierCode}</td>
                                  <td>${_title}</td>                    
                                  <td>${_customerType}</td>
                                  <td>${_contactName}</td>
@@ -587,7 +593,6 @@ var CustomerController = {
         if (ddlSupplier == undefined) {
             ddlSupplier = "";
         }
-
         var ddlCustomerType = $('#ddlCustomerType').val();
         var txtCodeID = $('#txtCodeID').val();
         var txtTitle = $('#txtTitle').val();
@@ -809,18 +814,18 @@ var CustomerController = {
 };
 
 CustomerController.init();
-
-$(document).on("change", "#ddlSupplier", function () {
-    $('#lblSupplier').html('');
-    var codeid = $(this).find(':selected').data('codeid');
-    $('#lblSupplierCodeID').html(codeid);
-});
-
+// *********************************************************************************************
 $(document).on("change", "#ddlCustomerType", function () {
     $('#lblDeposit').html('');
     var ddlCustomerType = $(this).val();
     if (ddlCustomerType === "") {
         $('#lblCustomerType').html('Vui lòng chọn loại khách hàng');
+        if ($('#ddlSupplier') != undefined) {
+            $('#lblSupplier').html("");
+            $("#ddlSupplier")[0].selectedIndex = 0;
+            $("#ddlSupplier").selectpicker("refresh");
+        }
+       
     }
     else {
         $('#lblCustomerType').html('');
@@ -831,6 +836,24 @@ $(document).on("change", "#ddlCustomerType", function () {
         else {
             $('#txtDeposit').removeAttr('disabled');
         }
+        // load agent 
+        if (HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged) {
+            LoadAgent(ddlCustomerType);
+        }
+    }
+});
+//
+$(document).on("change", "#ddlSupplier", function () {
+    $('#lblSupplier').html('');
+    $('#lblProviderCodeID').html('---');
+    var codeid = $(this).find(':selected').data('codeid');
+    $('#lblProviderCodeID').html(codeid);
+    //
+    var ddlSupplier = $(this).val();
+    var ddlCustomerType = $("#ddlCustomerType").val();
+    if (ddlCustomerType == "comp" && ddlSupplier == "") {
+        $('#lblSupplier').html("Vui lòng chọn đại lý");
+        return;
     }
 });
 //
@@ -1059,114 +1082,32 @@ $(document).on("keyup", "#txtTermPayment", function () {
         $('#lblTermPayment').html('');
     }
 });
-//
 
-$(document).on("change", "input[name='rdoClientType']", function () {
-    console.log(':>:');
-    $("#lblSupplier").html("");
-    $("#lblProviderCodeID").html("");
-    var ddlClientType = $(this).val();
-    // change text
-    var text = $(this).data('text');
-    $('#LblClientText').html(text);
-    // load data
-    if (parseInt(ddlClientType) === 1) {
-        CustomerAgentOption("", true, false);
-        //
-        var htmlComp = `<option value="">-Lựa chọn-</option><option value="comp">Công ty</option>`;
-        $('#ddlCustomerType').html(htmlComp);
-        $('#ddlCustomerType').selectpicker('refresh');
-    }
-    else {
-        SupplierOption("", true, false);
-        var htmlComp = `<option value="">-Lựa chọn-</option><option value="agent">Đại lý</option><option value="comp">Công ty</option> `;
-        $('#ddlCustomerType').html(htmlComp);
-        $('#ddlCustomerType').selectpicker('refresh');
-    }
-});
-
-//$(document).on("change", "#ddlSupplier", function () {
-//    $("#lblSupplier").html("");
-//    $('#lblProviderCodeID').html("");
-//    var ddlSupplier = $("#ddlSupplier").val();
-//    if (ddlSupplier == "") {
-//        $("#lblSupplier").html("Vui lòng chọn nhà cung cấp");
-//        return;
-//    }
-//    var codeid = $(this).find(':selected').data('codeid');
-//    $('#lblProviderCodeID').html(codeid);
-//    // 
-//});
-
-
-function CustomerAgentOption(_id, isdefault, isChangeEvent) {
+function LoadAgent(customerType) {
     var option = `<option value="">-Lựa chọn-</option>`;
+    $('select#ddlSupplier').html(option);
+    $('select#ddlSupplier').selectpicker('refresh');
+    customerType
     var model = {
+        CustomerType: customerType
     };
+    //GetTicketing
     AjaxFrom.POST({
-        url: '/Management/Customer/Action/AgentData',
+        url: URLC + '/GetAgentByCustomerType',
         data: model,
-        async: true,
-        success: function (result) {
-            if (result !== null) {
-                if (result.status === 200) {
-                    var attrSelect = '';
-                    $.each(result.data, function (index, item) {
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    $.each(response.data, function (index, item) {
+                        index = index + 1;
+                        // 
                         var id = item.ID;
+                        var title = item.Title;
                         var codeId = item.CodeID;
-                        if (_id !== undefined && _id != "" && _id === item.ID) {
-                            attrSelect = "selected";
-                        }
-                        option += `<option value='${id}' data-codeid ='${codeId}' ${attrSelect}>${item.Title}</option>`;
-                    })
-                    $('#ddlSupplier').html(option);
-                    $('#ddlSupplier').selectpicker('refresh');
-                    if (isChangeEvent !== undefined && isChangeEvent == true) {
-                        $('#ddlSupplier').change();
-                    }
-                    return;
-                }
-                else {
-                    Notifization.Error(response.message);
-                    return;
-                }
-            }
-            return;
-        },
-        error: function (result) {
-            console.log('::' + MessageText.NotService);
-        }
-    });
-}
-function SupplierOption(_id, isdefault, isChangeEvent) {
-    var option = `<option value="">-Lựa chọn-</option>`;
-    var model = {
-    };
-    AjaxFrom.POST({
-        url: '/Management/Supplier/Action/DropDownList',
-        data: model,
-        async: true,
-        success: function (result) {
-            if (result !== null) {
-                if (result.status === 200) {
-                    var attrSelect = '';
-                    $.each(result.data, function (index, item) {
-                        var id = item.ID;
-                        var codeId = item.CodeID;
-                        if (_id !== undefined && _id != "" && _id === item.ID) {
-                            attrSelect = "selected";
-                        }
-                        option += `<option value='${id}' data-codeid ='${codeId}' ${attrSelect}>${item.Title}</option>`;
+                        option += `<option value='${id}' data-codeid='${codeId}'>${title}</option>`;
                     });
-                    $('#ddlSupplier').html(option);
-                    $('#ddlSupplier').selectpicker('refresh');
-                    if (isChangeEvent !== undefined && isChangeEvent) {
-                        $('#ddlSupplier').change();
-                    }
-                    return;
-                }
-                else {
-                    console.log('::' + result.message);
+                    $('select#ddlSupplier').html(option);
+                    $('select#ddlSupplier').selectpicker('refresh');
                     return;
                 }
             }

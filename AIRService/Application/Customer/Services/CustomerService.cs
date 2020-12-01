@@ -150,7 +150,22 @@ namespace WebCore.Services
                     string currentUserId = Helper.Current.UserLogin.IdentifierID;
                     UserService userService = new UserService(_connection);
                     string suppId = string.Empty;
-                    
+                    if (string.IsNullOrWhiteSpace(typeId))
+                        return Notifization.Invalid("Vui lòng chọn loại khách hàng");
+                    //
+                    int typeEnum = CustomerTypeService.GetCustomerType(typeId);
+                    if (typeEnum == (int)CustomerEnum.CustomerType.NONE)
+                        return Notifization.Invalid("Loại khách hàng không hợp lệ");
+                    //
+                    if (Helper.Current.UserLogin.IsClientInApplication())
+                    {
+                        ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
+                        if (clientLogin == null)
+                            return Notifization.Invalid("Đại lý không xác định");
+                        //
+                        supplierId = clientLogin.ClientID;
+                    }
+                    //
                     if (!string.IsNullOrWhiteSpace(supplierId))
                     {
                         var customer1 = customerService.GetAlls(m => m.ID == supplierId, transaction: _transaction).FirstOrDefault();
@@ -171,7 +186,7 @@ namespace WebCore.Services
                     else
                     {
                         if (model.TypeID == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.COMP))
-                            return Notifization.Invalid("Loại khách hàng không hợp lệ");
+                            return Notifization.Invalid("Vui lòng chọn đại lý");
                         //
                     }
                     //
@@ -272,7 +287,7 @@ namespace WebCore.Services
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
-                    } 
+                    }
                     // 
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
@@ -627,6 +642,14 @@ namespace WebCore.Services
                     if (customerId.Count > 0)
                         return Notifization.Error("Vui lòng xóa tất cả khách hàng trước");
                     //
+                    string sqlAgentFee = @"SELECT ID FROM App_AirAgentFee WHERE AgentID = @AgentID";
+                    List<CustomerIDModel> customerFee = _connection.Query<CustomerIDModel>(sqlAgentFee, new { AgentID = id }, transaction: _transaction).ToList();
+                    if (customerFee.Count > 0)
+                    {
+                        sqlAgentFee = @"DELETE App_AirAgentFee WHERE AgentID = @AgentID";
+                        _connection.Execute(sqlAgentFee, new { AgentID = id }, transaction: _transaction);
+                    }
+                    // 
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id, transaction: _transaction).ToList();
                     if (clientLogin.Count > 0)
@@ -683,65 +706,7 @@ namespace WebCore.Services
                 }
             }
         }
-        //public ActionResult Delete(CustomerIDModel model)
-        //{
-        //    _connection.Open();
-        //    using (var _transaction = _connection.BeginTransaction())
-        //    {
-        //        try
-        //        {
-        //            if (model == null)
-        //                return Notifization.Error(MessageText.Invalid);
-        //            //
-        //            string id = model.ID.ToLower();
-        //            CustomerService customerService = new CustomerService(_connection);
-        //            var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
-        //            if (customer == null)
-        //                return Notifization.NotFound();
-        //            // get all user
-        //            ClientLoginService clientLoginService = new ClientLoginService(_connection);
-        //            var clientLogin = clientLoginService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ClientID) && m.ClientID == id && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, transaction: _transaction).ToList();
-        //            if (clientLogin.Count == 0)
-        //                return Notifization.Error(MessageText.Invalid);
-        //            //
-        //            string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
-        //            var userResult = _connection.Query<UserResult>(sqlQuery, transaction: _transaction).ToList();
-        //            if (userResult.Count == 0)
-        //                return Notifization.Error(MessageText.Invalid);
-        //            // check data reference
-        //            // #1. Customer
-        //            string sqlCustomer = @"SELECT ID FROM App_Customer WHERE ParentID = @ParentID";
-        //            var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { ParentID = id }, transaction: _transaction).ToList();
-        //            if (customerId.Count > 0)
-        //                return Notifization.Error("Vui lòng xóa tất cả các khách hàng trước");
-        //            //
-        //            // get all file
-        //            List<string> lstImgFile = userResult.Select(m => m.ImageFile).ToList();
-        //            if (lstImgFile.Count > 0)
-        //            {
-        //                foreach (var item in lstImgFile)
-        //                {
-        //                    AttachmentFile.DeleteFile(item, dbTransaction: _transaction);
-        //                }
-        //            }
-        //            _connection.Execute("DELETE App_ClientLogin WHERE ClientType = @ClientType AND UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", new { ClientType = (int)ClientLoginEnum.ClientType.Customer }, transaction: _transaction);
-        //            //
-        //            _connection.Execute("DELETE UserInfo WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-        //            _connection.Execute("DELETE UserSetting WHERE UserID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-        //            _connection.Execute("DELETE UserLogin WHERE ID IN('" + String.Join("', '", clientLogin.Select(m => m.UserID)) + "')", transaction: _transaction);
-        //            //
-        //            customerService.Remove(id, transaction: _transaction);
-        //            _transaction.Commit();
-        //            return Notifization.Success(MessageText.DeleteSuccess);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _transaction.Rollback();
-        //            return Notifization.TEST("::" + ex);
-        //        }
-        //    }
-        //}
-        //##############################################################################################################################################################################################################################################################
+
         public List<ClientOption> GetAgentData()
         {
             string userId = Helper.Current.UserLogin.IdentifierID;
@@ -770,6 +735,29 @@ namespace WebCore.Services
                 return new List<ClientOption>();
             //
             return clientOptions;
+        }
+
+        public ActionResult GetAgentCustomerType(string customerType)
+        {
+            if (string.IsNullOrWhiteSpace(customerType))
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            customerType = customerType.Trim().ToLower();
+            int typeEnum = CustomerTypeService.GetCustomerType(customerType);
+            string whereCondition = string.Empty;
+            //
+            if (typeEnum == (int)CustomerEnum.CustomerType.AGENT)
+                whereCondition += " AND (ParentID IS NULL OR datalength(ParentID)=0)";
+            //
+            if (typeEnum == (int)CustomerEnum.CustomerType.COMP)
+                whereCondition += " AND TypeID = 'agent'";
+            //
+            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 " + whereCondition + "  ORDER BY c.CodeID";
+            List<ClientOption> clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
+            if (clientOptions.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            return Notifization.Option(MessageText.Success, clientOptions);
         }
 
         public List<ClientOption> GetCompanyByLogin()
@@ -896,7 +884,7 @@ namespace WebCore.Services
                     whereCondition += " AND SupplierID = '" + supplierId + "'";
                 }
                 //
-                string sqlQuery = @"SELECT * FROM App_Customer WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
+                string sqlQuery = @"SELECT ID, Title, CodeID, ParentID FROM App_Customer WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
                 var dtList = service.Query<CustomerOption>(sqlQuery, new { TypeID = typeId }).ToList();
                 if (dtList.Count > 0)
                 {
@@ -905,7 +893,12 @@ namespace WebCore.Services
                         string select = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
                             select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                        //
+                        int isLimit = 1;
+                        if (string.IsNullOrWhiteSpace(item.ParentID))
+                            isLimit = 0;
+                        //
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' data-limited = '" + isLimit + "' " + select + ">" + item.Title + "</option>";
                     }
                 }
                 return result;

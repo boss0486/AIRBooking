@@ -15,11 +15,11 @@ using Helper.Page;
 
 namespace WebCore.Services
 {
-    public interface IAreaGeographicalService : IEntityService<AreaGeographical> { }
-    public class AreaGeographicalService : EntityService<AreaGeographical>, IAreaGeographicalService
+    public interface INationalService : IEntityService<National> { }
+    public class NationalService : EntityService<National>, INationalService
     {
-        public AreaGeographicalService() : base() { }
-        public AreaGeographicalService(System.Data.IDbConnection db) : base(db) { }
+        public NationalService() : base() { }
+        public NationalService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
@@ -56,8 +56,8 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
                 whereCondition += " AND AreaID = @AreaID ";
             // query
-            string sqlQuery = @"SELECT * FROM App_Geographical WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
-            var dtList = _connection.Query<AreaGeographicalResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
+            string sqlQuery = @"SELECT * FROM App_National WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            var dtList = _connection.Query<NationalResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query), AreaID = areaId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -80,17 +80,14 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(AreaGeographicalCreateModel model)
+        public ActionResult Create(NationalCreateModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
             //
-            string nationalId = model.NationalID;
+            string codeId = model.CodeID;
             string title = model.Title;
             string summary = model.Summary;
-            if (string.IsNullOrWhiteSpace(nationalId))
-                return Notifization.Invalid("Vui lòng lựa chọn quốc gia");
-            //
             if (string.IsNullOrWhiteSpace(title))
                 return Notifization.Invalid("Không được để trống tiêu đề");
             title = title.Trim();
@@ -98,7 +95,14 @@ namespace WebCore.Services
                 return Notifization.Invalid("Tiêu đề không hợp lệ");
             if (title.Length < 2 || title.Length > 80)
                 return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
-            // 
+            //
+            if (string.IsNullOrWhiteSpace(codeId))
+                return Notifization.Invalid("Không được để trống mã quốc gia");
+            codeId = codeId.Trim();
+            if (!Validate.TestRoll(codeId))
+                return Notifization.Invalid("Mã quốc gia không hợp lệ");
+            if (codeId.Length < 2 || codeId.Length > 5)
+                return Notifization.Invalid("Mã quốc gia giới hạn 2-5 ký tự");
             // summary valid               
             if (!string.IsNullOrWhiteSpace(summary))
             {
@@ -109,36 +113,36 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
             }
             //
-            AreaGeographicalService appAreaService = new AreaGeographicalService(_connection);
-            AreaGeographical areaGeographical = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.NationalID == nationalId && m.Title.ToLower() == title.ToLower()).FirstOrDefault();
-            if (areaGeographical != null)
+
+            NationalService nationalService = new NationalService(_connection);
+            National appTitle = nationalService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
+            if (appTitle != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
             //
-            var id = appAreaService.Create<string>(new AreaGeographical()
+            National appCode = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower()).FirstOrDefault();
+            if (appCode != null)
+                return Notifization.Invalid("Mã quốc gia đã được sử dụng");
+            //
+            var id = nationalService.Create<string>(new National()
             {
-                NationalID = nationalId,
+                CodeID = codeId,
                 Title = title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(title),
                 Summary = summary,
                 LanguageID = Helper.Page.Default.LanguageID,
                 Enabled = model.Enabled,
             });
-            string temp = string.Empty;
-            //sort
             return Notifization.Success(MessageText.CreateSuccess);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Update(AreaGeographicalUpdateModel model)
+        public ActionResult Update(NationalUpdateModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
             //
-            string nationalId = model.NationalID;
+            string codeId = model.CodeID;
             string title = model.Title;
             string summary = model.Summary;
-            if (string.IsNullOrWhiteSpace(nationalId))
-                return Notifization.Invalid("Vui lòng lựa chọn quốc gia");
-            //
             if (string.IsNullOrWhiteSpace(title))
                 return Notifization.Invalid("Không được để trống tiêu đề");
             title = title.Trim();
@@ -146,7 +150,14 @@ namespace WebCore.Services
                 return Notifization.Invalid("Tiêu đề không hợp lệ");
             if (title.Length < 2 || title.Length > 80)
                 return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
-            // 
+            //
+            if (string.IsNullOrWhiteSpace(codeId))
+                return Notifization.Invalid("Không được để trống mã quốc gia");
+            codeId = codeId.Trim();
+            if (!Validate.TestRoll(codeId))
+                return Notifization.Invalid("Mã quốc gia không hợp lệ");
+            if (codeId.Length < 2 || codeId.Length > 5)
+                return Notifization.Invalid("Mã quốc gia giới hạn 2-5 ký tự");
             // summary valid               
             if (!string.IsNullOrWhiteSpace(summary))
             {
@@ -157,42 +168,46 @@ namespace WebCore.Services
                     return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
             }
             //
-            var areaGeographicalService = new AreaGeographicalService(_connection);
+            var nationalService = new NationalService(_connection);
             string id = model.ID.ToLower();
-            AreaGeographical areaGeographical = areaGeographicalService.GetAlls(m => m.ID == id).FirstOrDefault();
-            if (areaGeographical == null)
+            National national = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
+            if (national == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            AreaGeographical areaGeographicalTitle = areaGeographicalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id && m.NationalID == nationalId).FirstOrDefault();
-            if (areaGeographicalTitle != null)
+            National nationalTitle = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
+            if (nationalTitle != null)
                 return Notifization.Invalid("Tiêu đề đã được sử dụng");
+
+            National nationalCode = nationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.CodeID) && m.CodeID.ToLower() == codeId.ToLower() && m.ID != id).FirstOrDefault();
+            if (nationalCode != null)
+                return Notifization.Invalid("Mã quốc gia đã được sử dụng");
             // update user information
-            areaGeographical.NationalID = nationalId;
-            areaGeographical.Title = title;
-            areaGeographical.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-            areaGeographical.Summary = model.Summary;
-            areaGeographical.Enabled = model.Enabled;
-            areaGeographicalService.Update(areaGeographical);
+            national.Title = title;
+            national.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+            national.Summary = summary;
+            national.Enabled = model.Enabled;
+            nationalService.Update(national);
+            //
             return Notifization.Success(MessageText.UpdateSuccess);
         }
-        public AreaGeographical GetAreaGeographicalByID(string id)
+        public National GetNationalByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
-            return _connection.Query<AreaGeographical>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_National WHERE ID = @Query";
+            return _connection.Query<National>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
-        public AreaGeographicalResult ViewAreaGeographicalByID(string id)
+        public NationalResult ViewNationalByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_Geographical WHERE ID = @Query";
-            return _connection.Query<AreaGeographicalResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_National WHERE ID = @Query";
+            return _connection.Query<NationalResult>(sqlQuery, new { Query = id }).FirstOrDefault();
         }
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(AreaGeographicalIDModel model)
+        public ActionResult Delete(NationalIDModel model)
         {
             if (model == null)
                 return Notifization.Invalid();
@@ -207,12 +222,12 @@ namespace WebCore.Services
                 try
                 {
                     id = id.ToLower();
-                    var areaGeographicalService = new AreaGeographicalService(_connection);
-                    var areaGeographical = areaGeographicalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: transaction).FirstOrDefault();
-                    if (areaGeographical == null)
+                    var NationalService = new NationalService(_connection);
+                    var National = NationalService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: transaction).FirstOrDefault();
+                    if (National == null)
                         return Notifization.NotFound();
                     //
-                    areaGeographicalService.Remove(areaGeographical.ID, transaction: transaction);
+                    NationalService.Remove(National.ID, transaction: transaction);
                     // remover seo
                     transaction.Commit();
                     return Notifization.Success(MessageText.DeleteSuccess);
@@ -225,12 +240,12 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string AreaDropdownList(string id, int itineraryType = 0)
+        public static string DropdownList(string id, int itineraryType = 0)
         {
             try
             {
                 string result = string.Empty;
-                using (var AppAreaService = new AreaGeographicalService())
+                using (var AppAreaService = new NationalService())
                 {
                     var dtList = AppAreaService.DataOption(id);
                     if (dtList.Count > 0)
@@ -251,21 +266,21 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<AreaGeographicalOptionModel> DataOption(string langID)
+        public List<NationalOptionModel> DataOption(string langID)
         {
             try
             {
-                string sqlQuery = @"SELECT * FROM App_Geographical ORDER BY Title ASC";
-                return _connection.Query<AreaGeographicalOptionModel>(sqlQuery, new { LangID = langID }).ToList();
+                string sqlQuery = @"SELECT * FROM App_National ORDER BY Title ASC";
+                return _connection.Query<NationalOptionModel>(sqlQuery, new { LangID = langID }).ToList();
             }
             catch
             {
-                return new List<AreaGeographicalOptionModel>();
+                return new List<NationalOptionModel>();
             }
         }
         //Static function
         // ##############################################################################################################################################################################################################################################################
-        public static string GetAreaName(string id)
+        public static string GetNationalName(string id)
         {
             try
             {
@@ -273,7 +288,7 @@ namespace WebCore.Services
                     return string.Empty;
                 //
                 id = id.ToLower();
-                AreaGeographicalService appAreaService = new AreaGeographicalService();
+                NationalService appAreaService = new NationalService();
                 var appArea = appAreaService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (appArea == null)
                     return string.Empty;

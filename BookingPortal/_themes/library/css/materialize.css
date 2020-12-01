@@ -16,7 +16,7 @@
     [type="radio"]:not(:checked) + label,
     [type="radio"]:checked + label {
         position: relative;
-        padding-left: 35px;
+        padding-left: 25px;
         cursor: pointer;
         display: inline-block;
         height: 25px;
@@ -29,7 +29,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    margin: 4px;
+    margin: 4px 0px;
     width: 16px;
     height: 16px;
     z-index: 0;

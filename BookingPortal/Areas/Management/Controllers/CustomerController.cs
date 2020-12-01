@@ -139,11 +139,11 @@ namespace WebApplication.Management.Controllers
         [HttpPost]
         [Route("Action/AgentData")]
         [IsManage(skip: true)]
-        public ActionResult AgentData()
+        public ActionResult GetAgentAll()
         {
             try
             {
-                var service = new CustomerService(); 
+                var service = new CustomerService();
                 var data = service.GetAgentData();
                 if (data.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -158,25 +158,22 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [Route("Action/GetCustomer-By-SuplierID")]
+        [Route("Action/GetAgentByCustomerType")]
         [IsManage(skip: true)]
-        public ActionResult GetCustomerBySuplierID(CustomerIDModel model)
+        public ActionResult GetAgentCustomerType(CustomerTypeModel model)
         {
-            return Notifization.TEST("::");
             try
             {
                 var service = new CustomerService();
-                var data = service.GetCustomerBySupplierIDOption(model.ID, (int)CustomerEnum.CustomerType.AGENT);
-                if (data.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Option("OK", data);
-
+                return service.GetAgentCustomerType(model.CustomerType);
             }
             catch (Exception ex)
             {
                 return Notifization.TEST("::" + ex);
             }
         }
+
+        //OPTION ##########################################################################################################################################################################################################################################################
+
     }
 }

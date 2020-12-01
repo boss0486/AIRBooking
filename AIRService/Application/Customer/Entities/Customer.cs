@@ -47,9 +47,10 @@ namespace WebCore.Entities
     public class CustomerResult : WEBModelResult
     {
         public string ID { get; set; }
-        private string _supplierId;
-        public string SupplierID { get; set; }
-
+        private string ParentID { get; set; }
+        private string SupplierID { get; set; }
+        [NotMapped]
+        public string SupplierCode => CustomerService.GetCustomerCodeID(SupplierID);
         private string _typeId;
         public string TypeID
         {
@@ -72,7 +73,6 @@ namespace WebCore.Entities
         //}
         public string CodeID { get; set; }
         public string NotationID { get; set; }
-        public string ParentID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
@@ -81,7 +81,7 @@ namespace WebCore.Entities
         public string TaxCode { get; set; }
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; } 
+        public string ContactPhone { get; set; }
         public double DepositAmount { get; set; }
         public double SpendingLimit { get; set; }
         public int TermPayment { get; set; }
@@ -130,6 +130,10 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+    public class CustomerTypeModel
+    {
+        public string CustomerType { get; set; }
+    }
     public class CustomerSearchModel : SearchModel
     {
         public string TypeID { get; set; }
@@ -140,5 +144,6 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string Title { get; set; }
         public string CodeID { get; set; }
+        public string ParentID { get; set; }
     }
 }

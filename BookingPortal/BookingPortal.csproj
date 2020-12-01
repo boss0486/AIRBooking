@@ -139,6 +139,7 @@
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
+    <Compile Include="Areas\Management\Controllers\NationalController.cs" />
     <Compile Include="Areas\Management\Controllers\AreaGeographicalController.cs" />
     <Compile Include="Areas\Management\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Management\Controllers\ProductController.cs" />
@@ -192,6 +193,7 @@
     <Content Include="Areas\Management\_script\account.js" />
     <Content Include="Areas\Management\_script\app-order.js" />
     <Content Include="Areas\Management\_script\app-book.js" />
+    <Content Include="Areas\Management\_script\national.js" />
     <Content Include="Areas\Management\_script\area-geographical.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />
@@ -1240,6 +1242,10 @@
     <Content Include="Areas\Management\Views\_ViewEprReportSearchPatial.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\SyncData.cshtml" />
     <Content Include="Areas\Template\Views\Shared\_Blank.cshtml" />
+    <Content Include="Areas\Management\Views\National\Create.cshtml" />
+    <Content Include="Areas\Management\Views\National\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\National\Details.cshtml" />
+    <Content Include="Areas\Management\Views\National\Update.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

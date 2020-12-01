@@ -1,23 +1,30 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/AreaGeographical/Action";
-var URLA = "/Management/AreaGeographical";
-var AreaGeographicalController = {
+var URLC = "/Management/National/Action";
+var URLA = "/Management/National";
+var NationalController = {
     init: function () {
-        AreaGeographicalController.registerEvent();
+        NationalController.registerEvent();
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
-            var ddlNationalID = $('#ddlNationalID').val();
+            var txtCode = $('#txtCode').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
-            if (ddlNationalID === '') {
-                $('#lblNationalID').html('Vui lòng chọn quốc gia');
+            //
+            if (txtCode === '') {
+                $('#lblCode').html('Không được để trống mã quốc gia');
                 flg = false;
             }
-            else {
-                $('#lblNationalID').html('');
+            else if (txtCode.length < 1 || txtCode.length > 5) {
+                $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
+                flg = false;
             }
+            else if (!FormatKeyId.test(txtCode)) {
+                $('#lblCode').html('Mã quốc gia không hợp lệ');
+                flg = false;
+            }
+            //
             if (txtTitle === '') {
                 $('#lblTitle').html('Không được để trống tiêu đề');
                 flg = false;
@@ -53,20 +60,33 @@ var AreaGeographicalController = {
             // submit
 
             if (flg) {
-                AreaGeographicalController.Create();
+                NationalController.Create();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
             }
         });
         $('#btnSearch').off('click').on('click', function () {
-            AreaGeographicalController.DataList(1);
+            NationalController.DataList(1);
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
+            var txtCode = $('#txtCode').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
-
+            if (txtCode === '') {
+                $('#lblCode').html('Không được để trống mã quốc gia');
+                flg = false;
+            }
+            else if (txtCode.length < 1 || txtCode.length > 5) {
+                $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
+                flg = false;
+            }
+            else if (!FormatKeyId.test(txtCode)) {
+                $('#lblCode').html('Mã quốc gia không hợp lệ');
+                flg = false;
+            }
+            //
             if (txtTitle === '') {
                 $('#lblTitle').html('Không được để trống tiêu đề');
                 flg = false;
@@ -101,7 +121,7 @@ var AreaGeographicalController = {
             }
             // submit
             if (flg) {
-                AreaGeographicalController.Update();
+                NationalController.Update();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
@@ -146,15 +166,14 @@ var AreaGeographicalController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "AreaGeographicalController", id);
+                            var action = HelperModel.RolePermission(result.role, "NationalController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${item.NationalName}</td>                                  
-                                 <td>${item.Title}</td>                                  
-                                 <td>${item.Summary}</td>                                  
+                                 <td>${item.CodeID}</td>                                  
+                                 <td>${item.Title}</td>                                                           
                                  <td class='tbcol-created'>${item.CreatedBy}</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
@@ -163,7 +182,7 @@ var AreaGeographicalController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, AreaGeographicalController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, NationalController.DataList);
                         }
                         return;
                     }
@@ -182,7 +201,7 @@ var AreaGeographicalController = {
         });
     },
     Create: function () {
-        var ddlNationalID = $('#ddlNationalID').val();
+        var txtCode = $('#txtCode').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var enabled = 0;
@@ -190,7 +209,7 @@ var AreaGeographicalController = {
             enabled = 1;
         //
         var model = {
-            NationalID: ddlNationalID,
+            CodeID: txtCode,
             Title: title,
             Summary: summary,
             Enabled: enabled
@@ -221,7 +240,7 @@ var AreaGeographicalController = {
     },
     Update: function () {
         var id = $('#txtID').val();
-        var ddlNationalID = $('#ddlNationalID').val();
+        var txtCode = $('#txtCode').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var enabled = 0;
@@ -230,7 +249,7 @@ var AreaGeographicalController = {
         //
         var model = {
             Id: id,
-            NationalID: ddlNationalID,
+            CodeID: txtCode,
             Title: title,
             Summary: summary,
             Enabled: enabled
@@ -268,7 +287,7 @@ var AreaGeographicalController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AreaGeographicalController.DataList(pageIndex);
+                        NationalController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -335,11 +354,26 @@ var AreaGeographicalController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, AreaGeographicalController.Delete, null, null);
+        Confirm.Delete(id, NationalController.Delete, null, null);
     }
 };
 
-AreaGeographicalController.init();
+NationalController.init();
+//
+$(document).on('keyup', '#txtCode', function () {
+    $('#lblCode').html('');
+    var txtCode = $(this).val();
+    if (txtCode === '') {
+        $('#lblCode').html('Không được để trống mã quốc gia');
+    }
+    else if (txtCode.length < 1 || txtCode.length > 5) {
+        $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
+    }
+    else if (!FormatKeyId.test(txtCode)) {
+        $('#lblCode').html('Mã quốc gia không hợp lệ');
+    }
+});
+
 $(document).on('keyup', '#txtTitle', function () {
     var txtTitle = $(this).val();
     if (txtTitle === '') {
@@ -374,14 +408,4 @@ $(document).on('keyup', '#txtSummary', function () {
         $('#lblSummary').html('');
     }
 });
-$(document).on('change', '#ddlNationalID', function () {
-    var ddlNationalID = $(this).val();
-    if (ddlNationalID === '') {
-        $('#lblNationalID').html('Vui lòng chọn quốc gia');
-    }
-    else {
-        $('#lblNationalID').html('');
-    }
-});
-
 

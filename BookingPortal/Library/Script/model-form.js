@@ -1,11 +1,12 @@
 ﻿var ajaxStatus = 0;
 class AjaxFrom {
     static POST(_form) {
+        // for edg
         _form.method = "POST";
         _form.dataType = 'json';
         _form.async = true;
         $.ajax(_form).done(function () {
-           
+
         });
         //.fail(function () {
         //    console.log('::111111111111' + MessageText.NotService);
@@ -14,9 +15,9 @@ class AjaxFrom {
 }
 // ************************************************************************************************
 $(document).ajaxStart(function () {
+    // edg is not working
     Loading.ShowLoading();
 }).ajaxStop(function () {
-    // 
     setTimeout(function () {
         Loading.HideLoading();
     }, 1500);
@@ -143,7 +144,7 @@ class HelperModel {
                     action += `<a href='${URLA}/Profile/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
                 }
                 //
-            }); 
+            });
 
             if (cnt > 1) {
                 return `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>${action}</div></div>`
@@ -170,10 +171,10 @@ class RoleEnum {
 
     static IsCMSUser = 1;
     static IsAdminInApplication = 2;
-    static IsAdminSupplierLogged = 3;
-    static IsSupplierLogged = 4;
-    static IsAdminCustomerLogged = 5;
-    static IsCustomerLogged = 6;
+    static IsAdminCustomerLogged = 3;
+    static IsCustomerLogged = 4;
+    static IsAdminSupplierLogged = 5;
+    static IsSupplierLogged = 6;
 }
 
 class PassengerGroupEnum {

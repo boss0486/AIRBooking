@@ -13,7 +13,6 @@
         string id = "";
         string title = "";
         string summary = "";
-        string nationalName = "";
         string languageId = "";
         string createdBy = "";
         string createdDate = "";
@@ -24,7 +23,6 @@
             id = Model.ID;
             title = Model.Title;
             summary = Model.Summary;
-            nationalName = Model.NationalName;
             languageId = Model.LanguageID;
             createdBy = Model.CreatedBy;
             enabled = Model.EnabledText;
@@ -35,7 +33,6 @@
                 <div class="top-pic">
                     <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
                 </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Quốc gia: @nationalName</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
                 <div class="form-group"><i class="fas fa-check-circle"></i> Người tạo: @createdBy</div>
