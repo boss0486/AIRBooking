@@ -75,9 +75,9 @@ namespace WebCore.Services
             }
             // 
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_WalletDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
+            string sqlQuery = @"SELECT * FROM App_WalletDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
    
-            var dtList = _connection.Query<WalletDepositHistoryResult>(sqlQuery, new { Query = query, SenderID = userId }).ToList();
+            var dtList = _connection.Query<WalletDepositHistoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), SenderID = userId }).ToList();
             //
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound + sqlQuery);

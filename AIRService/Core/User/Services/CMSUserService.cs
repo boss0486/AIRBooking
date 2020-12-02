@@ -95,7 +95,7 @@ namespace WebCore.Services
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM View_CMSUser WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
-            var dtList = _connection.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<UserResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //

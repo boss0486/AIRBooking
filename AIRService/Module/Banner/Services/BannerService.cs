@@ -22,7 +22,7 @@ namespace WebCore.Services
         public BannerService() : base() { }
         public BannerService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(SearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             #region
             if (model == null)

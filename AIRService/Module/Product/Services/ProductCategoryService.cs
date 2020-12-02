@@ -56,7 +56,7 @@ namespace WebCore.Services
             string sqlQuery = @"SELECT * FROM App_ProductCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate]";
 
             
-            var dtList = _connection.Query<ProductCategoryResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<ProductCategoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //

@@ -43,10 +43,10 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(routeArea))
                 whereCondition = "AND RouteArea = @RouteArea";
             //
-            string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%' 
+            string sqlQuery = @"SELECT * FROM MenuItem WHERE Title LIKE N'%'+  @Query +'%' 
                                     AND ParentID IS NULl " + whereCondition + " ORDER BY RouteArea, OrderID ASC ";
 
-            var dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea, Query = query, Enabled = status }).ToList();
+            var dtList = _connection.Query<MenuItemModelResult>(sqlQuery, new { RouteArea = routeArea, Query = Helper.Page.Library.FormatNameToUni2NONE(query), Enabled = status }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound();
 

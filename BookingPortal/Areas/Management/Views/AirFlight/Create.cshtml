@@ -11,7 +11,7 @@
             <label class="form-label">Khu vực:</label>
             <select id="ddlAreaID" name="ddlAreaID" class="form-control show-tick" data-live-search="true">
                 <option value="-">@Helper.Language.Resource.Label.Option</option>
-                @Html.Raw(AreaGeographicalService.AreaDropdownList(string.Empty))
+                @Html.Raw(AreaInlandService.AreaDropdownList(string.Empty))
             </select>
             <span id="lblAreaID" class="message msg-box"></span>
         </div>

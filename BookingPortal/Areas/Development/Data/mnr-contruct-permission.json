@@ -186,6 +186,78 @@
     ]
   },
   {
+    "KeyID": "AreaNational",
+    "Title": "Khu vực quốc gia",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
+    "KeyID": "AreaInland",
+    "Title": "Khu vực nội địa",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
     "KeyID": "National",
     "Title": "Quốc gia",
     "Action": [
@@ -224,42 +296,6 @@
   {
     "KeyID": "Airline",
     "Title": "Hãng hàng không",
-    "Action": [
-      {
-        "KeyID": "DataList",
-        "Method": "DataList",
-        "APIRouter": "Action/DataList",
-        "Title": "D.sách"
-      },
-      {
-        "KeyID": "Create",
-        "Method": "Create",
-        "APIRouter": "Action/Create",
-        "Title": "Tạo"
-      },
-      {
-        "KeyID": "Update",
-        "Method": "Update",
-        "APIRouter": "Action/Update",
-        "Title": "Sửa"
-      },
-      {
-        "KeyID": "Delete",
-        "Method": "",
-        "APIRouter": "Action/Delete",
-        "Title": "Xóa"
-      },
-      {
-        "KeyID": "Details",
-        "Method": "Details",
-        "APIRouter": "Action/Details",
-        "Title": "C.tiết"
-      }
-    ]
-  },
-  {
-    "KeyID": "AreaGeographical",
-    "Title": "Khu vực địa lý",
     "Action": [
       {
         "KeyID": "DataList",

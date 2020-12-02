@@ -17,8 +17,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -141,13 +140,10 @@
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
+    <Compile Include="Areas\Management\Controllers\AreaNationalController.cs" />
     <Compile Include="Areas\Management\Controllers\NationalController.cs" />
-    <Compile Include="Areas\Management\Controllers\AreaGeographicalController.cs" />
-    <Compile Include="Areas\Management\Controllers\ProductCategoryController.cs" />
-    <Compile Include="Areas\Management\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Management\Controllers\AreaInlandController.cs" />
     <Compile Include="Areas\Management\Controllers\AgentFeeController.cs" />
-    <Compile Include="Areas\Management\Controllers\ProductProviderController.cs" />
-    <Compile Include="Areas\Management\Controllers\ProductWarrantyController.cs" />
     <Compile Include="Areas\Management\Controllers\TicketConditionController.cs" />
     <Compile Include="Areas\Management\Controllers\AccountController.cs" />
     <Compile Include="Areas\Management\Controllers\BankController.cs" />
@@ -196,8 +192,9 @@
     <Content Include="Areas\Management\_script\app-order.js" />
     <Content Include="Areas\Management\_script\app-book.js" />
     <Content Include="Areas\Management\_script\app-airline.js" />
+    <Content Include="Areas\Management\_script\area-national.js" />
     <Content Include="Areas\Management\_script\national.js" />
-    <Content Include="Areas\Management\_script\area-geographical.js" />
+    <Content Include="Areas\Management\_script\area-inland.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
     <Content Include="Areas\Management\_script\app-flight-booking.js" />
     <Content Include="Areas\Management\_script\app-flight.js" />
@@ -1197,7 +1194,7 @@
     <Content Include="Areas\Management\Views\TransactionUserSpending\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TransactionCustomerSpending\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionUserSpending\Details.cshtml" />
-    <Content Include="Areas\Management\Views\_ViewSearchForHistoryPatial.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewSearchForAgentFeePatial.cshtml" />
     <Content Include="Areas\Management\Views\_ViewReportSearchPatial.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\Details.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\Search.cshtml" />
@@ -1212,29 +1209,13 @@
     <Content Include="Areas\Management\Views\Home\Test.cshtml" />
     <Content Include="Areas\Management\Views\TicketCondition\Update.cshtml" />
     <Content Include="Areas\Management\Views\AgentFee\Setting.cshtml" />
-    <Content Include="Areas\Management\Views\ProductCategory\Create.cshtml" />
-    <Content Include="Areas\Management\Views\ProductCategory\Details.cshtml" />
-    <Content Include="Areas\Management\Views\ProductCategory\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\ProductCategory\Update.cshtml" />
-    <Content Include="Areas\Management\Views\Product\Create.cshtml" />
-    <Content Include="Areas\Management\Views\Product\Detail.cshtml" />
-    <Content Include="Areas\Management\Views\Product\Index.cshtml" />
-    <Content Include="Areas\Management\Views\Product\Update.cshtml" />
-    <Content Include="Areas\Management\Views\ProductProvider\Create.cshtml" />
-    <Content Include="Areas\Management\Views\ProductProvider\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\ProductProvider\Details.cshtml" />
-    <Content Include="Areas\Management\Views\ProductProvider\Update.cshtml" />
-    <Content Include="Areas\Management\Views\ProductWarranty\Create.cshtml" />
-    <Content Include="Areas\Management\Views\ProductWarranty\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\ProductWarranty\Details.cshtml" />
-    <Content Include="Areas\Management\Views\ProductWarranty\Update.cshtml" />
     <Content Include="Areas\Management\Views\AgentFee\Details.cshtml" />
     <Content Include="Areas\Management\Views\AgentFee\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TicketCondition\Details.cshtml" />
-    <Content Include="Areas\Management\Views\AreaGeographical\Create.cshtml" />
-    <Content Include="Areas\Management\Views\AreaGeographical\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\AreaGeographical\Details.cshtml" />
-    <Content Include="Areas\Management\Views\AreaGeographical\Update.cshtml" />
+    <Content Include="Areas\Management\Views\AreaInland\Create.cshtml" />
+    <Content Include="Areas\Management\Views\AreaInland\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\AreaInland\Details.cshtml" />
+    <Content Include="Areas\Management\Views\AreaInland\Update.cshtml" />
     <Content Include="Areas\Management\Views\TransactionDepositHistory\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\UserRole.cshtml" />
     <Content Include="Areas\Management\Views\_ViewSearchForOrderPatial.cshtml" />
@@ -1253,6 +1234,11 @@
     <Content Include="Areas\Management\Views\Airline\DataList.cshtml" />
     <Content Include="Areas\Management\Views\Airline\Details.cshtml" />
     <Content Include="Areas\Management\Views\Airline\Update.cshtml" />
+    <Content Include="Areas\Management\Views\_ViewSearchForHistoryPatial.cshtml" />
+    <Content Include="Areas\Management\Views\AreaNational\Create.cshtml" />
+    <Content Include="Areas\Management\Views\AreaNational\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\AreaNational\Details.cshtml" />
+    <Content Include="Areas\Management\Views\AreaNational\Update.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

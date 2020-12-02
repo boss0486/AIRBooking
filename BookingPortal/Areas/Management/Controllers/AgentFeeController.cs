@@ -29,7 +29,7 @@ namespace WebApplication.Management.Controllers
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 string customerId = CustomerService.GetCustomerIDByUserID(userId);
                 AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
-                var airFeeAgentResult = airFeeAgentService.GetAgentFee(customerId);
+                AirAgentFee airFeeAgentResult = airFeeAgentService.GetAgentFee(customerId);
                 if (airFeeAgentResult != null)
                 {
                     return View(airFeeAgentResult);
@@ -41,7 +41,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
-            var airFeeAgentResult = airFeeAgentService.GetAgentFeeByID(id);
+            var airFeeAgentResult = airFeeAgentService.ViewAgentFee(id);
             if (airFeeAgentResult != null)
                 return View(airFeeAgentResult);
             //
@@ -66,7 +66,7 @@ namespace WebApplication.Management.Controllers
         }
         [HttpPost]
         [Route("Action/GetAgentFee")]
-        public ActionResult GetAgentFee(AirAgentFeeModel model)
+        public ActionResult GetAgentFee(AirAgentFee_AgentModel model)
         {
             try
             {
@@ -82,13 +82,13 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
-        [Route("Action/Update")]
+        [Route("Action/ConfigFee")]
         public ActionResult Update(AirAgentFeeConfigModel model)
         {
             try
             {
                 using (var service = new AirAgentFeeService())
-                    return service.Update(model);
+                    return service.ConfigFee(model);
             }
             catch (Exception ex)
             {
@@ -96,6 +96,20 @@ namespace WebApplication.Management.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("Action/GetFeeConfig")]
+        public ActionResult GetFeeConfigByNational(AirAgentFee_NationalIDModel model)
+        {
+            try
+            {
+                using (var service = new AirAgentFeeService())
+                    return service.GetFeeConfigByNational(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
 
+        }
     }
 }

@@ -134,16 +134,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\AirFilght\Entities\AirportType.cs" />
-    <Compile Include="Application\AirFilght\Services\AirportTypeService.cs" />
+    <Compile Include="Application\AirFilght\Entities\AirItinerary.cs" />
+    <Compile Include="Application\AirFilght\Enum\ItineraryEnum.cs" />
+    <Compile Include="Application\AirFilght\Services\AirItineraryService.cs" />
     <Compile Include="Application\AirTicketCondition\Entities\AirTicketCondition05.cs" />
     <Compile Include="Application\AirTicketCondition\Entities\AirTicketCondition04.cs" />
     <Compile Include="Application\AirAgentFee\Services\AirAgentFeeService.cs" />
     <Compile Include="Application\AirAgentFee\Entities\AirAgentFee.cs" />
     <Compile Include="Application\AirTicketCondition\Services\AirTicketCondition05Service.cs" />
     <Compile Include="Application\AirTicketCondition\Services\AirTicketCondition04Service.cs" />
-    <Compile Include="Application\Area\Entities\AreaGeographical.cs" />
-    <Compile Include="Application\Area\Services\AreaGeographicalService.cs" />
+    <Compile Include="Module\AreaGeographical\Entities\AreaInland.cs" />
+    <Compile Include="Module\AreaGeographical\Entities\AreaNational.cs" />
+    <Compile Include="Module\AreaGeographical\Services\AreaInlandService.cs" />
     <Compile Include="Application\AirOrder\Entities\OrderTax.cs" />
     <Compile Include="Application\AirOrder\Entities\OrderCode.cs" />
     <Compile Include="Application\AirOrder\Entities\OrderPrice.cs" />
@@ -350,8 +352,9 @@
     <Compile Include="Helper\ValidData.cs" />
     <Compile Include="Module\Account\Entities\Account.cs" />
     <Compile Include="Module\Account\Services\AccountService.cs" />
-    <Compile Include="Module\National\Entities\National.cs" />
-    <Compile Include="Module\National\Services\NationalService.cs" />
+    <Compile Include="Module\AreaGeographical\Entities\National.cs" />
+    <Compile Include="Module\AreaGeographical\Services\AreaNationalService.cs" />
+    <Compile Include="Module\AreaGeographical\Services\NationalService.cs" />
     <Compile Include="Module\Article\Entities\Article.cs" />
     <Compile Include="Module\Article\Entities\ArticleCategory.cs" />
     <Compile Include="Module\Article\Services\ArticleCategoryService.cs" />
@@ -1814,18 +1817,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\AirAgentFee\Enum\" />
-    <Folder Include="Application\AirFilght\Enum\" />
     <Folder Include="Application\AirOrder\Enum\" />
     <Folder Include="Application\AirTicketCondition\Enum\" />
     <Folder Include="Application\ApiReport\Enum\" />
-    <Folder Include="Application\Area\Enum\" />
     <Folder Include="Application\ReportSaleSummary\Enum\" />
     <Folder Include="Application\Wallet\Enum\" />
     <Folder Include="Core\Authorization\Entities\" />
     <Folder Include="Core\Authorization\Enum\" />
     <Folder Include="Core\Authorization\Services\" />
     <Folder Include="Module\Account\_Model\" />
-    <Folder Include="Module\National\Enum\" />
+    <Folder Include="Module\AreaGeographical\Enum\" />
     <Folder Include="Module\ServicePack\Enum\" />
   </ItemGroup>
   <ItemGroup>

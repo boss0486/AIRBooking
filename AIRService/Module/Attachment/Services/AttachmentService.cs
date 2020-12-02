@@ -21,7 +21,7 @@ namespace WebCore.Services
 
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(AttachmentFolderModel model)
+        public ActionResult DataList(AttachmentFolderModel model)
         {
             try
             {
@@ -33,9 +33,9 @@ namespace WebCore.Services
                 int page = model.Page;
                 string langID = Helper.Current.UserLogin.LanguageID;
                 string sqlQuery = @"SELECT  a.*, c.Title as 'CategoryName'  FROM Attachment as a LEFT JOIN  AttachmentCategory as c ON a.CategoryID  =  c.ID 
-                                    WHERE a.Title LIKE N'%'+ dbo.Uni2NONE('') +'%'
+                                    WHERE a.Title LIKE N'%'+ @Query +'%'
                                     ORDER BY CreatedDate DESC";
-                var dtList = _connection.Query<ViewAttachment>(sqlQuery, new { Query = query }).ToList();
+                var dtList = _connection.Query<ViewAttachment>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
 

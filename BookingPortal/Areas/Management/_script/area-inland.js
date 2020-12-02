@@ -1,39 +1,23 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/National/Action";
-var URLA = "/Management/National";
-var NationalController = {
+var URLC = "/Management/AreaInland/Action";
+var URLA = "/Management/AreaInland";
+var AreaInlandController = {
     init: function () {
-        NationalController.registerEvent();
+        AreaInlandController.registerEvent();
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
-            var ddlAreaNational = $('#ddlAreaNational').val();
-            var txtCode = $('#txtCode').val();
+            var ddlNationalID = $('#ddlNationalID').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
-            //
-            if (ddlAreaNational === '') {
-                $('#lblAreaNational').html('Vui lòng chọn khu vực');
+            if (ddlNationalID === '') {
+                $('#lblNationalID').html('Vui lòng chọn quốc gia');
                 flg = false;
             }
             else {
-                $('#lblAreaNational').html('');
+                $('#lblNationalID').html('');
             }
-            //
-            if (txtCode === '') {
-                $('#lblCode').html('Không được để trống mã quốc gia');
-                flg = false;
-            }
-            else if (txtCode.length < 1 || txtCode.length > 5) {
-                $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
-                flg = false;
-            }
-            else if (!FormatKeyId.test(txtCode)) {
-                $('#lblCode').html('Mã quốc gia không hợp lệ');
-                flg = false;
-            }
-            //
             if (txtTitle === '') {
                 $('#lblTitle').html('Không được để trống tiêu đề');
                 flg = false;
@@ -69,41 +53,20 @@ var NationalController = {
             // submit
 
             if (flg) {
-                NationalController.Create();
+                AreaInlandController.Create();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
             }
         });
         $('#btnSearch').off('click').on('click', function () {
-            NationalController.DataList(1);
+            AreaInlandController.DataList(1);
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
-            var ddlAreaNational = $('#ddlAreaNational').val();
-            var txtCode = $('#txtCode').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
-            if (ddlAreaNational === '') {
-                $('#lblAreaNational').html('Vui lòng chọn khu vực');
-                flg = false;
-            }
-            else {
-                $('#lblAreaNational').html('');
-            }
-            if (txtCode === '') {
-                $('#lblCode').html('Không được để trống mã quốc gia');
-                flg = false;
-            }
-            else if (txtCode.length < 1 || txtCode.length > 5) {
-                $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
-                flg = false;
-            }
-            else if (!FormatKeyId.test(txtCode)) {
-                $('#lblCode').html('Mã quốc gia không hợp lệ');
-                flg = false;
-            }
-            //
+
             if (txtTitle === '') {
                 $('#lblTitle').html('Không được để trống tiêu đề');
                 flg = false;
@@ -138,7 +101,7 @@ var NationalController = {
             }
             // submit
             if (flg) {
-                NationalController.Update();
+                AreaInlandController.Update();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
@@ -183,15 +146,15 @@ var NationalController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "NationalController", id);
+                            var action = HelperModel.RolePermission(result.role, "AreaInlandController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${item.CodeID}</td>                                  
-                                 <td>${item.Title}</td>                                                           
-                                 <td>${item.AreaNationName}</td>                                                           
+                                 <td>${item.NationalName}</td>                                  
+                                 <td>${item.Title}</td>                                  
+                                 <td>${item.Summary}</td>                                  
                                  <td class='tbcol-created'>${item.CreatedBy}</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
@@ -200,7 +163,7 @@ var NationalController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, NationalController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, AreaInlandController.DataList);
                         }
                         return;
                     }
@@ -219,9 +182,7 @@ var NationalController = {
         });
     },
     Create: function () {
-        var ddlAreaNational = $('#ddlAreaNational').val();
-        var txtCode = $('#txtCode').val();
-        var txtCode = $('#txtCode').val();
+        var ddlNationalID = $('#ddlNationalID').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var enabled = 0;
@@ -229,8 +190,7 @@ var NationalController = {
             enabled = 1;
         //
         var model = {
-            AreaNationalID: ddlAreaNational,
-            CodeID: txtCode,
+            NationalID: ddlNationalID,
             Title: title,
             Summary: summary,
             Enabled: enabled
@@ -261,8 +221,7 @@ var NationalController = {
     },
     Update: function () {
         var id = $('#txtID').val();
-        var ddlAreaNational = $('#ddlAreaNational').val();
-        var txtCode = $('#txtCode').val();
+        var ddlNationalID = $('#ddlNationalID').val();
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
         var enabled = 0;
@@ -271,8 +230,7 @@ var NationalController = {
         //
         var model = {
             Id: id,
-            AreaNationalID: ddlAreaNational,
-            CodeID: txtCode,
+            NationalID: ddlNationalID,
             Title: title,
             Summary: summary,
             Enabled: enabled
@@ -310,7 +268,7 @@ var NationalController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        NationalController.DataList(pageIndex);
+                        AreaInlandController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -377,26 +335,11 @@ var NationalController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, NationalController.Delete, null, null);
+        Confirm.Delete(id, AreaInlandController.Delete, null, null);
     }
 };
 
-NationalController.init();
-//
-$(document).on('keyup', '#txtCode', function () {
-    $('#lblCode').html('');
-    var txtCode = $(this).val();
-    if (txtCode === '') {
-        $('#lblCode').html('Không được để trống mã quốc gia');
-    }
-    else if (txtCode.length < 1 || txtCode.length > 5) {
-        $('#lblCode').html('Mã quốc gia giới hạn [1-5] ký tự');
-    }
-    else if (!FormatKeyId.test(txtCode)) {
-        $('#lblCode').html('Mã quốc gia không hợp lệ');
-    }
-});
-
+AreaInlandController.init();
 $(document).on('keyup', '#txtTitle', function () {
     var txtTitle = $(this).val();
     if (txtTitle === '') {
@@ -431,12 +374,14 @@ $(document).on('keyup', '#txtSummary', function () {
         $('#lblSummary').html('');
     }
 });
-$(document).on('change', '#ddlAreaNational', function () {
-    var ddlAreaNational = $(this).val();
-    if (ddlAreaNational === '') {
-        $('#lblAreaNational').html('Vui lòng chọn khu vực');
+$(document).on('change', '#ddlNationalID', function () {
+    var ddlNationalID = $(this).val();
+    if (ddlNationalID === '') {
+        $('#lblNationalID').html('Vui lòng chọn quốc gia');
     }
     else {
-        $('#lblAreaNational').html('');
+        $('#lblNationalID').html('');
     }
 });
+
+

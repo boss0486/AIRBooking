@@ -36,6 +36,7 @@ namespace Helper.Language
         }
         public class Label
         {
+            public static string BtnApply { get; set; } = "Áp dụng";
             public static string BtnCreate { get; set; } = "Thêm mới";
             public static string BtnUpdate { get; set; } = "Cập nhật";
             public static string BtnDelete { get; set; } = "Xóa";

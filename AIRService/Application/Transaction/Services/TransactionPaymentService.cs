@@ -76,7 +76,7 @@ namespace WebCore.Services
             // 
             string areaId = model.AreaID;
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_TransactionPayment WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR dbo.Uni2NONE(TransactionCode) LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT * FROM App_TransactionPayment WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR TransactionCode LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
             //
             var dtList = _connection.Query<TransactionPaymentResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)

@@ -56,7 +56,7 @@ namespace WebCore.Services
             if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
                 whereCondition += " AND AreaID = @AreaID ";
             // query
-            string sqlQuery = @"SELECT * FROM App_Airport WHERE Title LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
+            string sqlQuery = @"SELECT * FROM App_Airport WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
             var dtList = _connection.Query<AirportResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), AreaID = areaId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);

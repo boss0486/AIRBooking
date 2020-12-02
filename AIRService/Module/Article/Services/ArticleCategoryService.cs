@@ -19,7 +19,7 @@ namespace WebCore.Services
         public ArticleCategoryService() : base() { }
         public ArticleCategoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page)
+        public ActionResult DataList(string strQuery, int page)
         {
             string query = string.Empty;
             if (string.IsNullOrEmpty(strQuery))
@@ -27,9 +27,9 @@ namespace WebCore.Services
             else
                 query = strQuery;
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_ArticleCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ dbo.Uni2NONE(@Query) +'%'                                          
+            string sqlQuery = @"SELECT * FROM App_ArticleCategory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'                                          
                                     ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<ArticleCategoryResult>(sqlQuery, new { Query = query }).ToList();
+            var dtList = _connection.Query<ArticleCategoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //

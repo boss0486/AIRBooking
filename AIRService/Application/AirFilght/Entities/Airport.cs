@@ -62,7 +62,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return AreaGeographicalService.GetAreaName(CategoryID); ;
+                return AreaInlandService.GetAreaName(CategoryID); ;
             }
         }
         public string IATACode { get; set; }

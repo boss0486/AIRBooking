@@ -6209,7 +6209,10 @@ textarea.form-control {
         max-width: 100%;
         min-width: 100%;
     }
-
+input.error
+{
+    
+}
 
 .input-icon {
     position: absolute;

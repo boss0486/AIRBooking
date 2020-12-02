@@ -67,7 +67,7 @@ namespace WebCore.Services
             using (var service = new AccountService())
             {
                 string sqlQuery = @"SELECT * FROM View_User as vu  WHERE vu.ID NOT IN (SELECT UserID FROM App_ClientLogin) AND  dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY FullName,CreatedDate";
-                var dtList = service.Query<UserResult>(sqlQuery, new { Query = query }).ToList();
+                var dtList = service.Query<UserResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //

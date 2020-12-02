@@ -20,7 +20,7 @@ namespace WebCore.Services
         public LanguageService(System.Data.IDbConnection db) : base(db) { }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Datalist(string strQuery, int page, string langID)
+        public ActionResult DataList(string strQuery, int page, string langID)
         {
             string query = string.Empty;
             if (string.IsNullOrEmpty(strQuery))
@@ -39,7 +39,7 @@ namespace WebCore.Services
                                     ,[Enabled]
                                     ,[CreatedDate]
                                      FROM Language 
-                                     WHERE (Title LIKE N'%'+ dbo.Uni2NONE(@Query) +'%')  
+                                     WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%')  
                                      AND LangID = @LangID ORDER BY Title ASC";
             var dtList = _connection.Query<LanguageModel>(sqlQuery, new { Query = query, @LangID = langID }).ToList();
             if (dtList.Count == 0)

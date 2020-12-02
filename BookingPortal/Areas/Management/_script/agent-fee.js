@@ -12,76 +12,129 @@ var AgentFeeConfigController = {
         $(document).ready(function () {
             // $('[data-dateDefault="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
         });
-        $('#btnUpdate').off('click').on('click', function () {
+        $('#btnInlandUpdate').off('click').on('click', function () {
             var flg = true;
             // Flight go
-            var ddlCustomer = $('#ddlCustomer').val();
-            var txtAmount = $('#txtAmount').val();
+
             if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
                 //
+                var ddlCustomer = $('#ddlCustomer').val();
                 if (ddlCustomer === "") {
-                    $('#lblCustomer').html('Vui lòng chọn khách hàng');
+                    $('#lblAgentID').html('Vui lòng chọn đại lý');
                     flg = false;
                 }
                 else {
-                    $('#lblCustomer').html('');
+                    $('#lblAgentID').html('');
                 }
             }
 
-            var strResBookDesig = [];
-            $('input[name="inpFee"]').each(function (index, item) {
+            var arrFee = [];
+            $('#TblInlandFeeData input[name="inpFee"]').each(function (index, item) {
                 var txtAmount = $(item).val();
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
                 if (!FormatCurrency.test(txtAmount)) {
                     $('#lblFee').html('Phí không hợp lệ');
                     $(item).addClass("error");
+                    flg = false;
                 }
                 else if (parseFloat(txtAmount) < 0 || parseFloat(txtAmount) > 100000000) {
-                    $('#lblFee').html('Phí giới hạn từ 0 - 100 000 000 đ');
+                    $('#lblFee').html('Phí giới hạn từ [0-100 000 000] đ');
                     $(item).addClass("error");
+                    flg = false;
                 }
                 else {
                     $('#lblFee').html('');
                     $(item).removeClass("error");
+                    //
+                    var airlineCode = $(item).data("airlinecode");
+                    var itineraryId = $(item).data("itineraryid");
+
+                    var airlineFee = {
+                        AirlineCode: airlineCode,
+                        ItineraryID: itineraryId,
+                        Amount: LibCurrencies.FormatToCurrency(txtAmount)
+                    }
+                    arrFee.push(airlineFee);
                 }
-                strResBookDesig.push($(item).val());
             });
-            //if (strResBookDesig.length <= 0) {
-            //    strResBookDesig = [];
-            //}
-
-
-
-
-
-
-
-             
-            // submit form
-            if (flg) {
-                AgentFeeConfigController.AgentFeeConfig();
+            if (!flg || arrFee.length <= 0) {
+                Notifization.Error("Dữ liệu phí nội địa không hợp lệ");
+                return;
             }
-            else
-                Notifization.Error(MessageText.Datamissing);
+            //
+            AgentFeeConfigController.AgentFeeConfig(1);
+        });
+        //International  *************************************************************************************************************************************************************
+        $('#btnInternationalUpdate').off('click').on('click', function () {
+            var flg = true;
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
+                //
+                var ddlCustomer = $('#ddlCustomer').val();
+                if (ddlCustomer === "") {
+                    $('#lblAgentID').html('Vui lòng chọn đại lý');
+                    flg = false;
+                }
+                else {
+                    $('#lblAgentID').html('');
+                }
+            }
+            var ddlNational = $('#ddlNational').val();
+            if (ddlNational === "") {
+                $('#lblNational').html('Vui lòng chọn quốc gia');
+                flg = false;
+            }
+            else {
+                $('#lblNational').html('');
+            }
+            var arrFee = [];
+            $('#TblInternationalFeeData input[name="inpFee"]').each(function (index, item) {
+                var txtAmount = $(item).val();
+                txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+                if (!FormatCurrency.test(txtAmount)) {
+                    $('#lblFee').html('Phí không hợp lệ');
+                    $(item).addClass("error");
+                    flg = false;
+                }
+                else if (parseFloat(txtAmount) < 0 || parseFloat(txtAmount) > 100000000) {
+                    $('#lblFee').html('Phí giới hạn từ [0-100 000 000] đ');
+                    $(item).addClass("error");
+                    flg = false;
+                }
+                else {
+                    $('#lblFee').html('');
+                    $(item).removeClass("error");
+                    //
+                    var airlineCode = $(item).data("airlinecode");
+                    var itineraryId = $(item).data("itineraryid");
+
+                    var airlineFee = {
+                        AirlineCode: airlineCode,
+                        ItineraryID: itineraryId,
+                        Amount: LibCurrencies.FormatToCurrency(txtAmount)
+                    }
+                    arrFee.push(airlineFee);
+                }
+            });
+            if (!flg || arrFee.length <= 0) {
+                Notifization.Error("Dữ liệu phí quốc tế không hợp lệ");
+                return;
+            }
+            //
+            AgentFeeConfigController.AgentFeeConfig(2);
+        });
+        $('#btnSearch').off('click').on('click', function () {
+            AgentFeeConfigController.DataList(1);
         });
     },
     DataList: function (page) {
-        //       
-        var _ariaId = $('#ddlAreaID').val();
-        var _province = $('#ddlProvince').val();
-        var ddlTimeExpress = $('#ddlTimeExpress').val();
-        var txtStartDate = $('#txtStartDate').val();
-        var txtEndDate = $('#txtEndDate').val();
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
-            TimeExpress: parseInt(ddlTimeExpress),
-            StartDate: txtStartDate,
-            EndDate: txtEndDate,
+            Status: -1,
+            TimeExpress: 0,
+            StartDate: "",
+            EndDate: "",
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-            Status: parseInt($('#ddlStatus').val()),
-            AreaID: _ariaId,
-            ProviceID: _province,
         };
         //
         AjaxFrom.POST({
@@ -144,15 +197,54 @@ var AgentFeeConfigController = {
             }
         });
     },
-    AgentFeeConfig: function () {
-        var ddlCustomer = $('#ddlCustomer').val();
-        var txtAmount = $('#txtAmount').val();
+    AgentFeeConfig: function (_itineraryType) {
+        var ddlAgentID = $('#ddlAgentID').val();
+        var ddlNational = "";
+        if (ddlAgentID == undefined) {
+            ddlAgentID = "";
+        }
+        var arrFee = [];
+        if (_itineraryType == 1) {
+
+            $('#TblInlandFeeData input[name="inpFee"]').each(function (index, item) {
+                var txtAmount = $(item).val();
+                var airlineId = $(item).data("airlineid");
+                var airlineCode = $(item).data("airlinecode");
+                var airlineFee = {
+                    AirlineID: airlineId,
+                    AirlineCode: airlineCode,
+                    Amount: LibCurrencies.ConvertToCurrency(txtAmount)
+                }
+                arrFee.push(airlineFee);
+            });
+        }
+        //
+        if (_itineraryType == 2) {
+            ddlNational = $('#ddlNational').val();
+            $('#TblInternationalFeeData input[name="inpFee"]').each(function (index, item) {
+                var txtAmount = $(item).val();
+                var airlineId = $(item).data("airlineid");
+                var airlineCode = $(item).data("airlinecode");
+                var airlineFee = {
+                    AirlineID: airlineId,
+                    AirlineCode: airlineCode,
+                    Amount: LibCurrencies.ConvertToCurrency(txtAmount)
+                }
+                arrFee.push(airlineFee);
+            });
+        }
+        if (arrFee.length <= 0) {
+            Notifization.Error("Dữ liệu bảng phí không hợp lệ");
+            return;
+        }
         var model = {
-            AgentID: ddlCustomer,
-            Amount: LibCurrencies.ConvertToCurrency(txtAmount)
+            ItineraryType: _itineraryType,
+            NationalID: ddlNational,
+            AgentID: ddlAgentID,
+            AirlineFees: arrFee
         };
         AjaxFrom.POST({
-            url: URLC + '/Update',
+            url: URLC + '/ConfigFee',
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -178,32 +270,34 @@ var AgentFeeConfigController = {
 AgentFeeConfigController.init();
 //Validate
 //###################################################################################################################################################
-$(document).on("keyup", "#txtAmount", function () {
+$(document).on("keyup", '#TblInlandFeeData input[name="inpFee"]', function () {
     var txtAmount = $(this).val();
-    if (txtAmount === '') {
-        $('#lblAmount').html('Không được để trống số tiền nạp');
+    txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+    if (!FormatCurrency.test(txtAmount)) {
+        $('#lblFee').html('Phí không hợp lệ');
+        $(this).addClass("error");
+    }
+    else if (parseFloat(txtAmount) < 0 || parseFloat(txtAmount) > 100000000) {
+        $('#lblFee').html('Phí giới hạn từ [0-100 000 000] đ');
+        $(this).addClass("error");
     }
     else {
-        txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
-        if (!FormatCurrency.test(txtAmount)) {
-            $('#lblAmount').html('Số tiền nạp không hợp lệ');
-        }
-        else if (parseFloat(txtAmount) < 0 || parseFloat(txtAmount) > 100000000) {
-            $('#lblAmount').html('Số tiền giới hạn từ 0 - 100 000 000 đ');
-        }
-        else {
-            $('#lblAmount').html('');
-        }
+        $('#lblFee').html('');
+        $(this).removeClass("error");
     }
 });
 
-$(document).on("change", "#ddlCustomer", function () {
+$(document).on("change", "#ddlAgentID", function () {
+    $('#lblAgentCode').html("");
     var ddlCustomer = $(this).val();
     if (ddlCustomer === "") {
-        $('#lblCustomer').html('Vui lòng chọn khách hàng');
+        $('#lblAgentID').html('Vui lòng chọn đại lý');
     }
     else {
-        $('#lblCustomer').html('');
+        var codeid = $(this).find(':selected').data('codeid');
+        $('#lblAgentCode').html(codeid);
+
+        $('#lblAgentID').html('');
         // get data fill to form 
         var model = {
             AgentID: ddlCustomer
@@ -234,6 +328,68 @@ $(document).on("change", "#ddlCustomer", function () {
                 console.log('::' + MessageText.NotService + JSON.stringify(response));
             }
         });
+
+    }
+});
+
+$(document).on("change", "#ddlNational", function () {
+    // 
+    $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+        $(itemTbl).val(0);
+    });
+    //
+
+
+    $('#lblNationalCode').html("");
+    var ddlNational = $('#ddlNational').val();
+    if (ddlNational === "") {
+        $('#lblNational').html('Vui lòng chọn quốc gia');
+    }
+    else {
+        var codeid = $(this).find(':selected').data('codeid');
+        $('#lblNationalCode').html(codeid);
+        $('#lblNational').html('');
+        //load data 
+        var model = {
+            NationalID: ddlNational
+        };
+        AjaxFrom.POST({
+            url: URLC + '/GetFeeConfig',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        //
+                        var data = response.data;
+                        if (data != null) {
+                            //AirlineID 
+                            $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+                                var tblAirlineid = $(itemTbl).data("airlineid");
+                                console.log("::" + tblAirlineid);
+                                $(data).each(function (index, dataItem) {
+                                    if (tblAirlineid == dataItem.AirlineID) {
+                                        var amount = dataItem.FeeAmount;
+                                        $(itemTbl).val(LibCurrencies.FormatToCurrency(amount));
+                                    }
+                                });
+                            });
+                        }
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService + JSON.stringify(response));
+            }
+        });
+
+
 
     }
 });

@@ -1,5 +1,6 @@
 ﻿@using WebCore.Services;
 @using WebCore.Model.Services;
+@using WebCore.ENM;
 @*search control ******************************************************************************************************@
 <div class="row">
     <div class="col-md-2">
@@ -11,7 +12,7 @@
         <div class="form-group ">
             <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick" data-live-search="true">
                 <option value="">-Mã đại lý-</option>
-                @Html.Raw(ClientLoginService.DropdownAllProvider("", true))
+                @Html.Raw(CustomerService.DropdownList("", (int)CustomerEnum.CustomerType.AGENT))
             </select>
         </div>
     </div>
