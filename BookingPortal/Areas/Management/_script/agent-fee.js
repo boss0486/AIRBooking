@@ -20,7 +20,7 @@ var AgentFeeConfigController = {
                 //
                 var ddlCustomer = $('#ddlCustomer').val();
                 if (ddlCustomer === "") {
-                    $('#lblAgentID').html('Vui lòng chọn đại lý');
+                    $('#lblAgentID').html('Vui lòng chọn đại lý 3');
                     flg = false;
                 }
                 else {
@@ -71,7 +71,7 @@ var AgentFeeConfigController = {
                 //
                 var ddlCustomer = $('#ddlCustomer').val();
                 if (ddlCustomer === "") {
-                    $('#lblAgentID').html('Vui lòng chọn đại lý');
+                    $('#lblAgentID').html('Vui lòng chọn đại lý 1');
                     flg = false;
                 }
                 else {
@@ -189,7 +189,7 @@ var AgentFeeConfigController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -289,57 +289,28 @@ $(document).on("keyup", '#TblInlandFeeData input[name="inpFee"]', function () {
 
 $(document).on("change", "#ddlAgentID", function () {
     $('#lblAgentCode').html("");
-    var ddlCustomer = $(this).val();
-    if (ddlCustomer === "") {
-        $('#lblAgentID').html('Vui lòng chọn đại lý');
+    var ddlAgentId = $(this).val();
+    if (ddlAgentId === "") {
+        $('#lblAgentID').html('Vui lòng chọn đại lý 2');
     }
     else {
         var codeid = $(this).find(':selected').data('codeid');
         $('#lblAgentCode').html(codeid);
-
         $('#lblAgentID').html('');
-        // get data fill to form 
-        var model = {
-            AgentID: ddlCustomer
-        };
-        AjaxFrom.POST({
-            url: URLC + '/GetAgentFee',
-            data: model,
-            success: function (response) {
-                if (response !== null) {
-                    if (response.status === 200) {
-                        //
-                        var data = response.data;
-                        if (data != null) {
-                            var amount = LibCurrencies.FormatToCurrency(data.Amount);
-                            $('#txtAmount').val(amount);
-                        }
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (response) {
-                console.log('::' + MessageText.NotService + JSON.stringify(response));
-            }
-        });
-
+        //
+        var ddlNational = $('#ddlNational').val();
+        AgentFeeInlandLoad(ddlAgentId);
+        AgentFeeInternationalLoad(ddlAgentId, ddlNational)
     }
 });
 
 $(document).on("change", "#ddlNational", function () {
     // 
-    $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
-        $(itemTbl).val(0);
-    });
+    var ddlAgentID = "";
+    if ($("#ddlAgentID") != undefined) {
+        ddlAgentID = $("#ddlAgentID").val();
+    }
     //
-
-
     $('#lblNationalCode').html("");
     var ddlNational = $('#ddlNational').val();
     if (ddlNational === "") {
@@ -350,47 +321,84 @@ $(document).on("change", "#ddlNational", function () {
         $('#lblNationalCode').html(codeid);
         $('#lblNational').html('');
         //load data 
-        var model = {
-            NationalID: ddlNational
-        };
-        AjaxFrom.POST({
-            url: URLC + '/GetFeeConfig',
-            data: model,
-            success: function (response) {
-                if (response !== null) {
-                    if (response.status === 200) {
-                        //
-                        var data = response.data;
-                        if (data != null) {
-                            //AirlineID 
-                            $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
-                                var tblAirlineid = $(itemTbl).data("airlineid");
-                                console.log("::" + tblAirlineid);
-                                $(data).each(function (index, dataItem) {
-                                    if (tblAirlineid == dataItem.AirlineID) {
-                                        var amount = dataItem.FeeAmount;
-                                        $(itemTbl).val(LibCurrencies.FormatToCurrency(amount));
-                                    }
-                                });
-                            });
-                        }
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (response) {
-                console.log('::' + MessageText.NotService + JSON.stringify(response));
-            }
-        });
-
-
-
+        AgentFeeInternationalLoad(ddlAgentID, ddlNational);
     }
 });
 
+function AgentFeeInternationalLoad(_agentId, _nationalId) {
+    $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+        $(itemTbl).val(0);
+    });
+    var model = {
+        AgentID: _agentId,
+        NationalID: _nationalId,
+        ItineraryID: 2,
+    };
+    AjaxFrom.POST({
+        url: URLC + '/GetFeeConfig',
+        data: model,
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    //
+                    var data = response.data;
+                    if (data == null || data == undefined)
+                        return;
+                    //
+                    $('#TblInternationalFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+                        var tblAirlineid = $(itemTbl).data("airlineid");
+                        $(data).each(function (index, dataItem) {
+                            if (tblAirlineid == dataItem.AirlineID) {
+                                var amount = dataItem.FeeAmount;
+                                $(itemTbl).val(LibCurrencies.FormatToCurrency(amount));
+                            }
+                        });
+                    });
+                    return;
+                }
+            }
+            return;
+        },
+        error: function (response) {
+            console.log(MessageText.NotService);
+        }
+    });
+}
+function AgentFeeInlandLoad(_agentId) {
+    $('#TblInlandFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+        $(itemTbl).val(0);
+    });
+    var model = {
+        ItineraryID: 1,
+        AgentID: _agentId
+    };
+    AjaxFrom.POST({
+        url: URLC + '/GetFeeConfig',
+        data: model,
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    //
+                    var data = response.data;
+                    if (data == null || data == undefined)
+                        return;
+                    //
+                    $('#TblInlandFeeData input[name="inpFee"]').each(function (indexTbl, itemTbl) {
+                        var tblAirlineid = $(itemTbl).data("airlineid");
+                        $(data).each(function (index, dataItem) {
+                            if (tblAirlineid == dataItem.AirlineID) {
+                                var amount = dataItem.FeeAmount;
+                                $(itemTbl).val(LibCurrencies.FormatToCurrency(amount));
+                            }
+                        });
+                    });
+                    return;
+                }
+            }
+            return;
+        },
+        error: function (response) {
+            console.log(MessageText.NotService);
+        }
+    });
+}

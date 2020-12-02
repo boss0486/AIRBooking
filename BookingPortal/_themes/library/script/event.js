@@ -15,7 +15,6 @@
 $(function () {
     //
     $('body').on('keypress', '[data-keyenter], input', function (e) {
-        console.log('ok');
         if (e.keyCode === 13) {
             var $action = $($(this).parents('[data-keyenter]').data('keyenter'));
             if ($action.length > 0) {

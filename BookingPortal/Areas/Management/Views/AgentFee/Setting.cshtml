@@ -23,16 +23,14 @@
         }
         // column
         AirItineraryService airItineraryService = new AirItineraryService();
-        List<AirItineraryOption> airItineraryOptions = airItineraryService.DataOption();
-        List<Airline> airlines = new List<Airline>();
         List<AirAgentFee> airAgentFees = new List<AirAgentFee>();
+        AirlineService airlineService = new AirlineService();
+        List<Airline>  airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
 
         //
         <div class="row">
             <div class="col-md-8 m-b-50">
-                <div class="top-pic special">
-                    <label><span>Nội địa:</span></label>
-                </div>
+
                 @if (!Helper.Current.UserLogin.IsClientInApplication())
                 {
                     <div class="row">
@@ -58,14 +56,16 @@
                 else
                 {
                     // row
-                    AirlineService airlineService = new AirlineService();
-                    airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
+
                     // data
                     AirAgentFeeService airAgentFeeService = new AirAgentFeeService();
                     airAgentFees = airAgentFeeService.GetAlls(m => m.AgentID == agentId).ToList();
                 }
+                <div class="top-pic special">
+                    <label><span>Nội địa:</span></label>
+                </div>
                 <div class="form-group">
-                    <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
+                    <label class="form-label">Bảng phí:@airlines.Count <span id="lblFee" class="message"></span></label>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -137,7 +137,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Mã đại lý:</label> #
+                            <label class="form-label">Mã quốc gia:</label> #
                             <div class="form-control disabled" style="background: #FFE5F1"><label id="lblNationalCode">---</label></div>
                         </div>
                     </div>
@@ -210,10 +210,16 @@
     <script src="~/Areas/Management/_script/agent-fee.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("#ddlNational")[0].selectedIndex = 1;
-            $("#ddlNational").selectpicker("refresh");
-            $("#ddlNational").change();
-
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
+                $("#ddlAgentID")[0].selectedIndex = 1;
+                $("#ddlAgentID").selectpicker("refresh");
+                $("#ddlAgentID").change();
+            }
+            else if (HelperModel.AccessInApplication() == RoleEnum.IsAdminCustomerLogged || HelperModel.AccessInApplication() == RoleEnum.IsCustomerLogged) {
+                $("#ddlNational")[0].selectedIndex = 1;
+                $("#ddlNational").selectpicker("refresh");
+                $("#ddlNational").change();
+            }
         })
     </script>
 

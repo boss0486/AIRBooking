@@ -63,12 +63,10 @@ namespace WebCore.Services
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
+            int itineraryId = model.ItineraryID;
             string nationalId = model.NationalID;
             string agentId = model.AgentID;
             //
-            if (string.IsNullOrWhiteSpace(nationalId))
-                return Notifization.Invalid(MessageText.Invalid);
-            // 
             if (!Helper.Current.UserLogin.IsClientInApplication())
             {
                 if (string.IsNullOrWhiteSpace(agentId))
@@ -81,15 +79,27 @@ namespace WebCore.Services
                 agentId = ClientLoginService.GetClientIDByUserID(userId);
             }
             //
-            string sqlQuery = @"SELECT AirlineID, FeeAmount FROM App_AirAgentFee WHERE NationalID = @NationalID AND AgentID = @AgentID AND ItineraryID = @ItineraryID AND Enabled = 1";
+            string whereCondition = string.Empty;
+            if (itineraryId == (int)ItineraryEnum.ItineraryType.Inland)
+            {
+                whereCondition = " AND NationalID IS NULL AND ItineraryID = " + itineraryId;
+            }
+            if (itineraryId == (int)ItineraryEnum.ItineraryType.International)
+            {
+                if (string.IsNullOrWhiteSpace(nationalId))
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                whereCondition = " AND NationalID = @NationalID AND ItineraryID = " + itineraryId;
+            }
+            //
+            string sqlQuery = @"SELECT ItineraryID, AirlineID, FeeAmount FROM App_AirAgentFee WHERE AgentID = @AgentID AND Enabled = 1" + whereCondition;
             List<AirAgentFeeModel> airAgentFees = _connection.Query<AirAgentFeeModel>(sqlQuery, new
             {
                 NationalID = nationalId,
-                ItineraryID = (int)ItineraryEnum.ItineraryType.International,
                 AgentID = agentId
             }).ToList();
             if (airAgentFees.Count == 0)
-                return Notifization.Data(MessageText.Success, null);
+                return Notifization.Data(MessageText.Success + "nationalId:" + nationalId + "AgentID:" + agentId, null);
             // 
             return Notifization.Data(MessageText.Success, airAgentFees);
         }
