@@ -11,27 +11,28 @@
     <div class="col-md-2">
         <div class="form-group ">
             <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick" data-live-search="true">
-                <option value="">-Mã đại lý-</option>
-                @Html.Raw(CustomerService.DropdownList("", (int)CustomerEnum.CustomerType.AGENT))
+                <option value="">-Đại lý-</option>
+                @Html.Raw(CustomerService.DropdownList("", (int)AgentProvideEnum.AgentProvideType.AGENT))
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlCustomerType" name="ddlCustomerType" class="form-control show-tick" data-live-search="true">
+                <option value="">-Loại K.Hàng-</option>
+                @Html.Raw(CustomerTypeService.DropdownList(-1))
             </select>
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group ">
             <select id="ddlCompanyID" name="ddlCompanyID" class="form-control show-tick" data-live-search="true">
-                <option value="">-Mã khách hàng-</option>
+                <option value="">-Công ty-</option>
             </select>
         </div>
     </div>
-    <div class="col-md-2">
-        <div class="form-group ">
-            <select id="ddlContactType" name="ddlContactType" class="form-control show-tick" data-live-search="true">
-                <option value="">-Loại khách hàng</option>
-                <option value="1">-Công ty</option>
-                <option value="2">-Khách lẻ</option>
-            </select>
-        </div>
-    </div>
+
 </div>
 
 <div class="row" data-keyenter="#btnSearch" data-datesearch="true">

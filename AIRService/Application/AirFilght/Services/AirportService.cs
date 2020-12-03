@@ -85,14 +85,17 @@ namespace WebCore.Services
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
-            AirportService flightService = new AirportService(_connection);
+            string nationalId = model.NationalID;
+            string areaInlandId = model.AreaInlandID;
             double axfee = model.AxFee;
-
-            string categoryId = model.CategoryID;
-            if (string.IsNullOrWhiteSpace(categoryId))
-                return Notifization.Invalid("Vui lòng chọn vùng/miền địa lý");
+            string title = model.Title;
             //
-            categoryId = categoryId.ToLower();
+            AirportService flightService = new AirportService(_connection);
+            if (string.IsNullOrWhiteSpace(areaInlandId))
+                return Notifization.Invalid("Vui lòng chọn vùng/miền");
+            //
+            nationalId = nationalId.ToLower();
+            areaInlandId = areaInlandId.ToLower();
             // 
             var flight = flightService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
             if (flight != null)
@@ -107,10 +110,11 @@ namespace WebCore.Services
             //
             flightService.Create<string>(new Entities.Airport()
             {
+                NationalID = nationalId,
+                AreaInlandID = areaInlandId,
                 Title = model.Title,
                 Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
                 Summary = model.Summary,
-                CategoryID = model.CategoryID,
                 IATACode = model.IATACode.ToUpper(),
                 AxFee = axfee,
                 Enabled = model.Enabled
@@ -119,27 +123,34 @@ namespace WebCore.Services
         }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Update(AirportUpdateModel model)
-        { 
+        {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
             string id = model.ID;
+            string nationalId = model.NationalID;
+            string areaInlandId = model.AreaInlandID;
             double axfee = model.AxFee;
+            string title = model.Title;
+            //
             if (string.IsNullOrWhiteSpace(id))
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            string categoryId = model.CategoryID;
-            if (string.IsNullOrWhiteSpace(categoryId))
-                return Notifization.Invalid("Vui lòng chọn vùng/miền địa lý");
+            if (string.IsNullOrWhiteSpace(nationalId))
+                return Notifization.Invalid("Vui lòng chọn quốc gia");
             //
-            categoryId = categoryId.ToLower();
+            //
+            if (string.IsNullOrWhiteSpace(nationalId))
+                return Notifization.Invalid("Vui lòng chọn vùng/miền");
+            //
             id = id.ToLower();
+            nationalId = nationalId.ToLower();
+            areaInlandId = areaInlandId.ToLower();
             AirportService flightService = new AirportService(_connection);
             var flight = flightService.GetAlls(m => m.ID == id).FirstOrDefault();
             if (flight == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            string title = model.Title;
             var flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && flight.ID != id).FirstOrDefault();
             if (flightValid != null)
                 return Notifization.Invalid("Tên chuyến bay đã được sử dụng");
@@ -151,10 +162,11 @@ namespace WebCore.Services
             if (axfee < 0)
                 return Notifization.Invalid("Phí sân bay không hợp lệ");
             //
+            flight.AreaInlandID = model.AreaInlandID;
+            flight.NationalID = model.NationalID;
             flight.Title = title;
             flight.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
             flight.Summary = model.Summary;
-            flight.CategoryID = model.CategoryID;
             flight.IATACode = model.IATACode.ToUpper();
             flight.AxFee = axfee;
             flight.Enabled = model.Enabled;

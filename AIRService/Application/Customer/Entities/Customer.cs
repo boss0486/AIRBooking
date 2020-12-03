@@ -56,7 +56,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return CustomerTypeService.GetNameByID(_typeId);
+                return AgentprovideTypeService.GetNameByID(_typeId);
             }
             set
             {

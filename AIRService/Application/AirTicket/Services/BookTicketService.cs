@@ -75,7 +75,7 @@ namespace WebCore.Services
                     BookPassengerService bookPassengerService = new BookPassengerService(_connection);
                     BookTaxService bookFareService = new BookTaxService(_connection);
                     BookPriceService bookPriceService = new BookPriceService(_connection);
-                    BookContactService bookContactService = new BookContactService(_connection);
+                    BookCustomerService bookContactService = new BookCustomerService(_connection);
 
                     var pnr = model.PNR;
                     var flights = model.Flights;
@@ -198,7 +198,7 @@ namespace WebCore.Services
                     if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
                     {
                         BookCompanyContactModel bookCompanyContact = contact.BookCompanyContact;
-                        bookContactService.Create<string>(new BookContact
+                        bookContactService.Create<string>(new BookCustomer
                         {
                             PNR = pnr,
                             BookOrderID = bookOrderId,
@@ -207,13 +207,13 @@ namespace WebCore.Services
                             Name = bookCompanyContact.Name,
                             Email = bookCompanyContact.Email,
                             Phone = bookCompanyContact.Phone,
-                            ContactType = (int)ClientLoginEnum.PassengerGroup.Comp
+                            CustomerType = (int)ClientLoginEnum.PassengerGroup.Comp
                         }, transaction: _transaction);
                     }
                     if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Nomal)
                     {
                         BookKhachLeRqContact bookKhachLe = contact.BookKhachLeContact;
-                        bookContactService.Create<string>(new BookContact
+                        bookContactService.Create<string>(new BookCustomer
                         {
                             PNR = pnr,
                             BookOrderID = bookOrderId,
@@ -222,7 +222,7 @@ namespace WebCore.Services
                             Name = bookKhachLe.Name,
                             Email = bookKhachLe.Email,
                             Phone = bookKhachLe.Phone,
-                            ContactType = (int)ClientLoginEnum.PassengerGroup.Nomal
+                            CustomerType = (int)ClientLoginEnum.PassengerGroup.Nomal
                         }, transaction: _transaction);
                     }
                     //

@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebCore.ENM;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 
@@ -64,20 +65,24 @@ namespace WebCore.Services
                 whereCondition += " AND o.ItineraryType = @ItineraryType";
             //
             string agentId = model.AgentID;
+            string compId = model.CompanyID;
+            int customerType = model.CustomerType;
             if (!string.IsNullOrWhiteSpace(agentId))
                 whereCondition += " AND o.AgentID = @AgentID";
             //
-            string compId = model.CompanyID;
-            if (!string.IsNullOrWhiteSpace(compId))
-                whereCondition += " AND c.CompanyID = @CompanyID";
-            // query        
-
-            int contactType = model.ContactType;
-            if (contactType != -1)
-                whereCondition += " AND c.ContactType = " + contactType + " ";
+            if (customerType != (int)CustomerEnum.CustomerType.NONE)
+            {
+                whereCondition += " AND c.CustomerType = " + customerType + " ";
+                //
+                if (customerType == (int)CustomerEnum.CustomerType.COMP)
+                {
+                    if (!string.IsNullOrWhiteSpace(compId))
+                        whereCondition += " AND c.CompanyID = @CompanyID";
+                }
+            }
             // query
-            string sqlQuery = @"SELECT o.*,c.ContactType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode
-            FROM App_BookOrder as o LEFT JOIN App_BookContact as c ON c.BookOrderID = o.ID
+            string sqlQuery = @"SELECT o.*,c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode
+            FROM App_BookOrder as o LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
             WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%')  
             " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
             var dtList = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
@@ -125,7 +130,7 @@ namespace WebCore.Services
             BookTaxService bookTaxService = new BookTaxService(_connection);
             data.BookTaxs = bookTaxService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //
-            BookContactService bookContactService = new BookContactService(_connection);
+            BookCustomerService bookContactService = new BookCustomerService(_connection);
             data.BookContacts = bookContactService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //
             return data;

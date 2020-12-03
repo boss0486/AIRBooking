@@ -16,14 +16,18 @@ var AirOrderController = {
         });
     },
     DataList: function (page) {
-        var ddlOrderStatus = $('#ddlOrderStatus').val();
+        //   
         var ddlItinerary = $('#ddlItinerary').val();
         var ddlAgentID = $('#ddlAgentID').val();
+        var ddlCustomerType = $('#ddlCustomerType').val();
         var ddlCompanyID = $('#ddlCompanyID').val();
-        //var ddlItinerary = $('#ddlItinerary').val();
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
         var txtEndDate = $('#txtEndDate').val();
+        //
+        if (ddlCustomerType == "") {
+            ddlCustomerType = 0;
+        }
         var model = {
             Query: $('#txtQuery').val(),
             Page: page,
@@ -31,10 +35,10 @@ var AirOrderController = {
             StartDate: txtStartDate,
             EndDate: txtEndDate,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-            ItineraryType: 0,
+            ItineraryType: parseInt(ddlItinerary),
             AgentID: ddlAgentID,
-            CompanyID: ddlCompanyID,
-            OrderStatus: parseInt(ddlOrderStatus)
+            CustomerType: ddlCustomerType,
+            CompanyID: ddlCompanyID
         };
         //
         AjaxFrom.POST({
@@ -80,10 +84,13 @@ var AirOrderController = {
                                  <td class=''>${orderDate}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td class=''>${customerTypeText}</td>          
-                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
-                                 <td class=''>${itineraryText}</td>                                                                                                                                                                                                                                                                     
-                                 <td class='text-center bg-danger'>${pnr}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
                                  <td class='tbcol-left'>00011</td>                                  
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;

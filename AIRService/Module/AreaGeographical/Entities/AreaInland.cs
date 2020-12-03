@@ -42,6 +42,10 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+    public class AreaInlandNationalIDModel
+    {
+        public string NationalID { get; set; }
+    }
     public class AreaInlandResult : WEBModelResult
     {
         public string ID { get; set; }

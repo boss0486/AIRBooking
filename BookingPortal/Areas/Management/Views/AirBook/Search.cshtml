@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label class="form-label">Loại hình:</label>
                             <select id="ddlItineraryType" name="ddlItineraryType" class="form-control show-tick" data-live-search="true">
-                                @Html.Raw(AirportTypeService.DropdownList(1))
+                                @Html.Raw(AirItineraryService.DropdownList(1))
                             </select>
                             <span id="lblItineraryType" class="message msg-box"></span>
                         </div>
@@ -121,9 +121,12 @@
                 </div>
                 <div class="form-group text-right">
                     <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
-                    <hr />
+                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button> 
                 </div>
+                 <div class="form-group">
+                     <hr />
+                </div>
+
                 <div class="form-group">
                     <div class="form-label m-b-10">Lưu ý:</div>
                     <p>

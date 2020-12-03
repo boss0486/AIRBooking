@@ -2609,6 +2609,12 @@ span {
         color: #fff !important;
     }
 
+
+.bg-yellow-1 {
+    background-color: #fff6a4 !important; 
+}
+ 
+
 .bg-amber {
     background-color: #FFC107 !important;
     color: #fff;
@@ -5558,14 +5564,17 @@ table, .table {
 
     .table-bordered tbody tr td {
         white-space: nowrap;
-        border-color: #ABDED4;
-        padding: 6px 6px;
-        min-height: 32px;
+        padding: 6px 4px;
+        height: 32px;
     }
 
         .table-bordered tbody tr td .btn {
             padding: 0px 5px;
-            height: auto;
+            width: unset;
+            height: 19px;
+            display: inline;
+            line-height: 1;
+            border: none;
         }
 
 .table-inline tr td, .table-inline tr th {
@@ -5581,12 +5590,15 @@ table, .table {
 }
 
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
-    border: 1px solid #ABDED4;
+    border-color: #ABDED4;
 }
 
-.table-bordered tbody tr td .btn {
-    width: unset;
+.table-bordered > tbody > tr:hover > td {
+    background: #fbf6cf;
+    /* background: #D9F1EC;*/
 }
+
+
 
 .table-responsive {
     width: 100%;
@@ -6209,9 +6221,8 @@ textarea.form-control {
         max-width: 100%;
         min-width: 100%;
     }
-input.error
-{
-    
+
+input.error {
 }
 
 .input-icon {
@@ -8516,7 +8527,14 @@ input.error
     clear: both;
     color: #333333;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
+
+    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+        color: #333333;
+        outline: none;
+    }
 
     .dropdown-menu > li > a:hover {
         background-color: rgba(0, 0, 0, 0.075);
@@ -9644,7 +9662,7 @@ th.tbcol-photo {
 }
 
 th.tbcol-id {
-    width: 70px;
+    width: 80px;
     color: #F44336;
     text-align: right;
 }
@@ -9745,9 +9763,20 @@ td.tbcol-action {
         border: solid 1px #8ce490;
     }
 
+.table-bordered tbody tr th.tbcol-button, .table-bordered tbody tr td.tbcol-button {
+    line-height: 0px;
+}
+
 th, td .none {
     width: unset;
 }
+
+/*
+height: 20px;
+background: #F00;*/
+/*padding: 0px 5px;
+float: left;
+color: inherit;*/
 
 
 .dropbtn {

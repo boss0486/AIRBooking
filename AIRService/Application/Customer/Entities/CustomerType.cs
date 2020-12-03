@@ -7,7 +7,7 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Entities
 {
-    public class CustomerTypeOption
+    public class AgentProvideTypeOption
     {
         public string ID { get; set; }
         public string KeyID { get; set; }
@@ -15,4 +15,10 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public int Type { get; set; }
     }
+    public class CustomerTypeOption
+    {
+        public int ID { get; set; }
+        public string Title { get; set; }
+    }
+
 }

@@ -21,10 +21,11 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
+        public string NationalID { get; set; }
+        public string AreaInlandID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
-        public string Summary { get; set; }
-        public string CategoryID { get; set; }
+        public string Summary { get; set; } 
         public string IATACode { get; set; }
         public double AxFee { get; set; }
     }
@@ -36,10 +37,11 @@ namespace WebCore.Entities
 
     public class AirportCreateModel
     {
+        public string NationalID { get; set; }
+        public string AreaInlandID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string CategoryID { get; set; }
         public string IATACode { get; set; }
         public double AxFee { get; set; }
         public int Enabled { get; set; }
@@ -52,17 +54,18 @@ namespace WebCore.Entities
     public class AirportResult : WEBModelResult
     {
         public string ID { get; set; }
+        public string NationalID { get; set; } 
+        public string AreaInlandID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string CategoryID { get; set; }
 
         [NotMapped]
         public string AreaName
         {
             get
             {
-                return AreaInlandService.GetAreaName(CategoryID); ;
+                return AreaInlandService.GetAreaName(AreaInlandID); ;
             }
         }
         public string IATACode { get; set; }
@@ -86,7 +89,5 @@ namespace WebCore.Entities
     public class AirportSearch : SearchModel
     {
         public string ProviceID { get; set; }
-    }
-
-
+    } 
 }

@@ -18,14 +18,14 @@ using WebCore.ENM;
 
 namespace WebCore.Services
 {
-    public class CustomerTypeService
+    public class AgentprovideTypeService
     {
         public static string DropdownList(string id)
         {
             try
             {
                 string result = string.Empty;
-                var service = new CustomerTypeService();
+                var service = new AgentprovideTypeService();
                 var dtList = service.DataOption();
                 if (dtList.Count > 0)
                 {
@@ -33,6 +33,142 @@ namespace WebCore.Services
                     {
                         string select = string.Empty;
                         if (!string.IsNullOrWhiteSpace(item.ID) && item.ID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        public List<AgentProvideTypeOption> DataOption()
+        {
+            try
+            {
+                List<AgentProvideTypeOption> customerTypeOptions = new List<AgentProvideTypeOption>
+                {
+                    new AgentProvideTypeOption()
+                    {
+                        ID = "agent",
+                        Alias = "agent",
+                        Title = "Đại lý",
+                        Type =  1,
+                    },
+                    new AgentProvideTypeOption()
+                    {
+                        ID = "comp",
+                        Alias = "comp",
+                        Title = "Công ty",
+                        Type =  2,
+                    }
+                };
+                return customerTypeOptions;
+            }
+            catch
+            {
+                return new List<AgentProvideTypeOption>();
+            }
+        }
+        //##############################################################################################################################################################################################################################################################
+        public static string GetNameByID(string id)
+        {
+            try
+            {
+                var service = new AgentprovideTypeService();
+                id = id.ToLower();
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                return data.Title;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        public static string GetNameByType(int type)
+        {
+            try
+            {
+                var service = new AgentprovideTypeService();
+                var data = service.DataOption().Where(m => !string.IsNullOrWhiteSpace(m.ID) && m.Type == type).FirstOrDefault();
+                return data.Title;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static int GetAgentProvideType(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return (int)AgentProvideEnum.AgentProvideType.NONE;
+                //
+                id = id.ToLower();
+                var service = new AgentprovideTypeService();
+                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                //
+                return data.Type;
+            }
+            catch
+            {
+                return (int)AgentProvideEnum.AgentProvideType.NONE;
+            }
+        }
+
+        public static string GetAgentProvideTypeIDByType(int _typeEnum)
+        {
+            try
+            {
+                var service = new AgentprovideTypeService();
+                var data = service.DataOption().Where(m => m.Type == _typeEnum).FirstOrDefault();
+
+                return data.ID;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        public static List<AgentProvideTypeOption> GetAgentProvideTypeByTypeID(int typeId)
+        {
+            try
+            {
+                AgentprovideTypeService service = new AgentprovideTypeService();
+                List<AgentProvideTypeOption> data = service.DataOption().Where(m => m.Type == typeId).ToList();
+                if (data.Count == 0)
+                    return new List<AgentProvideTypeOption>();
+                //
+                return data;
+            }
+            catch
+            {
+                return new List<AgentProvideTypeOption>();
+            }
+        }
+
+    }
+
+    public class CustomerTypeService
+    {
+        public static string DropdownList(int id = -1)
+        {
+            try
+            {
+                string result = string.Empty;
+                CustomerTypeService service = new CustomerTypeService();
+                List<CustomerTypeOption> dtList = service.DataOption();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (item.ID == id)
                             select = "selected";
                         result += "<option value='" + item.ID + "' " + select + ">" + item.Title + "</option>";
                     }
@@ -53,17 +189,13 @@ namespace WebCore.Services
                 {
                     new CustomerTypeOption()
                     {
-                        ID = "agent",
-                        Alias = "agent",
-                        Title = "Đại lý",
-                        Type =  1,
+                        ID =  1,
+                        Title = "Công ty"
                     },
                     new CustomerTypeOption()
                     {
-                        ID = "comp",
-                        Alias = "comp",
-                        Title = "Công ty",
-                        Type =  2,
+                       ID =  2,
+                        Title = "Khách lẻ"
                     }
                 };
                 return customerTypeOptions;
@@ -74,83 +206,18 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string GetNameByID(string id)
-        {
-            try
-            {
-                var service = new CustomerTypeService();
-                id = id.ToLower();
-                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
-                return data.Title;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-        public static string GetNameByType(int type)
-        {
-            try
-            {
-                var service = new CustomerTypeService();
-                var data = service.DataOption().Where(m => !string.IsNullOrWhiteSpace(m.ID) && m.Type == type).FirstOrDefault();
-                return data.Title;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-
-        public static int GetCustomerType(string id)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(id))
-                    return (int)CustomerEnum.CustomerType.NONE;
-                //
-                id = id.ToLower();
-                var service = new CustomerTypeService();
-                var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
-                //
-                return data.Type;
-            }
-            catch
-            {
-                return (int)CustomerEnum.CustomerType.NONE;
-            }
-        }
-
-        public static string GetCustomerTypeIDByType(int _typeEnum)
-        {
-            try
-            {
-                var service = new CustomerTypeService();
-                var data = service.DataOption().Where(m => m.Type == _typeEnum).FirstOrDefault();
-
-                return data.ID;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-        public static List<CustomerTypeOption> GetCustomerTypeByTypeID(int typeId)
+        public static string GetNameByID(int id)
         {
             try
             {
                 CustomerTypeService service = new CustomerTypeService();
-                List<CustomerTypeOption> data = service.DataOption().Where(m => m.Type == typeId).ToList();
-                if (data.Count == 0)
-                    return new List<CustomerTypeOption>();
-                //
-                return data;
+                CustomerTypeOption data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                return data.Title;
             }
             catch
             {
-                return new List<CustomerTypeOption>();
+                return string.Empty;
             }
         }
-
     }
 }

@@ -20,18 +20,16 @@ var AirBookController = {
     },
     DataList: function (page) {
         //   
-        //var _ariaId = $('#ddlAreaID').val();
-        //var _province = $('#ddlProvince').val();
         var ddlItinerary = $('#ddlItinerary').val();
         var ddlAgentID = $('#ddlAgentID').val();
+        var ddlCustomerType = $('#ddlCustomerType').val();
         var ddlCompanyID = $('#ddlCompanyID').val();
-        var ddlContactType = $('#ddlContactType').val();
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
         var txtEndDate = $('#txtEndDate').val();
         //
-        if (ddlContactType == "") {
-            ddlContactType = -1;
+        if (ddlCustomerType == "") {
+            ddlCustomerType = 0;
         }
         var model = {
             Query: $('#txtQuery').val(),
@@ -42,8 +40,8 @@ var AirBookController = {
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             ItineraryType: parseInt(ddlItinerary),
             AgentID: ddlAgentID,
-            CompanyID: ddlCompanyID,
-            ContactType: ddlContactType
+            CustomerType: ddlCustomerType,
+            CompanyID: ddlCompanyID
         };
         //
         AjaxFrom.POST({
@@ -98,16 +96,16 @@ var AirBookController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>  
                                  <td class=''>${orderDate}</td>  
-                                 <td class='text-center bg-danger'>${agentCode}</td>  
+                                 <td class='text-center'>${agentCode}</td>  
                                  <td class=''>${ticketingName}</td>  
-                                 <td class=''><a class='btn-passenger' data-id='${id}'>${contactName}</a></td>  
-                                 <td class='text-center'><a class='btn-comp' data-id='${companyId}'>${companyCode}</a></td>  
+                                 <td class=''><a class='btn-passenger' data-id='${id}'>Xem</a></td>  
                                  <td class=''>${customerTypeText}</td>                                                                                                                                                                                                                                                                         
                                  <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
                                  <td class=''>${itineraryText}</td>                                                                                                                                                                                                                                                        
                                  <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                 <td class='text-center bg-danger'>${pnr}</td>                                                                                                                                                                                                                                                                         
-                                 <td class='tbcol-left'>
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-left'>${pnr}</td>                                                                                                                                                                                                                                                                         
+                                 <td class='tbcol-left tbcol-button'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
                                      ${actMail}
                                      <button type="button" class="btn btn-danger btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Hủy</button>
@@ -1035,14 +1033,28 @@ $(document).on("click", ".btn-export", function () {
 // list *******************************************************
 
 $(document).on('change', '#ddlAgentID', function () {
-    var option = `<option value="">-MKH-</option>`;
+    var option = `<option value="">-Công ty-</option>`;
     $('select#ddlCompanyID').html(option);
     $('select#ddlCompanyID').selectpicker('refresh');
-    var ddlAgent = $(this).val();
-    var model = {
-        AgentID: ddlAgent
-    };
 
+    $("#ddlCustomerType")[0].selectedIndex = 0;
+    $("#ddlCustomerType").selectpicker("refresh");
+});
+$(document).on('change', '#ddlCustomerType', function () {
+    var option = `<option value="">-Công ty-</option>`;
+    $('select#ddlCompanyID').html(option);
+    $('select#ddlCompanyID').selectpicker('refresh');
+    var ddlCustomerType = $(this).val();
+    if (parseInt(ddlCustomerType) == 1) {
+        GetCompanyFilter();
+    }
+});
+function GetCompanyFilter() {
+    var option = `<option value="">-Công ty-</option>`;
+    var _agentId = $("#ddlAgentID").val();
+    var model = {
+        AgentID: _agentId
+    };
     //GetTicketing
     AjaxFrom.POST({
         url: URLC + '/GetCompByAgentID',
@@ -1050,19 +1062,15 @@ $(document).on('change', '#ddlAgentID', function () {
         success: function (response) {
             if (response !== null) {
                 if (response.status === 200) {
-                    $.each(response.data, function (index, item) {
-                        index = index + 1;
-                        //
-                        var strIndex = '';
-                        if (index < 10)
-                            strIndex += "0" + index;
-                        //
-                        var id = item.ID;
-                        var title = item.CodeID;
-                        option += `<option value='${id}'>${title}</option>`;
-                    });
-                    $('select#ddlCompanyID').html(option);
-                    $('select#ddlCompanyID').selectpicker('refresh');
+                    if (response.data != null) { 
+                        $.each(response.data, function (index, item) {
+                            var id = item.ID;
+                            var title = item.CodeID;
+                            option += `<option value='${id}'>${title}</option>`;
+                        });
+                        $('select#ddlCompanyID').html(option);
+                        $('select#ddlCompanyID').selectpicker('refresh');
+                    }
                     return;
                 }
             }
@@ -1072,10 +1080,9 @@ $(document).on('change', '#ddlAgentID', function () {
             console.log('::' + MessageText.NotService);
         }
     });
+}
 
 
-
-});
 //*******************************************************
 function BookOrderStatus(_status) {
     var result = '';

@@ -153,8 +153,8 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(typeId))
                         return Notifization.Invalid("Vui lòng chọn loại khách hàng");
                     //
-                    int typeEnum = CustomerTypeService.GetCustomerType(typeId);
-                    if (typeEnum == (int)CustomerEnum.CustomerType.NONE)
+                    int typeEnum = AgentprovideTypeService.GetAgentProvideType(typeId);
+                    if (typeEnum == (int)AgentProvideEnum.AgentProvideType.NONE)
                         return Notifization.Invalid("Loại khách hàng không hợp lệ");
                     //
                     if (Helper.Current.UserLogin.IsClientInApplication())
@@ -179,13 +179,13 @@ namespace WebCore.Services
                         else
                             path = customer1.Path;
                         //
-                        if (!string.IsNullOrWhiteSpace(customer1.ParentID) && model.TypeID == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                        if (!string.IsNullOrWhiteSpace(customer1.ParentID) && model.TypeID == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                             return Notifization.Invalid("Cấp đại lý đã đạt giới hạn");
                         //
                     }
                     else
                     {
-                        if (model.TypeID == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.COMP))
+                        if (model.TypeID == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.COMP))
                             return Notifization.Invalid("Vui lòng chọn đại lý");
                         //
                     }
@@ -283,7 +283,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     //
-                    if (string.IsNullOrWhiteSpace(supplierId) && typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                    if (string.IsNullOrWhiteSpace(supplierId) && typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -383,7 +383,7 @@ namespace WebCore.Services
                     }, transaction: _transaction);
 
                     //******* create balance for agent
-                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                    if (typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         var balanceCustomer = balanceCustomerService.Create<string>(new WalletClient()
                         {
@@ -531,7 +531,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(contactPhone))
                         return Notifization.Invalid("Số đ.thoại liên hệ không hợp lệ");
                     //
-                    if (typeId == CustomerTypeService.GetCustomerTypeIDByType((int)CustomerEnum.CustomerType.AGENT))
+                    if (typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -745,13 +745,13 @@ namespace WebCore.Services
                 return Notifization.NotFound(MessageText.NotFound);
             //
             customerType = customerType.Trim().ToLower();
-            int typeEnum = CustomerTypeService.GetCustomerType(customerType);
+            int typeEnum = AgentprovideTypeService.GetAgentProvideType(customerType);
             string whereCondition = string.Empty;
             //
-            if (typeEnum == (int)CustomerEnum.CustomerType.AGENT)
+            if (typeEnum == (int)AgentProvideEnum.AgentProvideType.AGENT)
                 whereCondition += " AND (ParentID IS NULL OR datalength(ParentID)=0)";
             //
-            if (typeEnum == (int)CustomerEnum.CustomerType.COMP)
+            if (typeEnum == (int)AgentProvideEnum.AgentProvideType.COMP)
                 whereCondition += " AND TypeID = 'agent'";
             //
             string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 " + whereCondition + "  ORDER BY c.CodeID";
@@ -840,7 +840,7 @@ namespace WebCore.Services
             string result = string.Empty;
             using (var service = new CustomerService())
             {
-                string typeId = CustomerTypeService.GetCustomerTypeIDByType(typeEnum);
+                string typeId = AgentprovideTypeService.GetAgentProvideTypeIDByType(typeEnum);
                 if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsClientInApplication())
                     return result;
                 //
@@ -873,7 +873,7 @@ namespace WebCore.Services
                         if (string.IsNullOrWhiteSpace(item.ParentID))
                             isLimit = 0;
                         //
-                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' data-limited = '" + isLimit + "' " + select + ">" + item.Title + "</option>";
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' data-limited = '" + isLimit + "' " + select + " title='" + item.Title + "'>" + item.CodeID + "</option>";
                     }
                 }
                 return result;
@@ -881,6 +881,26 @@ namespace WebCore.Services
 
         }
 
+        public static string DropdownListAgent(string id)
+        {
+            string result = string.Empty;
+            using (var service = new CustomerService())
+            {
+                var dtList = service.DataOption();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+            }
+
+        }
         //##############################################################################################################################################################################################################################################################
         public static string GetCustomerCodeID(string id)
         {

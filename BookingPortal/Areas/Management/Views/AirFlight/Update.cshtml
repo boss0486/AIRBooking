@@ -11,6 +11,8 @@
     try
     {
         string id = string.Empty;
+        string nationalId = string.Empty;
+        string areaInland = string.Empty;
         string title = string.Empty;
         string summary = string.Empty;
         string iataCode = string.Empty;
@@ -21,10 +23,11 @@
         if (Model != null)
         {
             id = Model.ID;
+            nationalId = Model.NationalID;
+            areaInland = Model.AreaInlandID;
             title = Model.Title;
             summary = Model.Summary;
             iataCode = Model.IATACode;
-            categoryId = Model.CategoryID;
             axFee = Helper.Page.Library.FormatCurrency(Model.AxFee, false);
             if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
             {
@@ -33,15 +36,27 @@
         }
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group ">
-                    <div class="form-line selecter">
-                        <label class="form-label">Vùng/Miền:</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Quốc gia:</label>
+                            <select id="ddlNational" name="ddlNational" class="form-control show-tick">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(NationalService.DropdownList(nationalId))
+                            </select>
+                            <span id="lblNational" class="message msg-box"></span>
+                        </div>
                     </div>
-                    <select id="ddlAreaID" name="ddlAreaID" class="form-control show-tick" data-live-search="true">
-                        <option value="-">@Helper.Language.Resource.Label.Option</option>
-                        @Html.Raw(AreaGeographicalService.AreaDropdownList(categoryId))
-                    </select>
-                    <span id="lblAreaID" class="message msg-box"></span>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Khu vực nội địa:</label>
+                            <select id="ddlAreaInland" name="ddlAreaInland" class="form-control show-tick" data-live-search="true">
+                                <option value="-">@Helper.Language.Resource.Label.Option</option>
+                                @Html.Raw(AreaInlandService.DropdownList(areaInland))
+                            </select>
+                            <span id="lblAreaInland" class="message msg-box"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group ">
                     <div class="form-line">

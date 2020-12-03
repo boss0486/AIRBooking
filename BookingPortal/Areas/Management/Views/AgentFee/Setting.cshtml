@@ -39,7 +39,7 @@
                                 <label class="form-label">Đại lý:</label>
                                 <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick">
                                     <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                    @Html.Raw(CustomerService.DropdownList(id, (int)CustomerEnum.CustomerType.AGENT))
+                                    @Html.Raw(CustomerService.DropdownList(id, (int)AgentProvideEnum.AgentProvideType.AGENT))
                                 </select>
                                 <span id="lblAgentID" class="message msg-box"></span>
                             </div>

@@ -77,7 +77,7 @@ namespace WebCore.Entities
         public double Amount { get; set; }
         [NotMapped]
         public double TotalAmount => AgentFee + Amount;
-        public int ContactType { get; set; }
+        public int CustomerType { get; set; }
         public string ContactName { get; set; }
         public string CompanyCode { get; set; }
         public string CompanyID { get; set; }
@@ -101,7 +101,7 @@ namespace WebCore.Entities
         public int OrderStatus { get; set; }
 
         [NotMapped]
-        public string CustomerTypeText => BookOrderService.ViewOrderContactType(ContactType);
+        public string CustomerTypeText => CustomerTypeService.GetNameByID(CustomerType);
         [NotMapped]
         public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
         private string TimeBooking
@@ -128,7 +128,7 @@ namespace WebCore.Entities
         public int ItineraryType { get; set; }
         public string AgentID { get; set; }
         public string CompanyID { get; set; }
-        public int ContactType { get; set; }
+        public int CustomerType { get; set; }
     }
     public class BookAgentID
     {
@@ -152,11 +152,11 @@ namespace WebCore.Entities
         private int ItineraryType { get; set; }
         public int OrderStatus { get; set; }
         [NotMapped]
-        public string ItineraryText => BookOrderService.ViewOrderContactType(ItineraryType);
+        public string ItineraryText => AirItineraryService.GetNameByID(ItineraryType);
         public int Status { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }
-        public List<BookContact> BookContacts { get; set; }
+        public List<BookCustomer> BookContacts { get; set; }
         public List<BookPrice> BookPrices { get; set; }
         public List<BookTax> BookTaxs { get; set; }
     }

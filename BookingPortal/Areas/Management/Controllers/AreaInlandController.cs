@@ -30,7 +30,7 @@ namespace WebApplication.Management.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AreaInlandService service = new AreaInlandService();
-                AreaInland areaInland   = service.GetAreaInlandByID(id);
+                AreaInland areaInland = service.GetAreaInlandByID(id);
                 if (areaInland != null)
                     return View(areaInland);
             }
@@ -110,6 +110,22 @@ namespace WebApplication.Management.Controllers
             {
                 using (var flightService = new AreaInlandService())
                     return flightService.Delete(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Action/GetAreaInland")]
+        public ActionResult GetAreaInland(AreaInlandNationalIDModel model)
+        {
+            try
+            {
+                using (var flightService = new AreaInlandService())
+                    return Notifization.Data(MessageText.Success, flightService.DataOption(nationalId: model.NationalID));
             }
             catch (Exception ex)
             {

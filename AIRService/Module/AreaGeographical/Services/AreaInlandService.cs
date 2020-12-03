@@ -225,14 +225,14 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public static string AreaDropdownList(string id, int itineraryType = 0)
+        public static string DropdownList(string id, int itineraryType = 0)
         {
             try
             {
                 string result = string.Empty;
-                using (var AppAreaService = new AreaInlandService())
+                using (var appAreaService = new AreaInlandService())
                 {
-                    var dtList = AppAreaService.DataOption(id);
+                    var dtList = appAreaService.DataOption();
                     if (dtList.Count > 0)
                     {
                         foreach (var item in dtList)
@@ -251,17 +251,17 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<AreaInlandOptionModel> DataOption(string langID)
+
+
+        public List<AreaInlandOptionModel> DataOption(string nationalId = null)
         {
-            try
+            string whereCondition = string.Empty;
+            if (!string.IsNullOrWhiteSpace(nationalId))
             {
-                string sqlQuery = @"SELECT * FROM App_AreaInland ORDER BY Title ASC";
-                return _connection.Query<AreaInlandOptionModel>(sqlQuery, new { LangID = langID }).ToList();
+                whereCondition += " AND NationalID = @NationalID";
             }
-            catch
-            {
-                return new List<AreaInlandOptionModel>();
-            }
+            string sqlQuery = @"SELECT * FROM App_AreaInland WHERE Enabled = 1 " + whereCondition + " ORDER BY Title ASC";
+            return _connection.Query<AreaInlandOptionModel>(sqlQuery, new { NationalID = nationalId }).ToList();
         }
         //Static function
         // ##############################################################################################################################################################################################################################################################

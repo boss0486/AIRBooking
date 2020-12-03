@@ -13,15 +13,24 @@ var FlightController = {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
             // Area
-            var ddlArea = $('#ddlAreaID').val();
+            var ddlNational = $('#ddlNational').val();
+            var ddlAreaInland = $('#ddlAreaInland').val();
             var axFee = $('#txtAxFee').val();
             //
-            if (ddlArea === "-" || ddlArea === '') {
-                $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+            if (ddlNational == "") {
+                $('#lblNational').html('Vui lòng chọn quốc gia');
                 flg = false;
             }
             else {
-                $('#lblAreaID').html('');
+                $('#lblNational').html('');
+            }
+            //
+            if (ddlAreaInland === "-" || ddlAreaInland === '') {
+                $('#lblAreaInland').html('Vui lòng chọn vùng/miền');
+                flg = false;
+            }
+            else {
+                $('#lblAreaInland').html('');
             }
             // Iata code
             var iataCode = $('#txtIataCode').val();
@@ -49,7 +58,7 @@ var FlightController = {
                     flg = false;
                 }
             }
-            
+
 
             // title
             var title = $('#txtTitle').val();
@@ -98,15 +107,15 @@ var FlightController = {
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
             // Area
-            var ddlArea = $('#ddlAreaID').val();
+            var ddlAreaInland = $('#ddlAreaInland').val();
             var axFee = $('#txtAxFee').val();
             //
-            if (ddlArea === "-" || ddlArea === '') {
-                $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+            if (ddlAreaInland === "-" || ddlAreaInland === '') {
+                $('#lblAreaInland').html('Vui lòng chọn vùng/miền');
                 flg = false;
             }
             else {
-                $('#lblAreaID').html('');
+                $('#lblAreaInland').html('');
             }
             // Iata code
             var iataCode = $('#txtIataCode').val();
@@ -180,7 +189,7 @@ var FlightController = {
     },
     DataList: function (page) {
         //   
-        var _ariaId = $('#ddlAreaID').val();
+        var _ariaId = $('#ddlAreaInland').val();
         var _province = $('#ddlProvince').val();
         var ddlTimeExpress = $('#ddlTimeExpress').val();
         var txtStartDate = $('#txtStartDate').val();
@@ -191,10 +200,10 @@ var FlightController = {
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: txtStartDate,
             EndDate: txtEndDate,
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
             Status: parseInt($('#ddlStatus').val()),
-            AreaID: _ariaId,
-            ProviceID: _province,
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+            AreaID: "",
+            ProviceID: "",
         };
         //
         AjaxFrom.POST({
@@ -260,17 +269,20 @@ var FlightController = {
         });
     },
     Create: function () {
+        var ddlNational = $('#ddlNational').val();
+        var ddlAreaInland = $('#ddlAreaInland').val();
         var iataCode = $('#txtIataCode').val();
-        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());    
+        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
-        var ddlArea = $('#ddlAreaID').val();
+
         var enabled = 0;
         if ($('input[name="cbxActive"]').is(":checked"))
             enabled = 1;
         //
         var model = {
-            CategoryID: ddlArea,
+            NationalID: ddlNational,
+            AreaInlandID: ddlAreaInland,
             Title: title,
             IataCode: iataCode,
             AxFee: axFee,
@@ -301,18 +313,21 @@ var FlightController = {
     },
     Update: function () {
         var id = $('#txtID').val();
+        var ddlNational = $('#ddlNational').val();
+        var ddlAreaInland = $('#ddlAreaInland').val();
         var iataCode = $('#txtIataCode').val();
-        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());    
+        var axFee = LibCurrencies.ConvertToCurrency($('#txtAxFee').val());
         var title = $('#txtTitle').val();
         var summary = $('#txtSummary').val();
-        var ddlArea = $('#ddlAreaID').val();
+        var ddlAreaInland = $('#ddlAreaInland').val();
         var enabled = 0;
         if ($('input[name="cbxActive"]').is(":checked"))
             enabled = 1;
         //
         var model = {
             ID: id,
-            CategoryID: ddlArea,
+            NationalID: ddlNational,
+            AreaInlandID: ddlAreaInland,
             Title: title,
             IataCode: iataCode,
             AxFee: axFee,
@@ -489,13 +504,13 @@ $(document).on('keyup', '#txtPriceListed', function () {
     }
 });
 
-$(document).on("change", "#ddlAreaID", function () {
-    var txtCtl = $(this).val();
-    if (txtCtl === "-" || txtCtl === "") {
-        $('#lblAreaID').html('Vui lòng chọn vùng/miền');
+$(document).on("change", "#ddlAreaInland", function () {
+    var ddlAreaInland = $(this).val();
+    if (ddlAreaInland === "-" || ddlAreaInland === "") {
+        $('#lblAreaInland').html('Vui lòng chọn vùng/miền');
     }
     else {
-        $('#lblAreaID').html('');
+        $('#lblAreaInland').html('');
     }
 });
 //
@@ -509,6 +524,56 @@ $(document).on('keyup', '#txtAxFee', function () {
         axFee = LibCurrencies.ConvertToCurrency(axFee);
         if (!FormatCurrency.test(axFee)) {
             $('#lblAxFee').html('Phí sân bay không hợp lệ');
-        } 
+        }
     }
 });
+
+$(document).on("change", "#ddlNational", function () {
+    var option = `<option value="">-Lựa chọn-</option>`;
+    $('select#ddlAreaInland').html(option);
+    $('select#ddlAreaInland').selectpicker('refresh');
+    //
+    var ddlNational = $(this).val();
+    if (ddlNational === "") {
+        $('#lblNational').html('Vui lòng chọn quốc gia');
+    }
+    else {
+        $('#lblNational').html('');
+        //load data 
+        LoadGetAreaInland(ddlNational)
+    }
+});
+
+function LoadGetAreaInland(_national) {
+    var option = `<option value="">-Lựa chọn-</option>`;
+    $('select#ddlAreaInland').html(option);
+    $('select#ddlAreaInland').selectpicker('refresh');
+    var model = {
+        NationalID: _national
+    };
+    //GetTicketing
+    AjaxFrom.POST({
+        url: '/Management/AreaInland/Action/GetAreaInland',
+        data: model,
+        success: function (response) {
+            if (response !== null) {
+                if (response.status === 200) {
+                    $.each(response.data, function (index, item) {
+                        index = index + 1;
+                        // 
+                        var id = item.ID;
+                        var title = item.Title;
+                        option += `<option value='${id}'>${title}</option>`;
+                    });
+                    $('select#ddlAreaInland').html(option);
+                    $('select#ddlAreaInland').selectpicker('refresh');
+                    return;
+                }
+            }
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NotService);
+        }
+    });
+}

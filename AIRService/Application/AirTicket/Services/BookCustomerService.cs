@@ -13,13 +13,13 @@ using WebCore.Entities;
 
 namespace WebCore.Services
 {
-    public interface IBookContactService : IEntityService<BookContact> { }
-    public class BookContactService : EntityService<BookContact>, IBookContactService
+    public interface IBookCustomerService : IEntityService<BookCustomer> { }
+    public class BookCustomerService : EntityService<BookCustomer>, IBookCustomerService
     {
-        public BookContactService() : base() { }
-        public BookContactService(System.Data.IDbConnection db) : base(db) { }
+        public BookCustomerService() : base() { }
+        public BookCustomerService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public BookContact GetBookContactByID(string id)
+        public BookCustomer GetBookContactByID(string id)
         {
             try
             {
@@ -27,8 +27,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM App_BookContact WHERE ID = @Query";
-                var model = _connection.Query<BookContact>(sqlQuery, new { Query = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_BookCustomer WHERE ID = @Query";
+                var model = _connection.Query<BookCustomer>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch
@@ -44,12 +44,12 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(orderId))
                     return 0;
                 //
-                BookContactService bookContactService = new BookContactService();
-                BookContact bookContact = bookContactService.GetAlls(m=>  m.BookOrderID == orderId).FirstOrDefault();
+                BookCustomerService bookContactService = new BookCustomerService();
+                BookCustomer bookContact = bookContactService.GetAlls(m=>  m.BookOrderID == orderId).FirstOrDefault();
                 if (bookContact == null)
                     return 0;
                 //
-                return bookContact.ContactType;
+                return bookContact.CustomerType;
             }
             catch
             {

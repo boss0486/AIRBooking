@@ -1,28 +1,46 @@
 ﻿@using WebCore.Services;
 @using WebCore.Model.Services;
+@using WebCore.ENM;
 @*search control ******************************************************************************************************@
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group ">
+            <button id="btnExport" class="btn btn-green w-100"><i class="fas fa-download"></i> Exls</button>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick" data-live-search="true">
+                <option value="">-Đại lý-</option>
+                @Html.Raw(CustomerService.DropdownList("", (int)AgentProvideEnum.AgentProvideType.AGENT))
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlCustomerType" name="ddlCustomerType" class="form-control show-tick" data-live-search="true">
+                <option value="">-Loại K.Hàng-</option>
+                @Html.Raw(CustomerTypeService.DropdownList(-1))
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlCompanyID" name="ddlCompanyID" class="form-control show-tick" data-live-search="true">
+                <option value="">-Công ty-</option>
+            </select>
+        </div>
+    </div>
+
+</div>
 
 <div class="row" data-keyenter="#btnSearch" data-datesearch="true">
     <div class="col-md-2">
         <div class="form-group ">
-            <select id="ddlOrderStatus" name="ddlItinerary" class="form-control show-tick" data-live-search="true">
-                <option value="0">-T.Thái-</option>
-                @Html.Raw(BookOrderService.DropdownListBookOrderStatus(0))
-            </select>
-        </div>
-    </div>
-    <div class="col-md-1">
-        <div class="form-group ">
-            <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick" data-live-search="true">
-                <option value="">-MDL-</option>
-                @Html.Raw(ClientLoginService.DropdownAllProvider("", true))
-            </select>
-        </div>
-    </div>
-    <div class="col-md-1">
-        <div class="form-group ">
-            <select id="ddlCompanyID" name="ddlCompanyID" class="form-control show-tick" data-live-search="true">
-                <option value="">-MKH-</option>
+            <select id="ddlItinerary" name="ddlItinerary" class="form-control show-tick" data-live-search="true">
+                <option value="0">-Loại hành trình-</option>
+                @Html.Raw(BookOrderService.DropdownListOrderItinerary(-1))
             </select>
         </div>
     </div>
@@ -34,8 +52,8 @@
             </select>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="form-group ">
+    <div class="col-md-4">
+        <div class="form-group">
             <div class="input-daterange input-group" id="datepicker">
                 <input type="text" class="form-control" id="txtStartDate" placeholder="dd-mm-yyyy" />
                 <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
@@ -43,12 +61,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3" data-keyenter="#btnSearch">
-        <div class="form-group input-group">
+    <div class="col-md-4" data-keyenter="#btnSearch">
+        <div class="input-group form-group">
             <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
             <span id="btnSearch" class="input-group-addon" data-page="@Helper.Page.MetaSEO.ActionText"><i class="fa fa-search -icons"></i></span>
         </div>
     </div>
 </div>
+
 @*search control ******************************************************************************************************@
 

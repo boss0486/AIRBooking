@@ -156,14 +156,14 @@
     <Compile Include="Application\AirOrder\Services\OrderPriceService.cs" />
     <Compile Include="Application\AirOrder\Services\OrderTicketService.cs" />
     <Compile Include="Application\AirTicket\Entities\BookEmail.cs" />
-    <Compile Include="Application\AirTicket\Entities\BookContact.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookCustomer.cs" />
     <Compile Include="Application\AirTicket\Entities\BookPrice.cs" />
     <Compile Include="Application\AirTicket\Entities\BookTax.cs" />
     <Compile Include="Application\AirTicket\Entities\BookPassenger.cs" />
     <Compile Include="Application\AirTicket\Entities\BookTicket.cs" />
     <Compile Include="Application\AirTicket\Entities\BookOrder.cs" />
     <Compile Include="Application\AirTicket\Services\BookEmailService.cs" />
-    <Compile Include="Application\AirTicket\Services\BookContactService.cs" />
+    <Compile Include="Application\AirTicket\Services\BookCustomerService.cs" />
     <Compile Include="Application\AirTicket\Services\BookPriceService.cs" />
     <Compile Include="Application\AirTicket\Services\BookTaxService.cs" />
     <Compile Include="Application\AirTicket\Services\BookPassengerService.cs" />
@@ -379,7 +379,7 @@
     <Compile Include="Application\Customer\Entities\CustomerType.cs" />
     <Compile Include="Application\Customer\Enum\CustomerTypeEnum.cs" />
     <Compile Include="Application\Customer\Services\CustomerService.cs" />
-    <Compile Include="Application\Customer\Services\CustomerTypeService.cs" />
+    <Compile Include="Application\Customer\Services\AgentprovideTypeService.cs" />
     <Compile Include="Application\History\Entities\WalletDepositHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingHistory.cs" />
