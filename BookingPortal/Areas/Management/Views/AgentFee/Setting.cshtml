@@ -25,47 +25,34 @@
         AirItineraryService airItineraryService = new AirItineraryService();
         List<AirAgentFee> airAgentFees = new List<AirAgentFee>();
         AirlineService airlineService = new AirlineService();
-        List<Airline>  airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
+        List<Airline> airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
 
         //
         <div class="row">
             <div class="col-md-8 m-b-50">
-
-                @if (!Helper.Current.UserLogin.IsClientInApplication())
-                {
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label class="form-label">Đại lý:</label>
-                                <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick">
-                                    <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                    @Html.Raw(CustomerService.DropdownList(id, (int)AgentProvideEnum.AgentProvideType.AGENT))
-                                </select>
-                                <span id="lblAgentID" class="message msg-box"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Mã đại lý:</label> #
-                                <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCode">---</label></div>
-                            </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="form-label">Đại lý:</label>
+                            <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick">
+                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                @Html.Raw(CustomerService.DropdownList(id, (int)AgentProvideEnum.AgentProvideType.AGENT))
+                            </select>
+                            <span id="lblAgentID" class="message msg-box"></span>
                         </div>
                     </div>
-
-                }
-                else
-                {
-                    // row
-
-                    // data
-                    AirAgentFeeService airAgentFeeService = new AirAgentFeeService();
-                    airAgentFees = airAgentFeeService.GetAlls(m => m.AgentID == agentId).ToList();
-                }
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Mã đại lý:</label> #
+                            <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCode">---</label></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="top-pic special">
                     <label><span>Nội địa:</span></label>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Bảng phí:@airlines.Count <span id="lblFee" class="message"></span></label>
+                    <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -88,19 +75,7 @@
                                                 <td style="background:#eafbf7">@item.CodeID</td>
                                                 <td style="background:#eafbf7">@item.Title</td>
                                                 <td style="padding:5px;">
-                                                    @{
-                                                        string mapFee = string.Empty;
-                                                        double feeAmount = 0;
-                                                        if (airAgentFees.Count > 0)
-                                                        {
-                                                            AirAgentFee airAgentFee = airAgentFees.Where(m => m.AirlineID == item.ID && m.ItineraryID == 1).FirstOrDefault();
-                                                            if (airAgentFee != null)
-                                                            {
-                                                                feeAmount = airAgentFee.FeeAmount;
-                                                            }
-                                                        }
-                                                    }
-                                                    <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="1" value="@Helper.Page.Library.FormatCurrency(feeAmount, false)" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
+                                                    <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="1" value="0" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
                                                 </td>
                                             </tr>
                                             index++;
@@ -209,18 +184,11 @@
 @section scripts{
     <script src="~/Areas/Management/_script/agent-fee.js"></script>
     <script type="text/javascript">
-        $(function () {
-            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
-                $("#ddlAgentID")[0].selectedIndex = 1;
-                $("#ddlAgentID").selectpicker("refresh");
-                $("#ddlAgentID").change();
-            }
-            else if (HelperModel.AccessInApplication() == RoleEnum.IsAdminCustomerLogged || HelperModel.AccessInApplication() == RoleEnum.IsCustomerLogged) {
-                $("#ddlNational")[0].selectedIndex = 1;
-                $("#ddlNational").selectpicker("refresh");
-                $("#ddlNational").change();
-            }
-        })
+        //$(function () { 
+        //    $("#ddlAgentID")[0].selectedIndex = 1;
+        //    $("#ddlAgentID").selectpicker("refresh");
+        //    $("#ddlAgentID").change();
+        //})
     </script>
 
 }

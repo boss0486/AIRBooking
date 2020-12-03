@@ -110,19 +110,10 @@ namespace WebCore.Services
                 return Notifization.Invalid(MessageText.Invalid + "1");
             //
             string agentId = model.AgentID;
-            List<AirAgentFee_AirlineFee> airlineFees = model.AirlineFees;
-            if (!Helper.Current.UserLogin.IsClientInApplication())
-            {
-                if (string.IsNullOrWhiteSpace(agentId))
-                    return Notifization.Invalid("Vui lòng chọn đại lý");
-                //
-            }
-            else
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                agentId = ClientLoginService.GetClientIDByUserID(userId);
-            }
+            if (string.IsNullOrWhiteSpace(agentId))
+                return Notifization.Invalid("Vui lòng chọn đại lý");
             //
+            List<AirAgentFee_AirlineFee> airlineFees = model.AirlineFees;
             if (string.IsNullOrWhiteSpace(agentId))
                 return Notifization.Invalid("Đại lý không hợp lệ");
             //

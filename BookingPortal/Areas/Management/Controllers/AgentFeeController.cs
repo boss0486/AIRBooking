@@ -23,18 +23,7 @@ namespace WebApplication.Management.Controllers
             return View();
         }
         public ActionResult Setting()
-        {
-            if (Helper.Current.UserLogin.IsCustomerLogged())
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                string customerId = CustomerService.GetCustomerIDByUserID(userId);
-                AirAgentFeeService airFeeAgentService = new AirAgentFeeService();
-                AirAgentFee airFeeAgentResult = airFeeAgentService.GetAgentFee(customerId);
-                if (airFeeAgentResult != null)
-                {
-                    return View(airFeeAgentResult);
-                }
-            }
+        { 
             return View();
         }
 

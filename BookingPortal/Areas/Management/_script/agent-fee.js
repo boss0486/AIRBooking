@@ -14,20 +14,15 @@ var AgentFeeConfigController = {
         });
         $('#btnInlandUpdate').off('click').on('click', function () {
             var flg = true;
-            // Flight go
-
-            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
-                //
-                var ddlCustomer = $('#ddlCustomer').val();
-                if (ddlCustomer === "") {
-                    $('#lblAgentID').html('Vui lòng chọn đại lý 3');
-                    flg = false;
-                }
-                else {
-                    $('#lblAgentID').html('');
-                }
+            var ddlAgentID = $('#ddlAgentID').val();
+            if (ddlAgentID === "") {
+                $('#lblAgentID').html('Vui lòng chọn đại lý 3');
+                flg = false;
             }
-
+            else {
+                $('#lblAgentID').html('');
+            }
+            //
             var arrFee = [];
             $('#TblInlandFeeData input[name="inpFee"]').each(function (index, item) {
                 var txtAmount = $(item).val();
@@ -57,26 +52,25 @@ var AgentFeeConfigController = {
                     arrFee.push(airlineFee);
                 }
             });
-            if (!flg || arrFee.length <= 0) {
+            if (arrFee.length <= 0)
+                flg = false;
+            // 
+            if (!flg)
                 Notifization.Error("Dữ liệu phí nội địa không hợp lệ");
-                return;
-            }
-            //
-            AgentFeeConfigController.AgentFeeConfig(1);
+            else
+
+                AgentFeeConfigController.AgentFeeConfig(1);
         });
         //International  *************************************************************************************************************************************************************
         $('#btnInternationalUpdate').off('click').on('click', function () {
             var flg = true;
-            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged && HelperModel.AccessInApplication() != RoleEnum.IsCustomerLogged) {
-                //
-                var ddlCustomer = $('#ddlCustomer').val();
-                if (ddlCustomer === "") {
-                    $('#lblAgentID').html('Vui lòng chọn đại lý 1');
-                    flg = false;
-                }
-                else {
-                    $('#lblAgentID').html('');
-                }
+            var ddlAgentID = $('#ddlAgentID').val();
+            if (ddlAgentID === "") {
+                $('#lblAgentID').html('Vui lòng chọn đại lý 2');
+                flg = false;
+            }
+            else {
+                $('#lblAgentID').html('');
             }
             var ddlNational = $('#ddlNational').val();
             if (ddlNational === "") {
@@ -115,12 +109,13 @@ var AgentFeeConfigController = {
                     arrFee.push(airlineFee);
                 }
             });
-            if (!flg || arrFee.length <= 0) {
+            if (arrFee.length <= 0)
+                flg = false;
+            // 
+            if (!flg)
                 Notifization.Error("Dữ liệu phí quốc tế không hợp lệ");
-                return;
-            }
-            //
-            AgentFeeConfigController.AgentFeeConfig(2);
+            else
+                AgentFeeConfigController.AgentFeeConfig(2);
         });
         $('#btnSearch').off('click').on('click', function () {
             AgentFeeConfigController.DataList(1);
@@ -200,12 +195,8 @@ var AgentFeeConfigController = {
     AgentFeeConfig: function (_itineraryType) {
         var ddlAgentID = $('#ddlAgentID').val();
         var ddlNational = "";
-        if (ddlAgentID == undefined) {
-            ddlAgentID = "";
-        }
         var arrFee = [];
         if (_itineraryType == 1) {
-
             $('#TblInlandFeeData input[name="inpFee"]').each(function (index, item) {
                 var txtAmount = $(item).val();
                 var airlineId = $(item).data("airlineid");
@@ -291,7 +282,7 @@ $(document).on("change", "#ddlAgentID", function () {
     $('#lblAgentCode').html("");
     var ddlAgentId = $(this).val();
     if (ddlAgentId === "") {
-        $('#lblAgentID').html('Vui lòng chọn đại lý 2');
+        $('#lblAgentID').html('Vui lòng chọn đại lý 1');
     }
     else {
         var codeid = $(this).find(':selected').data('codeid');
