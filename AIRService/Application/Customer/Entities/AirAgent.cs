@@ -13,17 +13,16 @@ namespace WebCore.Entities
 {
 
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_Customer")]
-    public partial class Customer : WEBModel
+    [Table("App_AirAgent")]
+    public partial class AirAgent : WEBModel
     {
-        public Customer()
+        public AirAgent()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string SupplierID { get; set; }
         public string TypeID { get; set; }
         public string CodeID { get; set; }
         public string NotationID { get; set; }
@@ -44,19 +43,18 @@ namespace WebCore.Entities
         public string RegisterID { get; set; }
     }
 
-    public class CustomerResult : WEBModelResult
+    public class AirAgentResult : WEBModelResult
     {
         public string ID { get; set; }
         private string ParentID { get; set; }
-        private string SupplierID { get; set; }
         [NotMapped]
-        public string SupplierCode => CustomerService.GetCustomerCodeID(SupplierID);
+        public string SupplierCode => AirAgentService.GetCustomerCodeID(ParentID);
         private string _typeId;
         public string TypeID
         {
             get
             {
-                return AgentprovideTypeService.GetNameByID(_typeId);
+                return AgentProvideTypeService.GetNameByID(_typeId);
             }
             set
             {
@@ -88,7 +86,7 @@ namespace WebCore.Entities
 
     }
 
-    public class CustomerCreateModel
+    public class AirAgentCreateModel
     {
         public string SupplierID { get; set; }
         public string TypeID { get; set; }
@@ -116,30 +114,25 @@ namespace WebCore.Entities
         public int Enabled { get; set; }
     }
 
-    public class CustomerUpdateModel : CustomerCreateModel
+    public class AirAgentUpdateModel : AirAgentCreateModel
     {
         public string ID { get; set; }
     }
-    public class CustomerOptionModel
-    {
-        public string ID { get; set; }
-        public string Title { get; set; }
-        public string Alias { get; set; }
-    }
-    public class CustomerIDModel
+ 
+    public class AirAgentIDModel
     {
         public string ID { get; set; }
     }
-    public class CustomerTypeModel
+    public class AirAgentType
     {
         public string CustomerType { get; set; }
     }
-    public class CustomerSearchModel : SearchModel
+    public class AirAgentSearchModel : SearchModel
     {
         public string TypeID { get; set; }
     }
 
-    public class CustomerOption
+    public class AirAgentOption
     {
         public string ID { get; set; }
         public string Title { get; set; }

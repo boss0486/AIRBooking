@@ -1,7 +1,11 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
@@ -9,86 +13,79 @@
 @model WebCore.Entities.TransactionDepositResult
 
 @{
-    try
+    string id = "";
+    string customerId = "";
+    string title = "";
+    string alias = "";
+    string summary = "";
+    string transactionId = "";
+    string bankSent = "";
+    string bankIDSent = "";
+    string bankReceived = "";
+    string bankIDReceived = "";
+    string receivedDate = "";
+    double amount = 0;
+    int status = 0;
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string enabled = "None";
+    string transactionType = string.Empty;
+
+
+    if (Model != null)
     {
-        string id = "";
-        string customerId = "";
-        string title = "";
-        string alias = "";
-        string summary = "";
-        string transactionId = "";
-        string bankSent = "";
-        string bankIDSent = "";
-        string bankReceived = "";
-        string bankIDReceived = "";
-        string receivedDate = "";
-        double amount = 0;
-        int status = 0;
-        string languageId = "";
-        string createdBy = "";
-        string createdDate = "";
-        string enabled = "None";
-        string transactionType = string.Empty;
+        id = Model.ID;
 
-
-        if (Model != null)
-        {
-            id = Model.ID;
-
-            customerId = Model.ID;
-            title = Model.Title;
-            alias = Model.Alias;
-            summary = Model.Summary;
-            transactionId = Model.TransactionCode;
-            bankSent = Model.BankSent;
-            bankIDSent = Model.BankIDSent;
-            bankReceived = Model.BankReceived;
-            bankIDReceived = Model.BankIDReceived;
-            receivedDate = Model.ReceivedDate;
-            amount = Model.Amount;
-            status = Model.Status;
-            //
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            createdDate = Model.CreatedDate;
-            enabled = "None";
-        }
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
-                </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
-                </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @transactionId</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: Nạp tiền</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng chuyển: @bankSent , số tài khoản: @bankIDSent</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng nhận: @bankReceived , số tài khoản: @bankIDReceived</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @receivedDate</div>
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
-                </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: Thành công</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
-                @{
-                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-                    {
-                        <div class="form-group text-right att-data-list">
-                            <a href="@Helper.Page.Navigate.PathDataList()">
-                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-    }
-    catch (Exception)
-    {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        customerId = Model.ID;
+        title = Model.Title;
+        alias = Model.Alias;
+        summary = Model.Summary;
+        transactionId = Model.TransactionCode;
+        bankSent = Model.BankSent;
+        bankIDSent = Model.BankIDSent;
+        bankReceived = Model.BankReceived;
+        bankIDReceived = Model.BankIDReceived;
+        receivedDate = Model.ReceivedDate;
+        amount = Model.Amount;
+        status = Model.Status;
+        //
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = Model.CreatedDate;
+        enabled = "None";
     }
 }
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Giao dịch:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mã giao dịch: @transactionId</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Loại giao dịch: Nạp tiền</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng chuyển: @bankSent , số tài khoản: @bankIDSent</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngân hàng nhận: @bankReceived , số tài khoản: @bankIDReceived</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian nhận: @receivedDate</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: Thành công</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>

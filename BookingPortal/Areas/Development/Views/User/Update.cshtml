@@ -1,12 +1,13 @@
-﻿@{
-    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-}
-@using WebCore.Entities;
+﻿@using WebCore.Entities;
 @using WebCore.Services;
 @using WebCore.Model.Enum;
+@using WebCore.Model.Services
 
 @using Helper.Language;
 @using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
 
 @model WebCore.Entities.UserModel
 
@@ -27,40 +28,33 @@
     string createdDate = "";
     string isBlock = "";
     string enabled = "";
-    try
+
+    if (Model != null)
     {
-        if (Model != null)
+        id = Model.ID;
+        loginId = Model.LoginID;
+        fullName = Model.FullName;
+        nickname = Model.Nickname;
+        birthday = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.Birthday), LanguagePage.GetLanguageCode);
+        email = Model.Email;
+        phone = Model.Phone;
+        address = Model.Address;
+        roleId = Model.RoleID;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = Convert.ToString(Model.CreatedDate);
+        imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+        //
+        if (Model.IsBlock)
         {
-            id = Model.ID;
-            loginId = Model.LoginID;
-            fullName = Model.FullName;
-            nickname = Model.Nickname;
-            birthday = TimeFormat.FormatToDate(Convert.ToDateTime(Model.Birthday),  LanguagePage.GetLanguageCode);
-            email = Model.Email;
-            phone = Model.Phone;
-            address = Model.Address;
-            roleId = Model.RoleID;
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
-            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
-            //
-            if (Model.IsBlock)
-            {
-                isBlock = "checked";
-            }
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "checked";
-            }
+            isBlock = "checked";
+        }
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "checked";
         }
     }
-    catch (Exception)
-    {
-
-    }
 }
-
 <div class="row">
     <div class="col-md-4">
         <div class="top-pic special">
@@ -144,15 +138,13 @@
             <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
             <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
         </div>
-        @{
-            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-            {
-                <div class="form-group text-right att-data-list">
-                    <a href="@Helper.Page.Navigate.PathDataList()">
-                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            }
+        @if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+        {
+            <div class="form-group text-right att-data-list">
+                <a href="@Helper.Page.Navigate.PathDataList()">
+                    @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
         }
     </div>
 </div>

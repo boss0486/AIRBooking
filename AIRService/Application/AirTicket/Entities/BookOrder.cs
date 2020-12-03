@@ -156,7 +156,7 @@ namespace WebCore.Entities
         public int Status { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }
-        public List<BookCustomer> BookContacts { get; set; }
+        public List<BookCustomer> BookCustomers { get; set; }
         public List<BookPrice> BookPrices { get; set; }
         public List<BookTax> BookTaxs { get; set; }
     }

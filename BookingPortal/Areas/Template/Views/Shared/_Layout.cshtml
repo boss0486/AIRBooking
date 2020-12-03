@@ -29,6 +29,7 @@
     }
 </head>
 <body class="theme-blue">
+
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -383,11 +384,18 @@
             </div>
         </div>
         <hr />
-        <div class="container-fluid">
-            @RenderBody()
-            <input id="txtAccessInApplication" type="hidden" value="@Helper.Current.UserLogin.UserRoleInApplication" />
-        </div>
 
+        @try
+        {
+            <div class="container-fluid">
+                @RenderBody()
+                <input id="txtAccessInApplication" type="hidden" value="@Helper.Current.UserLogin.UserRoleInApplication" />
+            </div>
+        }
+        catch (Exception)
+        {
+            @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        }
     </section>
 
     @Scripts.Render("~/library/js")

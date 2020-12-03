@@ -1,63 +1,60 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 
-
 @model WebCore.Entities.BankResult
 
 @{
-    try
-    {
-        string id = "";
-        string title = "";
-        string summary = "";
-        string languageId = "";
-        string createdBy = "";
-        string createdDate = "";
-        string enabled = "None";
 
-        if (Model != null)
-        {
-            id = Model.ID;
-            title = Model.Title;
-            summary = Model.Summary;
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            createdDate = Convert.ToString(Model.CreatedDate);
-            enabled = Model.EnabledText;
-        }
+    string id = "";
+    string title = "";
+    string summary = "";
+    string languageId = "";
+    string createdBy = "";
+    string createdDate = "";
+    string enabled = "None";
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
-                </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
-                </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
-                @{
-                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-                    {
-                        <div class="form-group text-right att-data-list">
-                            <a href="@Helper.Page.Navigate.PathDataList()">
-                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-    }
-    catch (Exception)
+    if (Model != null)
     {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        id = Model.ID;
+        title = Model.Title;
+        summary = Model.Summary;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = Convert.ToString(Model.CreatedDate);
+        enabled = Model.EnabledText;
     }
 }
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo: @createdDate</div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+

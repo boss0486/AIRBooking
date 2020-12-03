@@ -6161,12 +6161,11 @@ table, .table {
     clear: both;
 }
 
-    .form-group hr {
-        margin-bottom: 0px;
-        padding-bottom: 0px;
+    .form-group .g-hr {
+        padding:0;
+        margin: 0px; 
         position: relative;
-        margin-top: 1px;
-        margin-bottom: 0px;
+        margin-top: 1px; 
         border: 0;
         border-top: 1px solid #eeeeee;
     }

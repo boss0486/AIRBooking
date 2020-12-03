@@ -30,7 +30,7 @@ namespace WebCore.Services
             //
             string sqlQuery = @"SELECT s.ID,s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 AND s.ID = @ClientID
                          Union
-                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND c.ID = @ClientID";
+                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_AirAgent as c WHERE c.Enabled = 1 AND c.ID = @ClientID";
             //
             ClientProviderOption clientOption = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).FirstOrDefault();
             if (clientOption == null)
@@ -49,7 +49,7 @@ namespace WebCore.Services
                 sqlQuery = @"
                          SELECT s.ID,s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 
                          Union
-                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
+                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
                 //
                 clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { }).ToList();
             }
@@ -62,7 +62,7 @@ namespace WebCore.Services
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID, c.CodeID, c.Title, IsSupplier = 0 FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ID = @ClientID";
+                sqlQuery = @"SELECT c.ID, c.CodeID, c.Title, IsSupplier = 0 FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ID = @ClientID";
                 clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             //

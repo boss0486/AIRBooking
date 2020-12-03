@@ -108,7 +108,7 @@ namespace WebCore.Services
                     double amount = model.Amount;
                     int enabled = model.Enabled;
                     //
-                    CustomerService customerService = new CustomerService(_connection);
+                    AirAgentService customerService = new AirAgentService(_connection);
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
                     UserService userService = new UserService(_connection);

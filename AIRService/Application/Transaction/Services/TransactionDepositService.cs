@@ -202,8 +202,8 @@ namespace WebCore.Services
                     }
                     //
                     return Notifization.Invalid("Nhà cung cấp không xác định");
-                    CustomerService customerService = new CustomerService();
-                    Customer customer = customerService.GetAlls(m => m.ID == receivedId).FirstOrDefault();
+                    AirAgentService customerService = new AirAgentService();
+                    AirAgent customer = customerService.GetAlls(m => m.ID == receivedId).FirstOrDefault();
                     if (customer == null)
                         return Notifization.Invalid("Khách hàng không xác định");
                     // 

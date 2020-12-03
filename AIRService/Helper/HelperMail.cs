@@ -95,8 +95,8 @@ namespace Helper.Email
             // contact
             if (!string.IsNullOrWhiteSpace(siteId))
             {
-                WebCore.Services.CustomerService customerService = new WebCore.Services.CustomerService();
-                Customer customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
+                WebCore.Services.AirAgentService customerService = new WebCore.Services.AirAgentService();
+                AirAgent customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
                 string title = string.Empty;
                 string address = string.Empty;
                 string phone = string.Empty;

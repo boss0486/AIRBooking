@@ -1,5 +1,6 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
 
@@ -11,136 +12,130 @@
 }
 @model ApiPortalBooking.Models.VNA_WS_Model.VNA_ReportSaleSummaryTicketing
 @{
-    try
+
+    List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = new List<VNA_ReportSaleSummaryTicketingDocument>();
+    VNA_ReportSaleSummaryTicketingDocumentAmount vna_ReportSaleSummaryTicketingDocumentAmount = new VNA_ReportSaleSummaryTicketingDocumentAmount();
+    List<VNA_ReportSaleSummaryTicketingDocumentTaxes> vna_ReportSaleSummaryTicketingDocumentTaxes = new List<VNA_ReportSaleSummaryTicketingDocumentTaxes>();
+    if (Model != null)
     {
-        List<VNA_ReportSaleSummaryTicketingDocument> vna_ReportSaleSummaryTicketingDocuments = new List<VNA_ReportSaleSummaryTicketingDocument>();
-        VNA_ReportSaleSummaryTicketingDocumentAmount vna_ReportSaleSummaryTicketingDocumentAmount = new VNA_ReportSaleSummaryTicketingDocumentAmount();
-        List<VNA_ReportSaleSummaryTicketingDocumentTaxes> vna_ReportSaleSummaryTicketingDocumentTaxes = new List<VNA_ReportSaleSummaryTicketingDocumentTaxes>();
-        if (Model != null)
-        {
-            vna_ReportSaleSummaryTicketingDocuments = Model.SaleSummaryTicketingDocument;
-            vna_ReportSaleSummaryTicketingDocumentAmount = Model.SaleSummaryTicketingDocumentAmount;
-            vna_ReportSaleSummaryTicketingDocumentTaxes = Model.SaleSummaryTicketingDocumentTaxes;
-        }
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Ticketting docummnent:</label>
-        </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <b class="col-red">@ViewBag.DocummentNumber</b> </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>MarketingFlightNumber</th>
-                        <th>ClassOfService</th>
-                        <th>FareBasis</th>
-                        <th>StartLocation/EndLocation</th>
-                        <th>StartDateTime/EndDateTime</th>
-                        <th>BookingStatus</th>
-                        <th>CurrentStatus</th>
-                        <th>DepartureDateTime</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (vna_ReportSaleSummaryTicketingDocuments != null && vna_ReportSaleSummaryTicketingDocuments.Count > 0)
-                    {
-                        foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
-                        {
-                            string _startDateTime = TimeFormat.Format_TDateTimeToDateTime(item.StartDateTime);
-                            string _endDateTime = TimeFormat.Format_TDateTimeToDateTime(item.EndDateTime);
-
-                            <tr>
-                                <td>@item.MarketingFlightNumber</td>
-                                <td class="text-center">@item.ClassOfService</td>
-                                <td>@item.FareBasis</td>
-                                <td>@item.StartLocation - @item.EndLocation</td>
-                                <td>@_startDateTime - @_endDateTime</td>
-                                <td>@item.BookingStatus</td>
-                                <td>@item.CurrentStatus</td>
-                                <td>@item.FlownCoupon_DepartureDateTime</td>
-                            </tr>
-                        }
-                    }
-
-                </tbody>
-            </table>
-        </div>
-
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí cơ bản:</label>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="tbcol-id">#</th>
-                        <th>Amount</th>
-                        <th>TotalTax</th>
-                        <th>Total</th>
-                        <th>NonRefundable</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @if (vna_ReportSaleSummaryTicketingDocumentAmount != null)
-                        {
-                            string unit = Helper.Page.Library.FormatCurrencyUnit(vna_ReportSaleSummaryTicketingDocumentAmount.Unit);
-                            double baseAmount = vna_ReportSaleSummaryTicketingDocumentAmount.BaseAmount;
-                            double totalTax = vna_ReportSaleSummaryTicketingDocumentAmount.TotalTax;
-                            double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
-                            double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
-                            //
-                            <td class="text-right">1</td>
-                            <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
-                            <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
-                            <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
-                            <td class="text-right">@Helper.Page.Library.FormatCurrency(nonRefundable) @unit</td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí thuế:</label>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="tbcol-id">#</th>
-                        <th>Tax code</th>
-                        <th>Amount</th>
-                        <th>Unit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (vna_ReportSaleSummaryTicketingDocumentTaxes != null && vna_ReportSaleSummaryTicketingDocumentTaxes.Count > 0)
-                    {
-                        int _cnt = 1;
-                        foreach (var item in vna_ReportSaleSummaryTicketingDocumentTaxes)
-                        {
-                            string unit = Helper.Page.Library.FormatCurrencyUnit(item.Unit);
-                            <tr>
-                                <td class="text-right">@_cnt</td>
-                                <td>@item.TaxCode</td>
-                                <td class="text-right">@Helper.Page.Library.FormatCurrency(item.Amount)</td>
-                                <td>@unit</td>
-                            </tr>
-                            _cnt++;
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="form-group text-right att-data-list">
-            <a href="@Helper.Page.Navigate.PathBase("Search") ">
-                @Helper.Language.Resource.Label.BtnSearch <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    }
-    catch (Exception ex)
-    {
-        @ex
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        vna_ReportSaleSummaryTicketingDocuments = Model.SaleSummaryTicketingDocument;
+        vna_ReportSaleSummaryTicketingDocumentAmount = Model.SaleSummaryTicketingDocumentAmount;
+        vna_ReportSaleSummaryTicketingDocumentTaxes = Model.SaleSummaryTicketingDocumentTaxes;
     }
 }
+<div class="top-pic">
+    <i class="fas fa-file-invoice"></i>&nbsp;<label>Ticketting docummnent:</label>
+</div>
+<div class="form-group"><i class="fas fa-check-circle"></i> <span>Documment number:</span> <b class="col-red">@ViewBag.DocummentNumber</b> </div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>MarketingFlightNumber</th>
+                <th>ClassOfService</th>
+                <th>FareBasis</th>
+                <th>StartLocation/EndLocation</th>
+                <th>StartDateTime/EndDateTime</th>
+                <th>BookingStatus</th>
+                <th>CurrentStatus</th>
+                <th>DepartureDateTime</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (vna_ReportSaleSummaryTicketingDocuments != null && vna_ReportSaleSummaryTicketingDocuments.Count > 0)
+            {
+                foreach (var item in vna_ReportSaleSummaryTicketingDocuments)
+                {
+                    string _startDateTime = TimeFormat.Format_TDateTimeToDateTime(item.StartDateTime);
+                    string _endDateTime = TimeFormat.Format_TDateTimeToDateTime(item.EndDateTime);
+
+                    <tr>
+                        <td>@item.MarketingFlightNumber</td>
+                        <td class="text-center">@item.ClassOfService</td>
+                        <td>@item.FareBasis</td>
+                        <td>@item.StartLocation - @item.EndLocation</td>
+                        <td>@_startDateTime - @_endDateTime</td>
+                        <td>@item.BookingStatus</td>
+                        <td>@item.CurrentStatus</td>
+                        <td>@item.FlownCoupon_DepartureDateTime</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="top-pic">
+    <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí cơ bản:</label>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#</th>
+                <th>Amount</th>
+                <th>TotalTax</th>
+                <th>Total</th>
+                <th>NonRefundable</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @if (vna_ReportSaleSummaryTicketingDocumentAmount != null)
+                {
+                    string unit = Helper.Page.Library.FormatCurrencyUnit(vna_ReportSaleSummaryTicketingDocumentAmount.Unit);
+                    double baseAmount = vna_ReportSaleSummaryTicketingDocumentAmount.BaseAmount;
+                    double totalTax = vna_ReportSaleSummaryTicketingDocumentAmount.TotalTax;
+                    double total = vna_ReportSaleSummaryTicketingDocumentAmount.Total;
+                    double nonRefundable = vna_ReportSaleSummaryTicketingDocumentAmount.NonRefundable;
+                    //
+                    <td class="text-right">1</td>
+                    <td class="text-right">@Helper.Page.Library.FormatCurrency(baseAmount) @unit</td>
+                    <td class="text-right">@Helper.Page.Library.FormatCurrency(totalTax) @unit</td>
+                    <td class="text-right">@Helper.Page.Library.FormatCurrency(total) @unit</td>
+                    <td class="text-right">@Helper.Page.Library.FormatCurrency(nonRefundable) @unit</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="top-pic">
+    <i class="fas fa-file-invoice"></i>&nbsp;<label>Phí thuế:</label>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#</th>
+                <th>Tax code</th>
+                <th>Amount</th>
+                <th>Unit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (vna_ReportSaleSummaryTicketingDocumentTaxes != null && vna_ReportSaleSummaryTicketingDocumentTaxes.Count > 0)
+            {
+                int _cnt = 1;
+                foreach (var item in vna_ReportSaleSummaryTicketingDocumentTaxes)
+                {
+                    string unit = Helper.Page.Library.FormatCurrencyUnit(item.Unit);
+                    <tr>
+                        <td class="text-right">@_cnt</td>
+                        <td>@item.TaxCode</td>
+                        <td class="text-right">@Helper.Page.Library.FormatCurrency(item.Amount)</td>
+                        <td>@unit</td>
+                    </tr>
+                    _cnt++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="form-group text-right att-data-list">
+    <a href="@Helper.Page.Navigate.PathBase("Search") ">
+        @Helper.Language.Resource.Label.BtnSearch <i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>
+

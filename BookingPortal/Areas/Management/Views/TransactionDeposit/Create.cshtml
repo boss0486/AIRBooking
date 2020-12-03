@@ -1,73 +1,39 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
-@using WebCore.Model.Enum;
-@using WebCore.Model.Services 
+@using WebCore.ENM
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
     string supplierId = string.Empty;
     string supplierCodeId = string.Empty;
+    if (Helper.Current.UserLogin.IsClientInApplication())
+    {
+        supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+    }
 }
 <div class="row">
-    <div class="col-md-9">
-        <div class="row">
-            <div class="col-md-7">
-                @{
-                    if (!Helper.Current.UserLogin.IsAdminSupplierLogged() && !Helper.Current.UserLogin.IsSupplierLogged())
-                    {
-                        <div class="form-group ">
-                            <label class="form-label">Nhà cung cấp:</label>
-                            <select id="ddlSupplier" name="ddlSupplier" class="form-control show-tick" data-live-search="true">
-                                <option value="">-Lựa chọn-</option>
-                                @Html.Raw(WebCore.Services.SupplierService.DropdownList(""))
-                            </select>
-                            <span id="lblSupplier" class="message msg-box"></span>
-                        </div>
-                    }
-                    else
-                    {
-                        supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
-                        SupplierService supplierService = new SupplierService();
-                        var supplier = supplierService.GetSupplierModel(supplierId);
-                        string title = "";
-                        if (supplier != null)
-                        {
-                            supplierCodeId = supplier.CodeID;
-                            title = supplier.Title;
-                        }
-                        <div class="form-group">
-                            <label class="form-label">Nhà cung cấp:</label>
-                            <div class="form-control disabled">@title</div>
-                            <span id="lblSuplier" class="message msg-box"></span>
-                        </div>
-
-                    }
-                }
-            </div>
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label class="form-label">MNCC:</label>
-                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">@supplierCodeId</label></div>
-                </div>
-            </div>
-        </div>
+    <div class="col-md-8"> 
         <div class="row">
             <div class="col-md-7">
                 <div class="form-group ">
                     <label class="form-label">Khách hàng:</label>
                     <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
-                        @Html.Raw(CustomerService.DropdownListBySuplierID("", supplierId, (int)WebCore.ENM.CustomerEnum.CustomerType.AGENT))
+                        @Html.Raw(AirAgentService.DropdownListAgentSub("", supplierId))
                     </select>
                     <span id="lblCustomer" class="message msg-box"></span>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <label class="form-label">Mã giao dịch:</label>
-                    <input id="txtTransactionCode" name="txtTransactionCode" maxlength="30" type="text" class="form-control" />
-                    <span id="lblTransactionCode" class="message msg-box"></span>
+                    <label class="form-label">MDL:</label>
+                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">@supplierCodeId</label></div>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Mã giao dịch:</label>
+            <input id="txtTransactionCode" name="txtTransactionCode" maxlength="30" type="text" class="form-control" />
+            <span id="lblTransactionCode" class="message msg-box"></span>
         </div>
         <div class="row">
             <div class="col-md-7">

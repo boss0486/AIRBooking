@@ -71,7 +71,7 @@ namespace WebCore.Entities
         public float InternationalFee { get; set; }
     }
 
-    public class AirAgentFeeModel
+    public class AirAgentFee_ResultModel
     {
         public string AirlineID { get; set; }
         public double FeeAmount { get; set; }
@@ -81,7 +81,7 @@ namespace WebCore.Entities
     {
         public string AgentID { get; set; }
     }
-    public class AirAgentFee_NationalIDModel
+    public class AirAgentFee_RequestModel
     {
         public string NationalID { get; set; }
         public string AgentID { get; set; }

@@ -135,7 +135,7 @@ namespace WebApplication.Management.Controllers
         [Route("Action/GetCompany")]
         public ActionResult GetCompanyByLogin()
         {
-            CustomerService customerService = new CustomerService();
+            AirAgentService customerService = new AirAgentService();
             List<ClientOption> dtList = customerService.GetCompanyByLogin();
             return Notifization.Data("", dtList);
         }
@@ -144,7 +144,7 @@ namespace WebApplication.Management.Controllers
         [Route("Action/GetCompByAgentID")]
         public ActionResult GetCompByAgentID(BookAgentID bookAgentId)
         {
-            CustomerService customerService = new CustomerService();
+            AirAgentService customerService = new AirAgentService();
             List<ClientOption> dtList = customerService.GetCompByAgentID(bookAgentId.AgentID);
             return Notifization.Data("", dtList);
         }

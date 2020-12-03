@@ -131,7 +131,7 @@ namespace WebCore.Services
             data.BookTaxs = bookTaxService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //
             BookCustomerService bookContactService = new BookCustomerService(_connection);
-            data.BookContacts = bookContactService.GetAlls(m => m.BookOrderID == data.ID).ToList();
+            data.BookCustomers = bookContactService.GetAlls(m => m.BookOrderID == data.ID).ToList();
             //
             return data;
         }

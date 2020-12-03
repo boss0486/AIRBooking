@@ -1,5 +1,6 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
 
@@ -7,8 +8,9 @@
 @using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
-    @model WebCore.Entities.UserModel
 }
+
+@model WebCore.Entities.UserModel
 @{
     string id = "";
     string loginId = "";
@@ -27,147 +29,141 @@
     string isBlock = "";
     string enabled = "";
     //
-    try
+
+    if (Model != null)
     {
-        if (Model != null)
+        id = Model.ID;
+        loginId = Model.LoginID;
+        fullName = Model.FullName;
+        nickname = Model.Nickname;
+        birthday = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.Birthday), LanguagePage.GetLanguageCode);
+        email = Model.Email;
+        phone = Model.Phone;
+        address = Model.Address;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        createdDate = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.CreatedDate), LanguagePage.GetLanguageCode);
+        imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
+        //
+        if (Model.IsBlock)
         {
-            id = Model.ID;
-            loginId = Model.LoginID;
-            fullName = Model.FullName;
-            nickname = Model.Nickname;
-            birthday = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.Birthday), LanguagePage.GetLanguageCode);
-            email = Model.Email;
-            phone = Model.Phone;
-            address = Model.Address;
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            createdDate = TimeFormat.FormatToViewDate(Convert.ToDateTime(Model.CreatedDate), LanguagePage.GetLanguageCode);
-            imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
-            //
-            if (Model.IsBlock)
-            {
-                isBlock = "checked";
-            }
-            //
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "checked";
-            }
+            isBlock = "checked";
         }
-        <div class="row">
-            <div class="col-md-4">
-                <div class="top-pic special">
-                    <label><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;<span>Tài khoản:</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label">Tên đăng nhập:</label>
-                    <div class="form-control" disabled>@loginId</div>
-                    <span id="lblLoginID" class="message msg-box"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="top-pic">
-                    <i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<label>Quyền hạn:</label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label">Quyền hạn:</label>
-                    <select id="ddlRole" name="ddlRole" class="form-control show-tick" data-live-search="true">
-                        <option value="">-Lựa chọn-</option>
-                        @Html.Raw(CMSRoleService.DropdownList(roleId))
-                    </select>
-                    <span id="lblRole" class="message msg-box"></span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="top-pic">
-                    <i class="fas fa-file-invoice"></i>&nbsp;<label>Hồ sơ:</label>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group text-center" style="background:#CCC; padding:30px 0px; height:220px">
-                            <img src="@imageFile" class="img-responsive infor-img" />
-                        </div>
-                        <div class="form-group m-t-5">
-                            <label class="form-label">Ảnh đại diện:<span class="note"></span> </label>
-                            <span id="lblFile" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group ">
-                            <label class="form-label">Họ/Tên:</label>
-                            <input id="txtFullName" name="txtFullName" maxlength="50" type="text" class="form-control" value="@fullName" />
-                            <span id="lblFullName" class="message msg-box"></span>
-                        </div>
-                        <div class="form-group ">
-                            <label class="form-label">Ngày sinh:</label>
-                            <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value="@birthday" />
-                            <span id="lblBirthday" class="message msg-box"></span>
-                        </div>
-                        <div class="form-group ">
-                            <label class="form-label">Địa chỉ email:</label>
-                            <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="@email" />
-                            <span id="lblEmail" class="message msg-box"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label">Số điện thoại:</label>
-                    <input id="txtPhone" name="txtPhone" maxlength="50" type="text" class="form-control" value="@phone" />
-                    <span id="lblPhone" class="message msg-box"></span>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label">Địa chỉ:</label>
-                    <input id="txtAddress" name="txtAddress" maxlength="250" type="text" class="form-control" value="@address" />
-                    <span id="lblAddress" class="message msg-box"></span>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="top-pic">
-                            <i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<label>Hoạt động:</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group ">
-                            <label class="form-label" style="width:100%">Tình trạng:</label>
-                            <input id="cbxBlock" name="cbxBlock" type="checkbox" class="filled-in" @isBlock />
-                            <label for="cbxBlock">Khóa</label>
-                            <span id="lblBlock" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group ">
-                            <label class="form-label" style="width:100%">Trạng thái:</label>
-                            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
-                            <label for="cbxActive">Kích hoạt</label>
-                            <span id="lblActive" class="message msg-box"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
-                </div>
-                @{
-                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-                    {
-                        <div class="form-group text-right att-data-list">
-                            <a href="@Helper.Page.Navigate.PathDataList()">
-                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-        <input id="txtID" type="hidden" value="@id" />
-    }
-    catch (Exception)
-    {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        //
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "checked";
+        }
     }
 }
+<div class="row">
+    <div class="col-md-4">
+        <div class="top-pic special">
+            <label><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;<span>Tài khoản:</span></label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Tên đăng nhập:</label>
+            <div class="form-control" disabled>@loginId</div>
+            <span id="lblLoginID" class="message msg-box"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="top-pic">
+            <i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<label>Quyền hạn:</label>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Quyền hạn:</label>
+            <select id="ddlRole" name="ddlRole" class="form-control show-tick" data-live-search="true">
+                <option value="">-Lựa chọn-</option>
+                @Html.Raw(CMSRoleService.DropdownList(roleId))
+            </select>
+            <span id="lblRole" class="message msg-box"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hồ sơ:</label>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group text-center" style="background:#CCC; padding:30px 0px; height:220px">
+                    <img src="@imageFile" class="img-responsive infor-img" />
+                </div>
+                <div class="form-group m-t-5">
+                    <label class="form-label">Ảnh đại diện:<span class="note"></span> </label>
+                    <span id="lblFile" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <label class="form-label">Họ/Tên:</label>
+                    <input id="txtFullName" name="txtFullName" maxlength="50" type="text" class="form-control" value="@fullName" />
+                    <span id="lblFullName" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Ngày sinh:</label>
+                    <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value="@birthday" />
+                    <span id="lblBirthday" class="message msg-box"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Địa chỉ email:</label>
+                    <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="@email" />
+                    <span id="lblEmail" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Số điện thoại:</label>
+            <input id="txtPhone" name="txtPhone" maxlength="50" type="text" class="form-control" value="@phone" />
+            <span id="lblPhone" class="message msg-box"></span>
+        </div>
+        <div class="form-group ">
+            <label class="form-label">Địa chỉ:</label>
+            <input id="txtAddress" name="txtAddress" maxlength="250" type="text" class="form-control" value="@address" />
+            <span id="lblAddress" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-pic">
+                    <i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<label>Hoạt động:</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label" style="width:100%">Tình trạng:</label>
+                    <input id="cbxBlock" name="cbxBlock" type="checkbox" class="filled-in" @isBlock />
+                    <label for="cbxBlock">Khóa</label>
+                    <span id="lblBlock" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="form-label" style="width:100%">Trạng thái:</label>
+                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+                    <label for="cbxActive">Kích hoạt</label>
+                    <span id="lblActive" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+<input id="txtID" type="hidden" value="@id" />
 
 @section scripts{
     <script src="~/Areas/Development/_script/account.js"></script>

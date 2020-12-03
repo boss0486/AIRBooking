@@ -1,12 +1,16 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 
-@model WebCore.Entities.AreaGeographical
+@model WebCore.Entities.AreaInland
 
 @{
     string id = "";
@@ -16,75 +20,70 @@
     string languageId = "";
     string createdBy = "";
     string enabled = "";
-    try
+
+    if (Model != null)
     {
-        if (Model != null)
+        id = Model.ID;
+        nationalid = Model.NationalID;
+        title = Model.Title;
+        summary = Model.Summary;
+        languageId = Model.LanguageID;
+        createdBy = Model.CreatedBy;
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
         {
-            id = Model.ID;
-            nationalid = Model.NationalID;
-            title = Model.Title;
-            summary = Model.Summary;
-            languageId = Model.LanguageID;
-            createdBy = Model.CreatedBy;
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "checked";
-            }
+            enabled = "checked";
         }
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Quốc gia</label>
-                    <select id="ddlNationalID" name="ddlNationalID" class="form-control show-tick" data-live-search="true">
-                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                        @Html.Raw(NationalService.DropdownList(nationalid));
-                    </select>
-                    <span id="lblNationalID" class="message msg-box"></span>
-                </div>
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="form-label">Tiêu đề</label>
-                        <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
-                    </div>
-                    <span id="lblTitle" class="message msg-box"></span>
-                </div>
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="form-label">Mô tả</label>
-                        <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
-                    </div>
-                    <span id="lblSummary" class="message msg-box"></span>
-                </div>
-                <div class="form-group m-t-5">
-                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
-                    <label for="cbxActive">Kích hoạt</label>
-                    <span id="lblActive" class="message msg-box"></span>
-                </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
-                </div>
-                @{
-                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-                    {
-                        <div class="form-group text-right att-data-list">
-                            <a href="@Helper.Page.Navigate.PathDataList()">
-                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-
-        <input id="txtID" type="hidden" value="@id" />
-    }
-    catch (Exception)
-    {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="form-label">Quốc gia</label>
+            <select id="ddlNationalID" name="ddlNationalID" class="form-control show-tick" data-live-search="true">
+                <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                @Html.Raw(NationalService.DropdownList(nationalid));
+            </select>
+            <span id="lblNationalID" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-line">
+                <label class="form-label">Tiêu đề</label>
+                <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+            </div>
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-line">
+                <label class="form-label">Mô tả</label>
+                <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
+            </div>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<input id="txtID" type="hidden" value="@id" />
+
 @section scripts{
     <script src="~/Areas/Management/_script/area-geographical.js"></script>
 }

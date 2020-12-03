@@ -943,7 +943,7 @@ namespace AIRService.Service
                     ticketingName = userInfoService.GetFullName(ticketingId);
                 }
                 if (string.IsNullOrWhiteSpace(ticketingId))
-                    return Notifization.Invalid("Lỗi xác định thông tin nhân viên đặt vé");
+                    return Notifization.Invalid("Nhân viên không hợp lệ");
                 //
                 string agentId = ClientLoginService.GetClientIDByUserID(ticketingId);
                 ClientLoginService clientLoginService = new ClientLoginService();
@@ -966,8 +966,8 @@ namespace AIRService.Service
                     if (string.IsNullOrWhiteSpace(companyId))
                         return Notifization.Invalid("Vui lòng chọn công ty");
                     //
-                    CustomerService customerService = new CustomerService();
-                    Customer customerComp = customerService.GetAlls(m => m.ID == companyId).FirstOrDefault();
+                    AirAgentService customerService = new AirAgentService();
+                    AirAgent customerComp = customerService.GetAlls(m => m.ID == companyId).FirstOrDefault();
                     if (customerComp == null)
                         return Notifization.Invalid("Thông tin công ty không tồn tại");
                     // 
@@ -1194,7 +1194,7 @@ namespace AIRService.Service
                         var pnrCode =  Helper.Security.Library.OTPCode;
                         vnaTransaction.EndTransaction();
                         if (string.IsNullOrWhiteSpace(pnrCode))
-                            return Notifization.Invalid("Cannot get PNA code");
+                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
                         //set PNR code
                         result.PNR = pnrCode;
                         // save order | input data ***************************************************************************************************

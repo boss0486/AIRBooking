@@ -635,7 +635,7 @@ namespace WebCore.Services
         public static string DropdownListEmployee(string clientId, string id)
         {
             string result = string.Empty;
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 UserClientService userClientService = new UserClientService();
                 List<EmployeeModel> dtList = userClientService.GetEmployeeByClientID(clientId);

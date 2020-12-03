@@ -58,7 +58,7 @@ namespace WebCore.Entities
         {
             get
             {
-                return CustomerService.GetCustomerCodeID(_clientId);
+                return AirAgentService.GetCustomerCodeID(_clientId);
             }
             set
             {

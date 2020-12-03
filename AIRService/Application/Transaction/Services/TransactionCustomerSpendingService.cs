@@ -128,7 +128,7 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(senderId))
                         return Notifization.Invalid(MessageText.Invalid);
                     //
-                    CustomerService customerService = new CustomerService(_connection);
+                    AirAgentService customerService = new AirAgentService(_connection);
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
                     //

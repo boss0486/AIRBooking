@@ -33,7 +33,7 @@ namespace WebCore.Services
             // query
             string sqlQuery = @"SELECT af.*, al.Title, al.CodeID, cs.Title as 'AgentName', cs.CodeID as 'AgentCode' FROM App_AirAgentFee as af 
             LEFT JOIN App_Airline as al  ON  al.ID = af.AirlineID 
-            LEFT JOIN App_Customer as cs  ON  cs.ID = af.AgentID 
+            LEFT JOIN App_AirAgent as cs  ON  cs.ID = af.AgentID 
             WHERE (dbo.Uni2NONE(al.Title) LIKE N'%'+ @Query +'%' OR al.CodeID LIKE N'%'+ @Query +'%' OR dbo.Uni2NONE(cs.Title) LIKE N'%'+ @Query +'%' OR cs.CodeID LIKE N'%'+ @Query +'%') ORDER BY af.AgentID, al.Title ASC";
             var dtList = _connection.Query<AirAgentFeeResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
@@ -58,7 +58,7 @@ namespace WebCore.Services
         }
 
 
-        public ActionResult GetFeeConfigByNational(AirAgentFee_NationalIDModel model)
+        public ActionResult GetFeeConfig(AirAgentFee_RequestModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -67,17 +67,8 @@ namespace WebCore.Services
             string nationalId = model.NationalID;
             string agentId = model.AgentID;
             //
-            if (!Helper.Current.UserLogin.IsClientInApplication())
-            {
-                if (string.IsNullOrWhiteSpace(agentId))
-                    return Notifization.Invalid("Vui lòng chọn đại lý");
-                //
-            }
-            else
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                agentId = ClientLoginService.GetClientIDByUserID(userId);
-            }
+            if (string.IsNullOrWhiteSpace(agentId))
+                return Notifization.Invalid("Vui lòng chọn đại lý");
             //
             string whereCondition = string.Empty;
             if (itineraryId == (int)ItineraryEnum.ItineraryType.Inland)
@@ -93,7 +84,7 @@ namespace WebCore.Services
             }
             //
             string sqlQuery = @"SELECT ItineraryID, AirlineID, FeeAmount FROM App_AirAgentFee WHERE AgentID = @AgentID AND Enabled = 1" + whereCondition;
-            List<AirAgentFeeModel> airAgentFees = _connection.Query<AirAgentFeeModel>(sqlQuery, new
+            List<AirAgentFee_ResultModel> airAgentFees = _connection.Query<AirAgentFee_ResultModel>(sqlQuery, new
             {
                 NationalID = nationalId,
                 AgentID = agentId
@@ -127,9 +118,9 @@ namespace WebCore.Services
                 //
             }
             // 
-            CustomerService customerService = new CustomerService(_connection);
+            AirAgentService customerService = new AirAgentService(_connection);
             AirAgentFeeService airFeeAgentService = new AirAgentFeeService(_connection);
-            Customer customer = customerService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+            AirAgent customer = customerService.GetAlls(m => m.ID == agentId).FirstOrDefault();
             if (customer == null)
                 return Notifization.Invalid("Đại lý không hợp lệ");
             //
@@ -224,11 +215,7 @@ namespace WebCore.Services
             AirAgentFeeResult airAirFeeAgent = _connection.Query<AirAgentFeeResult>(sqlQuery, new { AgentID = agentId.ToLower() }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
-                return Notifization.Data("OK", new AirAgentFeeResult
-                {
-                    AgentID = agentId,
-                    InlandFee = 0
-                });
+                return Notifization.Data("OK", null);
             //
             return Notifization.Data("OK", airAirFeeAgent);
         }

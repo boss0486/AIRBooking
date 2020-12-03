@@ -375,11 +375,11 @@
     <Compile Include="Module\Contact\Entities\Contact.cs" />
     <Compile Include="Module\Contact\Entities\MYRegularExpressionAttribute.cs" />
     <Compile Include="Module\Contact\Services\ContactService.cs" />
-    <Compile Include="Application\Customer\Entities\Customer.cs" />
+    <Compile Include="Application\Customer\Entities\AirAgent.cs" />
     <Compile Include="Application\Customer\Entities\CustomerType.cs" />
     <Compile Include="Application\Customer\Enum\CustomerTypeEnum.cs" />
-    <Compile Include="Application\Customer\Services\CustomerService.cs" />
-    <Compile Include="Application\Customer\Services\AgentprovideTypeService.cs" />
+    <Compile Include="Application\Customer\Services\AirAgentService.cs" />
+    <Compile Include="Application\Customer\Services\AgentProvideTypeService.cs" />
     <Compile Include="Application\History\Entities\WalletDepositHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingHistory.cs" />

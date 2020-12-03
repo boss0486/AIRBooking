@@ -12,7 +12,7 @@
 }
 @{
     string userId = Helper.Current.UserLogin.IdentifierID;
-    List<CustomerOption> customerOptions = new List<CustomerOption>();
+    List<AirAgentOption> customerOptions = new List<AirAgentOption>();
 }
 <section class="book-in">
     <div id="BookingForm">
@@ -197,7 +197,7 @@
                 <div class="form-group">
                     <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCustomerSingle" value="2" data-text="Khách lẻ" checked />
                     <label class="form-check-label" for="rdoCustomerSingle">Khách lẻ</label>
-                    <hr />
+                    <hr class="g-hr" />
                 </div>
                 <div class="row">
                     <div class="col-md-7">
@@ -227,7 +227,7 @@
                 <div class="form-group">
                     <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCompany" value="1" data-text="Công ty" />
                     <label class="form-check-label" for="rdoCompany">Công ty</label>
-                    <hr />
+                    <hr class="g-hr" />
                 </div>
             </div>
         </div>

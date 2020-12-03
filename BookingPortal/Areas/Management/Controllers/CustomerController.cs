@@ -31,8 +31,8 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult Update(string id)
         {
-            CustomerService service = new CustomerService();
-            Customer model = service.GetCustomerByID(id);
+            AirAgentService service = new AirAgentService();
+            AirAgent model = service.GetAgentByID(id);
             if (model != null)
                 return View(model);
             //
@@ -41,8 +41,8 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult Details(string id)
         {
-            CustomerService service = new CustomerService();
-            CustomerResult model = service.ViewCustomerByID(id);
+            AirAgentService service = new AirAgentService();
+            AirAgentResult model = service.ViewCustomerByID(id);
             if (model != null)
                 return View(model);
             //
@@ -52,11 +52,11 @@ namespace WebApplication.Management.Controllers
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DataList")]
-        public ActionResult DataList(CustomerSearchModel model)
+        public ActionResult DataList(AirAgentSearchModel model)
         {
             try
             {
-                using (var service = new CustomerService())
+                using (var service = new AirAgentService())
                 {
                     return service.DataList(model);
                 }
@@ -69,11 +69,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Create")]
-        public ActionResult Create(CustomerCreateModel model)
+        public ActionResult Create(AirAgentCreateModel model)
         {
             try
             {
-                using (var service = new CustomerService())
+                using (var service = new AirAgentService())
                 {
                     return service.Create(model);
                 }
@@ -86,11 +86,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Update")]
-        public ActionResult Update(CustomerUpdateModel model)
+        public ActionResult Update(AirAgentUpdateModel model)
         {
             try
             {
-                using (var service = new CustomerService())
+                using (var service = new AirAgentService())
                 {
                     return service.Update(model);
                 }
@@ -103,11 +103,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Delete")]
-        public ActionResult Delete(CustomerIDModel model)
+        public ActionResult Delete(AirAgentIDModel model)
         {
             try
             {
-                using (var service = new CustomerService())
+                using (var service = new AirAgentService())
                     return service.Delete(model);
             }
             catch (Exception)
@@ -123,7 +123,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var service = new CustomerService();
+                var service = new AirAgentService();
                 var data = service.DataOption();
                 if (data.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -143,7 +143,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var service = new CustomerService();
+                var service = new AirAgentService();
                 var data = service.GetAgentData();
                 if (data.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -160,11 +160,11 @@ namespace WebApplication.Management.Controllers
         [HttpPost]
         [Route("Action/GetAgentForCustomerType")]
         [IsManage(skip: true)]
-        public ActionResult GetAgentForCustomerType(CustomerTypeModel model)
+        public ActionResult GetAgentForCustomerType(AirAgentType model)
         {
             try
             {
-                var service = new CustomerService();
+                var service = new AirAgentService();
                 return service.GetAgentForCustomerType(model.CustomerType);
             }
             catch (Exception ex)

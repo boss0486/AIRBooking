@@ -18,14 +18,14 @@ using WebCore.ENM;
 
 namespace WebCore.Services
 {
-    public class AgentprovideTypeService
+    public class AgentProvideTypeService
     {
         public static string DropdownList(string id)
         {
             try
             {
                 string result = string.Empty;
-                var service = new AgentprovideTypeService();
+                var service = new AgentProvideTypeService();
                 var dtList = service.DataOption();
                 if (dtList.Count > 0)
                 {
@@ -78,7 +78,7 @@ namespace WebCore.Services
         {
             try
             {
-                var service = new AgentprovideTypeService();
+                var service = new AgentProvideTypeService();
                 id = id.ToLower();
                 var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
                 return data.Title;
@@ -92,7 +92,7 @@ namespace WebCore.Services
         {
             try
             {
-                var service = new AgentprovideTypeService();
+                var service = new AgentProvideTypeService();
                 var data = service.DataOption().Where(m => !string.IsNullOrWhiteSpace(m.ID) && m.Type == type).FirstOrDefault();
                 return data.Title;
             }
@@ -110,7 +110,7 @@ namespace WebCore.Services
                     return (int)AgentProvideEnum.AgentProvideType.NONE;
                 //
                 id = id.ToLower();
-                var service = new AgentprovideTypeService();
+                var service = new AgentProvideTypeService();
                 var data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
                 //
                 return data.Type;
@@ -125,7 +125,7 @@ namespace WebCore.Services
         {
             try
             {
-                var service = new AgentprovideTypeService();
+                var service = new AgentProvideTypeService();
                 var data = service.DataOption().Where(m => m.Type == _typeEnum).FirstOrDefault();
 
                 return data.ID;
@@ -139,7 +139,7 @@ namespace WebCore.Services
         {
             try
             {
-                AgentprovideTypeService service = new AgentprovideTypeService();
+                AgentProvideTypeService service = new AgentProvideTypeService();
                 List<AgentProvideTypeOption> data = service.DataOption().Where(m => m.Type == typeId).ToList();
                 if (data.Count == 0)
                     return new List<AgentProvideTypeOption>();

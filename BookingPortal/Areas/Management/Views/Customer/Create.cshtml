@@ -21,7 +21,7 @@
                     <label class="form-label">Loại khách hàng:</label>
                     <select id="ddlCustomerType" name="ddlCustomerType" class="form-control show-tick" data-live-search="true" data-action="@Helper.Page.MetaSEO.ActionText">
                         <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                        @Html.Raw(CustomerTypeService.DropdownList(""));
+                        @Html.Raw(AgentProvideTypeService.DropdownList(""));
                     </select>
                     <span id="lblCustomerType" class="message msg-box"></span>
                 </div>

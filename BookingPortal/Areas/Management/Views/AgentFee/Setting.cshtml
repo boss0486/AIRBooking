@@ -7,188 +7,177 @@
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-
-@model WebCore.Entities.AirAgentFee
 @{
-    try
+
+    // column
+    AirItineraryService airItineraryService = new AirItineraryService();
+    List<AirAgentFee> airAgentFees = new List<AirAgentFee>();
+    AirlineService airlineService = new AirlineService();
+    List<Airline> airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
+
+    string parentId = string.Empty;
+    if (Helper.Current.UserLogin.IsClientInApplication())
     {
-        string id = string.Empty;
-        string agentId = string.Empty;
-        double amount = 0;
-        if (Model != null)
-        {
-            id = Model.ID;
-            amount = Model.FeeAmount;
-            agentId = Model.AgentID;
-        }
-        // column
-        AirItineraryService airItineraryService = new AirItineraryService();
-        List<AirAgentFee> airAgentFees = new List<AirAgentFee>();
-        AirlineService airlineService = new AirlineService();
-        List<Airline> airlines = airlineService.GetAlls(m => m.Enabled == (int)ModelEnum.Enabled.ENABLED).ToList();
-
-        //
-        <div class="row">
-            <div class="col-md-8 m-b-50">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="form-label">Đại lý:</label>
-                            <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick">
-                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(CustomerService.DropdownList(id, (int)AgentProvideEnum.AgentProvideType.AGENT))
-                            </select>
-                            <span id="lblAgentID" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Mã đại lý:</label> #
-                            <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCode">---</label></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="top-pic special">
-                    <label><span>Nội địa:</span></label>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="tbcol-id">#&nbsp;</th>
-                                    <th>Mã HK</th>
-                                    <th>Hãng hàng không</th>
-                                    <th>Phí nội địa (đ)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="TblInlandFeeData">
-                                @{
-                                    if (airlines.Count > 0)
-                                    {
-                                        int index = 1;
-                                        foreach (var item in airlines)
-                                        {
-                                            <tr>
-                                                <td class="text-right" style="background:#eafbf7">@index</td>
-                                                <td style="background:#eafbf7">@item.CodeID</td>
-                                                <td style="background:#eafbf7">@item.Title</td>
-                                                <td style="padding:5px;">
-                                                    <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="1" value="0" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
-                                                </td>
-                                            </tr>
-                                            index++;
-                                        }
-                                    }
-                                }
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnInlandUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 m-b-50">
-                <div class="top-pic special">
-                    <label><span>Quốc tế:</span></label>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="form-label">Quốc gia:</label>
-                            <select id="ddlNational" name="ddlNational" class="form-control show-tick">
-                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(NationalService.DropdownList(""))
-                            </select>
-                            <span id="lblNational" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Mã quốc gia:</label> #
-                            <div class="form-control disabled" style="background: #FFE5F1"><label id="lblNationalCode">---</label></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="tbcol-id">#&nbsp;</th>
-                                    <th>Mã HK</th>
-                                    <th>Hãng hàng không</th>
-                                    <th>Phí quốc tế (đ)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="TblInternationalFeeData">
-                                @{
-                                    if (airlines.Count > 0)
-                                    {
-                                        int index = 1;
-                                        foreach (var item in airlines)
-                                        {
-                                            <tr>
-                                                <td class="text-right" style="background:#eafbf7">@index</td>
-                                                <td style="background:#eafbf7">@item.CodeID</td>
-                                                <td style="background:#eafbf7">@item.Title</td>
-                                                <td style="padding:5px;">
-                                                    <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="2" value="0" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
-                                                </td>
-                                            </tr>
-                                            index++;
-                                        }
-
-                                    }
-                                }
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnInternationalUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 m-t-30">
-                <label class="form-label">Lưu ý:</label>
-                <div class="form-group">
-                    <p>
-                        <i class="fas fa-check-circle"></i> Phí dịch vụ giới hạn từ 0 - 100 000 000 đ.
-                    </p>
-                    <p>
-                        <i class="fas fa-check-circle"></i> Phí dịch vụ sẽ được áp dụng sau khi bạn thực hiện thay đổi.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <input id="txtID" type="hidden" value="@id" />
-    }
-    catch (Exception)
-    {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        string userId = Helper.Current.UserLogin.IdentifierID;
+        parentId = ClientLoginService.GetClientIDByUserID(userId);
     }
 }
+<div class="row">
+    <div class="col-md-8 m-b-50">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="form-label">Đại lý:</label>
+                    <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(AirAgentService.DropdownListAgentSub("", parentId))
+                    </select>
+                    <span id="lblAgentID" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Mã đại lý:</label> #
+                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCode">---</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="top-pic special">
+            <label><span>Nội địa:</span></label>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="tbcol-id">#&nbsp;</th>
+                            <th>Mã HK</th>
+                            <th>Hãng hàng không</th>
+                            <th>Phí nội địa (đ)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TblInlandFeeData">
+                        @{
+                            if (airlines.Count > 0)
+                            {
+                                int index = 1;
+                                foreach (var item in airlines)
+                                {
+                                    <tr>
+                                        <td class="text-right" style="background:#eafbf7">@index</td>
+                                        <td style="background:#eafbf7">@item.CodeID</td>
+                                        <td style="background:#eafbf7">@item.Title</td>
+                                        <td style="padding:5px;">
+                                            <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="1" value="0" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnInlandUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 m-b-50">
+        <div class="top-pic special">
+            <label><span>Quốc tế:</span></label>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="form-label">Quốc gia:</label>
+                    <select id="ddlNational" name="ddlNational" class="form-control show-tick">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(NationalService.DropdownList(""))
+                    </select>
+                    <span id="lblNational" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Mã quốc gia:</label> #
+                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblNationalCode">---</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Bảng phí: <span id="lblFee" class="message"></span></label>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="tbcol-id">#&nbsp;</th>
+                            <th>Mã HK</th>
+                            <th>Hãng hàng không</th>
+                            <th>Phí quốc tế (đ)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TblInternationalFeeData">
+                        @{
+                            if (airlines.Count > 0)
+                            {
+                                int index = 1;
+                                foreach (var item in airlines)
+                                {
+                                    <tr>
+                                        <td class="text-right" style="background:#eafbf7">@index</td>
+                                        <td style="background:#eafbf7">@item.CodeID</td>
+                                        <td style="background:#eafbf7">@item.Title</td>
+                                        <td style="padding:5px;">
+                                            <input name="inpFee" data-currency="true" data-airlineid="@item.ID" data-airlinecode="@item.CodeID" data-itineraryid="2" value="0" style="border:none;width:100%;height: 21px; padding-left:5px; border-radius:0px; text-align:right" title="nhập liệu" />
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnInternationalUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 m-t-30">
+        <label class="form-label">Lưu ý:</label>
+        <div class="form-group">
+            <p>
+                <i class="fas fa-check-circle"></i> Phí dịch vụ giới hạn từ 0 - 100 000 000 đ.
+            </p>
+            <p>
+                <i class="fas fa-check-circle"></i> Phí dịch vụ sẽ được áp dụng sau khi bạn thực hiện thay đổi.
+            </p>
+        </div>
+    </div>
+</div>
+
+
 
 @section scripts{
     <script src="~/Areas/Management/_script/agent-fee.js"></script>
     <script type="text/javascript">
-        //$(function () { 
-        //    $("#ddlAgentID")[0].selectedIndex = 1;
-        //    $("#ddlAgentID").selectpicker("refresh");
-        //    $("#ddlAgentID").change();
-        //})
+                            //$(function () {
+                            //    $("#ddlAgentID")[0].selectedIndex = 1;
+                            //    $("#ddlAgentID").selectpicker("refresh");
+                            //    $("#ddlAgentID").change();
+                            //})
     </script>
 
 }

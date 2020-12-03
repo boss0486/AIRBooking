@@ -53,23 +53,7 @@ namespace WebApplication.Management.Controllers
             }
 
         }
-        [HttpPost]
-        [Route("Action/GetAgentFee")]
-        public ActionResult GetAgentFee(AirAgentFee_AgentModel model)
-        {
-            try
-            {
-                using (var service = new AirAgentFeeService())
-                    return service.GetAgentFee(model);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("::" + ex);
-            }
-
-        }
-
-
+  
         [HttpPost]
         [Route("Action/ConfigFee")]
         public ActionResult Update(AirAgentFeeConfigModel model)
@@ -87,12 +71,12 @@ namespace WebApplication.Management.Controllers
         }
         [HttpPost]
         [Route("Action/GetFeeConfig")]
-        public ActionResult GetFeeConfigByNational(AirAgentFee_NationalIDModel model)
+        public ActionResult GetFeeConfig(AirAgentFee_RequestModel model)
         {
             try
             {
                 using (var service = new AirAgentFeeService())
-                    return service.GetFeeConfigByNational(model);
+                    return service.GetFeeConfig(model);
             }
             catch (Exception ex)
             {

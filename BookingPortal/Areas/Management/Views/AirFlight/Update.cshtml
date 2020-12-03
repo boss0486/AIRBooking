@@ -1,124 +1,124 @@
 ﻿@using WebCore.Entities;
 @using WebCore.Services;
+@using WebCore.ENM;
 @using WebCore.Model.Enum;
 @using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
+
 @model WebCore.Entities.AirportResult
 
 @{
-    try
-    {
-        string id = string.Empty;
-        string nationalId = string.Empty;
-        string areaInland = string.Empty;
-        string title = string.Empty;
-        string summary = string.Empty;
-        string iataCode = string.Empty;
-        string axFee = "";
-        string categoryId = string.Empty;
-        string enabled = string.Empty;
 
-        if (Model != null)
+    string id = string.Empty;
+    string nationalId = string.Empty;
+    string areaInland = string.Empty;
+    string title = string.Empty;
+    string summary = string.Empty;
+    string iataCode = string.Empty;
+    string axFee = "";
+    string categoryId = string.Empty;
+    string enabled = string.Empty;
+
+    if (Model != null)
+    {
+        id = Model.ID;
+        nationalId = Model.NationalID;
+        areaInland = Model.AreaInlandID;
+        title = Model.Title;
+        summary = Model.Summary;
+        iataCode = Model.IATACode;
+        axFee = Helper.Page.Library.FormatCurrency(Model.AxFee, false);
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
         {
-            id = Model.ID;
-            nationalId = Model.NationalID;
-            areaInland = Model.AreaInlandID;
-            title = Model.Title;
-            summary = Model.Summary;
-            iataCode = Model.IATACode;
-            axFee = Helper.Page.Library.FormatCurrency(Model.AxFee, false);
-            if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
-            {
-                enabled = "checked";
-            }
+            enabled = "checked";
         }
-        <div class="row">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">Quốc gia:</label>
-                            <select id="ddlNational" name="ddlNational" class="form-control show-tick">
-                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(NationalService.DropdownList(nationalId))
-                            </select>
-                            <span id="lblNational" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">Khu vực nội địa:</label>
-                            <select id="ddlAreaInland" name="ddlAreaInland" class="form-control show-tick" data-live-search="true">
-                                <option value="-">@Helper.Language.Resource.Label.Option</option>
-                                @Html.Raw(AreaInlandService.DropdownList(areaInland))
-                            </select>
-                            <span id="lblAreaInland" class="message msg-box"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <div class="form-line">
-                        <label class="form-label">Tiêu đề</label>
-                        <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
-                    </div>
-                    <span id="lblTitle" class="message msg-box"></span>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group ">
-                            <div class="form-line">
-                                <label class="form-label">Mã IATA</label>
-                                <input id="txtIataCode" name="txtIataCode" maxlength="5" type="text" class="form-control" value="@iataCode" />
-                            </div>
-                            <span id="lblIataCode" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">Phí sân bay(Ax)</label>
-                            <input id="txtAxFee" name="txtAxFee" maxlength="7" type="text" class="form-control" value="@axFee" data-currency="true" />
-                            <span id="lblAxFee" class="message msg-box"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group ">
-                    <div class="form-line">
-                        <label class="form-label">Mô tả</label>
-                        <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
-                    </div>
-                    <span id="lblSummary" class="message msg-box"></span>
-                </div>
-                <div class="form-group m-t-5">
-                    <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
-                    <label for="cbxActive">Kích hoạt</label>
-                    <span id="lblActive" class="message msg-box"></span>
-                </div>
-                <div class="form-group  text-right ">
-                    <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
-                </div>
-                @{
-                    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
-                    {
-                        <div class="form-group text-right att-data-list">
-                            <a href="@Helper.Page.Navigate.PathDataList()">
-                                @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-        <input id="txtID" type="hidden" value="@id" />
-    }
-    catch (Exception)
-    {
-        @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
     }
 }
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Quốc gia:</label>
+                    <select id="ddlNational" name="ddlNational" class="form-control show-tick">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(NationalService.DropdownList(nationalId))
+                    </select>
+                    <span id="lblNational" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Khu vực nội địa:</label>
+                    <select id="ddlAreaInland" name="ddlAreaInland" class="form-control show-tick" data-live-search="true">
+                        <option value="-">@Helper.Language.Resource.Label.Option</option>
+                        @Html.Raw(AreaInlandService.DropdownList(areaInland))
+                    </select>
+                    <span id="lblAreaInland" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <div class="form-line">
+                <label class="form-label">Tiêu đề</label>
+                <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" />
+            </div>
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <div class="form-line">
+                        <label class="form-label">Mã IATA</label>
+                        <input id="txtIataCode" name="txtIataCode" maxlength="5" type="text" class="form-control" value="@iataCode" />
+                    </div>
+                    <span id="lblIataCode" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Phí sân bay(Ax)</label>
+                    <input id="txtAxFee" name="txtAxFee" maxlength="7" type="text" class="form-control" value="@axFee" data-currency="true" />
+                    <span id="lblAxFee" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <div class="form-line">
+                <label class="form-label">Mô tả</label>
+                <textarea id="txtSummary" name="txtSummary" class="form-control">@summary</textarea>
+            </div>
+            <span id="lblSummary" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group  text-right ">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnUpdate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+<input id="txtID" type="hidden" value="@id" />
+
 @section scripts{
     <script src="~/Areas/Management/_script/app-flight.js"></script>
 }

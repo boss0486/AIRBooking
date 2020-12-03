@@ -21,13 +21,13 @@ using WebCore.ENM;
 
 namespace WebCore.Services
 {
-    public interface ICustomerService : IEntityService<Customer> { }
-    public class CustomerService : EntityService<Customer>, ICustomerService
+    public interface ICustomerService : IEntityService<AirAgent> { }
+    public class AirAgentService : EntityService<AirAgent>, ICustomerService
     {
-        public CustomerService() : base() { }
-        public CustomerService(System.Data.IDbConnection db) : base(db) { }
+        public AirAgentService() : base() { }
+        public AirAgentService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult DataList(CustomerSearchModel model)
+        public ActionResult DataList(AirAgentSearchModel model)
         {
             #region
             if (model == null)
@@ -80,8 +80,8 @@ namespace WebCore.Services
                 whereCondition += " AND SupplierID = '" + clientId + "'";
             }
 
-            string sqlQuery = @"SELECT * FROM App_Customer WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
-            var dtList = _connection.Query<CustomerResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), TypeID = typeId }).ToList();
+            string sqlQuery = @"SELECT * FROM App_AirAgent WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
+            var dtList = _connection.Query<AirAgentResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //     
@@ -104,7 +104,7 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(CustomerCreateModel model)
+        public ActionResult Create(AirAgentCreateModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -139,7 +139,7 @@ namespace WebCore.Services
                     int enabled = model.Enabled;
 
                     string path = string.Empty;
-                    CustomerService customerService = new CustomerService(_connection);
+                    AirAgentService customerService = new AirAgentService(_connection);
 
                     string alias = Helper.Page.Library.FormatToUni2NONE(title);
                     if (model == null)
@@ -153,7 +153,7 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(typeId))
                         return Notifization.Invalid("Vui lòng chọn loại khách hàng");
                     //
-                    int typeEnum = AgentprovideTypeService.GetAgentProvideType(typeId);
+                    int typeEnum = AgentProvideTypeService.GetAgentProvideType(typeId);
                     if (typeEnum == (int)AgentProvideEnum.AgentProvideType.NONE)
                         return Notifization.Invalid("Loại khách hàng không hợp lệ");
                     //
@@ -179,13 +179,13 @@ namespace WebCore.Services
                         else
                             path = customer1.Path;
                         //
-                        if (!string.IsNullOrWhiteSpace(customer1.ParentID) && model.TypeID == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
+                        if (!string.IsNullOrWhiteSpace(customer1.ParentID) && model.TypeID == AgentProvideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                             return Notifization.Invalid("Cấp đại lý đã đạt giới hạn");
                         //
                     }
                     else
                     {
-                        if (model.TypeID == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.COMP))
+                        if (model.TypeID == AgentProvideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.COMP))
                             return Notifization.Invalid("Vui lòng chọn đại lý");
                         //
                     }
@@ -283,7 +283,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(phone))
                         return Notifization.Invalid("Số đ.thoại nhận OTP không hợp lệ");
                     //
-                    if (string.IsNullOrWhiteSpace(supplierId) && typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
+                    if (string.IsNullOrWhiteSpace(supplierId) && typeId == AgentProvideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -357,9 +357,8 @@ namespace WebCore.Services
                         LanguageID = languageId,
                     }, transaction: _transaction);
                     //
-                    var customerId = customerService.Create<string>(new Customer()
+                    var customerId = customerService.Create<string>(new AirAgent()
                     {
-                        SupplierID = supplierId,
                         TypeID = typeId,
                         CodeID = codeId,
                         ParentID = parentId,
@@ -383,7 +382,7 @@ namespace WebCore.Services
                     }, transaction: _transaction);
 
                     //******* create balance for agent
-                    if (typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
+                    if (typeId == AgentProvideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         var balanceCustomer = balanceCustomerService.Create<string>(new WalletClient()
                         {
@@ -425,7 +424,7 @@ namespace WebCore.Services
             }
         }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Update(CustomerUpdateModel model)
+        public ActionResult Update(AirAgentUpdateModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -531,7 +530,7 @@ namespace WebCore.Services
                     if (!Validate.TestPhone(contactPhone))
                         return Notifization.Invalid("Số đ.thoại liên hệ không hợp lệ");
                     //
-                    if (typeId == AgentprovideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
+                    if (typeId == AgentProvideTypeService.GetAgentProvideTypeIDByType((int)AgentProvideEnum.AgentProvideType.AGENT))
                     {
                         if (depositAmount <= 0)
                             return Notifization.Invalid("Số tiền đặt cọc phải > 0");
@@ -540,7 +539,7 @@ namespace WebCore.Services
                     if (termPayment < 0)
                         return Notifization.Invalid("Thời hạn thanh toán phải > 0");
                     //
-                    CustomerService customerService = new CustomerService(_connection);
+                    AirAgentService customerService = new AirAgentService(_connection);
                     var customer = customerService.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.NotFound();
@@ -584,7 +583,7 @@ namespace WebCore.Services
                 }
             }
         }
-        public Customer GetCustomerByID(string id)
+        public AirAgent GetAgentByID(string id)
         {
             try
             {
@@ -592,8 +591,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM App_Customer WHERE ID = @Query";
-                var model = _connection.Query<Customer>(sqlQuery, new { Query = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgent WHERE ID = @Query";
+                var model = _connection.Query<AirAgent>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch
@@ -602,7 +601,7 @@ namespace WebCore.Services
             }
         }
 
-        public CustomerResult ViewCustomerByID(string id)
+        public AirAgentResult ViewCustomerByID(string id)
         {
             try
             {
@@ -610,8 +609,8 @@ namespace WebCore.Services
                     return null;
                 string query = string.Empty;
                 string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT TOP (1) * FROM App_Customer WHERE ID = @Query";
-                var model = _connection.Query<CustomerResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+                string sqlQuery = @"SELECT TOP (1) * FROM App_AirAgent WHERE ID = @Query";
+                var model = _connection.Query<AirAgentResult>(sqlQuery, new { Query = id }).FirstOrDefault();
                 return model;
             }
             catch
@@ -621,7 +620,7 @@ namespace WebCore.Services
         }
 
         //########################################################################tttt######################################################################################################################################################################################
-        public ActionResult Delete(CustomerIDModel model)
+        public ActionResult Delete(AirAgentIDModel model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -632,18 +631,18 @@ namespace WebCore.Services
                         return Notifization.Error(MessageText.Invalid + "01");
                     //
                     string id = model.ID.ToLower();
-                    CustomerService customerService = new CustomerService(_connection);
+                    AirAgentService customerService = new AirAgentService(_connection);
                     var customer = customerService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (customer == null)
                         return Notifization.NotFound();
                     //
-                    string sqlCustomer = @"SELECT ID FROM App_Customer WHERE ParentID = @ParentID";
-                    var customerId = _connection.Query<CustomerIDModel>(sqlCustomer, new { ParentID = id }, transaction: _transaction).ToList();
+                    string sqlCustomer = @"SELECT ID FROM App_AirAgent WHERE ParentID = @ParentID";
+                    var customerId = _connection.Query<AirAgentIDModel>(sqlCustomer, new { ParentID = id }, transaction: _transaction).ToList();
                     if (customerId.Count > 0)
                         return Notifization.Error("Vui lòng xóa tất cả khách hàng trước");
                     //
                     string sqlAgentFee = @"SELECT ID FROM App_AirAgentFee WHERE AgentID = @AgentID";
-                    List<CustomerIDModel> customerFee = _connection.Query<CustomerIDModel>(sqlAgentFee, new { AgentID = id }, transaction: _transaction).ToList();
+                    List<AirAgentIDModel> customerFee = _connection.Query<AirAgentIDModel>(sqlAgentFee, new { AgentID = id }, transaction: _transaction).ToList();
                     if (customerFee.Count > 0)
                     {
                         sqlAgentFee = @"DELETE App_AirAgentFee WHERE AgentID = @AgentID";
@@ -714,20 +713,20 @@ namespace WebCore.Services
             string sqlQuery;
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' ORDER BY c.CodeID";
                 //
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
             }
             else if (Helper.Current.UserLogin.IsSupplierLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND SupplierID = @ClientID ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND SupplierID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ParentID = @ClientID ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ParentID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             //
@@ -745,7 +744,7 @@ namespace WebCore.Services
                 return Notifization.NotFound(MessageText.NotFound);
             //
             customerType = customerType.Trim().ToLower();
-            int typeEnum = AgentprovideTypeService.GetAgentProvideType(customerType);
+            int typeEnum = AgentProvideTypeService.GetAgentProvideType(customerType);
             string whereCondition = string.Empty;
             //
             if (typeEnum == (int)AgentProvideEnum.AgentProvideType.AGENT)
@@ -754,7 +753,7 @@ namespace WebCore.Services
             if (typeEnum == (int)AgentProvideEnum.AgentProvideType.COMP)
                 whereCondition += " AND TypeID = 'agent'";
             //
-            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 " + whereCondition + "  ORDER BY c.CodeID";
+            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 " + whereCondition + "  ORDER BY c.CodeID";
             List<ClientOption> clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
             if (clientOptions.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -770,20 +769,20 @@ namespace WebCore.Services
             string sqlQuery;
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' ORDER BY c.CodeID";
                 //
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
             }
             else if (Helper.Current.UserLogin.IsSupplierLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
+                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             //
@@ -796,7 +795,7 @@ namespace WebCore.Services
 
         public List<ClientOption> GetCompByAgentID(string agentId)
         {
-            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_Customer as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND  (ParentID = @AgentID OR SupplierID = @AgentID) ORDER BY c.CodeID";
+            string sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND  (ParentID = @AgentID OR SupplierID = @AgentID) ORDER BY c.CodeID";
             List<ClientOption> clientOptions = _connection.Query<ClientOption>(sqlQuery, new { AgentID = agentId }).ToList();
             //
             if (clientOptions.Count == 0)
@@ -809,7 +808,7 @@ namespace WebCore.Services
         public static string DropdownList(string id)
         {
             string result = string.Empty;
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 var dtList = service.DataOption();
                 if (dtList.Count > 0)
@@ -826,11 +825,41 @@ namespace WebCore.Services
             }
 
         }
-
-        public List<CustomerOption> DataOption()
+        public static string DropdownListAgentSub(string id, string parentId = null)
         {
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Customer WHERE Enabled = 1 ORDER BY Title ASC";
-            return _connection.Query<CustomerOption>(sqlQuery, new { }).ToList();
+            string result = string.Empty;
+            using (var service = new AirAgentService())
+            {
+                AirAgentService customerService = new AirAgentService();
+
+
+                string whereCondition = string.Empty;
+                if (!string.IsNullOrWhiteSpace(parentId))
+                {
+                    whereCondition += " AND ParentID = @ParentID";
+                }
+
+                string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 AND ParentID IS NOT NULL AND TypeID ='agent' " + whereCondition + " ORDER BY Title ASC";
+                List<AirAgentOption> dtList = customerService.Query<AirAgentOption>(sqlQuery, new { ParentID = parentId }).ToList();
+                if (dtList.Count > 0)
+                {
+                    foreach (var item in dtList)
+                    {
+                        string select = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                            select = "selected";
+                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
+                    }
+                }
+                return result;
+            }
+
+        }
+
+        public List<AirAgentOption> DataOption()
+        {
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 ORDER BY Title ASC";
+            return _connection.Query<AirAgentOption>(sqlQuery, new { }).ToList();
         }
 
 
@@ -838,9 +867,9 @@ namespace WebCore.Services
         public static string DropdownList(string id, int typeEnum)
         {
             string result = string.Empty;
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
-                string typeId = AgentprovideTypeService.GetAgentProvideTypeIDByType(typeEnum);
+                string typeId = AgentProvideTypeService.GetAgentProvideTypeIDByType(typeEnum);
                 if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsClientInApplication())
                     return result;
                 //
@@ -859,8 +888,8 @@ namespace WebCore.Services
                     whereCondition = " AND (ID = '" + agentCode + "')";
                 }
                 //
-                string sqlQuery = @"SELECT ID, Title, CodeID, ParentID FROM App_Customer WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
-                var dtList = service.Query<CustomerOption>(sqlQuery, new { TypeID = typeId }).ToList();
+                string sqlQuery = @"SELECT ID, Title, CodeID, ParentID FROM App_AirAgent WHERE TypeID = @TypeID  " + whereCondition + " AND Enabled = 1 ORDER BY Title ASC";
+                var dtList = service.Query<AirAgentOption>(sqlQuery, new { TypeID = typeId }).ToList();
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)
@@ -884,7 +913,7 @@ namespace WebCore.Services
         public static string DropdownListAgent(string id)
         {
             string result = string.Empty;
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 var dtList = service.DataOption();
                 if (dtList.Count > 0)
@@ -909,7 +938,7 @@ namespace WebCore.Services
                 return string.Empty;
             //
             id = id.ToLower();
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (customer == null)
@@ -927,7 +956,7 @@ namespace WebCore.Services
                 return string.Empty;
             //
             id = id.ToLower();
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (customer == null)
@@ -945,7 +974,7 @@ namespace WebCore.Services
                 return string.Empty;
             //
             id = id.ToLower();
-            using (var service = new CustomerService())
+            using (var service = new AirAgentService())
             {
                 var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.ID == id).FirstOrDefault();
                 if (customer == null)
