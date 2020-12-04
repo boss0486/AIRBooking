@@ -679,7 +679,7 @@ $(document).on('change', '#ddlProvider', function () {
     var ddlProvider = $(this).val();
     $("#lblProvider").html("");
     if (ddlProvider == "") {
-        $("#lblProvider").html("Vui lòng chọn nhà cung cấp");
+        $("#lblProvider").html("Vui lòng chọn đại lý");
     }
     var option = `<option value="">-Lựa chọn-</option>`;
     $('#ddlEmployee').html(option);
@@ -781,7 +781,7 @@ $(document).on('click', '#btnBooking', function () {
     $("#lblProvider").html("");
     $("#lblEmployee").html("");
     if (ddlProvider == "") {
-        $("#lblProvider").html("Vui lòng chọn công nhà cung cấp");
+        $("#lblProvider").html("Vui lòng chọn đại lý");
         flg = false;
     }
     if (ddlEmployee == "") {

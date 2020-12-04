@@ -15,7 +15,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public List<FareTax> FareTaxs { get; set; }
     }
     public class PassengerFare
-    { 
+    {
         public string FullName { get; set; }
         public string Gender { get; set; }
         public string DateOfBirth { get; set; }
@@ -40,8 +40,7 @@ namespace ApiPortalBooking.Models.VNA_WS_Model
         public string Code { get; set; }
         public double Amount { get; set; }
     }
-
-
+    
     public class PricingInPNR_Test
     {
         public AIRService.WebService.VNA_OTA_AirPriceLLSRQ.OTA_AirPriceRSPriceQuote PriceQuote { get; set; }

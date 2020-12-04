@@ -37,7 +37,7 @@ namespace WebCore.Entities
         public DateTime ArrivalDateTime { get; set; }
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
-        public int AirEquipType { get; set; } 
+        public int AirEquipType { get; set; }
         public string ReturnID { get; set; }
     }
     // model
@@ -89,16 +89,19 @@ namespace WebCore.Entities
         public List<BookSegmentModel> Flights { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
-        public List<FareFlight> FareFlights { get; set; } 
+        public List<FareFlight> FareFlights { get; set; }
+         
     }
     public class BookAgentInfo
     {
         public int PassengerGroup { get; set; }
         public string AgentID { get; set; }
         public string AgentCode { get; set; }
+        public string AgentName { get; set; }
         public string TiketingID { get; set; }
         public string TiketingName { get; set; }
         public double AgentFee { get; set; }
+        public string ProviderID { get; set; }
     }
     public class BookOrderContact
     {
@@ -113,7 +116,6 @@ namespace WebCore.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
     }
-
     public class BookTicketPassenger
     {
         public string PassengerType { get; set; }
@@ -121,6 +123,8 @@ namespace WebCore.Entities
         public int Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
+     
+
     public class BookTicketingRq
     {
         public string ProviderID { get; set; }
@@ -228,7 +232,7 @@ namespace WebCore.Entities
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<BookSegmentModel> Flights { get; set; }
         public BookContactRqModel Contacts { get; set; }
-        public string TimeZoneLocal { get; set; } 
+        public string TimeZoneLocal { get; set; }
     }
 
 }

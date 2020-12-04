@@ -141,86 +141,60 @@
                 </div>
             }
         }
-
+        @{
+            string agentId = string.Empty;
+        }
         <div class="top-pic special">
             <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Nhân viên đặt vé:</span></label>
         </div>
-        @{
-            ClientLoginService clientLoginService = new ClientLoginService();
-            List<ClientProviderOption> clientProviderOptions = clientLoginService.GetAllProvider();
-            string clientId = string.Empty;
-        }
         <div class="row">
             <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            <label class="form-label">Nhà cung cấp:</label>
+                @if (Helper.Current.UserLogin.IsClientInApplication() && !Helper.Current.UserLogin.IsAdminCustomerLogged())
+                {
+                    ClientLoginService clientLoginService = new ClientLoginService();
+                    string client = ClientLoginService.GetClientIDByUserID(userId);
+                    UserInfoService userInfoService = new UserInfoService();
+                    string name = userInfoService.GetFullName(userId);
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label class="form-label">Đại lý:</label>
+                                <div class="form-control">@name</div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="form-label">Nhân viên:</label>
+                                <div class="form-control">@name</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-7">
                             <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
                                 <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @if (clientProviderOptions.Count() > 0)
-                                {
-                                    foreach (var item in clientProviderOptions)
-                                    {
-                                        string selected = "";
-                                        if (item.ID == clientProviderOptions[0].ID)
-                                        {
-                                            selected = "selected";
-                                            clientId = item.ID;
-                                        }
-                                        <option value="@item.ID" data-codeid="@item.CodeID" @selected>@item.Title</option>
-
-                                    }
-                                }
+                                @Html.Raw(AirAgentService.DropdownListAgent(""))
                             </select>
                             <span id="lblProvider" class="message msg-box"></span>
                         </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="form-label">Nhân viên:</label>
-                            <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
-                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
-                            </select>
-                            <span id="lblEmployee" class="message msg-box"></span>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
+                                    <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                </select>
+                                <span id="lblEmployee" class="message msg-box"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
         <div class="top-pic special">
             <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Thông tin liên hệ:</span></label>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCustomerSingle" value="2" data-text="Khách lẻ" checked />
-                    <label class="form-check-label" for="rdoCustomerSingle">Khách lẻ</label>
-                    <hr class="g-hr" />
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="form-group ">
-                            <label class="form-label">Tên khách hàng:</label>
-                            <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
-                            <span id="lblName" class="message msg-box"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group ">
-                            <label class="form-label">Số đ.thoại:</label>
-                            <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
-                            <span id="lblPhone" class="message msg-box"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label">Địa chỉ email:</label>
-                    <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
-                    <span id="lblEmail" class="message msg-box"></span>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-md-8">
@@ -252,6 +226,37 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input class="form-check-input" type="radio" name="rdoPassengerGroup" id="rdoCustomerSingle" value="2" data-text="Khách lẻ" checked />
+                    <label class="form-check-label" for="rdoCustomerSingle">Khách lẻ</label>
+                    <hr class="g-hr" />
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group ">
+                            <label class="form-label">Tên khách hàng:</label>
+                            <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
+                            <span id="lblName" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group ">
+                            <label class="form-label">Số đ.thoại:</label>
+                            <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
+                            <span id="lblPhone" class="message msg-box"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Địa chỉ email:</label>
+                    <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
+                    <span id="lblEmail" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">

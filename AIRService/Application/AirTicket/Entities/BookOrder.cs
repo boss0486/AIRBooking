@@ -32,11 +32,6 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string TicketingID { get; set; }
-        public string TicketingName { get; set; }
-        public string AgentID { get; set; }
-        public string AgentCode { get; set; }
-        public double AgentFee { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
         public DateTime OrderDate { get; set; }
@@ -74,9 +69,15 @@ namespace WebCore.Entities
         public string TicketingName { get; set; }
         public string AgentCode { get; set; }
         public double AgentFee { get; set; }
+        public double ProviderFee { get; set; }
+        public double AgentPrice { get; set; }
         public double Amount { get; set; }
+        public double FareBasic { get; set; }
+        public double FareTax { get; set; }
+
+
         [NotMapped]
-        public double TotalAmount => AgentFee + Amount;
+        public double TotalAmount => Amount + ProviderFee + AgentFee;
         public int CustomerType { get; set; }
         public string ContactName { get; set; }
         public string CompanyCode { get; set; }

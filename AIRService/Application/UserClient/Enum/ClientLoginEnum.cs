@@ -9,10 +9,10 @@
             Supplier = 2,
         }
 
-        public enum PassengerGroup 
+        public enum PassengerGroup
         {
-            Nomal = 1,
-            Comp = 2,
+            Comp = 1,
+            Kle = 2,
         }
     }
 }

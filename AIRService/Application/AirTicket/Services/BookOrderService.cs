@@ -63,12 +63,14 @@ namespace WebCore.Services
             //
             if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
                 whereCondition += " AND o.ItineraryType = @ItineraryType";
-            //
-            string agentId = model.AgentID;
+            // 
             string compId = model.CompanyID;
             int customerType = model.CustomerType;
-            if (!string.IsNullOrWhiteSpace(agentId))
-                whereCondition += " AND o.AgentID = @AgentID";
+
+
+
+
+
             //
             if (customerType != (int)CustomerEnum.CustomerType.NONE)
             {
@@ -80,11 +82,35 @@ namespace WebCore.Services
                         whereCondition += " AND c.CompanyID = @CompanyID";
                 }
             }
+
+            string agentId = model.AgentID;
+
+
+
+            // limit data
+            //if (Helper.Current.UserLogin.IsClientInApplication())
+            //{
+            //    string userId = Helper.Current.UserLogin.IdentifierID;
+            //    agentId = ClientLoginService.GetClientIDByUserID(userId);
+               
+
+            //} 
+            //if (!string.IsNullOrWhiteSpace(agentId))
+            //{
+            //    whereCondition += " AND o.AgentID = @AgentID";
+            //}
+
+
             // query
-            string sqlQuery = @"SELECT o.*,c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode
-            FROM App_BookOrder as o LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
-            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%')  
-            " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
+            string sqlQuery = @"SELECT o.*,
+            c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
+            a.AgentCode, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
+            (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = o.ID) as FareBasic,
+            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = o.ID) as FareTax
+            FROM App_BookOrder as o 
+            LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
+            LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
+            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
             var dtList = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);

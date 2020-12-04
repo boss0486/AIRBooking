@@ -74,7 +74,7 @@ namespace WebCore.Services
             {
                 string clientId = ClientLoginService.GetClientIDByUserID(userId);
                 // show all with admin application
-                if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsAdminCustomerLogged())
+                if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     whereCondition += " AND ClientID = '" + clientId + "'";
                 }
@@ -647,13 +647,13 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownListEmployee(string clientId, string id)
+        public static string DropdownListEmployee( string id, string agentId)
         {
             string result = string.Empty;
             using (var service = new AirAgentService())
             {
                 UserClientService userClientService = new UserClientService();
-                List<EmployeeModel> dtList = userClientService.GetEmployeeByClientID(clientId);
+                List<EmployeeModel> dtList = userClientService.GetEmployeeByClientID(agentId);
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)

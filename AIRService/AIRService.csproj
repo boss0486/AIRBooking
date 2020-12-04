@@ -143,6 +143,8 @@
     <Compile Include="Application\AirAgentFee\Entities\AirAgentFee.cs" />
     <Compile Include="Application\AirTicketCondition\Services\AirTicketCondition05Service.cs" />
     <Compile Include="Application\AirTicketCondition\Services\AirTicketCondition04Service.cs" />
+    <Compile Include="Application\AirTicket\Entities\BookAgent.cs" />
+    <Compile Include="Application\AirTicket\Services\BookAgentService.cs" />
     <Compile Include="Module\AreaGeographical\Entities\AreaInland.cs" />
     <Compile Include="Module\AreaGeographical\Entities\AreaNational.cs" />
     <Compile Include="Module\AreaGeographical\Services\AreaInlandService.cs" />

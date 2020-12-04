@@ -858,10 +858,46 @@ namespace WebCore.Services
 
         public List<AirAgentOption> DataOption()
         {
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 ORDER BY Title ASC";
-            return _connection.Query<AirAgentOption>(sqlQuery, new { }).ToList();
+            // limit data
+            string whereCondition = string.Empty;
+            string agentId = string.Empty;
+            if (Helper.Current.UserLogin.IsClientInApplication())
+            {
+                agentId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                whereCondition = " AND ID = @ID";
+            }
+            else if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                return new List<AirAgentOption>();
+            }
+            //
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 " + whereCondition + " ORDER BY Title ASC";
+            return _connection.Query<AirAgentOption>(sqlQuery, new { ID = agentId }).ToList();
         }
+        public List<AirAgentOption> AgentDataOption()
+        {
+            // limit data
+            string whereCondition = string.Empty;
+            string agentId = string.Empty;
+            if (Helper.Current.UserLogin.IsClientInApplication())
+            {
+                agentId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                whereCondition = " AND ID = @ID";
+            }
+            else if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
+            {
+                return new List<AirAgentOption>();
+            }
+            // 
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 " + whereCondition + " AND TypeID = 'agent'  ORDER BY Title ASC";
+            List<AirAgentOption> airAgentOptions = _connection.Query<AirAgentOption>(sqlQuery, new { ID = agentId }).ToList();
+            // 
+            if (airAgentOptions.Count == 0)
+                return new List<AirAgentOption>();
+            //
+            return airAgentOptions;
 
+        }
 
 
         public static string DropdownList(string id, int typeEnum)
@@ -875,7 +911,7 @@ namespace WebCore.Services
                 //
                 // limit by user login
                 string whereCondition = string.Empty;
-                if (Helper.Current.UserLogin.IsAdminCustomerLogged())
+                if (Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     string userId = Helper.Current.UserLogin.IdentifierID;
                     string agentCode = ClientLoginService.GetClientIDByUserID(userId);
@@ -910,24 +946,26 @@ namespace WebCore.Services
 
         }
 
+
+
+
         public static string DropdownListAgent(string id)
         {
             string result = string.Empty;
-            using (var service = new AirAgentService())
+            AirAgentService airAgentService = new AirAgentService();
+            List<AirAgentOption> airAgentOptions = airAgentService.AgentDataOption();
+            // 
+            if (airAgentOptions.Count > 0)
             {
-                var dtList = service.DataOption();
-                if (dtList.Count > 0)
+                foreach (var item in airAgentOptions)
                 {
-                    foreach (var item in dtList)
-                    {
-                        string select = string.Empty;
-                        if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
-                            select = "selected";
-                        result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
-                    }
+                    string select = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                        select = "selected";
+                    result += "<option value='" + item.ID + "' data-codeid= '" + item.CodeID + "' " + select + ">" + item.Title + "</option>";
                 }
-                return result;
             }
+            return result;
 
         }
         //##############################################################################################################################################################################################################################################################

@@ -36,7 +36,7 @@ namespace Helper.Current
                     if (Helper.Current.UserLogin.IsAdminInApplication)
                         return 2;
                     //
-                    if (Helper.Current.UserLogin.IsAdminCustomerLogged())
+                    if (Helper.Current.UserLogin.IsAdminAgentLogged())
                         return 3;
                     //
                     if (Helper.Current.UserLogin.IsCustomerLogged())
@@ -95,7 +95,7 @@ namespace Helper.Current
             }
         }
 
-        public static bool IsAdminCustomerLogged()
+        public static bool IsAdminAgentLogged()
         {
             try
             {

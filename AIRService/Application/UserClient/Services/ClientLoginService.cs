@@ -38,39 +38,7 @@ namespace WebCore.Services
             //
             return clientOption.CodeID;
         }
-
-        public List<ClientProviderOption> GetAllProvider()
-        {
-            string userId = Helper.Current.UserLogin.IdentifierID;
-            string sqlQuery = "";
-            List<ClientProviderOption> clientOptions = new List<ClientProviderOption>();
-            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-            {
-                sqlQuery = @"
-                         SELECT s.ID,s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 
-                         Union
-                         SELECT c.ID,c.CodeID, c.Title, IsSupplier = 0 FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent'";
-                //
-                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT s.ID, s.CodeID, s.Title, IsSupplier = 1 FROM App_Supplier as s WHERE s.Enabled = 1 AND ID = @ClientID";
-                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsCustomerLogged())
-            {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID, c.CodeID, c.Title, IsSupplier = 0 FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ID = @ClientID";
-                clientOptions = _connection.Query<ClientProviderOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            //
-            if (clientOptions.Count == 0)
-                return new List<ClientProviderOption>();
-            //
-            return clientOptions;
-        }
+         
         //##############################################################################################################################################################################################################################################################
 
         public static string GetClientIDByUserID(string userId)

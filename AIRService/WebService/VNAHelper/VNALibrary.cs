@@ -73,7 +73,7 @@ namespace AIRService.WS.Helper
         {
             return date.ToString("yyyy-MM-dd'T'HH:mm:ss");
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -314,6 +314,19 @@ namespace AIRService.WS.Helper
 
 
         //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(8) + "search2.xml", soapEnvelopeXml);
+        public static void WriteXml(string fileName, string inpXml)
+        {
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            soapEnvelopeXml.LoadXml(inpXml);
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true
+            };
+            var urlFile = HttpContext.Current.Server.MapPath(@"~/Team/" + fileName);
+            XmlWriter writer = XmlWriter.Create(urlFile, settings);
+            soapEnvelopeXml.Save(writer);
+        }
+
         public static void WriteXml(string fileName, XmlDocument soapEnvelopeXml)
         {
             // Save the document to a file and auto-indent the output.
