@@ -244,16 +244,16 @@ namespace WebCore.Model.Services
             }
         }
 
-        public static string ViewEnableState(int state)
+        public static string ViewActiveState(int state)
         {
             string result = string.Empty;
             switch (state)
             {
                 case 1:
-                    result = "Hoạt động";
+                    result = "Đã kích hoạt";
                     break;
                 case 2:
-                    result = "Không hoạt động";
+                    result = "Chưa kích hoạt";
                     break;
                 default:
                     break;
@@ -261,16 +261,16 @@ namespace WebCore.Model.Services
             return result;
         }
 
-        public static string ViewActiveState(bool state)
+        public static string ViewAccountState(bool state)
         {
             string result = string.Empty;
             switch (state)
             {
                 case true:
-                    result = "Đã kích hoạt";
+                    result = "Đang bị khóa";
                     break;
                 case false:
-                    result = "Chưa kích hoạt";
+                    result = "Đang sử dụng";
                     break;
                 default:
                     break;

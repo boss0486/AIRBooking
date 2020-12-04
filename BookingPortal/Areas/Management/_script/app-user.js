@@ -664,7 +664,7 @@ var AppUserController = {
             }
         });
     },
-    GetRoleForUser: function (_id, _event) { 
+    GetRoleForUser: function (_id, _event) {
         var _option_default = ``;
         var model = {
             ID: _id
@@ -673,7 +673,7 @@ var AppUserController = {
             url: '/Management/Role/Action/GetRoleForUser',
             data: model,
             success: function (result) {
-                $('ul#Role').html(_option_default);
+                $('ul#RoleData').html(_option_default);
                 if (result !== null) {
                     if (result.status === 200) {
                         var rowData = '';
@@ -703,7 +703,7 @@ var AppUserController = {
                             });
                         }
 
-                        $('ul#Role').html(_option_default + rowData);
+                        $('ul#RoleData').html(_option_default + rowData);
                         return;
                     }
                 }
@@ -930,9 +930,10 @@ $(document).on("change", "input[name='rdoClientType']", function () {
 });
 
 $(document).on("click", "#btnRoleSetting", function () {
-    var roleActive = $('#Role input[type="checkbox"]:checkbox:checked');
+    var roleActive = $('#RoleData input[type="checkbox"]:checkbox:checked');
     var roleId = $(roleActive).val();
     var userId = $("#txtID").val();
+     
     var model = {
         RoleId: roleId,
         UserID: userId
@@ -985,7 +986,7 @@ function CustomerOption(_id, isdefault, isChangeEvent) {
                             attrSelect = '--';
                         }
                         option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
-                    }); 
+                    });
                     $('#ddlClient').html(option);
                     $('#ddlClient').selectpicker('refresh');
                     if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {

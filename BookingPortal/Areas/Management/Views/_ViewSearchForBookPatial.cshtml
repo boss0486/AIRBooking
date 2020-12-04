@@ -1,6 +1,15 @@
-﻿@using WebCore.Services;
-@using WebCore.Model.Services;
+﻿@using WebCore.Entities;
+@using WebCore.Services;
 @using WebCore.ENM;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
 @*search control ******************************************************************************************************@
 <div class="row">
     <div class="col-md-2">
@@ -12,7 +21,7 @@
         <div class="form-group ">
             <select id="ddlAgentID" name="ddlAgentID" class="form-control show-tick" data-live-search="true">
                 <option value="">-Đại lý-</option>
-                @Html.Raw(CustomerService.DropdownList("", (int)AgentProvideEnum.AgentProvideType.AGENT))
+                @Html.Raw(AirAgentService.DropdownList("", (int)AgentProvideEnum.AgentProvideType.AGENT))
             </select>
         </div>
     </div>

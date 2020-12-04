@@ -530,25 +530,28 @@ namespace WebCore.Services
             var service = new UserClientService();
             string roleId = model.RoleID;
             string userId = model.UserID;
-            if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(userId))
                 return Notifization.Invalid(MessageText.Invalid);
-            //
-            roleId = roleId.ToLower();
+            // 
             RoleService roleService = new RoleService(_connection);
             UserRoleService userRoleService = new UserRoleService(_connection);
-            UserLoginService userLoginService = new UserLoginService(_connection);
-            Role role = roleService.GetAlls(m => m.ID == roleId).FirstOrDefault();
-            if (role == null)
-                return Notifization.NotFound(MessageText.NotFound);
-            //
+            UserLoginService userLoginService = new UserLoginService(_connection); 
             userId = userId.ToLower();
             UserLogin userLogin = userLoginService.GetAlls(m => m.ID == userId).FirstOrDefault();
             if (userLogin == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            UserRole userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault();
+            UserRole userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault(); 
             if (userRole == null)
             {
+                if (string.IsNullOrWhiteSpace(roleId))
+                    return Notifization.Invalid(MessageText.Invalid);
+                // 
+                roleId = roleId.ToLower();
+                Role role = roleService.GetAlls(m => m.ID == roleId).FirstOrDefault();
+                if (role == null)
+                    return Notifization.NotFound(MessageText.NotFound);
+                //
                 userRoleService.Create<string>(new UserRole()
                 {
                     RoleID = roleId,
@@ -556,9 +559,21 @@ namespace WebCore.Services
                 });
             }
             else
-            {
-                userRole.RoleID = roleId;
-                userRoleService.Update(userRole);
+            {   // role empty => delete role of user
+                if (string.IsNullOrWhiteSpace(roleId))
+                {
+                    userRoleService.Remove(userRole.ID);
+                }
+                else
+                {
+                    roleId = roleId.ToLower();
+                    Role role = roleService.GetAlls(m => m.ID == roleId).FirstOrDefault();
+                    if (role == null)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    //
+                    userRole.RoleID = roleId;
+                    userRoleService.Update(userRole);
+                }
             }
             return Notifization.Success(MessageText.UpdateSuccess);
         }

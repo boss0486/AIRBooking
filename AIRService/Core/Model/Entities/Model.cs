@@ -31,7 +31,7 @@ namespace WebCore.Model.Entities
         public string LanguageID { get; set; }
         public int Enabled { get; set; }
         [NotMapped]
-        public string EnabledText => ModelService.ViewEnableState(Enabled);
+        public string EnabledText => ModelService.ViewActiveState(Enabled);
         public string SiteID { get; set; }
         private string _createdById = string.Empty;
         public string CreatedBy

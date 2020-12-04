@@ -44,7 +44,7 @@
         createdBy = Model.CreatedBy;
         createdDate = Model.CreatedDate;
         imageFile = Helper.File.AttachmentFile.GetFile(imageFile);
-        blockState = ModelService.ViewActiveState(Model.IsBlock);
+        blockState = ModelService.ViewAccountState(Model.IsBlock);
         enabled = Model.EnabledText;
         //
         UserRoleService userRoleService = new UserRoleService();
@@ -92,12 +92,7 @@
         </div>
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
-        </div>
-
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> 00: <span class="account-id">Quản trị hệ thống</span></label>
-        </div>
-
+        </div> 
         @if (userRoles != null && userRoles.Count() > 0)
         {
             int cnt = 1;
