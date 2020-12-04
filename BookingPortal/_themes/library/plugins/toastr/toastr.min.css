@@ -6,7 +6,11 @@
 
 
 input.error {
-    background: #f5e0a1;
+    background: #ffb3b1;
+}
+
+input.warning {
+    background: #fbe803;
 }
 
 .message {

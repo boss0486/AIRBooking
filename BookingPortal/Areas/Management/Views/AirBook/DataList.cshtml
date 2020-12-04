@@ -10,7 +10,7 @@
 @Html.Partial("~/Areas/Management/Views/_ViewSearchForBookPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
-    <table class="table table-bordered table-inline">
+    <table id="TblBooking" class="table table-bordered table-inline">
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
@@ -21,8 +21,9 @@
                 <th class="tbcol-date">Loại KH</th>
                 <th class="tbcol-active">Hãng</th>
                 <th class="tbcol-active">L.HTrình</th>
-                <th class="tbcol-none">Tổng chi phí</th>
-                <th class="tbcol-none">Giá chênh</th>
+                <th class="tbcol-date">Tổng chi phí</th>
+                <th class="tbcol-amount">Giá đại lý</th>
+                <th class="tbcol-fee">Phí xuất vé</th>
                 <th class="tbcol-date">PNR</th>
                 <th class="tbcol-none">Booking</th>
                 <th class="tbcol-action">
