@@ -73,25 +73,27 @@ var AirBookController = {
                             var ticketingId = item.TicketingID;
                             var ticketingName = item.TicketingName;
                             var agentCode = item.AgentCode;
-                            var amount = item.TotalAmount;
                             var itineraryText = item.ItineraryText;
                             var customerTypeText = item.CustomerTypeText;
                             //var companyId = item.CompanyID;
                             var companyCode = item.CompanyCode;
                             //var contactName = item.ContactName;
                             //
+                            var totalAmount = item.TotalAmount;
+                            var fareBasic = item.FareBasic;
                             var agentPrice = item.AgentPrice;
-                            //
-
+                            var agentFee = item.AgentFee;
+                            var taxFee = item.AgentPrice;
+                            //  
                             var mailStatus = item.MailStatus;
                             if (companyCode == null) {
                                 companyCode = "-";
                             }
 
-                            var actMail = '';
-                            if (mailStatus == 0) {
-                                actMail = `<button type="button" class="btn btn-success btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
-                            }
+                            var actMail = `<button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
+                            //if (mailStatus == 0) {
+                            //    actMail = `<button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
+                            //}
                             var _unit = 'đ';
                             //  role
                             var action = HelperModel.RolePermission(result.role, "FlightController", id);
@@ -103,13 +105,13 @@ var AirBookController = {
                                  <td >${orderDate}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td >${ticketingName}</td>  
-                                 <td ><a class='btn-passenger' data-id='${id}'>Xem</a></td>  
-                                 <td >${customerTypeText}</td>                                                                                                                                                                                                                                                                         
-                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                         
-                                 <td >${itineraryText}</td>                                                                                                                                                                                                                                                        
-                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(amount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                 <td class='text-right bg-yellow-1'><input name='inp-agtprice' data-currency="true" data-val='${agentPrice}' value ='${agentPrice}' />đ</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                 <td class='text-right bg-yellow-1'><input name='inp-tktfee' data-currency="true" data-val='${agentPrice}' value ='${agentPrice}' />đ</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td ><a class='btn-passenger' data-id='${id}'>Xem</a></td>                                                                                                                                                                                                                                                                         
+                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareBasic)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'><input name='inp-agtprice' data-currency="true" data-val='${agentPrice}' value ='${LibCurrencies.FormatToCurrency(agentPrice)}' />${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'><input name='inp-tktfee' data-currency="true" data-val='${agentFee}' value ='${LibCurrencies.FormatToCurrency(agentFee)}' />${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-left'>${pnr}</td>                                                                                                                                                                                                                                                                         
                                  <td class='tbcol-left tbcol-button'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
@@ -1222,14 +1224,11 @@ $(document).on("click", ".btn-passenger", function () {
 //})
 
 $(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-agtprice']", function () {
-    var _id = $(this).data("id");
-
-    console.log("::" + _id);
-
-
+    var trObj = $(this).closest("tr");
+    var _id = $(trObj).data("id");
+    var _ticketingId = $(trObj).data("ticketingid");
     var _oldVal = $(this).data("val");
     var _val = $(this).val();
-    var _ticketingId = $(this).data("ticketingId");
     //
     if (_val == "") {
         $(this).val(_oldVal);
@@ -1246,7 +1245,6 @@ $(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-agtprice'
         return;
     }
     //
-
     $(this).removeClass("error");
     var model = {
         ID: _id,
@@ -1261,6 +1259,59 @@ $(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-agtprice'
             if (result !== null) {
                 if (result.status === 200) {
                     Notifization.Success(result.message);
+                    AirBookController.DataList(pageIndex);
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NOTSERVICES);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NOTSERVICES);
+        }
+    });
+})
+$(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-tktfee']", function () {
+    var trObj = $(this).closest("tr");
+    var _id = $(trObj).data("id");
+    var _ticketingId = $(trObj).data("ticketingid");
+    var _oldVal = $(this).data("val");
+    var _val = $(this).val();
+    //
+    if (_val == "") {
+        $(this).val(_oldVal);
+        return;
+    }
+    if (!FormatCurrency.test(_val)) {
+        $(this).addClass("error");
+        return;
+    }
+    //
+    _val = LibCurrencies.ConvertToCurrency(_val);
+    if (_val == _oldVal) {
+        $(this).removeClass("error");
+        return;
+    }
+    //
+    $(this).removeClass("error");
+    var model = {
+        ID: _id,
+        TicktingID: _ticketingId,
+        Amount: _val,
+    };
+    ////
+    AjaxFrom.POST({
+        url: '/Management/AirOrder/Action/BookEditAgentFee',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    Notifization.Success(result.message);
+                    AirBookController.DataList(pageIndex);
                     return;
                 }
                 else {

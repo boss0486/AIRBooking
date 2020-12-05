@@ -208,7 +208,7 @@ namespace WebCore.Services
                         AgentName = bookAgentInfo.AgentName,
                         AgentFee = bookAgentInfo.AgentFee, // input from tickting
                         AgentPrice = 0, // 
-                        TicketingLogin = bookAgentInfo.TiketingID,
+                        TicketingID = bookAgentInfo.TiketingID,
                         TicketingName = bookAgentInfo.TiketingName,
                         ProviderName = agtProviderName,
                         ProviderFee = agtProviderFee

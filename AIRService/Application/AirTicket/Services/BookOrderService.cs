@@ -92,7 +92,7 @@ namespace WebCore.Services
             //{
             //    string userId = Helper.Current.UserLogin.IdentifierID;
             //    agentId = ClientLoginService.GetClientIDByUserID(userId);
-               
+
 
             //} 
             //if (!string.IsNullOrWhiteSpace(agentId))
@@ -104,7 +104,7 @@ namespace WebCore.Services
             // query
             string sqlQuery = @"SELECT o.*,
             c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
-            a.AgentCode, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
+            a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
             (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = o.ID) as FareBasic,
             (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = o.ID) as FareTax
             FROM App_BookOrder as o 
@@ -133,6 +133,7 @@ namespace WebCore.Services
             // reusult
             return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
+
         public ViewBookOrder ViewBookOrderByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -206,79 +207,99 @@ namespace WebCore.Services
             //
             return data;
         }
-        //
-        public string BookEmail(string bookId)
+        // 
+        //  change order ******************************************************************************************************
+        public ActionResult BookEditPrice(BookEditPriceModel model)
         {
-            if (string.IsNullOrWhiteSpace(bookId))
-                return null;
-            //
-            bookId = bookId.Trim().ToLower();
-
-
-
-
-
-
-            return string.Empty;
-        }
-
-        public ActionResult GetPdf(string id)
-        {
-            //// Validate the Model is correct and contains valid data
-            //// Generate your report output based on the model parameters
-            //// This can be an Excel, PDF, Word file - whatever you need.
-
-            //// As an example lets assume we've generated an EPPlus ExcelPackage
-
-            //ExcelPackage workbook = new ExcelPackage();
-            //// Do something to populate your workbook
-            //ExcelWorksheet ws = workbook.Workbook.Worksheets.Add("testsheet");
-            //// Generate a new unique identifier against which the file can be stored
-            //string handle = Guid.NewGuid().ToString();
-
-            //using (MemoryStream memoryStream = new MemoryStream())
-            //{
-            //    ws.Cells["B1"].Value = "Number of Used Agencies";
-            //    ws.Cells["C1"].Value = "Active Agencies";
-            //    ws.Cells["D1"].Value = "Inactive Agencies";
-            //    ws.Cells["E1"].Value = "Total Hours Volunteered";
-            //    ws.Cells["B1:E1"].Style.Font.Bold = true;
-            //    workbook.SaveAs(memoryStream);
-            //    memoryStream.Position = 0;
-            //    // Note we are returning a filename as well as the handle
-
-            //    return new DownLoadTest
-            //    {
-            //        GuidID = handle,
-            //        FileName = "TestReportOutput.xlsx",
-            //        DataFile = memoryStream.ToArray(),
-
-
-            //    };
-            //}
-            if (string.IsNullOrWhiteSpace(id))
+            if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
-
-            var converter = new HtmlToPdf();
-            var doc = converter.ConvertUrl("https://localhost:44334/ExportFile/ExOrder/" + id);
-            string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
-            string pathFile = fileFolderPath + Guid.NewGuid() + ".pdf";
-            if (File.Exists(pathFile))
-                File.Delete(pathFile);
+            string bookOrderId = model.ID;
+            string ticktingId = model.TicktingID;
+            double amount = model.Amount;
+            if (string.IsNullOrWhiteSpace(bookOrderId) || string.IsNullOrWhiteSpace(ticktingId))
+                return Notifization.Invalid(MessageText.Invalid);
             //
-            doc.Save(pathFile);
-            doc.Close();
-            Helper.Email.EMailService.MailExcuteTest("vietnt.itt@gmail.com", "ABC", "Nội dung", pathFile);
-
-            //var fileName = string.Format("{0}_ticketing.pdf", Guid.NewGuid() + "_1");
-            //string pathFile = fileFolderPath + fileName;
-            //List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith("_ticketing.pdf")).ToList();
-
-
-            return Notifization.DownLoadFile("ok", fileFolderPath);
+            BookOrderService bookOrderService = new BookOrderService(_connection);
+            BookAgentService bookAgentService = new BookAgentService(_connection);
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == bookOrderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookOrderId && m.TicketingID == ticktingId).FirstOrDefault();
+            if (bookAgent == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            double oldVal = bookAgent.AgentPrice;
+            if (oldVal == amount)
+                return Notifization.Success(MessageText.UpdateSuccess);
+            //
+            bookAgent.AgentPrice = amount;
+            bookAgentService.Update(bookAgent);
+            return Notifization.Success(MessageText.UpdateSuccess);
         }
+        public ActionResult BookEditAgentFee(BookEditFeeModel model)
+        {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string bookOrderId = model.ID;
+            string ticktingId = model.TicktingID;
+            double amount = model.Amount;
+            if (string.IsNullOrWhiteSpace(bookOrderId) || string.IsNullOrWhiteSpace(ticktingId))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            BookOrderService bookOrderService = new BookOrderService(_connection);
+            BookAgentService bookAgentService = new BookAgentService(_connection);
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == bookOrderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookOrderId && m.TicketingID == ticktingId).FirstOrDefault();
+            if (bookAgent == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            double oldVal = bookAgent.AgentFee;
+            if (oldVal == amount)
+                return Notifization.Success(MessageText.UpdateSuccess);
+            //
+            bookAgent.AgentFee = amount;
+            bookAgentService.Update(bookAgent);
+            return Notifization.Success(MessageText.UpdateSuccess);
+        }
+        public ActionResult BookEmail(string orderId)
+        {
+            if (string.IsNullOrWhiteSpace(orderId))
+                return null;
+            //
+            orderId = orderId.Trim().ToLower();
+            BookOrderService bookOrderService = new BookOrderService(_connection);
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //    
+            BookCustomerService bookCustomerService = new BookCustomerService(_connection);
+            BookCustomer bookCustomer = bookCustomerService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+            if (bookCustomer == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //  
+            BookAgentService bookAgentService = new BookAgentService(_connection);
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+            if (bookAgent == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string emailTo = bookCustomer.Email;
+            int mailStaus = Helper.Email.EMailService.SendBooking_TicketingInfo(emailTo, bookAgent.ID, "/ExportFile/ExOrder/" + orderId);
+            if (mailStaus == 1)
+            {
+                bookOrder.MailStatus = 1;
+                bookOrderService.Update(bookOrder);
+                //
+                return Notifization.Success("Đã gửi mail");
+            }
+            return Notifization.Invalid(MessageText.Invalid);
 
+        }
 
         //##############################################################################################################################################################################################################################################################
 
@@ -343,6 +364,8 @@ namespace WebCore.Services
                     new StatusModel(2, "Quốc tế")
                 };
         }
+
+        //##############################################################################################################################################################################################################################################################
 
 
         public class DownLoadTest

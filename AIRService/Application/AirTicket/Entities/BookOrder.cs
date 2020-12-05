@@ -57,7 +57,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public partial class BookOrderResult : WEBModelResult
+    public partial class BookOrderResult //: WEBModelResult
     {
         public string ID { get; set; }
         public string PNR { get; set; }
@@ -66,6 +66,7 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string TicketingID { get; set; }
         public string TicketingName { get; set; }
         public string AgentCode { get; set; }
         public double AgentFee { get; set; }
@@ -77,7 +78,18 @@ namespace WebCore.Entities
 
 
         [NotMapped]
-        public double TotalAmount => Amount + ProviderFee + AgentFee;
+        public double TotalAmount
+        {
+            get
+            {
+                double fareBasic = FareBasic;
+                if (AgentPrice > FareBasic)
+                    fareBasic = AgentPrice;
+                //
+                return fareBasic + FareTax + ProviderFee + AgentFee;
+            }
+
+        }
         public int CustomerType { get; set; }
         public string ContactName { get; set; }
         public string CompanyCode { get; set; }
@@ -135,6 +147,20 @@ namespace WebCore.Entities
     {
         public string AgentID { get; set; }
     }
+
+    public class BookEditPriceModel
+    {
+        public string ID { get; set; }
+        public string TicktingID { get; set; }
+        public double Amount { get; set; }
+    }
+    public class BookEditFeeModel
+    {
+        public string ID { get; set; }
+        public string TicktingID { get; set; }
+        public double Amount { get; set; }
+    }
+
     //details ***************************************************************************************************************
     public partial class ViewBookOrder : WEBModelResult
     {

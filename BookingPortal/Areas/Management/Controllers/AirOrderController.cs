@@ -72,21 +72,33 @@ namespace WebApplication.Management.Controllers
 
         // Data ****************************************************************************************************
         [HttpPost]
+        [Route("Action/BookEditPrice")]
+        public ActionResult BookEditPrice(BookEditPriceModel model)
+        {
+            BookOrderService bookOrderService = new BookOrderService();
+            return bookOrderService.BookEditPrice(model);
+        }
+        [HttpPost]
+        [Route("Action/BookEditAgentFee")]
+        public ActionResult BookEditAgentFee(BookEditFeeModel model)
+        {
+            BookOrderService bookOrderService = new BookOrderService();
+            return bookOrderService.BookEditAgentFee(model);
+        }
+        [HttpPost]
         [Route("Action/BookEmail")]
         public ActionResult BookEmail(BookOrderIDModel model)
         {
             try
             {
-                using (var service = new BookOrderService()) 
-                    return service.GetPdf(model.ID);
+                using (var service = new BookOrderService())
+                    return service.BookEmail(model.ID);
             }
             catch (Exception ex)
             {
                 return Notifization.TEST("::" + ex);
             }
         }
-
-
 
         // Data ****************************************************************************************************
 

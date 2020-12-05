@@ -41,6 +41,44 @@ namespace Helper.Email
             int status = MailExcute(_to, _subject, _content);
             return status;
         }
+
+        public static int SendBooking_TicketingInfo(string _to, string siteId, string inUrlPage)
+        {
+            // contact
+            if (!string.IsNullOrWhiteSpace(siteId))
+            {
+                WebCore.Services.AirAgentService customerService = new WebCore.Services.AirAgentService();
+                AirAgent customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
+                string title = string.Empty;
+                string address = string.Empty;
+                string phone = string.Empty;
+                string email = string.Empty;
+                string _subject = "Thông tin đặt vé tại phòng vé " + title;
+                string _content = "Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi";
+                _content += "Đơn hàng của quý khách đang ở trạng thái chờ thanh toán.";
+
+                string attmPath = Helper.File.AttachmentFile.AttachmentPDF(Helper.Page.Library.FormatToUni2NONE(_subject), inUrlPage, "/Files/Export/Order/");
+                if (string.IsNullOrWhiteSpace(attmPath))
+                    return 0;
+                //
+                if (customer != null)
+                {
+                    title = customer.Title;
+                    address = customer.Address;
+                    phone = customer.ContactPhone;
+                    email = customer.ContactEmail;
+                }
+                _content += "<div style='width:100%;background-color:#ff017e;padding:15px 20px;color:#fff'>";
+                _content += "    <p style='margin:0px'>";
+                _content += "        <a style='font-weight:bold;text-decoration:none;color:#fff'>";
+                _content += "            <strong style='text-transform:uppercase;font-size:14px'>Phòng vé: " + title + "  </strong></a>";
+                _content += "    </p>";
+                _content += "    <p style='margin:0px'> - ĐC: " + address + ". <br> - ĐT: " + phone + "Email: " + email + " </p><br>";
+                _content += "</div>";
+                return MailExcute(_to, _subject, _content, attmPath);
+            }
+            return 0;
+        }
         // Mail Activated
         public static int MailRegAccount(string _to, string _user)
         {
@@ -63,6 +101,7 @@ namespace Helper.Email
             int status = MailExcute(_to, _subject, _content);
             return status;
         }
+
         public static int MailExcute(string _to, string _subject, string _content, string attmPath = null, string siteId = null)
         {
             //try
@@ -92,36 +131,6 @@ namespace Helper.Email
                 Credentials = new NetworkCredential(mailModel.From, mailModel.Password),
                 Timeout = 20000
             };
-            // contact
-            if (!string.IsNullOrWhiteSpace(siteId))
-            {
-                WebCore.Services.AirAgentService customerService = new WebCore.Services.AirAgentService();
-                AirAgent customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
-                string title = string.Empty;
-                string address = string.Empty;
-                string phone = string.Empty;
-                string email = string.Empty;
-                if (customer != null)
-                {
-                    title = customer.Title;
-                    address = customer.Address;
-                    phone = customer.ContactPhone;
-                    email = customer.ContactEmail;
-                }
-                _content += "<div style='width:100%;background-color:#ff017e;padding:15px 20px;color:#fff'>";
-                _content += "    <p style='margin:0px'>";
-                _content += "        <a style='font-weight:bold;text-decoration:none;color:#fff'>";
-                _content += "            <strong style='text-transform:uppercase;font-size:14px'>Phòng vé: " + title + "  </strong></a>";
-                _content += "    </p>";
-                _content += "    <p style='margin:0px'> - ĐC: " + address + ". <br> - ĐT: " + phone + "Email: " + email + " </p><br>";
-                _content += "</div>";
-            }
-            else
-            {
-                //
-
-            }
-
             smtp.Send(msg);
             return 1;
             //}
@@ -161,9 +170,6 @@ namespace Helper.Email
                     Credentials = new NetworkCredential(mailModel.From, mailModel.Password),
                     Timeout = 20000
                 };
-
-
-
                 smtp.Send(msg);
                 return "1";
             }

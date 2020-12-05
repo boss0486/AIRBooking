@@ -15,6 +15,7 @@ using WebCore.Services;
 using Helper.Page;
 using System.Drawing;
 using System.IO.Compression;
+using SelectPdf;
 
 namespace Helper.File
 {
@@ -264,6 +265,53 @@ namespace Helper.File
         {
             ZipFile.CreateFromDirectory(inputDirectory, zipPath);
             return zipPath;
+        }
+
+        public static string AttachmentPDF(string fileName, string inUrlPage, string outFolder)
+        {
+            //// Validate the Model is correct and contains valid data
+            //// Generate your report output based on the model parameters
+            //// This can be an Excel, PDF, Word file - whatever you need.
+
+            //// As an example lets assume we've generated an EPPlus ExcelPackage
+
+            //ExcelPackage workbook = new ExcelPackage();
+            //// Do something to populate your workbook
+            //ExcelWorksheet ws = workbook.Workbook.Worksheets.Add("testsheet");
+            //// Generate a new unique identifier against which the file can be stored
+            //string handle = Guid.NewGuid().ToString();
+
+            //using (MemoryStream memoryStream = new MemoryStream())
+            //{
+            //    ws.Cells["B1"].Value = "Number of Used Agencies";
+            //    ws.Cells["C1"].Value = "Active Agencies";
+            //    ws.Cells["D1"].Value = "Inactive Agencies";
+            //    ws.Cells["E1"].Value = "Total Hours Volunteered";
+            //    ws.Cells["B1:E1"].Style.Font.Bold = true;
+            //    workbook.SaveAs(memoryStream);
+            //    memoryStream.Position = 0;
+            //    // Note we are returning a filename as well as the handle
+
+            //    return new DownLoadTest
+            //    {
+            //        GuidID = handle,
+            //        FileName = "TestReportOutput.xlsx",
+            //        DataFile = memoryStream.ToArray(),
+
+
+            //    };
+            //} 
+            string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+            var converter = new HtmlToPdf();
+            var doc = converter.ConvertUrl(domainName + inUrlPage);
+            string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
+            string pathFile = fileFolderPath + fileName + ".pdf";
+            if (System.IO.File.Exists(pathFile))
+                System.IO.File.Delete(pathFile);
+            //
+            doc.Save(pathFile);
+            doc.Close();
+            return pathFile;
         }
 
         private List<string> GetImagesInHTMLString(string htmlString)

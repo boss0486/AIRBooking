@@ -147,7 +147,7 @@ namespace WebApplication.Management.Controllers
             AirAgentService customerService = new AirAgentService();
             List<ClientOption> dtList = customerService.GetCompByAgentID(bookAgentId.AgentID);
             return Notifization.Data("", dtList);
-        }
+        } 
         // GET: Booking ******************************************************************************************************************************
 
 

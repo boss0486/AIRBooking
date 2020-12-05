@@ -7,7 +7,7 @@ var FormatPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*
 var FormatEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 var FormatNumber = new RegExp("^(0|[1-9][0-9]*)$");
 var FormatNumberFloat = /^-?\d*(\.\d+)?$/;
-var FormatCurrency = /^\d+(?:\.\d{1,8})?$/;
+var FormatCurrency = /^[0-9 ]+(?:\.[0-9]{1,8})?$/;
 var FormatKeyword = new RegExp("^[a-zA-Z0-9 ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵýỷỹ!@#$%&*()+-?<>:,;'|_]+$");
 var FormatDomain = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/u;
 var FormatNegative = new RegExp("^-?[0-9]+$");

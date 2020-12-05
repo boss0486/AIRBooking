@@ -23,7 +23,7 @@ namespace WebCore.Entities
         public string BookOrderID { get; set; }
         public string AgentCode { get; set; }
         public string AgentName { get; set; }
-        public string TicketingLogin { get; set; }
+        public string TicketingID { get; set; }
         public string TicketingName { get; set; } 
         public double AgentFee { get; set; }
         public double AgentPrice { get; set; }
