@@ -223,7 +223,7 @@ namespace WebCore.Services
             string strToken = Helper.Security.HashToken.Create(user.LoginID);
             //  send otp for reset password 
             string subject = "XÁC THỰC OTP";
-            int status = Helper.Email.EMailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
+            int status = Helper.Email.MailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
             if (status != 1)
                 return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
             //

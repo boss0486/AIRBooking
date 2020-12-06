@@ -18,7 +18,7 @@ namespace Helper.Email
         public readonly string Ident = "Hệ Thống";
     }
 
-    public class EMailService
+    public class MailService
     {
 
         public static int SendOTP_ForGotPassword(string _to, string _subject, string otpCode)
@@ -38,7 +38,8 @@ namespace Helper.Email
             _content += "        </div>";
             _content += "    </div>";
             _content += "</div>";
-            int status = MailExcute(_to, _subject, _content);
+            MailService mailService = new MailService();
+            int status = mailService.MailExcute(_to, _subject, _content);
             return status;
         }
 
@@ -49,13 +50,26 @@ namespace Helper.Email
             {
                 WebCore.Services.AirAgentService customerService = new WebCore.Services.AirAgentService();
                 AirAgent customer = customerService.GetAlls(m => m.ID == siteId).FirstOrDefault();
-                string title = string.Empty;
-                string address = string.Empty;
-                string phone = string.Empty;
-                string email = string.Empty;
+                if (customer == null)
+                    return -1;
+                // 
+                string title = customer.Title;
+                string address = customer.Address;
+                string phone = customer.CompanyPhone;
+                string email = customer.ContactEmail;
                 string _subject = "Thông tin đặt vé tại phòng vé " + title;
-                string _content = "Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi";
-                _content += "Đơn hàng của quý khách đang ở trạng thái chờ thanh toán.";
+                string _content = ""; 
+                _content += "<div style='background-color:#ff017e;color:#fff;padding:15px 20px'>";
+                _content += "   <div style='font-size:24px;color:#ff0'>";
+                _content += "    <div style='font-size:24px;color:#ff0'>" + title + "</div>";
+                _content += "   </div>";
+                _content += "</div>"; 
+                _content += "<div style='background-color:#eee;padding:10px 20px 5px 20px;line-height:150%'>";
+                _content += "    <strong>Kính chào Quý khách! </strong>";
+                _content += "    <p>";
+                _content += "        - Xin cám ơn quý khách hàng, đã sử dụng dịch vụ đặt vé máy bay tại focus travel. <br />- Đơn hàng của quý khách đang ở trạng thái chờ thanh toán.";
+                _content += "    </p> ";
+                _content += "</div>";
 
                 string attmPath = Helper.File.AttachmentFile.AttachmentPDF(Helper.Page.Library.FormatToUni2NONE(_subject), inUrlPage, "/Files/Export/Order/");
                 if (string.IsNullOrWhiteSpace(attmPath))
@@ -73,9 +87,10 @@ namespace Helper.Email
                 _content += "        <a style='font-weight:bold;text-decoration:none;color:#fff'>";
                 _content += "            <strong style='text-transform:uppercase;font-size:14px'>Phòng vé: " + title + "  </strong></a>";
                 _content += "    </p>";
-                _content += "    <p style='margin:0px'> - ĐC: " + address + ". <br> - ĐT: " + phone + "Email: " + email + " </p><br>";
+                _content += "    <p style='margin:0px'>- ĐT: " + phone + "<br />- Email: " + email + "<br />- ĐC: " + address + ". <br /> </p><br>";
                 _content += "</div>";
-                return MailExcute(_to, _subject, _content, attmPath);
+                MailService mailService = new MailService();
+                return mailService.MailExcute(_to, _subject, _content, attmPath);
             }
             return 0;
         }
@@ -84,54 +99,78 @@ namespace Helper.Email
         {
             string _subject = "Register Account";
             string _content = "";
-            int status = MailExcute(_to, _subject, _content);
+            MailService mailService = new MailService();
+            int status = mailService.MailExcute(_to, _subject, _content);
             return status;
         }
         public static int MailForgotPassword(string _to, string _name)
         {
             string _subject = "Your password has been changed";
             string _content = "";
-            int status = MailExcute(_to, _subject, _content);
+            MailService mailService = new MailService();
+            int status = mailService.MailExcute(_to, _subject, _content);
             return status;
         }
         public static int MailFeedback(string _to, string _name, string body)
         {
             string _subject = "Customer feedback";
             string _content = "";
-            int status = MailExcute(_to, _subject, _content);
+            MailService mailService = new MailService();
+            int status = mailService.MailExcute(_to, _subject, _content);
             return status;
         }
 
-        public static int MailExcute(string _to, string _subject, string _content, string attmPath = null, string siteId = null)
+        public int MailExcute(string _to, string _subject, string _content, string attmPath = null, string siteId = null)
         {
             //try
-            //{
-            MailMessage msg = new MailMessage();
-            EmailModel mailModel = new EmailModel();
+            //{ 
             if (!Helper.Page.Validate.TestEmail(_to))
                 return 0;
-            //
-            if (!string.IsNullOrWhiteSpace(attmPath))
+            // 
+            //using (SmtpClient smtp = new SmtpClient())
+            //{
+            EmailModel mailModel = new EmailModel();
+            //    MailMessage msg = new MailMessage();
+            //    System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+            //    msg.Attachments.Add(attachment);
+            //    //
+            //    msg.From = new MailAddress(mailModel.From, mailModel.Ident);
+            //    msg.To.Add(_to);
+            //    msg.Subject = _subject;
+            //    msg.Body = _content;
+            //    msg.IsBodyHtml = true;
+            //    await smtp.SendMailAsync(msg);
+            //    return 1;
+            //}
+            Task t = Task.Run(async () =>
             {
-                System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
-                msg.Attachments.Add(attachment);
-            }
-            msg.From = new MailAddress(mailModel.From, mailModel.Ident);
-            msg.To.Add(_to);
-            msg.Subject = _subject;
-            msg.Body = _content;
-            msg.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient
-            {
-                UseDefaultCredentials = true,
-                Host = mailModel.Host,
-                Port = mailModel.Port,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(mailModel.From, mailModel.Password),
-                Timeout = 20000
-            };
-            smtp.Send(msg);
+                // You should use using block so .NET can clean up resources
+                using (var client = new SmtpClient())
+                {
+                    MailMessage msg = new MailMessage();
+
+                    System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+                    msg.Attachments.Add(attachment);
+                    //
+                    msg.From = new MailAddress(mailModel.From, mailModel.Ident);
+                    msg.To.Add(_to);
+                    msg.Subject = _subject;
+                    msg.Body = _content;
+                    msg.IsBodyHtml = true;
+
+
+                    client.UseDefaultCredentials = true;
+                    client.Host = mailModel.Host;
+                    client.Port = mailModel.Port;
+                    client.EnableSsl = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.Credentials = new NetworkCredential(mailModel.From, mailModel.Password);
+                    client.Timeout = 20000;
+                    await client.SendMailAsync(msg);
+                }
+            });
+
+            t.Wait(); // Wait until the above task is complete, email is sent
             return 1;
             //}
             //catch

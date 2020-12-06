@@ -21,6 +21,7 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string BookOrderID { get; set; }
+        public string AgentID { get; set; }
         public string AgentCode { get; set; }
         public string AgentName { get; set; }
         public string TicketingID { get; set; }

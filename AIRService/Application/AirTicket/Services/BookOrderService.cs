@@ -289,7 +289,7 @@ namespace WebCore.Services
                 return Notifization.Invalid(MessageText.Invalid);
             //
             string emailTo = bookCustomer.Email;
-            int mailStaus = Helper.Email.EMailService.SendBooking_TicketingInfo(emailTo, bookAgent.ID, "/ExportFile/ExOrder/" + orderId);
+            int mailStaus = Helper.Email.MailService.SendBooking_TicketingInfo(emailTo, bookAgent.AgentID, "/ExportFile/ExOrder/" + orderId);
             if (mailStaus == 1)
             {
                 bookOrder.MailStatus = 1;

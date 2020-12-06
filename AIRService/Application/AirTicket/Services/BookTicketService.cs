@@ -204,6 +204,7 @@ namespace WebCore.Services
                     bookAgentService.Create<string>(new BookAgent
                     {
                         BookOrderID = bookOrderId,
+                        AgentID = bookAgentInfo.AgentID,
                         AgentCode = bookAgentInfo.AgentCode,
                         AgentName = bookAgentInfo.AgentName,
                         AgentFee = bookAgentInfo.AgentFee, // input from tickting
