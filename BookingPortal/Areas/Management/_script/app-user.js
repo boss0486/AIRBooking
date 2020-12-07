@@ -509,7 +509,7 @@ var AppUserController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, AppUserController.Delete, null, null);
+        Confirm.DeleteYN(id, AppUserController.Delete, null, null);
     },
     Delete: function (id) {
         var model = {

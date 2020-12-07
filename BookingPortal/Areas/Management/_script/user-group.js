@@ -402,7 +402,7 @@ var UserGroupController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, UserGroupController.Delete, null, null);
+        Confirm.DeleteYN(id, UserGroupController.Delete, null, null);
     }
 };
 UserGroupController.init();

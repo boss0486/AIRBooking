@@ -371,7 +371,7 @@ var RoleController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, RoleController.Delete, null, null);
+        Confirm.DeleteYN(id, RoleController.Delete, null, null);
     }
 };
 RoleController.init();

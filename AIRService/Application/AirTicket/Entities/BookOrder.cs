@@ -74,9 +74,7 @@ namespace WebCore.Entities
         public double AgentPrice { get; set; }
         public double Amount { get; set; }
         public double FareBasic { get; set; }
-        public double FareTax { get; set; }
-
-
+        public double FareTax { get; set; } 
         [NotMapped]
         public double TotalAmount
         {
@@ -171,16 +169,12 @@ namespace WebCore.Entities
         public string AirlineID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string TicketingID { get; set; }
-        public string TicketingName { get; set; }
-        public string AgentID { get; set; }
-        public string AgentCode { get; set; }
-        public double AgentFee { get; set; }
         private int ItineraryType { get; set; }
         public int OrderStatus { get; set; }
         [NotMapped]
         public string ItineraryText => AirItineraryService.GetNameByID(ItineraryType);
         public int Status { get; set; }
+        public BookAgent BookAgent { get; set; }
         public List<BookTicket> BookTickets { get; set; }
         public List<BookPassenger> BookPassengers { get; set; }
         public List<BookCustomer> BookCustomers { get; set; }

@@ -58,7 +58,7 @@ namespace WebCore.Entities
         public string FullName { get; set; }
         private int Gender { get; set; }
         [NotMapped]
-        public string GenderText => WebCore.Services.BookTicketService.ConvertToGenderName(Gender);     
+        public string GenderText => WebCore.Services.BookTicketService.ConvertToGenderName(Gender);
         public string Phone { get; set; }
         public string Email { get; set; }
         private string _dateOfBirth;
@@ -86,7 +86,13 @@ namespace WebCore.Entities
         public DateTime DateOfBirth { get; set; }
     }
 
-
+    public class RequestBookFareBasic
+    {
+        public string PassengerType { get; set; }
+        public int Quantity { get; set; }
+        public double Amount { get; set; }
+        public double TaxAmount { get; set; }
+    }
 
 
 

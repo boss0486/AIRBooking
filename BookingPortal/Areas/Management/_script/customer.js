@@ -809,7 +809,7 @@ var CustomerController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, CustomerController.Delete, null, null);
+        Confirm.DeleteYN(id, CustomerController.Delete, null, null);
     }
 };
 

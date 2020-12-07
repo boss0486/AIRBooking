@@ -982,6 +982,23 @@ span {
 }
 
 /* Helpers ===================================== */
+.mgt-10 {
+    margin-top: 10px;
+}
+
+.mgt-20 {
+    margin-top: 20px;
+}
+
+.mgb-10 {
+    margin-bottom: 10px;
+}
+
+.mgb-20 {
+    margin-bottom: 20px;
+}
+
+
 .m-l--125 {
     margin-left: -125px;
 }
@@ -2611,9 +2628,9 @@ span {
 
 
 .bg-yellow-1 {
-    background-color: #fff6a4 !important; 
+    background-color: #fff6a4 !important;
 }
- 
+
 
 .bg-amber {
     background-color: #FFC107 !important;
@@ -5576,15 +5593,19 @@ table, .table {
             line-height: 1;
             border: none;
         }
+        .table-bordered tbody tr td .btn.min-default {
+            min-width:60px;
+        }
+
         .table-bordered tbody tr td input {
             width: 90%;
             height: 19px;
             border-radius: 0px;
             border: none;
             padding: 0px 1px;
-            text-align:right;
+            text-align: right;
         }
-        
+
 
 .table-inline tr td, .table-inline tr th {
     white-space: nowrap;
@@ -5602,7 +5623,12 @@ table, .table {
     border-color: #ABDED4;
 }
 
-.table-bordered > tbody > tr:hover > td {
+.table-bordered > tbody > tr:hover > td, .table-bordered > tbody > tr:hover > th {
+    background: #fbf6cf;
+    /* background: #D9F1EC;*/
+}
+
+.table-bordered > tbody > tr.highlight > td, .table-bordered > tbody > tr.highlight > th {
     background: #fbf6cf;
     /* background: #D9F1EC;*/
 }
@@ -5620,7 +5646,7 @@ table, .table {
     .table-responsive > .table-bordered {
         border: 1px solid #ABDED4;
         width: auto;
-        min-width:1200px;
+        min-width: 1200px;
     }
 }
 
@@ -6173,10 +6199,10 @@ table, .table {
 }
 
     .form-group .g-hr {
-        padding:0;
-        margin: 0px; 
+        padding: 0;
+        margin: 0px;
         position: relative;
-        margin-top: 1px; 
+        margin-top: 1px;
         border: 0;
         border-top: 1px solid #eeeeee;
     }
@@ -9717,6 +9743,7 @@ th.tbcol-amount {
     text-align: center;
     width: 100px;
 }
+
 th.tbcol-fee {
     text-align: center;
     width: 80px;

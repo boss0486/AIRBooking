@@ -43,7 +43,7 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(loginId) || string.IsNullOrWhiteSpace(password))
                     return Notifization.Invalid(MessageText.Invalid);
                 //   
-                var sqlHelper = DbConnect.Connection.CMS; 
+                var sqlHelper = DbConnect.Connection.CMS;
                 var login = _connection.Query<Logged>("sp_user_login", new { model.LoginID, Password = Helper.Security.Library.Encryption256(password) }, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
                 //
                 if (login == null)
@@ -223,7 +223,7 @@ namespace WebCore.Services
             string strToken = Helper.Security.HashToken.Create(user.LoginID);
             //  send otp for reset password 
             string subject = "XÁC THỰC OTP";
-            int status = Helper.Email.MailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
+            int status = Helper.Email.MailService.SendOTP_ForGotPasswordAsync(strEmail, subject, strOTP).Result;
             if (status != 1)
                 return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
             //

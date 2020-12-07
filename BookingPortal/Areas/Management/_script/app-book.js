@@ -81,16 +81,17 @@ var AirBookController = {
                             //
                             var totalAmount = item.TotalAmount;
                             var fareBasic = item.FareBasic;
+                            var fareTax = item.FareTax;
                             var agentPrice = item.AgentPrice;
                             var agentFee = item.AgentFee;
-                            var taxFee = item.AgentPrice;
+                            var providerFee = item.ProviderFee;
                             //  
                             var mailStatus = item.MailStatus;
                             if (companyCode == null) {
                                 companyCode = "-";
                             }
 
-                            var actMail = `<button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
+                            var actMail = `<button type="button" class="btn btn-warning btn-sm btn-email min-default" data-id="${id}" data-pnr="${pnr}">Sent(${mailStatus})</button>`;
                             //if (mailStatus == 0) {
                             //    actMail = `<button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
                             //}
@@ -105,12 +106,12 @@ var AirBookController = {
                                  <td >${orderDate}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td >${ticketingName}</td>  
-                                 <td ><a class='btn-passenger' data-id='${id}'>Xem</a></td>                                                                                                                                                                                                                                                                         
+                                 <td ><a class='btn-passenger' data-id='${id}'>C.tiết</a></td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                                  <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareBasic)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'><a class='btn-farebasic' data-id='${id}'>${LibCurrencies.FormatToCurrency(fareBasic + fareTax)} ${_unit} </a></td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-right bg-yellow-1'><input name='inp-agtprice' data-currency="true" data-val='${agentPrice}' value ='${LibCurrencies.FormatToCurrency(agentPrice)}' />${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-right bg-yellow-1'><input name='inp-tktfee' data-currency="true" data-val='${agentFee}' value ='${LibCurrencies.FormatToCurrency(agentFee)}' />${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(providerFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                  <td class='text-left'>${pnr}</td>                                                                                                                                                                                                                                                                         
                                  <td class='tbcol-left tbcol-button'>
@@ -140,6 +141,70 @@ var AirBookController = {
                 console.log('::' + MessageText.NOTSERVICES);
             }
         });
+    },
+    ExportTiket: function (id) {
+        Notifization.Success(response.message);
+        return;
+        var model = {
+            Id: id
+        };
+        AjaxFrom.POST({
+            url: URLC + '/AbcDelete',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        Notifization.Success(response.message);
+                        AirlineController.DataList(pageIndex);
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    ConfirmExport: function (id) {
+        Confirm.ConfirmYN(id, AirBookController.ExportTiket, Confirm.Text_ExportTicket);
+    },
+    VoidTiket: function (id) {
+        Notifization.Success(response.message);
+        return;
+        var model = {
+            Id: id
+        };
+        AjaxFrom.POST({
+            url: URLC + '/AbcDelete',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        Notifization.Success(response.message);
+                        AirlineController.DataList(pageIndex);
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    ConfirmVoid: function (id) {
+        Confirm.ConfirmYN(id, AirBookController.VoidTiket, Confirm.Text_VoidTicket);
     }
 };
 //
@@ -1036,7 +1101,8 @@ $(document).on('click', '#btnRelease', function () {
 //*******************************************************
 $(document).on("click", ".btn-export", function () {
     var id = $(this).data("id");
-    console.log(":::" + id);
+    AirBookController.ConfirmExport(id);
+
 })
 // list *******************************************************
 
@@ -1151,6 +1217,75 @@ $(document).on("click", ".btn-passenger", function () {
                     });
                     $('#PassengerModal tbody#TblModalData').html(rowData);
                     $("#PassengerModal").modal();
+                    return;
+                }
+                else {
+                    Notifization.Error(result.message);
+                    console.log('::' + result.message);
+                    return;
+                }
+            }
+            Notifization.Error(MessageText.NOTSERVICES);
+            return;
+        },
+        error: function (result) {
+            console.log('::' + MessageText.NOTSERVICES);
+        }
+    });
+})
+
+$(document).on("click", ".btn-farebasic", function () {
+    var id = $(this).data("id");
+    var model = {
+        ID: id
+    };
+    //
+    $('#FaseBasicModal tbody#TblModalData').html('');
+    AjaxFrom.POST({
+        url: '/Management/AirOrder/Action/GetFaseBasic',
+        data: model,
+        success: function (result) {
+            if (result !== null) {
+                if (result.status === 200) {
+                    var rowData = '';
+                    var cnt = 1;
+                    var totalPrice = 0;
+                    var totalTax = 0;
+                    var totalQty = 0;
+                    $.each(result.data, function (index, item) {
+                        index = index + 1;
+                        //
+                        var passengerType = item.PassengerType;
+                        var quantity = item.Quantity;
+                        var amount = item.Amount;
+                        var taxAmount = item.TaxAmount;
+                        // 
+                        rowData += `
+                            <tr>
+                                 <td class="text-right">${cnt}&nbsp;</td>  
+                                 <td>${passengerType}</td>  
+                                 <td class="text-right">${quantity}</td>  
+                                 <td class="text-right">${LibCurrencies.FormatToCurrency(amount)} đ</td>  
+                                 <td class="text-right">${LibCurrencies.FormatToCurrency(taxAmount)} đ</td>   
+                            </tr>`;
+                        cnt++;
+                        totalPrice += amount;
+                        totalTax += taxAmount;
+                        totalQty += quantity;
+                    });
+                    // toatl
+
+                    rowData += `
+                            <tr class='highlight'>
+                                 <td class="text-right">=></td>  
+                                 <td>Tổng: ${LibCurrencies.FormatToCurrency(totalPrice + totalTax)}</td>  
+                                 <td class="text-right">${totalQty}</td>  
+                                 <td class="text-right">${LibCurrencies.FormatToCurrency(totalPrice)} đ</td>  
+                                 <td class="text-right">${LibCurrencies.FormatToCurrency(totalTax)} đ</td>   
+                            </tr>`;
+
+                    $('#FaseBasicModal tbody#TblModalData').html(rowData);
+                    $("#FaseBasicModal").modal();
                     return;
                 }
                 else {
@@ -1339,6 +1474,7 @@ $(document).on("click", ".btn-email", function () {
         success: function (result) {
             if (result !== null) {
                 if (result.status === 200) {
+                    AirBookController.DataList(pageIndex);
                     Notifization.Success(result.message);
                     return;
                 }

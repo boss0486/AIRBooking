@@ -21,7 +21,7 @@ namespace Helper.Email
     public class MailService
     {
 
-        public static int SendOTP_ForGotPassword(string _to, string _subject, string otpCode)
+        public static async Task<int> SendOTP_ForGotPasswordAsync(string _to, string _subject, string otpCode)
         {
             string _content = "";
             _content += "<div class='mail-content' style='margin: 0;font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif; color:#122e39'>";
@@ -58,12 +58,12 @@ namespace Helper.Email
                 string phone = customer.CompanyPhone;
                 string email = customer.ContactEmail;
                 string _subject = "Thông tin đặt vé tại phòng vé " + title;
-                string _content = ""; 
+                string _content = "";
                 _content += "<div style='background-color:#ff017e;color:#fff;padding:15px 20px'>";
                 _content += "   <div style='font-size:24px;color:#ff0'>";
                 _content += "    <div style='font-size:24px;color:#ff0'>" + title + "</div>";
                 _content += "   </div>";
-                _content += "</div>"; 
+                _content += "</div>";
                 _content += "<div style='background-color:#eee;padding:10px 20px 5px 20px;line-height:150%'>";
                 _content += "    <strong>Kính chào Quý khách! </strong>";
                 _content += "    <p>";
@@ -82,6 +82,7 @@ namespace Helper.Email
                     phone = customer.ContactPhone;
                     email = customer.ContactEmail;
                 }
+
                 _content += "<div style='width:100%;background-color:#ff017e;padding:15px 20px;color:#fff'>";
                 _content += "    <p style='margin:0px'>";
                 _content += "        <a style='font-weight:bold;text-decoration:none;color:#fff'>";
@@ -90,7 +91,9 @@ namespace Helper.Email
                 _content += "    <p style='margin:0px'>- ĐT: " + phone + "<br />- Email: " + email + "<br />- ĐC: " + address + ". <br /> </p><br>";
                 _content += "</div>";
                 MailService mailService = new MailService();
-                return mailService.MailExcute(_to, _subject, _content, attmPath);
+
+                int mailStaus = mailService.MailExcute(_to, _subject, _content, attmPath);
+                return mailStaus;
             }
             return 0;
         }
@@ -122,60 +125,69 @@ namespace Helper.Email
 
         public int MailExcute(string _to, string _subject, string _content, string attmPath = null, string siteId = null)
         {
-            //try
-            //{ 
             if (!Helper.Page.Validate.TestEmail(_to))
                 return 0;
-            // 
-            //using (SmtpClient smtp = new SmtpClient())
-            //{
             EmailModel mailModel = new EmailModel();
-            //    MailMessage msg = new MailMessage();
-            //    System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
-            //    msg.Attachments.Add(attachment);
-            //    //
-            //    msg.From = new MailAddress(mailModel.From, mailModel.Ident);
-            //    msg.To.Add(_to);
-            //    msg.Subject = _subject;
-            //    msg.Body = _content;
-            //    msg.IsBodyHtml = true;
-            //    await smtp.SendMailAsync(msg);
-            //    return 1;
-            //}
+            //Task t = Task.Run(async () =>
+            //{
+            //    // You should use using block so .NET can clean up resources
+
+            //});
+
             Task t = Task.Run(async () =>
             {
                 // You should use using block so .NET can clean up resources
                 using (var client = new SmtpClient())
                 {
-                    MailMessage msg = new MailMessage();
-
-                    System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
-                    msg.Attachments.Add(attachment);
-                    //
-                    msg.From = new MailAddress(mailModel.From, mailModel.Ident);
-                    msg.To.Add(_to);
-                    msg.Subject = _subject;
-                    msg.Body = _content;
-                    msg.IsBodyHtml = true;
-
-
-                    client.UseDefaultCredentials = true;
-                    client.Host = mailModel.Host;
-                    client.Port = mailModel.Port;
-                    client.EnableSsl = true;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.Credentials = new NetworkCredential(mailModel.From, mailModel.Password);
-                    client.Timeout = 20000;
-                    await client.SendMailAsync(msg);
+                    using (MailMessage msg = new MailMessage())
+                    {
+                        System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+                        msg.Attachments.Add(attachment);
+                        //
+                        msg.From = new MailAddress(mailModel.From, mailModel.Ident);
+                        msg.To.Add(_to);
+                        msg.Subject = _subject;
+                        msg.Body = _content;
+                        msg.IsBodyHtml = true;
+                        //
+                        client.UseDefaultCredentials = true;
+                        client.Host = mailModel.Host;
+                        client.Port = mailModel.Port;
+                        client.EnableSsl = true;
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.Credentials = new NetworkCredential(mailModel.From, mailModel.Password);
+                        client.Timeout = 20000;
+                        await client.SendMailAsync(msg);
+                    }
                 }
             });
-
-            t.Wait(); // Wait until the above task is complete, email is sent
+            t.Wait();
             return 1;
-            //}
-            //catch
+
+            //using (var client = new SmtpClient())
             //{
-            //    return -1;
+            //    using (MailMessage msg = new MailMessage())
+            //    {
+            //        System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+            //        msg.Attachments.Add(attachment);
+            //        //
+            //        msg.From = new MailAddress(mailModel.From, mailModel.Ident);
+            //        msg.To.Add(_to);
+            //        msg.Subject = _subject;
+            //        msg.Body = _content;
+            //        msg.IsBodyHtml = true;
+
+            //        client.UseDefaultCredentials = true;
+            //        client.Host = mailModel.Host;
+            //        client.Port = mailModel.Port;
+            //        client.EnableSsl = true;
+            //        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //        client.Credentials = new NetworkCredential(mailModel.From, mailModel.Password);
+            //        client.Timeout = 20000;
+            //        await client.SendMailAsync(msg);
+
+            //        return 1;
+            //    }
             //}
         }
 

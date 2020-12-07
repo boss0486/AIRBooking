@@ -354,7 +354,7 @@ var AirlineController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, AirlineController.Delete, null, null);
+        Confirm.ConfirmYN(id, AirlineController.Delete, Confirm.Text_Delete);
     }
 };
 

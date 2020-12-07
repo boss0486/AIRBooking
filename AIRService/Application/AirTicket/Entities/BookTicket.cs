@@ -100,6 +100,8 @@ namespace WebCore.Entities
         public string AgentName { get; set; }
         public string TiketingID { get; set; }
         public string TiketingName { get; set; }
+        public string TiketingPhone { get; set; }
+        public string TiketingEmail { get; set; }
         public double AgentFee { get; set; }
         public string ProviderID { get; set; }
     }

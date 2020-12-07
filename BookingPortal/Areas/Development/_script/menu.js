@@ -440,7 +440,7 @@ var MenuItemController = {
     },
     ConfirmDelete: function (id) {
 
-        Confirm.Delete(id, MenuItemController.Delete, null, null);
+        Confirm.DeleteYN(id, MenuItemController.Delete, null, null);
 
         //Confirm.ConfirmDelete({
         //    Title: 'Xác nhận!',

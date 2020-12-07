@@ -514,7 +514,7 @@ var UserController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, UserController.Delete, null, null);
+        Confirm.DeleteYN(id, UserController.Delete, null, null);
     },
     Delete: function (id) {
         var model = {

@@ -29,11 +29,19 @@
     }
 </head>
 <body>
-    <div class="container-fluid bg-white" style="border:solid 1px #ABDED4">
-       
-            @RenderBody()
-         
-    </div>
+    @{
+        try
+        {
+            <div class="container-fluid bg-white" style="border:solid 1px #ABDED4">
+                @RenderBody()
+            </div>
+        }
+        catch (Exception)
+        {
+            @Html.Partial("~/Areas/Template/Views/_ViewNotPageLoadPatial.cshtml", null)
+        }
+    }
+
     @Scripts.Render("~/library/js")
     @RenderSection("scripts", required: false)
 </body>

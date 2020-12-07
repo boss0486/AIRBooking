@@ -290,7 +290,7 @@ var TransactionSpendingController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, TransactionSpendingController.Delete, null, null);
+        Confirm.DeleteYN(id, TransactionSpendingController.Delete, null, null);
 
     },
     GetTiketing(id) { 

@@ -2,6 +2,7 @@
 using AL.NetFrame.Services;
 using Dapper;
 using Helper;
+using Helper.Email;
 using OfficeOpenXml;
 using PagedList;
 using SelectPdf;
@@ -133,7 +134,6 @@ namespace WebCore.Services
             // reusult
             return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-
         public ViewBookOrder ViewBookOrderByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -143,6 +143,10 @@ namespace WebCore.Services
             ViewBookOrder data = _connection.Query<ViewBookOrder>(sqlQuery, new { ID = id }).FirstOrDefault();
             if (data == null)
                 return null;
+            //
+            BookAgentService bookAgentService = new BookAgentService(_connection);
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == data.ID).FirstOrDefault();
+            data.BookAgent = bookAgent;
             //
             BookTicketService bookTicketService = new BookTicketService(_connection);
             List<BookTicket> bookTickets = bookTicketService.GetAlls(m => m.BookOrderID == data.ID).ToList();
@@ -207,7 +211,45 @@ namespace WebCore.Services
             //
             return data;
         }
-        // 
+        public List<RequestBookFareBasic> ViewBookFareBasic(string bookId)
+        {
+            if (string.IsNullOrWhiteSpace(bookId))
+                return null;
+            //
+            bookId = bookId.Trim().ToLower();
+            string sqlQuery = @"SELECT * FROM App_BookPassenger WHERE BookOrderID = @BookOrderID";
+            List<BookPassenger> dataPassengers = _connection.Query<BookPassenger>(sqlQuery, new { BookOrderID = bookId }).ToList();
+            if (dataPassengers.Count == 0)
+                return null;
+            //
+            var dataGroup = dataPassengers.GroupBy(m => new { m.PassengerType }).Select(m => new { m.Key.PassengerType }).ToList();
+            BookPriceService bookPriceService = new BookPriceService(_connection);
+            BookTaxService bookTaxService = new BookTaxService(_connection);
+            List<RequestBookFareBasic> requestBookFareBasics = new List<RequestBookFareBasic>();
+            foreach (var item in dataGroup)
+            {
+                //
+                double amount = 0;
+                double tax = 0;
+                List<BookPrice> bookPrices = bookPriceService.GetAlls(m => m.PassengerType == item.PassengerType && m.BookOrderID == bookId).ToList();
+                if (bookPrices.Count > 0)
+                    amount = bookPrices.Sum(m => m.Amount);
+                // 
+                List<BookTax> bookTaxes = bookTaxService.GetAlls(m => m.PassengerType == item.PassengerType && m.BookOrderID == bookId).ToList();
+                if (bookTaxes.Count > 0)
+                    tax = bookTaxes.Sum(m => m.Amount);
+                // 
+                RequestBookFareBasic requestBookFareBasic = new RequestBookFareBasic
+                {
+                    PassengerType = item.PassengerType,
+                    Quantity = dataPassengers.Where(m => m.PassengerType == item.PassengerType).Count(),
+                    Amount = amount,
+                    TaxAmount = tax
+                };
+                requestBookFareBasics.Add(requestBookFareBasic);
+            }
+            return requestBookFareBasics;
+        }
         //  change order ******************************************************************************************************
         public ActionResult BookEditPrice(BookEditPriceModel model)
         {
@@ -289,13 +331,13 @@ namespace WebCore.Services
                 return Notifization.Invalid(MessageText.Invalid);
             //
             string emailTo = bookCustomer.Email;
-            int mailStaus = Helper.Email.MailService.SendBooking_TicketingInfo(emailTo, bookAgent.AgentID, "/ExportFile/ExOrder/" + orderId);
+            int mailStaus = MailService.SendBooking_TicketingInfo(emailTo, bookAgent.AgentID, "/ExportFile/ExOrder/" + orderId);
             if (mailStaus == 1)
             {
-                bookOrder.MailStatus = 1;
+                bookOrder.MailStatus += 1;
                 bookOrderService.Update(bookOrder);
                 //
-                return Notifization.Success("Đã gửi mail");
+                return Notifization.Success("Thư của bạn đã được gửi tới khách hàng");
             }
             return Notifization.Invalid(MessageText.Invalid);
 

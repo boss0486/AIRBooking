@@ -941,18 +941,21 @@ namespace AIRService.Service
                     return Notifization.Invalid("Nhân viên không hợp lệ");
                 //
                 UserInfoService userInfoService = new UserInfoService();
-                string ticketingName = userInfoService.GetFullName(ticketingId);
+                UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId).FirstOrDefault();
+                if (userInfo == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                string ticketingName = userInfo.FullName;
+                string ticketingPhone = userInfo.Phone;
+                string ticketingEmail = userInfo.Email; 
                 //
                 string agentId = ClientLoginService.GetClientIDByUserID(ticketingId);
-                ClientLoginService clientLoginService = new ClientLoginService();
-
+                ClientLoginService clientLoginService = new ClientLoginService(); 
                 AirAgentService airAgentService = new AirAgentService();
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
                 string agentCode = airAgent.CodeID;
                 string agentName = airAgent.Title;
-                string agentProviderId = airAgent.ParentID;
-
-
+                string agentProviderId = airAgent.ParentID; 
                 int passengerGroup = model.PassengerGroup;
                 // call service get PNR code 
                 string strEmail = string.Empty;
@@ -1087,7 +1090,7 @@ namespace AIRService.Service
                         }
                         VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
                         var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
- 
+
                         // #3. Get PNA code - **************************************************************************************************************************************************
                         var result = new BookVeResult
                         {
@@ -1222,7 +1225,7 @@ namespace AIRService.Service
                         {
                             string fullName = item.FullName;
                             bookTicketPassengers.Add(new BookTicketPassenger
-                            { 
+                            {
                                 DateOfBirth = item.DateOfBirth,
                                 FullName = fullName,
                                 Gender = item.Gender,
@@ -1250,6 +1253,8 @@ namespace AIRService.Service
                                 AgentFee = airAgentFee,
                                 TiketingID = ticketingId,
                                 TiketingName = ticketingName,
+                                TiketingPhone = ticketingPhone,
+                                TiketingEmail = ticketingEmail,
                                 ProviderID = agentProviderId
                             },
                             Contacts = new BookOrderContact

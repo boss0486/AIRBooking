@@ -307,7 +307,9 @@ namespace Helper.File
             string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
             string pathFile = fileFolderPath + fileName + ".pdf";
             if (System.IO.File.Exists(pathFile))
+            {
                 System.IO.File.Delete(pathFile);
+            }
             //
             doc.Save(pathFile);
             doc.Close();

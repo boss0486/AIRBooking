@@ -26,6 +26,8 @@ namespace WebCore.Entities
         public string AgentName { get; set; }
         public string TicketingID { get; set; }
         public string TicketingName { get; set; } 
+        public string TicketingPhone { get; set; } 
+        public string TicketingEmail { get; set; } 
         public double AgentFee { get; set; }
         public double AgentPrice { get; set; }
         public string ProviderName { get; set; }

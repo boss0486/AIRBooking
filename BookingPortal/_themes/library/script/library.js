@@ -356,10 +356,24 @@ class Cookies {
     }
 }
 class Confirm {
-    static Delete(id, funcY) {
+    static Text_Delete = 1;
+    static Text_ExportTicket = 2;
+    static Text_VoidTicket = 3;
+
+    static ConfirmYN(id, funcY, title_enum = 0) {
+        var _content = "...";
+        if (title_enum == 1)
+            _content = "Thực hiện xóa dữ liệu, bạn có chắc chắn muốn xóa dữ liệu này không ?";
+        // 
+        if (title_enum == 2)
+            _content = "Thực hiện xuất vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
+        //
+        if (title_enum == 3)
+            _content = "Thực hiện hủy vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
+        // 
         $.confirm({
             title: 'Xác nhận!',
-            content: 'Dữ liệu sẽ không thể khôi phục lại sau khi thực hiện chức năng, bạn có chắc chắn muốn xóa dữ liệu này không?',
+            content: _content,
             buttons: {
                 confirm: function () {
                     Notifization.Success("Thực hiện hành động");

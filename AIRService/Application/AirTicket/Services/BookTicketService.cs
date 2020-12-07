@@ -211,6 +211,8 @@ namespace WebCore.Services
                         AgentPrice = 0, // 
                         TicketingID = bookAgentInfo.TiketingID,
                         TicketingName = bookAgentInfo.TiketingName,
+                        TicketingPhone = bookAgentInfo.TiketingPhone,
+                        TicketingEmail = bookAgentInfo.TiketingEmail,
                         ProviderName = agtProviderName,
                         ProviderFee = agtProviderFee
                     }, transaction: _transaction);

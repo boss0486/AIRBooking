@@ -117,6 +117,21 @@ namespace WebApplication.Management.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Action/GetFaseBasic")]
+        public ActionResult GetFaseBasic(BookOrderIDModel model)
+        {
+            try
+            {
+                BookOrderService service = new BookOrderService();
+                return Notifization.Data(MessageText.Success, service.ViewBookFareBasic(model.ID));
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
 
     }
 }

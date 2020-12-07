@@ -380,7 +380,7 @@ var FlightController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, FlightController.Delete, null, null);
+        Confirm.DeleteYN(id, FlightController.Delete, null, null);
     }
 };
 //
