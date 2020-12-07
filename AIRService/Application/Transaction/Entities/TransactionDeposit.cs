@@ -45,10 +45,10 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string TransactionCode { get; set; }
-        public string BankSent { get; set; }
-        public string BankIDSent { get; set; }
-        public string BankReceived { get; set; }
-        public string BankIDReceived { get; set; }
+        public string BankSentID { get; set; }
+        public string BankSentNumber { get; set; }
+        public string BankReceivedID { get; set; }
+        public string BankReceivedNumber { get; set; }
         public string ReceivedDate { get; set; }
         public double Amount { get; set; }
         public int Enabled { get; set; }

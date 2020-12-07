@@ -184,16 +184,16 @@ namespace WebCore.Services
 
         }
 
-        public Logged LoggedModel(string loginId)
+        public Logged LoggedModel(string loginId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
-                using (var service = new UserService())
+                using (var service = new UserService(dbConnection))
                 {
                     string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE LoginID = @LoginID 
                                          UNION 
                                          SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE LoginID = @LoginID ";
-                    var logged = service.Query<Logged>(sqlQuerry, new { LoginID = loginId }).FirstOrDefault();
+                    var logged = service.Query<Logged>(sqlQuerry, new { LoginID = loginId }, transaction: dbTransaction).FirstOrDefault();
                     if (logged == null)
                         return null;
                     //
@@ -223,7 +223,7 @@ namespace WebCore.Services
             string strToken = Helper.Security.HashToken.Create(user.LoginID);
             //  send otp for reset password 
             string subject = "XÁC THỰC OTP";
-            int status = Helper.Email.MailService.SendOTP_ForGotPasswordAsync(strEmail, subject, strOTP).Result;
+            int status = Helper.Email.MailService.SendOTP_ForGotPassword(strEmail, subject, strOTP);
             if (status != 1)
                 return Notifization.Error("Không thể gửi mã OTP tới email của bạn");
             //
@@ -843,7 +843,7 @@ namespace WebCore.Services
                 }
             }
         }
-        public bool IsClientLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public bool IsClientInApplication(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {

@@ -155,7 +155,7 @@ namespace WebCore.Services
                         string crrUserId = Helper.Current.UserLogin.IdentifierID;
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         UserService userService = new UserService(_connection);
-                        if (!userService.IsClientLogged(crrUserId, _connection, _transaction))
+                        if (!userService.IsClientInApplication(crrUserId, _connection, _transaction))
                         {
                             if (clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer && clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Supplier)
                                 return Notifization.Invalid("Loại người dùng không hợp lệ");

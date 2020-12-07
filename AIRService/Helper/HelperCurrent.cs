@@ -87,7 +87,7 @@ namespace Helper.Current
             {
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 var service = new UserService();
-                return service.IsClientLogged(userId);
+                return service.IsClientInApplication(userId);
             }
             catch (Exception)
             {

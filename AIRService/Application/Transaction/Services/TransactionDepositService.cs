@@ -112,21 +112,23 @@ namespace WebCore.Services
                     if (model == null)
                         return Notifization.Invalid();
                     //
-                    string senderId = model.SenderID;
+                    string senderId = string.Empty;
                     string receivedId = model.ReceivedID;
+                    //
                     string title = "Giao dịch nạp tiền";
                     string summary = model.Summary;
                     string transactionId = model.TransactionCode;
-                    string bankSent = model.BankSent;
-                    string bankIDSent = model.BankIDSent;
-                    string bankReceived = model.BankReceived;
-                    string bankIDReceived = model.BankIDReceived;
+                    string bankSentId = model.BankSentID;
+                    string bankSentNumber = model.BankSentNumber;
+                    string bankReceivedId = model.BankReceivedID;
+                    string bankReceivedNumber = model.BankReceivedNumber;
                     string receivedDate = model.ReceivedDate;
                     double amount = model.Amount;
                     int enabled = model.Enabled;
                     string languageId = Helper.Current.UserLogin.LanguageID;
                     string userId = Helper.Current.UserLogin.IdentifierID;
                     //
+
                     if (string.IsNullOrWhiteSpace(receivedId))
                         return Notifization.Invalid("Vui lòng chọn khách hàng");
                     receivedId = receivedId.Trim();
@@ -138,26 +140,26 @@ namespace WebCore.Services
                     if (!Validate.TestText(transactionId))
                         return Notifization.Invalid("Mã giao dịch không hợp lệ");
                     // bank name send
-                    if (string.IsNullOrWhiteSpace(bankSent))
+                    if (string.IsNullOrWhiteSpace(bankSentId))
                         return Notifization.Invalid("Vui lòng chọn ngân hàng chuyển");
-                    bankSent = bankSent.Trim();
+                    bankSentId = bankSentId.Trim();
 
-                    if (string.IsNullOrWhiteSpace(bankIDSent))
+                    if (string.IsNullOrWhiteSpace(bankSentNumber))
                         return Notifization.Invalid("Không được để trống số TK Ng.Hàng chuyển");
-                    bankIDSent = bankIDSent.Trim();
+                    bankSentNumber = bankSentNumber.Trim();
 
-                    if (!Validate.TestText(bankIDSent))
+                    if (!Validate.TestText(bankSentNumber))
                         return Notifization.Invalid("Số TK Ng.Hàng chuyển không hợp lệ");
                     // bank name receive
-                    if (string.IsNullOrWhiteSpace(bankReceived))
+                    if (string.IsNullOrWhiteSpace(bankReceivedId))
                         return Notifization.Invalid("Vui lòng chọn ngân hàng nhận");
-                    bankReceived = bankReceived.Trim();
+                    bankReceivedId = bankReceivedId.Trim();
 
-                    if (string.IsNullOrWhiteSpace(bankIDReceived))
+                    if (string.IsNullOrWhiteSpace(bankReceivedNumber))
                         return Notifization.Invalid("Không được để trống số TK Ng.Hàng nhận");
-                    bankIDReceived = bankIDReceived.Trim();
+                    bankReceivedNumber = bankReceivedNumber.Trim();
 
-                    if (!Validate.TestText(bankIDReceived))
+                    if (!Validate.TestText(bankReceivedNumber))
                         return Notifization.Invalid("Số TK Ng.Hàng nhận không hợp lệ");
                     // amount
                     if (amount <= 0)
@@ -182,31 +184,35 @@ namespace WebCore.Services
                             return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
                     }
                     // check bank
-                    string bankNameSent = BankService.GetBankNameByID(bankSent);
-                    if (string.IsNullOrWhiteSpace(bankNameSent))
-                        return Notifization.Invalid("Lỗi không xác định được ngân hàng gửi");
+                    BankService bankService = new BankService(_connection);
+                    Bank bankSend = bankService.GetAlls(m => m.ID == bankSentId).FirstOrDefault();
+                    if (bankSend == null)
+                        return Notifization.Invalid("Ngân hàng gửi không hợp lệ");
                     //
-                    string bankNameReceived = BankService.GetBankNameByID(bankReceived);
-                    if (string.IsNullOrWhiteSpace(bankNameSent))
-                        return Notifization.Invalid("Lỗi không xác định được ngân hàng nhận");
+                    Bank bankReceive = bankService.GetAlls(m => m.ID == bankReceivedId).FirstOrDefault();
+                    if (bankReceive == null)
+                        return Notifization.Invalid("Ngân hàng nhận không hợp lệ");
                     //
-                    if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
-                    {
-                        senderId = ClientLoginService.GetClientIDByUserID(userId);
-                    }
-                    else
-                    {
-                        //SupplierService supplierService = new SupplierService();
-                        //Supplier supplier = supplierService.GetAlls(m => m.ID == senderId).FirstOrDefault();
-                        //if (supplier == null)
-                    }
-                    //
-                    return Notifization.Invalid("Nhà cung cấp không xác định");
-                    AirAgentService customerService = new AirAgentService();
-                    AirAgent customer = customerService.GetAlls(m => m.ID == receivedId).FirstOrDefault();
-                    if (customer == null)
+
+                    // 
+                    AirAgentService airAgentService = new AirAgentService(_connection);
+                    AirAgent airAgent = airAgentService.GetAlls(m => m.ID == receivedId, transaction: _transaction).FirstOrDefault();
+                    if (airAgent == null)
                         return Notifization.Invalid("Khách hàng không xác định");
                     // 
+                    UserService userService = new UserService(_connection);
+                    Logged looged = userService.LoggedModel(userId, _connection, _transaction);
+                    if (looged.IsCMSUser || looged.IsAdministrator)
+                    {
+                        senderId = airAgent.ParentID;
+                    }
+                    if (userService.IsClientInApplication(userId))
+                    {
+                        ClientLoginService clientLoginService = new ClientLoginService(_connection);
+                        ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == userId).FirstOrDefault();
+                        senderId = clientLogin.ClientID;
+                    }
+
                     TransactionDepositService transactionDeposit = new TransactionDepositService(_connection);
                     var transactionDepositId = transactionDeposit.Create<string>(new TransactionDeposit()
                     {
@@ -218,9 +224,9 @@ namespace WebCore.Services
                         ReceivedID = receivedId,
                         TransactionCode = transactionId,
                         BankSent = bankNameSent,
-                        BankIDSent = bankIDSent,
+                        BankIDSent = bankSentNumber,
                         BankReceived = bankNameReceived,
-                        BankIDReceived = bankIDReceived,
+                        BankIDReceived = bankReceivedNumber,
                         ReceivedDate = TimeFormat.FormatToServerDate(receivedDate),
                         Amount = amount,
                         Status = (int)TransactionEnum.TransactionType.IN,
@@ -316,10 +322,10 @@ namespace WebCore.Services
                     string title = model.Title;
                     string summary = model.Summary;
                     string transactionId = model.TransactionCode;
-                    string bankSent = model.BankSent;
-                    string bankIDSent = model.BankIDSent;
-                    string bankReceived = model.BankReceived;
-                    string bankIDReceived = model.BankIDReceived;
+                    string bankSent = model.BankSentID;
+                    string bankIDSent = model.BankSentNumber;
+                    string bankReceived = model.BankReceivedID;
+                    string bankIDReceived = model.BankReceivedNumber;
                     string receivedDate = model.ReceivedDate;
                     double amount = model.Amount;
                     int enabled = model.Enabled;
