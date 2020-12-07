@@ -11,20 +11,29 @@
 }
 
 @model  WebCore.Entities.ViewBookOrder
+
 @{
+
+    double agentFee = 0;
+    double agentPrice = 0;
+    double providerFee = 0;
     List<BookTicket> bookTickets = new List<BookTicket>();
     List<BookPassenger> bookPassengers = new List<BookPassenger>();
     List<BookPrice> bookPrices = new List<BookPrice>();
     List<BookTax> bookTaxes = new List<BookTax>();
     List<BookCustomer> bookContacts = new List<BookCustomer>();
+    BookAgent bookAgent = new BookAgent();
+
     if (Model != null)
     {
+        //
         bookTickets = Model.BookTickets;
         bookPassengers = Model.BookPassengers;
         bookPrices = Model.BookPrices;
         bookTaxes = Model.BookTaxs;
         bookContacts = Model.BookCustomers;
         double ticketTotal = 0;
+        bookAgent = Model.BookAgent;
     }
 }
 <section>
@@ -149,13 +158,13 @@
                             <th class="text-center" style="width:160px;">@item</th>
                         }
                     }
-                    <th class="text-right">Tổng / chặng</th>
+                    <th class="text-right">Tổng</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th class="text-center" valign="middle" rowspan="3">Giá</th>
-                    <th>Chiều đi</th>
+                    <td class="text-center" valign="middle" rowspan="3">Giá</td>
+                    <td>Chiều đi</td>
                     @{
                         double totalRow1 = 0;
                         if (passengerTypeList.Count > 0)
@@ -226,16 +235,16 @@
                             <tr>
                                 @if (cntTax == 0)
                                 {
-                                    <th class="text-center" valign="middle" rowspan="@Convert.ToInt32(taxCodes.Count() + 1)">Tax</th>
+                                    <td class="text-center" valign="middle" rowspan="@Convert.ToInt32(taxCodes.Count() + 1)">Tax</td>
                                 }
-                                <th>@itemTax</th>
+                                <td>@itemTax</td>
                                 @{
                                     if (passengerTypeList.Count > 0)
                                     {
                                         foreach (var item in passengerTypeList)
                                         {
                                             double taxAmount = bookTaxes.Where(m => m.PassengerType == item && m.TaxCode == itemTax).Sum(m => m.Amount);
-                                            <th class="text-right">@Helper.Page.Library.FormatCurrency(taxAmount) đ</th>
+                                            <td class="text-right">@Helper.Page.Library.FormatCurrency(taxAmount) đ</td>
                                         }
                                     }
                                     else
@@ -270,9 +279,28 @@
                     }
                     <td class="text-right bg-success">@Helper.Page.Library.FormatCurrency(taxTotalAll) đ</td>
                 </tr>
+                @{
+
+                    if (bookAgent != null)
+                    {
+                        providerFee = bookAgent.ProviderFee;
+                        agentFee = bookAgent.AgentFee;
+                    }
+                }
                 <tr>
-                    <td class="">Tổng</td>
-                    <td class="text-right bg-danger" colspan="@Convert.ToInt32(passengerTypeList.Count() + 2)">@Helper.Page.Library.FormatCurrency(priceTotalAll + taxTotalAll) đ</td>
+                    <td rowspan="2">Phí dịch vụ</td>
+                    <td class="">Phí xuất vé</td>
+                    <td colspan="@passengerTypeList.Count()" class="text-right">@Helper.Page.Library.FormatCurrency(providerFee) đ</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Đại lý</td>
+                    <td colspan="@passengerTypeList.Count()" class="text-right">@Helper.Page.Library.FormatCurrency(agentFee) đ</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Tổng</td>
+                    <td class="text-right bg-danger" colspan="@Convert.ToInt32(passengerTypeList.Count() + 2)">@Helper.Page.Library.FormatCurrency(priceTotalAll + taxTotalAll + providerFee + agentFee) đ</td>
                 </tr>
             </tbody>
         </table>
@@ -280,29 +308,67 @@
     <div class="form-group mgb-10">
         <label><i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin liên hệ:</label>
     </div>
-    <div class="container-fluid mgb-20" style="background: #a2d5d0;">
-        <div class="row">
-            @if (bookContacts.Count > 0)
-            {
-                foreach (var item in bookContacts)
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="tbcol-id">#</th>
+                    <th>Họ và Tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ e-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (bookContacts.Count > 0)
                 {
-                    <div class="col-md-5">
-                        <div class="form-group mgt-20">
-                            <br />
-                            <label class="form-label">Họ tên: @item.Name</label>
-                        </div>
-                        <div class="form-group ">
-                            <label class="form-label">Số đ.thoại: @item.Phone</label>
-                        </div>
-                        <div class="form-group ">
-                            <label class="form-label">Địa chỉ e-mail:  @item.Email</label>
-                        </div>
-                    </div>
+                    foreach (var item in bookContacts)
+                    {
+                        <tr>
+                            <th class="tbcol-id">01</th>
+                            <td>@item.Name</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Email</td>
+                        </tr>
+
+                    }
                 }
-            }
-            <div class="col-md-12"> <hr /></div>
-        </div>
+
+            </tbody>
+        </table>
     </div>
+
+    <div class="form-group mgb-10">
+        <label><i class="fa fa-info-circle" aria-hidden="true"></i> Nhân viên xuất vé:</label>
+    </div>
+    <div class="container-fluid m-b-20" style="background: #a2d5d0;">
+        @if (bookAgent != null)
+        {
+            <div class="col-md-5">
+                <div class="form-group mgt-20">
+                    <br />
+                    <label class="form-label">Họ tên: @bookAgent.TicketingName</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Số đ.thoại: @bookAgent.TicketingPhone</label>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Địa chỉ e-mail:  @bookAgent.TicketingEmail</label>
+                </div>
+            </div>
+        }
+    </div>
+    @{
+        if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+        {
+            <div class="form-group text-right att-data-list">
+                <a href="@Helper.Page.Navigate.PathDataList()">
+                    @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        }
+    }
 </section>
+
 
 
