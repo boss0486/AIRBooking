@@ -16,6 +16,7 @@ using Helper.Page;
 using System.Drawing;
 using System.IO.Compression;
 using SelectPdf;
+using OfficeOpenXml;
 
 namespace Helper.File
 {
@@ -303,7 +304,7 @@ namespace Helper.File
             //} 
             string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
             var converter = new HtmlToPdf();
-            var doc = converter.ConvertUrl(domainName + inUrlPage);
+            PdfDocument doc = converter.ConvertUrl(domainName + inUrlPage);
             string fileFolderPath = HttpContext.Current.Server.MapPath(outFolder);
             string pathFile = fileFolderPath + fileName + ".pdf";
             if (System.IO.File.Exists(pathFile))
@@ -315,20 +316,20 @@ namespace Helper.File
             doc.Close();
             return pathFile;
         }
-        public static string AttachmentExls(string fileName, string inUrlPage, string outFolder = "~/Files/Export/")
-        { 
-            string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
- 
+        public static string AttachmentExls(string _fileName, ExcelPackage excel, string outFolder = "~/Files/Export/")
+        {
             string fileFolderPath = HttpContext.Current.Server.MapPath(outFolder);
-            string pathFile = fileFolderPath + fileName + ".pdf";
+            string fileName = _fileName + ".xlsx";
+            string pathFile = fileFolderPath + fileName;
             if (System.IO.File.Exists(pathFile))
             {
                 System.IO.File.Delete(pathFile);
             }
             //
-            doc.Save(pathFile);
-            doc.Close();
-            return pathFile;
+            FileInfo excelFile = new FileInfo(pathFile);
+            excel.SaveAs(excelFile);
+            excel.Dispose();
+            return outFolder + fileName;
         }
 
         private List<string> GetImagesInHTMLString(string htmlString)

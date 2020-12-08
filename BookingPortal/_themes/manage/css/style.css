@@ -10072,6 +10072,66 @@ button, .btn {
         background-color: #fff;
     }
 
+.btn-teal {
+    color: #fff;
+    background-color: #009688;
+    border-color: #028a7d;
+}
+
+    .btn-teal:focus,
+    .btn-teal.focus {
+        color: #fff;
+        background-color: #009688;
+        border-color: #038a7d;
+    }
+
+    .btn-teal:hover {
+        color: #fff;
+        background-color: #009688;
+        border-color: #038a7d;
+    }
+
+    .btn-teal:active,
+    .btn-teal.active,
+    .open > .dropdown-toggle.btn-teal {
+        color: #fff;
+        background-image: none;
+        background-color: #009688;
+        border-color: #038a7d;
+    }
+
+        .btn-teal:active:hover,
+        .btn-teal.active:hover,
+        .open > .dropdown-toggle.btn-teal:hover,
+        .btn-teal:active:focus,
+        .btn-teal.active:focus,
+        .open > .dropdown-toggle.btn-teal:focus,
+        .btn-teal:active.focus,
+        .btn-teal.active.focus,
+        .open > .dropdown-toggle.btn-teal.focus {
+            color: #fff;
+            background-color: #009688;
+            border-color: #038a7d;
+        }
+
+    .btn-teal.disabled:hover,
+    .btn-teal[disabled]:hover,
+    fieldset[disabled] .btn-teal:hover,
+    .btn-teal.disabled:focus,
+    .btn-teal[disabled]:focus,
+    fieldset[disabled] .btn-teal:focus,
+    .btn-teal.disabled.focus,
+    .btn-teal[disabled].focus,
+    fieldset[disabled] .btn-teal.focus {
+        background-color: #009688;
+        border-color: #038a7d;
+    }
+
+.btn-teal .badge {
+    color: #337ab7;
+    background-color: #fff;
+}
+ 
 
 .w-50 {
     width: 50%;

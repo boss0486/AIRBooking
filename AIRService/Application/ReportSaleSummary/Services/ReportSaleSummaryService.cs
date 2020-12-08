@@ -184,74 +184,104 @@ namespace WebCore.Services
 
             List<AirPassengerReult> dtList = DepartureData(model);
             if (dtList.Count == 0)
-                return Notifization.NotFound(MessageText.NotFound);
+                return null;
             //     
-            ExcelPackage excel = new ExcelPackage();
-            string excelName = "BÁO CÁO NGÀY BAY";
-            var workSheet = excel.Workbook.Worksheets.Add(Helper.Page.Library.FormatToUni2NONE(excelName).ToUpper());
-            workSheet.TabColor = System.Drawing.Color.Black;
-            workSheet.DefaultRowHeight = 12;
-            //Header of table   
-            workSheet.Cells["A1:G1"].Merge = true;
-            workSheet.Row(1).Height = 20;
-            workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            workSheet.Row(1).Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            workSheet.Row(1).Style.Font.Bold = true;
-            workSheet.Row(1).Style.Font.Color.SetColor(Color.White);
-            workSheet.Row(1).Style.Fill.PatternType = ExcelFillStyle.Solid;
-            workSheet.Row(1).Style.Fill.BackgroundColor.SetColor(Color.Green);
-            //title of table  
-            workSheet.Cells[2, 1].Value = "#";
-            workSheet.Cells[2, 2].Value = "PnrLocator/FareBasis";
-            workSheet.Cells[2, 3].Value = "Tên hành khách";
-            workSheet.Cells[2, 4].Value = "Document Number";
-            workSheet.Cells[2, 5].Value = "T.Gian khởi hành";
-            workSheet.Cells[2, 6].Value = "B-Status";
-            workSheet.Cells[2, 7].Value = "C-Status";
-            workSheet.Cells[2, 7].Style.Font.Color.SetColor(Color.White);
-            //Body of table  
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                string fileName = "DANH SÁCH BÁO CÁO NGÀY BAY";
+                string alias = Helper.Page.Library.FormatToUni2NONE(fileName);
+                var workSheet = excelPackage.Workbook.Worksheets.Add(Helper.Page.Library.FormatToUni2NONE(fileName).ToUpper());
+                workSheet.TabColor = System.Drawing.Color.Black;
+                workSheet.DefaultRowHeight = 12;
+                //Header of table   
+                workSheet.Cells["A1:H1"].Merge = true;
+                workSheet.Cells["A1:H1"].Value = fileName;
+                workSheet.Cells["A1:H1"].Style.Font.Name = "Arial Narrow";
+                workSheet.Cells["A1:H1"].Style.Font.Size = 16;
+                workSheet.Row(1).Height = 35; 
+                workSheet.Cells["A1:H1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                workSheet.Cells["A1:H1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                workSheet.Cells["A1:H1"].Style.Font.Bold = true;
+                workSheet.Cells["A1:H1"].Style.Font.Color.SetColor(Color.White);
+                workSheet.Cells["A1:H1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["A1:H1"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                workSheet.Cells["A1:H1"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                workSheet.Cells["A1:H1"].Style.Border.Bottom.Color.SetColor(Color.Gray);
+                //title of table  
+                workSheet.Row(2).Height = 20;
+                workSheet.Cells[2, 1].Value = "#";
+                workSheet.Cells[2, 2].Value = "PnrLocator";
+                workSheet.Cells[2, 3].Value = "FareBasis";
+                workSheet.Cells[2, 4].Value = "Tên hành khách";
+                workSheet.Cells[2, 5].Value = "Document Number";
+                workSheet.Cells[2, 6].Value = "T.Gian khởi hành";
+                workSheet.Cells[2, 7].Value = "B-Status";
+                workSheet.Cells[2, 8].Value = "C-Status";
+                //Body of table  
+                workSheet.Cells["A2:H2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["A2:H2"].Style.Fill.BackgroundColor.SetColor(Color.Teal); 
+                workSheet.Cells["A2:H2"].Style.Font.Color.SetColor(Color.White);
+                workSheet.Cells["A2:H2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-            int recordIndex = 3;
-            int cnt = 1;
-            foreach (var item in dtList)
-            {
-                workSheet.Cells[recordIndex, 1].Value = cnt;
-                workSheet.Cells[recordIndex, 2].Value = item.PnrLocator + "/" + item.FareBasis;
-                workSheet.Cells[recordIndex, 3].Value = item.PassengerName;
-                workSheet.Cells[recordIndex, 4].Value = item.DocumentNumber;
-                workSheet.Cells[recordIndex, 5].Value = item.StartDateTime;
-                workSheet.Cells[recordIndex, 6].Value = item.BookingStatus;
-                workSheet.Cells[recordIndex, 7].Value = item.CurrentStatus;
-                // attribute
-                workSheet.Cells[recordIndex, 6].Style.SetTextVertical();
-                workSheet.Cells[recordIndex, 6].Style.Font.Color.SetColor(Color.White);
-                workSheet.Cells[recordIndex, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                workSheet.Cells[recordIndex, 6].Style.Fill.BackgroundColor.SetColor(Color.SpringGreen);
-                workSheet.Cells[recordIndex, 7].Style.SetTextVertical();
-                workSheet.Cells[recordIndex, 7].Style.Font.Color.SetColor(Color.White);
-                workSheet.Cells[recordIndex, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                workSheet.Cells[recordIndex, 7].Style.Fill.BackgroundColor.SetColor(Color.Azure);
-                recordIndex++;
-                cnt++;
+                int recordIndex = 3;
+                int cnt = 1;
+                foreach (var item in dtList)
+                {
+                    workSheet.Cells[recordIndex, 1].Value = cnt;
+                    workSheet.Cells[recordIndex, 2].Value = item.PnrLocator;
+                    workSheet.Cells[recordIndex, 3].Value = item.FareBasis;
+                    workSheet.Cells[recordIndex, 4].Value = item.PassengerName;
+                    workSheet.Cells[recordIndex, 5].Value = item.DocumentNumber;
+                    workSheet.Cells[recordIndex, 6].Value = item.StartDateTime;
+                    workSheet.Cells[recordIndex, 7].Value = item.BookingStatus;
+                    workSheet.Cells[recordIndex, 8].Value = item.CurrentStatus;
+                    ////// attribute
+                    ////workSheet.Cells[recordIndex, 7].Style.Font.Color.SetColor(Color.White);
+                    ////workSheet.Cells[recordIndex, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    ////workSheet.Cells[recordIndex, 7].Style.Fill.BackgroundColor.SetColor(Color.SpringGreen);
+                    //////
+                    ////workSheet.Cells[recordIndex, 8].Style.Font.Color.SetColor(Color.White);
+                    ////workSheet.Cells[recordIndex, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    ////workSheet.Cells[recordIndex, 8].Style.Fill.BackgroundColor.SetColor(Color.Azure);
+
+                    //workSheet.Cells[recordIndex, 8].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                    recordIndex++;
+                    cnt++;
+                }
+                workSheet.Column(1).AutoFit();
+                workSheet.Column(2).AutoFit();
+                workSheet.Column(3).AutoFit();
+                workSheet.Column(4).AutoFit();
+                workSheet.Column(5).AutoFit();
+                workSheet.Column(6).AutoFit();
+                workSheet.Column(7).AutoFit();
+                workSheet.Column(8).AutoFit();
+                // create file
+                string outFolder = "/Files/Export/VnaReport/";
+                string pathFile = Helper.File.AttachmentFile.AttachmentExls(alias, excelPackage, outFolder);
+                if (string.IsNullOrWhiteSpace(pathFile))
+                    return null;
+                //
+
+                return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
+                //return fileContentResult;
+
+                //return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
+                //using (var memoryStream = new MemoryStream())
+                //{
+                //    HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                //    HttpContext.Current.Response.AddHeader("content-disposition", "attachment; filename=" + excelName + ".xlsx");
+                //    excel.SaveAs(memoryStream);
+                //    memoryStream.WriteTo(HttpContext.Current.Response.OutputStream);
+                //    HttpContext.Current.Response.Flush();
+                //    HttpContext.Current.Response.End();
+
+
+                //}
+
+                //
             }
-            workSheet.Column(1).AutoFit();
-            workSheet.Column(2).AutoFit();
-            workSheet.Column(3).AutoFit();
-            workSheet.Column(4).AutoFit();
-            workSheet.Column(5).AutoFit();
-            workSheet.Column(6).AutoFit();
-            workSheet.Column(7).AutoFit();
-            using (var memoryStream = new MemoryStream())
-            {
-                HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                HttpContext.Current.Response.AddHeader("content-disposition", "attachment; filename=" + excelName + ".xlsx");
-                excel.SaveAs(memoryStream);
-                memoryStream.WriteTo(HttpContext.Current.Response.OutputStream);
-                HttpContext.Current.Response.Flush();
-                HttpContext.Current.Response.End();
-                return Notifization.Data(MessageText.Success, memoryStream);
-            }
-            //
         }
 
 

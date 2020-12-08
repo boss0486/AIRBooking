@@ -36,6 +36,7 @@ var VNAReportController = {
                     if (result !== null) {
                         if (result.status === 200) {
                             //
+                            HelperModel.Download(result.path);
                         }
                         else {
                             //Notifization.Error(result.message);

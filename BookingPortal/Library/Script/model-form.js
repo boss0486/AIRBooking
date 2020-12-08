@@ -164,6 +164,21 @@ class HelperModel {
         else
             return parseInt(_val);
     }
+    // *********************************************************************************
+    static Download(path) {
+        var a = document.createElement("a");
+        var fileNameIndex = path.lastIndexOf("/") + 1;
+        var filename = path.substr(fileNameIndex);
+        a.href = path;
+        a.setAttribute("taget", "_blank");
+        a.setAttribute("download", filename);
+        a.setAttribute("_download", "true");
+        //
+        document.body.appendChild(a);
+        a.click();
+        $("a[_download='true']").remove();
+        return;
+    }
 
 }
 
