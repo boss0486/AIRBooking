@@ -19,6 +19,7 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string Title { get; set; }
+        public string CodeID { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
 
@@ -28,6 +29,7 @@ namespace WebCore.Entities
     public class BankCreateModel
     {
         public string Title { get; set; }
+        public string CodeID { get; set; }
         public string Summary { get; set; }
         public int Enabled { get; set; }
 
@@ -44,14 +46,16 @@ namespace WebCore.Entities
     {
 
         public string ID { get; set; }
+        public string CodeID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string Alias { get; set; } 
+        public string Alias { get; set; }
     }
     public class BankOption
     {
         public string ID { get; set; }
         public string Title { get; set; }
+        public string CodeID { get; set; }
         public string Alias { get; set; }
     }
 }

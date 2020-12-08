@@ -12,6 +12,45 @@ var VNAReportController = {
         $('#btnEprSearch').off('click').on('click', function () {
             VNAReportController.EprSearch(1);
         });
+        $('#btnEprExport').off('click').on('click', function () {
+            var ddlTimeExpress = $('#ddlTimeExpress').val();
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            var currentStatus = $('#ddlCurrStatus').val();
+            var model = {
+                Query: $('#txtQuery').val(),
+                Page: 0,
+                TimeExpress: parseInt(ddlTimeExpress),
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                CurrentStatus: currentStatus,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            //
+            AjaxFrom.POST({
+                url: URLC + '/EprExport',
+                data: model,
+                success: function (result) {
+                    $('tbody#TblData').html('');
+                    $('#Pagination').html('');
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            //
+                        }
+                        else {
+                            //Notifization.Error(result.message);
+                            console.log('::' + result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NOTSERVICES);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
     },
     DataList: function (page) {
         //
@@ -140,7 +179,7 @@ var VNAReportController = {
                             var reportDate = item.ReportDate;
 
                             var _bookingStatus = EPRReportModel.BookingStatus(bookingStatus);
-                            var _currentStatus = EPRReportModel.CurrStatus(currentStatus); 
+                            var _currentStatus = EPRReportModel.CurrStatus(currentStatus);
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                                     <tr>
@@ -174,6 +213,7 @@ var VNAReportController = {
             }
         });
     },
+
 };
 VNAReportController.init();
 
@@ -183,28 +223,28 @@ class EPRReportModel {
         var result = '';
         switch (_status) {
             case "OK":
-                result = `<a class="btn btn-success btn-sm" style='width:100%;'>OK</a>`;
+                result = `<span class="btn btn-success btn-sm" style='width:100%;'>OK</span>`;
                 break;
             case "CKIN":
-                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>CKIN</a>`;
+                result = `<span class="btn btn-warning btn-sm" style='width:100%;'>CKIN</span>`;
                 break;
             case "LFTD":
-                result = `<a class="btn btn-green btn-sm" style='width:100%;'>LFTD</a>`;
+                result = `<span class="btn btn-green btn-sm" style='width:100%;'>LFTD</span>`;
                 break;
             case "USED":
-                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>USED</a>`;
+                result = `<span class="btn btn-primary btn-sm" style='width:100%;'>USED</span>`;
                 break;
             case "NOGO":
-                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>NOGO</a>`;
+                result = `<span class="btn btn-secondary btn-sm" style='width:100%;'>NOGO</span>`;
                 break;
             case "VOID":
-                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>VOID</a>`;
+                result = `<span class="btn btn-danger btn-sm" style='width:100%;'>VOID</span>`;
                 break;
             case "RFND":
-                result = `<a class="btn btn-info btn-sm" style='width:100%;'>RFND</a>`;
+                result = `<span class="btn btn-info btn-sm" style='width:100%;'>RFND</span>`;
                 break;
             case "EXCH":
-                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>EXCH</a>`;
+                result = `<span class="btn btn-orange btn-sm" style='width:100%;'>EXCH</span>`;
                 break;
             default:
                 result = "";
@@ -212,41 +252,41 @@ class EPRReportModel {
         }
         return result;
     }
-       
+
     static BookingStatus(_status) {
         var result = '';
         switch (_status) {
             case "OK":
-                result = `<a class="btn btn-success btn-sm" style='width:100%;'>OK</a>`;
+                result = `<span class="btn btn-success btn-sm" style='width:100%;'>OK</span>`;
                 break;
             case "HK":
-                result = `<a class="btn btn-warning btn-sm" style='width:100%;'>HK</a>`;
+                result = `<span class="btn btn-warning btn-sm" style='width:100%;'>HK</span>`;
                 break;
             case "KL":
-                result = `<a class="btn btn-green btn-sm" style='width:100%;'>KL</a>`;
+                result = `<span class="btn btn-green btn-sm" style='width:100%;'>KL</span>`;
                 break;
             case "UC":
-                result = `<a class="btn btn-primary btn-sm" style='width:100%;'>UC</a>`;
+                result = `<span class="btn btn-primary btn-sm" style='width:100%;'>UC</span>`;
                 break;
             case "GN":
-                result = `<a class="btn btn-secondary btn-sm" style='width:100%;'>GN</a>`;
+                result = `<span class="btn btn-secondary btn-sm" style='width:100%;'>GN</span>`;
                 break;
             case "JL":
-                result = `<a class="btn btn-danger btn-sm" style='width:100%;'>JL</a>`;
+                result = `<span class="btn btn-danger btn-sm" style='width:100%;'>JL</span>`;
                 break;
             case "HL":
-                result = `<a class="btn btn-info btn-sm" style='width:100%;'>HL</a>`;
+                result = `<span class="btn btn-info btn-sm" style='width:100%;'>HL</span>`;
                 break;
             case "WK":
-                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>WK</a>`;
+                result = `<span class="btn btn-orange btn-sm" style='width:100%;'>WK</span>`;
             case "SC":
-                result = `<a class="btn btn-orange btn-sm" style='width:100%;'>SC</a>`;
+                result = `<span class="btn btn-orange btn-sm" style='width:100%;'>SC</span>`;
                 break;
             case "NS":
-                result = `<a class="btn btn-default btn-sm" style='width:100%;'>NS</a>`;
+                result = `<span class="btn btn-default btn-sm" style='width:100%;'>NS</span>`;
                 break;
             case "RQ":
-                result = `<a class="btn btn-default btn-sm" style='width:100%;'>RQ</a>`;
+                result = `<span class="btn btn-default btn-sm" style='width:100%;'>RQ</span>`;
                 break;
             default:
                 result = _status;

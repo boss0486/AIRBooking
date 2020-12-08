@@ -30,7 +30,7 @@ namespace WebCore.Services
         public WalletUserMessageModel ChangeBalanceForUser(WalletUserChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             var service = new WalletUserService(dbConnection);
             string customerId = model.ClientID.ToLower();
@@ -64,15 +64,15 @@ namespace WebCore.Services
         public WalletUserMessageModel GetBalanceByUserID(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             if (string.IsNullOrWhiteSpace(userId))
                 return new WalletUserMessageModel { Status = false, Balance = 0, Message = "Người dùng không xác định" };
             //
             userId = userId.ToLower();
             double amount = 0;
-            var service = new WalletUserService(dbConnection);
-            var balance = service.GetAlls(m => m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
+            WalletUserService walletUserService = new WalletUserService(dbConnection);
+            var balance = walletUserService.GetAlls(m => m.UserID == userId, transaction: dbTransaction).FirstOrDefault();
             if (balance != null)
                 amount = balance.Amount;
             //

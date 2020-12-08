@@ -184,21 +184,23 @@ namespace WebCore.Services
 
         }
 
-        public Logged LoggedModel(string loginId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public Logged LoggedModel(IDbConnection dbConnection = null, IDbTransaction transaction = null)
         {
             try
             {
-                using (var service = new UserService(dbConnection))
-                {
-                    string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE LoginID = @LoginID 
-                                         UNION 
-                                         SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE LoginID = @LoginID ";
-                    var logged = service.Query<Logged>(sqlQuerry, new { LoginID = loginId }, transaction: dbTransaction).FirstOrDefault();
-                    if (logged == null)
-                        return null;
-                    //
-                    return logged;
-                }
+                if (dbConnection == null)
+                    dbConnection = _connection;
+                //
+                string loginId = Helper.Current.UserLogin.LoginID;
+                string sqlQuerry = @"SELECT TOP 1 *,IsCMSUser = 1 FROM View_CMSUserLogin WHERE LoginID = @LoginID 
+                                     UNION 
+                                     SELECT TOP 1 *,IsCMSUser = 0 FROM View_UserLogin WHERE LoginID = @LoginID ";
+                var logged = dbConnection.Query<Logged>(sqlQuerry, new { LoginID = loginId }, transaction: transaction).FirstOrDefault();
+                if (logged == null)
+                    return null;
+                //
+                return logged;
+
             }
             catch (Exception)
             {
@@ -843,19 +845,19 @@ namespace WebCore.Services
                 }
             }
         }
-        public bool IsClientInApplication(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public bool IsClientInApplication(string userId, IDbConnection dbConnection = null, IDbTransaction transaction = null)
         {
             try
             {
                 if (dbConnection == null)
-                    dbConnection = DbConnect.Connection.CMS;
+                    dbConnection = _connection;
                 //
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))
                     return false;
                 //
                 userId = userId.ToLower();
-                var client = service.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
+                var client = service.GetAlls(m => m.UserID == userId, transaction).FirstOrDefault();
                 if (client == null)
                     return false;
                 //
@@ -871,7 +873,7 @@ namespace WebCore.Services
             try
             {
                 if (dbConnection == null)
-                    dbConnection = DbConnect.Connection.CMS;
+                    dbConnection = _connection;
                 //
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))
@@ -895,7 +897,7 @@ namespace WebCore.Services
             try
             {
                 if (dbConnection == null)
-                    dbConnection = this._connection;
+                    dbConnection = _connection;
                 //
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))
@@ -921,7 +923,7 @@ namespace WebCore.Services
             try
             {
                 if (dbConnection == null)
-                    dbConnection = this._connection;
+                    dbConnection = _connection;
                 //
                 var service = new ClientLoginService(dbConnection);
                 if (string.IsNullOrWhiteSpace(userId))

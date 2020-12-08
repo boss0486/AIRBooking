@@ -11,16 +11,16 @@
     }
 }
 <div class="row">
-    <div class="col-md-8"> 
+    <div class="col-md-8">
         <div class="row">
             <div class="col-md-7">
                 <div class="form-group ">
-                    <label class="form-label">Khách hàng:</label>
-                    <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
+                    <label class="form-label">Đại lý:</label>
+                    <select id="ddlAgentReceived" name="ddlAgentReceived" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
                         @Html.Raw(AirAgentService.DropdownListAgentSub("", supplierId))
                     </select>
-                    <span id="lblCustomer" class="message msg-box"></span>
+                    <span id="lbldAgentReceived" class="message msg-box"></span>
                 </div>
             </div>
             <div class="col-md-5">
@@ -39,18 +39,18 @@
             <div class="col-md-7">
                 <div class="form-group">
                     <label class="form-label">Ngân hàng chuyển:</label>
-                    <select id="ddlBankSent" name="ddlBankSent" class="form-control show-tick" data-live-search="true">
+                    <select id="ddlBankSend" name="ddlBankSend" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
                         @Html.Raw(BankService.DropdownList(""))
                     </select>
-                    <span id="lblBankSent" class="message msg-box"></span>
+                    <span id="lblBankSend" class="message msg-box"></span>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="form-group">
                     <label class="form-label">Số TK chuyển:</label>
-                    <input id="txtBankIDSent" name="txtBankIDSent" maxlength="20" type="text" class="form-control" />
-                    <span id="lblBankIDSent" class="message msg-box"></span>
+                    <input id="txtBankSendNumber" name="txtBankSendNumber" maxlength="20" type="text" class="form-control" />
+                    <span id="lblBankSendNumber" class="message msg-box"></span>
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label class="form-label">Số TK nhận:</label>
-                    <input id="txtBankIDReceived" name="txtBankIDReceived" maxlength="20" type="text" class="form-control" />
-                    <span id="lblBankIDReceived" class="message msg-box"></span>
+                    <input id="txtBankReceivedNumber" name="txtBankReceivedNumber" maxlength="20" type="text" class="form-control" />
+                    <span id="lblBankReceivedNumber" class="message msg-box"></span>
                 </div>
             </div>
         </div>

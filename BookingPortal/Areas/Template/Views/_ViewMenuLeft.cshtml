@@ -1,65 +1,60 @@
 ﻿@using WebCore.Entities;
 @{
-    try
-    {
-        WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
-        List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemUserLogin();
-        List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
-        string metaController = Helper.Page.MetaSEO.ControllerText;
-        <div class="menu">
-            <ul class="list" id="LeftMenu">
-                @{
-                    if (menuItems.Count > 0)
-                    {
-                        foreach (var item in menuItems)
-                        {
-                            MenuItemLayout menuItemLayout = menuItemService.GetMenuItemUserLogin().Where(m => m.ParentID == item.ID).FirstOrDefault();
-                            if (menuItemLayout == null && string.IsNullOrWhiteSpace(item.MvcController))
-                            {
-                                continue;
-                            }
-                            //
-                            string _cls = "";
-                            string _path = item.PathAction;
-                            string parentId = item.ID;
-                            string toggled = string.Empty;
-                            //
-                            MenuItemSubLayout menuItemSubLayout = menuItemService.SubMenuItemData(item.ID, menuItemModelResults, metaController);
-                            if (menuItemSubLayout == null)
-                            {
-                                continue;
-                            }
 
-                            string _innerText = menuItemSubLayout.InnerText;
-                            bool _isToggled = menuItemSubLayout.IsToggled;
-                            //
-                            if (!string.IsNullOrWhiteSpace(_innerText))
-                            {
-                                _cls = "menu-toggle";
-                                _path = "javascript:void(0);";
-                            }
-                            //
-                            string controller = item.MvcController;
-                            if ((!string.IsNullOrWhiteSpace(metaController) && !string.IsNullOrWhiteSpace(controller) && metaController.ToLower() == controller.ToLower()) || (_isToggled))
-                            {
-                                toggled = "toggled";
-                            }
-                            //
-                            if (!string.IsNullOrWhiteSpace(_path))
-                            {
-                                _path = _path.ToLower();
-                            }
-                            <li class="">
-                                <a href="@_path" class="@_cls  @toggled"><span><i class="@item.IconFont" aria-hidden="true"></i>&nbsp; @item.Title </span></a> @Html.Raw(_innerText)
-                            </li>
+    WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
+    List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemUserLogin();
+    List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
+    string metaController = Helper.Page.MetaSEO.ControllerText;
+    <div class="menu">
+        <ul class="list" id="LeftMenu">
+            @{
+                if (menuItems.Count > 0)
+                {
+                    foreach (var item in menuItems)
+                    {
+                        MenuItemLayout menuItemLayout = menuItemService.GetMenuItemUserLogin().Where(m => m.ParentID == item.ID).FirstOrDefault();
+                        if (menuItemLayout == null && string.IsNullOrWhiteSpace(item.MvcController))
+                        {
+                            continue;
                         }
+                        //
+                        string _cls = "";
+                        string _path = item.PathAction;
+                        string parentId = item.ID;
+                        string toggled = string.Empty;
+                        //
+                        MenuItemSubLayout menuItemSubLayout = menuItemService.SubMenuItemData(item.ID, menuItemModelResults, metaController);
+                        if (menuItemSubLayout == null)
+                        {
+                            continue;
+                        }
+
+                        string _innerText = menuItemSubLayout.InnerText;
+                        bool _isToggled = menuItemSubLayout.IsToggled;
+                        //
+                        if (!string.IsNullOrWhiteSpace(_innerText))
+                        {
+                            _cls = "menu-toggle";
+                            _path = "javascript:void(0);";
+                        }
+                        //
+                        string controller = item.MvcController;
+                        if ((!string.IsNullOrWhiteSpace(metaController) && !string.IsNullOrWhiteSpace(controller) && metaController.ToLower() == controller.ToLower()) || (_isToggled))
+                        {
+                            toggled = "toggled";
+                        }
+                        //
+                        if (!string.IsNullOrWhiteSpace(_path))
+                        {
+                            _path = _path.ToLower();
+                        }
+                        <li class="">
+                            <a href="@_path" class="@_cls  @toggled"><span><i class="@item.IconFont" aria-hidden="true"></i>&nbsp; @item.Title </span></a> @Html.Raw(_innerText)
+                        </li>
                     }
                 }
-            </ul>
-        </div>
-    }
-    catch  
-    {
-        @Helper.MessageText.NotFound
-    }
+            }
+        </ul>
+    </div>
+
 }

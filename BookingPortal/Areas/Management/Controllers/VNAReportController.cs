@@ -86,6 +86,21 @@ namespace WebApplication.Management.Controllers
                 return Notifization.Error("Error: " + ex);
             }
         }
+
+        [HttpPost]
+        [Route("Action/EprExport")]
+        public ActionResult EPRExport(ReportEprSearchModel model)
+        {
+            try
+            {
+                ReportSaleSummaryService service = new ReportSaleSummaryService();
+                return service.EPRExportDeparture(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.Error("Error: " + ex);
+            }
+        }
         // API save for daily report *******************************************************************************************************
     }
 }

@@ -30,7 +30,7 @@ namespace WebCore.Services
         public WalletClientMessageModel ExecuteChangeInvestmentBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             var service = new WalletClientService(dbConnection);
             string clientId = model.ClientID.ToLower();
@@ -52,7 +52,7 @@ namespace WebCore.Services
         public WalletClientMessageModel ExecuteChangeSpendingLimitBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             var service = new WalletClientService(dbConnection);
             string clientId = model.ClientID.ToLower();
@@ -74,7 +74,7 @@ namespace WebCore.Services
         public WalletClientMessageModel ExecuteChangeSpendingBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             var service = new WalletClientService(dbConnection);
             string customerId = model.ClientID.ToLower();
@@ -97,7 +97,7 @@ namespace WebCore.Services
         public WalletClientMessageModel ExecuteChangeDepositBalance(WalletClientChangeModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (dbConnection == null)
-                dbConnection = DbConnect.Connection.CMS;
+                dbConnection = _connection;
             //
             var service = new WalletClientService(dbConnection);
             string customerId = model.ClientID.ToLower();

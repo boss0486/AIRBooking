@@ -267,7 +267,7 @@ namespace Helper.File
             return zipPath;
         }
 
-        public static string AttachmentPDF(string fileName, string inUrlPage, string outFolder)
+        public static string AttachmentPDF(string fileName, string inUrlPage, string outFolder = "~/Files/Export/")
         {
             //// Validate the Model is correct and contains valid data
             //// Generate your report output based on the model parameters
@@ -304,7 +304,22 @@ namespace Helper.File
             string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
             var converter = new HtmlToPdf();
             var doc = converter.ConvertUrl(domainName + inUrlPage);
-            string fileFolderPath = HttpContext.Current.Server.MapPath(@"~/Files/Export/Order/");
+            string fileFolderPath = HttpContext.Current.Server.MapPath(outFolder);
+            string pathFile = fileFolderPath + fileName + ".pdf";
+            if (System.IO.File.Exists(pathFile))
+            {
+                System.IO.File.Delete(pathFile);
+            }
+            //
+            doc.Save(pathFile);
+            doc.Close();
+            return pathFile;
+        }
+        public static string AttachmentExls(string fileName, string inUrlPage, string outFolder = "~/Files/Export/")
+        { 
+            string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+ 
+            string fileFolderPath = HttpContext.Current.Server.MapPath(outFolder);
             string pathFile = fileFolderPath + fileName + ".pdf";
             if (System.IO.File.Exists(pathFile))
             {

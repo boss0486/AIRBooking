@@ -1002,6 +1002,7 @@
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
     <Folder Include="Files\Export\Order\" />
+    <Folder Include="Files\Export\VnaReport\" />
     <Folder Include="Files\Upload\news\" />
     <Folder Include="Files\Upload\product\" />
     <Folder Include="Team\" />

@@ -13,7 +13,7 @@ namespace WebCore.Model.Entities
     {
         public WEBModel()
         {
-            LanguageID = Helper.Page.Default.LanguageID;
+            LanguageID = Helper.Language.LanguagePage.GetLanguageCode;
             SiteID = "";
             Enabled = 0;
             CreatedBy = Helper.Current.UserLogin.IdentifierID;

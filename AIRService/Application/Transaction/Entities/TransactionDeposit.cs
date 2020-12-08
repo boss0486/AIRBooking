@@ -24,26 +24,28 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string SenderUserID { get; set; }
-        public string SenderID { get; set; }
-        public string ReceivedID { get; set; }
+        public string UserSentID { get; set; }
+        public string AgentSentID { get; set; }
+        public string AgentSentCode { get; set; }
+        public string AgentReceivedID { get; set; }
+        public string AgentReceivedCode { get; set; }
         public string TransactionCode { get; set; }
-        public string BankSent { get; set; }
-        public string BankIDSent { get; set; }
-        public string BankReceived { get; set; }
-        public string BankIDReceived { get; set; }
+        public string BankSentID { get; set; }
+        public string BankSentCode { get; set; }
+        public string BankSentNumber { get; set; }
+        public string BankReceivedID { get; set; }
+        public string BankReceivedCode { get; set; }
+        public string BankReceivedNumber { get; set; }
         public DateTime ReceivedDate { get; set; }
         public double Amount { get; set; }
-        public int Status { get; set; }
+        public int TransactionStatus { get; set; }
     }
 
     // model
     public class TransactionDepositCreateModel
     {
-        public string SenderID { get; set; }
-        public string ReceivedID { get; set; }
-        public string Title { get; set; }
         public string Summary { get; set; }
+        public string AgentReceivedID { get; set; }
         public string TransactionCode { get; set; }
         public string BankSentID { get; set; }
         public string BankSentNumber { get; set; }
@@ -62,31 +64,28 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+
+
     public class TransactionDepositResult : WEBModelResult
     {
 
         public string ID { get; set; }
-        public string SenderID { get; set; }
-        private string _receivedId;
-        public string ReceivedID
-        {
-            get
-            {
-                return AirAgentService.GetCustomerCodeID(_receivedId);
-            }
-            set
-            {
-                _receivedId = value;
-            }
-        }
+
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
+        public string UserSentID { get; set; }
+        public string AgentSentID { get; set; }
+        public string AgentSentCode { get; set; }
+        public string AgentReceivedID { get; set; }
+        public string AgentReceivedCode { get; set; }
         public string TransactionCode { get; set; }
-        public string BankSent { get; set; }
-        public string BankIDSent { get; set; }
-        public string BankReceived { get; set; }
-        public string BankIDReceived { get; set; }
+        public string BankSentID { get; set; }
+        public string BankSentCode { get; set; }
+        public string BankSentNumber { get; set; }
+        public string BankReceivedID { get; set; }
+        public string BankReceivedCode { get; set; }
+        public string BankReceivedNumber { get; set; }
         private string _receivedDate;
         public string ReceivedDate
         {
@@ -100,8 +99,11 @@ namespace WebCore.Entities
             }
         }
         public double Amount { get; set; }
-        public int Status { get; set; }
+        public int TransactionStatus { get; set; }
     }
+
+
+
     public class TransactionDepositOption
     {
         public string ID { get; set; }

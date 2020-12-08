@@ -21,7 +21,7 @@ namespace Helper.Email
     public class MailService
     {
 
-        public static async Task<int> SendOTP_ForGotPasswordAsync(string _to, string _subject, string otpCode)
+        public static int SendOTP_ForGotPassword(string _to, string _subject, string otpCode)
         {
             string _content = "";
             _content += "<div class='mail-content' style='margin: 0;font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif; color:#122e39'>";

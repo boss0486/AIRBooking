@@ -58,7 +58,7 @@ namespace Helper.Current
                 {
                     string loggedId = UserLogin.LoginID;
                     var service = new UserService();
-                    var logged = service.LoggedModel(loggedId);
+                    var logged = service.LoggedModel();
                     if (logged == null)
                         return false;
                     //
@@ -74,10 +74,12 @@ namespace Helper.Current
         {
             get
             {
-                string loggedId = UserLogin.LoginID;
                 var service = new UserService();
-                var logged = service.LoggedModel(loggedId);
-                return logged.IsAdministrator;
+                var logged = service.LoggedModel();
+                if (logged != null)
+                    return logged.IsAdministrator;
+                //
+                return false;
             }
         }
 
@@ -154,10 +156,9 @@ namespace Helper.Current
             get
             {
                 try
-                {
-                    string loggedId = UserLogin.LoginID;
+                { 
                     var service = new UserService();
-                    var logged = service.LoggedModel(loggedId);
+                    var logged = service.LoggedModel();
                     return logged;
                 }
                 catch (Exception)

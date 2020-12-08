@@ -7,38 +7,38 @@ var _TransactionDepositController = {
     },
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
-            var flg = true;  
-            var ddlSupplier = $('#ddlSupplier').val();
-            var ddlCustomer = $('#ddlCustomer').val();
+            var flg = true;
+            //var ddlSupplier = $('#ddlSupplier').val();
+            var ddlAgentReceived = $('#ddlAgentReceived').val();
             var txtTransactionCode = $('#txtTransactionCode').val();
-            var ddlBankSent = $('#ddlBankSent').val();
-            var txtBankIDSent = $('#txtBankIDSent').val();
+            var ddlBankSend = $('#ddlBankSend').val();
+            var txtBankSendNumber = $('#txtBankSendNumber').val();
             var ddlBankReceived = $('#ddlBankReceived').val();
-            var txtBankIDReceived = $('#txtBankIDReceived').val();
+            var txtBankReceivedNumber = $('#txtBankReceivedNumber').val();
             var txtAmount = $('#txtAmount').val();
             var txtReceivedDate = $('#txtReceivedDate').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
             //
-            if (HelperModel.AccessInApplication != RoleEnum.IsAdminSupplierLogged && HelperModel.AccessInApplication != RoleEnum.IsSupplierLogged) {
-                //
-                if (ddlSupplier === "") {
-                    $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
-                    flg = false;
-                }
-                else {
-                    $('#lblSupplier').html('');
-                }
-                //
-            }
+            //if (HelperModel.AccessInApplication != RoleEnum.IsAdminSupplierLogged && HelperModel.AccessInApplication != RoleEnum.IsSupplierLogged) {
+            //    //
+            //    if (ddlSupplier === "") {
+            //        $('#lblSupplier').html('Vui lòng chọn nhà cung cấp');
+            //        flg = false;
+            //    }
+            //    else {
+            //        $('#lblSupplier').html('');
+            //    }
+            //    //
+            //}
             //
 
-            if (ddlCustomer === "") {
-                $('#lblCustomer').html('Vui lòng chọn khách hàng');
+            if (ddlAgentReceived === "") {
+                $('#lblAgentReceived').html('Vui lòng chọn đại lý');
                 flg = false;
             }
             else {
-                $('#lblCustomer').html('');
+                $('#lblAgentReceived').html('');
             }
             // transaction id
             if (txtTransactionCode === '') {
@@ -54,24 +54,24 @@ var _TransactionDepositController = {
             }
 
             // bank sent
-            if (ddlBankSent === "") {
-                $('#lblBankSent').html('Vui lòng chọn ngân hàng chuyển');
+            if (ddlBankSend === "") {
+                $('#lblBankSend').html('Vui lòng chọn ngân hàng chuyển');
                 flg = false;
             }
             else {
-                $('#lblBankSent').html('');
+                $('#lblBankSend').html('');
             }
             //
-            if (txtBankIDSent === '') {
-                $('#lblBankIDSent').html('Không được để trống số TK Ng.Hàng chuyển');
+            if (txtBankSendNumber === '') {
+                $('#lblBankSendNumber').html('Không được để trống số TK Ng.Hàng chuyển');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtBankIDSent)) {
-                $('#lblBankIDSent').html('Số TK Ng.Hàng chuyển không hợp lệ');
+            else if (!FormatKeyword.test(txtBankSendNumber)) {
+                $('#lblBankSendNumber').html('Số TK Ng.Hàng chuyển không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblBankIDSent').html('');
+                $('#lblBankSendNumber').html('');
             }
 
             // bank receive
@@ -83,16 +83,16 @@ var _TransactionDepositController = {
                 $('#lblBankReceived').html('');
             }
             //
-            if (txtBankIDReceived === '') {
-                $('#lblBankIDReceived').html('Không được để trống số T.Khoản Ng.Hàng nhận');
+            if (txtBankReceivedNumber === '') {
+                $('#lblBankReceivedNumber').html('Không được để trống số T.Khoản Ng.Hàng nhận');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtBankIDReceived)) {
-                $('#lblBankIDReceived').html('Số TK Ng.Hàng nhân không hợp lệ');
+            else if (!FormatKeyword.test(txtBankReceivedNumber)) {
+                $('#lblBankReceivedNumber').html('Số TK Ng.Hàng nhân không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblBankIDReceived').html('');
+                $('#lblBankReceivedNumber').html('');
             }
 
             //
@@ -173,23 +173,23 @@ var _TransactionDepositController = {
         });
         $('#btnUpdate').off('click').on('click', function () {
             var flg = true;
-            var ddlCustomer = $('#ddlCustomer').val();
+            var ddlAgentReceived = $('#ddlAgentReceived').val();
             var txtTransactionCode = $('#txtTransactionCode').val();
-            var ddlBankSent = $('#ddlBankSent').val();
-            var txtBankIDSent = $('#txtBankIDSent').val();
+            var ddlBankSend = $('#ddlBankSend').val();
+            var txtBankSendNumber = $('#txtBankSendNumber').val();
             var ddlBankReceived = $('#ddlBankReceived').val();
-            var txtBankIDReceived = $('#txtBankIDReceived').val();
+            var txtBankReceivedNumber = $('#txtBankReceivedNumber').val();
             var txtAmount = $('#txtAmount').val();
             var txtReceivedDate = $('#txtReceivedDate').val();
             var txtTitle = $('#txtTitle').val();
             var txtSummary = $('#txtSummary').val();
             //
-            if (ddlCustomer === "") {
-                $('#lblCustomer').html('Vui lòng chọn khách hàng');
+            if (ddlAgentReceived === "") {
+                $('#lblAgentReceived').html('Vui lòng chọn đại lý');
                 flg = false;
             }
             else {
-                $('#lblCustomer').html('');
+                $('#lblAgentReceived').html('');
             }
             // transaction id
             if (txtTransactionCode === '') {
@@ -205,24 +205,24 @@ var _TransactionDepositController = {
             }
 
             // bank sent
-            if (ddlBankSent === "") {
-                $('#lblBankSent').html('Vui lòng chọn ngân hàng chuyển');
+            if (ddlBankSend === "") {
+                $('#lblBankSend').html('Vui lòng chọn ngân hàng chuyển');
                 flg = false;
             }
             else {
-                $('#lblBankSent').html('');
+                $('#lblBankSend').html('');
             }
             //
-            if (txtBankIDSent === '') {
-                $('#lblBankIDSent').html('Không được để trống số TK Ng.Hàng chuyển');
+            if (txtBankSendNumber === '') {
+                $('#lblBankSendNumber').html('Không được để trống số TK Ng.Hàng chuyển');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtBankIDSent)) {
-                $('#lblBankIDSent').html('Số TK Ng.Hàng chuyển không hợp lệ');
+            else if (!FormatKeyword.test(txtBankSendNumber)) {
+                $('#lblBankSendNumber').html('Số TK Ng.Hàng chuyển không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblBankIDSent').html('');
+                $('#lblBankSendNumber').html('');
             }
 
             // bank receive
@@ -234,16 +234,16 @@ var _TransactionDepositController = {
                 $('#lblBankReceived').html('');
             }
             //
-            if (txtBankIDReceived === '') {
-                $('#lblBankIDReceived').html('Không được để trống số TK Ng.Hàng nhận');
+            if (txtBankReceivedNumber === '') {
+                $('#lblBankReceivedNumber').html('Không được để trống số TK Ng.Hàng nhận');
                 flg = false;
             }
-            else if (!FormatKeyword.test(txtBankIDReceived)) {
-                $('#lblBankIDReceived').html('Số TK Ng.Hàng nhận không hợp lệ');
+            else if (!FormatKeyword.test(txtBankReceivedNumber)) {
+                $('#lblBankReceivedNumber').html('Số TK Ng.Hàng nhận không hợp lệ');
                 flg = false;
             }
             else {
-                $('#lblBankIDReceived').html('');
+                $('#lblBankReceivedNumber').html('');
             }
 
             //
@@ -251,7 +251,7 @@ var _TransactionDepositController = {
                 $('#lblAmount').html('Không được để trống số tiền nạp');
                 flg = false;
             }
-            else { 
+            else {
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
                 if (!FormatCurrency.test(txtAmount)) {
                     $('#lblAmount').html('Số tiền nạp không hợp lệ');
@@ -362,7 +362,10 @@ var _TransactionDepositController = {
                             var receivedId = item.ReceivedID;
                             var transactionCode = item.TransactionCode;
                             var amount = item.Amount;
-                            var createdBy = item.CreatedBy; 
+                            var sentCode = item.AgentSentCode;
+                            var receivedCode = item.AgentReceivedCode;
+                            var amount = item.Amount;
+                            var createdBy = item.CreatedBy;
 
                             //  role
                             var action = HelperModel.RolePermission(result.role, "_TransactionDepositController", id);
@@ -371,8 +374,10 @@ var _TransactionDepositController = {
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${title}, MGD: ${transactionCode}</td>                                    
-                                 <td>${receivedId}</td>                                    
+                                 <td>${title}</td>                                    
+                                 <td>${transactionCode}</td>                                    
+                                 <td>${sentCode}</td>                                    
+                                 <td>${receivedCode}</td>                                    
                                  <td class="text-right"> ${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
                                  <td>${createdBy}</td>                                    
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
@@ -401,35 +406,35 @@ var _TransactionDepositController = {
         });
     },
     Create: function () {
-        var ddlSupplier = $('#ddlSupplier').val();
-        if (ddlSupplier == undefined || ddlSupplier == null) {
-            ddlSupplier = '';
-        }
-        var ddlCustomer = $('#ddlCustomer').val();
+        //var ddlSupplier = $('#ddlSupplier').val();
+        //if (ddlSupplier == undefined || ddlSupplier == null) {
+        //    ddlSupplier = '';
+        //}
+        var ddlAgentReceived = $('#ddlAgentReceived').val();
         var txtTransactionCode = $('#txtTransactionCode').val();
-        var ddlBankSent = $('#ddlBankSent').val();
-        var txtBankIDSent = $('#txtBankIDSent').val();
+        var ddlBankSend = $('#ddlBankSend').val();
+        var txtBankSendNumber = $('#txtBankSendNumber').val();
         var ddlBankReceived = $('#ddlBankReceived').val();
-        var txtBankIDReceived = $('#txtBankIDReceived').val();
-        var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());  
+        var txtBankReceivedNumber = $('#txtBankReceivedNumber').val();
+        var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());
         var txtReceivedDate = $('#txtReceivedDate').val();
         var txtTitle = $('#txtTitle').val();
-        var txtSummary = $('#txtSummary').val(); 
+        var txtSummary = $('#txtSummary').val();
         //
         var model = {
-            SenderID: ddlSupplier,
-            ReceivedID: ddlCustomer,
-            TransactionCode: txtTransactionCode,
-            BankSent: ddlBankSent,
-            BankIDSent: txtBankIDSent,
-            BankReceived: ddlBankReceived,
-            BankReceived: ddlBankReceived,
-            BankIDReceived: txtBankIDReceived,
-            Amount: txtAmount,
-            ReceivedDate: txtReceivedDate,
-            Title: txtTitle,
+
             Summary: txtSummary,
-            Enabled: 1
+            //AgentSentID: ddl,
+            //AgentSentCode:,
+            AgentReceivedID: ddlAgentReceived,
+            TransactionCode: txtTransactionCode,
+            BankSentID: ddlBankSend,
+            BankSentNumber: txtBankSendNumber,
+            BankReceivedID: ddlBankReceived ,
+            BankReceivedNumber: txtBankReceivedNumber,
+            ReceivedDate: txtReceivedDate,
+            Amount: txtAmount,
+            Enabled: 1,
         };
         AjaxFrom.POST({
             url: URLC + '/Create',
@@ -457,8 +462,8 @@ var _TransactionDepositController = {
     },
     GetCustomerBySupplierID: function (supplierId, _id, isChangeEvent) {
         var option = `<option value="">-Lựa chọn-</option>`;
-        $('#ddlCustomer').html(option);
-        $('#ddlCustomer').selectpicker('refresh');
+        $('#ddlAgentReceived').html(option);
+        $('#ddlAgentReceived').selectpicker('refresh');
         var model = {
             ID: supplierId
         };
@@ -483,11 +488,11 @@ var _TransactionDepositController = {
                             option += `<option value='${id}' data-codeid='${codeid}' ${attrSelect}>${item.Title}</option>`;
                         });
                         //
-                        $('#ddlCustomer').html(option);
+                        $('#ddlAgentReceived').html(option);
                         setTimeout(function () {
-                            $('#ddlCustomer').selectpicker('refresh');
+                            $('#ddlAgentReceived').selectpicker('refresh');
                             if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
-                                $('#ddlCustomer').change();
+                                $('#ddlAgentReceived').change();
                             }
                         }, 1000);
                         return;
@@ -507,7 +512,7 @@ var _TransactionDepositController = {
         });
     }
 };
- 
+
 _TransactionDepositController.init();
 // supplier
 $(document).on("change", "#ddlSupplier", function () {
@@ -526,13 +531,13 @@ $(document).on("change", "#ddlSupplier", function () {
 });
 
 // customer
-$(document).on("change", "#ddlCustomer", function () {
-    var ddlCustomer = $(this).val();
-    if (ddlCustomer === "") {
-        $('#lblCustomer').html('Vui lòng chọn khách hàng');
+$(document).on("change", "#ddlAgentReceived", function () {
+    var ddlAgentReceived = $(this).val();
+    if (ddlAgentReceived === "") {
+        $('#lblAgentReceived').html('Vui lòng chọn đại lý');
     }
     else {
-        $('#lblCustomer').html('');
+        $('#lblAgentReceived').html('');
     }
 });
 $(document).on("keyup", "#txtAmount", function () {
@@ -583,26 +588,26 @@ $(document).on('keyup', '#txtTransactionCode', function () {
     }
 });
 // 
-$(document).on("change", "#ddlBankSent", function () {
-    var ddlBankSent = $(this).val();
-    if (ddlBankSent === "") {
-        $('#lblBankSent').html('Vui lòng chọn ngân hàng chuyển');
+$(document).on("change", "#ddlBankSend", function () {
+    var ddlBankSend = $(this).val();
+    if (ddlBankSend === "") {
+        $('#lblBankSend').html('Vui lòng chọn ngân hàng chuyển');
     }
     else {
-        $('#lblBankSent').html('');
+        $('#lblBankSend').html('');
     }
 });
 
-$(document).on('keyup', '#txtBankIDSent', function () {
-    var txtBankIDSent = $(this).val();
-    if (txtBankIDSent === '') {
-        $('#lblBankIDSent').html('Không được để trống số TK Ng.Hàng chuyển');
+$(document).on('keyup', '#txtBankSendNumber', function () {
+    var txtBankSendNumber = $(this).val();
+    if (txtBankSendNumber === '') {
+        $('#lblBankSendNumber').html('Không được để trống số TK Ng.Hàng chuyển');
     }
-    else if (!FormatKeyword.test(txtBankIDSent)) {
-        $('#lblBankIDSent').html('Số TK Ng.Hàng chuyển không hợp lệ');
+    else if (!FormatKeyword.test(txtBankSendNumber)) {
+        $('#lblBankSendNumber').html('Số TK Ng.Hàng chuyển không hợp lệ');
     }
     else {
-        $('#lblBankIDSent').html('');
+        $('#lblBankSendNumber').html('');
     }
 });
 // bank receive
@@ -615,16 +620,16 @@ $(document).on("change", "#ddlBankReceived", function () {
         $('#lblBankReceived').html('');
     }
 });
-$(document).on('keyup', '#txtBankIDReceived', function () {
-    var txtBankIDReceived = $(this).val();
-    if (txtBankIDReceived === '') {
-        $('#lblBankIDReceived').html('Không được để trống số TK Ng.Hàng nhận');
+$(document).on('keyup', '#txtBankReceivedNumber', function () {
+    var txtBankReceivedNumber = $(this).val();
+    if (txtBankReceivedNumber === '') {
+        $('#lblBankReceivedNumber').html('Không được để trống số TK Ng.Hàng nhận');
     }
-    else if (!FormatKeyword.test(txtBankIDReceived)) {
-        $('#lblBankIDReceived').html('Số TK Ng.Hàng nhân không hợp lệ');
+    else if (!FormatKeyword.test(txtBankReceivedNumber)) {
+        $('#lblBankReceivedNumber').html('Số TK Ng.Hàng nhân không hợp lệ');
     }
     else {
-        $('#lblBankIDReceived').html('');
+        $('#lblBankReceivedNumber').html('');
     }
 });
 // title

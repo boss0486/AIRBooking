@@ -5586,11 +5586,9 @@ table, .table {
     }
 
         .table-bordered tbody tr td .btn {
-            padding: 0px 5px;
-            width: unset;
-            height: 19px;
-            display: inline;
-            line-height: 1;
+            height: 20px;
+            display: inline-block;
+            line-height: 0px;
             border: none;
         }
         .table-bordered tbody tr td .btn.min-default {
@@ -5626,7 +5624,7 @@ table, .table {
 .table-bordered > tbody > tr:hover > td, .table-bordered > tbody > tr:hover > th {
     background: #fbf6cf;
     /* background: #D9F1EC;*/
-}
+        }
 
 .table-bordered > tbody > tr.highlight > td, .table-bordered > tbody > tr.highlight > th {
     background: #fbf6cf;
