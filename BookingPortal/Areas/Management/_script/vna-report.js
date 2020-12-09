@@ -12,6 +12,44 @@ var VNAReportController = {
         $('#btnEprSearch').off('click').on('click', function () {
             VNAReportController.EprSearch(1);
         });
+        $('#btnDailyExport').off('click').on('click', function () {
+            var ddlTimeExpress = $('#ddlTimeExpress').val();
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            var currentStatus = $('#ddlCurrStatus').val();
+            var model = {
+                Query: $('#txtQuery').val(),
+                Page: 0,
+                TimeExpress: parseInt(ddlTimeExpress),
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                CurrentStatus: currentStatus,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            //
+            AjaxFrom.POST({
+                url: URLC + '/DailyExport',
+                data: model,
+                success: function (result) {
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            //
+                            HelperModel.Download(result.path);
+                        }
+                        else {
+                            //Notifization.Error(result.message);
+                            console.log('::' + result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NOTSERVICES);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
         $('#btnEprExport').off('click').on('click', function () {
             var ddlTimeExpress = $('#ddlTimeExpress').val();
             var txtStartDate = $('#txtStartDate').val();
@@ -31,8 +69,6 @@ var VNAReportController = {
                 url: URLC + '/EprExport',
                 data: model,
                 success: function (result) {
-                    $('tbody#TblData').html('');
-                    $('#Pagination').html('');
                     if (result !== null) {
                         if (result.status === 200) {
                             //
@@ -93,7 +129,7 @@ var VNAReportController = {
                             //  role
                             var action = HelperModel.RolePermission(result.role, "VNAReportController", id);
                             //
-                            var reportDate = item.ReportDate;
+                            var reportDate = item.ReportDateText;
 
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
@@ -170,14 +206,14 @@ var VNAReportController = {
                             //  role
                             var docId = item.DocumentNumber;
                             var reportSaleSummaryId = item.ReportSaleSummaryID;
-                            var startTime = item.StartDateTime;
+                            var startTime = item.StartDateTimeText;
                             var endTime = item.EndDateTime;
                             var bookingStatus = item.BookingStatus;
                             var currentStatus = item.CurrentStatus;
                             //
                             var action = HelperModel.RolePermission(result.role, "VNAReportController", reportSaleSummaryId);
                             //
-                            var reportDate = item.ReportDate;
+                            var reportDate = item.ReportDateText;
 
                             var _bookingStatus = EPRReportModel.BookingStatus(bookingStatus);
                             var _currentStatus = EPRReportModel.CurrStatus(currentStatus);
@@ -189,6 +225,7 @@ var VNAReportController = {
                                          <td class="tbcol-none">${item.PassengerName}</td>
                                          <td class="tbcol-none">${docId}</td>
                                          <td class="text-right">${startTime}</td>
+                                         <td class="text-right">${reportDate}</td>
                                          <td class="text-center">${_bookingStatus}</td>
                                          <td class="text-center">${_currentStatus}</td>
                                          <td class="tbcol-action">${action} </td>

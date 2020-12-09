@@ -17,8 +17,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -1002,8 +1001,6 @@
     <Folder Include="Areas\Management\Data\" />
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
-    <Folder Include="Files\Export\Order\" />
-    <Folder Include="Files\Export\VnaReport\" />
     <Folder Include="Files\Upload\news\" />
     <Folder Include="Files\Upload\product\" />
     <Folder Include="Team\" />
@@ -1241,6 +1238,10 @@
     <Content Include="Areas\Management\Views\AreaNational\DataList.cshtml" />
     <Content Include="Areas\Management\Views\AreaNational\Details.cshtml" />
     <Content Include="Areas\Management\Views\AreaNational\Update.cshtml" />
+    <Content Include="Files\Export\VnaReport\danh-sach-bao-cao-hang-ngay.xlsx" />
+    <Content Include="Files\Export\VnaReport\danh-sach-bao-cao-ngay-bay.xlsx" />
+    <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-dl01.pdf" />
+    <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-focus-travel-viet-nam.pdf" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

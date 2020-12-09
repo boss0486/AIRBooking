@@ -55,21 +55,10 @@ namespace WebCore.Entities
         public bool ExceptionItem { get; set; }
         public bool DecoupleItem { get; set; }
         public string TicketStatusCode { get; set; }
-        public bool IsElectronicTicket { get; set; }
-        private string _createdDate;
-        public string ReportDate
-        {
-            get
-            {
-                if (_createdDate == null)
-                    return "../" + "../" + "..";
-                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_createdDate), Helper.Language.LanguageCode.Vietnamese.ID);
-            }
-            set
-            {
-                _createdDate = value;
-            }
-        }
+        public bool IsElectronicTicket { get; set; } 
+        public DateTime ReportDate { get; set; }
+        [NotMapped]
+        public string ReportDateText => TimeFormat.FormatToViewDate(Convert.ToDateTime(ReportDate), Helper.Language.LanguageCode.Vietnamese.ID);
 
     }
 
@@ -87,12 +76,12 @@ namespace WebCore.Entities
         public ReportTicketingDocumentAmount TicketingDocumentAmount { get; set; }
         public List<ReportTicketingDocumentTaxes> TicketingDocumentTaxes { get; set; }
         public List<VNA_ReportSaleSummaryTicketingDocument> TicketingDocumentStatus { get; set; }
-     }
+    }
 
     //
-    public class ReportEprSearchModel: SearchModel
+    public class ReportEprSearchModel : SearchModel
     {
-        public string ReportDate { get; set; } 
+        public string ReportDate { get; set; }
         public string CurrentStatus { get; set; }
     }
     // search report
@@ -112,27 +101,15 @@ namespace WebCore.Entities
         public bool DecoupleItem { get; set; }
         public string TicketStatusCode { get; set; }
         public bool IsElectronicTicket { get; set; }
-        private string _reportDate;
-        public string ReportDate
-        {
-            get
-            {
-                if (_reportDate == null)
-                    return "../" + "../" + "..";
-                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_reportDate), Helper.Language.LanguageCode.Vietnamese.ID);
-            }
-            set
-            {
-                _reportDate = value;
-            }
-        }
+        public DateTime ReportDate { get; set; }
+        public string ReportDateText => TimeFormat.FormatToViewDate(Convert.ToDateTime(ReportDate), Helper.Language.LanguageCode.Vietnamese.ID);
         public string ReportSaleSummaryID { get; set; }
         public string MarketingFlightNumber { get; set; }
         public string ClassOfService { get; set; }
         public string FareBasis { get; set; }
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }
-        public string StartDateTime { get; set; }
+        public DateTime StartDateTime { get; set; }
         public string EndDateTime { get; set; }
         [NotMapped]
         public string StartDateTimeText
@@ -141,13 +118,14 @@ namespace WebCore.Entities
             {
                 return TimeFormat.FormatToViewDateTime(StartDateTime, Helper.Language.LanguageCode.Vietnamese.ID);
             }
-        } 
+        }
         [NotMapped]
-        public string EndDateTimeText {
+        public string EndDateTimeText
+        {
             get
             {
                 return TimeFormat.FormatToViewDateTime(EndDateTime, Helper.Language.LanguageCode.Vietnamese.ID);
-            } 
+            }
         }
         public string BookingStatus { get; set; }
         public string CurrentStatus { get; set; }
