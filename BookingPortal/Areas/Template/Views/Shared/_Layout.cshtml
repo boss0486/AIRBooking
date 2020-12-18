@@ -310,71 +310,8 @@
             <div class="row">
                 <div class="col-md-6 col-md-push-6">
                     <div class="row">
-                        @*@if (Helper.Current.UserLogin.IsCustomerLogged())
-                        {
-                            if (Helper.Current.UserLogin.IsAdminSupplierLogged())
-                            {
-                                double spendingLimitBalance = 0;
-                                double spendingBalance = 0;
-                                double depositBalance = 0;
-                                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                                WebCore.Entities.WalletClientMessageModel walletCustomerMessageModel = WalletService.GetBalanceByClientID(clientId);
-                                if (walletCustomerMessageModel.Status)
-                                {
-                                    spendingLimitBalance = walletCustomerMessageModel.SpendingLimitBalance;
-                                    spendingBalance = walletCustomerMessageModel.SpendingBalance;
-                                    depositBalance = walletCustomerMessageModel.DepositBalance;
-                                }
-                                <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">Nạp: @Helper.Page.Library.FormatCurrency(depositBalance) đ</a></li>
-                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(spendingBalance) đ</a></li>
-                                    <li><a class="bg-pink">HM: @Helper.Page.Library.FormatCurrency(spendingLimitBalance) đ</a></li>
-                                </ul>
-                            }
-                            else
-                            {
-                                double blance = 0;
-                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUser(userId);
-                                if (walletUserMessageModel.Status)
-                                {
-                                    blance = walletUserMessageModel.Balance;
-                                }
-                                <ul class="nav navbar-group">
-                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(blance)đ</a></li>
-                                </ul>
-                            }
-                        }
-                        else if (Helper.Current.UserLogin.IsSupplierLogged())
-                        {
-                            string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                            double investedBalance = 0;
-                            if (Helper.Current.UserLogin.IsAdminSupplierLogged())
-                            {
-                                WebCore.Entities.WalletClientMessageModel walletUserMessageModel = WalletService.GetBalanceByClientID(clientId);
-                                if (walletUserMessageModel.Status)
-                                {
-                                    investedBalance = walletUserMessageModel.InvestedAmount;
-                                }
-                                <ul class="nav navbar-group">
-                                    <li><a class="bg-teal">TK: Unlimited</a></li>
-                                    <li><a class="bg-pink">Đầu tư: @Helper.Page.Library.FormatCurrency(investedBalance) đ</a></li>
-                                </ul>
-                            }
-                            else
-                            {
-                                double blance = 0;
-                                WebCore.Entities.WalletUserMessageModel walletUserMessageModel = WalletService.GetBalanceOfUser(userId);
-                                if (walletUserMessageModel.Status)
-                                {
-                                    blance = walletUserMessageModel.Balance;
-                                }
-                                <ul class="nav navbar-group">
-                                    <li><a class="bg-green">TK: @Helper.Page.Library.FormatCurrency(blance) đ</a></li>
-                                </ul>
-                        }
-                            }*@
+                        &nbsp;
                     </div>
-                    <div>GMT: @Helper.Language.LanguagePage.GetLanguageCode  @TimeHelper.GetDateTime</div>
                 </div>
                 <div class="col-md-6 col-md-pull-6">
                     <div class="block-header">
@@ -383,7 +320,12 @@
                 </div>
             </div>
         </div>
-        <hr />
+        <div class="container-fluid form-group">
+            <span style="position: absolute;right: 10px;bottom: 15px;color: #2196F3;">
+                GMT: @Helper.Language.LanguagePage.GetLanguageCode @TimeHelper.GetDateTime
+            </span>
+            <hr />
+        </div>
 
         @try
         {
