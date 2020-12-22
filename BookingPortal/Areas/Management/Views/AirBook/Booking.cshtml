@@ -149,7 +149,7 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                @if (Helper.Current.UserLogin.IsClientInApplication() && !Helper.Current.UserLogin.IsAdminCustomerLogged())
+                @if (Helper.Current.UserLogin.IsClientInApplication() && !Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     ClientLoginService clientLoginService = new ClientLoginService();
                     string client = ClientLoginService.GetClientIDByUserID(userId);

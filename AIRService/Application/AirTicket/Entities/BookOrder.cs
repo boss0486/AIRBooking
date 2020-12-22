@@ -74,7 +74,7 @@ namespace WebCore.Entities
         public double AgentPrice { get; set; }
         public double Amount { get; set; }
         public double FareBasic { get; set; }
-        public double FareTax { get; set; } 
+        public double FareTax { get; set; }
         [NotMapped]
         public double TotalAmount
         {
@@ -94,19 +94,10 @@ namespace WebCore.Entities
         public string CompanyID { get; set; }
         public int Status { get; set; }
         private string _orderDate;
-        public string OrderDate
-        {
-            get
-            {
-                if (_orderDate == null)
-                    return "../" + "../" + "..";
-                return TimeFormat.FormatToViewDate(Convert.ToDateTime(_orderDate), LanguageCode.Vietnamese.ID);
-            }
-            set
-            {
-                _orderDate = value;
-            }
-        }
+        public DateTime OrderDate { get; set; }
+        [NotMapped]
+        public string OrderDateText => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
+
         private int ItineraryType { get; set; }
         public int MailStatus { get; set; }
         public int OrderStatus { get; set; }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WebCore.Model.Enum;
 
 namespace Helper.TimeData
 {
@@ -120,14 +121,20 @@ namespace Helper.TimeData
             return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
         }
         // date time
-        public static string FormatToViewDate(DateTime dtime, string languageCode)
+        public static string FormatToViewDate(DateTime dtime, string languageCode, int extent = (int)ModelEnum.DateExtension.DASH)
         {
             try
             {
-                if (languageCode == Language.LanguageCode.Vietnamese.ID)
-                    return dtime.ToString("dd-MM-yyyy");
+                string strExt = string.Empty;
+                if (extent == (int)ModelEnum.DateExtension.NONE || extent == (int) ModelEnum.DateExtension.DASH)
+                    strExt = "-";
                 else
-                    return dtime.ToString("yyyy-MM-dd");
+                    strExt = "/";
+                //
+                if (languageCode == Language.LanguageCode.Vietnamese.ID)
+                    return dtime.ToString("dd" + strExt + "MM" + strExt + "yyyy");
+                else
+                    return dtime.ToString("yyyy" + strExt + "MM" + strExt + "dd");
 
             }
             catch (Exception)
@@ -236,7 +243,7 @@ namespace Helper.TimeData
             {
                 dtime = dtime.Trim();
                 string[] arrDtime = dtime.Split(' ');
-                if (arrDtime.Length == 0) 
+                if (arrDtime.Length == 0)
                     return DateTime.Now;
                 //
                 string arrDate = arrDtime[0];

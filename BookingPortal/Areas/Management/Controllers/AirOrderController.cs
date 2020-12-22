@@ -131,7 +131,36 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
-
+        
+        
+        [HttpPost]
+        [Route("Action/BookingExport")]
+        public ActionResult BookingExport(BookOrderSerch model)
+        {
+            try
+            {
+                BookOrderService service = new BookOrderService();
+                return service.BookingExport(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.Error("Error: " + ex);
+            }
+        }
+        [HttpPost]
+        [Route("Action/OrderExport")]
+        public ActionResult OrderExport(BookOrderSerch model)
+        {
+            try
+            {
+                BookOrderService service = new BookOrderService();
+                return service.OrderExport(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.Error("Error: " + ex);
+            }
+        }
 
     }
 }

@@ -16,10 +16,17 @@ namespace WebCore.Model.Enum
         }
 
         public enum Enabled
-        {    
+        {
             NONE = -1,
             ENABLED = 1,
-            DISABLE = 0            
+            DISABLE = 0
+        }
+
+        public enum DateExtension
+        {
+            NONE = 0,
+            DASH = 1,
+            SLASH = 2
         }
     }
 }

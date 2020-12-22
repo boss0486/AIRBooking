@@ -17,6 +17,47 @@ var AirBookController = {
         $('#btnSearch').off('click').on('click', function () {
             AirBookController.DataList(1);
         });
+        //
+        $('#btnExport').off('click').on('click', function () {
+            var ddlTimeExpress = $('#ddlTimeExpress').val();
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            var currentStatus = $('#ddlCurrStatus').val();
+            var model = {
+                Query: $('#txtQuery').val(),
+                Page: 0,
+                TimeExpress: parseInt(ddlTimeExpress),
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                CurrentStatus: currentStatus,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            //
+            AjaxFrom.POST({
+                url: '/Management/AirOrder/Action/BookingExport',
+                data: model,
+                success: function (result) {
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            //
+                            HelperModel.Download(result.path);
+                        }
+                        else {
+                            //Notifization.Error(result.message);
+                            console.log('::' + result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NOTSERVICES);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
+
+
     },
     DataList: function (page) {
         //   
@@ -68,7 +109,7 @@ var AirBookController = {
                                 id = id.trim();
                             //
                             var pnr = item.PNR;
-                            var orderDate = item.OrderDate;
+                            var orderDate = item.OrderDateText;
                             var airlineId = item.AirlineID;
                             var ticketingId = item.TicketingID;
                             var ticketingName = item.TicketingName;
@@ -89,12 +130,7 @@ var AirBookController = {
                             var mailStatus = item.MailStatus;
                             if (companyCode == null) {
                                 companyCode = "-";
-                            }
-
-                            var actMail = `<button type="button" class="btn btn-warning btn-sm btn-email min-default" data-id="${id}" data-pnr="${pnr}">Sent(${mailStatus})</button>`;
-                            //if (mailStatus == 0) {
-                            //    actMail = `<button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Email</button>`;
-                            //}
+                            } 
                             var _unit = 'đ';
                             //  role
                             var action = HelperModel.RolePermission(result.role, "FlightController", id);
@@ -116,7 +152,8 @@ var AirBookController = {
                                  <td class='text-left'>${pnr}</td>                                                                                                                                                                                                                                                                         
                                  <td class='tbcol-left tbcol-button'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
-                                     ${actMail}
+                                     <button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Gửi ${mailStatus}</button>
+                                     
                                      <button type="button" class="btn btn-danger btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Hủy</button>
                                  </td>                                  
                                  <td class="tbcol-action">${action}</td>

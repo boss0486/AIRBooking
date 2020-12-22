@@ -1001,6 +1001,7 @@
     <Folder Include="Areas\Management\Data\" />
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
+    <Folder Include="Files\Export\AirBooking\" />
     <Folder Include="Files\Upload\news\" />
     <Folder Include="Files\Upload\product\" />
     <Folder Include="Team\" />

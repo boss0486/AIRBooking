@@ -3,11 +3,15 @@ using AL.NetFrame.Services;
 using Dapper;
 using Helper;
 using Helper.Email;
+using Helper.Language;
+using Helper.TimeData;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using PagedList;
 using SelectPdf;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +21,7 @@ using System.Web.Mvc;
 using WebCore.ENM;
 using WebCore.Entities;
 using WebCore.Model.Entities;
+using WebCore.Model.Enum;
 
 namespace WebCore.Services
 {
@@ -26,10 +31,11 @@ namespace WebCore.Services
         public BookOrderService() : base() { }
         public BookOrderService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public ActionResult BookOrder(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        public List<BookOrderResult> BookOrderData(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
         {
+            List<BookOrderResult> bookOrderResult = new List<BookOrderResult>();
             if (model == null)
-                return Notifization.Invalid(MessageText.Invalid);
+                return bookOrderResult;
             //
             int page = model.Page;
             string query = model.Query;
@@ -53,7 +59,7 @@ namespace WebCore.Services
                 if (searchResult.Status == 1)
                     whereCondition = searchResult.Message;
                 else
-                    return Notifization.Invalid(searchResult.Message);
+                    return bookOrderResult;
             }
             // 
             if (orderStatus == (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None && model.OrderStatus != (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None)
@@ -67,11 +73,6 @@ namespace WebCore.Services
             // 
             string compId = model.CompanyID;
             int customerType = model.CustomerType;
-
-
-
-
-
             //
             if (customerType != (int)CustomerEnum.CustomerType.NONE)
             {
@@ -112,7 +113,15 @@ namespace WebCore.Services
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
             WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
-            var dtList = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+            bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+            // reusult
+            return bookOrderResult;
+        }
+
+        public ActionResult BookOrder(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        {
+            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            int page = model.Page;
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -132,8 +141,294 @@ namespace WebCore.Services
                 Page = page
             };
             // reusult
-            return Notifization.Data(MessageText.Success + sqlQuery, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
+        //
+
+
+        public ActionResult BookingExport(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        {
+
+            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            if (dtList.Count == 0)
+                return null;
+            //     
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                DateTime dateMin = dtList.Min(m => m.OrderDate);
+                DateTime dateMax = dtList.Max(m => m.OrderDate);
+
+                string fileName = "DỮ LIỆU ĐẶT CHỖ";
+                string alias = Helper.Page.Library.FormatToUni2NONE(fileName);
+                // set month / sheet
+                List<string> sheetData = dtList.Select(m => m.OrderDate.ToString("yyyy-MM")).ToList();
+                sheetData = sheetData.GroupBy(m => m).Select(m => m.Key).ToList();
+                foreach (var sheet in sheetData)
+                {
+                    ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets.Add("T:" + sheet);
+                    workSheet.TabColor = System.Drawing.Color.Black;
+                    workSheet.DefaultRowHeight = 12;
+                    //Header of table   
+                    workSheet.Cells["A1:N1"].Merge = true;
+                    workSheet.Cells["A1:N1"].Value = fileName + " " + TimeFormat.FormatToViewDate(dateMin, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH) + " - " + TimeFormat.FormatToViewDate(dateMax, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH);
+                    workSheet.Cells["A1:N1"].Style.Font.Name = "Arial Unicode MS";
+                    workSheet.Cells["A1:N1"].Style.Font.Size = 16;
+                    workSheet.Row(1).Height = 35;
+                    workSheet.Cells["A1:N1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    workSheet.Cells["A1:N1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    workSheet.Cells["A1:N1"].Style.Font.Bold = true;
+                    workSheet.Cells["A1:N1"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A1:N1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A1:N1"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A1:N1"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells["A1:N1"].Style.Border.Bottom.Color.SetColor(Color.Gray);
+                    //title of table  
+                    workSheet.Row(2).Height = 20;
+                    workSheet.Cells[2, 1].Value = "#";
+                    workSheet.Cells[2, 2].Value = "Ngày đặt";
+                    workSheet.Cells[2, 3].Value = "Loại khách hàng";
+                    workSheet.Cells[2, 4].Value = "Mã DL";
+                    workSheet.Cells[2, 5].Value = "Nhân viên đặt chỗ";
+                    workSheet.Cells[2, 6].Value = "Loại chuyến bay";
+                    workSheet.Cells[2, 7].Value = "Hãng hàng không";
+                    workSheet.Cells[2, 8].Value = "Mã PNR";
+                    workSheet.Cells[2, 9].Value = "Gửi mail";
+                    workSheet.Cells[2, 10].Value = "Giá hãng";
+                    workSheet.Cells[2, 11].Value = "Giá DL (chênh)";
+                    workSheet.Cells[2, 12].Value = "Phí xuất vé";
+                    workSheet.Cells[2, 13].Value = "Phí đại lý";
+                    workSheet.Cells[2, 14].Value = "Tổng chi phí";
+
+
+                    //Body of table  
+                    workSheet.Cells["A2:N2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A2:N2"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A2:N2"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A2:N2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    //
+                    int recordIndex = 3;
+                    int cnt = 1;
+                    // / data to sheet
+                    List<BookOrderResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
+                    if (dtListForSheet.Count == 0)
+                        continue;
+                    //
+                    foreach (var item in dtListForSheet)
+                    {
+                        workSheet.Cells[recordIndex, 1].Value = cnt;
+                        workSheet.Cells[recordIndex, 2].Value = item.OrderDateText;
+                        workSheet.Cells[recordIndex, 3].Value = item.CustomerTypeText;
+                        workSheet.Cells[recordIndex, 4].Value = item.AgentCode;
+                        workSheet.Cells[recordIndex, 5].Value = item.TicketingName;
+                        workSheet.Cells[recordIndex, 6].Value = item.ItineraryText;
+                        workSheet.Cells[recordIndex, 7].Value = item.AirlineID;
+                        workSheet.Cells[recordIndex, 8].Value = item.PNR;
+                        workSheet.Cells[recordIndex, 9].Value = item.MailStatus;
+                        workSheet.Cells[recordIndex, 10].Value = item.Amount;
+                        workSheet.Cells[recordIndex, 11].Value = item.AgentPrice;
+                        workSheet.Cells[recordIndex, 12].Value = item.ProviderFee;
+                        workSheet.Cells[recordIndex, 13].Value = item.AgentFee;
+                        workSheet.Cells[recordIndex, 14].Value = item.TotalAmount;
+                        ////// attribute 
+                        workSheet.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        //
+                        workSheet.Cells[recordIndex, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 12].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 13].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 6].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 7].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        //
+                        workSheet.Cells[recordIndex, 8].Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                        //
+                        workSheet.Cells[recordIndex, 10].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 12].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 13].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 14].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        ////
+                        recordIndex++;
+                        cnt++;
+                    }
+                    //
+                    for (int i = 1; i < 9; i++)
+                    {
+                        workSheet.Column(i).AutoFit();
+                    }
+                    //
+                    workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Top.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Left.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Right.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Bottom.Color.SetColor(Color.LightGray);
+                }
+                // create file
+                string outFolder = "/Files/Export/AirBooking/";
+                string pathFile = Helper.File.AttachmentFile.AttachmentExls(alias, excelPackage, outFolder);
+                if (string.IsNullOrWhiteSpace(pathFile))
+                    return null;
+                //
+                return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
+            }
+        }
+        public ActionResult OrderExport(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        {
+
+            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            if (dtList.Count == 0)
+                return null;
+            //     
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                DateTime dateMin = dtList.Min(m => m.OrderDate);
+                DateTime dateMax = dtList.Max(m => m.OrderDate);
+
+                string fileName = "DỮ LIỆU XUẤT VÉ";
+                string alias = Helper.Page.Library.FormatToUni2NONE(fileName);
+                // set month / sheet
+                List<string> sheetData = dtList.Select(m => m.OrderDate.ToString("yyyy-MM")).ToList();
+                sheetData = sheetData.GroupBy(m => m).Select(m => m.Key).ToList();
+                foreach (var sheet in sheetData)
+                {
+                    ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets.Add("T:" + sheet);
+                    workSheet.TabColor = System.Drawing.Color.Black;
+                    workSheet.DefaultRowHeight = 12;
+                    //Header of table   
+                    workSheet.Cells["A1:M1"].Merge = true;
+                    workSheet.Cells["A1:M1"].Value = fileName + " " + TimeFormat.FormatToViewDate(dateMin, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH) + " - " + TimeFormat.FormatToViewDate(dateMax, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH);
+                    workSheet.Cells["A1:M1"].Style.Font.Name = "Arial Unicode MS";
+                    workSheet.Cells["A1:M1"].Style.Font.Size = 16;
+                    workSheet.Row(1).Height = 35;
+                    workSheet.Cells["A1:M1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    workSheet.Cells["A1:M1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    workSheet.Cells["A1:M1"].Style.Font.Bold = true;
+                    workSheet.Cells["A1:M1"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A1:M1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A1:M1"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A1:M1"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells["A1:M1"].Style.Border.Bottom.Color.SetColor(Color.Gray);
+                    //title of table  
+                    workSheet.Row(2).Height = 20;
+                    workSheet.Cells[2, 1].Value = "#";
+                    workSheet.Cells[2, 2].Value = "Ngày đặt";
+                    workSheet.Cells[2, 3].Value = "Loại khách hàng";
+                    workSheet.Cells[2, 4].Value = "Mã DL";
+                    workSheet.Cells[2, 5].Value = "Nhân viên đặt chỗ";
+                    workSheet.Cells[2, 6].Value = "Loại chuyến bay";
+                    workSheet.Cells[2, 7].Value = "Hãng hàng không";
+                    workSheet.Cells[2, 8].Value = "Mã PNR";
+                    workSheet.Cells[2, 9].Value = "Giá hãng";
+                    workSheet.Cells[2, 10].Value = "Giá DL (chênh)";
+                    workSheet.Cells[2, 11].Value = "Phí xuất vé";
+                    workSheet.Cells[2, 12].Value = "Phí đại lý";
+                    workSheet.Cells[2, 13].Value = "Tổng chi phí";
+
+
+                    //Body of table  
+                    workSheet.Cells["A2:M2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A2:M2"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A2:M2"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A2:M2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    //
+                    int recordIndex = 3;
+                    int cnt = 1;
+                    // / data to sheet
+                    List<BookOrderResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
+                    if (dtListForSheet.Count == 0)
+                        continue;
+                    //
+                    foreach (var item in dtListForSheet)
+                    {
+                        workSheet.Cells[recordIndex, 1].Value = cnt;
+                        workSheet.Cells[recordIndex, 2].Value = item.OrderDateText;
+                        workSheet.Cells[recordIndex, 3].Value = item.CustomerTypeText;
+                        workSheet.Cells[recordIndex, 4].Value = item.AgentCode;
+                        workSheet.Cells[recordIndex, 5].Value = item.TicketingName;
+                        workSheet.Cells[recordIndex, 6].Value = item.ItineraryText;
+                        workSheet.Cells[recordIndex, 7].Value = item.AirlineID;
+                        workSheet.Cells[recordIndex, 8].Value = item.PNR;
+                        workSheet.Cells[recordIndex, 9].Value = item.Amount;
+                        workSheet.Cells[recordIndex, 10].Value = item.AgentPrice;
+                        workSheet.Cells[recordIndex, 11].Value = item.ProviderFee;
+                        workSheet.Cells[recordIndex, 12].Value = item.AgentFee;
+                        workSheet.Cells[recordIndex, 13].Value = item.TotalAmount;
+                        ////// attribute 
+                        workSheet.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 13].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        //
+                        workSheet.Cells[recordIndex, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 12].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 13].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        //
+                        workSheet.Cells[recordIndex, 6].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 7].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        //
+                        workSheet.Cells[recordIndex, 8].Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                        //
+                        workSheet.Cells[recordIndex, 9].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 10].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 12].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 13].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        ////
+                        recordIndex++;
+                        cnt++;
+                    }
+                    //
+                    for (int i = 1; i < 9; i++)
+                    {
+                        workSheet.Column(i).AutoFit();
+                    }
+                    //
+                    workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Top.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Left.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Right.Color.SetColor(Color.LightGray);
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[workSheet.Dimension.Address].Style.Border.Bottom.Color.SetColor(Color.LightGray);
+                }
+                // create file
+                string outFolder = "/Files/Export/AirBooking/";
+                string pathFile = Helper.File.AttachmentFile.AttachmentExls(alias, excelPackage, outFolder);
+                if (string.IsNullOrWhiteSpace(pathFile))
+                    return null;
+                //
+                return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
+            }
+        }
+        //
+
         public ViewBookOrder ViewBookOrderByID(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

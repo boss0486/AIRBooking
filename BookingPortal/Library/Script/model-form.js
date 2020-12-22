@@ -144,14 +144,25 @@ class HelperModel {
                     action += `<a href='${URLA}/Profile/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
                 }
                 //
+                if (item.KeyID == "BookLuggage") {
+                    cnt++;
+                    action += `<a href='${URLA}/Booking/${id}' target="_blank"><i class="fas fa-luggage-cart"></i>&nbsp;${item.Title}</a>`;
+                }
+                //
+                if (item.KeyID == "SendMail") {
+                    cnt++;
+                    action += `<a href='${URLA}/Booking/${id}' target="_blank"><i class="fas fa-paper-plane"></i>&nbsp;${item.Title}</a>`;
+                }
+                //
             });
 
-            if (cnt > 1) {
-                return `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>${action}</div></div>`
-            }
-            else {
-                return action;
-            }
+            return `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>${action}</div></div>`
+            //if (cnt > 1) {
+            //    return `<div class='ddl-action'><span><i class='fa fa-caret-down'></i></span><div class='ddl-action-content'>${action}</div></div>`
+            //}
+            //else {
+            //    return action;
+            //}
         }
         return "";
     }

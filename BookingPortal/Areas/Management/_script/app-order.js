@@ -10,9 +10,47 @@ var AirOrderController = {
     registerEvent: function () {
         $(document).ready(function () {
             // $('[data-dateDefault="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
-        }); 
+        });
         $('#btnSearch').off('click').on('click', function () {
             AirOrderController.DataList(1);
+        });
+        $('#btnExport').off('click').on('click', function () {
+            var ddlTimeExpress = $('#ddlTimeExpress').val();
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            var currentStatus = $('#ddlCurrStatus').val();
+            var model = {
+                Query: $('#txtQuery').val(),
+                Page: 0,
+                TimeExpress: parseInt(ddlTimeExpress),
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                CurrentStatus: currentStatus,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            //
+            AjaxFrom.POST({
+                url: '/Management/AirOrder/Action/OrderExport',
+                data: model,
+                success: function (result) {
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            //
+                            HelperModel.Download(result.path);
+                        }
+                        else {
+                            //Notifization.Error(result.message);
+                            console.log('::' + result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NOTSERVICES);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
         });
     },
     DataList: function (page) {
@@ -64,7 +102,7 @@ var AirOrderController = {
                                 id = id.trim();
                             //
                             var pnr = item.PNR;
-                            var orderDate = item.OrderDate;
+                            var orderDate = item.OrderDateText;
                             var airlineId = item.AirlineID;
                             var ticketingId = item.TicketingID;
                             var ticketingName = item.TicketingName;
@@ -92,8 +130,7 @@ var AirOrderController = {
                                  <td class=''>${orderDate}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td class=''>${customerTypeText}</td>          
-                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-                                 <td class='tbcol-left'>00011</td>                                  
+                                 <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareBasic)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareTax)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareTax)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
