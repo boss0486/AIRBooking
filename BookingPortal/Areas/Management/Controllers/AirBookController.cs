@@ -123,7 +123,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 using (var service = new BookOrderService())
-                    return service.BookOrder(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
+                    return service.BookingList(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
             }
             catch (Exception ex)
             {

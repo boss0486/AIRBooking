@@ -57,7 +57,56 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+
     public partial class BookOrderResult //: WEBModelResult
+    {
+        public string ID { get; set; }
+        public string TicketNo { get; set; }
+        public string PNR { get; set; }
+        public string CodeID { get; set; }
+        public string AirlineID { get; set; }
+        public string TicketingName { get; set; }
+        public string AgentCode { get; set; }
+        public double AgentFee { get; set; }
+        public double ProviderFee { get; set; }
+        public double AgentPrice { get; set; }
+        public double Amount { get; set; }
+        public double FareBasic { get; set; }
+        public double FareTax { get; set; }
+        [NotMapped]
+        public double TotalAmount
+        {
+            get
+            {
+                double fareBasic = FareBasic;
+                if (AgentPrice > FareBasic)
+                    fareBasic = AgentPrice;
+                //
+                return fareBasic + FareTax + ProviderFee + AgentFee;
+            }
+
+        }
+        public int CustomerType { get; set; }
+        public string ContactName { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyID { get; set; }
+        public int Status { get; set; }
+        public DateTime OrderDate { get; set; }
+
+        private int ItineraryType { get; set; }
+        public int MailStatus { get; set; }
+        public int OrderStatus { get; set; }
+
+        [NotMapped]
+        public string OrderDateText => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
+        [NotMapped]
+        public string CustomerTypeText => CustomerTypeService.GetNameByID(CustomerType);
+        [NotMapped]
+        public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
+        [NotMapped]
+        private string TimeBooking => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
+    }
+    public partial class BookingResult //: WEBModelResult
     {
         public string ID { get; set; }
         public string PNR { get; set; }

@@ -31,7 +31,7 @@ namespace WebCore.Services
         public BookOrderService() : base() { }
         public BookOrderService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public List<BookOrderResult> BookOrderData(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        public List<BookOrderResult> OrderData(BookOrderSerch model)
         {
             List<BookOrderResult> bookOrderResult = new List<BookOrderResult>();
             if (model == null)
@@ -62,11 +62,83 @@ namespace WebCore.Services
                     return bookOrderResult;
             }
             // 
-            if (orderStatus == (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None && model.OrderStatus != (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None)
+            whereCondition += " AND o.OrderStatus = @OrderStatus";
+            //
+            if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
+                whereCondition += " AND o.ItineraryType = @ItineraryType";
+            // 
+            string compId = model.CompanyID;
+            int customerType = model.CustomerType;
+            //
+            if (customerType != (int)CustomerEnum.CustomerType.NONE)
             {
-                whereCondition += " AND o.OrderStatus = @OrderStatus";
-                orderStatus = model.OrderStatus;
+                whereCondition += " AND c.CustomerType = " + customerType + " ";
+                //
+                if (customerType == (int)CustomerEnum.CustomerType.COMP)
+                {
+                    if (!string.IsNullOrWhiteSpace(compId))
+                        whereCondition += " AND c.CompanyID = @CompanyID";
+                }
             }
+
+            string agentId = model.AgentID;
+            // limit data
+            //if (Helper.Current.UserLogin.IsClientInApplication())
+            //{
+            //    string userId = Helper.Current.UserLogin.IdentifierID;
+            //    agentId = ClientLoginService.GetClientIDByUserID(userId);
+
+
+            //} 
+            //if (!string.IsNullOrWhiteSpace(agentId))
+            //{
+            //    whereCondition += " AND o.AgentID = @AgentID";
+            //}
+            // query
+            string sqlQuery = @" SELECT bp.TicketNo,bp.FullName, bp.Gender, 
+            c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
+            a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
+            (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = bp.BookOrderID) as FareBasic,
+            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = bp.BookOrderID) as FareTax
+            FROM App_BookPassenger as bp
+            LEFT JOIN App_BookAgent as a ON a.BookOrderID = bp.BookOrderID
+            LEFT JOIN App_BookCustomer as c ON c.BookOrderID = bp.BookOrderID
+            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " AND bp.TicketNo IS NOT NULL AND  DATALENGTH(bp.TicketNo) > 0 ORDER BY o.OrderDate, o.[Title] ASC";
+            bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.ExTicket, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+            return bookOrderResult;
+        }
+        public List<BookingResult> BookingData(BookOrderSerch model)
+        {
+            List<BookingResult> bookOrderResult = new List<BookingResult>();
+            if (model == null)
+                return bookOrderResult;
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            }, dateColumn: "OrderDate");
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return bookOrderResult;
+            }
+            // 
+            whereCondition += " AND o.OrderStatus = @OrderStatus";
             //
             if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
                 whereCondition += " AND o.ItineraryType = @ItineraryType";
@@ -113,14 +185,39 @@ namespace WebCore.Services
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
             WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
-            bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = orderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+            bookOrderResult = _connection.Query<BookingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = model.OrderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             // reusult
             return bookOrderResult;
         }
 
-        public ActionResult BookOrder(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        public ActionResult OrederList(BookOrderSerch model)
         {
-            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            List<BookOrderResult> dtList = OrderData(model);
+            int page = model.Page;
+            if (dtList.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            if (result.Count == 0 && page > 1)
+            {
+                page -= 1;
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            }
+            if (result.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            // Pagination
+            Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
+            {
+                PageSize = Helper.Pagination.Paging.PAGESIZE,
+                Total = dtList.Count,
+                Page = page
+            };
+            // reusult
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+        }
+        public ActionResult BookingList(BookOrderSerch model)
+        {
+            List<BookingResult> dtList = BookingData(model);
             int page = model.Page;
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
@@ -146,10 +243,10 @@ namespace WebCore.Services
         //
 
 
-        public ActionResult BookingExport(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        public ActionResult BookingExport(BookOrderSerch model)
         {
 
-            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            List<BookingResult> dtList = BookingData(model);
             if (dtList.Count == 0)
                 return null;
             //     
@@ -210,7 +307,7 @@ namespace WebCore.Services
                     int recordIndex = 3;
                     int cnt = 1;
                     // / data to sheet
-                    List<BookOrderResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
+                    List<BookingResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
                     if (dtListForSheet.Count == 0)
                         continue;
                     //
@@ -287,10 +384,10 @@ namespace WebCore.Services
                 return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
             }
         }
-        public ActionResult OrderExport(BookOrderSerch model, int orderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.None)
+        public ActionResult OrderExport(BookOrderSerch model)
         {
 
-            List<BookOrderResult> dtList = BookOrderData(model, orderStatus);
+            List<BookOrderResult> dtList = OrderData(model);
             if (dtList.Count == 0)
                 return null;
             //     

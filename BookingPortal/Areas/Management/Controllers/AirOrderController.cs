@@ -45,7 +45,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 using (var service = new BookOrderService())
-                    return service.BookOrder(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None);
+                    return service.OrederList(model);
             }
             catch (Exception ex)
             {
@@ -54,13 +54,13 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [Route("Action/BookOrder")]
-        public ActionResult BookOrder(BookOrderSerch model)
+        [Route("Action/BookingList")]
+        public ActionResult BookingList(BookOrderSerch model)
         {
             try
             {
                 using (var service = new BookOrderService())
-                    return service.BookOrder(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None);
+                    return service.BookingList(model);
             }
             catch (Exception ex)
             {
@@ -131,8 +131,8 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
-        
-        
+
+
         [HttpPost]
         [Route("Action/BookingExport")]
         public ActionResult BookingExport(BookOrderSerch model)
@@ -140,7 +140,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 BookOrderService service = new BookOrderService();
-                return service.BookingExport(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
+                return service.BookingExport(model);
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 BookOrderService service = new BookOrderService();
-                return service.OrderExport(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None);
+                return service.OrderExport(model);
             }
             catch (Exception ex)
             {
