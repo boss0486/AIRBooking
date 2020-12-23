@@ -1398,10 +1398,10 @@ namespace AIRService.Service
                         if (end.ApplicationResults.Success != null)
                         {
                             BookOrderService bookPNRCodeService = new BookOrderService();
-                            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == pnr.ToLower()).FirstOrDefault();
+                            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr.ToLower()).FirstOrDefault();
                             if (bookPNRCode != null)
                             {
-                                bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.ExTicket;
+                                bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.Exported;
                                 bookPNRCodeService.Update(bookPNRCode);
                             }
                         }

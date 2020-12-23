@@ -22,6 +22,7 @@ using WebCore.ENM;
 using WebCore.Entities;
 using WebCore.Model.Entities;
 using WebCore.Model.Enum;
+using static WebCore.ENM.BookOrderEnum;
 
 namespace WebCore.Services
 {
@@ -31,7 +32,7 @@ namespace WebCore.Services
         public BookOrderService() : base() { }
         public BookOrderService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
-        public List<BookOrderResult> OrderData(BookOrderSerch model)
+        public List<BookOrderResult> OrderData(BookOrderSearch model)
         {
             List<BookOrderResult> bookOrderResult = new List<BookOrderResult>();
             if (model == null)
@@ -62,8 +63,6 @@ namespace WebCore.Services
                     return bookOrderResult;
             }
             // 
-            whereCondition += " AND o.OrderStatus = @OrderStatus";
-            //
             if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
                 whereCondition += " AND o.ItineraryType = @ItineraryType";
             // 
@@ -95,19 +94,21 @@ namespace WebCore.Services
             //    whereCondition += " AND o.AgentID = @AgentID";
             //}
             // query
-            string sqlQuery = @" SELECT bp.TicketNo,bp.FullName, bp.Gender, 
+            string sqlQuery = @"SELECT bp.ID, bp.TicketNo, bp.FullName, bp.Gender, 
             c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
             a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
-            (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = bp.BookOrderID) as FareBasic,
-            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = bp.BookOrderID) as FareTax
+			o.ProviderCode, o.AirlineID, o.ItineraryType, o.PNR, o.Amount, o.OrderDate,
+            (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType) as FareBasic,
+            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType) as FareTax
             FROM App_BookPassenger as bp
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = bp.BookOrderID
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = bp.BookOrderID
-            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " AND bp.TicketNo IS NOT NULL AND  DATALENGTH(bp.TicketNo) > 0 ORDER BY o.OrderDate, o.[Title] ASC";
-            bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.ExTicket, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+			LEFT JOIN App_BookOrder as o ON o.ID = bp.BookOrderID
+            WHERE (bp.TicketNo LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + "  AND o.OrderStatus = @OrderStatus ORDER BY o.OrderDate, bp.TicketNo, bp.FullName  ASC";
+            bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Exported, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             return bookOrderResult;
         }
-        public List<BookingResult> BookingData(BookOrderSerch model)
+        public List<BookingResult> BookingData(BookOrderSearch model)
         {
             List<BookingResult> bookOrderResult = new List<BookingResult>();
             if (model == null)
@@ -184,13 +185,13 @@ namespace WebCore.Services
             FROM App_BookOrder as o 
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
-            WHERE (o.Title LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate, o.[Title] ASC";
-            bookOrderResult = _connection.Query<BookingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = model.OrderStatus, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
+            WHERE (o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate ASC";
+            bookOrderResult = _connection.Query<BookingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)BookOrderStatus.Booking, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             // reusult
             return bookOrderResult;
         }
 
-        public ActionResult OrederList(BookOrderSerch model)
+        public ActionResult OrederList(BookOrderSearch model)
         {
             List<BookOrderResult> dtList = OrderData(model);
             int page = model.Page;
@@ -215,7 +216,7 @@ namespace WebCore.Services
             // reusult
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
-        public ActionResult BookingList(BookOrderSerch model)
+        public ActionResult BookingList(BookOrderSearch model)
         {
             List<BookingResult> dtList = BookingData(model);
             int page = model.Page;
@@ -243,7 +244,7 @@ namespace WebCore.Services
         //
 
 
-        public ActionResult BookingExport(BookOrderSerch model)
+        public ActionResult BookingExport(BookOrderSearch model)
         {
 
             List<BookingResult> dtList = BookingData(model);
@@ -384,7 +385,7 @@ namespace WebCore.Services
                 return Notifization.DownLoadFile(MessageText.DownLoad, pathFile);
             }
         }
-        public ActionResult OrderExport(BookOrderSerch model)
+        public ActionResult OrderExport(BookOrderSearch model)
         {
 
             List<BookOrderResult> dtList = OrderData(model);

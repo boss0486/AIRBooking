@@ -40,7 +40,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/DataList")]
-        public ActionResult DataList(BookOrderSerch model)
+        public ActionResult DataList(BookOrderSearch model)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/BookingList")]
-        public ActionResult BookingList(BookOrderSerch model)
+        public ActionResult BookingList(BookOrderSearch model)
         {
             try
             {
@@ -131,11 +131,10 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
-
-
+         
         [HttpPost]
         [Route("Action/BookingExport")]
-        public ActionResult BookingExport(BookOrderSerch model)
+        public ActionResult BookingExport(BookOrderSearch model)
         {
             try
             {
@@ -149,7 +148,7 @@ namespace WebApplication.Management.Controllers
         }
         [HttpPost]
         [Route("Action/OrderExport")]
-        public ActionResult OrderExport(BookOrderSerch model)
+        public ActionResult OrderExport(BookOrderSearch model)
         {
             try
             {

@@ -101,6 +101,8 @@ var AirOrderController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //
+                            var ticketNo = item.TicketNo;
+                            var fullName = item.FullName;
                             var pnr = item.PNR;
                             var orderDate = item.OrderDateText;
                             var airlineId = item.AirlineID;
@@ -118,6 +120,7 @@ var AirOrderController = {
                             var agentPrice = item.AgentPrice;
                             var agentFee = item.AgentFee;
                             var providerFee = item.ProviderFee;
+                            var providerCode = item.ProviderCode;
                             //   
                             var _unit = 'đ';
                             //  role
@@ -128,6 +131,9 @@ var AirOrderController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>  
                                  <td class=''>${orderDate}</td>  
+                                 <td class=''>${ticketNo}</td>  
+                                 <td class=''>${fullName.toUpperCase()}</td>  
+                                 <td class='text-center'>${providerCode}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td class=''>${customerTypeText}</td>          
                                  <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

@@ -5,9 +5,8 @@
         public enum BookOrderStatus
         {
             Booking = -1,
-            None = 0,
-            Cancel = 2,
-            ExTicket = 3
+            Exported = 1,
+            Cancel = 2
         }
         public enum BookMailStatus
         {

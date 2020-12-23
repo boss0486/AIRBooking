@@ -5591,9 +5591,10 @@ table, .table {
             line-height: 0px;
             border: none;
         }
-        .table-bordered tbody tr td .btn.min-default {
-            min-width:60px;
-        }
+
+            .table-bordered tbody tr td .btn.min-default {
+                min-width: 60px;
+            }
 
         .table-bordered tbody tr td input {
             width: 90%;
@@ -5602,7 +5603,12 @@ table, .table {
             border: none;
             padding: 0px 1px;
             text-align: right;
+            background: inherit;
         }
+
+            .table-bordered tbody tr td input:hover, .table-bordered tbody tr td input:focus {
+                background: #FFF;
+            }
 
 
 .table-inline tr td, .table-inline tr th {
@@ -5624,7 +5630,7 @@ table, .table {
 .table-bordered > tbody > tr:hover > td, .table-bordered > tbody > tr:hover > th {
     background: #fbf6cf;
     /* background: #D9F1EC;*/
-        }
+}
 
 .table-bordered > tbody > tr.highlight > td, .table-bordered > tbody > tr.highlight > th {
     background: #fbf6cf;
@@ -10127,11 +10133,11 @@ button, .btn {
         border-color: #038a7d;
     }
 
-.btn-teal .badge {
-    color: #337ab7;
-    background-color: #fff;
-}
- 
+    .btn-teal .badge {
+        color: #337ab7;
+        background-color: #fff;
+    }
+
 
 .w-50 {
     width: 50%;

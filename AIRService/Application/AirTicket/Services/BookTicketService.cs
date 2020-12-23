@@ -77,7 +77,9 @@ namespace WebCore.Services
                     BookPriceService bookPriceService = new BookPriceService(_connection);
                     BookCustomerService bookContactService = new BookCustomerService(_connection);
                     BookAgentService bookAgentService = new BookAgentService(_connection);
-
+                    AirAgentService airAgentService = new AirAgentService(_connection);
+                    AirAgentFeeService airAgentFeeService = new AirAgentFeeService(_connection);
+                    //
                     var pnr = model.PNR;
                     var flights = model.Flights;
                     var direction = (int)VNAEnum.FlightDirection.None;
@@ -89,14 +91,14 @@ namespace WebCore.Services
                     //
                     int itineraryId = model.ItineraryType;
                     BookAgentInfo bookAgentInfo = model.AgentInfo;
+                    string providerCode = airAgentService.GetAlls(m => m.ID == bookAgentInfo.ProviderID, transaction: _transaction).FirstOrDefault().CodeID;
+
                     string orderCode = "PO-" + pnr;
                     string bookOrderId = bookOrderService.Create<string>(new BookOrder
                     {
                         CodeID = orderCode,
                         AirlineID = "VNA",
-                        Title = orderCode,
                         PNR = pnr,
-                        Alias = orderCode.ToLower(),
                         Summary = model.Summary,
                         Amount = bookAgentInfo.AgentFee + fareFlights.Sum(m => m.Amount) + fareTaxes.Sum(m => m.Amount),
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
@@ -104,7 +106,7 @@ namespace WebCore.Services
                         MailStatus = (int)ENM.BookOrderEnum.BookMailStatus.None,
                         OrderDate = model.OrderDate,
                         OrderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
-                        SiteID = "-"
+                        ProviderCode = providerCode
                     }, transaction: _transaction);
 
                     foreach (var flight in flights)
@@ -183,9 +185,7 @@ namespace WebCore.Services
                             }, transaction: _transaction);
                         }
                     }
-                    // 
-                    AirAgentService airAgentService = new AirAgentService(_connection);
-                    AirAgentFeeService airAgentFeeService = new AirAgentFeeService(_connection);
+                    //  
                     string agentId = bookAgentInfo.AgentID;
                     string agtProviderName = string.Empty;
                     double agtProviderFee = 0;

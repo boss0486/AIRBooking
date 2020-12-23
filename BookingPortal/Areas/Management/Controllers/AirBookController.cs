@@ -118,12 +118,12 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/DataList")]
-        public ActionResult BookList(BookOrderSerch model)
+        public ActionResult BookList(BookOrderSearch model)
         {
             try
             {
                 using (var service = new BookOrderService())
-                    return service.BookingList(model, (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking);
+                    return service.BookingList(model);
             }
             catch (Exception ex)
             {
