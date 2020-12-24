@@ -274,7 +274,7 @@ namespace WebCore.Services
             if (dateTimeEnd < dateTimeStart)
                 return Notifization.Invalid(MessageText.Invalid);
             //
-            if (dateTimeEnd > Convert.ToDateTime(TimeHelper.GetDateTime))
+            if (dateTimeEnd > Convert.ToDateTime(TimeHelper.GetUtcDateTime))
                 return Notifization.Invalid("T.gian kết thúc phải < t.gian hiện tại");
             //
             List<DateTime> dateTimes = Enumerable.Range(0, 1 + dateTimeEnd.Subtract(dateTimeStart).Days).Select(offset => dateTimeStart.AddDays(offset)).ToList();

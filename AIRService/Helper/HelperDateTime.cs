@@ -17,7 +17,10 @@ namespace Helper.TimeData
 {
     public class TimeHelper
     {
-        public static string GetDateTime
+        /// <summary>
+        /// Fomat: yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        public static string GetUtcDateTime
         {
             get
             {
@@ -42,7 +45,7 @@ namespace Helper.TimeData
         {
             get
             {
-                string strdTime = TimeHelper.GetDateTime;
+                string strdTime = TimeHelper.GetUtcDateTime;
                 if (string.IsNullOrWhiteSpace(strdTime))
                     return string.Empty;
                 //
@@ -54,7 +57,7 @@ namespace Helper.TimeData
         {
             get
             {
-                string strdTime = TimeHelper.GetDateTime;
+                string strdTime = TimeHelper.GetUtcDateTime;
                 if (string.IsNullOrWhiteSpace(strdTime))
                     return string.Empty;
                 //

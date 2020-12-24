@@ -947,15 +947,15 @@ namespace AIRService.Service
                 //
                 string ticketingName = userInfo.FullName;
                 string ticketingPhone = userInfo.Phone;
-                string ticketingEmail = userInfo.Email; 
+                string ticketingEmail = userInfo.Email;
                 //
                 string agentId = ClientLoginService.GetClientIDByUserID(ticketingId);
-                ClientLoginService clientLoginService = new ClientLoginService(); 
+                ClientLoginService clientLoginService = new ClientLoginService();
                 AirAgentService airAgentService = new AirAgentService();
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
                 string agentCode = airAgent.CodeID;
                 string agentName = airAgent.Title;
-                string agentProviderId = airAgent.ParentID; 
+                string agentProviderId = airAgent.ParentID;
                 int passengerGroup = model.PassengerGroup;
                 // call service get PNR code 
                 string strEmail = string.Empty;
@@ -1240,7 +1240,7 @@ namespace AIRService.Service
                             PassengerGroup = model.PassengerGroup,
                             Summary = model.Summary,
                             ItineraryType = model.ItineraryType,
-                            OrderDate = Convert.ToDateTime(TimeHelper.GetDateTime),
+                            OrderDate = Convert.ToDateTime(TimeHelper.GetUtcDateTime),
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
@@ -1287,10 +1287,46 @@ namespace AIRService.Service
                 if (model == null)
                     return Notifization.Invalid(MessageText.Invalid + "1");
                 //
+                string orderId = "";
+                BookOrderService bookOrderService = new BookOrderService();
+                BookTicketService bookTicketService = new BookTicketService();
+                WalletClientService walletClientService = new WalletClientService();
+                BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+                if (bookOrder == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                string pnr = bookOrder.PNR;
+
+                BookAgentService bookAgentService = new BookAgentService();
+                BookAgent bookAgent = bookAgentService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+                string agentId = bookAgent.AgentID;
+
+                WalletClient walletClient = walletClientService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+                double spendingLimitAmount = walletClient.SpendingLimitAmount;
+
+                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetUtcDateTime);
+
+                //DateTime firstDayOfMonth = dateTime.AddDays(-(dateTime.Day - 1));
+
+                DateTime firstDayOfMonth = dateTime.AddDays(0 - dateTime.Day);
+                DateTime lastDayOfMonth = firstDayOfMonth.AddDays(1 - firstDayOfMonth.Day);
+
+                // check han muc
+                // thanh toan chua
+
+
+
+                BookTicket bookTicket = bookTicketService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+
+
+
+
+
+
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
-                    return Notifization.Error("Cannot create session");
+                    return Notifization.Invalid(MessageText.Invalid);
                 // create session 
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
