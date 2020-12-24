@@ -19,18 +19,29 @@ var AirBookController = {
         });
         //
         $('#btnExport').off('click').on('click', function () {
+            //   
+            var ddlItinerary = $('#ddlItinerary').val();
+            var ddlAgentID = $('#ddlAgentID').val();
+            var ddlCustomerType = $('#ddlCustomerType').val();
+            var ddlCompanyID = $('#ddlCompanyID').val();
             var ddlTimeExpress = $('#ddlTimeExpress').val();
             var txtStartDate = $('#txtStartDate').val();
             var txtEndDate = $('#txtEndDate').val();
-            var currentStatus = $('#ddlCurrStatus').val();
+            //
+            if (ddlCustomerType == "") {
+                ddlCustomerType = 0;
+            }
             var model = {
                 Query: $('#txtQuery').val(),
-                Page: 0,
+                Page: 1,
                 TimeExpress: parseInt(ddlTimeExpress),
                 StartDate: txtStartDate,
                 EndDate: txtEndDate,
-                CurrentStatus: currentStatus,
-                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+                ItineraryType: parseInt(ddlItinerary),
+                AgentID: ddlAgentID,
+                CustomerType: ddlCustomerType,
+                CompanyID: ddlCompanyID
             };
             //
             AjaxFrom.POST({
@@ -43,8 +54,7 @@ var AirBookController = {
                             HelperModel.Download(result.path);
                         }
                         else {
-                            //Notifization.Error(result.message);
-                            console.log('::' + result.message);
+                            Notifization.Error(result.message);
                             return;
                         }
                     }
@@ -109,7 +119,7 @@ var AirBookController = {
                                 id = id.trim();
                             //
                             var pnr = item.PNR;
-                            var orderDate = item.OrderDateText;
+                            var issueDate = item.IssueDateText;
                             var airlineId = item.AirlineID;
                             var ticketingId = item.TicketingID;
                             var ticketingName = item.TicketingName;
@@ -130,7 +140,7 @@ var AirBookController = {
                             var mailStatus = item.MailStatus;
                             if (companyCode == null) {
                                 companyCode = "-";
-                            } 
+                            }
                             var _unit = 'đ';
                             //  role
                             var action = HelperModel.RolePermission(result.role, "FlightController", id);
@@ -139,7 +149,7 @@ var AirBookController = {
                             rowData += `
                             <tr data-id='${id}' data-ticketingId='${ticketingId}'>
                                  <td class="text-right">${rowNum}&nbsp;</td>  
-                                 <td >${orderDate}</td>  
+                                 <td >${issueDate}</td>  
                                  <td class='text-center'>${agentCode}</td>  
                                  <td >${ticketingName}</td>  
                                  <td ><a class='btn-passenger' data-id='${id}'>C.tiết</a></td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

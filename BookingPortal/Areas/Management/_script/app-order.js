@@ -15,18 +15,29 @@ var AirOrderController = {
             AirOrderController.DataList(1);
         });
         $('#btnExport').off('click').on('click', function () {
+            //   
+            var ddlItinerary = $('#ddlItinerary').val();
+            var ddlAgentID = $('#ddlAgentID').val();
+            var ddlCustomerType = $('#ddlCustomerType').val();
+            var ddlCompanyID = $('#ddlCompanyID').val();
             var ddlTimeExpress = $('#ddlTimeExpress').val();
             var txtStartDate = $('#txtStartDate').val();
             var txtEndDate = $('#txtEndDate').val();
-            var currentStatus = $('#ddlCurrStatus').val();
+            //
+            if (ddlCustomerType == "") {
+                ddlCustomerType = 0;
+            }
             var model = {
                 Query: $('#txtQuery').val(),
-                Page: 0,
+                Page: 1,
                 TimeExpress: parseInt(ddlTimeExpress),
                 StartDate: txtStartDate,
                 EndDate: txtEndDate,
-                CurrentStatus: currentStatus,
-                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+                ItineraryType: parseInt(ddlItinerary),
+                AgentID: ddlAgentID,
+                CustomerType: ddlCustomerType,
+                CompanyID: ddlCompanyID
             };
             //
             AjaxFrom.POST({
@@ -39,8 +50,7 @@ var AirOrderController = {
                             HelperModel.Download(result.path);
                         }
                         else {
-                            //Notifization.Error(result.message);
-                            console.log('::' + result.message);
+                            Notifization.Error(result.message);
                             return;
                         }
                     }
@@ -104,7 +114,7 @@ var AirOrderController = {
                             var ticketNo = item.TicketNo;
                             var fullName = item.FullName;
                             var pnr = item.PNR;
-                            var orderDate = item.OrderDateText;
+                            var issueDate = item.IssueDateText;
                             var airlineId = item.AirlineID;
                             var ticketingId = item.TicketingID;
                             var ticketingName = item.TicketingName;
@@ -117,6 +127,7 @@ var AirOrderController = {
                             var totalAmount = item.TotalAmount;
                             var fareBasic = item.FareBasic;
                             var fareTax = item.FareTax;
+                            var vatFee = item.VAT;
                             var agentPrice = item.AgentPrice;
                             var agentFee = item.AgentFee;
                             var providerFee = item.ProviderFee;
@@ -130,7 +141,7 @@ var AirOrderController = {
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>  
-                                 <td class=''>${orderDate}</td>  
+                                 <td class=''>${issueDate}</td>  
                                  <td class=''>${ticketNo}</td>  
                                  <td class=''>${fullName.toUpperCase()}</td>  
                                  <td class='text-center'>${providerCode}</td>  
@@ -139,7 +150,7 @@ var AirOrderController = {
                                  <td class='text-center bg-success'>${airlineId}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareBasic)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareTax)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(fareTax)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right bg-yellow-1'>${LibCurrencies.FormatToCurrency(vatFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(agentPrice)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(providerFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(agentFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

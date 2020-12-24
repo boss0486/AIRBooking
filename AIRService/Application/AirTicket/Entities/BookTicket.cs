@@ -29,7 +29,7 @@ namespace WebCore.Entities
         public int ADT { get; set; }
         public int CNN { get; set; }
         public int INF { get; set; }
-        public int Direction { get; set; }
+        public int TicketType { get; set; }
         public int NumberInParty { get; set; }
         public string OriginLocation { get; set; }
         public string DestinationLocation { get; set; }

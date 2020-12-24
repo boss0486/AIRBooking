@@ -104,7 +104,7 @@ namespace WebCore.Services
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         ItineraryType = itineraryId,
                         MailStatus = (int)ENM.BookOrderEnum.BookMailStatus.None,
-                        OrderDate = model.OrderDate,
+                        IssueDate = model.OrderDate,
                         OrderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
                         ProviderCode = providerCode
                     }, transaction: _transaction);
@@ -123,7 +123,7 @@ namespace WebCore.Services
                             ADT = passengers.Where(m => m.PassengerType == "ADT").Count(),
                             CNN = passengers.Where(m => m.PassengerType == "CNN").Count(),
                             INF = passengers.Where(m => m.PassengerType == "INF").Count(),
-                            Direction = direction,
+                            TicketType = direction,
                             NumberInParty = flight.NumberInParty,
                             OriginLocation = flight.OriginLocation,
                             DestinationLocation = flight.DestinationLocation,
@@ -411,22 +411,19 @@ namespace WebCore.Services
             return result;
         }
 
+        public List<GenderModel> genderData = new List<GenderModel>{
+            new GenderModel { Text = "Nam", Value = 1 },
+            new GenderModel { Text = "Nữ", Value = 2 }
+        };
+        public List<GenderModel> ticketTypeData = new List<GenderModel>{
+            new GenderModel { Text = "Một chiều", Value = 1 },
+            new GenderModel { Text = "Khứ hồi", Value = 2 }
+        };
         public static string DDLGender(string str = null)
         {
             string result = string.Empty;
-            List<GenderModel> genderModels = new List<GenderModel>
-            {
-                new GenderModel {
-                    Text = "Nam",
-                    Value = 1
-                },
-                new GenderModel {
-                    Text = "Nữ",
-                    Value = 2
-                }
-            };
-
-            foreach (var item in genderModels)
+            BookTicketService bookTicketService = new BookTicketService();
+            foreach (var item in bookTicketService.genderData)
             {
                 string attrActive = "";
                 if (str != null && item.Value == ConvertGenderToNumber(str))
@@ -438,7 +435,11 @@ namespace WebCore.Services
             return result;
         }
 
-
+        public static List<GenderModel> TicketTypeData()
+        {
+            BookTicketService bookTicketService = new BookTicketService();
+            return bookTicketService.ticketTypeData;   
+        }
 
     }
 

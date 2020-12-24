@@ -32,11 +32,12 @@ namespace WebCore.Entities
         public string Summary { get; set; }
         public double Amount { get; set; }
         public int Status { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime IssueDate { get; set; }
         public int MailStatus { get; set; }
         public int OrderStatus { get; set; }
         public string ProviderCode { get; set; }
-        
+        public DateTime ExportDate { get; set; }
+
     }
 
     // model
@@ -61,6 +62,7 @@ namespace WebCore.Entities
     public partial class BookOrderResult //: WEBModelResult
     {
         public string ID { get; set; }
+        public string BookOrderID { get; set; }
         public string TicketNo { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
@@ -79,20 +81,23 @@ namespace WebCore.Entities
         public string AirlineID { get; set; }
         public string PNR { get; set; }
         public double Amount { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime IssueDate { get; set; }
+        public DateTime ExportDate { get; set; }
         public double FareBasic { get; set; }
         public double FareTax { get; set; }
+        public double VAT { get; set; }
+        public string Unit { get; set; }
 
         [NotMapped]
-        public double TotalAmount => FareBasic + FareTax + ProviderFee + AgentPrice + AgentFee;
+        public double TotalAmount => FareBasic + FareTax + VAT + ProviderFee + AgentPrice + AgentFee;
         [NotMapped]
-        public string OrderDateText => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
+        public string IssueDateText => TimeFormat.FormatToViewDate(IssueDate, Helper.Language.LanguagePage.GetLanguageCode);
+        [NotMapped]
+        public string ExportDateText => TimeFormat.FormatToViewDate(ExportDate, Helper.Language.LanguagePage.GetLanguageCode);
         [NotMapped]
         public string CustomerTypeText => CustomerTypeService.GetNameByID(CustomerType);
         [NotMapped]
         public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
-        [NotMapped]
-        private string TimeBooking => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
     }
     public partial class BookingResult //: WEBModelResult
     {
@@ -117,20 +122,20 @@ namespace WebCore.Entities
         public string CompanyCode { get; set; }
         public string CompanyID { get; set; }
         public int Status { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime IssueDate { get; set; }
         private int ItineraryType { get; set; }
         public int MailStatus { get; set; }
         public int OrderStatus { get; set; }
         [NotMapped]
         public double TotalAmount => FareBasic + FareTax + ProviderFee + AgentPrice + AgentFee;
         [NotMapped]
-        public string OrderDateText => TimeFormat.FormatToViewDate(OrderDate, Helper.Language.LanguagePage.GetLanguageCode);
+        public string IssueDateText => TimeFormat.FormatToViewDate(IssueDate, Helper.Language.LanguagePage.GetLanguageCode);
         [NotMapped]
         public string CustomerTypeText => CustomerTypeService.GetNameByID(CustomerType);
         [NotMapped]
         public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
         [NotMapped]
-        private string TimeBooking => TimeFormat.FormatToViewDate(Convert.ToDateTime(OrderDate), LanguageCode.Vietnamese.ID);
+        private string TimeBooking => TimeFormat.FormatToViewDate(Convert.ToDateTime(IssueDate), LanguageCode.Vietnamese.ID);
 
     }
 

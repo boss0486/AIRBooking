@@ -54,7 +54,7 @@ namespace WebCore.Services
                 Page = model.Page,
                 AreaID = model.AreaID,
                 TimeZoneLocal = model.TimeZoneLocal
-            }, dateColumn: "OrderDate");
+            }, dateColumn: "IssueDate");
             if (searchResult != null)
             {
                 if (searchResult.Status == 1)
@@ -94,17 +94,18 @@ namespace WebCore.Services
             //    whereCondition += " AND o.AgentID = @AgentID";
             //}
             // query
-            string sqlQuery = @"SELECT bp.ID, bp.TicketNo, bp.FullName, bp.Gender, 
+            string sqlQuery = @"SELECT bp.ID, bp.BookOrderID, bp.TicketNo, bp.FullName, bp.Gender, 
             c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
             a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
-			o.ProviderCode, o.AirlineID, o.ItineraryType, o.PNR, o.Amount, o.OrderDate,
+			o.ProviderCode, o.AirlineID, o.ItineraryType, o.PNR, o.Amount, o.IssueDate, o.ExportDate, o.Unit,
             (SELECT SUM (Amount) FROM App_BookPrice WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType) as FareBasic,
-            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType) as FareTax
+            (SELECT SUM (Amount) FROM App_BookTax WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType AND TaxCode !='UE3') as FareTax,
+            (SELECT Amount FROM App_BookTax WHERE BookOrderID = bp.BookOrderID AND PassengerType = bp.PassengerType AND TaxCode ='UE3') as VAT
             FROM App_BookPassenger as bp
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = bp.BookOrderID
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = bp.BookOrderID
 			LEFT JOIN App_BookOrder as o ON o.ID = bp.BookOrderID
-            WHERE (bp.TicketNo LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + "  AND o.OrderStatus = @OrderStatus ORDER BY o.OrderDate, bp.TicketNo, bp.FullName  ASC";
+            WHERE (bp.TicketNo LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%' OR bp.FullName LIKE N'%'+ @Query +'%') " + whereCondition + "  AND o.OrderStatus = @OrderStatus ORDER BY o.IssueDate, bp.TicketNo, bp.FullName  ASC";
             bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Exported, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             return bookOrderResult;
         }
@@ -130,7 +131,7 @@ namespace WebCore.Services
                 Page = model.Page,
                 AreaID = model.AreaID,
                 TimeZoneLocal = model.TimeZoneLocal
-            }, dateColumn: "OrderDate");
+            }, dateColumn: "IssueDate");
             if (searchResult != null)
             {
                 if (searchResult.Status == 1)
@@ -185,7 +186,7 @@ namespace WebCore.Services
             FROM App_BookOrder as o 
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
-            WHERE (o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.OrderDate ASC";
+            WHERE (o.PNR LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY o.IssueDate ASC";
             bookOrderResult = _connection.Query<BookingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)BookOrderStatus.Booking, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             // reusult
             return bookOrderResult;
@@ -249,18 +250,18 @@ namespace WebCore.Services
 
             List<BookingResult> dtList = BookingData(model);
             if (dtList.Count == 0)
-                return null;
+                return Notifization.NotFound();
             //     
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
-                DateTime dateMin = dtList.Min(m => m.OrderDate);
-                DateTime dateMax = dtList.Max(m => m.OrderDate);
+                DateTime dateMin = dtList.Min(m => m.IssueDate);
+                DateTime dateMax = dtList.Max(m => m.IssueDate);
 
                 string fileName = "DỮ LIỆU ĐẶT CHỖ";
                 string alias = Helper.Page.Library.FormatToUni2NONE(fileName);
                 // set month / sheet
-                List<string> sheetData = dtList.Select(m => m.OrderDate.ToString("yyyy-MM")).ToList();
+                List<string> sheetData = dtList.Select(m => m.IssueDate.ToString("yyyy-MM")).ToList();
                 sheetData = sheetData.GroupBy(m => m).Select(m => m.Key).ToList();
                 foreach (var sheet in sheetData)
                 {
@@ -308,14 +309,14 @@ namespace WebCore.Services
                     int recordIndex = 3;
                     int cnt = 1;
                     // / data to sheet
-                    List<BookingResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
+                    List<BookingResult> dtListForSheet = dtList.Where(m => m.IssueDate.ToString("yyyy-MM") == sheet).ToList();
                     if (dtListForSheet.Count == 0)
                         continue;
                     //
                     foreach (var item in dtListForSheet)
                     {
                         workSheet.Cells[recordIndex, 1].Value = cnt;
-                        workSheet.Cells[recordIndex, 2].Value = item.OrderDateText;
+                        workSheet.Cells[recordIndex, 2].Value = item.IssueDateText;
                         workSheet.Cells[recordIndex, 3].Value = item.CustomerTypeText;
                         workSheet.Cells[recordIndex, 4].Value = item.AgentCode;
                         workSheet.Cells[recordIndex, 5].Value = item.TicketingName;
@@ -390,112 +391,167 @@ namespace WebCore.Services
 
             List<BookOrderResult> dtList = OrderData(model);
             if (dtList.Count == 0)
-                return null;
+                return Notifization.NotFound();
             //     
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
-                DateTime dateMin = dtList.Min(m => m.OrderDate);
-                DateTime dateMax = dtList.Max(m => m.OrderDate);
+                DateTime dateMin = dtList.Min(m => m.IssueDate);
+                DateTime dateMax = dtList.Max(m => m.IssueDate);
 
                 string fileName = "DỮ LIỆU XUẤT VÉ";
                 string alias = Helper.Page.Library.FormatToUni2NONE(fileName);
                 // set month / sheet
-                List<string> sheetData = dtList.Select(m => m.OrderDate.ToString("yyyy-MM")).ToList();
+                List<string> sheetData = dtList.Select(m => m.IssueDate.ToString("yyyy-MM")).ToList();
                 sheetData = sheetData.GroupBy(m => m).Select(m => m.Key).ToList();
+                BookTicketService bookTicketService = new BookTicketService(_connection);
+
+
                 foreach (var sheet in sheetData)
                 {
                     ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets.Add("T:" + sheet);
                     workSheet.TabColor = System.Drawing.Color.Black;
                     workSheet.DefaultRowHeight = 12;
                     //Header of table   
-                    workSheet.Cells["A1:M1"].Merge = true;
-                    workSheet.Cells["A1:M1"].Value = fileName + " " + TimeFormat.FormatToViewDate(dateMin, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH) + " - " + TimeFormat.FormatToViewDate(dateMax, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH);
-                    workSheet.Cells["A1:M1"].Style.Font.Name = "Arial Unicode MS";
-                    workSheet.Cells["A1:M1"].Style.Font.Size = 16;
+                    workSheet.Cells["A1:V1"].Merge = true;
+                    workSheet.Cells["A1:V1"].Value = fileName + " " + TimeFormat.FormatToViewDate(dateMin, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH) + " - " + TimeFormat.FormatToViewDate(dateMax, LanguagePage.GetLanguageCode, (int)ModelEnum.DateExtension.SLASH);
+                    workSheet.Cells["A1:V1"].Style.Font.Name = "Arial Unicode MS";
+                    workSheet.Cells["A1:V1"].Style.Font.Size = 16;
                     workSheet.Row(1).Height = 35;
-                    workSheet.Cells["A1:M1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    workSheet.Cells["A1:M1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    workSheet.Cells["A1:M1"].Style.Font.Bold = true;
-                    workSheet.Cells["A1:M1"].Style.Font.Color.SetColor(Color.White);
-                    workSheet.Cells["A1:M1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    workSheet.Cells["A1:M1"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
-                    workSheet.Cells["A1:M1"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                    workSheet.Cells["A1:M1"].Style.Border.Bottom.Color.SetColor(Color.Gray);
+                    workSheet.Cells["A1:V1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    workSheet.Cells["A1:V1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    workSheet.Cells["A1:V1"].Style.Font.Bold = true;
+                    workSheet.Cells["A1:V1"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A1:V1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A1:V1"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A1:V1"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells["A1:V1"].Style.Border.Bottom.Color.SetColor(Color.Gray);
                     //title of table  
                     workSheet.Row(2).Height = 20;
-                    workSheet.Cells[2, 1].Value = "#";
-                    workSheet.Cells[2, 2].Value = "Ngày đặt";
-                    workSheet.Cells[2, 3].Value = "Loại khách hàng";
-                    workSheet.Cells[2, 4].Value = "Mã DL";
-                    workSheet.Cells[2, 5].Value = "Nhân viên đặt chỗ";
-                    workSheet.Cells[2, 6].Value = "Loại chuyến bay";
-                    workSheet.Cells[2, 7].Value = "Hãng hàng không";
-                    workSheet.Cells[2, 8].Value = "Mã PNR";
-                    workSheet.Cells[2, 9].Value = "Giá hãng";
-                    workSheet.Cells[2, 10].Value = "Giá DL (chênh)";
-                    workSheet.Cells[2, 11].Value = "Phí xuất vé";
-                    workSheet.Cells[2, 12].Value = "Phí đại lý";
-                    workSheet.Cells[2, 13].Value = "Tổng chi phí";
-
-
+                    workSheet.Cells[2, 01].Value = "#";
+                    workSheet.Cells[2, 02].Value = "Ngày xuất vé";
+                    workSheet.Cells[2, 03].Value = "Số vé";
+                    workSheet.Cells[2, 04].Value = "Tên hành khách";
+                    workSheet.Cells[2, 05].Value = "Nhà cung cấp";
+                    workSheet.Cells[2, 06].Value = "Mã đại lý";
+                    workSheet.Cells[2, 07].Value = "Loại khách hàng";
+                    workSheet.Cells[2, 08].Value = "NV. Phụ trách";
+                    //
+                    workSheet.Cells[2, 09].Value = "L.hành trình";
+                    workSheet.Cells[2, 10].Value = "Hãng HK";
+                    workSheet.Cells[2, 11].Value = "Hành trình";
+                    workSheet.Cells[2, 12].Value = "Ngày khởi hành";
+                    workSheet.Cells[2, 13].Value = "Loại vé";
+                    workSheet.Cells[2, 14].Value = "Hạng vé";
+                    //
+                    workSheet.Cells[2, 15].Value = "Giá vé(1)";
+                    workSheet.Cells[2, 16].Value = "Thuế(2)";
+                    workSheet.Cells[2, 17].Value = "VAT(3)";
+                    workSheet.Cells[2, 18].Value = "Giá DL(4)";
+                    workSheet.Cells[2, 19].Value = "Phí xuất vé(5)";
+                    workSheet.Cells[2, 20].Value = "Phí đại lý(6)";
+                    workSheet.Cells[2, 21].Value = "Tổng chi phí";
+                    workSheet.Cells[2, 22].Value = "Đơn vị";
                     //Body of table  
-                    workSheet.Cells["A2:M2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    workSheet.Cells["A2:M2"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
-                    workSheet.Cells["A2:M2"].Style.Font.Color.SetColor(Color.White);
-                    workSheet.Cells["A2:M2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    workSheet.Cells["A2:V2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["A2:V2"].Style.Fill.BackgroundColor.SetColor(Color.Teal);
+                    workSheet.Cells["A2:V2"].Style.Font.Color.SetColor(Color.White);
+                    workSheet.Cells["A2:V2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     //
                     int recordIndex = 3;
                     int cnt = 1;
                     // / data to sheet
-                    List<BookOrderResult> dtListForSheet = dtList.Where(m => m.OrderDate.ToString("yyyy-MM") == sheet).ToList();
+                    List<BookOrderResult> dtListForSheet = dtList.Where(m => m.IssueDate.ToString("yyyy-MM") == sheet).ToList();
                     if (dtListForSheet.Count == 0)
                         continue;
                     //
                     foreach (var item in dtListForSheet)
                     {
-                        workSheet.Cells[recordIndex, 1].Value = cnt;
-                        workSheet.Cells[recordIndex, 2].Value = item.OrderDateText;
-                        workSheet.Cells[recordIndex, 3].Value = item.CustomerTypeText;
-                        workSheet.Cells[recordIndex, 4].Value = item.AgentCode;
-                        workSheet.Cells[recordIndex, 5].Value = item.TicketingName;
-                        workSheet.Cells[recordIndex, 6].Value = item.ItineraryText;
-                        workSheet.Cells[recordIndex, 7].Value = item.AirlineID;
-                        workSheet.Cells[recordIndex, 8].Value = item.PNR;
-                        workSheet.Cells[recordIndex, 9].Value = item.Amount;
-                        workSheet.Cells[recordIndex, 10].Value = item.AgentPrice;
-                        workSheet.Cells[recordIndex, 11].Value = item.ProviderFee;
-                        workSheet.Cells[recordIndex, 12].Value = item.AgentFee;
-                        workSheet.Cells[recordIndex, 13].Value = item.TotalAmount;
+                        string itinerary = string.Empty;
+                        string departureDate = string.Empty;
+                        string ticketType = string.Empty;
+                        string resBookDesigCode = string.Empty;
+                        string direction = string.Empty;
+                        BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == item.BookOrderID).FirstOrDefault();
+                        if (bookTicket != null)
+                        {
+                            itinerary = "1:" + bookTicket.OriginLocation + "-" + bookTicket.DestinationLocation;
+                            departureDate = Helper.TimeData.TimeFormat.FormatToViewDate(bookTicket.DepartureDateTime, LanguagePage.GetLanguageCode);
+                            ticketType = BookTicketService.TicketTypeData().Where(m => m.Value == bookTicket.TicketType).FirstOrDefault().Text;
+                            resBookDesigCode = bookTicket.ResBookDesigCode;
+                        }
+                        workSheet.Cells[recordIndex, 01].Value = cnt;
+                        workSheet.Cells[recordIndex, 02].Value = item.ExportDateText;
+                        workSheet.Cells[recordIndex, 03].Value = item.TicketNo;
+                        workSheet.Cells[recordIndex, 04].Value = item.FullName.ToUpper();
+                        workSheet.Cells[recordIndex, 05].Value = item.ProviderCode;
+                        workSheet.Cells[recordIndex, 06].Value = item.AgentCode;
+                        workSheet.Cells[recordIndex, 07].Value = item.CustomerTypeText;
+                        workSheet.Cells[recordIndex, 08].Value = item.TicketingName;
+                        //
+                        workSheet.Cells[recordIndex, 09].Value = item.ItineraryText;
+                        workSheet.Cells[recordIndex, 10].Value = item.AirlineID;
+                        workSheet.Cells[recordIndex, 11].Value = itinerary;
+                        workSheet.Cells[recordIndex, 12].Value = departureDate;
+                        workSheet.Cells[recordIndex, 13].Value = ticketType;
+                        workSheet.Cells[recordIndex, 14].Value = resBookDesigCode;
+                        //
+                        workSheet.Cells[recordIndex, 15].Value = item.FareBasic;
+                        workSheet.Cells[recordIndex, 16].Value = item.FareTax;
+                        workSheet.Cells[recordIndex, 17].Value = item.VAT;
+                        workSheet.Cells[recordIndex, 18].Value = item.AgentPrice;
+                        workSheet.Cells[recordIndex, 19].Value = item.ProviderFee;
+                        workSheet.Cells[recordIndex, 20].Value = item.AgentFee;
+                        workSheet.Cells[recordIndex, 21].Value = item.TotalAmount;
+                        workSheet.Cells[recordIndex, 22].Value = item.Unit;
                         ////// attribute 
-                        workSheet.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        workSheet.Cells[recordIndex, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        workSheet.Cells[recordIndex, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        workSheet.Cells[recordIndex, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        workSheet.Cells[recordIndex, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        workSheet.Cells[recordIndex, 13].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 01].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                         //
-                        workSheet.Cells[recordIndex, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        workSheet.Cells[recordIndex, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         //
-                        workSheet.Cells[recordIndex, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 15].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 16].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 17].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 18].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 19].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 20].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        workSheet.Cells[recordIndex, 20].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                         //
-                        workSheet.Cells[recordIndex, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 22].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        //
+                        workSheet.Cells[recordIndex, 09].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         workSheet.Cells[recordIndex, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         workSheet.Cells[recordIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         workSheet.Cells[recordIndex, 12].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         workSheet.Cells[recordIndex, 13].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         //
-                        workSheet.Cells[recordIndex, 6].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
-                        workSheet.Cells[recordIndex, 7].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         //
-                        workSheet.Cells[recordIndex, 8].Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                        workSheet.Cells[recordIndex, 15].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 16].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 17].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 18].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 19].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 20].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 21].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[recordIndex, 22].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         //
-                        workSheet.Cells[recordIndex, 9].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
-                        workSheet.Cells[recordIndex, 10].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
-                        workSheet.Cells[recordIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
-                        workSheet.Cells[recordIndex, 12].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
-                        workSheet.Cells[recordIndex, 13].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 09].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 10].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 12].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 13].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        workSheet.Cells[recordIndex, 14].Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                        //
+                        workSheet.Cells[recordIndex, 15].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 16].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 17].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 18].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 19].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 20].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        workSheet.Cells[recordIndex, 21].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        //
+                        workSheet.Cells[recordIndex, 22].Style.Fill.BackgroundColor.SetColor(Color.Aquamarine);
                         ////
                         recordIndex++;
                         cnt++;
