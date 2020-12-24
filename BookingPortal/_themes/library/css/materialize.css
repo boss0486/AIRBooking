@@ -264,8 +264,8 @@ form p {
     [type="checkbox"].filled-in:not(:checked) + label:after {
         height: 16px;
         width: 16px;
-        background-color: #FFF;
-        border: 1px solid #CAC6C6;
+        background-color: #F1FFE0;
+        border: 1px solid #26A69A;
         top: 0px;
         z-index: 0;
     }
@@ -313,8 +313,8 @@ form p {
     }
 
     [type="checkbox"].filled-in:disabled:not(:checked) + label:after {
-        background-color: #FFF;
-        border: 1px solid #CAC6C6;
+       /* background-color: #FFF;
+        border: 1px solid #CAC6C6;*/
         cursor: not-allowed;
     }
 

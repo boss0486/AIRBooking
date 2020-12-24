@@ -5580,36 +5580,45 @@ table, .table {
     border-color: #ABDED4;
 }
 
+    .table-bordered thead tr td, .table-bordered thead tr th {
+        white-space: nowrap;
+        padding: 6px 4px;
+    }
+
     .table-bordered tbody tr td {
         white-space: nowrap;
         padding: 6px 4px;
         height: 32px;
     }
 
-        .table-bordered tbody tr td .btn {
-            height: 20px;
-            display: inline-block;
-            line-height: 0px;
-            border: none;
+    .table-bordered tr th:nth-child(1), .table-bordered tr td:nth-child(1) {
+        background: #D9F1EC
+    }
+
+    .table-bordered tbody tr td .btn {
+        height: 20px;
+        display: inline-block;
+        line-height: 0px;
+        border: none;
+    }
+
+        .table-bordered tbody tr td .btn.min-default {
+            min-width: 60px;
         }
 
-            .table-bordered tbody tr td .btn.min-default {
-                min-width: 60px;
-            }
+    .table-bordered tbody tr td input {
+        width: 90%;
+        height: 19px;
+        border-radius: 0px;
+        border: none;
+        padding: 0px 1px;
+        text-align: right;
+        background: inherit;
+    }
 
-        .table-bordered tbody tr td input {
-            width: 90%;
-            height: 19px;
-            border-radius: 0px;
-            border: none;
-            padding: 0px 1px;
-            text-align: right;
-            background: inherit;
+        .table-bordered tbody tr td input:hover, .table-bordered tbody tr td input:focus {
+            background: #FFF;
         }
-
-            .table-bordered tbody tr td input:hover, .table-bordered tbody tr td input:focus {
-                background: #FFF;
-            }
 
 
 .table-inline tr td, .table-inline tr th {
@@ -5621,7 +5630,7 @@ table, .table {
 }
 
 .table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
-    border-bottom-width: 1px; 
+    border-bottom-width: 1px;
 }
 
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
