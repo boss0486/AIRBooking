@@ -48,28 +48,24 @@ var TransactionDepositHistoryController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //  role
-                             
+
                             var title = item.Title;
                             var amount = item.Amount;
-                            var senderName = item.SenderID + " (" + item.SenderName + ") ";  
-                            var receivedId = item.ReceivedID;  
                             var createdDate = item.CreatedDate;
                             var transactionTypeText = "";
                             var transactionType = item.TransactionType;
                             if (transactionType == 1)
                                 transactionTypeText = "Nhận";
                             else
-                                transactionTypeText = "Chuyển";
+                                transactionTypeText = "Nạp";
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
-                                 <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td class=''>${senderName}</td>                                    
-                                 <td>${receivedId}</td>                                     
+                                 <td class="text-right">${rowNum}&nbsp;</td>                                                                     
                                  <td>${title}</td>                                                                      
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                 
                                  <td>${transactionTypeText}</td>                                    
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
                                  <td class="text-center">${createdDate}</td>
                             </tr>`;
                         });

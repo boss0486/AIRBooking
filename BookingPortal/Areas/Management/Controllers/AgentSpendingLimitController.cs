@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("TransactionCustomerSpending")]
-    public class TransactionCustomerSpendingController : CMSController
+    [RoutePrefix("AgentSpendingLimit")]
+    public class AgentSpendingLimitController : CMSController
     {
         // GET: BackEnd/bank
         public ActionResult DataList()
@@ -23,15 +23,19 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult Create()
+        public ActionResult Setting(string id)
         {
+            AgentSpendingLimitService service = new AgentSpendingLimitService();
+            AgentSpendingLimitResult model = service.ViewgentSpendingLimit(id);
+            if (model != null)
+                return View(model);
+            //
             return View();
         }
-
         public ActionResult Details(string id)
         {
-            TransactionCustomerSpendingService service = new TransactionCustomerSpendingService();
-            TransactionCustomerSpendingResult model = service.GetTransactionSpendingModel(id);
+            AgentSpendingLimitService service = new AgentSpendingLimitService();
+            AgentSpendingLimitResult model = service.ViewgentSpendingLimit(id);
             if (model != null)
                 return View(model);
             //
@@ -44,48 +48,29 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new TransactionCustomerSpendingService())
-                { 
+                using (var service = new AgentSpendingLimitService())
+                {
                     return service.DataList(model);
                 }
             }
             catch (Exception ex)
             {
-                return Notifization.NotService;
+                return Notifization.TEST("::" + ex);
             }
         }
 
         [HttpPost]
-        [Route("Action/Create")]
-        public ActionResult Create(TransactionCustomerSpendingCreateModel model)
+        [Route("Action/Setting")]
+        public ActionResult Setting(AgentSpendingLimitSettingModel model)
         {
             try
             {
-                using (var service = new TransactionCustomerSpendingService())
-                    return service.Create(model);
+                using (var service = new AgentSpendingLimitService())
+                    return service.Setting(model);
             }
             catch (Exception ex)
             {
-                return Notifization.NotService;
-            }
-        }
-
-        [HttpPost]
-        [Route("Action/Delete")]
-        public ActionResult Delete(TransactionSpendingIDModel model)
-        {
-            try
-            {
-                using (var service = new TransactionCustomerSpendingService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid();
-                    return service.Delete(model.ID);
-                }
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
+                return Notifization.TEST(">>:" + ex);
             }
         }
     }

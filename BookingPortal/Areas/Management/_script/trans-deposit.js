@@ -6,7 +6,7 @@ var _TransactionDepositController = {
         _TransactionDepositController.registerEvent();
     },
     registerEvent: function () {
-        $('#btnCreate').off('click').on('click', function () {
+        $('#btnDeposit').off('click').on('click', function () {
             var flg = true;
             //var ddlSupplier = $('#ddlSupplier').val();
             var ddlAgentReceived = $('#ddlAgentReceived').val();
@@ -162,7 +162,7 @@ var _TransactionDepositController = {
             // submit
 
             if (flg) {
-                _TransactionDepositController.Create();
+                _TransactionDepositController.Deposit();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
@@ -405,7 +405,7 @@ var _TransactionDepositController = {
             }
         });
     },
-    Create: function () {
+    Deposit: function () {
         //var ddlSupplier = $('#ddlSupplier').val();
         //if (ddlSupplier == undefined || ddlSupplier == null) {
         //    ddlSupplier = '';
@@ -437,7 +437,7 @@ var _TransactionDepositController = {
             Enabled: 1,
         };
         AjaxFrom.POST({
-            url: URLC + '/Create',
+            url: URLC + '/deposit',
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -538,7 +538,12 @@ $(document).on("change", "#ddlAgentReceived", function () {
     }
     else {
         $('#lblAgentReceived').html('');
-    }
+    } 
+    $('#lblAgentReceivedCode').html('');
+    var codeid = $(this).find(':selected').data('codeid');
+    $('#lblAgentReceivedCode').html(codeid);
+        // load customer
+
 });
 $(document).on("keyup", "#txtAmount", function () {
     var txtAmount = $(this).val();

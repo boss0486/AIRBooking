@@ -40,6 +40,7 @@ namespace Helper.Language
             public static string BtnCreate { get; set; } = "Thêm mới";
             public static string BtnUpdate { get; set; } = "Cập nhật";
             public static string BtnDelete { get; set; } = "Xóa";
+            public static string BtnDeposit { get; set; } = "Nạp";
             public static string BtnSearch { get; set; } = "Tìm kiếm";
             public static string BtnClose { get; set; } = "Đóng";
             public static string BtnOpen { get; set; } = "Mở";
@@ -287,7 +288,7 @@ namespace Helper.Language
                 // set default
                 return string.Empty;
             }
-        } 
+        }
     }
 
 }

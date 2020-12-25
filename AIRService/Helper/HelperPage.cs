@@ -581,6 +581,30 @@ namespace Helper.Page
                 return string.Empty;
             }
         }
+        public static string PathDeposit()
+        {
+            try
+            {
+                var meta = new MetaSEO();
+                string _url = string.Empty;
+                // area
+                if (!string.IsNullOrWhiteSpace(MetaSEO.AreaText))
+                    _url += "/" + MetaSEO.AreaText;
+                // controller
+                if (!string.IsNullOrWhiteSpace(MetaSEO.ControllerText))
+                    _url += "/" + MetaSEO.ControllerText;
+                // action
+                if (string.IsNullOrWhiteSpace(_url))
+                    return string.Empty;
+                //
+                _url += "/deposit";
+                return _url.ToLower();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
         public static string PathBase(string action = null)
         {
             try

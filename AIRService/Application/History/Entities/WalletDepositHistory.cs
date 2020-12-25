@@ -19,14 +19,13 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
         public double Amount { get; set; }
+        public string TransactionID { get; set; }
         public int TransactionType { get; set; }
-        public int TransactionOriginal { get; set; }
-        public string TransactionOriginalID { get; set; }
         public int Status { get; set; }
 
     }
@@ -34,12 +33,11 @@ namespace WebCore.Entities
     // model
     public class WalletDepositHistoryCreateModel
     {
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         public double Amount { get; set; }
         public double NewBalance { get; set; }
+        public string TransactionID { get; set; }
         public int TransactionType { get; set; }
-        public int TransactionOriginal { get; set; }
-        public string TransactionOriginalID { get; set; }
     }
     public class WalletDepositHistoryUpdateModel : WalletDepositHistoryCreateModel
     {
@@ -53,16 +51,16 @@ namespace WebCore.Entities
     public partial class WalletDepositHistoryResult : WEBModelResult
     {
         public string ID { get; set; }
-        string _clientId { get; set; }
-        public string ClientID
+        string _agentId { get; set; }
+        public string AgentID
         {
             get
             {
-                return AirAgentService.GetCustomerCodeID(_clientId);
+                return AirAgentService.GetCustomerCodeID(_agentId);
             }
             set
             {
-                _clientId = value;
+                _agentId = value;
             }
         }
         public string Title { get; set; }
@@ -70,8 +68,6 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
-        public int TransactionOriginal { get; set; }
-        public string TransactionOriginalID { get; set; }
         public int Status { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace WebCore.Services
          
         //##############################################################################################################################################################################################################################################################
 
-        public static string GetClientIDByUserID(string userId)
+        public static string GetAgentIDByUserID(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
                 return string.Empty;

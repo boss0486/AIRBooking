@@ -66,9 +66,9 @@ namespace WebCore.Services
             }
             else if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
                 whereCondition += " AND (AgentSentID = '" + clientId + "' OR AgentReceivedID = '" + clientId + "')";
-            }   
+            }
             else
             {
                 return Notifization.AccessDenied(MessageText.AccessDenied);
@@ -102,7 +102,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult Create(TransactionDepositCreateModel model)
+        public ActionResult Deposit(TransactionDepositCreateModel model)
         {
             _connection.Open();
             string userId = Helper.Current.UserLogin.IdentifierID;
@@ -119,7 +119,7 @@ namespace WebCore.Services
                     //
                     string title = "Giao dịch nạp tiền";
                     string summary = model.Summary;
-                    string transactionId = model.TransactionCode;
+                    string transactionCode = model.TransactionCode;
                     string bankSentId = model.BankSentID;
                     string bankSentNumber = model.BankSentNumber;
                     string bankReceivedId = model.BankReceivedID;
@@ -133,11 +133,11 @@ namespace WebCore.Services
                     //
                     agentReceivedId = agentReceivedId.Trim();
                     // transaction 
-                    if (string.IsNullOrWhiteSpace(transactionId))
+                    if (string.IsNullOrWhiteSpace(transactionCode))
                         return Notifization.Invalid("Không được để trống mã giao dịch");
-                    transactionId = transactionId.Trim();
+                    transactionCode = transactionCode.Trim();
 
-                    if (!Validate.TestText(transactionId))
+                    if (!Validate.TestText(transactionCode))
                         return Notifization.Invalid("Mã giao dịch không hợp lệ");
                     // bank name send
                     if (string.IsNullOrWhiteSpace(bankSentId))
@@ -173,7 +173,7 @@ namespace WebCore.Services
                     if (!Validate.TestDate(receivedDate))
                         return Notifization.Invalid("Ngày nhận tiền không hợp lệ");
                     //
-                    title = "Nạp tiền vào tài khoản";
+                    title = "Nạp tiền";
                     // summary valid               
                     if (!string.IsNullOrWhiteSpace(summary))
                     {
@@ -200,6 +200,11 @@ namespace WebCore.Services
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == userId, transaction: _transaction).FirstOrDefault();
                         agentSentId = clientLogin.ClientID;
+                        //
+                        string providerId = agentReceived.ParentID;
+                        if (providerId != clientLogin.ClientID)
+                            return Notifization.Invalid(MessageText.Forbidden);
+                        //
                     }
                     else
                     {
@@ -217,6 +222,7 @@ namespace WebCore.Services
 
                     // check bank
                     BankService bankService = new BankService(_connection);
+
                     Bank bankSend = bankService.GetAlls(m => m.ID == bankSentId, transaction: _transaction).FirstOrDefault();
                     if (bankSend == null)
                         return Notifization.Invalid("Ngân hàng gửi không hợp lệ");
@@ -225,8 +231,13 @@ namespace WebCore.Services
                     if (bankReceive == null)
                         return Notifization.Invalid("Ngân hàng nhận không hợp lệ");
                     // 
-                    TransactionDepositService transactionDeposit = new TransactionDepositService(_connection);
-                    var transactionDepositId = transactionDeposit.Create<string>(new TransactionDeposit()
+                    TransactionDepositService transactionDepositService = new TransactionDepositService(_connection);
+                    transactionCode = transactionCode.ToLower().Trim();
+                    TransactionDeposit transactionDeposit = transactionDepositService.GetAlls(m => m.TransactionCode == transactionCode, transaction: _transaction).FirstOrDefault();
+                    if (transactionDeposit != null)
+                        return Notifization.Invalid("Mã giao dịch đã được sử dụng");
+                    //
+                    var transactionDepositId = transactionDepositService.Create<string>(new TransactionDeposit()
                     {
                         Title = title,
                         Alias = Helper.Page.Library.FormatToUni2NONE(title),
@@ -244,73 +255,33 @@ namespace WebCore.Services
                         BankReceivedNumber = bankReceivedNumber,
                         ReceivedDate = TimeFormat.FormatToServerDate(receivedDate),
                         Amount = amount,
-                        TransactionCode = transactionId,
+                        TransactionCode = transactionCode.ToLower(),
                         TransactionStatus = (int)TransactionEnum.TransactionType.IN,
                         Enabled = enabled,
                     }, transaction: _transaction);
 
-                    // send history ************************************************************************************************************************************
-                    #region
-                    WalletClientMessageModel balanceSender = WalletService.GetBalanceByClientID(agentSentId, dbConnection: _connection, dbTransaction: _transaction);
-                    //
-                    if (!balanceSender.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
-                    WalletClientMessageModel changeInvestmentBalance = WalletService.ChangeInvestmentBalance(new WalletClientChangeModel { ClientID = agentSentId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!changeInvestmentBalance.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
-                    TransactionHistoryMessageModel loggerWalletInvestmentHistory = LoggerHistoryService.LoggerWalletInvestmentHistory(new WalletInvestmentHistoryCreateModel
-                    {
-                        ClientID = agentReceivedId,
-                        Amount = amount,
-                        NewBalance = balanceSender.InvestedAmount + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN,
-                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.DEPOSIT
-                    }, dbConnection: _connection, dbTransaction: _transaction);
-                    //
-                    if (!loggerWalletInvestmentHistory.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    #endregion
-                    //
-                    // receive history ************************************************************************************************************************************
-                    #region
-                    WalletClientMessageModel balanceReceived = WalletService.GetBalanceByClientID(agentReceivedId, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!balanceReceived.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    // update deposit wallet 
-                    WalletClientMessageModel changeBalanceDeposit = WalletService.ChangeDepositBalance(new WalletClientChangeModel { ClientID = agentReceivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!changeBalanceDeposit.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
                     TransactionHistoryMessageModel loggerWalletDepositHistory1 = LoggerHistoryService.LoggerWalletDepositHistory(new WalletDepositHistoryCreateModel
                     {
-                        ClientID = agentReceivedId,
+                        AgentID = agentSentId,
                         Amount = amount,
-                        NewBalance = balanceReceived.DepositBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.OUT,
-                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.DEPOSIT
+                        NewBalance = +amount,
+                        TransactionType = (int)TransactionEnum.TransactionType.OUT
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
                     if (!loggerWalletDepositHistory1.Status)
                         return Notifization.Invalid(MessageText.Invalid);
-                    // update spending wallet 
-                    WalletClientMessageModel changeBalanceSpending = WalletService.ChangeSpendingBalance(new WalletClientChangeModel { ClientID = agentReceivedId, Amount = amount, TransactionType = (int)TransactionEnum.TransactionType.IN }, dbConnection: _connection, dbTransaction: _transaction);
-                    if (!changeBalanceSpending.Status)
-                        return Notifization.Invalid(MessageText.Invalid);
                     //
-                    TransactionHistoryMessageModel loggerWalletSpendingHistory = LoggerHistoryService.LoggerWalletSpendingHistory(new WalletSpendingHistoryCreateModel
+                    TransactionHistoryMessageModel loggerWalletDepositHistory2 = LoggerHistoryService.LoggerWalletDepositHistory(new WalletDepositHistoryCreateModel
                     {
-                        ClientID = agentReceivedId,
+                        AgentID = agentReceivedId,
                         Amount = amount,
-                        NewBalance = balanceReceived.SpendingBalance + amount,
-                        TransactionType = (int)TransactionEnum.TransactionType.IN,
-                        TransactionOriginal = (int)TransactionEnum.TransactionOriginal.DEPOSIT
+                        NewBalance = +amount,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN
                     }, dbConnection: _connection, dbTransaction: _transaction);
                     //
-                    if (!loggerWalletSpendingHistory.Status)
+                    if (!loggerWalletDepositHistory1.Status)
                         return Notifization.Invalid(MessageText.Invalid);
-                    #endregion
+
                     //commit ************************************************************************************************************************************
                     _transaction.Commit();
                     return Notifization.Success(MessageText.CreateSuccess);
@@ -327,7 +298,7 @@ namespace WebCore.Services
         {
             return Notifization.NotService;
         }
-        public TransactionDepositResult TransactionDepositModel(string id)
+        public TransactionDepositResult ViewTransactionDeposit(string id)
         {
             try
             {
@@ -384,7 +355,7 @@ namespace WebCore.Services
                 if (string.IsNullOrWhiteSpace(id))
                     return Notifization.NotFound(MessageText.Invalid);
                 string langID = Helper.Current.UserLogin.LanguageID;
-                var item = TransactionDepositModel(id);
+                var item = ViewTransactionDeposit(id);
                 if (item == null)
                     return Notifization.NotFound(MessageText.NotFound);
                 //

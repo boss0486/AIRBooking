@@ -39,5 +39,6 @@ namespace WebCore.Entities
         public static string Delete = "Delete";
         public static string Setting = "Setting";
         public static string Details = "Details";
+        public static string Deposit = "Deposit";
     }
 }

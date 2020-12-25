@@ -138,6 +138,10 @@ class HelperModel {
                     cnt++;
                     action += `<a href='${URLA}/Details/${id}' target="_blank"><i class='fas fa-info-circle'></i>&nbsp;${item.Title}</a>`;
                 }
+                if (item.KeyID == "Setting") {
+                    cnt++;
+                    action += `<a href='${URLA}/Setting/${id}' target="_blank"><i class='fas fa-cog'></i>&nbsp;${item.Title}</a>`;
+                }
                 //
                 if (item.KeyID == "Profile") {
                     cnt++;

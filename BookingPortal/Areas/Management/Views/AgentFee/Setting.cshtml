@@ -19,7 +19,7 @@
     if (Helper.Current.UserLogin.IsClientInApplication())
     {
         string userId = Helper.Current.UserLogin.IdentifierID;
-        parentId = ClientLoginService.GetClientIDByUserID(userId);
+        parentId = ClientLoginService.GetAgentIDByUserID(userId);
     }
 }
 <div class="row">

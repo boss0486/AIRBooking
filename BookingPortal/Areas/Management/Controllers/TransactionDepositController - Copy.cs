@@ -23,14 +23,14 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult Create()
+        public ActionResult Deposit()
         {
             return View();
         }
         public ActionResult Details(string id)
         {
             TransactionDepositService service = new TransactionDepositService();
-            TransactionDepositResult model = service.TransactionDepositModel(id);
+            TransactionDepositResult model = service.ViewTransactionDeposit(id);
             if (model != null)
                 return View(model);
             //
@@ -55,13 +55,13 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [Route("Action/Create")]
-        public ActionResult Create(TransactionDepositCreateModel model)
+        [Route("Action/Deposit")]
+        public ActionResult Deposit(TransactionDepositCreateModel model)
         {
             try
             {
                 using (var service = new TransactionDepositService())
-                    return service.Create(model);
+                    return service.Deposit(model);
             }
             catch (Exception ex)
             {

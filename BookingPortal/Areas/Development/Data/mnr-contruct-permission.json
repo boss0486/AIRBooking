@@ -444,8 +444,8 @@
     ]
   },
   {
-    "KeyID": "Customer",
-    "Title": "Khách hàng",
+    "KeyID": "Agent",
+    "Title": "Đại lý",
     "Action": [
       {
         "KeyID": "DataList",
@@ -471,6 +471,30 @@
         "APIRouter": "Action/Delete",
         "Title": "Xóa"
       },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
+    "KeyID": "AgentSpendingLimit",
+    "Title": "Hạn mức đại lý",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Setting",
+        "Method": "Create",
+        "APIRouter": "Action/Setting",
+        "Title": "Thiết lập"
+      }, 
       {
         "KeyID": "Details",
         "Method": "Details",
@@ -616,10 +640,10 @@
         "Title": "D.sách"
       },
       {
-        "KeyID": "Create",
-        "Method": "Create",
-        "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "KeyID": "Deposit",
+        "Method": "Deposit",
+        "APIRouter": "Action/Deposit",
+        "Title": "Nạp"
       },
       {
         "KeyID": "Details",

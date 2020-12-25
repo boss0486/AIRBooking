@@ -15,7 +15,7 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public int Type { get; set; }
     }
-    public class CustomerTypeOption
+    public class AgentTypeOption
     {
         public int ID { get; set; }
         public string Title { get; set; }

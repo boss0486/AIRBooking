@@ -66,8 +66,8 @@ namespace WebCore.Services
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
             {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
-                whereCondition += " AND ClientID = '" + clientId + "'";
+                string agentId = ClientLoginService.GetAgentIDByUserID(userId);
+                whereCondition += " AND AgentID = '" + agentId + "'";
             }
             else
             {
@@ -76,7 +76,7 @@ namespace WebCore.Services
             // 
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"SELECT * FROM App_WalletDepositHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
-   
+
             var dtList = _connection.Query<WalletDepositHistoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), SenderID = userId }).ToList();
             //
             if (dtList.Count == 0)
@@ -107,30 +107,37 @@ namespace WebCore.Services
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string receivedId = model.ClientID;
+            string agentId = model.AgentID;
             double amount = model.Amount;
             double balance = model.NewBalance;
+            string transId = model.TransactionID;
             int transType = model.TransactionType;
-            int transOriginal = model.TransactionOriginal;
             string languageId = Helper.Current.UserLogin.LanguageID;
             //
-            string transState = "x";
+            string title = string.Empty;
+            string transState = "";
             if (transType == (int)TransactionEnum.TransactionType.IN)
-                transState = "+";
-            if (transType == (int)TransactionEnum.TransactionType.OUT)
-                transState = "-";
-            //
-            string title = "Nạp tiền. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
-            string summary = "";
-            WalletDepositHistoryService BalanceCustomerHistoryService = new WalletDepositHistoryService(dbConnection);
-            var id = BalanceCustomerHistoryService.Create<string>(new WalletDepositHistory()
             {
-                ClientID = receivedId,
+                transState = "+";
+                title = "Nạp tiền vào tài khoản.";
+            }
+            if (transType == (int)TransactionEnum.TransactionType.OUT)
+            {
+                transState = "-";
+                title = "Nạp tiền cho đại lý.";
+            }
+            //
+            title += "GD: " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ.";
+            string summary = "";
+            WalletDepositHistoryService walletDepositHistoryService = new WalletDepositHistoryService(dbConnection);
+            var id = walletDepositHistoryService.Create<string>(new WalletDepositHistory()
+            {
+                AgentID = agentId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,
+                TransactionID = transId,
                 TransactionType = transType,
-                TransactionOriginal = transOriginal,
                 Status = 1,
                 Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
             }, transaction: dbTransaction);

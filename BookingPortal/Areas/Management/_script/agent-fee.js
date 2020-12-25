@@ -174,7 +174,7 @@ var AgentFeeConfigController = {
                         });
                         $('tbody#TblData').html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, FlightController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, AgentFeeConfigController.DataList);
                         }
                         return;
                     }

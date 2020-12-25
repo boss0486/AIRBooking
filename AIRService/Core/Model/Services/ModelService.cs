@@ -256,6 +256,7 @@ namespace WebCore.Model.Services
                     result = "Chưa kích hoạt";
                     break;
                 default:
+                    result = "Chưa kích hoạt";
                     break;
             }
             return result;

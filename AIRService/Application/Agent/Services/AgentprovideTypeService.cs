@@ -162,7 +162,7 @@ namespace WebCore.Services
             {
                 string result = string.Empty;
                 CustomerTypeService service = new CustomerTypeService();
-                List<CustomerTypeOption> dtList = service.DataOption();
+                List<AgentTypeOption> dtList = service.DataOption();
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)
@@ -181,18 +181,18 @@ namespace WebCore.Services
                 return string.Empty;
             }
         }
-        public List<CustomerTypeOption> DataOption()
+        public List<AgentTypeOption> DataOption()
         {
             try
             {
-                List<CustomerTypeOption> customerTypeOptions = new List<CustomerTypeOption>
+                List<AgentTypeOption> customerTypeOptions = new List<AgentTypeOption>
                 {
-                    new CustomerTypeOption()
+                    new AgentTypeOption()
                     {
                         ID =  1,
                         Title = "Công ty"
                     },
-                    new CustomerTypeOption()
+                    new AgentTypeOption()
                     {
                        ID =  2,
                         Title = "Khách lẻ"
@@ -202,7 +202,7 @@ namespace WebCore.Services
             }
             catch
             {
-                return new List<CustomerTypeOption>();
+                return new List<AgentTypeOption>();
             }
         }
         //##############################################################################################################################################################################################################################################################
@@ -211,7 +211,7 @@ namespace WebCore.Services
             try
             {
                 CustomerTypeService service = new CustomerTypeService();
-                CustomerTypeOption data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
+                AgentTypeOption data = service.DataOption().Where(m => m.ID == id).FirstOrDefault();
                 return data.Title;
             }
             catch

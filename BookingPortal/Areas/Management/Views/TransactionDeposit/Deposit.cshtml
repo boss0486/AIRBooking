@@ -7,7 +7,7 @@
     string supplierCodeId = string.Empty;
     if (Helper.Current.UserLogin.IsClientInApplication())
     {
-        supplierId = ClientLoginService.GetClientIDByUserID(Helper.Current.UserLogin.IdentifierID);
+        supplierId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
     }
 }
 <div class="row">
@@ -26,7 +26,7 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label class="form-label">MDL:</label>
-                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblSupplierCodeID">@supplierCodeId</label></div>
+                    <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentReceivedCode"></label></div>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
         </div>
         <div class="form-group text-right">
             <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-            <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+            <button id="btnDeposit" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnDeposit</button>
         </div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))

@@ -72,7 +72,7 @@ namespace WebCore.Services
             //
             if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                string clientId = ClientLoginService.GetClientIDByUserID(userId);
+                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
                 // show all with admin application
                 if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsAdminAgentLogged())
                 {

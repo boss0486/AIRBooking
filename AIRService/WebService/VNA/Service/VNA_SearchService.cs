@@ -949,7 +949,7 @@ namespace AIRService.Service
                 string ticketingPhone = userInfo.Phone;
                 string ticketingEmail = userInfo.Email;
                 //
-                string agentId = ClientLoginService.GetClientIDByUserID(ticketingId);
+                string agentId = ClientLoginService.GetAgentIDByUserID(ticketingId);
                 ClientLoginService clientLoginService = new ClientLoginService();
                 AirAgentService airAgentService = new AirAgentService();
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
@@ -1290,7 +1290,7 @@ namespace AIRService.Service
                 string orderId = "";
                 BookOrderService bookOrderService = new BookOrderService();
                 BookTicketService bookTicketService = new BookTicketService();
-                WalletClientService walletClientService = new WalletClientService();
+                WalletAgentService walletClientService = new WalletAgentService();
                 BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
                 if (bookOrder == null)
                     return Notifization.Invalid(MessageText.Invalid);
@@ -1301,8 +1301,8 @@ namespace AIRService.Service
                 BookAgent bookAgent = bookAgentService.GetAlls(m => m.ID == orderId).FirstOrDefault();
                 string agentId = bookAgent.AgentID;
 
-                WalletClient walletClient = walletClientService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                double spendingLimitAmount = walletClient.SpendingLimitAmount;
+                WalletAgent walletClient = walletClientService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+                //double spendingLimitAmount = walletClient.SpendingLimitAmount;
 
                 DateTime dateTime = Convert.ToDateTime(TimeHelper.GetUtcDateTime);
 
@@ -1311,18 +1311,11 @@ namespace AIRService.Service
                 DateTime firstDayOfMonth = dateTime.AddDays(0 - dateTime.Day);
                 DateTime lastDayOfMonth = firstDayOfMonth.AddDays(1 - firstDayOfMonth.Day);
 
-                // check han muc
+                // check han muc cua nhan vien booking 
+
+                //8:30 -> 15 -> (:30 -> 15)
                 // thanh toan chua
-
-
-
                 BookTicket bookTicket = bookTicketService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-
-
-
-
-
-
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
@@ -1332,8 +1325,7 @@ namespace AIRService.Service
                 string _conversationId = tokenModel.ConversationID;
                 if (string.IsNullOrWhiteSpace(_token))
                     return Notifization.NotService;
-                // 
-                string pnr = model.PNR;
+                //  
                 if (string.IsNullOrWhiteSpace(pnr))
                     return Notifization.Invalid("Mã PNR không hợp lệ");
                 //

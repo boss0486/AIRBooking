@@ -12,12 +12,10 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-none">Mã giao dịch</th>
-                <th class="tbcol-title">Tiêu đề</th>
-                <th class="tbcol-none">Nhà cung cấp</th>
-                <th class="tbcol-none">Khách hàng</th>
-                <th class="tbcol-none">Số tiền</th>
+                <th class="tbcol-id">#&nbsp;</th> 
+                <th class="tbcol-none">Đại lý</th>
+                <th class="tbcol-none">Mã đại lý</th>
+                <th class="tbcol-amount">Hạn mức</th> 
                 <th class="tbcol-active">T.Thái</th>
                 <th class="tbcol-date">Ngày tạo</th>
                 <th class="tbcol-action">
@@ -31,7 +29,7 @@
 <div id="Pagination"></div>
 
 @section scripts{
-    <script src="~/Areas/Management/_script/trans-spending.js"></script>
+    <script src="~/Areas/Management/_script/app-agent-spending-limit.js"></script>
     <script type="text/javascript">
         $(function () {
             //var d = new Date();
@@ -64,7 +62,7 @@
                 $('#txtStartDate').val('');
                 $('#txtEndDate').val('');
             });
-            TransactionSpendingController.DataList(1);
+            AgentSpendingLimitController.DataList(1);
         });
     </script>
 }

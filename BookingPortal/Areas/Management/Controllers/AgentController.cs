@@ -16,7 +16,7 @@ namespace WebApplication.Management.Controllers
     [IsManage]
     [RouteArea("Management")]
     [RoutePrefix("Customer")]
-    public class CustomerController : CMSController
+    public class AgentController : CMSController
     {
         // GET: BackEnd/Customer
         public ActionResult DataList()
