@@ -22,6 +22,10 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult Payment()
+        {
+            return View();
+        }
 
         public ActionResult Setting(string id)
         {
@@ -51,6 +55,40 @@ namespace WebApplication.Management.Controllers
                 using (var service = new AgentSpendingLimitService())
                 {
                     return service.DataList(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+        //##########################################################################################################################################################################################################################################################
+        [HttpPost]
+        [Route("Action/Payment")]
+        public ActionResult PayList(SearchModel model)
+        {
+            try
+            {
+                using (var service = new AgentSpendingLimitPaymentService())
+                {
+                    return service.ShowPay(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("Action/ExPayment")]
+        public ActionResult ExPayment(AgentSpendingLimitPaymentSettingModel model)
+        {
+            try
+            {
+                using (var service = new AgentSpendingLimitPaymentService())
+                {
+                    return service.ExPayment(model);
                 }
             }
             catch (Exception ex)

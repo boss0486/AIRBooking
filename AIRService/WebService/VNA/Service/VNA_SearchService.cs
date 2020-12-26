@@ -1240,7 +1240,7 @@ namespace AIRService.Service
                             PassengerGroup = model.PassengerGroup,
                             Summary = model.Summary,
                             ItineraryType = model.ItineraryType,
-                            OrderDate = Convert.ToDateTime(TimeHelper.GetUtcDateTime),
+                            OrderDate = Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx),
                             Flights = model.Flights,
                             Passengers = bookTicketPassengers,
                             FareTaxs = result.FareTaxs,
@@ -1304,7 +1304,7 @@ namespace AIRService.Service
                 WalletAgent walletClient = walletClientService.GetAlls(m => m.ID == orderId).FirstOrDefault();
                 //double spendingLimitAmount = walletClient.SpendingLimitAmount;
 
-                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetUtcDateTime);
+                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx);
 
                 //DateTime firstDayOfMonth = dateTime.AddDays(-(dateTime.Day - 1));
 

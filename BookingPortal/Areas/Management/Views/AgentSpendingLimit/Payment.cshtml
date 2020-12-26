@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+@{
+    string addPath = string.Empty;
+    bool addState = false;
+    int vcol = 5;
+
+    if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+    {
+        addState = true;
+        vcol = 4;
+        addPath = Helper.Page.Navigate.PathCreate();
+
+    }
+}
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlTimeExpress" name="ddlTimeExpress" class="form-control show-tick" data-live-search="true">
+                <option value="0">-Giới hạn-</option>
+                @Html.Raw(ModelService.DropdownListMonthExpress(0));
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <div class="input-daterange input-group" id="datepicker">
+                <input type="text" class="form-control" id="txtStartDate" placeholder="dd-mm-yyyy" />
+                <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
+                <input type="text" class="form-control" id="txtEndDate" placeholder="dd-mm-yyyy" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-@vcol" data-keyenter="#btnSearch">
+        <div class="form-group input-group">
+            <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+            <span id="btnPaySearch" class="input-group-addon"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+</div>
+@*search control ******************************************************************************************************@
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id ">#&nbsp;</th>
+                <th class="tbcol-none">Thời gian</th>
+                <th class="tbcol-none">Mã đại lý</th>
+                <th class="tbcol-none">Đại lý</th>
+                <th class="tbcol-active">Trạng thái thanh toán</th>
+                <th class="tbcol-date">Ngày thanh toán</th>
+                <th class="tbcol-action">Thanh toán</th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+
+@section scripts{
+    <script src="~/Areas/Management/_script/app-agent-spending-limit.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //var d = new Date();
+            //d.setDate(d.getDate() - 3);
+            //var today = d;
+            //var dd = String(today.getDate()).padStart(2, '0');
+            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            //var yyyy = today.getFullYear();
+            //today = dd + "-" + mm + "-" + yyyy;
+
+            //$('#txtStartDate').val(today);
+            $('#txtStartDate').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: '01-07-2020',
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                /// $('#selectDate').datepicker('hide');
+            });
+            $('#txtEndDate').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: $('#txtStartDate').val(),
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                //$('#ddlTimeExpress').datepicker('hide');
+            });
+            //
+            $(document).on('change', '#ddlTimeExpress', function () {
+                $('#txtStartDate').val('');
+                $('#txtEndDate').val('');
+            });
+            AgentSpendingLimitController.PayList(1);
+        });
+    </script>
+}

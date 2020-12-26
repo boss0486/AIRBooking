@@ -163,7 +163,6 @@ var AirBookController = {
                                  <td class='tbcol-left tbcol-button'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
                                      <button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Gửi ${mailStatus}</button>
-                                     
                                      <button type="button" class="btn btn-danger btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Hủy</button>
                                  </td>                                  
                                  <td class="tbcol-action">${action}</td>

@@ -491,10 +491,16 @@
       },
       {
         "KeyID": "Setting",
-        "Method": "Create",
+        "Method": "Setting",
         "APIRouter": "Action/Setting",
         "Title": "Thiết lập"
-      }, 
+      },
+      {
+        "KeyID": "Payment",
+        "Method": "Payment",
+        "APIRouter": "Action/Payment",
+        "Title": "T.Toán"
+      },
       {
         "KeyID": "Details",
         "Method": "Details",
@@ -604,31 +610,7 @@
         "Title": "C.tiết"
       }
     ]
-  },
-  {
-    "KeyID": "TransactionCustomerSpending",
-    "Title": "G.D hạn mức(Khách hàng)",
-    "Action": [
-      {
-        "KeyID": "DataList",
-        "Method": "DataList",
-        "APIRouter": "Action/DataList",
-        "Title": "D.sách"
-      },
-      {
-        "KeyID": "Create",
-        "Method": "Create",
-        "APIRouter": "Action/Create",
-        "Title": "Tạo"
-      },
-      {
-        "KeyID": "Details",
-        "Method": "Details",
-        "APIRouter": "Action/Details",
-        "Title": "C.tiết"
-      }
-    ]
-  },
+  }, 
   {
     "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
@@ -642,6 +624,30 @@
       {
         "KeyID": "Deposit",
         "Method": "Deposit",
+        "APIRouter": "Action/Deposit",
+        "Title": "Nạp"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  }, 
+  {
+    "KeyID": "AgentPayment",
+    "Title": "Thanh toán",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "Danh sách"
+      },
+      {
+        "KeyID": "Payment",
+        "Method": "Payment",
         "APIRouter": "Action/Deposit",
         "Title": "Nạp"
       },

@@ -1245,6 +1245,7 @@
     <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-dl01.pdf" />
     <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-focus-travel-viet-nam.pdf" />
     <Content Include="Areas\Management\Views\_ViewSearchDepositPatial.cshtml" />
+    <Content Include="Areas\Management\Views\AgentSpendingLimit\Payment.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

@@ -29,8 +29,7 @@ namespace WebCore.Entities
         public string AgentID { get; set; }
         public double Amount { get; set; }
         public int Enabled { get; set; }
-    }
-
+    } 
     public class AgentSpendingLimitIDModel
     {
         public string ID { get; set; }
@@ -43,5 +42,17 @@ namespace WebCore.Entities
         public string CodeID { get; set; }
         public string AgentID { get; set; }
         public double Amount { get; set; }
+    }
+    
+    public class PayData  
+    {
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public string AgentID { get; set; }
+        public string CodeID { get; set; }
+        public string Title { get; set; }
+        public bool State { get; set; }
+        public string PaymentDate { get; set; }
+
     }
 }

@@ -19,6 +19,15 @@
     outline: none;
 }
 
+.bg-light-success {
+    background: rgba(170,249,130, 0.8);
+}
+
+.bg-light-danger {
+    background: rgba(255, 165,158, 0.41);
+}
+
+
 html, body {
     transition: all 0.5s;
     font-family: 'Roboto', sans-serif, monospace;
@@ -5596,7 +5605,7 @@ table, .table {
     }
 
     .table-bordered tbody tr td .btn {
-        height: 20px;
+        height: 19px;
         display: inline-block;
         line-height: 0px;
         border: none;

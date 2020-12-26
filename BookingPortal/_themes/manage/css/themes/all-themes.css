@@ -86,3 +86,16 @@
 
 
 /*theme-item*************************************************************************************************************************************************/
+.jconfirm .jconfirm-box .jconfirm-buttons button
+{
+    border-radius: 2px;
+    font-size:unset;
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button
+{
+    font-size:unset;
+    font-weight:unset;
+}
+.jconfirm.jconfirm-white .jconfirm-box, .jconfirm.jconfirm-light .jconfirm-box {
+    border-radius: 2px; 
+}

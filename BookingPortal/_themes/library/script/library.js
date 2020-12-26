@@ -359,8 +359,9 @@ class Confirm {
     static Text_Delete = 1;
     static Text_ExportTicket = 2;
     static Text_VoidTicket = 3;
+    static Text_payment_spendinglimit = 4;
 
-    static ConfirmYN(id, funcY, title_enum = 0) {
+    static ConfirmYN(param, funcY, title_enum = 0) {
         var _content = "...";
         if (title_enum == 1)
             _content = "Thực hiện xóa dữ liệu, bạn có chắc chắn muốn xóa dữ liệu này không ?";
@@ -371,20 +372,34 @@ class Confirm {
         if (title_enum == 3)
             _content = "Thực hiện hủy vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
         // 
+
+        if (title_enum == 4)
+            _content = "Thực hiện thanh toán hạn mức. Bạn có chắc chắn muốn thực hiện hành động này không?"
+        // 
         $.confirm({
             title: 'Xác nhận!',
             content: _content,
             buttons: {
-                confirm: function () {
-                    Notifization.Success("Thực hiện hành động");
-                    setTimeout(function () {
-                        funcY(id);
-                    }, 2000);
-                    //return;
+                confirm:
+                {
+                    btnClass: 'btn-primary',
+                    text: "Thực hiện",
+                    action: function () {
+                        Notifization.Success("Thực hiện hành động");
+                        setTimeout(function () {
+                            funcY(param);
+                        }, 2000);
+                        //return;
+                    }
                 },
-                cancel: function () {
-                    Notifization.Error("Hủy hành động");
-                    return;
+                cancel:
+                {
+                    btnClass: 'btn-danger',
+                    text: "Hủy",
+                    action: function () {
+                        Notifization.Error("Hủy hành động");
+                        return;
+                    }
                 }
             }
         });

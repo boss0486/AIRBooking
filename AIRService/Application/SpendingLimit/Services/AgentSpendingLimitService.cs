@@ -18,6 +18,7 @@ using Helper.Page;
 using WebCore.Model.Entities;
 using WebCore.ENM;
 using System.ComponentModel;
+using Helper.Language;
 
 namespace WebCore.Services
 {
@@ -92,7 +93,7 @@ namespace WebCore.Services
             };
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
-        }
+        } 
         //##############################################################################################################################################################################################################################################################
         public ActionResult Setting(AgentSpendingLimitSettingModel model)
         {
@@ -128,8 +129,7 @@ namespace WebCore.Services
             agentSpendingLimit.Enabled = enabled;
             agentSpendingLimitService.Update(agentSpendingLimit);
             return Notifization.Success(MessageText.UpdateSuccess);
-        }
-
+        } 
         public AgentSpendingLimitResult ViewgentSpendingLimit(string agentId)
         {
             if (agentId == null)

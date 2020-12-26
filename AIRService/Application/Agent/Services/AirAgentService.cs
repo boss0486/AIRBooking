@@ -859,7 +859,7 @@ namespace WebCore.Services
                 return new List<AirAgentOption>();
             }
             //
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 " + whereCondition + " ORDER BY Title ASC";
+            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_AirAgent WHERE Enabled = 1 AND TypeID = 'agent' " + whereCondition + " ORDER BY Title ASC";
             return _connection.Query<AirAgentOption>(sqlQuery, new { ID = agentId }).ToList();
         }
         public List<AirAgentOption> AgentDataOption()

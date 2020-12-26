@@ -6,8 +6,8 @@
 @using WebCore.Model.Services;
 @using WebCore.Model.Services;
 @{
-    DateTime start = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
-    DateTime end = Convert.ToDateTime(Helper.TimeData.TimeHelper.GetDateTime);
+    DateTime start = Helper.TimeData.TimeHelper.UtcDateTime;
+    DateTime end = Helper.TimeData.TimeHelper.UtcDateTime;
     //
     List<DateTime> dateTimes = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).ToList();
 }

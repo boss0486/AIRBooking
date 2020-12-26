@@ -161,6 +161,32 @@ namespace WebCore.Model.Services
             }
 
         }
+        public static string DropdownListMonthExpress(int id)
+        {
+            try
+            {
+                var searchExpOptions = new List<SearchExpressOption>{
+                    new SearchExpressOption(1, "Tháng này"),       // Today
+                    new SearchExpressOption(2, "Tháng trước"),       // Yesterday 
+                    new SearchExpressOption(3, "3 tháng trước"), // ThreeMonthAgo
+                    new SearchExpressOption(4, "6 tháng trước")  // // SixMonthAgo
+                    };
+                string result = string.Empty;
+                foreach (var item in searchExpOptions)
+                {
+                    string selected = string.Empty;
+                    if (item.ID == id)
+                        selected = "selected";
+                    result += "<option value='" + item.ID + "' " + selected + ">" + item.Title + "</option>";
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+
+        }
         public static string DropdownListStatus(int Id)
         {
             try

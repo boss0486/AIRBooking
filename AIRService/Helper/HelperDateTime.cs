@@ -20,7 +20,9 @@ namespace Helper.TimeData
         /// <summary>
         /// Fomat: yyyy-MM-dd HH:mm:ss
         /// </summary>
-        public static string GetUtcDateTime
+        public static DateTime UtcDateTime => Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx);
+
+        public static string GetUtcDateTimeTx
         {
             get
             {
@@ -45,7 +47,7 @@ namespace Helper.TimeData
         {
             get
             {
-                string strdTime = TimeHelper.GetUtcDateTime;
+                string strdTime = TimeHelper.GetUtcDateTimeTx;
                 if (string.IsNullOrWhiteSpace(strdTime))
                     return string.Empty;
                 //
@@ -57,7 +59,7 @@ namespace Helper.TimeData
         {
             get
             {
-                string strdTime = TimeHelper.GetUtcDateTime;
+                string strdTime = TimeHelper.GetUtcDateTimeTx;
                 if (string.IsNullOrWhiteSpace(strdTime))
                     return string.Empty;
                 //
@@ -129,7 +131,7 @@ namespace Helper.TimeData
             try
             {
                 string strExt = string.Empty;
-                if (extent == (int)ModelEnum.DateExtension.NONE || extent == (int) ModelEnum.DateExtension.DASH)
+                if (extent == (int)ModelEnum.DateExtension.NONE || extent == (int)ModelEnum.DateExtension.DASH)
                     strExt = "-";
                 else
                     strExt = "/";
