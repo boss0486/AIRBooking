@@ -26,6 +26,8 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using AIRService.WS.Helper;
 using Helper.TimeData;
+using Helper.Language;
+using Itenso.TimePeriod;
 
 namespace AIRService.Service
 {
@@ -1275,177 +1277,237 @@ namespace AIRService.Service
             }
         }
 
-        /// <summary>
-        /// Xuất vé
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ActionResult ReleaseTicket(PNRModel model)
+        // check xuat ve
+        public ActionResult CheckReleaseTicket(BookOrderIDModel model)
         {
-            try
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            BookOrderService bookOrderService = new BookOrderService();
+            BookTicketService bookTicketService = new BookTicketService();
+            WalletAgentService walletClientService = new WalletAgentService();
+            BookAgentService bookAgentService = new BookAgentService();
+            //
+            string orderId = model.ID;
+            if (string.IsNullOrWhiteSpace(orderId))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+            if (bookAgent == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string pnr = bookOrder.PNR;
+            string agentId = bookAgent.AgentID;
+            double amount = bookOrder.Amount;
+
+            // xuat ve: 
+            // #1: kiem tra hom nay co trong khoang cuối tháng trước -> ngày 15 tháng hiện tại hay ko
+            //     + nếu trong khoảng -> kiem tra da thanh toan han muc cua thang truoc hay chua
+            //           + đã thanh toán -> kiểm tra hạn mức
+            //                 + còn hạn mức:  xuất vé
+            //                 - hết hạn mức: Thông báo hạn mức ko đủ
+            //           + chưa thanh toán -> Thông báo yêu cầu thanh toán
+            //     - nếu ko trong khoảng -> kiểm tra hạn mức
+            //           + còn hạn mức:  xuất vé
+            //           - hết hạn mức: Thông báo hạn mức ko đủ
+
+            DateTime today = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));// Convert.ToDateTime(TimeHelper.UtcDateTime.ToString("yyyy-MM-dd"));
+
+            //kiem tra da thanh toan han muc cua thang truoc hay chua
+            AirAgentService airAgentService = new AirAgentService();
+            AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(airAgent.ParentID))
             {
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid + "1");
-                //
-                string orderId = "";
-                BookOrderService bookOrderService = new BookOrderService();
-                BookTicketService bookTicketService = new BookTicketService();
-                WalletAgentService walletClientService = new WalletAgentService();
-                BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                if (bookOrder == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                string pnr = bookOrder.PNR;
-
-                BookAgentService bookAgentService = new BookAgentService();
-                BookAgent bookAgent = bookAgentService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                string agentId = bookAgent.AgentID;
-
-                WalletAgent walletClient = walletClientService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                //double spendingLimitAmount = walletClient.SpendingLimitAmount;
-
-                DateTime dateTime = Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx);
-
-                //DateTime firstDayOfMonth = dateTime.AddDays(-(dateTime.Day - 1));
-
-                DateTime firstDayOfMonth = dateTime.AddDays(0 - dateTime.Day);
-                DateTime lastDayOfMonth = firstDayOfMonth.AddDays(1 - firstDayOfMonth.Day);
-
-                // check han muc cua nhan vien booking 
-
-                //8:30 -> 15 -> (:30 -> 15)
-                // thanh toan chua
-                BookTicket bookTicket = bookTicketService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                // create session 
-                if (tokenModel == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // create session 
-                string _token = tokenModel.Token;
-                string _conversationId = tokenModel.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
-                //  
-                if (string.IsNullOrWhiteSpace(pnr))
-                    return Notifization.Invalid("Mã PNR không hợp lệ");
-                //
-                List<ExTitketPassengerFareModel> exTitketPassengerFareModels = new List<ExTitketPassengerFareModel>();
-                BookPassengerService appBookPassengerService = new BookPassengerService();
-                BookPriceService appBookPriceService = new BookPriceService();
-                BookTaxService appBookFareService = new BookTaxService();
-                var passengers = appBookPassengerService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower()).OrderBy(m => m.PassengerType).ToList();
-                if (passengers.Count == 0)
-                    return Notifization.Invalid("Thông tin hành khách không hợp lệ");
-                // 
-                foreach (var item in passengers)
-                {
-                    var bookPrice = appBookPriceService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
-                    var bookTax = appBookFareService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
-                    exTitketPassengerFareModels.Add(new ExTitketPassengerFareModel
-                    {
-                        FullName = item.FullName,
-                        PassengerType = item.PassengerType,
-                        DateOfBirth = item.DateOfBirth.ToString(),
-                        PriceTotal = bookPrice,
-                        TaxTotal = bookTax
-                    });
-                }
-                //
-                double fareTotal = exTitketPassengerFareModels.Sum(m => m.TaxTotal + m.PriceTotal);
-                using (var sessionService = new VNA_SessionService(tokenModel))
-                {
-
-                    var paymentModel = new PaymentModel
-                    {
-                        //paymentModel.RevResult = ReservationData.RevResult;
-                        ConversationID = _conversationId,
-                        Token = _token,
-                        pnr = pnr,
-                        PaymentOrderDetail = new List<PaymentOrderDetail>(),
-                        Total = fareTotal
-                    };
-                    foreach (var item in exTitketPassengerFareModels)
-                    {
-                        string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
-                        string surName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
-                        var paymentOrderDetail = new PaymentOrderDetail
-                        {
-                            PsgrType = item.PassengerType,
-                            FirstName = givenName,
-                            LastName = surName,
-                            BaseFare = item.PriceTotal,
-                            Taxes = item.TaxTotal ///////////////////////////////////////////////////////////////////////////////////////////////////
-                        };
-                        paymentModel.PaymentOrderDetail.Add(paymentOrderDetail);
-                    }
-                    VNA_PaymentRQService vNAPaymentRQService = new VNA_PaymentRQService();
-                    var paymentData = vNAPaymentRQService.Payment(paymentModel);
-
-                    //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
-                    #region xuất vé
-                    //wss.SarbreCommand(tokenModel, "IG");
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                    designatePrinter.ConversationID = tokenModel.ConversationID;
-                    designatePrinter.Token = tokenModel.Token;
-                    //
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                        return Notifization.Error("Server not responding from designate printer");
-                    //
-                    var jjson = new JavaScriptSerializer().Serialize(printer);
-                    var getReservationModel = new GetReservationModel();
-                    getReservationModel.ConversationID = tokenModel.ConversationID;
-                    getReservationModel.Token = tokenModel.Token;
-                    getReservationModel.PNR = pnr;
-                    //paymentRQ
-                    //wss.GetReservationWS(getReservationModel);
-                    VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    var ReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                    if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
-                    {
-                        if (paymentData.Items.Count() == 0)
-                            return Notifization.Error("Server not responding from getreservation");
-                        //
-                        var data = (WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
-                        if (string.IsNullOrWhiteSpace(data.ApprovalCode))
-                            return Notifization.NotFound("ApprovalCode is null");
-                        //
-                        var airTicket = new AirTicketLLSRQModel
-                        {
-                            ConversationID = tokenModel.ConversationID,
-                            Token = tokenModel.Token,
-                            PNR = pnr,
-                            approveCode = data.ApprovalCode,
-                            lPricingInPNR = exTitketPassengerFareModels
-                        };
-                        VNAWSAirTicketLLSRQService vNAWSAirTicketLLSRQService = new VNAWSAirTicketLLSRQService();
-                        var airTicketData = vNAWSAirTicketLLSRQService.AirTicket(airTicket);
-                        VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                        var end = vNATransaction.EndTransaction(tokenModel);
-                        if (end.ApplicationResults.Success != null)
-                        {
-                            BookOrderService bookPNRCodeService = new BookOrderService();
-                            var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr.ToLower()).FirstOrDefault();
-                            if (bookPNRCode != null)
-                            {
-                                bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.Exported;
-                                bookPNRCodeService.Update(bookPNRCode);
-                            }
-                        }
-                        // 
-                        return Notifization.Data("OK", end);
-                    }
-                    #endregion
-                    return Notifization.Error(MessageText.Invalid);
-                }
+                // check han muc cua tickting
+                return ReleaseTicket(pnr);
             }
-            catch (Exception ex)
+            // kiểm tra dữ liệu các tháng trước đó  
+            DateTime agentCreatedDate = airAgent.CreatedDate;
+            DateTime end = today.AddMonths(-2);// ko xử lý tháng cuối cùng
+            DateDiff dateDiff = new DateDiff(agentCreatedDate, end);
+            DateTime start = end.AddMonths(-dateDiff.Months);
+
+            List<DateTime> dateTimeRange = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).Where(m => m.Day == 1).ToList();
+            AgentSpendingLimitPaymentService agentSpendingLimitPaymentService = new AgentSpendingLimitPaymentService();
+            foreach (var item in dateTimeRange)
             {
-                return Notifization.TEST("OK" + ex);
+                // kiem tra da tieu han muc chua, chua tieu bo qua
+                BookOrder bookOrderOnMonth = bookOrderService.GetAlls(m => m.IssueDate.Year == item.Year && m.IssueDate.Month == item.Month).FirstOrDefault();
+                if (bookOrderOnMonth == null)
+                    continue;
+                //
+                AgentSpendingLimitPayment agentSpendingLimitPayment = agentSpendingLimitPaymentService.GetAlls(m => m.AgentID == agentId && m.Year == item.Year && m.Month == item.Month).FirstOrDefault();
+                if (agentSpendingLimitPayment == null)
+                    return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(item, LanguagePage.GetLanguageCode) + " chưa thanh toán");
+                //
             }
+            // ngay dau tien cua thang truoc
+            DateTime firstDayOfMonth = today.AddMonths(-1);
+            firstDayOfMonth = new DateTime(firstDayOfMonth.Year, firstDayOfMonth.Month, 01);
+            int paymentDayTotal = today.Subtract(firstDayOfMonth).Days;
+            int termPayment = airAgent.TermPayment;
+            if (termPayment <= 0)
+                return Notifization.Invalid("Kỳ hạn thanh toán của đại lý không hợp lệ");
+            // 
+            //#1: check kỳ hạn thanh toan han muc 
+            if (paymentDayTotal > termPayment)
+                return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
+            //
+            // lấy tổng đã tiêu tu tháng trước den nay (< 45 ngay)
+
+            string sqlQuery = @"SELECT SUM(o.Amount) FROM App_BookOrder AS o
+            INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
+            WHERE o.ID != @OrderID AND a.AgentID = @AgentID
+            AND cast(IssueDate as Date) >= cast('" + firstDayOfMonth + "' as Date) AND cast(IssueDate as Date) <= cast('" + today + "' as Date)";
+            int totalSpent = bookOrderService.Query<int>(sqlQuery, new { OrderID = orderId, AgentID = agentId }).FirstOrDefault();
+            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService();
+            double spendingLimit = 0;
+            AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId).FirstOrDefault();
+            if (agentSpendingLimit != null)
+                spendingLimit = agentSpendingLimit.Amount;
+            //
+            if (spendingLimit < totalSpent + amount)
+                return Notifization.Invalid("Hạn mức không đủ");
+            // check han mức ticketing
+             
+            // xuất vé
+            return ReleaseTicket(pnr);
         }
 
+        private ActionResult ReleaseTicket(string pnr)
+        {
+            return Notifization.TEST("OK:" + pnr);
+
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            //  
+            if (string.IsNullOrWhiteSpace(pnr))
+                return Notifization.Invalid("Mã PNR không hợp lệ");
+            //
+            List<ExTitketPassengerFareModel> exTitketPassengerFareModels = new List<ExTitketPassengerFareModel>();
+            BookPassengerService appBookPassengerService = new BookPassengerService();
+            BookPriceService appBookPriceService = new BookPriceService();
+            BookTaxService appBookFareService = new BookTaxService();
+            var passengers = appBookPassengerService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower()).OrderBy(m => m.PassengerType).ToList();
+            if (passengers.Count == 0)
+                return Notifization.Invalid("Thông tin hành khách không hợp lệ");
+            // 
+            foreach (var item in passengers)
+            {
+                var bookPrice = appBookPriceService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
+                var bookTax = appBookFareService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
+                exTitketPassengerFareModels.Add(new ExTitketPassengerFareModel
+                {
+                    FullName = item.FullName,
+                    PassengerType = item.PassengerType,
+                    DateOfBirth = item.DateOfBirth.ToString(),
+                    PriceTotal = bookPrice,
+                    TaxTotal = bookTax
+                });
+            }
+            //
+            double fareTotal = exTitketPassengerFareModels.Sum(m => m.TaxTotal + m.PriceTotal);
+            using (var sessionService = new VNA_SessionService(tokenModel))
+            {
+
+                var paymentModel = new PaymentModel
+                {
+                    //paymentModel.RevResult = ReservationData.RevResult;
+                    ConversationID = _conversationId,
+                    Token = _token,
+                    pnr = pnr,
+                    PaymentOrderDetail = new List<PaymentOrderDetail>(),
+                    Total = fareTotal
+                };
+                foreach (var item in exTitketPassengerFareModels)
+                {
+                    string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
+                    string surName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
+                    var paymentOrderDetail = new PaymentOrderDetail
+                    {
+                        PsgrType = item.PassengerType,
+                        FirstName = givenName,
+                        LastName = surName,
+                        BaseFare = item.PriceTotal,
+                        Taxes = item.TaxTotal ///////////////////////////////////////////////////////////////////////////////////////////////////
+                    };
+                    paymentModel.PaymentOrderDetail.Add(paymentOrderDetail);
+                }
+                VNA_PaymentRQService vNAPaymentRQService = new VNA_PaymentRQService();
+                var paymentData = vNAPaymentRQService.Payment(paymentModel);
+
+                //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
+                #region xuất vé
+                //wss.SarbreCommand(tokenModel, "IG");
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
+                designatePrinter.ConversationID = tokenModel.ConversationID;
+                designatePrinter.Token = tokenModel.Token;
+                //
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Error("Server not responding from designate printer");
+                //
+                var jjson = new JavaScriptSerializer().Serialize(printer);
+                var getReservationModel = new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr
+                };
+                //paymentRQ
+                //wss.GetReservationWS(getReservationModel);
+                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                var ReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
+                {
+                    if (paymentData.Items.Count() == 0)
+                        return Notifization.Error("Server not responding from getreservation");
+                    //
+                    var data = (AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
+                    if (string.IsNullOrWhiteSpace(data.ApprovalCode))
+                        return Notifization.NotFound("ApprovalCode is null");
+                    //
+                    var airTicket = new AirTicketLLSRQModel
+                    {
+                        ConversationID = tokenModel.ConversationID,
+                        Token = tokenModel.Token,
+                        PNR = pnr,
+                        approveCode = data.ApprovalCode,
+                        lPricingInPNR = exTitketPassengerFareModels
+                    };
+                    VNAWSAirTicketLLSRQService vNAWSAirTicketLLSRQService = new VNAWSAirTicketLLSRQService();
+                    var airTicketData = vNAWSAirTicketLLSRQService.AirTicket(airTicket);
+                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                    var end = vNATransaction.EndTransaction(tokenModel);
+                    if (end.ApplicationResults.Success != null)
+                    {
+                        BookOrderService bookPNRCodeService = new BookOrderService();
+                        var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr.ToLower()).FirstOrDefault();
+                        if (bookPNRCode != null)
+                        {
+                            bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.Exported;
+                            bookPNRCodeService.Update(bookPNRCode);
+                        }
+                    }
+                    // 
+                    return Notifization.Data("OK", end);
+                }
+                #endregion
+                return Notifization.Error(MessageText.Invalid);
+            }
+        }
         /// <summary>
         ///  Hủy vé
         /// </summary>

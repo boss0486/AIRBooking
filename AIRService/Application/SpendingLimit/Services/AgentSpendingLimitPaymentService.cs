@@ -49,10 +49,10 @@ namespace WebCore.Services
             //
 
             // today
-            DateTime today = Helper.TimeData.TimeHelper.UtcDateTime;
+            DateTime today = Helper.TimeData.TimeHelper.UtcDateTime.AddMonths(-1);
             today = new DateTime(today.Year, today.Month, 1);
 
-            DateTime dateTimeStart = today.AddMonths(-6);
+            DateTime dateTimeStart = today.AddMonths(-5);
             DateTime dateTimeEnd = today;
             //DateTime today = Convert.ToDateTime(clientTime);
             if (timeExpress != 0 && !string.IsNullOrWhiteSpace(clientTime))

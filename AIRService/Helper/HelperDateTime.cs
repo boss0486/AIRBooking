@@ -185,6 +185,13 @@ namespace Helper.TimeData
 
             }
         }
+        public static string FormatToViewYearMonth(DateTime dtime, string languageCode)
+        {
+            if (languageCode == Language.LanguageCode.Vietnamese.ID)
+                return dtime.ToString("MM-yyyy");
+            else
+                return dtime.ToString("yyyy-MM");
+        }
         public static string FormatToTime(DateTime dtime)
         {
             return dtime.ToString("HH:mm:ss");

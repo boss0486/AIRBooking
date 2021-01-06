@@ -147,7 +147,7 @@ namespace WebApplication.Management.Controllers
             AirAgentService customerService = new AirAgentService();
             List<ClientOption> dtList = customerService.GetCompByAgentID(bookAgentId.AgentID);
             return Notifization.Data("", dtList);
-        } 
+        }
         // GET: Booking ******************************************************************************************************************************
 
 
@@ -278,8 +278,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.TicketOrder(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.TicketOrder(model);
             }
             catch (Exception ex)
             {
@@ -290,12 +290,12 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/ExTicket")]
-        public ActionResult ExTicket(PNRModel model)
+        public ActionResult ExTicket(BookOrderIDModel model)
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.ReleaseTicket(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.CheckReleaseTicket(model);
             }
             catch (Exception ex)
             {
@@ -310,8 +310,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.TicketInfo(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.TicketInfo(model);
             }
             catch (Exception ex)
             {
@@ -326,8 +326,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.VoidTicket(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.VoidTicket(model);
             }
             catch (Exception ex)
             {
@@ -343,8 +343,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var vNASearchService = new VNA_SearchService();
-                return vNASearchService.GetTicketCondition(model);
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.GetTicketCondition(model);
             }
             catch (Exception ex)
             {

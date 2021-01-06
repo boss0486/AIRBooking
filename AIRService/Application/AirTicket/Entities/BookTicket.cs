@@ -90,7 +90,7 @@ namespace WebCore.Entities
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
         public List<FareFlight> FareFlights { get; set; }
-         
+
     }
     public class BookAgentInfo
     {
@@ -125,7 +125,7 @@ namespace WebCore.Entities
         public int Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
-     
+
 
     public class BookTicketingRq
     {
@@ -213,6 +213,11 @@ namespace WebCore.Entities
     public class PNRModel
     {
         public string PNR { get; set; }
+    }
+    public class ExportTitket
+    {
+        public string PNR { get; set; }
+        public double Amount { get; set; }
     }
 
     public class ExTitketPassengerFareModel

@@ -188,14 +188,12 @@ var AirBookController = {
             }
         });
     },
-    ExportTiket: function (id) {
-        Notifization.Success(response.message);
-        return;
+    ExportTiket: function (id) {   
         var model = {
-            Id: id
+            ID: id
         };
         AjaxFrom.POST({
-            url: URLC + '/AbcDelete',
+            url: URLC + '/ExTicket',
             data: model,
             success: function (response) {
                 if (response !== null) {

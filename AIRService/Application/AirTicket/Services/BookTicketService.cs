@@ -12,6 +12,13 @@ using System.Web;
 using WebCore.Entities;
 using AIRService.WebService.VNA.Enum;
 using WebCore.ENM;
+using Helper.TimeData;
+using AIRService.Models;
+using ApiPortalBooking.Models;
+using AIRService.WS.Service;
+using System.Web.Script.Serialization;
+using AIR.Helper.Session;
+using AIRService.WebService.VNA.Authen;
 
 namespace WebCore.Services
 {
@@ -62,6 +69,9 @@ namespace WebCore.Services
         //    };
         //    return Notifization.DATALIST(NotifizationText.Success, data: result, role: roleAccountModel, paging: pagingModel);
         //}
+
+
+
 
         public string BookTicket(BookTicketOrder model)
         {
@@ -438,7 +448,7 @@ namespace WebCore.Services
         public static List<GenderModel> TicketTypeData()
         {
             BookTicketService bookTicketService = new BookTicketService();
-            return bookTicketService.ticketTypeData;   
+            return bookTicketService.ticketTypeData;
         }
 
     }

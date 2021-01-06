@@ -152,7 +152,7 @@
                 @if (Helper.Current.UserLogin.IsClientInApplication() && !Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     ClientLoginService clientLoginService = new ClientLoginService();
-                    string client = ClientLoginService.GetClientIDByUserID(userId);
+                    string client = ClientLoginService.GetAgentIDByUserID(userId);
                     UserInfoService userInfoService = new UserInfoService();
                     string name = userInfoService.GetFullName(userId);
                     <div class="row">
