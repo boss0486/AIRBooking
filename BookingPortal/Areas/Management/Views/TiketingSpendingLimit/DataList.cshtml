@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@using WebCore.Services;
+@using WebCore.Model.Services;
+
+@Html.Partial("~/Areas/Management/Views/_ViewSearchForHistoryPatial.cshtml", null)
+@* control ******************************************************************************************************@
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="tbcol-id">#&nbsp;</th> 
+                <th class="tbcol-none">Đại lý</th>
+                <th class="tbcol-none">Mã đại lý</th>
+                <th class="tbcol-amount">Hạn mức</th> 
+                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-action">
+                    ACT
+                </th>
+            </tr>
+        </thead>
+        <tbody id="TblData"></tbody>
+    </table>
+</div>
+<div id="Pagination"></div>
+
+@section scripts{
+    <script src="~/Areas/Management/_script/app-ticketing-spending-limit.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //var d = new Date();
+            //d.setDate(d.getDate() - 3);
+            //var today = d;
+            //var dd = String(today.getDate()).padStart(2, '0');
+            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            //var yyyy = today.getFullYear();
+            //today = dd + "-" + mm + "-" + yyyy;
+
+            //$('#txtStartDate').val(today);
+            $('#txtStartDate').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: '01-07-2020',
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                /// $('#selectDate').datepicker('hide');
+            });
+            $('#txtEndDate').datepicker({
+                format: 'dd-mm-yyyy',
+                startDate: $('#txtStartDate').val(),
+                todayHighlight: true
+
+            }).on('changeDate', function (index, item) {
+                //$('#ddlTimeExpress').datepicker('hide');
+            });
+            //
+            $(document).on('change', '#ddlTimeExpress', function () {
+                $('#txtStartDate').val('');
+                $('#txtEndDate').val('');
+            });
+           TiketingSpendingLimitController.DataList(1);
+        });
+    </script>
+}

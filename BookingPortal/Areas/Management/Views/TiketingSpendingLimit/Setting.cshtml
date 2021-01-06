@@ -1,0 +1,72 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+
+@model WebCore.Entities.AgentSpendingLimitResult
+
+@{
+
+    string id = "";
+    string title = "";
+    string codeId = "";
+    double amount = 0;
+    string enabled = string.Empty;
+    string createdDate = string.Empty;
+    if (Model != null)
+    {
+        id = Model.ID;
+        title = Model.Title;
+        codeId = Model.CodeID;
+        amount = Model.Amount;
+        if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
+        {
+            enabled = "checked";
+        }
+    }
+}
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="form-group">
+            <div class="form-line">
+                <label class="form-label">Tiêu đề</label>
+                <input id="txtTitle" name="txtTitle" maxlength="50" type="text" class="form-control" value="@title" disabled />
+            </div>
+            <span id="lblTitle" class="message msg-box"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Hạn mức(vnd):</label>
+            <input id="txtAmount" name="txtAmount" data-currency="true" maxlength="15" type="text" class="form-control" value="@Helper.Page.Library.FormatCurrency(amount)" />
+            <span id="lblAmount" class="message msg-box"></span>
+        </div>
+        <div class="form-group m-t-5">
+            <input id="cbxActive" name="cbxActive" type="checkbox" class="filled-in" @enabled />
+            <label for="cbxActive">Kích hoạt</label>
+            <span id="lblActive" class="message msg-box"></span>
+        </div>
+        <div class="form-group text-right">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnApply" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
+        </div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+<input id="txtID" type="hidden" value="@id" />
+@section scripts{
+    <script src="~/Areas/Management/_script/app-ticketing-spending-limit.js"></script> 
+}

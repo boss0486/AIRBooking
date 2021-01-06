@@ -1,0 +1,54 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.ENM;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@model WebCore.Entities.AgentSpendingLimitResult
+
+@{
+
+    string id = "";
+    string title = "";
+    string codeId = "";
+    double amount = 0;
+    string enabled = string.Empty;
+    string createdDate = string.Empty;
+    if (Model != null)
+    {
+        id = Model.AgentID;
+        title = Model.Title;
+        codeId = Model.CodeID;
+        amount = Model.Amount;
+        enabled = Model.EnabledText;
+    }
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="top-pic">
+            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
+        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Đại lý: @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Mã đại lý: @codeId</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Hạn mức: @amount</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
+
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>

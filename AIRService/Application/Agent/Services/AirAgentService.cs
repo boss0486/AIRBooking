@@ -69,14 +69,14 @@ namespace WebCore.Services
             if (Helper.Current.UserLogin.IsCustomerLogged())
             {
                 // get customerid
-                string clientId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                string clientId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                 whereCondition += " AND Path LIKE N'" + clientId + "%'";
             }
             else
             if (Helper.Current.UserLogin.IsSupplierLogged())
             {
                 // get customerid
-                string clientId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                string clientId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                 whereCondition += " AND SupplierID = '" + clientId + "'";
             }
 
@@ -159,7 +159,7 @@ namespace WebCore.Services
                     //
                     if (Helper.Current.UserLogin.IsClientInApplication())
                     {
-                        ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
+                        ClientLogin clientLogin = GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
                         if (clientLogin == null)
                             return Notifization.Invalid("Đại lý không xác định");
                         //
@@ -382,7 +382,7 @@ namespace WebCore.Services
                     }, transaction: _transaction);
 
                     //******* create balance for agent 
-                    var clientId = clientLoginService.Create<string>(new ClientLogin()
+                    var clientId = Create<string>(new ClientLogin()
                     {
                         ClientID = customerId,
                         ClientType = (int)ClientLoginEnum.ClientType.Customer,
@@ -638,7 +638,7 @@ namespace WebCore.Services
                     }
                     // 
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = clientLoginService.GetAlls(m => m.ClientID == id, transaction: _transaction).ToList();
+                    var clientLogin = GetAlls(m => m.ClientID == id, transaction: _transaction).ToList();
                     if (clientLogin.Count > 0)
                     {
                         string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
@@ -707,13 +707,13 @@ namespace WebCore.Services
             }
             else if (Helper.Current.UserLogin.IsSupplierLogged())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND SupplierID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ParentID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
@@ -763,13 +763,13 @@ namespace WebCore.Services
             }
             else if (Helper.Current.UserLogin.IsSupplierLogged())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
             else if (Helper.Current.UserLogin.IsCustomerLogged())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
             }
@@ -851,7 +851,7 @@ namespace WebCore.Services
             string agentId = string.Empty;
             if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                agentId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                agentId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                 whereCondition = " AND ID = @ID";
             }
             else if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
@@ -869,7 +869,7 @@ namespace WebCore.Services
             string agentId = string.Empty;
             if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                agentId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                agentId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                 whereCondition = " AND ID = @ID";
             }
             else if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
@@ -902,13 +902,13 @@ namespace WebCore.Services
                 if (Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     string userId = Helper.Current.UserLogin.IdentifierID;
-                    string agentCode = ClientLoginService.GetAgentIDByUserID(userId);
+                    string agentCode = GetAgentIDByUserID(userId);
                     whereCondition = " AND (ID = '" + agentCode + "' OR ParentID = '" + agentCode + "')";
                 }
                 if (Helper.Current.UserLogin.IsCustomerLogged())
                 {
                     string userId = Helper.Current.UserLogin.IdentifierID;
-                    string agentCode = ClientLoginService.GetAgentIDByUserID(userId);
+                    string agentCode = GetAgentIDByUserID(userId);
                     whereCondition = " AND (ID = '" + agentCode + "')";
                 }
                 //
@@ -1063,6 +1063,21 @@ namespace WebCore.Services
 
         }
         //##############################################################################################################################################################################################################################################################
+        public static string GetAgentIDByUserID(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return string.Empty;
+            //
+            userId = userId.ToLower();
+            using (var service = new ClientLoginService())
+            {
+                var customer = service.GetAlls(m => !string.IsNullOrWhiteSpace(m.ID) && m.UserID == userId).FirstOrDefault();
+                if (customer == null)
+                    return string.Empty;
+                //
+                return customer.ClientID;
 
+            }
+        }
     }
 }

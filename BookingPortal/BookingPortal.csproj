@@ -138,6 +138,7 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\TiketingSpendingLimitController.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
     <Compile Include="Areas\Management\Controllers\AreaNationalController.cs" />
@@ -155,7 +156,7 @@
     <Compile Include="Areas\Management\Controllers\PermissionController.cs" />
     <Compile Include="Areas\Management\Controllers\ReportController.cs" />
     <Compile Include="Areas\Management\Controllers\RoleController.cs" />
-    <Compile Include="Areas\Management\Controllers\TransactionDepositController - Copy.cs" />
+    <Compile Include="Areas\Management\Controllers\TransactionDepositController.cs" />
     <Compile Include="Areas\Management\Controllers\AgentSpendingLimitController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
@@ -189,6 +190,7 @@
     <Content Include="Areas\Development\_script\setup-password.js" />
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\_script\account.js" />
+    <Content Include="Areas\Management\_script\app-ticketing-spending-limit.js" />
     <Content Include="Areas\Management\_script\app-agent-spending-limit.js" />
     <Content Include="Areas\Management\_script\app-order.js" />
     <Content Include="Areas\Management\_script\app-book.js" />
@@ -1246,6 +1248,9 @@
     <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-focus-travel-viet-nam.pdf" />
     <Content Include="Areas\Management\Views\_ViewSearchDepositPatial.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Payment.cshtml" />
+    <Content Include="Areas\Management\Views\TiketingSpendingLimit\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TiketingSpendingLimit\Details.cshtml" />
+    <Content Include="Areas\Management\Views\TiketingSpendingLimit\Setting.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

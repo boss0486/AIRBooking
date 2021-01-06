@@ -443,10 +443,10 @@
     <Compile Include="Application\UserClient\Services\ClientLoginService.cs" />
     <Compile Include="Application\Wallet\Entities\Wallet.cs" />
     <Compile Include="Application\Wallet\Entities\WalletAgent.cs" />
-    <Compile Include="Application\Wallet\Entities\WalletTiketing.cs" />
+    <Compile Include="Application\SpendingLimit\Entities\TiketingSpendingLimit.cs" />
     <Compile Include="Application\Wallet\Services\WalletAgentService.cs" />
     <Compile Include="Application\Wallet\Services\WalletService.cs" />
-    <Compile Include="Application\Wallet\Services\WalletTiketingService.cs" />
+    <Compile Include="Application\SpendingLimit\Services\TiketingSpendingLimitService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebService\Mbay\Authen\GDS_WSAuthencation.cs" />
     <Compile Include="WebService\VNAHelper\VNAFlight.cs" />
