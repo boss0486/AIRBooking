@@ -161,13 +161,13 @@ var MenuItemController = {
                             rowData += `
                             <tr>
                                  <td class='text-right'>${rowNum}&nbsp;</td>
-                                 <td class='text-left' style='background:#F1F5F7'>- ${_title}</td>                                  
-                                 <td class='text-left'>${_areaKey}</td>                                  
-                                 <td class='text-left'>Cấp ${_level + 1}</td>                                  
-                                 <td class='text-right'>${_orderId}</td>                                  
-                                 <td class='text-center'>${_actionSort}</td>                                                                                                                                
-                                 <td class='text-center'>${HelperModel.StatusIcon(item.Enabled)}</td>
-                                 <td class='text-center'>${action}</td>
+                                 <td class='text-left v-light'>- ${_title}</td>                                  
+                                 <td class='text-left v-light'>${_areaKey}</td>                                  
+                                 <td class='text-left v-light'>Cấp ${_level + 1}</td>                                  
+                                 <td class='text-right v-light'>${_orderId}</td>                                  
+                                 <td class='text-center v-light'>${_actionSort}</td>                                                                                                                                
+                                 <td class='text-center v-light'>${HelperModel.StatusIcon(item.Enabled)}</td>
+                                 <td class='text-center v-light'>${action}</td>
                             </tr>`;
                             var subMenu = item.SubMenuLevelModel;
                             if (subMenu !== undefined && subMenu !== null && subMenu.length > 0) {
@@ -440,7 +440,7 @@ var MenuItemController = {
     },
     ConfirmDelete: function (id) {
 
-        Confirm.DeleteYN(id, MenuItemController.Delete, null, null);
+        Confirm.Delete(id, MenuItemController.Delete, null, null);
 
         //Confirm.ConfirmDelete({
         //    Title: 'Xác nhận!',

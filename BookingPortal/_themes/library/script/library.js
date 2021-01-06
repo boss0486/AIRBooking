@@ -404,5 +404,34 @@ class Confirm {
             }
         });
     }
+    static Delete(param, funcY) {
+        $.confirm({
+            title: 'Xác nhận!',
+            content: "Thực hiện xóa dữ liệu, bạn có chắc chắn muốn xóa dữ liệu này không ?",
+            buttons: {
+                confirm:
+                {
+                    btnClass: 'btn-primary',
+                    text: "Thực hiện",
+                    action: function () {
+                        Notifization.Success("Thực hiện hành động");
+                        setTimeout(function () {
+                            funcY(param);
+                        }, 2000);
+                        //return;
+                    }
+                },
+                cancel:
+                {
+                    btnClass: 'btn-danger',
+                    text: "Hủy",
+                    action: function () {
+                        Notifization.Error("Hủy hành động");
+                        return;
+                    }
+                }
+            }
+        });
+    }
 }
 

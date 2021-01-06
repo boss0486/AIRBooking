@@ -5646,7 +5646,7 @@ table, .table {
     border-color: #ABDED4;
 }
 
-.table-bordered > tbody > tr:hover > td, .table-bordered > tbody > tr:hover > th {
+.table-bordered > tbody > tr:hover > td, .table-bordered > tbody > tr:hover > th, .table-bordered > tbody > tr:hover > td.v-light, .table-bordered > tbody > tr:hover > th.v-light {
     background: #fbf6cf;
     /* background: #D9F1EC;*/
 }
@@ -5656,7 +5656,9 @@ table, .table {
     /* background: #D9F1EC;*/
 }
 
-
+.table-bordered > tbody > tr > td.v-light, .table-bordered > tbody > tr > th.v-light {
+    background: #f5f8f5;
+}
 
 .table-responsive {
     width: 100%;
@@ -8857,13 +8859,21 @@ input.error {
                 }
 
                 .sidebar .menu .list a span {
-                    margin: 5px 0 5px 12px;
+                    margin: 5px 0 5px 8px;
                     color: inherit;
                     font-weight: 300;
                     font-size: 13.5px;
                     overflow: hidden;
                     letter-spacing: 0.05px;
                 }
+
+                    .sidebar .menu .list a span i {
+                        width: 20px;
+                        /*background: rgba(134,134,134 , 0.28);*/
+                        text-align: left;
+                        padding: 2px 3px;
+                        transform: rotate(45deg);
+                    }
 
             .sidebar .menu .list .ml-menu {
                 list-style: none;
@@ -8875,6 +8885,10 @@ input.error {
                     font-weight: 300;
                     margin: 0px 0 1px 0px;
                 }
+
+                    .sidebar .menu .list .ml-menu span i {
+                        font-size: 11.5px; 
+                    }
 
                 .sidebar .menu .list .ml-menu li a {
                     padding-left: 44px;

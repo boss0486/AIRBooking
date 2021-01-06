@@ -84,18 +84,20 @@
         color: #1870b5;
     }
 
-
+    .theme-blue .sidebar .menu .list a span i {
+        color: #2196F3;
+    }
 /*theme-item*************************************************************************************************************************************************/
-.jconfirm .jconfirm-box .jconfirm-buttons button
-{
+.jconfirm .jconfirm-box .jconfirm-buttons button {
     border-radius: 2px;
-    font-size:unset;
+    font-size: unset;
 }
-.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button
-{
-    font-size:unset;
-    font-weight:unset;
+
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button {
+    font-size: unset;
+    font-weight: unset;
 }
+
 .jconfirm.jconfirm-white .jconfirm-box, .jconfirm.jconfirm-light .jconfirm-box {
-    border-radius: 2px; 
+    border-radius: 2px;
 }

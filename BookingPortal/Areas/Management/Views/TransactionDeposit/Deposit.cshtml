@@ -7,7 +7,7 @@
     string supplierCodeId = string.Empty;
     if (Helper.Current.UserLogin.IsClientInApplication())
     {
-        supplierId = ClientLoginService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+        supplierId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
     }
 }
 <div class="row">
