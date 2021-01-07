@@ -317,22 +317,25 @@ var AppUserController = {
                             //  role
                             var action = HelperModel.RolePermission(result.role, "AppUserController", id);
                             //
-                            var clientName = '';
+                            var userType = '';
                             var clientType = item.ClientType;
-                            if (parseInt(clientType) == 1) {
-                                clientName = "Khách hàng";
-                            }
-                            if (parseInt(clientType) == 2) {
-                                clientName = "Nhà cung cấp";
-                            }
-
+                            if (parseInt(clientType) == 1)
+                                userType = "AGT";
+                            else if (parseInt(clientType) == 2)
+                                userType = "COM";
+                            //
+                            var clientCode = item.ClientCode;
+                            if (clientCode == null)
+                                clientCode = "";
+                            //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
+                                 <td>${clientCode}</td>                                  
                                  <td>${item.LoginID}</td>                                  
                                  <td>${item.FullName}</td>
-                                 <td>${clientName}</td>
+                                 <td>${userType}</td>
                                  <td class="text-center">${!item.IsBlock ? "<i class='fas fa-check-circle'></i>" : "<i class='fas fa-ban'></i>"}</td>
                                  <td class="text-center">${item.Enabled ? "<i class='fas fa-check-circle'></i>" : "<i class='fas fa-ban'></i>"}</td>
                                  <td class="text-center">${item.CreatedDate}</td>

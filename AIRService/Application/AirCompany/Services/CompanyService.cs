@@ -325,6 +325,7 @@ namespace WebCore.Services
                     //
                     var clientId = clientLoginService.Create<string>(new ClientLogin()
                     {
+                        ClientType = (int)ClientLoginEnum.ClientType1.COMP,
                         AgentID = CompanyId,
                         UserID = userId,
                         IsSuper = true

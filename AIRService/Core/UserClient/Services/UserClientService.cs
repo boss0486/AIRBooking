@@ -92,8 +92,9 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserClientService())
             {
-                string sqlQuery = @"SELECT vu.*, c.AgentID, c.ClientType FROM View_User as vu LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
-                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.FullName,vu.CreatedDate ";
+                string sqlQuery = @"SELECT vu.*, c.AgentID, c.ClientType   FROM View_User as vu 
+                                    LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
+                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY a.CodeID, vu.FullName, vu.CreatedDate ";
                 var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -114,7 +115,7 @@ namespace WebCore.Services
                     Page = page
                 };
                 //
-                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+                return Notifization.Data(MessageText.Success + "::" + query, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
         }
 
@@ -153,7 +154,7 @@ namespace WebCore.Services
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         UserService userService = new UserService(_connection);
                         if (!userService.IsClientInApplication(crrUserId, _connection, _transaction))
-                        { 
+                        {
                             //
                             var clientLogin = clientLoginService.GetAlls(m => m.AgentID == agentId, transaction: _transaction).FirstOrDefault();
                             if (clientLogin == null)
@@ -192,7 +193,7 @@ namespace WebCore.Services
                             return Notifization.Invalid("Họ tên giới hạn [2-30] ký tự");
                         //
                         if (!Validate.TestAlphabet(fullName))
-                            return Notifization.Invalid("Họ tên không hợp lệ"); 
+                            return Notifization.Invalid("Họ tên không hợp lệ");
                         // birthday
                         if (!string.IsNullOrWhiteSpace(birthday))
                         {
@@ -502,13 +503,13 @@ namespace WebCore.Services
             // 
             RoleService roleService = new RoleService(_connection);
             UserRoleService userRoleService = new UserRoleService(_connection);
-            UserLoginService userLoginService = new UserLoginService(_connection); 
+            UserLoginService userLoginService = new UserLoginService(_connection);
             userId = userId.ToLower();
             UserLogin userLogin = userLoginService.GetAlls(m => m.ID == userId).FirstOrDefault();
             if (userLogin == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            UserRole userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault(); 
+            UserRole userRole = userRoleService.GetAlls(m => m.UserID == userId).FirstOrDefault();
             if (userRole == null)
             {
                 if (string.IsNullOrWhiteSpace(roleId))
@@ -614,7 +615,7 @@ namespace WebCore.Services
         }
 
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownListEmployee( string id, string agentId)
+        public static string DropdownListEmployee(string id, string agentId)
         {
             string result = string.Empty;
             using (var service = new AirAgentService())
@@ -627,7 +628,7 @@ namespace WebCore.Services
                     {
                         string strSelect = string.Empty;
                         if (!string.IsNullOrWhiteSpace(id) && item.UserID == id.ToLower())
-                            strSelect = "selected"; 
+                            strSelect = "selected";
                         else if (string.IsNullOrWhiteSpace(id) && item.UserID == dtList[0].UserID)
                             strSelect = "selected";
                         //
