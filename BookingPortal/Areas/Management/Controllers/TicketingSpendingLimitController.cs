@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("TiketingSpendingLimit")]
-    public class TiketingSpendingLimitController : CMSController
+    [RoutePrefix("TicketingSpendingLimit")]
+    public class TicketingSpendingLimitController : CMSController
     {
         // GET: BackEnd/bank
         public ActionResult DataList()

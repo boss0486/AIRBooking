@@ -66,20 +66,13 @@ namespace WebCore.Services
                 whereCondition += " AND TypeID = @TypeID";
             }
             //
-            if (Helper.Current.UserLogin.IsCustomerLogged())
+            if (Helper.Current.UserLogin.IsAgentLogged())
             {
                 // get customerid
                 string clientId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                 whereCondition += " AND Path LIKE N'" + clientId + "%'";
             }
-            else
-            if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                // get customerid
-                string clientId = GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
-                whereCondition += " AND SupplierID = '" + clientId + "'";
-            }
-
+              
             string sqlQuery = @"SELECT * FROM App_AirAgent WHERE (dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' OR CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY [CreatedDate]";
             var dtList = _connection.Query<AirAgentResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), TypeID = typeId }).ToList();
             if (dtList.Count == 0)
@@ -159,11 +152,11 @@ namespace WebCore.Services
                     //
                     if (Helper.Current.UserLogin.IsClientInApplication())
                     {
-                        ClientLogin clientLogin = GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
+                        ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == currentUserId, transaction: _transaction).FirstOrDefault();
                         if (clientLogin == null)
                             return Notifization.Invalid("Đại lý không xác định");
                         //
-                        supplierId = clientLogin.ClientID;
+                        supplierId = clientLogin.AgentID;
                     }
                     //
                     if (!string.IsNullOrWhiteSpace(supplierId))
@@ -380,12 +373,10 @@ namespace WebCore.Services
                         //
                         Enabled = enabled,
                     }, transaction: _transaction);
-
-                    //******* create balance for agent 
-                    var clientId = Create<string>(new ClientLogin()
+                    //
+                    var clientId = clientLoginService.Create<string>(new ClientLogin()
                     {
-                        ClientID = customerId,
-                        ClientType = (int)ClientLoginEnum.ClientType.Customer,
+                        AgentID = customerId,
                         UserID = userId,
                         IsSuper = true
                     }, transaction: _transaction);
@@ -638,7 +629,7 @@ namespace WebCore.Services
                     }
                     // 
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
-                    var clientLogin = GetAlls(m => m.ClientID == id, transaction: _transaction).ToList();
+                    var clientLogin = clientLoginService.GetAlls(m => m.AgentID == id, transaction: _transaction).ToList();
                     if (clientLogin.Count > 0)
                     {
                         string sqlQuery = @"SELECT * FROM View_User WHERE ID IN ('" + String.Join("','", clientLogin.Select(m => m.UserID)) + "')";
@@ -704,14 +695,8 @@ namespace WebCore.Services
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' ORDER BY c.CodeID";
                 //
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                string clientId = GetAgentIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND SupplierID = @ClientID ORDER BY c.CodeID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsCustomerLogged())
+            } 
+            else if (Helper.Current.UserLogin.IsAgentLogged())
             {
                 string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'agent' AND ParentID = @ClientID ORDER BY c.CodeID";
@@ -760,14 +745,8 @@ namespace WebCore.Services
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' ORDER BY c.CodeID";
                 //
                 clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-                string clientId = GetAgentIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND SupplierID = @ClientID ORDER BY c.CodeID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsCustomerLogged())
+            } 
+            else if (Helper.Current.UserLogin.IsAgentLogged())
             {
                 string clientId = GetAgentIDByUserID(userId);
                 sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND TypeID = 'comp' AND ParentID = @ClientID ORDER BY c.CodeID";
@@ -905,7 +884,7 @@ namespace WebCore.Services
                     string agentCode = GetAgentIDByUserID(userId);
                     whereCondition = " AND (ID = '" + agentCode + "' OR ParentID = '" + agentCode + "')";
                 }
-                if (Helper.Current.UserLogin.IsCustomerLogged())
+                if (Helper.Current.UserLogin.IsAgentLogged())
                 {
                     string userId = Helper.Current.UserLogin.IdentifierID;
                     string agentCode = GetAgentIDByUserID(userId);
@@ -1057,7 +1036,7 @@ namespace WebCore.Services
                 if (customer == null)
                     return string.Empty;
                 //
-                return customer.ClientID;
+                return customer.AgentID;
 
             }
 
@@ -1075,7 +1054,7 @@ namespace WebCore.Services
                 if (customer == null)
                     return string.Empty;
                 //
-                return customer.ClientID;
+                return customer.AgentID;
 
             }
         }

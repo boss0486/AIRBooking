@@ -64,9 +64,9 @@ namespace WebCore.Services
             {
                 // show all
             }
-            else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+            else if (Helper.Current.UserLogin.IsAgentLogged())
             {
-                string agentId = ClientLoginService.GetAgentIDByUserID(userId);
+                string agentId = AirAgentService.GetAgentIDByUserID(userId);
                 whereCondition += " AND AgentID = '" + agentId + "'";
             }
             else

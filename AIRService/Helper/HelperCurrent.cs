@@ -39,7 +39,7 @@ namespace Helper.Current
                     if (Helper.Current.UserLogin.IsAdminAgentLogged())
                         return 3;
                     //
-                    if (Helper.Current.UserLogin.IsCustomerLogged())
+                    if (Helper.Current.UserLogin.IsAgentLogged())
                         return 4;
                     //
                     return 0;
@@ -103,47 +103,20 @@ namespace Helper.Current
             {
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 var service = new UserService();
-                return service.IsAdminCustomerLogged(userId);
+                return service.IsAdminAgentLogged(userId);
             }
             catch (Exception)
             {
                 return false;
             }
         }
-        public static bool IsCustomerLogged()
+        public static bool IsAgentLogged()
         {
             try
             {
                 string userId = Helper.Current.UserLogin.IdentifierID;
                 var service = new UserService();
-                return service.IsCustomerLogged(userId);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public static bool IsAdminSupplierLogged()
-        {
-            try
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                var service = new UserService();
-                return service.IsAdminSupplierLogged(userId);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        public static bool IsSupplierLogged()
-        {
-            try
-            {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                var service = new UserService();
-                return service.IsSupplierLogged(userId, dbConnection: service._connection);
+                return service.IsAgentLogged(userId);
             }
             catch (Exception)
             {

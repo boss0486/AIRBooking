@@ -9,25 +9,12 @@ var AppUserController = {
     registerEvent: function () {
         $('#btnCreate').off('click').on('click', function () {
             var flg = true;
-            //
-            var typeLogin = $('#typeLogin').val();
-            if (parseInt(typeLogin) == 1) {
-                var clientType = $("input[name='rdoClientType']").val();
-                var ddlClient = $('#ddlClient').val();
-                if (clientType == "") {
-                    $("#lblClientType").html("Xin vui lòng chọn loại khách hàng");
-                    flg = false;
-                }
-                else {
-                    $("#lblClientType").html("");
-                }
-                var clientText = $("input[name='rdoClientType']:checked").data('text');
-                if (ddlClient == "") {
-                    $("#lblClient").html("Xin vui lòng chọn " + clientText + ">>" + ddlClient);
-                    flg = false;
-                } else {
-                    $("#lblClient").html("");
-                }
+            // 
+            if (ddlAgent == "") {
+                $("#lblAgent").html("Xin vui lòng chọn đại lý");
+                flg = false;
+            } else {
+                $("#lblAgent").html("");
             }
             // account validate
             var txtLoginID = $('#txtLoginID').val();
@@ -380,18 +367,7 @@ var AppUserController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        //var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
-        //if (ddlRoleId == null || ddlRoleId == undefined ) {
-        //    ddlRoleId = "";
-        //}
-        //
-        var typeLogin = $('#typeLogin').val();
-        var clientId = "";
-        var clientType = "";
-        if (parseInt(typeLogin) == 1) {
-            clientId = $('#ddlClient').val();
-            clientType = $("input[name='rdoClientType']:checked").val();
-        }
+        var agentId = $('#ddlAgent').val();
         //  
         var ddlLanguage = ''; //$('#ddlLanguage').val();
         var enabled = 0;
@@ -413,8 +389,7 @@ var AppUserController = {
             LoginID: txtLoginID,
             Password: txtPassword,
             //
-            ClientID: clientId,
-            ClientType: clientType,
+            AgentID: agentId,
             //
             LanguageID: ddlLanguage,
             IsBlock: isBlock,
@@ -452,15 +427,9 @@ var AppUserController = {
         var txtEmail = $('#txtEmail').val();
         var txtPhone = $('#txtPhone').val();
         var txtAddress = $('#txtAddress').val();
-        //var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val();
-        var typeLogin = $('#typeLogin').val();
-        var clientId = "";
-        var clientType = "";
-        if (parseInt(typeLogin) == 1) {
-            clientId = $('#ddlClient').val();
-            clientType = $("input[name='rdoClientType']:checked").val();
-        }
-        //  
+        //var ddlRoleId = $('#ddlRole input[type="checkbox"]:checkbox:checked').val(); 
+        var agentId = $('#ddlAgent').val();
+
         var ddlLanguage = ''; //$('#ddlLanguage').val();
         var enabled = 0;
         if ($('input[name="cbxActive"]').is(":checked"))
@@ -479,8 +448,7 @@ var AppUserController = {
             Phone: txtPhone,
             Address: txtAddress,
             //
-            ClientID: clientId,
-            ClientType: clientType,
+            AgentID: agentId,
             //
             LanguageID: ddlLanguage,
             IsBlock: isBlock,
@@ -899,41 +867,20 @@ $(document).on("change", "#ddlLanguage", function () {
     }
 });
 
-$(document).on("change", "#ddlClient", function () {
-    var ddlClient = $(this).val();
-    if (ddlClient === "") {
-        var clientText = $("input[name='rdoClientType']:checked").data('text');
-        if (ddlClient == "") {
-            $("#lblClient").html("Xin vui lòng chọn " + clientText);
-        } else {
-            $("#lblClient").html("");
-        }
-    }
-    else {
-        $('#lblClient').html('');
+$(document).on("change", "#ddlAgent", function () {
+    var ddlAgent = $(this).val();
+    if (ddlAgent == "") {
+        $("#lblAgent").html("Xin vui lòng chọn đại lý");
+    } else {
+        $("#lblAgent").html("");
     }
 });
-//
-$(document).on("change", "input[name='rdoClientType']", function () {
-    $("#lblClient").html("");
-    var ddlClientType = $(this).val();
-    // change text
-    var text = $(this).data('text');
-    $('#LblClientText').html(text);
-    // load data
-    if (parseInt(ddlClientType) === 1) {
-        CustomerOption("", true, false);
-    }
-    else {
-        SupplierOption("", true, false);
-    }
-});
-
+// 
 $(document).on("click", "#btnRoleSetting", function () {
     var roleActive = $('#RoleData input[type="checkbox"]:checkbox:checked');
     var roleId = $(roleActive).val();
     var userId = $("#txtID").val();
-     
+
     var model = {
         RoleId: roleId,
         UserID: userId
@@ -987,10 +934,10 @@ function CustomerOption(_id, isdefault, isChangeEvent) {
                         }
                         option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
                     });
-                    $('#ddlClient').html(option);
-                    $('#ddlClient').selectpicker('refresh');
+                    $('#ddlAgent').html(option);
+                    $('#ddlAgent').selectpicker('refresh');
                     if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
-                        $('#ddlClient').change();
+                        $('#ddlAgent').change();
                     }
                     return;
                 }
@@ -1033,10 +980,10 @@ function SupplierOption(_id, isdefault, isChangeEvent) {
                         option += `<option value='${id}' ${attrSelect}>${item.Title}</option>`;
                     });
                     console.log('::' + attrSelect);
-                    $('#ddlClient').html(option);
-                    $('#ddlClient').selectpicker('refresh');
+                    $('#ddlAgent').html(option);
+                    $('#ddlAgent').selectpicker('refresh');
                     if (isChangeEvent !== undefined && isChangeEvent == true && attrSelect !== '') {
-                        $('#ddlClient').change();
+                        $('#ddlAgent').change();
                     }
                     return;
                 }

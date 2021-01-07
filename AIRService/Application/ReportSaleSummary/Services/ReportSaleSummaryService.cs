@@ -65,7 +65,7 @@ namespace WebCore.Services
             #endregion
             //
 
-            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
                 return new List<ReportSaleSummaryResult>();
             //
             string typeId = "";
@@ -261,7 +261,7 @@ namespace WebCore.Services
 
         public ActionResult DataListByDeparture(ReportEprSearchModel model)
         {
-            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication && !Helper.Current.UserLogin.IsSupplierLogged())
+            if (!Helper.Current.UserLogin.IsCMSUser && !Helper.Current.UserLogin.IsAdminInApplication)
                 return Notifization.Invalid(MessageText.AccessDenied);
             //
             List<AirPassengerReult> dtList = DepartureData(model);

@@ -69,11 +69,9 @@ namespace WebCore.Entities
         // login
         public string LoginID { get; set; }
         public string Password { get; set; }
-        public string RePassword { get; set; }
-        public string RoleID { get; set; }
+        public string RePassword { get; set; } 
         //
-        public int ClientType { get; set; }
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         //
         public string LanguageID { get; set; }
         public bool IsBlock { get; set; }

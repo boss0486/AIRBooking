@@ -60,10 +60,7 @@ namespace WebCore.Services
             }
             #endregion
             //
-            if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-
-            }
+             
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"
@@ -102,6 +99,7 @@ namespace WebCore.Services
             string agentId = model.AgentID;
             string userId = model.UserID;
             double amount = model.Amount;
+            string summary = model.Summary;
             int enabled = model.Enabled;
             //
             if (string.IsNullOrWhiteSpace(agentId) || string.IsNullOrWhiteSpace(userId))
@@ -111,12 +109,31 @@ namespace WebCore.Services
                 return Notifization.Invalid("Hạn mức không hợp lệ");
             //
             agentId = agentId.ToLower().Trim();
-            TiketingSpendingLimitService TiketingSpendingLimitService = new TiketingSpendingLimitService(_connection);
-            TiketingSpendingLimit tiketingSpendingLimit = TiketingSpendingLimitService.GetAlls(m => m.AgentID == agentId && m.UserID == userId).FirstOrDefault();
+            TiketingSpendingLimitService tiketingSpendingLimitService = new TiketingSpendingLimitService(_connection);
 
+            AirAgentService airAgentService = new AirAgentService(_connection);
+            AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+            if (airAgent == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
+            {
+                AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService(_connection);
+                AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+                if (agentSpendingLimit == null)
+                    return Notifization.Invalid("Không thể xác định hạn mức");
+                //
+                double usedTotal = tiketingSpendingLimitService.GetAlls(m => m.AgentID == agentId && m.UserID != userId).Sum(m => m.Amount);
+                double remaining = agentSpendingLimit.Amount - usedTotal;
+                if (remaining > usedTotal + amount)
+                    return Notifization.Invalid("Hạn mức không đủ");
+                //
+            }
+
+            TiketingSpendingLimit tiketingSpendingLimit = tiketingSpendingLimitService.GetAlls(m => m.AgentID == agentId && m.UserID == userId).FirstOrDefault();
             if (tiketingSpendingLimit == null)
             {
-                TiketingSpendingLimitService.Create<string>(new TiketingSpendingLimit
+                tiketingSpendingLimitService.Create<string>(new TiketingSpendingLimit
                 {
                     AgentID = agentId,
                     UserID = userId,
@@ -128,7 +145,7 @@ namespace WebCore.Services
             // update
             tiketingSpendingLimit.Amount = amount;
             tiketingSpendingLimit.Enabled = enabled;
-            TiketingSpendingLimitService.Update(tiketingSpendingLimit);
+            tiketingSpendingLimitService.Update(tiketingSpendingLimit);
             return Notifization.Success(MessageText.UpdateSuccess);
         }
         public TiketingSpendingLimitResult ViewgentSpendingLimit(string agentId)

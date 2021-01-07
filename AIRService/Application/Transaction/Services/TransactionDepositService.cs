@@ -66,7 +66,7 @@ namespace WebCore.Services
             }
             else if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = AirAgentService.GetAgentIDByUserID(userId);
                 whereCondition += " AND (AgentSentID = '" + clientId + "' OR AgentReceivedID = '" + clientId + "')";
             }
             else
@@ -199,10 +199,10 @@ namespace WebCore.Services
                     {
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == userId, transaction: _transaction).FirstOrDefault();
-                        agentSentId = clientLogin.ClientID;
+                        agentSentId = clientLogin.AgentID;
                         //
                         string providerId = agentReceived.ParentID;
-                        if (providerId != clientLogin.ClientID)
+                        if (providerId != clientLogin.AgentID)
                             return Notifization.Invalid(MessageText.Forbidden);
                         //
                     }

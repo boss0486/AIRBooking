@@ -137,12 +137,12 @@ namespace WebApplication.Management.Controllers
         [HttpPost]
         [Route("Action/GetTicketing")]
         [IsManage(skip: true)]
-        public ActionResult GetEmployeeIsBooker(UserIDModel model)
+        public ActionResult GetBooker(UserIDModel model)
         {
             try
             {
                 using (var service = new UserClientService())
-                    return Notifization.Data(MessageText.Success, service.GetEmployeeByClientID(model.ID));
+                    return Notifization.Data(MessageText.Success, service.GetEmployeeByAgentID(model.ID));
             }
             catch (Exception ex)
             {

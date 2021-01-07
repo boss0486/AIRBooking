@@ -129,9 +129,10 @@ namespace WebCore.Entities
 
     public class EmployeeModel
     {
+        public string AgentID { get; set; }
         public string UserID { get; set; }
         public string FullName { get; set; }
-        public string ClientID { get; set; }
+        public string SpendingAmount { get; set; }
 
     }
 }

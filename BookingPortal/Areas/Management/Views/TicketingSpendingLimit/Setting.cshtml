@@ -14,37 +14,34 @@
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>T.Tin Người nhận:</label>
         </div>
-        @if (!Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
+        @if (!Helper.Current.UserLogin.IsAgentLogged())
         {
             <div class="row">
                 <div class="col-md-7">
                     <div class="form-group">
-                        <label class="form-label">Khách hàng:</label>
-                        <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
-                            <option value="">-Lựa chọn11-</option>
+                        <label class="form-label">Đại lý:</label>
+                        <select id="ddlAgent" name="ddlAgent" class="form-control show-tick" data-live-search="true">
+                            <option value="">-Lựa chọn-</option>
                             @Html.Raw(AirAgentService.DropdownListAgent(""));
                         </select>
-                        <span id="lblCustomer" class="message msg-box"></span>
+                        <span id="lblAgent" class="message msg-box"></span>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="form-group">
-                        <label class="form-label">MKH:</label>
-                        <div class="form-control disabled" style="background: #FFE5F1"><label id="lblCustomerCodeID"></label></div>
+                        <label class="form-label">MDL:</label>
+                        <div class="form-control disabled" style="background: #FFE5F1"><label id="lblAgentCodeID"></label></div>
                     </div>
                 </div>
             </div>
         }
-
-
-
         <div class="row">
             <div class="col-md-7">
                 <div class="form-group">
                     <label class="form-label">Nhân viên:</label>
                     <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
-                        @if (Helper.Current.UserLogin.IsSupplierLogged() || Helper.Current.UserLogin.IsCustomerLogged())
+                        @if (Helper.Current.UserLogin.IsAgentLogged())
                         {
                             string clientId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
                             @Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
@@ -109,7 +106,7 @@
         </div>
         <div class="form-group text-right">
             <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-            <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+            <button id="BtnApply" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
         </div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
@@ -124,5 +121,5 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/Areas/Management/_script/trans-user-spending.js"></script>
+    <script src="~/Areas/Management/_script/app-ticketing-spending-limit.js"></script>
 }

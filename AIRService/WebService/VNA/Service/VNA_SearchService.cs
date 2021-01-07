@@ -951,7 +951,7 @@ namespace AIRService.Service
                 string ticketingPhone = userInfo.Phone;
                 string ticketingEmail = userInfo.Email;
                 //
-                string agentId = ClientLoginService.GetAgentIDByUserID(ticketingId);
+                string agentId = AirAgentService.GetAgentIDByUserID(ticketingId);
                 ClientLoginService clientLoginService = new ClientLoginService();
                 AirAgentService airAgentService = new AirAgentService();
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();

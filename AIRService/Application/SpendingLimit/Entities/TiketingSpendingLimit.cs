@@ -30,6 +30,7 @@ namespace WebCore.Entities
         public string AgentID { get; set; }
         public string UserID { get; set; }
         public double Amount { get; set; }
+        public string Summary { get; set; }
         public int Enabled { get; set; }
 
     }

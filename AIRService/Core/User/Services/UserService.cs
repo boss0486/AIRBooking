@@ -868,7 +868,7 @@ namespace WebCore.Services
                 return false;
             }
         }
-        public bool IsCustomerLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public bool IsAgentLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
@@ -880,7 +880,7 @@ namespace WebCore.Services
                     return false;
                 //
                 userId = userId.ToLower();
-                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
+                var client = service.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
                 //
@@ -892,7 +892,7 @@ namespace WebCore.Services
             }
         }
 
-        public bool IsAdminCustomerLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public bool IsAdminAgentLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             try
             {
@@ -904,7 +904,7 @@ namespace WebCore.Services
                     return false;
                 //
                 userId = userId.ToLower();
-                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Customer, dbTransaction).FirstOrDefault();
+                var client = service.GetAlls(m => m.UserID == userId, dbTransaction).FirstOrDefault();
                 if (client == null)
                     return false;
 
@@ -914,54 +914,6 @@ namespace WebCore.Services
                 return false;
             }
             catch (Exception ex)
-            {
-                return false;
-            }
-        }
-        public bool IsAdminSupplierLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
-        {
-            try
-            {
-                if (dbConnection == null)
-                    dbConnection = _connection;
-                //
-                var service = new ClientLoginService(dbConnection);
-                if (string.IsNullOrWhiteSpace(userId))
-                    return false;
-                //
-                userId = userId.ToLower();
-                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
-                if (client == null)
-                    return false;
-                //
-                if (client.IsSuper)
-                    return true;
-                //
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public bool IsSupplierLogged(string userId, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
-        {
-            try
-            {
-                var service = new ClientLoginService(dbConnection);
-                if (string.IsNullOrWhiteSpace(userId))
-                    return false;
-                //
-                userId = userId.ToLower();
-                var client = service.GetAlls(m => m.UserID == userId && m.ClientType == (int)ClientLoginEnum.ClientType.Supplier, dbTransaction).FirstOrDefault();
-                if (client == null)
-                    return false;
-                //
-                return true;
-
-            }
-            catch
             {
                 return false;
             }

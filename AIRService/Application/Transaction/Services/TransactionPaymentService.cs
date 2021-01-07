@@ -64,9 +64,9 @@ namespace WebCore.Services
             {
                 // show all
             }
-            else if (Helper.Current.UserLogin.IsCustomerLogged() || Helper.Current.UserLogin.IsSupplierLogged())
+            else if (Helper.Current.UserLogin.IsAgentLogged())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string clientId = AirAgentService.GetAgentIDByUserID(userId);
                 whereCondition += " AND (SenderID = '" + clientId + "' OR ReceivedID = '" + clientId + "')";
             }
             else
@@ -190,17 +190,7 @@ namespace WebCore.Services
                     if (string.IsNullOrWhiteSpace(bankNameSent))
                         return Notifization.Invalid("Lỗi không xác định được ngân hàng nhận");
                     //
-                    if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsSupplierLogged())
-                    {
-                        senderId = ClientLoginService.GetAgentIDByUserID(userId);
-                    }
-                    else
-                    {
-                        //SupplierService supplierService = new SupplierService();
-                        //Supplier supplier = supplierService.GetAlls(m => m.ID == senderId).FirstOrDefault();
-                        //if (supplier == null)
-                        //    return Notifization.Invalid("Nhà cung cấp không xác định");
-                    }
+                     
                     return Notifization.Invalid("Nhà cung cấp không xác định");
                     //
                     AirAgentService customerService = new AirAgentService();

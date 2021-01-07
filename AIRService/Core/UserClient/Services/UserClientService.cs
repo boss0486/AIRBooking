@@ -72,15 +72,15 @@ namespace WebCore.Services
             //
             if (Helper.Current.UserLogin.IsClientInApplication())
             {
-                string clientId = ClientLoginService.GetAgentIDByUserID(userId);
+                string agentId = AirAgentService.GetAgentIDByUserID(userId);
                 // show all with admin application
-                if (Helper.Current.UserLogin.IsAdminSupplierLogged() || Helper.Current.UserLogin.IsAdminAgentLogged())
+                if (Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
-                    whereCondition += " AND ClientID = '" + clientId + "'";
+                    whereCondition += " AND AgentID = '" + agentId + "'";
                 }
                 else
                 {
-                    whereCondition += " AND ClientID = '" + clientId + "' AND  UserId = '" + userId + "'";
+                    whereCondition += " AND AgentID = '" + agentId + "' AND  UserId = '" + userId + "'";
                 }
             }
             else
@@ -92,7 +92,7 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserClientService())
             {
-                string sqlQuery = @"SELECT vu.*, c.ClientID, c.ClientType FROM View_User as vu LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
+                string sqlQuery = @"SELECT vu.*, c.AgentID, c.ClientType FROM View_User as vu LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
                                     WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.FullName,vu.CreatedDate ";
                 var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
@@ -134,7 +134,6 @@ namespace WebCore.Services
                             return Notifization.Invalid(MessageText.Invalid);
                         //
                         string fullName = model.FullName;
-                        string nickName = model.NickName;
                         string birthday = model.Birthday;
                         string imageFile = model.ImageFile;
                         string email = model.Email;
@@ -144,9 +143,7 @@ namespace WebCore.Services
                         string loginId = model.LoginID;
                         string password = model.Password;
                         //////string roleId = model.RoleID;
-                        //
-                        int clientType = model.ClientType;
-                        string clientId = model.ClientID;
+                        string agentId = model.AgentID;
                         //
                         string languageId = "";
                         bool isBlock = model.IsBlock;
@@ -156,28 +153,9 @@ namespace WebCore.Services
                         ClientLoginService clientLoginService = new ClientLoginService(_connection);
                         UserService userService = new UserService(_connection);
                         if (!userService.IsClientInApplication(crrUserId, _connection, _transaction))
-                        {
-                            if (clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer && clientType != (int)WebCore.ENM.ClientLoginEnum.ClientType.Supplier)
-                                return Notifization.Invalid("Loại người dùng không hợp lệ");
+                        { 
                             //
-                            string clientName = string.Empty;
-                            if (clientType == (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer)
-                            {
-                                if (string.IsNullOrWhiteSpace(clientId))
-                                    return Notifization.Invalid("Vui lòng chọn khách hàng");
-                                //
-                                clientName = "Khách hàng";
-                            }
-                            //
-                            if (clientType == (int)WebCore.ENM.ClientLoginEnum.ClientType.Customer)
-                            {
-                                if (string.IsNullOrWhiteSpace(clientId))
-                                    return Notifization.Invalid("Vui lòng chọn nhà cung cấp");
-                                //
-                                clientName = "Nhà cung cấp";
-                            }
-                            //
-                            var clientLogin = clientLoginService.GetAlls(m => m.ClientID == clientId, transaction: _transaction).FirstOrDefault();
+                            var clientLogin = clientLoginService.GetAlls(m => m.AgentID == agentId, transaction: _transaction).FirstOrDefault();
                             if (clientLogin == null)
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
@@ -188,10 +166,9 @@ namespace WebCore.Services
                             if (clientLogin == null)
                                 return Notifization.Invalid(MessageText.Invalid);
                             //
-                            clientId = clientLogin.ClientID;
-                            clientType = clientLogin.ClientType;
+                            agentId = clientLogin.AgentID;
                         }
-                        if (string.IsNullOrWhiteSpace(clientId))
+                        if (string.IsNullOrWhiteSpace(agentId))
                         {
                             return Notifization.Invalid(MessageText.Invalid);
                         }
@@ -215,16 +192,7 @@ namespace WebCore.Services
                             return Notifization.Invalid("Họ tên giới hạn [2-30] ký tự");
                         //
                         if (!Validate.TestAlphabet(fullName))
-                            return Notifization.Invalid("Họ tên không hợp lệ");
-                        // nick name
-                        if (!string.IsNullOrWhiteSpace(nickName))
-                        {
-                            if (nickName.Length < 2 || nickName.Length > 30)
-                                return Notifization.Invalid("Biệt danh giới hạn [2-30] ký tự");
-                            //
-                            if (!Validate.TestAlphabet(nickName))
-                                return Notifization.Invalid("Biệt danh không hợp lệ");
-                        }
+                            return Notifization.Invalid("Họ tên không hợp lệ"); 
                         // birthday
                         if (!string.IsNullOrWhiteSpace(birthday))
                         {
@@ -275,8 +243,8 @@ namespace WebCore.Services
                         // call service
 
                         string sqlQuery = @"SELECT TOP(1) ID FROM CMSUserLogin WHERE LoginID = @LoginID 
-                                                     UNION 
-                                                     SELECT TOP(1) ID FROM UserLogin WHERE LoginID = @LoginID ";
+                        UNION 
+                        SELECT TOP(1) ID FROM UserLogin WHERE LoginID = @LoginID ";
                         //
                         var userLogin = _connection.Query<UserClientIDModel>(sqlQuery, new { LoginID = loginId }, transaction: _transaction).FirstOrDefault();
                         if (userLogin != null)
@@ -352,8 +320,7 @@ namespace WebCore.Services
                         clientLoginService.Create<string>(new ClientLogin()
                         {
                             UserID = userId,
-                            ClientID = clientId,
-                            ClientType = clientType
+                            AgentID = agentId,
                         }, transaction: _transaction);
                         //
                         _transaction.Commit();
@@ -622,23 +589,23 @@ namespace WebCore.Services
             }
         }
 
-        public List<EmployeeModel> GetEmployeeByClientID(string clientId)
+        public List<EmployeeModel> GetEmployeeByAgentID(string agentId)
         {
-            if (string.IsNullOrWhiteSpace(clientId))
+            if (string.IsNullOrWhiteSpace(agentId))
                 return new List<EmployeeModel>();
             //
             using (var service = new UserClientService())
             {
                 var _connection = service._connection;
-                if (string.IsNullOrWhiteSpace(clientId))
+                if (string.IsNullOrWhiteSpace(agentId))
                     return new List<EmployeeModel>();
                 //
-                string sqlQuery = @"SELECT uf.UserID, uf.FullName, ur.RoleID FROM UserInfo as uf
+                string sqlQuery = @"SELECT uf.UserID, uf.FullName, ur.RoleID,,(select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as SpendingAmount FROM UserInfo as uf
                                     INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
                                     LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
                                     INNER JOIN [Role] as r On r.ID = ur.RoleID
-                                    where r.IsAllowSpend = 1 AND client.ClientID = @ClientID AND client.UserID != @UserID";
-                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { ClientID = clientId, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
+                                    where r.IsAllowSpend = 1 AND client.AgentID = @AgentID AND client.UserID != @UserID";
+                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { AgentID = agentId, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
                 if (data.Count == 0)
                     return new List<EmployeeModel>();
                 //
@@ -653,7 +620,7 @@ namespace WebCore.Services
             using (var service = new AirAgentService())
             {
                 UserClientService userClientService = new UserClientService();
-                List<EmployeeModel> dtList = userClientService.GetEmployeeByClientID(agentId);
+                List<EmployeeModel> dtList = userClientService.GetEmployeeByAgentID(agentId);
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)

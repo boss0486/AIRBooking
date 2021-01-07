@@ -22,8 +22,7 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string UserID { get; set; }
-        public string ClientID { get; set; }
-        public int ClientType { get; set; }
+        public string AgentID { get; set; }
         public bool IsSuper { get; set; }
     }
 

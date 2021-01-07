@@ -61,10 +61,7 @@ namespace WebCore.Services
             }
             #endregion
             //
-            if (Helper.Current.UserLogin.IsSupplierLogged())
-            {
-
-            }
+            
             //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"

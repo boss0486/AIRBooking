@@ -5,47 +5,20 @@
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-
-@{
-    int typeLogin = 0;
-}
 <div class="row">
     <div class="col-md-8">
 
         @if (!Helper.Current.UserLogin.IsClientInApplication())
         {
-            typeLogin = 1;
-            <div class="top-pic special">
-                <label><i class="fas fa-building"></i>&nbsp;<span>Cung cấp dịch vụ:</span></label>
-            </div>
-            <div class="form-group client-group m-t-15">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="inp-check">
-                            <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientCustomer" value="1" data-text="Khách hàng" checked />
-                            <label class="form-check-label" for="rdoClientCustomer">Khách hàng</label>
-                            <hr />
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="inp-check">
-                            <input class="form-check-input" type="radio" name="rdoClientType" id="rdoClientSupplier" value="2" data-text="Nhà cung cấp" />
-                            <label class="form-check-label" for="rdoClientSupplier">Nhà cung cấp</label>
-                            <hr />
-                        </div>
-                    </div>
-                </div>
-                <span id="lblClientType" class="message msg-box"></span>
-            </div>
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label class="form-label" id="LblClientText">Nhà cung cấp:</label>
-                        <select id="ddlClient" name="ddlClient" class="form-control show-tick" data-live-search="true">
+                        <label class="form-label" id="LblClientText">Đại lý:</label>
+                        <select id="ddlAgent" name="ddlAgent" class="form-control show-tick" data-live-search="true">
                             <option value="">-Lựa chọn-</option>
+                            @Html.Raw(AirAgentService.DropdownListAgent(""))
                         </select>
-                        <span id="lblClient" class="message msg-box"></span>
+                        <span id="lblAgent" class="message msg-box"></span>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -171,18 +144,6 @@
         }
     </div>
 </div>
-
-<input id="typeLogin" value="@typeLogin" type="hidden" />
 @section scripts{
     <script src="~/Areas/Management/_script/app-user.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //
-            var typeLogin = @typeLogin;
-            if (parseInt(typeLogin) == 1) {
-                $('#ddlClient').html(`<option value="">-Lựa chọn-</option>`);
-                $(".client-group input[name='rdoClientType']:first").change();
-            }
-        });
-    </script>
 }

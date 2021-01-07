@@ -138,7 +138,7 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
-    <Compile Include="Areas\Management\Controllers\TiketingSpendingLimitController.cs" />
+    <Compile Include="Areas\Management\Controllers\TicketingSpendingLimitController.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
     <Compile Include="Areas\Management\Controllers\AreaNationalController.cs" />
@@ -1248,9 +1248,9 @@
     <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-focus-travel-viet-nam.pdf" />
     <Content Include="Areas\Management\Views\_ViewSearchDepositPatial.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Payment.cshtml" />
-    <Content Include="Areas\Management\Views\TiketingSpendingLimit\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\TiketingSpendingLimit\Details.cshtml" />
-    <Content Include="Areas\Management\Views\TiketingSpendingLimit\Setting.cshtml" />
+    <Content Include="Areas\Management\Views\TicketingSpendingLimit\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\TicketingSpendingLimit\Details.cshtml" />
+    <Content Include="Areas\Management\Views\TicketingSpendingLimit\Setting.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
