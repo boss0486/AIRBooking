@@ -362,7 +362,7 @@ var _TransactionDepositController = {
                             var receivedId = item.ReceivedID;
                             var transactionCode = item.TransactionCode;
                             var amount = item.Amount;
-                            var sentCode = item.AgentSentCode;
+                            //var sentCode = item.AgentSentCode;
                             var receivedCode = item.AgentReceivedCode;
                             var amount = item.Amount;
                             var createdBy = item.CreatedBy;
@@ -375,8 +375,7 @@ var _TransactionDepositController = {
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${title}</td>                                    
-                                 <td>${transactionCode}</td>                                    
-                                 <td>${sentCode}</td>                                    
+                                 <td>${transactionCode}</td>                                                                   
                                  <td>${receivedCode}</td>                                    
                                  <td class="text-right"> ${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
                                  <td>${createdBy}</td>                                    

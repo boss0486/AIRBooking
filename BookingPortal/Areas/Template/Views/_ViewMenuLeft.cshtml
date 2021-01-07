@@ -3,7 +3,7 @@
 
     WebCore.Services.MenuItemService menuItemService = new WebCore.Services.MenuItemService();
     List<MenuItemLayout> menuItemModelResults = menuItemService.GetMenuItemUserLogin();
-    List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).OrderBy(m=> m.OrderID).ToList();
+    List<MenuItemLayout> menuItems = menuItemModelResults.Where(m => string.IsNullOrWhiteSpace(m.ParentID)).ToList();
     string metaController = Helper.Page.MetaSEO.ControllerText;
     <div class="menu">
         <ul class="list" id="LeftMenu">
@@ -49,7 +49,7 @@
                             _path = _path.ToLower();
                         }
                         <li class="">
-                            <a href="@_path" class="@_cls  @toggled"><span><i class="fas fa-square-full" aria-hidden="true"></i>&nbsp; @item.Title </span></a> @Html.Raw(_innerText)
+                            <a href="@_path" class="@_cls  @toggled"><span><i class="fas fa-square-full" aria-hidden="true"></i>&nbsp; @item.Title @item.OrderID </span></a> @Html.Raw(_innerText)
                         </li>
                     }
                 }

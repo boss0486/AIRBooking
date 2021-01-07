@@ -14,10 +14,9 @@
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
                 <th class="tbcol-none">MKH</th>
-                <th class="tbcol-none">NCC</th>
+                <th class="tbcol-none">MDL</th>
                 <th class="tbcol-none">Tên khách hàng</th>
                 <th class="tbcol-none">Liên hệ</th>
-                <th class="tbcol-none">Số tiền đặt cọc</th>
                 <th class="tbcol-active">T.Thái</th>
                 <th class="tbcol-date">Ngày tạo</th>
                 <th class="tbcol-action">
@@ -30,10 +29,10 @@
 </div>
 <div id="Pagination"></div>
 @section scripts{
-    <script src="~/Areas/Management/_script/customer.js"></script>
+    <script src="~/Areas/Management/_script/company.js"></script>
     <script type="text/javascript">
         $(function () {
-            AgentController.DataList(1);
+            CompanyController.DataList(1);
         });
     </script>
 }

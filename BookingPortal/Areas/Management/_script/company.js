@@ -1,14 +1,14 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/agent/Action";
-var URLA = "/Management/agent";
-var AgentController = {
+var URLC = "/Management/Company/Action";
+var URLA = "/Management/Company";
+var CompanyController = {
     init: function () {
-        AgentController.registerEvent();
+        CompanyController.registerEvent();
     },
     registerEvent: function () {
         $("#btnCreate").off("click").on("click", function () {
             var flg = true;
-            var ddlSupplier = $("#ddlSupplier").val();
+            var ddlAgent = $("#ddlAgent").val();
             //
             var txtCodeID = $("#txtCodeID").val();
             var txtTitle = $("#txtTitle").val();
@@ -24,10 +24,17 @@ var AgentController = {
             var txtAccount = $("#txtAccount").val();
             var txtPassword = $("#txtPassword").val();
             var txtEmail = $("#txtEmail").val();
-            var txtPhone = $("#txtPhone").val(); 
-            var txtDeposit = $("#txtDeposit").val();
+            var txtPhone = $("#txtPhone").val();
             var txtTermPayment = $("#txtTermPayment").val();
-            //  
+            // 
+            $("#lblAgent").html("");
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged) {
+                if (ddlAgent == "") {
+                    $("#lblAgent").html("Vui lòng chọn đại lý");
+                    flg = false;
+                } 
+            }
+            //
             if (txtCodeID === "") {
                 $("#lblCodeID").html("Không được để trống MKH");
                 flg = false;
@@ -206,26 +213,6 @@ var AgentController = {
             else {
                 $("#lblPhone").html("");
             }
-            // deposit **********************************************************************************
-
-            if (txtDeposit === "") {
-                $("#lblDeposit").html("Không được để trống số tiền đặt cọc");
-                flg = false;
-            }
-            else {
-                txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
-                if (!FormatCurrency.test(txtDeposit)) {
-                    $("#lblDeposit").html("Số tiền đặt cọc không hợp lệ");
-                    flg = false;
-                }
-                else if (parseFloat(txtDeposit) <= 0) {
-                    $("#lblDeposit").html("Số tiền đặt cọc phải > 0");
-                    flg = false;
-                }
-                else {
-                    $("#lblDeposit").html("");
-                }
-            }
             //
             if (txtTermPayment === "") {
                 $("#lblTermPayment").html("Không được để trống kỳ hạn thanh toán");
@@ -244,18 +231,18 @@ var AgentController = {
             }
             // submit **********************************************************************************
             if (flg) {
-                AgentController.Create();
+                CompanyController.Create();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
             }
         });
         $("#btnSearch").off("click").on("click", function () {
-            AgentController.DataList(1);
+            CompanyController.DataList(1);
         });
         $("#btnUpdate").off("click").on("click", function () {
             var flg = true;
-            var ddlSupplier = $("#ddlSupplier").val(); 
+            var ddlAgent = $("#ddlAgent").val();
             var txtCodeID = $("#txtCodeID").val();
             var txtTitle = $("#txtTitle").val();
             var txtSummary = $("#txtSummary").val();
@@ -271,27 +258,26 @@ var AgentController = {
             var txtPassword = $("#txtPassword").val();
             var txtEmail = $("#txtEmail").val();
             var txtPhone = $("#txtPhone").val();
-
-            var txtDeposit = $("#txtDeposit").val();
             var txtTermPayment = $("#txtTermPayment").val();
             //
-            if (ddlSupplier === "") {
-                $("#lblSupplier").html("Vui lòng chọn nhà cung cấp");
-                flg = false;
+            $("#lblAgent").html("");
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged) {
+                if (ddlAgent == "") {
+                    $("#lblAgent").html("Vui lòng chọn đại lý");
+                    flg = false;
+                }
             }
-            else {
-                $("#lblSupplier").html("");
-            } 
+            
             if (txtCodeID === "") {
-                $("#lblCodeID").html("Không được để trống mã đại lý");
+                $("#lblCodeID").html("Không được để trống mã khách hàng");
                 flg = false;
             }
             else if (txtCodeID.length != 3) {
-                $("#lblCodeID").html("Mã đại lý bao gồm 3 ký tự");
+                $("#lblCodeID").html("Mã khách hàng bao gồm 3 ký tự");
                 flg = false;
             }
             else if (!FormatKeyword.test(txtCodeID)) {
-                $("#lblCodeID").html("Mã đại lý không hợp lệ");
+                $("#lblCodeID").html("Mã khách hàng không hợp lệ");
                 flg = false;
             }
             else {
@@ -405,25 +391,6 @@ var AgentController = {
             else {
                 $("#lblContactPhone").html("");
             }
-            // deposit **********************************************************************************
-            if (txtDeposit === "") {
-                $("#lblDeposit").html("Không được để trống số tiền đặt cọc");
-                flg = false;
-            }
-            else {
-                txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
-                if (!FormatCurrency.test(txtDeposit)) {
-                    $("#lblDeposit").html("Số tiền đặt cọc không hợp lệ");
-                    flg = false;
-                }
-                else if (parseFloat(txtDeposit) <= 0) {
-                    $("#lblDeposit").html("Số tiền đặt cọc phải > 0");
-                    flg = false;
-                }
-                else {
-                    $("#lblDeposit").html("");
-                }
-            }
             //
             if (txtTermPayment === "") {
                 $("#lblTermPayment").html("Không được để trống kỳ hạn thanh toán");
@@ -443,7 +410,7 @@ var AgentController = {
 
             // submit **********************************************************************************
             if (flg) {
-                AgentController.Update();
+                CompanyController.Update();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
@@ -490,7 +457,7 @@ var AgentController = {
 
                             //var _id = item.ID;
                             var _customerCode = item.CodeID;
-                            var _supplierCode = item.SupplierCode;
+                            var _agentCode = item.AgentCode;
                             //var _parentID = item.ParentID;
                             var _title = item.Title;
                             //var _alias = item.Alias;
@@ -513,17 +480,16 @@ var AgentController = {
                             //    strlevel = " - cấp: " + "0" + _typeLevel;
                             //}
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "AgentController", id);
+                            var action = HelperModel.RolePermission(result.role, "CompanyController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${_customerCode}</td>
-                                 <td class="bg-danger">${_supplierCode}</td>
+                                 <td class="bg-danger">${_agentCode}</td>
                                  <td>${_title}</td>                    
-                                 <td>${_contactName}</td>
-                                 <td class="text-right">${LibCurrencies.FormatToCurrency(_depositAmount)} đ</td>                                                                            
+                                 <td>${_contactName}</td>                                                                         
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
@@ -531,7 +497,7 @@ var AgentController = {
                         });
                         $("tbody#TblData").html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, AgentController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, CompanyController.DataList);
                         }
                         return;
                     }
@@ -550,7 +516,7 @@ var AgentController = {
         });
     },
     Create: function () {
-        var ddlAgent = $("#ddlSupplier").val();
+        var ddlAgent = $("#ddlAgent").val();
         if (ddlAgent == undefined) {
             ddlAgent = "";
         }
@@ -570,7 +536,6 @@ var AgentController = {
         var txtEmail = $("#txtEmail").val();
         var txtPhone = $("#txtPhone").val();
         //
-        var txtDeposit = LibCurrencies.ConvertToCurrency($("#txtDeposit").val());
         var txtTermPayment = $("#txtTermPayment").val();
         //
         var enabled = 0;
@@ -580,7 +545,6 @@ var AgentController = {
         var model = {
             AgentID: ddlAgent,
             CodeID: txtCodeID,
-            ParentID: "",
             Title: txtTitle,
             Summary: txtSummary,
             TaxCode: txtTaxCode,
@@ -596,7 +560,6 @@ var AgentController = {
             Phone: txtPhone,
             Email: txtEmail,
             //
-            DepositAmount: txtDeposit,
             TermPayment: txtTermPayment,
             //
             Enabled: enabled
@@ -638,8 +601,6 @@ var AgentController = {
         var txtContactEmail = $("#txtContactEmail").val();
         var txtContactPhone = $("#txtContactPhone").val();
         //
-        var txtDeposit = LibCurrencies.ConvertToCurrency($("#txtDeposit").val());
-
         var txtTermPayment = $("#txtTermPayment").val();
         //
         var enabled = 0;
@@ -650,7 +611,6 @@ var AgentController = {
         var model = {
             ID: id,
             CodeID: txtCodeID,
-            ParentID: "",
             Title: txtTitle,
             Summary: txtSummary,
             Address: txtAddress,
@@ -661,7 +621,6 @@ var AgentController = {
             ContactEmail: txtContactEmail,
             ContactPhone: txtContactPhone,
             //        
-            DepositAmount: txtDeposit,
             TermPayment: txtTermPayment,
             //
             Enabled: enabled
@@ -699,7 +658,7 @@ var AgentController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AgentController.DataList(pageIndex);
+                        CompanyController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -766,29 +725,34 @@ var AgentController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.Delete(id, AgentController.Delete, null, null);
+        Confirm.Delete(id, CompanyController.Delete, null, null);
     }
 };
 
-AgentController.init();
+CompanyController.init();
 // *********************************************************************************************
-$(document).on("change", "#ddlSupplier", function () {
-    $("#lblSupplier").html("");
+$(document).on("change", "#ddlAgent", function () {
+    var ddlAgent = $(this).val();
+    $("#lblAgent").html("");
     $("#lblProviderCodeID").html("- - -");
+    if (ddlAgent == "") {
+        $("#lblAgent").html("Vui lòng chọn đại lý");
+        flg = false;
+    }
     var codeid = $(this).find(":selected").data("codeid");
-    $("#lblProviderCodeID").html(codeid); 
+    $("#lblProviderCodeID").html(codeid);
 });
 //
 $(document).on("keyup", "#txtCodeID", function () {
     var txtCodeID = $(this).val();
     if (txtCodeID === "") {
-        $("#lblCodeID").html("Không được để trống MKH");
+        $("#lblCodeID").html("Không được để trống mã khách hàng");
     }
     else if (txtCodeID.length != 3) {
-        $("#lblCodeID").html("Mã đại lý bao gồm 3 ký tự");
+        $("#lblCodeID").html("Mã khách hàng bao gồm 3 ký tự");
     }
     else if (!FormatKeyword.test(txtCodeID)) {
-        $("#lblCodeID").html("Mã đại lý không hợp lệ");
+        $("#lblCodeID").html("Mã khách hàng không hợp lệ");
     }
     else {
         $("#lblCodeID").html("");
@@ -962,26 +926,6 @@ $(document).on("keyup", "#txtPhone", function () {
     }
     else {
         $("#lblPhone").html("");
-    }
-});
-// deposit
-$(document).on("keyup", "#txtDeposit", function () {
-    var txtDeposit = $(this).val();
-    if (txtDeposit === "") {
-        $("#lblDeposit").html("Không được để trống số tiền đặt cọc");
-    }
-    else {
-        txtDeposit = LibCurrencies.ConvertToCurrency(txtDeposit);
-
-        if (!FormatCurrency.test(txtDeposit)) {
-            $("#lblDeposit").html("Số tiền đặt cọc không hợp lệ");
-        }
-        else if (parseFloat(txtDeposit) <= 0) {
-            $("#lblDeposit").html("Số tiền đặt cọc phải > 0");
-        }
-        else {
-            $("#lblDeposit").html("");
-        }
     }
 });
 // TermPayment

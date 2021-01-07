@@ -14,8 +14,7 @@
                 <th class="tbcol-id">#&nbsp;</th>
                 <th class="tbcol-title">Tiêu đề</th>
                 <th class="tbcol-none">MGD</th>
-                <th class="tbcol-none">DL chuyển</th>
-                <th class="tbcol-none">DL nhận</th>
+                <th class="tbcol-none">MDL</th>
                 <th class="tbcol-none">Số tiền</th>
                 <th class="tbcol-none">Người thực hiện</th>
                 <th class="tbcol-active">T.Thái</th>
@@ -32,17 +31,7 @@
 @section scripts{
     <script src="~/Areas/Management/_script/trans-deposit.js"></script>
     <script type="text/javascript">
-        $(function () {
-
-            //$('#txtStartDate').datepicker({
-            //    format: 'dd-mm-yyyy',
-            //    startDate: '01-01-2019',
-            //    todayHighlight: true
-
-            //}).on('changeDate', function (index, item) {
-            //    $('#selectDate').datepicker('hide');
-            //});
-
+        $(function () { 
             _TransactionDepositController.DataList(1);
         });
     </script>

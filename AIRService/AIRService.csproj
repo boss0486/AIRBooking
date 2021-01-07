@@ -137,6 +137,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\AirCompany\Entities\Company.cs" />
+    <Compile Include="Application\AirCompany\Services\CompanyService.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimitPayment.cs" />
     <Compile Include="Application\AirFilght\Entities\AirItinerary.cs" />
     <Compile Include="Application\AirFilght\Enum\ItineraryEnum.cs" />
@@ -183,9 +185,7 @@
     <Compile Include="Application\Airline\Entities\Airline.cs" />
     <Compile Include="Application\Airline\Services\AirlineService.cs" />
     <Compile Include="Application\History\Entities\TransactionPaymentHistory.cs" />
-    <Compile Include="Application\History\Entities\WalletSpendingLimitHistory.cs" />
     <Compile Include="Application\History\Entities\WalletInvestmentHistory.cs" />
-    <Compile Include="Application\History\Services\WalletSpendingLimitHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletInvestmentHistoryService.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentCoupon.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportTicketingDocumentTaxes.cs" />
@@ -1824,6 +1824,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Application\AirAgentFee\Enum\" />
+    <Folder Include="Application\AirCompany\Enum\" />
     <Folder Include="Application\AirOrder\Enum\" />
     <Folder Include="Application\AirTicketCondition\Enum\" />
     <Folder Include="Application\ApiReport\Enum\" />

@@ -115,7 +115,7 @@ namespace WebCore.Services
             //
             if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
             {
-                string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY OrderID ASC";
+                string sqlQuery = @"SELECT * FROM MenuItem WHERE RouteArea = @RouteArea AND Enabled = 1 ORDER BY ParentID,OrderID ASC";
                 List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, }).ToList();
                 return menuItemLayouts;
             }
@@ -123,7 +123,7 @@ namespace WebCore.Services
             {
                 string sqlQuery = @" SELECT ID, ParentID, IconFont, Title, OrderID, PathAction, MvcController, MvcAction 
                 FROM MenuItem as mn
-                WHERE RouteArea = @RouteArea AND (ParentID IS NULL OR [dbo].[CheckPermissionInMenu](@UserID, mn.MvcController, mn.MvcAction) =1) ORDER BY RouteArea, OrderID ASC";
+                WHERE RouteArea = @RouteArea AND (ParentID IS NULL OR [dbo].[CheckPermissionInMenu](@UserID, mn.MvcController, mn.MvcAction) =1) ORDER BY ParentID,OrderID ASC";
                 List<MenuItemLayout> menuItemLayouts = _connection.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
                 return menuItemLayouts;
             }

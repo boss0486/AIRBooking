@@ -66,30 +66,6 @@
     ]
   },
   {
-    "KeyID": "AgentFee",
-    "Title": "Phí đại lý",
-    "Action": [
-      {
-        "KeyID": "DataList",
-        "Method": "DataList",
-        "APIRouter": "Action/DataList",
-        "Title": "D.sách"
-      },
-      {
-        "KeyID": "Setting",
-        "Method": "Setting",
-        "APIRouter": "Action/Setting",
-        "Title": "Thiết lập"
-      },
-      {
-        "KeyID": "Details",
-        "Method": "Details",
-        "APIRouter": "Action/Details",
-        "Title": "C.tiết"
-      }
-    ]
-  },
-  {
     "KeyID": "AirBook",
     "Title": "Đặt vé",
     "Action": [
@@ -510,6 +486,90 @@
     ]
   },
   {
+    "KeyID": "AgentFee",
+    "Title": "Phí đại lý",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Setting",
+        "Method": "Setting",
+        "APIRouter": "Action/Setting",
+        "Title": "Thiết lập"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
+    "KeyID": "AgentPayment",
+    "Title": "Thanh toán",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "Danh sách"
+      },
+      {
+        "KeyID": "Payment",
+        "Method": "Payment",
+        "APIRouter": "Action/Deposit",
+        "Title": "Nạp"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
+    "KeyID": "Company",
+    "Title": "Công ty",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "Tạo"
+      },
+      {
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
     "KeyID": "Permission",
     "Title": "Phân quyền",
     "Action": [
@@ -610,7 +670,7 @@
         "Title": "C.tiết"
       }
     ]
-  }, 
+  },
   {
     "KeyID": "TransactionDeposit",
     "Title": "G.D Nạp tiền",
@@ -624,30 +684,6 @@
       {
         "KeyID": "Deposit",
         "Method": "Deposit",
-        "APIRouter": "Action/Deposit",
-        "Title": "Nạp"
-      },
-      {
-        "KeyID": "Details",
-        "Method": "Details",
-        "APIRouter": "Action/Details",
-        "Title": "C.tiết"
-      }
-    ]
-  }, 
-  {
-    "KeyID": "AgentPayment",
-    "Title": "Thanh toán",
-    "Action": [
-      {
-        "KeyID": "DataList",
-        "Method": "DataList",
-        "APIRouter": "Action/DataList",
-        "Title": "Danh sách"
-      },
-      {
-        "KeyID": "Payment",
-        "Method": "Payment",
         "APIRouter": "Action/Deposit",
         "Title": "Nạp"
       },

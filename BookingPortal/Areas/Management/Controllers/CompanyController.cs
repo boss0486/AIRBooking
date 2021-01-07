@@ -15,10 +15,10 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("agent")]
-    public class AgentController : CMSController
+    [RoutePrefix("Company")]
+    public class CompanyController : CMSController
     {
-        // GET: BackEnd/Customer
+        // GET: BackEnd/Company
         public ActionResult DataList()
         {
             return View();
@@ -31,8 +31,8 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult Update(string id)
         {
-            AirAgentService service = new AirAgentService();
-            AirAgent model = service.GetAgentByID(id);
+            CompanyService service = new CompanyService();
+            Company model = service.GetCompanyByID(id);
             if (model != null)
                 return View(model);
             //
@@ -41,8 +41,8 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult Details(string id)
         {
-            AirAgentService service = new AirAgentService();
-            AirAgentResult model = service.ViewCustomerByID(id);
+            CompanyService service = new CompanyService();
+            CompanyResult model = service.ViewCompanyByID(id);
             if (model != null)
                 return View(model);
             //
@@ -52,11 +52,11 @@ namespace WebApplication.Management.Controllers
         //##########################################################################################################################################################################################################################################################
         [HttpPost]
         [Route("Action/DataList")]
-        public ActionResult DataList(AirAgentSearchModel model)
+        public ActionResult DataList(SearchModel model)
         {
             try
             {
-                using (var service = new AirAgentService())
+                using (var service = new CompanyService())
                 {
                     return service.DataList(model);
                 }
@@ -69,11 +69,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Create")]
-        public ActionResult Create(AirAgentCreateModel model)
+        public ActionResult Create(CompanyCreateModel model)
         {
             try
             {
-                using (var service = new AirAgentService())
+                using (var service = new CompanyService())
                 {
                     return service.Create(model);
                 }
@@ -86,11 +86,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Update")]
-        public ActionResult Update(AirAgentUpdateModel model)
+        public ActionResult Update(CompanyUpdateModel model)
         {
             try
             {
-                using (var service = new AirAgentService())
+                using (var service = new CompanyService())
                 {
                     return service.Update(model);
                 }
@@ -103,11 +103,11 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Delete")]
-        public ActionResult Delete(AirAgentIDModel model)
+        public ActionResult Delete(CompanyIDModel model)
         {
             try
             {
-                using (var service = new AirAgentService())
+                using (var service = new CompanyService())
                     return service.Delete(model);
             }
             catch (Exception)
@@ -123,7 +123,7 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                var service = new AirAgentService();
+                var service = new CompanyService();
                 var data = service.DataOption();
                 if (data.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -135,45 +135,6 @@ namespace WebApplication.Management.Controllers
             {
                 return Notifization.TEST("::" + ex);
             }
-        }
-        [HttpPost]
-        [Route("Action/AgentData")]
-        [IsManage(skip: true)]
-        public ActionResult GetAgentAll()
-        {
-            try
-            {
-                var service = new AirAgentService();
-                var data = service.GetAgentLimit();
-                if (data.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Option("OK", data);
-
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("::" + ex);
-            }
-        }
-
-        [HttpPost]
-        [Route("Action/GetAgentForCustomerType")]
-        [IsManage(skip: true)]
-        public ActionResult GetAgentForCustomerType(AirAgentType model)
-        {
-            try
-            {
-                var service = new AirAgentService();
-                return service.GetAgentForCustomerType(model.CustomerType);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("::" + ex);
-            }
-        }
-
-        //OPTION ##########################################################################################################################################################################################################################################################
-
+        } 
     }
 }

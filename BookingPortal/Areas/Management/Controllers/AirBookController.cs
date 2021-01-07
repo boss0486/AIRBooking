@@ -144,8 +144,8 @@ namespace WebApplication.Management.Controllers
         [Route("Action/GetCompByAgentID")]
         public ActionResult GetCompByAgentID(BookAgentID bookAgentId)
         {
-            AirAgentService customerService = new AirAgentService();
-            List<ClientOption> dtList = customerService.GetCompByAgentID(bookAgentId.AgentID);
+            CompanyService companyService = new CompanyService();
+            List<ClientOption> dtList = companyService.GetCompByAgentID(bookAgentId.AgentID);
             return Notifization.Data("", dtList);
         }
         // GET: Booking ******************************************************************************************************************************

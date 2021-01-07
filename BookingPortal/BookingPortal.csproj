@@ -138,6 +138,7 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Management\Controllers\TicketingSpendingLimitController.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
@@ -196,6 +197,7 @@
     <Content Include="Areas\Management\_script\app-book.js" />
     <Content Include="Areas\Management\_script\app-airline.js" />
     <Content Include="Areas\Management\_script\area-national.js" />
+    <Content Include="Areas\Management\_script\company.js" />
     <Content Include="Areas\Management\_script\national.js" />
     <Content Include="Areas\Management\_script\area-inland.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
@@ -1251,6 +1253,10 @@
     <Content Include="Areas\Management\Views\TicketingSpendingLimit\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TicketingSpendingLimit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TicketingSpendingLimit\Setting.cshtml" />
+    <Content Include="Areas\Management\Views\Company\Create.cshtml" />
+    <Content Include="Areas\Management\Views\Company\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\Company\Details.cshtml" />
+    <Content Include="Areas\Management\Views\Company\Update.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

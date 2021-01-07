@@ -12,7 +12,7 @@ namespace WebCore.Model.Services
 {
     public class ModelService
     {
-        public static SearchResult SearchDefault(SearchModel model, string dateColumn = null)
+        public static SearchResult SearchDefault(SearchModel model, string dateColumn = null, string ectColumn = null)
         {
             string whereCondition = string.Empty;
             int status = model.Status;
@@ -22,7 +22,7 @@ namespace WebCore.Model.Services
             string timeZoneLocal = model.TimeZoneLocal;
             //
             string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
-            string columName = "CreatedDate";
+            string columName = $"{ectColumn}CreatedDate";
             if (!string.IsNullOrWhiteSpace(dateColumn))
             {
                 columName = dateColumn;
@@ -84,9 +84,9 @@ namespace WebCore.Model.Services
                 }
 
                 if (status == (int)ModelEnum.Enabled.ENABLED)
-                    whereCondition += " AND Enabled = 1 ";
+                    whereCondition += $" AND {ectColumn}Enabled = 1 ";
                 else if (status == (int)ModelEnum.Enabled.DISABLE)
-                    whereCondition += " AND Enabled = 0 ";
+                    whereCondition += $" AND {ectColumn}Enabled = 0 ";
 
 
                 return new SearchResult()
@@ -120,10 +120,9 @@ namespace WebCore.Model.Services
                 }
                 //
                 if (status == (int)ModelEnum.Enabled.ENABLED)
-                    whereCondition += " AND Enabled = 1 ";
+                    whereCondition += $" AND {ectColumn}Enabled = 1 ";
                 else if (status == (int)ModelEnum.Enabled.DISABLE)
-                    whereCondition += " AND Enabled = 0 ";
-
+                    whereCondition += $" AND {ectColumn}Enabled = 0 ";
                 //
                 return new SearchResult()
                 {

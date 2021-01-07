@@ -45,13 +45,7 @@ namespace WebCore.Services
         {
             WalletSpendingHistoryService service = new WalletSpendingHistoryService(dbConnection);
             return service.WalletSpendingHistoryCreate(model, dbConnection, dbTransaction);
-        }
-        public static TransactionHistoryMessageModel LoggerWalletSpendingLimitHistory(WalletSpendingLimitHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
-        {
-            WalletSpendingLimitHistoryService service = new WalletSpendingLimitHistoryService(dbConnection);
-            return service.WalletCustomerSpendingLimitHistoryCreate(model, dbConnection, dbTransaction);
-        }
-
+        } 
         //wallet user history ##############################################################################################################################################################################################################################################################
 
         public static TransactionHistoryMessageModel LoggerWalletUserSpendingHistory(WalletUserSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)

@@ -13,56 +13,35 @@ namespace WebCore.Entities
 {
 
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_AirAgent")]
-    public partial class AirAgent : WEBModel
+    [Table("App_Company")]
+    public partial class Company : WEBModel
     {
-        public AirAgent()
+        public Company()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string TypeID { get; set; }
+        public string AgentID { get; set; }
         public string CodeID { get; set; }
-        public string NotationID { get; set; }
-        public string ParentID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-        public string Path { get; set; }
         public string Address { get; set; }
         public string CompanyPhone { get; set; }
         public string TaxCode { get; set; }
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
-        public double DepositAmount { get; set; }
-        public double SpendingLimit { get; set; }
         public int TermPayment { get; set; }
         public string RegisterID { get; set; }
     }
-
-    public class AirAgentResult : WEBModelResult
+     
+    public class CompanyCreateModel
     {
-        public string ID { get; set; }
-        private string ParentID { get; set; }
-        [NotMapped]
-        public string SupplierCode => AirAgentService.GetAgentCodeID(ParentID);
-        private string _typeId;
-        public string TypeID
-        {
-            get
-            {
-                return AgentProvideTypeService.GetNameByID(_typeId);
-            }
-            set
-            {
-                _typeId = value;
-            }
-        }
+        public string AgentID { get; set; }
         public string CodeID { get; set; }
-        public string NotationID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
@@ -72,31 +51,8 @@ namespace WebCore.Entities
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
-        public double DepositAmount { get; set; }
-        public double SpendingLimit { get; set; }
         public int TermPayment { get; set; }
-
-    }
-
-    public class AirAgentCreateModel
-    {
-        public string AgentID { get; set; }
-        public string CodeID { get; set; }
-        public string NotationID { get; set; }
-        public string ParentID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Address { get; set; }
-        public string CompanyPhone { get; set; }
-        public string TaxCode { get; set; }
-        // contact
-        public string ContactName { get; set; }
-        public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; }
         //
-        public double DepositAmount { get; set; }
-        public int TermPayment { get; set; }
-        // 
         public string AccountID { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
@@ -105,24 +61,37 @@ namespace WebCore.Entities
         public int Enabled { get; set; }
     }
 
-    public class AirAgentUpdateModel : AirAgentCreateModel
+    public class CompanyUpdateModel : CompanyCreateModel
     {
         public string ID { get; set; }
     }
  
-    public class AirAgentIDModel
+    public class CompanyIDModel
     {
         public string ID { get; set; }
     }
-    public class AirAgentType
+    public class CompanyResult : WEBModelResult
     {
-        public string CustomerType { get; set; }
-    }
-    public class AirAgentSearchModel : SearchModel
-    { 
+        public string ID { get; set; }
+        public string AgentID { get; set; }
+        public string AgentCode { get; set; }
+        public string AgentName { get; set; }
+        public string CodeID { get; set; }
+        public string Title { get; set; }
+        public string Alias { get; set; }
+        public string Summary { get; set; }
+        public string Address { get; set; }
+        public string CompanyPhone { get; set; }
+        public string TaxCode { get; set; }
+        public string ContactName { get; set; }
+        public string ContactEmail { get; set; }
+        public string ContactPhone { get; set; }
+        public int TermPayment { get; set; }
+        public string RegisterID { get; set; }
+
     }
 
-    public class AirAgentOption
+    public class CompanyOption
     {
         public string ID { get; set; }
         public string Title { get; set; }
