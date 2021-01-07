@@ -92,9 +92,9 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserClientService())
             {
-                string sqlQuery = @"SELECT vu.*, c.AgentID, c.ClientType   FROM View_User as vu 
+                string sqlQuery = @"SELECT vu.*, c.AgentID as 'ClientID', c.ClientType FROM View_User as vu 
                                     LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
-                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY a.CodeID, vu.FullName, vu.CreatedDate ";
+                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.LoginID, vu.CreatedDate ";
                 var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);

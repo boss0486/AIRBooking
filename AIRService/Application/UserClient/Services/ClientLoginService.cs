@@ -32,14 +32,14 @@ namespace WebCore.Services
             {
                 AirAgentService airAgentService = new AirAgentService();
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == clientId).FirstOrDefault();
-                if (airAgent == null)
+                if (airAgent != null)
                     return airAgent.CodeID;
             }
             if (typeId == (int)ClientLoginEnum.ClientType1.COMP)
             {
                 CompanyService companyService = new CompanyService();
                 Company company = companyService.GetAlls(m => m.ID == clientId).FirstOrDefault();
-                if (company == null)
+                if (company != null)
                     return company.CodeID;
             }
             return string.Empty;

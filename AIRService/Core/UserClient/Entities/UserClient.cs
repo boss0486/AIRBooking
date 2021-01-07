@@ -52,22 +52,11 @@ namespace WebCore.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
+        public string ClientID { get; set; }
         public int ClientType { get; set; }
-
-        private string _clientCode = string.Empty;
-        public string ClientCode
-        {
-            get
-            {
-                return ClientLoginService.GetTypeLogin(_clientCode, ClientType);
-            }
-            set
-            {
-                _clientCode = value;
-            }
-        }
+        [NotMapped]
+        public string ClientCode => ClientLoginService.GetTypeLogin(ClientID, ClientType);
         public bool IsBlock { get; set; }
-
     }
     public class UserClientCreateModel
     {
