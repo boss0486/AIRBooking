@@ -60,16 +60,15 @@ namespace WebApplication.Management.Controllers
         [Route("Action/Create")]
         public ActionResult Create(TransactionUserSpendingCreateModel model)
         {
-            return Notifization.NotService;
-            //try
-            //{
-            //    using (var service = new TransactionUserSpendingService())
-            //        return service.Create(model);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return Notifization.TEST(">>>:" + ex);
-            //}
+            try
+            {
+                using (var service = new TransactionUserSpendingService())
+                    return service.Create(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(">>>:" + ex);
+            }
         }
 
         [HttpPost]

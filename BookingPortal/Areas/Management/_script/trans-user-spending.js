@@ -1,104 +1,104 @@
 ﻿var pageIndex = 1;
 var URLC = "/Management/TransactionUserSpending/Action";
 var URLA = "/Management/TransactionUserSpending";
-var TransactionSpendingController = {
+var UserSpendingController = {
     init: function () {
-        TransactionSpendingController.registerEvent();
+        UserSpendingController.registerEvent();
     },
     registerEvent: function () {
-        $('#btnCreate').off('click').on('click', function () {
+        $("#btnApply").off("click").on("click", function () {
             var flg = true;
-            var ddlCustomer = $('#ddlCustomer').val();
-            var ddlEmployee = $('#ddlEmployee').val();
-            var txtAmount = $('#txtAmount').val();
-            var txtSummary = $('#txtSummary').val();
+            var ddlCustomer = $("#ddlCustomer").val();
+            var ddlEmployee = $("#ddlEmployee").val();
+            var txtAmount = $("#txtAmount").val();
+            var txtSummary = $("#txtSummary").val();
             //
-            if (ddlCustomer === "") {
-                $('#lblCustomer').html('Vui lòng chọn khách hàng');
+            if (ddlCustomer == "") {
+                $("#lblCustomer").html("Vui lòng chọn khách hàng");
                 flg = false;
             }
             else {
-                $('#lblCustomer').html('');
+                $("#lblCustomer").html("");
             }
             // transaction id
-            if (ddlEmployee === "") {
-                $('#lblEmployee').html('Vui lòng chọn nhân viên');
+            if (ddlEmployee == "") {
+                $("#lblEmployee").html("Vui lòng chọn nhân viên");
                 flg = false;
             }
             else {
-                $('#lblEmployee').html('');
+                $("#lblEmployee").html("");
             }
             //
-            if (txtAmount === '') {
-                $('#lblAmount').html('Không được để trống số tiền nạp');
+            if (txtAmount == "") {
+                $("#lblAmount").html("Không được để trống số tiền nạp");
                 flg = false;
             }
             else {
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
                 if (!FormatCurrency.test(txtAmount)) {
-                    $('#lblAmount').html('Số tiền nạp không hợp lệ');
+                    $("#lblAmount").html("Số tiền nạp không hợp lệ");
                     flg = false;
                 }
                 else if (parseFloat(txtAmount) <= 0) {
-                    $('#lblAmount').html('Số tiền nạp phải > 0');
+                    $("#lblAmount").html("Số tiền nạp phải > 0");
                     flg = false;
                 }
                 else {
-                    $('#lblAmount').html('');
+                    $("#lblAmount").html("");
                 }
             }
-             //
-            if (txtSummary !== '') {
+            //
+            if (txtSummary !== "") {
                 if (txtSummary.length > 120) {
-                    $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
+                    $("#lblSummary").html("Mô tả giới hạn từ 1-> 120 ký tự");
                     flg = false;
                 }
                 else if (!FormatKeyword.test(txtSummary)) {
-                    $('#lblSummary').html('Mô tả không hợp lệ');
+                    $("#lblSummary").html("Mô tả không hợp lệ");
                     flg = false;
                 }
                 else {
-                    $('#lblSummary').html('');
+                    $("#lblSummary").html("");
                 }
             }
             else {
-                $('#lblSummary').html('');
+                $("#lblSummary").html("");
             }
             // submit
             if (flg) {
-                TransactionSpendingController.Create();
+                UserSpendingController.Setting();
             }
             else {
                 Notifization.Error(MessageText.Datamissing);
             }
         });
-        $('#btnSearch').off('click').on('click', function () {
-            TransactionSpendingController.DataList(1);
+        $("#btnSearch").off("click").on("click", function () {
+            UserSpendingController.DataList(1);
         });
     },
     DataList: function (page) {
         //
-        var ddlTimeExpress = $('#ddlTimeExpress').val();
-        var txtStartDate = $('#txtStartDate').val();
-        var txtEndDate = $('#txtEndDate').val();
+        var ddlTimeExpress = $("#ddlTimeExpress").val();
+        var txtStartDate = $("#txtStartDate").val();
+        var txtEndDate = $("#txtEndDate").val();
         var model = {
-            Query: $('#txtQuery').val(),
+            Query: $("#txtQuery").val(),
             Page: page,
             TimeExpress: parseInt(ddlTimeExpress),
             StartDate: txtStartDate,
             EndDate: txtEndDate,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-            Status: parseInt($('#ddlStatus').val())
+            Status: parseInt($("#ddlStatus").val())
         };
         //
         AjaxFrom.POST({
-            url: URLC + '/DataList',
+            url: URLC + "/DataList",
             data: model,
             success: function (result) {
-                $('tbody#TblData').html('');
-                $('#Pagination').html('');
+                $("tbody#TblData").html("");
+                $("#Pagination").html("");
                 if (result !== null) {
-                    if (result.status === 200) {
+                    if (result.status == 200) {
                         var currentPage = 1;
                         var pagination = result.paging;
                         if (pagination !== null) {
@@ -107,13 +107,13 @@ var TransactionSpendingController = {
                             pageSize = pagination.PageSize;
                             pageIndex = pagination.Page;
                         }
-                        var rowData = '';
+                        var rowData = "";
                         $.each(result.data, function (index, item) {
                             index = index + 1;
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
-                           
+
                             var customerId = item.CustomerID;
                             var title = item.Title;
                             var summary = item.Summary;
@@ -137,30 +137,30 @@ var TransactionSpendingController = {
                             }
                             else {
                                 summary = "";
-                            } 
+                            }
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "TransactionSpendingController", id);
+                            var action = HelperModel.RolePermission(result.role, "UserSpendingController", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
                                  <td>${title}</td>        
-                                 <td class='tbcol-created'>${item.CreatedBy}</td>                                  
+                                 <td class="tbcol-created">${item.CreatedBy}</td>                                  
                                  <td class="text-center">${HelperModel.StatusIcon(item.Enabled)}</td>
                                  <td class="text-center">${item.CreatedDate}</td>
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
                         });
-                        $('tbody#TblData').html(rowData);
+                        $("tbody#TblData").html(rowData);
                         if (parseInt(totalPage) > 1) {
-                            Paging.Pagination("#Pagination", totalPage, currentPage, TransactionSpendingController.DataList);
+                            Paging.Pagination("#Pagination", totalPage, currentPage, UserSpendingController.DataList);
                         }
                         return;
                     }
                     else {
                         //Notifization.Error(result.message);
-                        console.log('::' + result.message);
+                        console.log("::" + result.message);
                         return;
                     }
                 }
@@ -168,17 +168,17 @@ var TransactionSpendingController = {
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NotService);
+                console.log("::" + MessageText.NotService);
             }
         });
     },
-    Create: function () {
-        var ddlCustomer = $('#ddlCustomer').val();
-        var ddlEmployee = $('#ddlEmployee').val();
-        var txtAmount = LibCurrencies.ConvertToCurrency($('#txtAmount').val());  
-        var txtSummary = $('#txtSummary').val();
+    Setting: function () {
+        var ddlCustomer = $("#ddlCustomer").val();
+        var ddlEmployee = $("#ddlEmployee").val();
+        var txtAmount = LibCurrencies.ConvertToCurrency($("#txtAmount").val());
+        var txtSummary = $("#txtSummary").val();
         var enabled = 0;
-        if ($('input[name="cbxActive"]').is(":checked"))
+        if ($("input[name='cbxActive']").is(":checked"))
             enabled = 1;
         //
         var model = {
@@ -189,11 +189,11 @@ var TransactionSpendingController = {
             Enabled: enabled
         };
         AjaxFrom.POST({
-            url: URLC + '/Create',
+            url: URLC + "/Create",
             data: model,
             success: function (response) {
                 if (response !== null) {
-                    if (response.status === 200) {
+                    if (response.status == 200) {
                         Notifization.Success(response.message);
                         FData.ResetForm();
                         return;
@@ -207,7 +207,7 @@ var TransactionSpendingController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NotService);
+                console.log("::" + MessageText.NotService);
             }
         });
 
@@ -217,13 +217,13 @@ var TransactionSpendingController = {
             Id: id
         };
         AjaxFrom.POST({
-            url: URLC + '/Delete',
+            url: URLC + "/Delete",
             data: model,
             success: function (response) {
                 if (response !== null) {
-                    if (response.status === 200) {
+                    if (response.status == 200) {
                         Notifization.Success(response.message);
-                        TransactionSpendingController.DataList(pageIndex);
+                        UserSpendingController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -235,44 +235,44 @@ var TransactionSpendingController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NotService);
+                console.log("::" + MessageText.NotService);
             }
         });
     },
     Details: function () {
-        var id = $('#txtID').val();
+        var id = $("#txtID").val();
         if (id.length <= 0) {
             Notifization.Error(MessageText.NotService);
             return;
         }
         var fData = {
-            Id: $('#txtID').val()
+            Id: $("#txtID").val()
         };
         $.ajax({
-            url: '/post/detail',
+            url: "/post/detail",
             data: {
                 strData: JSON.stringify(fData)
             },
-            type: 'POST',
-            dataType: 'json',
+            type: "POST",
+            dataType: "json",
             success: function (result) {
                 if (result !== null) {
-                    if (result.status === 200) {
+                    if (result.status == 200) {
                         var item = result.data;
-                        $('#LblAccount').html(item.LoginID);
-                        $('#LblDate').html(item.CreatedDate);
-                        var action = '';
+                        $("#LblAccount").html(item.LoginID);
+                        $("#LblDate").html(item.CreatedDate);
+                        var action = "";
                         if (item.Enabled)
-                            action += `<i class='fa fa-toggle-on'></i> actived`;
+                            action += `<i class="fa fa-toggle-on"></i> actived`;
                         else
-                            action += `<i class='fa fa-toggle-off'></i>not active`;
+                            action += `<i class="fa fa-toggle-off"></i>not active`;
 
-                        $('#LblActive').html(action);
-                        $('#lblLastName').html(item.FirstName + ' ' + item.LastName);
-                        $('#LblEmail').html(item.Email);
-                        $('#LblPhone').html(item.Phone);
-                        $('#LblLanguage').html(item.LanguageID);
-                        $('#LblPermission').html(item.PermissionID);
+                        $("#LblActive").html(action);
+                        $("#lblLastName").html(item.FirstName + " " + item.LastName);
+                        $("#LblEmail").html(item.Email);
+                        $("#LblPhone").html(item.Phone);
+                        $("#LblLanguage").html(item.LanguageID);
+                        $("#LblPermission").html(item.PermissionID);
 
                         return;
                     }
@@ -285,111 +285,132 @@ var TransactionSpendingController = {
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NotService);
+                console.log("::" + MessageText.NotService);
             }
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, TransactionSpendingController.Delete, null, null);
+        Confirm.DeleteYN(id, UserSpendingController.Delete, null, null);
 
     },
-    GetTiketing(id) { 
+    GetTiketing(agentId) {
         var option = `<option value="">-Lựa chọn-</option>`;
-        $('#ddlEmployee').html(option);
-        $('#ddlEmployee').selectpicker('refresh');
+        $("#ddlEmployee").html(option);
+        $("#ddlEmployee").selectpicker("refresh");
         var model = {
-            ID: id
+            ID: agentId
         };
         AjaxFrom.POST({
-            url: '/Management/User/Action/GetTiketing',
+            url: "/Management/User/Action/GetTicketing",
             data: model,
             success: function (response) {
                 if (response !== null) {
-                    if (response.status === 200) { 
+                    if (response.status == 200) {
                         $.each(response.data, function (index, item) {
                             index = index + 1;
                             //
-                            var strIndex = '';
+                            var strIndex = "";
                             if (index < 10)
                                 strIndex += "0" + index;
                             //
                             var id = item.UserID;
-                            var title = item.FullName;                       
-                            option += `<option value='${id}'>${title}</option>`;
+                            var title = item.FullName;
+                            option += `<option value="${id}">${title}</option>`;
                         });
-                        $('select#ddlEmployee').html(option);
-                        $('select#ddlEmployee').selectpicker('refresh');
+                        $("select#ddlEmployee").html(option);
+                        $("select#ddlEmployee").selectpicker("refresh");
                         return;
                     }
                 }
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NotService);
+                console.log("::" + MessageText.NotService);
             }
         });
     }
 };
 
-TransactionSpendingController.init();
+UserSpendingController.init();
 // customer
 $(document).on("change", "#ddlCustomer", function () {
     var ddlCustomer = $(this).val();
-    if (ddlCustomer === "") {
-        $('#lblCustomer').html('Vui lòng chọn khách hàng');
+    if (ddlCustomer == "") {
+        $("#lblCustomer").html("Vui lòng chọn khách hàng");
     }
     else {
-        $('#lblCustomer').html('');
-        var codeid = $(this).find(':selected').data('codeid');
-        $('#lblCustomerCodeID').html(codeid);
-        TransactionSpendingController.GetTiketing(ddlCustomer);
+        $("#lblCustomer").html("");
+        var codeid = $(this).find(":selected").data("codeid");
+        $("#lblCustomerCodeID").html(codeid);
+        //UserSpendingController.GetTiketing(ddlCustomer);
     }
 });
 // emloyee
 $(document).on("change", "#ddlEmployee", function () {
     var ddlEmployee = $(this).val();
-    if (ddlEmployee === "") {
-        $('#lblEmployee').html('Vui lòng chọn nhân viên');
+    if (ddlEmployee == "") {
+        $("#lblEmployee").html("Vui lòng chọn nhân viên");
     }
     else {
-        $('#lblEmployee').html('');
+        $("#lblEmployee").html("");
+        var spendVal = $(this).find(":selected").data("spending");
+        if (spendVal != undefined && spendVal != "") {
+            $("#txtAmount").val(LibCurrencies.FormatToCurrency(spendVal));
+        }
     }
 });
 $(document).on("keyup", "#txtAmount", function () {
     var txtAmount = $(this).val();
-    if (txtAmount === '') {
-        $('#lblAmount').html('Không được để trống số tiền nạp');
+    if (txtAmount == "") {
+        $("#lblAmount").html("Không được để trống số tiền nạp");
     }
     else {
         txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
         if (!FormatCurrency.test(txtAmount)) {
-            $('#lblAmount').html('Số tiền nạp không hợp lệ');
+            $("#lblAmount").html("Số tiền nạp không hợp lệ");
         }
         else if (parseFloat(txtAmount) <= 0) {
-            $('#lblAmount').html('Số tiền nạp phải > 0');
+            $("#lblAmount").html("Số tiền nạp phải > 0");
         }
         else {
-            $('#lblAmount').html('');
+            $("#lblAmount").html("");
         }
     }
 });
 // summary
-$(document).on('keyup', '#txtSummary', function () {
+$(document).on("keyup", "#txtSummary", function () {
     var txtSummary = $(this).val();
-    if (txtSummary !== '') {
+    if (txtSummary !== "") {
         if (txtSummary.length > 120) {
-            $('#lblSummary').html('Mô tả giới hạn từ 1-> 120 ký tự');
+            $("#lblSummary").html("Mô tả giới hạn từ 1-> 120 ký tự");
             flg = false;
         }
         else if (!FormatKeyword.test(txtSummary)) {
-            $('#lblSummary').html('Mô tả không hợp lệ');
+            $("#lblSummary").html("Mô tả không hợp lệ");
             flg = false;
         }
         else {
-            $('#lblSummary').html('');
+            $("#lblSummary").html("");
         }
     }
     else {
-        $('#lblSummary').html('');
+        $("#lblSummary").html("");
     }
+});
+
+$(document).on("change", "#ddlAgent", function () {
+    var ddlAgent = $(this).val();
+    $("#lblAgent").html("");
+    if (ddlAgent == "") {
+        $("#lblAgent").html("Vui lòng chọn đại lý");
+        return;
+    }
+    $("#lblAgentCode").html(0);
+    var spending = $(this).find(":selected").data("spending");
+    if (spending != undefined) {
+        $("#lblAgentCode").html(LibCurrencies.FormatToCurrency(spending));
+        // load booker
+        UserSpendingController.GetTiketing(ddlAgent);
+    } 
+   
 });

@@ -76,11 +76,11 @@ namespace WebCore.Services
                 // show all with admin application
                 if (Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
-                    whereCondition += " AND AgentID = '" + agentId + "'";
+                    whereCondition += " AND c.AgentID = '" + agentId + "'";
                 }
                 else
                 {
-                    whereCondition += " AND AgentID = '" + agentId + "' AND  UserId = '" + userId + "'";
+                    whereCondition += " AND c.AgentID = '" + agentId + "' AND  c.UserID = '" + userId + "'";
                 }
             }
             else
@@ -92,10 +92,18 @@ namespace WebCore.Services
             string langID = Helper.Current.UserLogin.LanguageID;
             using (var service = new UserClientService())
             {
-                string sqlQuery = @"SELECT vu.*, c.AgentID as 'ClientID', c.ClientType FROM View_User as vu 
-                                    LEFT JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID 
-                                    WHERE vu.ID IN (select  c.UserID from App_ClientLogin as c group by c.UserID) AND dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY vu.LoginID, vu.CreatedDate ";
-                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
+                string sqlQuery = $@"
+                SELECT vu.ID, vu.LoginID, vu.FullName, vu.Nickname, vu.Birthday, vu.Email, vu.LanguageID, vu.Status, vu.SiteID, vu.Enabled, vu.CreatedBy, vu.CreatedDate,	 
+                (CASE
+                    WHEN c.ClientType = 1 THEN (select CodeID from App_AirAgent where id = c.AgentID)   
+                    ELSE (select CodeID from App_Company where id = c.AgentID) 
+                END)as 'ClientCode',
+                c.ClientType 
+                FROM View_User as vu 
+                INNER JOIN dbo.App_ClientLogin as c ON vu.ID = c.UserID
+                WHERE (dbo.Uni2NONE(vu.LoginID) LIKE N'%'+ @Query +'%' OR dbo.Uni2NONE(vu.FullName) LIKE N'%'+ @Query +'%') {whereCondition}";
+                //
+                var dtList = _connection.Query<UserClientResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).OrderBy(m => m.ClientCode).OrderBy(m => m.LoginID).OrderBy(m => m.CreatedDate).ToList();
                 if (dtList.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 //
@@ -590,38 +598,52 @@ namespace WebCore.Services
             }
         }
 
-        public List<EmployeeModel> GetEmployeeByAgentID(string agentId)
+        public List<EmployeeModel> GetEmployeeByAgentLogin()
         {
-            if (string.IsNullOrWhiteSpace(agentId))
+            string agentId = string.Empty;
+            string whereCondition = string.Empty;
+            if (Helper.Current.UserLogin.IsAdminAgentLogged())
+            {
+                agentId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                whereCondition = " AND client.AgentID = @AgentID";
+            }
+            //
+            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID, (select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as Spending  
+                                FROM UserInfo as uf
+                                INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
+                                LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
+                                INNER JOIN [Role] as r On r.ID = ur.RoleID
+                                where r.IsAllowSpend = 1 {whereCondition} ORDER BY uf.FullName";
+            //
+            List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { AgentID = agentId }).ToList();
+            if (data.Count == 0)
                 return new List<EmployeeModel>();
             //
-            using (var service = new UserClientService())
-            {
-                var _connection = service._connection;
-                if (string.IsNullOrWhiteSpace(agentId))
-                    return new List<EmployeeModel>();
-                //
-                string sqlQuery = @"SELECT uf.UserID, uf.FullName, ur.RoleID,,(select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as SpendingAmount FROM UserInfo as uf
-                                    INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
-                                    LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
-                                    INNER JOIN [Role] as r On r.ID = ur.RoleID
-                                    where r.IsAllowSpend = 1 AND client.AgentID = @AgentID AND client.UserID != @UserID";
-                List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { AgentID = agentId, UserID = Helper.Current.UserLogin.IdentifierID }).ToList();
-                if (data.Count == 0)
-                    return new List<EmployeeModel>();
-                //
-                return data;
-            }
+            return data;
         }
-
+        public List<EmployeeModel> GetUserByAgentID(string agentId)
+        {
+            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID, (select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as Spending  
+                                FROM UserInfo as uf
+                                INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
+                                LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
+                                INNER JOIN [Role] as r On r.ID = ur.RoleID
+                                WHERE r.IsAllowSpend = 1 AND AgentID = @AgentID ORDER BY uf.FullName";
+            //
+            List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { AgentID = agentId }).ToList();
+            if (data.Count == 0)
+                return new List<EmployeeModel>();
+            //
+            return data;
+        }
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownListEmployee(string id, string agentId)
+        public static string DropdownListEmployee(string id)
         {
             string result = string.Empty;
             using (var service = new AirAgentService())
             {
                 UserClientService userClientService = new UserClientService();
-                List<EmployeeModel> dtList = userClientService.GetEmployeeByAgentID(agentId);
+                List<EmployeeModel> dtList = userClientService.GetEmployeeByAgentLogin();
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)
@@ -632,7 +654,7 @@ namespace WebCore.Services
                         else if (string.IsNullOrWhiteSpace(id) && item.UserID == dtList[0].UserID)
                             strSelect = "selected";
                         //
-                        result += "<option value='" + item.UserID + "' " + strSelect + ">" + item.FullName + "</option>";
+                        result += $"<option value='{item.UserID}' {strSelect} data-spending='{item.Spending }'>{item.FullName }</option>";
                     }
                 }
                 return result;

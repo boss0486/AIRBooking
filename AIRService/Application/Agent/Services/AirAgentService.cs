@@ -725,7 +725,7 @@ namespace WebCore.Services
         }
 
 
-        
+
 
         //##############################################################################################################################################################################################################################################################
         public static string DropdownList(string id)
@@ -746,8 +746,49 @@ namespace WebCore.Services
                 }
                 return result;
             }
+        }
+        public static string DropdownList_HasSpend(string id)
+        {
+            string result = string.Empty;
+            using (var service = new AirAgentService())
+            {
+                string agentId = string.Empty;
+                string whereCondition = string.Empty;
+                if (Helper.Current.UserLogin.IsAgentLogged())
+                {
+                    agentId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+                    whereCondition = " AND a.ID = @AgentID";
+                }
+                //
+                string sqlQuery = $@"SELECT a.ID, a.ParentID, a.Title, a.CodeID, l.Amount as 'Spending' FROM App_AirAgent as a
+                                     LEFT JOIN App_AgentSpendingLimit as l ON l.AgentID =  a.ID  
+                                     WHERE a.ID != '' {whereCondition} ORDER BY a.CodeID";
+                //
+                List<AirAgent_DDLSpendingOption> dtList = service._connection.Query<AirAgent_DDLSpendingOption>(sqlQuery, new { AgentID = agentId }).ToList();
+                if (dtList.Count == 0)
+                    return string.Empty;
+                //
+                foreach (var item in dtList)
+                {
+                    string strSelect = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(id) && item.ID == id.ToLower())
+                        strSelect = "selected";
+                    else if (string.IsNullOrWhiteSpace(id) && item.ID == dtList[0].ID)
+                        strSelect = "selected";
+                    //
+                    int limited = 0;
+                    if (string.IsNullOrEmpty(item.ParentID))
+                        limited = 1;
+                    //
+                    result += $"<option value='{item.ID}' {strSelect} title='{item.Title}' data-limited='{limited}' data-code='{item.CodeID}' data-spending='{item.Spending }'>{item.CodeID}:{item.Title }</option>";
+                }
+                return result;
+            }
 
         }
+
+
+
         public static string DropdownListAgentLimit(string id)
         {
             string result = string.Empty;

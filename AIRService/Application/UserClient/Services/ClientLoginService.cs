@@ -23,27 +23,7 @@ namespace WebCore.Services
         public ClientLoginService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
 
-        public static string GetTypeLogin(string clientId, int typeId)
-        {
-            if (string.IsNullOrWhiteSpace(clientId))
-                return string.Empty;
-            //
-            if (typeId == (int)ClientLoginEnum.ClientType1.AGENT)
-            {
-                AirAgentService airAgentService = new AirAgentService();
-                AirAgent airAgent = airAgentService.GetAlls(m => m.ID == clientId).FirstOrDefault();
-                if (airAgent != null)
-                    return airAgent.CodeID;
-            }
-            if (typeId == (int)ClientLoginEnum.ClientType1.COMP)
-            {
-                CompanyService companyService = new CompanyService();
-                Company company = companyService.GetAlls(m => m.ID == clientId).FirstOrDefault();
-                if (company != null)
-                    return company.CodeID;
-            } 
-            return string.Empty;
-        }
+         
         //##############################################################################################################################################################################################################################################################
 
     }

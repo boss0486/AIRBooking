@@ -10,45 +10,34 @@
     string customerCodeID = string.Empty;
 }
 <div class="row">
-    <div class="col-md-6">
-        <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>T.Tin Người nhận:</label>
-        </div>
-        @if (!Helper.Current.UserLogin.IsSupplierLogged() && !Helper.Current.UserLogin.IsCustomerLogged())
-        {
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="form-group">
-                        <label class="form-label">Khách hàng:</label>
-                        <select id="ddlCustomer" name="ddlCustomer" class="form-control show-tick" data-live-search="true">
-                            <option value="">-Lựa chọn11-</option>
-                            @Html.Raw(AirAgentService.DropdownListAgent(""));
-                        </select>
-                        <span id="lblCustomer" class="message msg-box"></span>
-                    </div>
+    <div class="col-md-8">
+        <div class="row">
+
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label class="form-label">Đại lý:</label>
+                    <select id="ddlAgent" name="ddlAgent" class="form-control show-tick" data-live-search="true">
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                        @Html.Raw(AirAgentService.DropdownList_HasSpend(""));
+                    </select>
+                    <span id="lblAgent" class="message msg-box"></span>
                 </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label class="form-label">MKH:</label>
-                        <div class="form-control disabled" style="background: #FFE5F1"><label id="lblCustomerCodeID"></label></div>
-                    </div>
+
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="form-control disabled"><label id="lblAgentCode">---</label></div>
                 </div>
             </div>
-        }
-
-
-
+        </div>
         <div class="row">
             <div class="col-md-7">
                 <div class="form-group">
                     <label class="form-label">Nhân viên:</label>
                     <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
                         <option value="">-Lựa chọn-</option>
-                        @if (Helper.Current.UserLogin.IsSupplierLogged() || Helper.Current.UserLogin.IsCustomerLogged())
-                        {
-                            string clientId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
-                            @Html.Raw(UserClientService.DropdownListEmployee(clientId, ""));
-                        }
+                        @Html.Raw(UserClientService.DropdownListEmployee(""));
                     </select>
                     <span id="lblEmployee" class="message msg-box"></span>
                 </div>
@@ -61,37 +50,6 @@
                 </div>
             </div>
         </div>
-        @*<div class="row">
-                <div class="col-md-5">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="form-group text-center" style="background:#CCC; padding:30px 0px; height:220px">
-                        <img src="@Helper.Page.Default.FileUserImange" class="img-responsive infor-img" />
-                    </div>
-                    <div class="form-group m-t-5">
-                        <span id="lblFile" class="message msg-box"></span>
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="form-group ">
-                        <label class="form-label" style="width:100%">&nbsp;</label>
-                        <label class="form-label" style="width:100%">Họ/Tên:</label>
-                        <input id="txtFullName" name="txtFullName" maxlength="50" type="text" class="form-control" value="" />
-                        <span id="lblFullName" class="message msg-box"></span>
-                    </div>
-                    <div class="form-group ">
-                        <label class="form-label">Ngày sinh:</label>
-                        <input id="txtBirthday" name="txtBirthday" maxlength="10" type="text" class="form-control" value="" />
-                        <span id="lblBirthday" class="message msg-box"></span>
-                    </div>
-                    <div class="form-group ">
-                        <label class="form-label">Địa chỉ email:</label>
-                        <input id="txtEmail" name="txtEmail" maxlength="50" type="text" class="form-control" value="" />
-                        <span id="lblEmail" class="message msg-box"></span>
-                    </div>
-                </div>
-            </div>        <hr />*@
-
-
         <div class="form-group">
             <label class="form-label">Hạn mức(vnd):</label>
             <input id="txtAmount" name="txtAmount" data-currency="true" maxlength="50" type="text" class="form-control" value="0" />
@@ -109,7 +67,7 @@
         </div>
         <div class="form-group text-right">
             <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
-            <button id="btnCreate" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnCreate</button>
+            <button id="btnApply" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnApply</button>
         </div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))

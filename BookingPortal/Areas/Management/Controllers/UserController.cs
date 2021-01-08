@@ -142,7 +142,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 using (var service = new UserClientService())
-                    return Notifization.Data(MessageText.Success, service.GetEmployeeByAgentID(model.ID));
+                    return Notifization.Data(MessageText.Success, service.GetUserByAgentID(model.ID));
             }
             catch (Exception ex)
             {

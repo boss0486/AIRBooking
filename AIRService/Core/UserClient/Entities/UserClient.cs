@@ -54,8 +54,7 @@ namespace WebCore.Entities
         public string Address { get; set; }
         public string ClientID { get; set; }
         public int ClientType { get; set; }
-        [NotMapped]
-        public string ClientCode => ClientLoginService.GetTypeLogin(ClientID, ClientType);
+        public string ClientCode { get; set; }
         public bool IsBlock { get; set; }
     }
     public class UserClientCreateModel
