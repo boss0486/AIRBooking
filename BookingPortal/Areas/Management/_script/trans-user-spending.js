@@ -1,6 +1,6 @@
 ﻿var pageIndex = 1;
-var URLC = "/Management/TransactionUserSpending/Action";
-var URLA = "/Management/TransactionUserSpending";
+var URLC = "/Management/UserSpending/Action";
+var URLA = "/Management/UserSpending";
 var UserSpendingController = {
     init: function () {
         UserSpendingController.registerEvent();
@@ -8,17 +8,17 @@ var UserSpendingController = {
     registerEvent: function () {
         $("#btnApply").off("click").on("click", function () {
             var flg = true;
-            var ddlCustomer = $("#ddlCustomer").val();
+            var ddlAgent = $("#ddlAgent").val();
             var ddlEmployee = $("#ddlEmployee").val();
             var txtAmount = $("#txtAmount").val();
             var txtSummary = $("#txtSummary").val();
             //
-            if (ddlCustomer == "") {
-                $("#lblCustomer").html("Vui lòng chọn khách hàng");
-                flg = false;
-            }
-            else {
-                $("#lblCustomer").html("");
+            $("#lblAgent").html("");
+            if (HelperModel.AccessInApplication() != RoleEnum.IsAdminCustomerLogged) {
+                if (ddlAgent == "") {
+                    $("#lblAgent").html("Vui lòng chọn đại lý");
+                    flg = false;
+                }
             }
             // transaction id
             if (ddlEmployee == "") {
@@ -30,17 +30,23 @@ var UserSpendingController = {
             }
             //
             if (txtAmount == "") {
-                $("#lblAmount").html("Không được để trống số tiền nạp");
+                $("#lblAmount").html("Không được để trống hạn mức");
                 flg = false;
             }
             else {
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+                var agentRemain = $("#ddlAgent").find(":selected").data("remain");
+                var useSpending = $("#ddlEmployee").find(":selected").data("spending");
                 if (!FormatCurrency.test(txtAmount)) {
-                    $("#lblAmount").html("Số tiền nạp không hợp lệ");
+                    $("#lblAmount").html("Hạn mức không hợp lệ");
                     flg = false;
                 }
-                else if (parseFloat(txtAmount) <= 0) {
-                    $("#lblAmount").html("Số tiền nạp phải > 0");
+                else if (parseFloat(txtAmount) < 0) {
+                    $("#lblAmount").html("Hạn mức phải >= 0");
+                    flg = false;
+                }
+                else if (parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
+                    $("#lblAmount").html("Hạn mức đại lý không đủ");
                     flg = false;
                 }
                 else {
@@ -173,7 +179,7 @@ var UserSpendingController = {
         });
     },
     Setting: function () {
-        var ddlCustomer = $("#ddlCustomer").val();
+        var ddlAgent = $("#ddlAgent").val();
         var ddlEmployee = $("#ddlEmployee").val();
         var txtAmount = LibCurrencies.ConvertToCurrency($("#txtAmount").val());
         var txtSummary = $("#txtSummary").val();
@@ -182,8 +188,8 @@ var UserSpendingController = {
             enabled = 1;
         //
         var model = {
-            SenderID: ddlCustomer,
-            ReceivedUserID: ddlEmployee,
+            AgentID: ddlAgent,
+            TicketingID: ddlEmployee,
             Amount: txtAmount,
             Summary: txtSummary,
             Enabled: enabled
@@ -195,7 +201,7 @@ var UserSpendingController = {
                 if (response !== null) {
                     if (response.status == 200) {
                         Notifization.Success(response.message);
-                        FData.ResetForm();
+                        UserSpendingController.GetAgentHasSending(ddlAgent, true);
                         return;
                     }
                     else {
@@ -293,7 +299,53 @@ var UserSpendingController = {
         Confirm.DeleteYN(id, UserSpendingController.Delete, null, null);
 
     },
-    GetTiketing(agentId) {
+    GetAgentHasSending(agentId, _echanged = false) {
+        var option = `<option value="">-Lựa chọn-</option>`;
+        $("#ddlAgent").html(option);
+        $("#ddlAgent").selectpicker("refresh");
+        var model = {
+            ID: agentId
+        };
+        AjaxFrom.POST({
+            url: "/Management/Agent/Action/GetAgentHasSpending",
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status == 200) {
+                        $.each(response.data, function (index, item) {
+                            index = index + 1;
+                            //
+                            var strIndex = "";
+                            if (index < 10)
+                                strIndex += "0" + index;
+                            //
+                            var id = item.ID;
+                            var title = item.CodeID;
+                            var spending = item.Spending;
+                            var remain = item.Remain;
+                            var selected = "";
+                            if (agentId == id) {
+                                selected = "selected";
+                            }
+                            option += `<option value="${id}" data-spending='${spending}' data-remain='${remain}' ${selected}>${title}</option>`;
+                        });
+                        $("select#ddlAgent").html(option);
+                        $("select#ddlAgent").selectpicker("refresh");
+                        CanculateAgentSpandingMax();
+                        if (_echanged) {
+                            $("select#ddlAgent").change();
+                        }
+                        return;
+                    }
+                }
+                return;
+            },
+            error: function (result) {
+                console.log("::" + MessageText.NotService);
+            }
+        });
+    },
+    GetTiketing(agentId, ticketingId) {
         var option = `<option value="">-Lựa chọn-</option>`;
         $("#ddlEmployee").html(option);
         $("#ddlEmployee").selectpicker("refresh");
@@ -315,10 +367,16 @@ var UserSpendingController = {
                             //
                             var id = item.UserID;
                             var title = item.FullName;
-                            option += `<option value="${id}">${title}</option>`;
+                            var spending = item.Spending;
+                            var selected = "";
+                            if (id == ticketingId) {
+                                selected = "selected";
+                            }
+                            option += `<option value="${id}" data-spending='${spending}' ${selected}>${title}</option>`;
                         });
                         $("select#ddlEmployee").html(option);
                         $("select#ddlEmployee").selectpicker("refresh");
+                        CanculateAgentSpandingMax();
                         return;
                     }
                 }
@@ -332,45 +390,52 @@ var UserSpendingController = {
 };
 
 UserSpendingController.init();
-// customer
-$(document).on("change", "#ddlCustomer", function () {
-    var ddlCustomer = $(this).val();
-    if (ddlCustomer == "") {
-        $("#lblCustomer").html("Vui lòng chọn khách hàng");
+// Agent
+$(document).on("change", "#ddlAgent", function () {
+    var ddlAgent = $(this).val();
+    $("#lblAgent").html("");
+    $("#lblAgentSpend").html(0);
+    if (ddlAgent == "") {
+        $("#lblAgent").html("Vui lòng chọn đại lý");
+        return;
     }
-    else {
-        $("#lblCustomer").html("");
-        var codeid = $(this).find(":selected").data("codeid");
-        $("#lblCustomerCodeID").html(codeid);
-        //UserSpendingController.GetTiketing(ddlCustomer);
-    }
+    // canclulate
+    var ticketingId = $("#ddlEmployee").val();
+    UserSpendingController.GetTiketing(ddlAgent, ticketingId);
 });
 // emloyee
 $(document).on("change", "#ddlEmployee", function () {
     var ddlEmployee = $(this).val();
+    $("#txtAmount").val(0);
     if (ddlEmployee == "") {
         $("#lblEmployee").html("Vui lòng chọn nhân viên");
     }
     else {
         $("#lblEmployee").html("");
-        var spendVal = $(this).find(":selected").data("spending");
-        if (spendVal != undefined && spendVal != "") {
-            $("#txtAmount").val(LibCurrencies.FormatToCurrency(spendVal));
-        }
+        var useSpending = $(this).find(":selected").data("spending");
+        $("#txtAmount").val(LibCurrencies.FormatToCurrency(useSpending));
+        UserSpendingController.GetAgentHasSending($("#ddlAgent").val());
+       
     }
+    CanculateAgentSpandingMax();
 });
 $(document).on("keyup", "#txtAmount", function () {
     var txtAmount = $(this).val();
     if (txtAmount == "") {
-        $("#lblAmount").html("Không được để trống số tiền nạp");
+        $("#lblAmount").html("Không được để trống hạn mức");
     }
     else {
         txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
+        var agentRemain = $("#ddlAgent").find(":selected").data("remain");
+        var useSpending = $("#ddlEmployee").find(":selected").data("spending");
         if (!FormatCurrency.test(txtAmount)) {
-            $("#lblAmount").html("Số tiền nạp không hợp lệ");
+            $("#lblAmount").html("Hạn mức không hợp lệ");
         }
-        else if (parseFloat(txtAmount) <= 0) {
-            $("#lblAmount").html("Số tiền nạp phải > 0");
+        else if (parseFloat(txtAmount) < 0) {
+            $("#lblAmount").html("Hạn mức phải >= 0");
+        }
+        else if (parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
+            $("#lblAmount").html("Hạn mức đại lý không đủ");
         }
         else {
             $("#lblAmount").html("");
@@ -398,19 +463,18 @@ $(document).on("keyup", "#txtSummary", function () {
     }
 });
 
-$(document).on("change", "#ddlAgent", function () {
-    var ddlAgent = $(this).val();
-    $("#lblAgent").html("");
-    if (ddlAgent == "") {
-        $("#lblAgent").html("Vui lòng chọn đại lý");
-        return;
+function CanculateAgentSpandingMax() {
+    var agentRemain = 0;
+    var userSpending = 0;
+    var ddlAgent = $("#ddlAgent").val();
+    var ddlEmployee = $("#ddlEmployee").val();
+    if (ddlAgent != "") {
+        agentRemain = $("#ddlAgent").find(":selected").data("remain");
     }
-    $("#lblAgentCode").html(0);
-    var spending = $(this).find(":selected").data("spending");
-    if (spending != undefined) {
-        $("#lblAgentCode").html(LibCurrencies.FormatToCurrency(spending));
-        // load booker
-        UserSpendingController.GetTiketing(ddlAgent);
-    } 
-   
-});
+    if (ddlEmployee != "") {
+        userSpending = $("#ddlEmployee").find(":selected").data("spending");
+    }
+    console.log("1:" + agentRemain);
+    console.log("2:" + userSpending);
+    $("#lblAgentSpend").html(LibCurrencies.FormatToCurrency(parseFloat(agentRemain + userSpending)));
+}

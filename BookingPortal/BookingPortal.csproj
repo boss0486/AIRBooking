@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -159,7 +160,7 @@
     <Compile Include="Areas\Management\Controllers\RoleController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositController.cs" />
     <Compile Include="Areas\Management\Controllers\AgentSpendingLimitController.cs" />
-    <Compile Include="Areas\Management\Controllers\TransactionUserSpendingController.cs" />
+    <Compile Include="Areas\Management\Controllers\UserSpendingController.cs" />
     <Compile Include="Areas\Management\Controllers\UserController.cs" />
     <Compile Include="Areas\Management\Controllers\TransactionDepositHistoryController.cs" />
     <Compile Include="Areas\Management\Controllers\VNAReportController.cs" />
@@ -847,7 +848,7 @@
     <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\Create.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Setting.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionUserSpending\Create.cshtml" />
+    <Content Include="Areas\Management\Views\UserSpending\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\Details.cshtml" />
@@ -1196,9 +1197,9 @@
     <Content Include="Areas\Management\Views\VNAReport\DataList.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\DataList.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionUserSpending\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\UserSpending\DataList.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Details.cshtml" />
-    <Content Include="Areas\Management\Views\TransactionUserSpending\Details.cshtml" />
+    <Content Include="Areas\Management\Views\UserSpending\Details.cshtml" />
     <Content Include="Areas\Management\Views\_ViewSearchForAgentFeePatial.cshtml" />
     <Content Include="Areas\Management\Views\_ViewReportSearchPatial.cshtml" />
     <Content Include="Areas\Management\Views\VNAReport\Details.cshtml" />

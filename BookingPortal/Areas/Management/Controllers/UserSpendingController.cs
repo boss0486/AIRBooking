@@ -14,8 +14,8 @@ namespace WebApplication.Management.Controllers
 {
     [IsManage]
     [RouteArea("Management")]
-    [RoutePrefix("TransactionUserSpending")]
-    public class TransactionUserSpendingController : CMSController
+    [RoutePrefix("UserSpending")]
+    public class UserSpendingController : CMSController
     {
         // GET: BackEnd/bank
         public ActionResult DataList()
@@ -58,37 +58,17 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Create")]
-        public ActionResult Create(TransactionUserSpendingCreateModel model)
+        public ActionResult Create(UserSpendingCreateModel model)
         {
             try
             {
-                using (var service = new TransactionUserSpendingService())
-                    return service.Create(model);
+                using (var service = new UserSpendingService())
+                    return service.Setting(model);
             }
             catch (Exception ex)
             {
                 return Notifization.TEST(">>>:" + ex);
             }
-        }
-
-        [HttpPost]
-        [Route("Action/Delete")]
-        public ActionResult Delete(TransactionUserSpendingIDModel model)
-        {
-            return Notifization.NotService;
-            //try
-            //{
-            //    using (var service = new TransactionUserSpendingService())
-            //    {
-            //        if (model == null)
-            //            return Notifization.Invalid();
-            //        return service.Delete(model.ID);
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    return Notifization.NotService;
-            //}
-        }
+        } 
     }
 }

@@ -108,7 +108,7 @@ var AccountController = {
             if (flg)
                 AccountController.ChangePinCode();
             else
-                Notifization.Error(MessageText.DATAMISSING);
+                Notifization.Error(MessageText.Datamissing);
         });
     },
     ChangePassword: function () {

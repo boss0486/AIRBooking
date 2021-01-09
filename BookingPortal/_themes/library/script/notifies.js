@@ -25,20 +25,11 @@ class NotifizationResult {
 }
 
 class MessageText {
-    static NotFound() {
-        return "Không tìm thấy dữ liệu";
-    }
-    static NotService() {
-        return "Xin vui lòng truy cập sau !";
-    }
-    static Datamissing() {
-        return "Xin vui lòng nhập đầy đủ thông tin";
-    }
-    static Complexity() {
-        return "Yêu cầu mật khẩu phức tạp hơn";
-    }
+    static NotFound = "Không tìm thấy dữ liệu";
+    static NotService = "Xin vui lòng truy cập sau !";
+    static Datamissing = "Tồn tại dữ liệu không hợp lệ";
+    static Complexity = "Yêu cầu mật khẩu phức tạp hơn";
     static confirm_delete = "Bạn có muốn xóa dữ liệu này không? Dữ liệu không thể khôi phục sau khi xóa.";
-
 }
 class Notifization {
     static Success(message, callback, milisecondsInterval) {

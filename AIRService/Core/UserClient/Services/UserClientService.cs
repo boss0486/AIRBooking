@@ -623,7 +623,7 @@ namespace WebCore.Services
         }
         public List<EmployeeModel> GetUserByAgentID(string agentId)
         {
-            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID, (select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as Spending  
+            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID,  ISNULL((select top 1 Amount from App_UserSpending where TicketingID = ur.UserID),0) as 'Spending'   
                                 FROM UserInfo as uf
                                 INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
                                 LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID

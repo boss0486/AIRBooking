@@ -173,6 +173,22 @@ namespace WebApplication.Management.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Action/GetAgentHasSpending")]
+        [IsManage(skip: true)]
+        public ActionResult GetAgentHasSpending(AirAgentIDModel model)
+        {
+            try
+            {
+                var service = new AirAgentService();
+                return Notifization.Data(MessageText.Success, service.GetAgentHasSpendingData());
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
         //OPTION ##########################################################################################################################################################################################################################################################
 
     }

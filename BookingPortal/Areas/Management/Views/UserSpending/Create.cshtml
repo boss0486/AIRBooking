@@ -8,6 +8,16 @@
 
 @{
     string customerCodeID = string.Empty;
+    string agentCode = string.Empty;
+    string agentName = string.Empty;
+    if (Helper.Current.UserLogin.IsAgentLogged())
+    {
+        AirAgentService airAgentService = new AirAgentService();
+        string agentId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
+        AirAgent airAgent = airAgentService.GetAgentByID(agentId);
+        agentName = airAgent.Title;
+        agentCode = airAgent.CodeID;
+    }
 }
 <div class="row">
     <div class="col-md-8">
@@ -22,12 +32,11 @@
                     </select>
                     <span id="lblAgent" class="message msg-box"></span>
                 </div>
-
             </div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="form-control disabled"><label id="lblAgentCode">---</label></div>
+                    <label class="form-label">Tổng hạn mức:</label>
+                    <div class="form-control disabled"><label id="lblAgentSpend">---</label></div>
                 </div>
             </div>
         </div>
@@ -36,8 +45,7 @@
                 <div class="form-group">
                     <label class="form-label">Nhân viên:</label>
                     <select id="ddlEmployee" name="ddlEmployee" class="form-control show-tick" data-live-search="true">
-                        <option value="">-Lựa chọn-</option>
-                        @Html.Raw(UserClientService.DropdownListEmployee(""));
+                        <option value="">-@Helper.Language.Resource.Label.Option-</option>
                     </select>
                     <span id="lblEmployee" class="message msg-box"></span>
                 </div>
@@ -45,16 +53,13 @@
             </div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="form-control disabled"><label id="lblCustomerCodeID">---</label></div>
+                    <label class="form-label">Hạn mức(đ):</label>
+                    <input id="txtAmount" name="txtAmount" data-currency="true" maxlength="50" type="text" class="form-control" value="0" />
+                    <span id="lblAmount" class="message msg-box"></span>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-label">Hạn mức(vnd):</label>
-            <input id="txtAmount" name="txtAmount" data-currency="true" maxlength="50" type="text" class="form-control" value="0" />
-            <span id="lblAmount" class="message msg-box"></span>
-        </div>
+
         <div class="form-group">
             <label class="form-label">Mô tả</label>
             <textarea id="txtSummary" name="txtSummary" class="form-control default"></textarea>
@@ -83,4 +88,11 @@
 </div>
 @section scripts{
     <script src="~/Areas/Management/_script/trans-user-spending.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#ddlAgent")[0].selectedIndex = 1;
+            $("#ddlAgent").change();
+        })
+    </script>
 }

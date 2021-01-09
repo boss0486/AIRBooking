@@ -152,6 +152,8 @@
     <Compile Include="Application\AirTicket\Entities\BookAgent.cs" />
     <Compile Include="Application\AirTicket\Services\BookAgentService.cs" />
     <Compile Include="Application\SpendingLimit\Services\AgentSpendingLimitPaymentService.cs" />
+    <Compile Include="Application\UserSpending\Entities\UserSpending.cs" />
+    <Compile Include="Application\UserSpending\Services\UserSpendingService.cs" />
     <Compile Include="Module\AreaGeographical\Entities\AreaInland.cs" />
     <Compile Include="Module\AreaGeographical\Entities\AreaNational.cs" />
     <Compile Include="Module\AreaGeographical\Services\AreaInlandService.cs" />
@@ -433,11 +435,9 @@
     <Compile Include="Module\ServicePack\Services\ServicePackService.cs" />
     <Compile Include="Application\Transaction\Entities\TransactionDeposit.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimit.cs" />
-    <Compile Include="Application\Transaction\Entities\TransactionUserSpending.cs" />
     <Compile Include="Application\Transaction\Enum\TransactionEnum.cs" />
     <Compile Include="Application\Transaction\Services\TransactionDepositService.cs" />
     <Compile Include="Application\SpendingLimit\Services\AgentSpendingLimitService.cs" />
-    <Compile Include="Application\Transaction\Services\TransactionUserSpendingService.cs" />
     <Compile Include="Application\UserClient\Entities\ClientLogin.cs" />
     <Compile Include="Application\UserClient\Enum\ClientLoginEnum.cs" />
     <Compile Include="Application\UserClient\Services\ClientLoginService.cs" />
@@ -1830,6 +1830,7 @@
     <Folder Include="Application\ApiReport\Enum\" />
     <Folder Include="Application\ReportSaleSummary\Enum\" />
     <Folder Include="Application\SpendingLimit\Enum\" />
+    <Folder Include="Application\UserSpending\Enum\" />
     <Folder Include="Application\Wallet\Enum\" />
     <Folder Include="Core\Authorization\Entities\" />
     <Folder Include="Core\Authorization\Enum\" />
