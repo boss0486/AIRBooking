@@ -152,7 +152,7 @@
                 @if (Helper.Current.UserLogin.IsClientInApplication() && !Helper.Current.UserLogin.IsAdminAgentLogged())
                 {
                     ClientLoginService clientLoginService = new ClientLoginService();
-                    string client = ClientLoginService.GetAgentIDByUserID(userId);
+                    string client = AirAgentService.GetAgentIDByUserID(userId);
                     UserInfoService userInfoService = new UserInfoService();
                     string name = userInfoService.GetFullName(userId);
                     <div class="row">
@@ -176,7 +176,7 @@
                         <div class="col-md-7">
                             <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
                                 <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(AirAgentService.DropdownListAgent(""))
+                                @Html.Raw(AirAgentService.DropdownListProvider(""))
                             </select>
                             <span id="lblProvider" class="message msg-box"></span>
                         </div>

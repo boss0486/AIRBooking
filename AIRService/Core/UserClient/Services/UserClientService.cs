@@ -93,7 +93,7 @@ namespace WebCore.Services
             using (var service = new UserClientService())
             {
                 string sqlQuery = $@"
-                SELECT vu.ID, vu.LoginID, vu.FullName, vu.Nickname, vu.Birthday, vu.Email, vu.LanguageID, vu.Status, vu.SiteID, vu.Enabled, vu.CreatedBy, vu.CreatedDate,	 
+                SELECT vu.ID, vu.LoginID, vu.FullName, vu.Nickname, vu.Birthday, vu.Email, vu.IsBlock, vu.LanguageID, vu.Status, vu.SiteID, vu.Enabled, vu.CreatedBy, vu.CreatedDate,	 
                 (CASE
                     WHEN c.ClientType = 1 THEN (select CodeID from App_AirAgent where id = c.AgentID)   
                     ELSE (select CodeID from App_Company where id = c.AgentID) 
@@ -123,7 +123,7 @@ namespace WebCore.Services
                     Page = page
                 };
                 //
-                return Notifization.Data(MessageText.Success + "::" + query, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+                return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
             }
         }
 

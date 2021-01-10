@@ -93,7 +93,7 @@ namespace WebCore.Services
             //{
             //    whereCondition += " AND o.AgentID = @AgentID";
             //}
-            // query
+            // query 
             string sqlQuery = @"SELECT bp.ID, bp.BookOrderID, bp.TicketNo, bp.FullName, bp.Gender, 
             c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
             a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,

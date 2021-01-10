@@ -26,7 +26,7 @@ namespace WebCore.Entities
         public string Phone { get; set; }
         public string Address { get; set; }
         public string RoleID { get; set; }
-        public bool IsBlock { get; set; }
+        public bool IsBlock { get; set; } = true;
     }
     public partial class UserClientResult : WEBModelResult
     {

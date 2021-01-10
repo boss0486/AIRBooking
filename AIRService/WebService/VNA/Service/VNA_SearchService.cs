@@ -80,7 +80,7 @@ namespace AIRService.Service
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
                 if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.Error(MessageText.NotService);
+                    return Notifization.Invalid(MessageText.NotService);
                 // seach data in web service
                 // tax Ax:
                 AirportService airportService = new AirportService();
@@ -609,7 +609,7 @@ namespace AIRService.Service
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
-                return Notifization.Error("Cannot create session");
+                return Notifization.Invalid("Cannot create session");
             // create session 
             string _token = tokenModel.Token;
             string _conversationId = tokenModel.ConversationID;
@@ -681,7 +681,7 @@ namespace AIRService.Service
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
-                    return Notifization.Error("Cannot create session");
+                    return Notifization.Invalid("Cannot create session");
                 // create session 
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
@@ -807,7 +807,7 @@ namespace AIRService.Service
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
-                return Notifization.Error("Cannot create session");
+                return Notifization.Invalid("Cannot create session");
             // create session 
             string _token = tokenModel.Token;
             string _conversationId = tokenModel.ConversationID;
@@ -1287,6 +1287,8 @@ namespace AIRService.Service
             BookTicketService bookTicketService = new BookTicketService();
             WalletAgentService walletClientService = new WalletAgentService();
             BookAgentService bookAgentService = new BookAgentService();
+            BookTaxService bookTaxService = new BookTaxService();
+            BookPriceService bookPriceService = new BookPriceService();
             //
             string orderId = model.ID;
             if (string.IsNullOrWhiteSpace(orderId))
@@ -1302,7 +1304,11 @@ namespace AIRService.Service
             //
             string pnr = bookOrder.PNR;
             string agentId = bookAgent.AgentID;
-            double amount = bookOrder.Amount;
+
+            double taxPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId).Sum(m => m.Amount);
+            double taxTotal = bookTaxService.GetAlls(m => m.BookOrderID == orderId).Sum(m => m.Amount);
+
+            double amount = taxPrice + taxTotal + bookAgent.ProviderFee + bookAgent.AgentFee + bookAgent.AgentPrice;
 
             // xuat ve: 
             // #1: kiem tra hom nay co trong khoang cuối tháng trước -> ngày 15 tháng hiện tại hay ko
@@ -1331,6 +1337,7 @@ namespace AIRService.Service
             DateDiff dateDiff = new DateDiff(agentCreatedDate, end);
             DateTime start = end.AddMonths(-dateDiff.Months);
 
+
             List<DateTime> dateTimeRange = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).Where(m => m.Day == 1).ToList();
             AgentSpendingLimitPaymentService agentSpendingLimitPaymentService = new AgentSpendingLimitPaymentService();
             foreach (var item in dateTimeRange)
@@ -1351,29 +1358,30 @@ namespace AIRService.Service
             int paymentDayTotal = today.Subtract(firstDayOfMonth).Days;
             int termPayment = airAgent.TermPayment;
             if (termPayment <= 0)
-                return Notifization.Invalid("Kỳ hạn thanh toán của đại lý không hợp lệ");
+                return Notifization.Invalid("Hạn mức không hợp lệ");
             // 
             //#1: check kỳ hạn thanh toan han muc 
             if (paymentDayTotal > termPayment)
                 return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
             //
             // lấy tổng đã tiêu tu tháng trước den nay (< 45 ngay)
-
-            string sqlQuery = @"SELECT SUM(o.Amount) FROM App_BookOrder AS o
-            INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
-            WHERE o.ID != @OrderID AND a.AgentID = @AgentID
-            AND cast(IssueDate as Date) >= cast('" + firstDayOfMonth + "' as Date) AND cast(IssueDate as Date) <= cast('" + today + "' as Date)";
-            int totalSpent = bookOrderService.Query<int>(sqlQuery, new { OrderID = orderId, AgentID = agentId }).FirstOrDefault();
-            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService();
-            double spendingLimit = 0;
-            AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId).FirstOrDefault();
-            if (agentSpendingLimit != null)
-                spendingLimit = agentSpendingLimit.Amount;
+            // For ticketing
+            string userLog = Helper.Current.UserLogin.IdentifierID;
+            UserSpendingService userSpendingService = new UserSpendingService();
+            UserSpending userSpending = userSpendingService.GetAlls(m => m.TicketingID == userLog).FirstOrDefault();
+            if (userSpending == null)
+                return Notifization.Invalid("Hạn mức chưa được cấp phép");
             //
-            if (spendingLimit < totalSpent + amount)
+            string sqlQuery = $@"SELECT SUM(o.Amount) FROM App_BookOrder AS o
+            INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
+            WHERE o.ID != @OrderID AND a.AgentID = @AgentID AND a.TicketingID = @TicketingID 
+            AND cast(IssueDate as Date) >= cast('{firstDayOfMonth}' as Date) AND cast(IssueDate as Date) <= cast('{today}' as Date)";
+            int totalSpent = bookOrderService.Query<int>(sqlQuery, new { OrderID = orderId, AgentID = agentId, TicketingID = userLog }).FirstOrDefault();
+            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService();
+            double userSpendingLimit = userSpending.Amount;
+
+            if (userSpendingLimit < totalSpent + amount)
                 return Notifization.Invalid("Hạn mức không đủ");
-            // check han mức ticketing
-             
             // xuất vé
             return ReleaseTicket(pnr);
         }
@@ -1457,7 +1465,7 @@ namespace AIRService.Service
                 VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                 var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                    return Notifization.Error("Server not responding from designate printer");
+                    return Notifization.Invalid("Server not responding from designate printer");
                 //
                 var jjson = new JavaScriptSerializer().Serialize(printer);
                 var getReservationModel = new GetReservationModel
@@ -1473,7 +1481,7 @@ namespace AIRService.Service
                 if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
                 {
                     if (paymentData.Items.Count() == 0)
-                        return Notifization.Error("Server not responding from getreservation");
+                        return Notifization.Invalid("Server not responding from getreservation");
                     //
                     var data = (AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
                     if (string.IsNullOrWhiteSpace(data.ApprovalCode))
@@ -1505,7 +1513,7 @@ namespace AIRService.Service
                     return Notifization.Data("OK", end);
                 }
                 #endregion
-                return Notifization.Error(MessageText.Invalid);
+                return Notifization.Invalid(MessageText.Invalid);
             }
         }
         /// <summary>
@@ -1523,7 +1531,7 @@ namespace AIRService.Service
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
-                    return Notifization.Error("Cannot create session");
+                    return Notifization.Invalid("Cannot create session");
                 // create session 
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
@@ -1573,7 +1581,7 @@ namespace AIRService.Service
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
-                    return Notifization.Error("Cannot create session");
+                    return Notifization.Invalid("Cannot create session");
                 // create session 
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
@@ -1651,7 +1659,7 @@ namespace AIRService.Service
                 TokenModel tokenModel = VNA_AuthencationService.GetSession();
                 // create session 
                 if (tokenModel == null)
-                    return Notifization.Error("Cannot create session");
+                    return Notifization.Invalid("Cannot create session");
                 // create session 
                 string _token = tokenModel.Token;
                 string _conversationId = tokenModel.ConversationID;
