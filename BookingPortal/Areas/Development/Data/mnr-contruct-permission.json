@@ -696,8 +696,8 @@
     ]
   },
   {
-    "KeyID": "TransactionUserSpending",
-    "Title": "G.D hạn mức(Người dùng)",
+    "KeyID": "UserSpending",
+    "Title": "Hạn mức n.dùng",
     "Action": [
       {
         "KeyID": "DataList",
@@ -706,10 +706,10 @@
         "Title": "D.sách"
       },
       {
-        "KeyID": "Create",
-        "Method": "Create",
-        "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "KeyID": "Setting",
+        "Method": "Setting",
+        "APIRouter": "Action/Setting",
+        "Title": "Thiết lập"
       },
       {
         "KeyID": "Details",

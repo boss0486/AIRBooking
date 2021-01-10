@@ -138,6 +138,7 @@ namespace WebCore.Entities
         public string CodeID { get; set; }
         public double Spending { get; set; }
         public double Remain { get; set; }
+        public bool UnLimited { get; set; }
     }
 
 }

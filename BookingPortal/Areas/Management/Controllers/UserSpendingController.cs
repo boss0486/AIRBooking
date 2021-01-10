@@ -23,7 +23,7 @@ namespace WebApplication.Management.Controllers
             return View();
         }
 
-        public ActionResult Create()
+        public ActionResult Setting()
         {
             return View();
         }
@@ -57,8 +57,8 @@ namespace WebApplication.Management.Controllers
         }
 
         [HttpPost]
-        [Route("Action/Create")]
-        public ActionResult Create(UserSpendingCreateModel model)
+        [Route("Action/Setting")]
+        public ActionResult Setting(UserSpendingCreateModel model)
         {
             try
             {

@@ -37,6 +37,11 @@ var UserSpendingController = {
                 txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
                 var agentRemain = $("#ddlAgent").find(":selected").data("remain");
                 var useSpending = $("#ddlEmployee").find(":selected").data("spending");
+                var unLimited = 0;
+                var checkLimit = $("#ddlAgent").find(":selected").data("unlimited");
+                if (checkLimit != undefined && parseInt(checkLimit) == 1) {
+                    unLimited = 1;
+                }
                 if (!FormatCurrency.test(txtAmount)) {
                     $("#lblAmount").html("Hạn mức không hợp lệ");
                     flg = false;
@@ -45,7 +50,7 @@ var UserSpendingController = {
                     $("#lblAmount").html("Hạn mức phải >= 0");
                     flg = false;
                 }
-                else if (parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
+                else if (parseInt(unLimited) != 1 && parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
                     $("#lblAmount").html("Hạn mức đại lý không đủ");
                     flg = false;
                 }
@@ -195,7 +200,7 @@ var UserSpendingController = {
             Enabled: enabled
         };
         AjaxFrom.POST({
-            url: URLC + "/Create",
+            url: URLC + "/Setting",
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -297,7 +302,6 @@ var UserSpendingController = {
     },
     ConfirmDelete: function (id) {
         Confirm.DeleteYN(id, UserSpendingController.Delete, null, null);
-
     },
     GetAgentHasSending(agentId, _echanged = false) {
         var option = `<option value="">-Lựa chọn-</option>`;
@@ -320,14 +324,20 @@ var UserSpendingController = {
                                 strIndex += "0" + index;
                             //
                             var id = item.ID;
-                            var title = item.CodeID;
+                            var codeId = item.CodeID;
+                            var title = item.Title;
                             var spending = item.Spending;
                             var remain = item.Remain;
+                            var parentId = item.ParentID;
+                            var unLimited = 0;
+                            if (parentId == null) {
+                                unLimited = 1;
+                            }
                             var selected = "";
                             if (agentId == id) {
                                 selected = "selected";
                             }
-                            option += `<option value="${id}" data-spending='${spending}' data-remain='${remain}' ${selected}>${title}</option>`;
+                            option += `<option value="${id}" data-spending='${spending}' data-remain='${remain}' ${selected} data-unLimited='${unLimited}'>${title}</option>`;
                         });
                         $("select#ddlAgent").html(option);
                         $("select#ddlAgent").selectpicker("refresh");
@@ -415,7 +425,7 @@ $(document).on("change", "#ddlEmployee", function () {
         var useSpending = $(this).find(":selected").data("spending");
         $("#txtAmount").val(LibCurrencies.FormatToCurrency(useSpending));
         UserSpendingController.GetAgentHasSending($("#ddlAgent").val());
-       
+
     }
     CanculateAgentSpandingMax();
 });
@@ -428,13 +438,18 @@ $(document).on("keyup", "#txtAmount", function () {
         txtAmount = LibCurrencies.ConvertToCurrency(txtAmount);
         var agentRemain = $("#ddlAgent").find(":selected").data("remain");
         var useSpending = $("#ddlEmployee").find(":selected").data("spending");
+        var unLimited = 0;
+        var checkLimit = $("#ddlAgent").find(":selected").data("unlimited");
+        if (checkLimit != undefined && parseInt(checkLimit) == 1) {
+            unLimited = 1;
+        }
         if (!FormatCurrency.test(txtAmount)) {
             $("#lblAmount").html("Hạn mức không hợp lệ");
         }
         else if (parseFloat(txtAmount) < 0) {
             $("#lblAmount").html("Hạn mức phải >= 0");
         }
-        else if (parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
+        else if (unLimited != 1 && parseFloat(txtAmount) > parseFloat(agentRemain + useSpending)) {
             $("#lblAmount").html("Hạn mức đại lý không đủ");
         }
         else {
@@ -468,13 +483,17 @@ function CanculateAgentSpandingMax() {
     var userSpending = 0;
     var ddlAgent = $("#ddlAgent").val();
     var ddlEmployee = $("#ddlEmployee").val();
+    var limited = "";
     if (ddlAgent != "") {
         agentRemain = $("#ddlAgent").find(":selected").data("remain");
+        var checkLimit = $("#ddlAgent").find(":selected").data("unlimited");
+        if (checkLimit != undefined && parseInt(checkLimit) == 1) {
+            $("#lblAgentSpend").html("UnLimited");
+            return;
+        }
     }
     if (ddlEmployee != "") {
         userSpending = $("#ddlEmployee").find(":selected").data("spending");
     }
-    console.log("1:" + agentRemain);
-    console.log("2:" + userSpending);
     $("#lblAgentSpend").html(LibCurrencies.FormatToCurrency(parseFloat(agentRemain + userSpending)));
 }

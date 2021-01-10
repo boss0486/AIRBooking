@@ -108,19 +108,10 @@ namespace WebCore.Services
                     ClientLoginService clientLoginService = new ClientLoginService(_connection);
                     UserLoginService userLoginService = new UserLoginService(_connection);
                     UserService userService = new UserService(_connection);
+                    UserSpendingService userSpendingService = new UserSpendingService(_connection);
                     //
                     agentId = agentId.ToLower();
-                    if (!Helper.Current.UserLogin.IsAgentLogged())
-                    {
-                        if (string.IsNullOrWhiteSpace(agentId))
-                            return Notifization.Invalid("Đại lý không hợp lệ");
-                        //
-                        AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId, transaction: _transaction).FirstOrDefault();
-                        if (airAgent == null)
-                            return Notifization.Invalid("Đại lý không hợp lệ");
-                        // 
-                    }
-                    else
+                    if (Helper.Current.UserLogin.IsAgentLogged())
                     {
                         ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == logUserId, transaction: _transaction).FirstOrDefault();
                         if (clientLogin == null)
@@ -128,7 +119,19 @@ namespace WebCore.Services
                         //
                         agentId = clientLogin.AgentID;
                     }
+                    if (string.IsNullOrWhiteSpace(agentId))
+                        return Notifization.Invalid("Đại lý không hợp lệ");
                     //
+                    AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId, transaction: _transaction).FirstOrDefault();
+                    if (airAgent == null)
+                        return Notifization.Invalid("Đại lý không hợp lệ");
+                    // 
+                    if (airAgent.Enabled != (int)ModelEnum.Enabled.ENABLED)
+                        return Notifization.Invalid("Đại lý đã tạm dừng hoạt động");
+                    //
+                    string parendId = airAgent.ParentID;
+
+
                     if (string.IsNullOrWhiteSpace(ticketingId))
                         return Notifization.Invalid("Vui lòng chọn nhân viên");
                     //  
@@ -137,16 +140,19 @@ namespace WebCore.Services
                         return Notifization.Invalid("Nhân viên không hợp lệ");
                     // get spending of agent
                     AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService(_connection);
-                    AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId, transaction: _transaction).FirstOrDefault();
-                    if (agentSpendingLimit == null)
-                        return Notifization.Invalid("Lỗi hạn mức đại lý");
-                    //
-                    UserSpendingService userSpendingService = new UserSpendingService(_connection);
-                    double agentSpendingTotal = agentSpendingLimit.Amount; //  tinh toan luong da cap cho nhan vien #
-                    double agentSpending = userSpendingService.GetAlls(m => m.AgentID == agentId && m.TicketingID != ticketingId, transaction: _transaction).Sum(m => m.Amount);
-                    double agentRemaining = agentSpendingTotal - agentSpending;
-                    if (amount < 0 || amount > agentRemaining)
-                        return Notifization.Invalid($"Hạn mức giới hạn [0-{Helper.Page.Library.FormatCurrency(agentRemaining)}]");
+
+                    if (!string.IsNullOrWhiteSpace(parendId))
+                    {
+                        AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId, transaction: _transaction).FirstOrDefault();
+                        if (agentSpendingLimit == null)
+                            return Notifization.Invalid("Lỗi hạn mức đại lý");
+                        // 
+                        double agentSpendingTotal = agentSpendingLimit.Amount; //  tinh toan luong da cap cho nhan vien #
+                        double agentSpending = userSpendingService.GetAlls(m => m.AgentID == agentId && m.TicketingID != ticketingId, transaction: _transaction).Sum(m => m.Amount);
+                        double agentRemaining = agentSpendingTotal - agentSpending;
+                        if (amount < 0 || amount > agentRemaining)
+                            return Notifization.Invalid($"Hạn mức giới hạn [0-{Helper.Page.Library.FormatCurrency(agentRemaining)}]");
+                    }
                     //            
                     if (!string.IsNullOrWhiteSpace(summary))
                     {

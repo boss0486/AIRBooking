@@ -848,7 +848,7 @@
     <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\Create.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Setting.cshtml" />
-    <Content Include="Areas\Management\Views\UserSpending\Create.cshtml" />
+    <Content Include="Areas\Management\Views\UserSpending\setting.cshtml" />
     <Content Include="Areas\Management\Views\User\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\Details.cshtml" />
