@@ -17,8 +17,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -140,7 +139,6 @@
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
     <Compile Include="Areas\Management\Controllers\CompanyController.cs" />
-    <Compile Include="Areas\Management\Controllers\TicketingSpendingLimitController.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
     <Compile Include="Areas\Management\Controllers\AreaNationalController.cs" />
@@ -192,7 +190,6 @@
     <Content Include="Areas\Development\_script\setup-password.js" />
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\_script\account.js" />
-    <Content Include="Areas\Management\_script\app-ticketing-spending-limit.js" />
     <Content Include="Areas\Management\_script\app-agent-spending-limit.js" />
     <Content Include="Areas\Management\_script\app-order.js" />
     <Content Include="Areas\Management\_script\app-book.js" />
@@ -1251,9 +1248,6 @@
     <Content Include="Files\Export\Order\thong-tin-dat-ve-tai-phong-ve-focus-travel-viet-nam.pdf" />
     <Content Include="Areas\Management\Views\_ViewSearchDepositPatial.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Payment.cshtml" />
-    <Content Include="Areas\Management\Views\TicketingSpendingLimit\DataList.cshtml" />
-    <Content Include="Areas\Management\Views\TicketingSpendingLimit\Details.cshtml" />
-    <Content Include="Areas\Management\Views\TicketingSpendingLimit\Setting.cshtml" />
     <Content Include="Areas\Management\Views\Company\Create.cshtml" />
     <Content Include="Areas\Management\Views\Company\DataList.cshtml" />
     <Content Include="Areas\Management\Views\Company\Details.cshtml" />

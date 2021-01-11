@@ -49,7 +49,7 @@
                             _path = _path.ToLower();
                         }
                         <li class="">
-                            <a href="@_path" class="@_cls  @toggled"><span><i class="fas fa-square-full" aria-hidden="true"></i>&nbsp; @item.Title @item.OrderID </span></a> @Html.Raw(_innerText)
+                            <a href="@_path" class="@_cls  @toggled"><span><i class="fas fa-square-full" aria-hidden="true"></i>&nbsp; @item.Title</span></a>@Html.Raw(_innerText)
                         </li>
                     }
                 }
