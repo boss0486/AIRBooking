@@ -13,6 +13,7 @@ namespace ApiPortalBooking.Models
     {
         public string PNR { get; set; }
         public string approveCode { get; set; }
+        public string ExpireDate { get; set; }
         public List<ExTitketPassengerFareModel> lPricingInPNR { get; set; }
     }
 }

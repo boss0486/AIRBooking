@@ -36,7 +36,7 @@ namespace WebCore.Entities
         public int MailStatus { get; set; }
         public int OrderStatus { get; set; }
         public string ProviderCode { get; set; }
-        public DateTime ExportDate { get; set; }
+        public DateTime? ExportDate { get; set; }
 
     }
 

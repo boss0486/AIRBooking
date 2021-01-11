@@ -229,6 +229,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Files\default\00000000-0000-0000-0000-000000000000.gif" />
     <Content Include="Files\default\0088e0aa-a890-4a0a-b705-476d7ba98588.png" />
+    <Content Include="Files\Export\AirBooking\00000000-0000-0000-0000-000000000000.gif" />
     <Content Include="Files\log\Log-2019-05.txt" />
     <Content Include="Files\Upload\2019\10\05c561d2-f56f-4862-ba80-e8231a2a3da7.jpg" />
     <Content Include="Files\Upload\2019\10\0dbd0bc9-5e3a-4afe-a0f4-4ef4000898d4.jpg" />
@@ -278,6 +279,7 @@
     <Content Include="Global.asax" />
     <Content Include="HtmlPage1.html" />
     <Content Include="HtmlPage2.html" />
+    <Content Include="Team\00000000-0000-0000-0000-000000000000.gif" />
     <Content Include="WS\Xml\FareBasis.xml" />
     <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />
     <Content Include="Library\Script\model-form.js" />
@@ -845,7 +847,7 @@
     <Content Include="Areas\Management\Views\TransactionDeposit\Details.cshtml" />
     <Content Include="Areas\Management\Views\TransactionPayment\Create.cshtml" />
     <Content Include="Areas\Management\Views\AgentSpendingLimit\Setting.cshtml" />
-    <Content Include="Areas\Management\Views\UserSpending\setting.cshtml" />
+    <Content Include="Areas\Management\Views\UserSpending\Setting.cshtml" />
     <Content Include="Areas\Management\Views\User\Create.cshtml" />
     <Content Include="Areas\Management\Views\User\DataList.cshtml" />
     <Content Include="Areas\Management\Views\User\Details.cshtml" />
@@ -1004,10 +1006,8 @@
     <Folder Include="Areas\Management\Data\" />
     <Folder Include="Areas\Template\Data\" />
     <Folder Include="Files\content\" />
-    <Folder Include="Files\Export\AirBooking\" />
     <Folder Include="Files\Upload\news\" />
     <Folder Include="Files\Upload\product\" />
-    <Folder Include="Team\" />
     <Folder Include="_themes\fontend\js\" />
     <Folder Include="_themes\manage\images\image-gallery\thumb\" />
     <Folder Include="_themes\manage\plugins\ckeditor\adapters\" />

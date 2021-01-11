@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">WebServiceSupplier</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="?">WebServiceClient</eb:PartyId>
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service eb:type="?">PassengerDetailsRQ</eb:Service>
+      <eb:Action>PassengerDetailsRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>2opd93d0m</eb:MessageId>
+        <eb:Timestamp>2021-01-11T06:57:31</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com1</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESB!ICESMSLB\/RES.LB!1610348243880!9266!269!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <PassengerDetailsRS xmlns="http://services.sabre.com/sp/pd/v3_4">
+      <ApplicationResults xmlns="http://services.sabre.com/STL_Payload/v02_01" xmlns:ns2="http://services.sabre.com/essm/diagnostic/v1" xmlns:ns3="http://services.sabre.com/essm/core/v1" xmlns:ns4="http://services.sabre.com/STL_Payload/v02_02" xmlns:ns5="http://opentravel.org/common/message/v02" xmlns:ns6="http://opentravel.org/common/v02" xmlns:ns7="http://services.sabre.com/sp/ssp/v1" xmlns:ns8="http://services.sabre.com/STL_Header/v02_02" xmlns:ns9="http://services.sabre.com/STL_Header/v120" xmlns:ns10="http://services.sabre.com/essm/session/v1" xmlns:ns11="http://services.sabre.com/STL_Header/v02_01" xmlns:ns12="http://webservices.sabre.com/servicesplatform/eiapi/1.0.0" xmlns:ns13="http://services.sabre.com/essm/sharedcache/v1" xmlns:ns14="http://www.OpenTravel.org/ns/OTA2/AppInfo_v01_00" xmlns:ns15="http://services.sabre.com/sp/preferences/v1" xmlns:ns16="http://services.sabre.com/STL/v01" xmlns:ns17="http://services.sabre.com/ssse/trace/v01" status="Complete">
+        <Success timeStamp="2021-01-11T00:57:31.882-06:00" />
+        <Warning timeStamp="2021-01-11T00:57:31.518-06:00" type="BusinessLogic">
+          <SystemSpecificResults>
+            <Message code="WARN.SWS.HOST.ERROR_IN_RESPONSE">TravelItineraryAddInfoLLSRQ: .INVALID ACTION</Message>
+          </SystemSpecificResults>
+        </Warning>
+        <Warning timeStamp="2021-01-11T00:57:31.577-06:00" type="BusinessLogic">
+          <SystemSpecificResults>
+            <Message code="WARN.SWS.HOST.ERROR_IN_RESPONSE">EndTransactionLLSRQ: INCORRECT TIME LIMIT - VERIFY  *PQ  DATE - LAST DATE 11JAN</Message>
+          </SystemSpecificResults>
+        </Warning>
+      </ApplicationResults>
+      <ItineraryRef ID="AGYDPI" />
+      <TravelItineraryReadRS>
+        <TravelItinerary>
+          <CustomerInfo>
+            <ContactNumbers>
+              <ContactNumber Phone="0983498218-H-1.1" LocationCode="LZJ" RPH="001" Id="8" />
+            </ContactNumbers>
+            <PersonName elementId="pnr-5.1" NameNumber="01.01" WithInfant="false" RPH="1">
+              <Email Id="7">VIETNT.ITT@GMAIL.COM</Email>
+              <GivenName>QUOC VIET MR</GivenName>
+              <Surname>PHUNG</Surname>
+            </PersonName>
+          </CustomerInfo>
+          <ItineraryInfo>
+            <ItineraryPricing>
+              <PriceQuote RPH="1">
+                <MiscInformation>
+                  <SignatureLine Status="ACTIVE" ExpirationDateTime="00:57" Source="SYS">
+                    <Text>LZJ LZJ 4A44 1357/11JAN21</Text>
+                  </SignatureLine>
+                </MiscInformation>
+                <PricedItinerary TaxExempt="false" ValidatingCarrier="VN" DisplayOnly="false" RPH="1" InputMessage="WPP1ADT¥RQ" StatusCode="A" StoredDateTime="2021-01-11T13:57">
+                  <AirItineraryPricingInfo>
+                    <ItinTotalFare>
+                      <BaseFare CurrencyCode="VND" Amount="718000" />
+                      <Taxes>
+                        <Tax TaxCode="XT" Amount="1012000" />
+                        <TaxBreakdownCode TaxPaid="false">700000YR</TaxBreakdownCode>
+                        <TaxBreakdownCode TaxPaid="false">72000UE</TaxBreakdownCode>
+                        <TaxBreakdownCode TaxPaid="false">200000AX</TaxBreakdownCode>
+                        <TaxBreakdownCode TaxPaid="false">40000C4</TaxBreakdownCode>
+                      </Taxes>
+                      <TotalFare CurrencyCode="VND" Amount="1730000" />
+                      <Totals>
+                        <BaseFare Amount="718000" />
+                        <Taxes>
+                          <Tax Amount="1012000" />
+                        </Taxes>
+                        <TotalFare Amount="1730000" />
+                      </Totals>
+                    </ItinTotalFare>
+                    <PassengerTypeQuantity Quantity="01" Code="ADT" />
+                    <PTC_FareBreakdown>
+                      <Endorsements>
+                        <Endorsement type="PRICING_PARAMETER">
+                          <Text>WPP1ADT$RQ</Text>
+                        </Endorsement>
+                        <Endorsement type="WARNING">
+                          <Text>PRIVATE FARE APPLIED - CHECK RULES FOR CORRECT TICKETING</Text>
+                        </Endorsement>
+                        <Endorsement type="WARNING">
+                          <Text>VALIDATING CARRIER SPECIFIED - VN</Text>
+                        </Endorsement>
+                        <Endorsement type="SYSTEM_ENDORSEMENT">
+                          <Text>NON-END.RESTRICT MAY APPLY/CONTACT B4 DEPT FOR CHANGE</Text>
+                        </Endorsement>
+                      </Endorsements>
+                      <FareBasis Code="PAPVNF96/EAPVNF" />
+                      <FareCalculation>
+                        <Text>HAN VN SGN209000PAPVNF96 VN HAN509000EAPVNF VND718000END</Text>
+                      </FareCalculation>
+                      <FlightSegment SegmentNumber="1" Status="OK" DepartureDateTime="03-25T06:00" ConnectionInd="O" FlightNumber="6025" ResBookDesigCode="P">
+                        <BaggageAllowance Number="NIL" />
+                        <FareBasis Code="PAPVNF96" />
+                        <MarketingAirline FlightNumber="6025" Code="VN" />
+                        <OriginLocation LocationCode="HAN" />
+                        <ValidityDates>
+                          <NotValidAfter>2021-03-25</NotValidAfter>
+                          <NotValidBefore>2021-03-25</NotValidBefore>
+                        </ValidityDates>
+                      </FlightSegment>
+                      <FlightSegment SegmentNumber="2" Status="OK" DepartureDateTime="03-27T06:00" ConnectionInd="O" FlightNumber="206" ResBookDesigCode="E">
+                        <BaggageAllowance Number="01P" />
+                        <FareBasis Code="EAPVNF" />
+                        <MarketingAirline FlightNumber="206" Code="VN" />
+                        <OriginLocation LocationCode="SGN" />
+                        <ValidityDates>
+                          <NotValidAfter>2021-03-27</NotValidAfter>
+                          <NotValidBefore>2021-03-27</NotValidBefore>
+                        </ValidityDates>
+                      </FlightSegment>
+                      <FlightSegment>
+                        <OriginLocation LocationCode="HAN" />
+                      </FlightSegment>
+                      <FareComponent TicketDesignator="" GoverningCarrier="VN" FareBasisCode="PAPVNF96" Amount="209000" FareDirectionality="FROM" FareComponentNumber="1">
+                        <Location Origin="HAN" Destination="SGN" />
+                        <Dates DepartureDateTime="03-25T06:00" ArrivalDateTime="03-25T08:05" />
+                        <FlightSegmentNumbers>
+                          <FlightSegmentNumber>1</FlightSegmentNumber>
+                        </FlightSegmentNumbers>
+                      </FareComponent>
+                      <FareComponent TicketDesignator="" GoverningCarrier="VN" FareBasisCode="EAPVNF" Amount="509000" FareDirectionality="TO" FareComponentNumber="2">
+                        <Location Origin="SGN" Destination="HAN" />
+                        <Dates DepartureDateTime="03-27T06:00" ArrivalDateTime="03-27T08:10" />
+                        <FlightSegmentNumbers>
+                          <FlightSegmentNumber>2</FlightSegmentNumber>
+                        </FlightSegmentNumbers>
+                      </FareComponent>
+                      <ResTicketingRestrictions>LAST DAY TO PURCHASE 11JAN/1957</ResTicketingRestrictions>
+                      <ResTicketingRestrictions>GUARANTEED FARE APPL IF PURCHASED BEFORE 11JAN</ResTicketingRestrictions>
+                    </PTC_FareBreakdown>
+                  </AirItineraryPricingInfo>
+                </PricedItinerary>
+                <ResponseHeader>
+                  <Text>FARE - PRICE RETAINED</Text>
+                  <Text>FARE USED TO CALCULATE DISCOUNT</Text>
+                  <Text>FARE NOT GUARANTEED UNTIL TICKETED</Text>
+                </ResponseHeader>
+                <PriceQuotePlus PricingStatus="S" VerifyFareCalc="false" NUCSuppresion="false" SystemIndicator="S" IT_BT_Fare="BT" NegotiatedFare="false" DomesticIntlInd="I" DisplayOnly="false" ManualFare="false" SubjToGovtApproval="false" DiscountAmount="0" ItineraryChanged="false">
+                  <PassengerInfo PassengerType="ADT">
+                    <PassengerData NameNumber="01.01">PHUNG/QUOC VIET MR</PassengerData>
+                  </PassengerInfo>
+                  <TicketingInstructionsInfo />
+                </PriceQuotePlus>
+              </PriceQuote>
+              <PriceQuoteTotals>
+                <BaseFare Amount="718000.00" />
+                <Taxes>
+                  <Tax Amount="1012000.00" />
+                </Taxes>
+                <TotalFare Amount="1730000.00" />
+              </PriceQuoteTotals>
+            </ItineraryPricing>
+            <ReservationItems>
+              <Item RPH="1">
+                <FlightSegment Status="HK" DayOfWeekInd="4" CodeShare="false" NumberInParty="01" StopQuantity="00" ElapsedTime="02.05" ResBookDesigCode="P" SmokingAllowed="false" AirMilesFlown="0718" SegmentNumber="0001" IsPast="false" eTicket="true" DepartureDateTime="2021-03-25T06:00" ArrivalDateTime="03-25T08:05" SegmentBookedDate="2021-01-11T00:57:00" FlightNumber="6025" SpecialMeal="false" Id="3">
+                  <DestinationLocation TerminalCode="1" LocationCode="SGN" Terminal="TERMINAL 1" />
+                  <Equipment AirEquipType="320" />
+                  <MarketingAirline FlightNumber="6025" ResBookDesigCode="P" Code="VN">
+                    <Banner>MARKETED BY VIETNAM AIRLINES</Banner>
+                  </MarketingAirline>
+                  <Meal Code="N" />
+                  <OperatingAirline FlightNumber="6025" ResBookDesigCode="P" Code="VN">
+                    <Banner>BL</Banner>
+                  </OperatingAirline>
+                  <OperatingAirlinePricing Code="BL" />
+                  <DisclosureCarrier DOT="true" Code="BL">
+                    <Banner>BL</Banner>
+                  </DisclosureCarrier>
+                  <OriginLocation TerminalCode="1" LocationCode="HAN" Terminal="TERMINAL 1" />
+                  <UpdatedArrivalTime>03-25T08:05</UpdatedArrivalTime>
+                  <UpdatedDepartureTime>03-25T06:00</UpdatedDepartureTime>
+                  <Cabin SabreCode="Y" ShortName="ECONOMY" Lang="EN" Code="Y" Name="ECONOMY" />
+                </FlightSegment>
+                <Product>
+                  <ProductDetails productCategory="AIR">
+                    <ProductName type="AIR" />
+                    <Air sequence="1" segmentAssociationId="2">
+                      <DepartureAirport>HAN</DepartureAirport>
+                      <DepartureTerminalName>TERMINAL 1</DepartureTerminalName>
+                      <DepartureTerminalCode>1</DepartureTerminalCode>
+                      <ArrivalAirport>SGN</ArrivalAirport>
+                      <ArrivalTerminalName>TERMINAL 1</ArrivalTerminalName>
+                      <ArrivalTerminalCode>1</ArrivalTerminalCode>
+                      <OperatingAirlineCode>**</OperatingAirlineCode>
+                      <EquipmentType>320</EquipmentType>
+                      <MarketingAirlineCode>VN</MarketingAirlineCode>
+                      <MarketingFlightNumber>6025</MarketingFlightNumber>
+                      <MarketingClassOfService>P</MarketingClassOfService>
+                      <Cabin code="Y" name="ECONOMY" shortName="ECONOMY" lang="EN" sabreCode="Y" />
+                      <MealCode>N</MealCode>
+                      <ElapsedTime>125</ElapsedTime>
+                      <AirMilesFlown>718</AirMilesFlown>
+                      <FunnelFlight>false</FunnelFlight>
+                      <ChangeOfGauge>false</ChangeOfGauge>
+                      <DisclosureCarrier DOT="true" Code="BL">
+                        <Banner>BL</Banner>
+                      </DisclosureCarrier>
+                      <Eticket>true</Eticket>
+                      <DepartureDateTime>2021-03-25T06:00:00</DepartureDateTime>
+                      <ArrivalDateTime>2021-03-25T08:05:00</ArrivalDateTime>
+                      <FlightNumber>6025</FlightNumber>
+                      <ClassOfService>P</ClassOfService>
+                      <ActionCode>HK</ActionCode>
+                      <NumberInParty>1</NumberInParty>
+                      <inboundConnection>false</inboundConnection>
+                      <outboundConnection>false</outboundConnection>
+                      <ScheduleChangeIndicator>false</ScheduleChangeIndicator>
+                      <SegmentBookedDate>2021-01-11T00:57:00</SegmentBookedDate>
+                    </Air>
+                  </ProductDetails>
+                </Product>
+              </Item>
+              <Item RPH="2">
+                <FlightSegment Status="HK" DayOfWeekInd="6" CodeShare="false" NumberInParty="01" StopQuantity="00" ElapsedTime="02.10" ResBookDesigCode="E" SmokingAllowed="false" AirMilesFlown="0718" SegmentNumber="0002" IsPast="false" eTicket="true" DepartureDateTime="2021-03-27T06:00" ArrivalDateTime="03-27T08:10" SegmentBookedDate="2021-01-11T00:57:00" FlightNumber="0206" SpecialMeal="false" Id="4">
+                  <DestinationLocation TerminalCode="1" LocationCode="HAN" Terminal="TERMINAL 1" />
+                  <Equipment AirEquipType="359" />
+                  <MarketingAirline FlightNumber="0206" ResBookDesigCode="E" Code="VN">
+                    <Banner>MARKETED BY VIETNAM AIRLINES</Banner>
+                  </MarketingAirline>
+                  <Meal Code="B" />
+                  <OperatingAirline FlightNumber="0206" ResBookDesigCode="E" Code="VN">
+                    <Banner>OPERATED BY VIETNAM AIRLINES</Banner>
+                  </OperatingAirline>
+                  <OperatingAirlinePricing Code="VN" />
+                  <DisclosureCarrier DOT="false" Code="VN">
+                    <Banner>VIETNAM AIRLINES</Banner>
+                  </DisclosureCarrier>
+                  <OriginLocation TerminalCode="1" LocationCode="SGN" Terminal="TERMINAL 1" />
+                  <UpdatedArrivalTime>03-27T08:10</UpdatedArrivalTime>
+                  <UpdatedDepartureTime>03-27T06:00</UpdatedDepartureTime>
+                  <Cabin SabreCode="Y" ShortName="ECONOMY" Lang="EN" Code="Y" Name="ECONOMY" />
+                </FlightSegment>
+                <Product>
+                  <ProductDetails productCategory="AIR">
+                    <ProductName type="AIR" />
+                    <Air sequence="2" segmentAssociationId="3">
+                      <DepartureAirport>SGN</DepartureAirport>
+                      <DepartureTerminalName>TERMINAL 1</DepartureTerminalName>
+                      <DepartureTerminalCode>1</DepartureTerminalCode>
+                      <ArrivalAirport>HAN</ArrivalAirport>
+                      <ArrivalTerminalName>TERMINAL 1</ArrivalTerminalName>
+                      <ArrivalTerminalCode>1</ArrivalTerminalCode>
+                      <EquipmentType>359</EquipmentType>
+                      <MarketingAirlineCode>VN</MarketingAirlineCode>
+                      <MarketingFlightNumber>206</MarketingFlightNumber>
+                      <MarketingClassOfService>E</MarketingClassOfService>
+                      <Cabin code="Y" name="ECONOMY" shortName="ECONOMY" lang="EN" sabreCode="Y" />
+                      <MealCode>B</MealCode>
+                      <ElapsedTime>130</ElapsedTime>
+                      <AirMilesFlown>718</AirMilesFlown>
+                      <FunnelFlight>false</FunnelFlight>
+                      <ChangeOfGauge>false</ChangeOfGauge>
+                      <DisclosureCarrier DOT="false" Code="VN">
+                        <Banner>VIETNAM AIRLINES</Banner>
+                      </DisclosureCarrier>
+                      <Eticket>true</Eticket>
+                      <DepartureDateTime>2021-03-27T06:00:00</DepartureDateTime>
+                      <ArrivalDateTime>2021-03-27T08:10:00</ArrivalDateTime>
+                      <FlightNumber>206</FlightNumber>
+                      <ClassOfService>E</ClassOfService>
+                      <ActionCode>HK</ActionCode>
+                      <NumberInParty>1</NumberInParty>
+                      <inboundConnection>false</inboundConnection>
+                      <outboundConnection>false</outboundConnection>
+                      <ScheduleChangeIndicator>false</ScheduleChangeIndicator>
+                      <SegmentBookedDate>2021-01-11T00:57:00</SegmentBookedDate>
+                    </Air>
+                  </ProductDetails>
+                </Product>
+              </Item>
+            </ReservationItems>
+            <Ticketing TicketTimeLimit="TL30" RPH="01" />
+          </ItineraryInfo>
+          <ItineraryRef PrimeHostID="VN" InhibitCode="U" AccountingCode="GS" AccountingCity="LZJ" ID="AGYDPI" AirExtras="false" OfficeStationCode="3795968" PartitionID="VN" TicketingCarrier="VN">
+            <Source HomePseudoCityCode="LZJ" LastUpdateDateTime="2021-01-11T00:57" ReceivedFrom="GOINGO" CreateDateTime="2021-01-11T00:57" SequenceNumber="1" AAA_PseudoCityCode="LZJ" CreationAgent="A44" PseudoCityCode="A0A0" />
+          </ItineraryRef>
+          <OpenReservationElements>
+            <OpenReservationElement elementId="pnr-or-3" id="3" />
+            <OpenReservationElement elementId="pnr-or-3" id="3" />
+            <OpenReservationElement elementId="pnr-or-4" id="4" />
+            <OpenReservationElement elementId="pnr-or-4" id="4" />
+            <OpenReservationElement elementId="pnr-7" id="7" type="PSG_DETAILS_MAIL">
+              <Email comment="">
+                <Address>VIETNT.ITT@GMAIL.COM</Address>
+              </Email>
+              <NameAssociation>
+                <LastName>PHUNG</LastName>
+                <FirstName>QUOC VIET MR</FirstName>
+                <ReferenceId>1</ReferenceId>
+                <NameRefNumber>01.01</NameRefNumber>
+              </NameAssociation>
+            </OpenReservationElement>
+          </OpenReservationElements>
+        </TravelItinerary>
+      </TravelItineraryReadRS>
+    </PassengerDetailsRS>
+  </soap-env:Body>
+</soap-env:Envelope>

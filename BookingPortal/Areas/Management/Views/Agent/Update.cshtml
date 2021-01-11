@@ -212,8 +212,11 @@
 @section scripts{
     <script src="~/Areas/Management/_script/customer.js"></script>
     <script type="text/javascript">
-        $("select#ddlSupplier").change();
-    </script>
+        $(function () {
+            $("#ddlSupplier")[0].selectedIndex = 1;
+            $("#ddlSupplier").change();
+        })
+    </script> 
 }
 
 

@@ -957,7 +957,11 @@ namespace AIRService.Service
                 AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
                 string agentCode = airAgent.CodeID;
                 string agentName = airAgent.Title;
-                string agentProviderId = airAgent.ParentID;
+                //
+                string agentProviderId = airAgent.ID;
+                if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
+                    agentProviderId = airAgent.ParentID;
+                //
                 int passengerGroup = model.PassengerGroup;
                 // call service get PNR code 
                 string strEmail = string.Empty;
@@ -1305,10 +1309,10 @@ namespace AIRService.Service
             string pnr = bookOrder.PNR;
             string agentId = bookAgent.AgentID;
 
-            double taxPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId).Sum(m => m.Amount);
+            double priceTotal = bookPriceService.GetAlls(m => m.BookOrderID == orderId).Sum(m => m.Amount);
             double taxTotal = bookTaxService.GetAlls(m => m.BookOrderID == orderId).Sum(m => m.Amount);
 
-            double amount = taxPrice + taxTotal + bookAgent.ProviderFee + bookAgent.AgentFee + bookAgent.AgentPrice;
+            double amount = priceTotal + taxTotal + bookAgent.ProviderFee + bookAgent.AgentFee + bookAgent.AgentPrice;
 
             // xuat ve: 
             // #1: kiem tra hom nay co trong khoang cuối tháng trước -> ngày 15 tháng hiện tại hay ko
@@ -1324,72 +1328,79 @@ namespace AIRService.Service
             DateTime today = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));// Convert.ToDateTime(TimeHelper.UtcDateTime.ToString("yyyy-MM-dd"));
 
             //kiem tra da thanh toan han muc cua thang truoc hay chua
+            string userLog = Helper.Current.UserLogin.IdentifierID;
             AirAgentService airAgentService = new AirAgentService();
             AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(airAgent.ParentID))
+            double totalSpent = 0;
+            if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
             {
-                // check han muc cua tickting
-                return ReleaseTicket(pnr);
-            }
-            // kiểm tra dữ liệu các tháng trước đó  
-            DateTime agentCreatedDate = airAgent.CreatedDate;
-            DateTime end = today.AddMonths(-2);// ko xử lý tháng cuối cùng
-            DateDiff dateDiff = new DateDiff(agentCreatedDate, end);
-            DateTime start = end.AddMonths(-dateDiff.Months);
+                // kiểm tra dữ liệu các tháng trước đó  
+                DateTime agentCreatedDate = airAgent.CreatedDate;
+                DateTime end = today.AddMonths(-2);// ko xử lý tháng cuối cùng
+                DateDiff dateDiff = new DateDiff(agentCreatedDate, end);
+                DateTime start = end.AddMonths(-dateDiff.Months);
 
 
-            List<DateTime> dateTimeRange = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).Where(m => m.Day == 1).ToList();
-            AgentSpendingLimitPaymentService agentSpendingLimitPaymentService = new AgentSpendingLimitPaymentService();
-            foreach (var item in dateTimeRange)
-            {
-                // kiem tra da tieu han muc chua, chua tieu bo qua
-                BookOrder bookOrderOnMonth = bookOrderService.GetAlls(m => m.IssueDate.Year == item.Year && m.IssueDate.Month == item.Month).FirstOrDefault();
-                if (bookOrderOnMonth == null)
-                    continue;
-                //
-                AgentSpendingLimitPayment agentSpendingLimitPayment = agentSpendingLimitPaymentService.GetAlls(m => m.AgentID == agentId && m.Year == item.Year && m.Month == item.Month).FirstOrDefault();
-                if (agentSpendingLimitPayment == null)
-                    return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(item, LanguagePage.GetLanguageCode) + " chưa thanh toán");
-                //
+                List<DateTime> dateTimeRange = Enumerable.Range(0, 1 + end.Subtract(start).Days).Select(offset => start.AddDays(offset)).Where(m => m.Day == 1).ToList();
+                AgentSpendingLimitPaymentService agentSpendingLimitPaymentService = new AgentSpendingLimitPaymentService();
+                foreach (var item in dateTimeRange)
+                {
+                    // kiem tra da tieu han muc chua, chua tieu bo qua
+                    BookOrder bookOrderOnMonth = bookOrderService.GetAlls(m => m.IssueDate.Year == item.Year && m.IssueDate.Month == item.Month).FirstOrDefault();
+                    if (bookOrderOnMonth == null)
+                        continue;
+                    //
+                    AgentSpendingLimitPayment agentSpendingLimitPayment = agentSpendingLimitPaymentService.GetAlls(m => m.AgentID == agentId && m.Year == item.Year && m.Month == item.Month).FirstOrDefault();
+                    if (agentSpendingLimitPayment == null)
+                        return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(item, LanguagePage.GetLanguageCode) + " chưa thanh toán");
+                    //
+                }
+                // ngay dau tien cua thang truoc
+                DateTime firstDayOfMonth = today.AddMonths(-1);
+                firstDayOfMonth = new DateTime(firstDayOfMonth.Year, firstDayOfMonth.Month, 01);
+                int paymentDayTotal = today.Subtract(firstDayOfMonth).Days;
+                int termPayment = airAgent.TermPayment;
+                if (termPayment <= 0)
+                    return Notifization.Invalid("Hạn mức không hợp lệ");
+                // 
+
+
+                //#1: check kỳ hạn thanh toan han muc 
+                if (paymentDayTotal > termPayment)
+                    return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
+
+                // lấy tổng đã tiêu tu tháng trước den nay (< 45 ngay)
+
+                string sqlQuery = $@" SELECT (
+                ISNULL((select sum (Amount) from App_BookPrice where BookOrderID = o.ID),0) +
+                ISNULL((select sum (Amount) from App_BookTax where BookOrderID = o.ID),0) +
+                ISNULL((select sum (AgentPrice + ProviderFee + AgentFee) from App_BookAgent where BookOrderID = o.ID),0) 
+                ) as 'Spent'              
+                FROM App_BookOrder AS o
+                INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
+                WHERE o.ID != @OrderID AND a.AgentID = @AgentID AND a.TicketingID = @TicketingID 
+                AND cast(IssueDate as Date) >= cast('{firstDayOfMonth}' as Date) AND cast(IssueDate as Date) <= cast('{today}' as Date)";
+                totalSpent = bookOrderService.Query<double>(sqlQuery, new { OrderID = orderId, AgentID = agentId, TicketingID = userLog }).FirstOrDefault();
             }
-            // ngay dau tien cua thang truoc
-            DateTime firstDayOfMonth = today.AddMonths(-1);
-            firstDayOfMonth = new DateTime(firstDayOfMonth.Year, firstDayOfMonth.Month, 01);
-            int paymentDayTotal = today.Subtract(firstDayOfMonth).Days;
-            int termPayment = airAgent.TermPayment;
-            if (termPayment <= 0)
-                return Notifization.Invalid("Hạn mức không hợp lệ");
-            // 
-            //#1: check kỳ hạn thanh toan han muc 
-            if (paymentDayTotal > termPayment)
-                return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
-            //
-            // lấy tổng đã tiêu tu tháng trước den nay (< 45 ngay)
-            // For ticketing
-            string userLog = Helper.Current.UserLogin.IdentifierID;
+            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService();
+            // For ticketing 
             UserSpendingService userSpendingService = new UserSpendingService();
             UserSpending userSpending = userSpendingService.GetAlls(m => m.TicketingID == userLog).FirstOrDefault();
             if (userSpending == null)
                 return Notifization.Invalid("Hạn mức chưa được cấp phép");
-            //
-            string sqlQuery = $@"SELECT SUM(o.Amount) FROM App_BookOrder AS o
-            INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
-            WHERE o.ID != @OrderID AND a.AgentID = @AgentID AND a.TicketingID = @TicketingID 
-            AND cast(IssueDate as Date) >= cast('{firstDayOfMonth}' as Date) AND cast(IssueDate as Date) <= cast('{today}' as Date)";
-            int totalSpent = bookOrderService.Query<int>(sqlQuery, new { OrderID = orderId, AgentID = agentId, TicketingID = userLog }).FirstOrDefault();
-            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService();
-            double userSpendingLimit = userSpending.Amount;
 
+            double userSpendingLimit = userSpending.Amount;
             if (userSpendingLimit < totalSpent + amount)
                 return Notifization.Invalid("Hạn mức không đủ");
             // xuất vé
-            return ReleaseTicket(pnr);
+            return ReleaseTicket(orderId);
         }
 
-        private ActionResult ReleaseTicket(string pnr)
+        private ActionResult ReleaseTicket(string orderId)
         {
-            return Notifization.TEST("OK:" + pnr);
-
+            if (string.IsNullOrWhiteSpace(orderId))
+                return Notifization.Invalid(MessageText.Invalid);
+            //
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
@@ -1398,23 +1409,31 @@ namespace AIRService.Service
             string _token = tokenModel.Token;
             string _conversationId = tokenModel.ConversationID;
             if (string.IsNullOrWhiteSpace(_token))
-                return Notifization.NotService;
-            //  
-            if (string.IsNullOrWhiteSpace(pnr))
-                return Notifization.Invalid("Mã PNR không hợp lệ");
-            //
+                return Notifization.Invalid(MessageText.Invalid);
+            //   
             List<ExTitketPassengerFareModel> exTitketPassengerFareModels = new List<ExTitketPassengerFareModel>();
             BookPassengerService appBookPassengerService = new BookPassengerService();
             BookPriceService appBookPriceService = new BookPriceService();
             BookTaxService appBookFareService = new BookTaxService();
-            var passengers = appBookPassengerService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower()).OrderBy(m => m.PassengerType).ToList();
+            BookOrderService bookOrderService = new BookOrderService();
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            if (bookOrder.OrderStatus != (int)BookOrderEnum.BookOrderStatus.Booking)
+                return Notifization.Invalid(MessageText.Invalid);
+            string pnr = bookOrder.PNR;
+            if (string.IsNullOrWhiteSpace(pnr))
+                return Notifization.Invalid("Mã PNR không hợp lệ");
+            //
+            var passengers = appBookPassengerService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.PassengerType).ToList();
             if (passengers.Count == 0)
                 return Notifization.Invalid("Thông tin hành khách không hợp lệ");
-            // 
+            //  
             foreach (var item in passengers)
             {
-                var bookPrice = appBookPriceService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
-                var bookTax = appBookFareService.GetAlls(m => m.PNR.ToLower() == pnr.ToLower() && m.PassengerType.ToLower() == (item.PassengerType.ToLower())).Sum(m => m.Amount);
+                var bookPrice = appBookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
+                var bookTax = appBookFareService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
                 exTitketPassengerFareModels.Add(new ExTitketPassengerFareModel
                 {
                     FullName = item.FullName,
@@ -1458,14 +1477,19 @@ namespace AIRService.Service
                 //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
                 #region xuất vé
                 //wss.SarbreCommand(tokenModel, "IG");
-                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel();
-                designatePrinter.ConversationID = tokenModel.ConversationID;
-                designatePrinter.Token = tokenModel.Token;
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                };
                 //
                 VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
                 var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.Error != null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                    return Notifization.Invalid("Server not responding from designate printer");
+                    return Notifization.Invalid(MessageText.Invalid);
                 //
                 var jjson = new JavaScriptSerializer().Serialize(printer);
                 var getReservationModel = new GetReservationModel
@@ -1474,14 +1498,15 @@ namespace AIRService.Service
                     Token = tokenModel.Token,
                     PNR = pnr
                 };
+
                 //paymentRQ
                 //wss.GetReservationWS(getReservationModel);
                 VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                var ReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                var reservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
                 if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
                 {
                     if (paymentData.Items.Count() == 0)
-                        return Notifization.Invalid("Server not responding from getreservation");
+                        return Notifization.Invalid(MessageText.Invalid);
                     //
                     var data = (AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
                     if (string.IsNullOrWhiteSpace(data.ApprovalCode))
@@ -1493,21 +1518,22 @@ namespace AIRService.Service
                         Token = tokenModel.Token,
                         PNR = pnr,
                         approveCode = data.ApprovalCode,
+                        ExpireDate = $"{Helper.TimeData.TimeHelper.UtcDateTime.Year}-12",
                         lPricingInPNR = exTitketPassengerFareModels
                     };
                     VNAWSAirTicketLLSRQService vNAWSAirTicketLLSRQService = new VNAWSAirTicketLLSRQService();
-                    var airTicketData = vNAWSAirTicketLLSRQService.AirTicket(airTicket);
+                    var airTicketData = vNAWSAirTicketLLSRQService.VNA_AirTicketLLSRQ(airTicket);
+
                     VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                     var end = vNATransaction.EndTransaction(tokenModel);
                     if (end.ApplicationResults.Success != null)
                     {
-                        BookOrderService bookPNRCodeService = new BookOrderService();
-                        var bookPNRCode = bookPNRCodeService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr.ToLower()).FirstOrDefault();
-                        if (bookPNRCode != null)
-                        {
-                            bookPNRCode.Enabled = (int)BookOrderEnum.BookOrderStatus.Exported;
-                            bookPNRCodeService.Update(bookPNRCode);
-                        }
+                        // 
+
+
+                        //bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
+                        bookOrder.ExportDate = DateTime.Now;
+                        //bookOrderService.Update(bookOrder);
                     }
                     // 
                     return Notifization.Data("OK", end);

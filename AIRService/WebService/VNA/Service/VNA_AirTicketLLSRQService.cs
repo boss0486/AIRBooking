@@ -14,9 +14,8 @@ namespace AIRService.WS.Service
 {
     class VNAWSAirTicketLLSRQService
     {
-        public string AirTicket(AirTicketLLSRQModel model)
+        public string VNA_AirTicketLLSRQ(AirTicketLLSRQModel model)
         {
-
             #region test code
             HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
             XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -38,7 +37,7 @@ namespace AIRService.WS.Service
             stringXML += "            <SabreSonicTicketing>";
             stringXML += "                <BasicFOP>";
             stringXML += "                    <CC_Info Suppress=\"true\">";
-            stringXML += "                        <PaymentCard Code=\"BT\" ExpireDate=\"2020-12\" ManualApprovalCode=\"" + model.approveCode + "\" Number=\"8738210537959681\"/>";
+            stringXML += "                        <PaymentCard Code=\"BT\" ExpireDate=\"" + model.ExpireDate + "\" ManualApprovalCode=\"" + model.approveCode + "\" Number=\"8738210537959681\"/>";
             stringXML += "                    </CC_Info>";
             stringXML += "                </BasicFOP>";
             stringXML += "            </SabreSonicTicketing>";
@@ -86,7 +85,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-
+                    Helper.XMLHelper.WriteXml("AirTicketRQ-test-xuat-ve.xml", soapEnvelopeXml);
                 }
             }
             return "";

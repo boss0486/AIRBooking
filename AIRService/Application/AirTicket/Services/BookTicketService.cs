@@ -101,8 +101,12 @@ namespace WebCore.Services
                     //
                     int itineraryId = model.ItineraryType;
                     BookAgentInfo bookAgentInfo = model.AgentInfo;
-                    string providerCode = airAgentService.GetAlls(m => m.ID == bookAgentInfo.ProviderID, transaction: _transaction).FirstOrDefault().CodeID;
+                    string providerCode = string.Empty;
 
+                    AirAgent airAgentParent =  airAgentService.GetAlls(m => m.ID == bookAgentInfo.ProviderID, transaction: _transaction).FirstOrDefault();
+                    if (airAgentParent != null) 
+                        providerCode = airAgentParent.CodeID;
+                    // 
                     string orderCode = "PO-" + pnr;
                     string bookOrderId = bookOrderService.Create<string>(new BookOrder
                     {
@@ -111,12 +115,13 @@ namespace WebCore.Services
                         PNR = pnr,
                         Summary = model.Summary,
                         Amount = bookAgentInfo.AgentFee + fareFlights.Sum(m => m.Amount) + fareTaxes.Sum(m => m.Amount),
-                        Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED,
                         ItineraryType = itineraryId,
                         MailStatus = (int)ENM.BookOrderEnum.BookMailStatus.None,
+                        ProviderCode = providerCode,
                         IssueDate = model.OrderDate,
+                        ExportDate = null,
                         OrderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
-                        ProviderCode = providerCode
+                        Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED
                     }, transaction: _transaction);
 
                     foreach (var flight in flights)

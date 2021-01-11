@@ -199,7 +199,7 @@ var AirBookController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AirlineController.DataList(pageIndex);
+                        AirBookController.DataList(pageIndex);
                         return;
                     }
                     else {
@@ -231,7 +231,7 @@ var AirBookController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AirlineController.DataList(pageIndex);
+                        AirBookController.DataList(pageIndex);
                         return;
                     }
                     else {
