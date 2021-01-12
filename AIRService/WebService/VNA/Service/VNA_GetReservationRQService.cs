@@ -1,6 +1,5 @@
 ﻿using AIRService.WS.Helper;
 using ApiPortalBooking.Models;
-using ApiPortalBooking.Models.VNA_WS_Model.VNA;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,11 +14,8 @@ namespace AIRService.WS.Service
 {
     class VNA_WSGetReservationRQService
     {
-        public ApiPortalBooking.Models.VNA_WS_Model.VNA.GetReservationData GetReservation(GetReservationModel model)
+        public XMLObject.ReservationRq.GetReservationRS GetReservation(GetReservationModel model)
         {
-            #region xml
-            ApiPortalBooking.Models.VNA_WS_Model.VNA.GetReservationData data = null;
-            //ReservationModel result;
             //try
             //{
 
@@ -60,107 +56,22 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    var xmlnode = soapEnvelopeXml.GetElementsByTagName("stl19:TicketDetails");
-                    data = new ApiPortalBooking.Models.VNA_WS_Model.VNA.GetReservationData();
-                    data.RevResult = new ApiPortalBooking.Models.VNA_WS_Model.RevResult();
-                    data.RevResult.AgentDutyCode = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["AgentDutyCode"].Value;
-                    data.RevResult.BookingSource = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["BookingSource"].Value;
-                    data.RevResult.AgentSine = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["AgentSine"].Value;
-                    data.RevResult.PseudoCityCode = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["PseudoCityCode"].Value;
-                    data.RevResult.ISOCountry = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["ISOCountry"].Value;
-                    data.RevResult.AirlineVendorID = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["AirlineVendorID"].Value;
-                    data.RevResult.HomePseudoCityCode = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["HomePseudoCityCode"].Value;
-                    data.RevResult.PrimeHostID = soapEnvelopeXml.GetElementsByTagName("stl19:Source")[0].Attributes["PrimeHostID"].Value;
-                    var OAC = soapEnvelopeXml.GetElementsByTagName("stl19:OAC")[0];
-                    data.RevResult.OAC = new ApiPortalBooking.Models.VNA_WS_Model.RevResultOAC();
-                    foreach (XmlNode item in OAC.ChildNodes)
-                    {
-                        if (item.Name == "stl19:PartitionId")
-                        {
-                            data.RevResult.OAC.PartitionId = item.InnerText;
-                            continue;
-                        }
-                        if (item.Name == "stl19:AccountingCityCode")
-                        {
-                            data.RevResult.OAC.AccountingCityCode = item.InnerText;
-                            continue;
-                        }
-                        if (item.Name == "stl19:AccountingCode")
-                        {
-                            data.RevResult.OAC.AccountingCode = item.InnerText;
-                            continue;
-                        }
-                        if (item.Name == "stl19:AccountingOfficeStationCode")
-                        {
-                            data.RevResult.OAC.AccountingOfficeStationCode = item.InnerText;
-                            continue;
-                        }
-                    }
-                    if (xmlnode != null && xmlnode.Count > 0)
-                    {
-                        data.TicketDetails = new List<TicketingInfoTicketDetails>();
-                        foreach (XmlNode item in xmlnode)
-                        {
-                            var details = new TicketingInfoTicketDetails();
-                            details.id = item.Attributes["id"].Value != null ? int.Parse(item.Attributes["id"].Value) : 0;
-                            details.index = item.Attributes["index"].Value != null ? int.Parse(item.Attributes["index"].Value) : 0;
-                            details.elementId = item.Attributes["elementId"].Value != null ? item.Attributes["elementId"].Value : "";
-                            foreach (XmlNode item2 in item.ChildNodes)
-                            {
-                                if (item2.Name == "stl19:OriginalTicketDetails")
-                                {
-                                    details.OriginalTicketDetails = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:TransactionIndicator")
-                                {
-                                    details.TransactionIndicator = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:TicketNumber")
-                                {
-                                    details.TicketNumber = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:PassengerName")
-                                {
-                                    details.PassengerName = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:AgencyLocation")
-                                {
-                                    details.AgencyLocation = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:DutyCode")
-                                {
-                                    details.DutyCode = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:AgentSine")
-                                {
-                                    details.AgentSine = item2.InnerText;
-                                    continue;
-                                }
-                                if (item2.Name == "stl19:Timestamp")
-                                {
-                                    details.Timestamp = DateTime.Parse(item2.InnerText);
-                                    continue;
-                                }
-                            }
-                            data.TicketDetails.Add(details);
-                        }
-                    }
+                    Helper.XMLHelper.WriteXml("getreservationrq-test-xuat-ve.xml", soapEnvelopeXml);
+                    XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                    XMLObject.ReservationRq.GetReservationRS reservationRS = new XMLObject.ReservationRq.GetReservationRS();
+                    if (xmlnode != null)
+                        reservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq.GetReservationRS>(xmlnode.InnerXml);
+                    //
+                    return reservationRS;
                 }
             }
-            return data;
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ex;
-            //}
-            #endregion
         }
+        //}
+        //catch (Exception ex)
+        //{
+
+        //    throw ex;
+        //}
+
     }
 }

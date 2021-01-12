@@ -475,7 +475,8 @@
     <Compile Include="WebService\VNA\Entities\PassengerDetailsModel.cs" />
     <Compile Include="WebService\VNA\Entities\PaymentModel.cs" />
     <Compile Include="WebService\VNA\Entities\VNA_ReportModel.cs" />
-    <Compile Include="WebService\VNA\Entities\ReservationModel.cs" />
+    <Compile Include="WebService\VNA\XmlObject\AirTicketRqModel.cs" />
+    <Compile Include="WebService\VNA\XmlObject\ReservationModel.cs" />
     <Compile Include="WebService\VNA\Entities\RevResult.cs" />
     <Compile Include="WebService\VNA\Entities\SearchFlightModel.cs" />
     <Compile Include="WebService\VNA\Entities\TaxModel.cs" />

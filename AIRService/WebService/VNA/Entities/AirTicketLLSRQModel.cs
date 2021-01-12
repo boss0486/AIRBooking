@@ -1,6 +1,4 @@
 ﻿using AIRService.Models;
-using ApiPortalBooking.Models.VNA_WS_Model;
-using ApiPortalBooking.Models.VNA_WS_Model.VNA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +10,8 @@ namespace ApiPortalBooking.Models
     public class AirTicketLLSRQModel : TokenModel
     {
         public string PNR { get; set; }
-        public string approveCode { get; set; }
+        public string ApproveCode { get; set; }
         public string ExpireDate { get; set; }
-        public List<ExTitketPassengerFareModel> lPricingInPNR { get; set; }
+        public List<ExTitketPassengerFareModel> ListPricingInPNR { get; set; }
     }
 }

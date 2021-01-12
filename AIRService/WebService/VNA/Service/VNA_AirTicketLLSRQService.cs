@@ -37,7 +37,7 @@ namespace AIRService.WS.Service
             stringXML += "            <SabreSonicTicketing>";
             stringXML += "                <BasicFOP>";
             stringXML += "                    <CC_Info Suppress=\"true\">";
-            stringXML += "                        <PaymentCard Code=\"BT\" ExpireDate=\"" + model.ExpireDate + "\" ManualApprovalCode=\"" + model.approveCode + "\" Number=\"8738210537959681\"/>";
+            stringXML += "                        <PaymentCard Code=\"BT\" ExpireDate=\"" + model.ExpireDate + "\" ManualApprovalCode=\"" + model.ApproveCode + "\" Number=\"8738210537959681\"/>";
             stringXML += "                    </CC_Info>";
             stringXML += "                </BasicFOP>";
             stringXML += "            </SabreSonicTicketing>";

@@ -1037,7 +1037,7 @@ namespace AIRService.Service
                 using (var sessionService = new VNA_SessionService(tokenModel))
                 {
                     if (string.IsNullOrWhiteSpace(_token))
-                        return Notifization.Invalid("Can not create token");
+                        return Notifization.Invalid(MessageText.Invalid);
                     //
                     using (var vnaTransaction = new VNA_EndTransaction(tokenModel))
                     {
@@ -1062,7 +1062,7 @@ namespace AIRService.Service
                         });
                         // 
                         if (ota_AirBookRS.ApplicationResults.Success == null)
-                            return Notifization.Invalid("AirBook invalid");
+                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
                         //
                         var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
                         if (_originDestinationOption.Count == 0)
@@ -1146,8 +1146,8 @@ namespace AIRService.Service
                         model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
                         // create model passenger details model
                         List<PassengerDetailsRQ> passengerDetailsRQ = new List<PassengerDetailsRQ>();
-                        List<BookTicketPassenger> Request_Passengers = model.Passengers;
-                        foreach (var item in Request_Passengers)
+                        List<BookTicketPassenger> request_Passengers = model.Passengers;
+                        foreach (var item in request_Passengers)
                         {
                             // 
                             string fullName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName);
@@ -1160,8 +1160,10 @@ namespace AIRService.Service
                             });
                         }
 
-                        //
-                        var passengerDetailModel = new DetailsRQ
+
+                        //call service  passenger details in ws.service
+                        VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
+                        XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = vNAWSPassengerDetailsRQService.PassengerDetail(new DetailsRQ
                         {
                             Email = bookEmailConfig.Email,
                             Phone = bookEmailConfig.Phone,
@@ -1169,13 +1171,14 @@ namespace AIRService.Service
                             Token = _token,
                             Passengers = passengerDetailsRQ,
                             AirBook = ota_AirBookRS
-                        };
-                        //call service  passenger details in ws.service
-                        VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
-                        string pnrCode = vNAWSPassengerDetailsRQService.PassengerDetail2(passengerDetailModel);
+                        });
                         //End transaction 
+                        if (passengerDetailsRS == null)
+                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                        //
+                        string pnrCode = passengerDetailsRS.ItineraryRef.ID;
                         vnaTransaction.EndTransaction();
-
+                        //
                         if (string.IsNullOrWhiteSpace(pnrCode))
                             return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
                         //set PNR code
@@ -1225,17 +1228,30 @@ namespace AIRService.Service
                             });
                         }
                         // save book information | output data ***************************************************************************************************
+
+                        //List<XMLObject.AirTicketRq.PersonName> personNames = passengerDetailsRS.TravelItineraryReadRS.TravelItinerary.CustomerInfo.PersonName;
+
                         BookTicketService bookTicketService = new BookTicketService();
                         List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
                         foreach (var item in model.Passengers)
                         {
-                            string fullName = item.FullName;
+                            string passengerName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName).ToUpper();
+                            string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(passengerName);
+                            string surName = AIRService.WS.Helper.VNALibrary.GetSurName(passengerName);
+                            string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(passengerName);
+                            char mdd;
+                            if (!string.IsNullOrWhiteSpace(middleName))
+                                mdd = middleName[0];
+                            else
+                                mdd = givenName[0];
+                            // 
                             bookTicketPassengers.Add(new BookTicketPassenger
                             {
                                 DateOfBirth = item.DateOfBirth,
-                                FullName = fullName,
+                                FullName = item.FullName,
                                 Gender = item.Gender,
-                                PassengerType = item.PassengerType
+                                PassengerType = item.PassengerType,
+                                PassengerName = $"{surName}/{mdd}"
                             });
                         }
                         // call save booking 
@@ -1271,7 +1287,7 @@ namespace AIRService.Service
                         });
                         result.TicketID = bookTicketId;
                         //
-                        return Notifization.Data("Đặt chỗ thành công:" + bookTicketId + " PNR: " + pnrCode, result); // "/backend/flightbook/details/" + bookIdFist
+                        return Notifization.Data("Đặt chỗ thành công", result); // "/backend/flightbook/details/" + bookIdFist
                     } // end using tran session
                 } // end using session
             }
@@ -1412,28 +1428,41 @@ namespace AIRService.Service
                 return Notifization.Invalid(MessageText.Invalid);
             //   
             List<ExTitketPassengerFareModel> exTitketPassengerFareModels = new List<ExTitketPassengerFareModel>();
-            BookPassengerService appBookPassengerService = new BookPassengerService();
-            BookPriceService appBookPriceService = new BookPriceService();
-            BookTaxService appBookFareService = new BookTaxService();
+            BookPassengerService bookPassengerService = new BookPassengerService();
+            BookPriceService bookPriceService = new BookPriceService();
+            BookTaxService bookFareService = new BookTaxService();
             BookOrderService bookOrderService = new BookOrderService();
             BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
             if (bookOrder == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //
             if (bookOrder.OrderStatus != (int)BookOrderEnum.BookOrderStatus.Booking)
-                return Notifization.Invalid(MessageText.Invalid);
+                return Notifization.Invalid("Trạng thái vé không hợp lệ");
+            //
             string pnr = bookOrder.PNR;
             if (string.IsNullOrWhiteSpace(pnr))
                 return Notifization.Invalid("Mã PNR không hợp lệ");
             //
-            var passengers = appBookPassengerService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.PassengerType).ToList();
+            var passengers = bookPassengerService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.PassengerType).ToList();
             if (passengers.Count == 0)
                 return Notifization.Invalid("Thông tin hành khách không hợp lệ");
-            //  
+            //   
+            VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+            XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+            {
+                ConversationID = tokenModel.ConversationID,
+                Token = tokenModel.Token,
+                PNR = pnr
+            });
+            //
+            XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+            if (alreadyTicketed != null)
+                return Notifization.Invalid("Vé đã xuất, vui lòng kiểm tra lại");
+            //
             foreach (var item in passengers)
             {
-                var bookPrice = appBookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
-                var bookTax = appBookFareService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
+                var bookPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
+                var bookTax = bookFareService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == item.PassengerType).Sum(m => m.Amount);
                 exTitketPassengerFareModels.Add(new ExTitketPassengerFareModel
                 {
                     FullName = item.FullName,
@@ -1447,7 +1476,6 @@ namespace AIRService.Service
             double fareTotal = exTitketPassengerFareModels.Sum(m => m.TaxTotal + m.PriceTotal);
             using (var sessionService = new VNA_SessionService(tokenModel))
             {
-
                 var paymentModel = new PaymentModel
                 {
                     //paymentModel.RevResult = ReservationData.RevResult;
@@ -1467,79 +1495,82 @@ namespace AIRService.Service
                         FirstName = givenName,
                         LastName = surName,
                         BaseFare = item.PriceTotal,
-                        Taxes = item.TaxTotal ///////////////////////////////////////////////////////////////////////////////////////////////////
+                        Taxes = item.TaxTotal
                     };
                     paymentModel.PaymentOrderDetail.Add(paymentOrderDetail);
                 }
                 VNA_PaymentRQService vNAPaymentRQService = new VNA_PaymentRQService();
-                var paymentData = vNAPaymentRQService.Payment(paymentModel);
-
+                WebService.VNA_PaymentRQ.PaymentRS paymentRS = vNAPaymentRQService.Payment(paymentModel);
+                //
+                if (paymentRS.Result == null || paymentRS.Result.ResultCode != "SUCCESS")
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                if (paymentRS.Items.Count() == 0)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType authorizationResultType = (AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType)paymentRS.Items[0];
+                if (authorizationResultType == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                if (string.IsNullOrWhiteSpace(authorizationResultType.ApprovalCode))
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
                 //Login -> DisginPinter -> GetRev -> OTA_AirPriceLLSRQ -> PaymentRQ -> AirTicketLLSRQ -> Endtransession
-                #region xuất vé
-                //wss.SarbreCommand(tokenModel, "IG");
-                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(new DesignatePrinterLLSModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token
-                };
-                //
-                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                });
                 if (printer.ApplicationResults.Error != null)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                     return Notifization.Invalid(MessageText.Invalid);
+                // 
+                VNAWSAirTicketLLSRQService vNAWSAirTicketLLSRQService = new VNAWSAirTicketLLSRQService();
+                var airTicketData = vNAWSAirTicketLLSRQService.VNA_AirTicketLLSRQ(new AirTicketLLSRQModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr,
+                    ApproveCode = authorizationResultType.ApprovalCode,
+                    ExpireDate = $"{Helper.TimeData.TimeHelper.UtcDateTime.Year}-12",
+                    ListPricingInPNR = exTitketPassengerFareModels
+                });
+                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                vNATransaction.EndTransaction(tokenModel); 
                 //
-                var jjson = new JavaScriptSerializer().Serialize(printer);
-                var getReservationModel = new GetReservationModel
+                XMLObject.ReservationRq.GetReservationRS reservationRSCheck = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token,
                     PNR = pnr
-                };
-
-                //paymentRQ
-                //wss.GetReservationWS(getReservationModel);
-                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                var reservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                if (paymentData.Result != null && paymentData.Result.ResultCode == "SUCCESS")
+                });
+                XMLObject.ReservationRq.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo; 
+                if (ticketingInfo != null)
                 {
-                    if (paymentData.Items.Count() == 0)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
-                    var data = (AIRService.WebService.VNA_PaymentRQ.AuthorizationResultType)paymentData.Items[0];
-                    if (string.IsNullOrWhiteSpace(data.ApprovalCode))
-                        return Notifization.NotFound("ApprovalCode is null");
-                    //
-                    var airTicket = new AirTicketLLSRQModel
+                    List<XMLObject.ReservationRq.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
+                    if (ticketDetails.Count() > 0)
                     {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token,
-                        PNR = pnr,
-                        approveCode = data.ApprovalCode,
-                        ExpireDate = $"{Helper.TimeData.TimeHelper.UtcDateTime.Year}-12",
-                        lPricingInPNR = exTitketPassengerFareModels
-                    };
-                    VNAWSAirTicketLLSRQService vNAWSAirTicketLLSRQService = new VNAWSAirTicketLLSRQService();
-                    var airTicketData = vNAWSAirTicketLLSRQService.VNA_AirTicketLLSRQ(airTicket);
-
-                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    var end = vNATransaction.EndTransaction(tokenModel);
-                    if (end.ApplicationResults.Success != null)
-                    {
-                        // 
-
-
-                        //bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
-                        bookOrder.ExportDate = DateTime.Now;
-                        //bookOrderService.Update(bookOrder);
+                        foreach (var item in passengers)
+                        {
+                            XMLObject.ReservationRq.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == item.PassengerName.ToUpper()).FirstOrDefault();
+                            if (ticket != null)
+                            {
+                                BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
+                                bookPassenger.TicketNumber = ticket.TicketNumber;
+                                bookPassengerService.Update(bookPassenger);
+                            }
+                        }
                     }
-                    // 
-                    return Notifization.Data("OK", end);
                 }
-                #endregion
-                return Notifization.Invalid(MessageText.Invalid);
+                // save
+                bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
+                bookOrder.ExportDate = DateTime.Now;
+                bookOrderService.Update(bookOrder);
+                //
+                return Notifization.Success("Thành công. Đã xuất vé");
             }
         }
         /// <summary>
@@ -1575,11 +1606,7 @@ namespace AIRService.Service
                         ConversationID = tokenModel.ConversationID,
                         Token = tokenModel.Token
                     };
-                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    //WSDesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new WSDesignatePrinterLLSRQService();
-                    //var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    //if (printer.ApplicationResults.status != AIRService.WebService.WSDesignatePrinterLLSRQ.CompletionCodes.Complete)
-                    //    return Notifization.Invalid(MessageText.Invalid);
+
                     var getReservationModel = new GetReservationModel
                     {
                         ConversationID = tokenModel.ConversationID,
@@ -1587,9 +1614,10 @@ namespace AIRService.Service
                         PNR = pnr
                     };
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    ApiPortalBooking.Models.VNA_WS_Model.VNA.GetReservationData getReservationData = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                    XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                     vNATransaction.EndTransaction(tokenModel);
-                    return Notifization.Data("OK", getReservationData);
+                    return Notifization.Data("OK", reservationRS);
                 }
             }
             catch (Exception ex)
@@ -1639,34 +1667,15 @@ namespace AIRService.Service
                         PNR = pnr
                     };
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    var dataPnr = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                    var ldata = new List<WebService.VNA_VoidTicketLLSRQ.VoidTicketRS>();
-                    if (dataPnr.TicketDetails != null && dataPnr.TicketDetails.Count > 0)
-                    {
-                        VNA_VoidTicketLLSRQService vNAWSVoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
-                        foreach (var item in dataPnr.TicketDetails.Where(m => m.TransactionIndicator == "TE"))
-                        {
-                            var data = vNAWSVoidTicketLLSRQService.VoidETicket(tokenModel, item.TicketNumber);
-                            ldata.Add(data);
-                        }
-                        voidTicketModel.JsonResultVoidTicket = vNATransaction.EndTransaction(tokenModel);
-                        voidTicketModel.Message = "Sucess";
-                    }
-                    else
-                    {
-                        voidTicketModel.Message = "Cannot find e-ticket data";
-                    }
-                    if (voidTicketModel.JsonResultVoidTicket != null && voidTicketModel.JsonResultVoidTicket.ApplicationResults.Success != null)
-                    {
-                        getReservationModel.ConversationID = tokenModel.ConversationID;
-                        getReservationModel.Token = tokenModel.Token;
-                        getReservationModel.PNR = pnr;
-                        var dataPnr2 = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                        VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
-                        var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
-                        var end = vNATransaction.EndTransaction(tokenModel);
-                        voidTicketModel.JsonResultOTA_Cancel = end;
-                    }
+                    XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                    XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                    if (alreadyTicketed == null)
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
+                    var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
+                    var end = vNATransaction.EndTransaction(tokenModel);
+                    voidTicketModel.JsonResultOTA_Cancel = end;
                     return Notifization.Data("OK", voidTicketModel);
                 }
             }

@@ -178,10 +178,11 @@ namespace WebCore.Services
                             {
                                 BookOrderID = bookOrderId,
                                 PassengerType = passenger.PassengerType,
+                                PassengerName = passenger.PassengerName,
                                 FullName = passenger.FullName,
                                 Gender = passenger.Gender,
                                 DateOfBirth = passenger.DateOfBirth,
-                            }, transaction: _transaction);
+                            }, transaction: _transaction); 
                         }
                     }
                     // tax 

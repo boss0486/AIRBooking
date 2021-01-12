@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>AirTicketLLSRQ</eb:Service>
+      <eb:Action>AirTicketLLSRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>222839402601890282</eb:MessageId>
+        <eb:Timestamp>2021-01-12T11:11:00</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESF!ICESMSLB\/RES.LB!1610449851974!841!289!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <AirTicketRS xmlns="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stl="http://services.sabre.com/STL/v01" Version="2.12.0">
+      <stl:ApplicationResults status="Complete">
+        <stl:Success timeStamp="2021-01-12T05:11:00-06:00">
+          <stl:SystemSpecificResults>
+            <stl:HostCommand LNIATA="4F7E16">W¥VCR¥F*BT8738210537959681/1221*Z820375-XN</stl:HostCommand>
+          </stl:SystemSpecificResults>
+        </stl:Success>
+      </stl:ApplicationResults>
+      <Text>OK   3054000 / 24 0578 8621-8622 5</Text>
+      <Text>VERIFY CARDHOLDER SIGNATURE</Text>
+      <Text>HANDWRITE REMITTANCE TAX AMOUNT</Text>
+    </AirTicketRS>
+  </soap-env:Body>
+</soap-env:Envelope>

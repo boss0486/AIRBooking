@@ -24,8 +24,10 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string BookOrderID { get; set; }
         public string PassengerType { get; set; }
+        public string TicketNumber { get; set; }
         public string PNR { get; set; }
         public string FullName { get; set; }
+        public string PassengerName { get; set; }
         public int Gender { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -35,16 +37,16 @@ namespace WebCore.Entities
     public class BookPassengerCreateModel
     {
         public string PassengerType { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string FullName { get; set; }
+        public string PersonName { get; set; }
+        /// <summary>
+        /// F, Or M
+        /// </summary>
         public int Gender { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
-        public DateTime DateOfBirth { get; set; }
     }
-    public class BookPassengerUpdateModel : BookPassengerCreateModel
-    {
-        public string ID { get; set; }
-    }
+ 
     public class BookPassengerIDModel
     {
         public string ID { get; set; }
