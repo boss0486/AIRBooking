@@ -26,12 +26,14 @@ namespace WebCore.Entities
         public string PassengerType { get; set; }
         public string TicketNumber { get; set; }
         public string PNR { get; set; }
-        public string FullName { get; set; }
-        public string PassengerName { get; set; }
+        public string FullName { get; set; } 
         public int Gender { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string PassengerName { get; set; }
+        public string ElementID { get; set; }
+        public string NameNumber { get; set; }
     }
     // model
     public class BookPassengerCreateModel

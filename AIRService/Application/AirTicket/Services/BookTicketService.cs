@@ -177,11 +177,13 @@ namespace WebCore.Services
                             var passengerId = bookPassengerService.Create<string>(new BookPassenger
                             {
                                 BookOrderID = bookOrderId,
-                                PassengerType = passenger.PassengerType,
-                                PassengerName = passenger.PassengerName,
+                                PassengerType = passenger.PassengerType, 
                                 FullName = passenger.FullName,
                                 Gender = passenger.Gender,
                                 DateOfBirth = passenger.DateOfBirth,
+                                PassengerName = passenger.PassengerName,
+                                ElementID = passenger.ElementID,
+                                NameNumber =  passenger.NameNumber
                             }, transaction: _transaction); 
                         }
                     }

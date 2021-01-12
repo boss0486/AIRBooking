@@ -125,6 +125,8 @@ namespace WebCore.Entities
         public int Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PassengerName { get; set; }
+        public string ElementID { get; set; }
+        public string NameNumber { get; set; }
     }
 
 

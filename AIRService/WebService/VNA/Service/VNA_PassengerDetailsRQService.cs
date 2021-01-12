@@ -483,8 +483,6 @@ namespace AIRService.WS.Service
             var record = 0;
             var isHaveCNNOrINF = false;
             var contactNumber = string.Empty;
-            var isHaveContact = false;
-            var strEmail = "";
             var personName = "";
             model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
             foreach (var item in model.Passengers)
@@ -519,23 +517,11 @@ namespace AIRService.WS.Service
                 }
                 index++;
                 var nameNumber = index + ".1";
-
                 pricequote += " <Link hostedCarrier=\"true\" nameNumber=\"" + nameNumber + "\" record=\"" + record + "\" />";
-
-                //if (!isHaveContact && !string.IsNullOrEmpty(item.Phone))
-                //{
-                //    contactNumber = "<ContactNumber NameNumber=\"" + nameNumber + "\" Phone=\"" + item.Phone + "\" PhoneUseType=\"H\"/>";
-                //    strEmail = "<Email Address=\"" + model.Email + "\" NameNumber=\"" + nameNumber + "\"/>";
-                //    isHaveContact = true;
-                //}
-
-                //if (item.PassengerType.ToUpper() != "INF")
-                //{
                 personName += "          <PersonName NameNumber=\"" + nameNumber + "\" Infant=\"" + isInf + "\" PassengerType=\"" + item.PassengerType.ToUpper() + "\">";
                 personName += "            <GivenName>" + middleName + " " + givenName + " " + AIRService.WS.Helper.VNALibrary.TitleGenerator(item.PassengerType, AIRService.WS.Helper.VNALibrary.ConvertGender(item.Gender)) + "</GivenName>";
                 personName += "            <Surname>" + surName + "</Surname>";
                 personName += "          </PersonName>";
-                //}
             }
             var SpecialReqDetails = "";
             if (isHaveCNNOrINF)

@@ -1159,7 +1159,7 @@ namespace AIRService.Service
                                 Gender = item.Gender
                             });
                         }
-
+                        // ######################################################################################
 
                         //call service  passenger details in ws.service
                         VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
@@ -1230,15 +1230,45 @@ namespace AIRService.Service
                         // save book information | output data ***************************************************************************************************
 
                         //List<XMLObject.AirTicketRq.PersonName> personNames = passengerDetailsRS.TravelItineraryReadRS.TravelItinerary.CustomerInfo.PersonName;
-
+                        // 
                         BookTicketService bookTicketService = new BookTicketService();
                         List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
+
+                        var index = 0;
+                        var record = 0;
+                        var isHaveCNNOrINF = false;
                         foreach (var item in model.Passengers)
                         {
                             string passengerName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName).ToUpper();
-                            string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(passengerName);
-                            string surName = AIRService.WS.Helper.VNALibrary.GetSurName(passengerName);
-                            string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(passengerName);
+                            string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
+                            string surName = AIRService.WS.Helper.VNALibrary.GetSurName(item.FullName);
+                            string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(item.FullName);
+                            //
+                            if (!string.IsNullOrWhiteSpace(givenName))
+                                givenName = givenName.ToUpper();
+                            if (!string.IsNullOrWhiteSpace(middleName))
+                                middleName = middleName.ToUpper();
+                            if (!string.IsNullOrWhiteSpace(surName))
+                                surName = surName.ToUpper();
+
+                            var isInf = "false";
+                            if (item.PassengerType.ToUpper() == "ADT")
+                            {
+                                record = 1;
+                            }
+                            if (item.PassengerType.ToUpper() == "CNN")
+                            {
+                                isHaveCNNOrINF = true;
+                                record = 2;
+                            }
+                            if (item.PassengerType.ToUpper() == "INF")
+                            {
+                                isInf = "true";
+                                isHaveCNNOrINF = true;
+                                record = 3;
+                            }
+                            index++;
+                            var nameNumber = index + ".1";
                             char mdd;
                             if (!string.IsNullOrWhiteSpace(middleName))
                                 mdd = middleName[0];
@@ -1251,7 +1281,9 @@ namespace AIRService.Service
                                 FullName = item.FullName,
                                 Gender = item.Gender,
                                 PassengerType = item.PassengerType,
-                                PassengerName = $"{surName}/{mdd}"
+                                PassengerName = $"{surName}/{mdd}",
+                                ElementID = agentCode,
+                                NameNumber = nameNumber
                             });
                         }
                         // call save booking 
@@ -1539,7 +1571,7 @@ namespace AIRService.Service
                     ListPricingInPNR = exTitketPassengerFareModels
                 });
                 VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                vNATransaction.EndTransaction(tokenModel); 
+                vNATransaction.EndTransaction(tokenModel);
                 //
                 XMLObject.ReservationRq.GetReservationRS reservationRSCheck = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 {
@@ -1547,22 +1579,38 @@ namespace AIRService.Service
                     Token = tokenModel.Token,
                     PNR = pnr
                 });
-                XMLObject.ReservationRq.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo; 
-                if (ticketingInfo != null)
+
+                //step 01
+                //XMLObject.ReservationRq.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo; 
+                //if (ticketingInfo != null)
+                //{
+                //    List<XMLObject.ReservationRq.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
+                //    if (ticketDetails.Count() > 0)
+                //    {
+                //        foreach (var item in passengers)
+                //        {
+                //            XMLObject.ReservationRq.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == item.PassengerName.ToUpper()).FirstOrDefault();
+                //            if (ticket != null)
+                //            {
+                //                BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
+                //                bookPassenger.TicketNumber = ticket.TicketNumber;
+                //                bookPassengerService.Update(bookPassenger);
+                //            }
+                //        }
+                //    }
+                //}
+                // step 02
+                List<XMLObject.ReservationRq.Passenger> passengers1 = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
+                if (passengers1.Count() > 0)
                 {
-                    List<XMLObject.ReservationRq.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
-                    if (ticketDetails.Count() > 0)
+                    foreach (var item in passengers)
                     {
-                        foreach (var item in passengers)
-                        {
-                            XMLObject.ReservationRq.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == item.PassengerName.ToUpper()).FirstOrDefault();
-                            if (ticket != null)
-                            {
-                                BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
-                                bookPassenger.TicketNumber = ticket.TicketNumber;
-                                bookPassengerService.Update(bookPassenger);
-                            }
-                        }
+                        XMLObject.ReservationRq.Passenger passenger = passengers1.Where(m => m.NameId == item.NameNumber.ToUpper()).FirstOrDefault();
+                        List<XMLObject.ReservationRq.GenericSpecialRequest> genericSpecialRequests = passenger.SpecialRequests.GenericSpecialRequest;
+                        //genericSpecialRequests.Where
+                        BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
+                        bookPassenger.TicketNumber = "";
+                        bookPassengerService.Update(bookPassenger);
                     }
                 }
                 // save
