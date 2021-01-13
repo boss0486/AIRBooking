@@ -444,10 +444,8 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-
                     //
-                    //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rq.xml", stringXML);
-                    Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rs.xml", soapEnvelopeXml);
+                    //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rs.xml", soapEnvelopeXml);
                     if (soapEnvelopeXml.GetElementsByTagName("ApplicationResults")[0].Attributes["status"].Value == "Complete")
                     {
                         string pna = soapEnvelopeXml.GetElementsByTagName("ItineraryRef")[0].Attributes["ID"].Value;
@@ -634,7 +632,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rs.xml", soapEnvelopeXml);
+                    //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rs.xml", soapEnvelopeXml);
 
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
                     XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = new XMLObject.AirTicketRq.PassengerDetailsRS();

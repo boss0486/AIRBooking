@@ -56,7 +56,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    Helper.XMLHelper.WriteXml("getreservationrq-test-xuat-ve.xml", soapEnvelopeXml);
+                    //Helper.XMLHelper.WriteXml("getreservationrq-test-xuat-ve.xml", soapEnvelopeXml);
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
                     XMLObject.ReservationRq.GetReservationRS reservationRS = new XMLObject.ReservationRq.GetReservationRS();
                     if (xmlnode != null)

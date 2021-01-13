@@ -188,7 +188,7 @@ var AgentFeeConfigController = {
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },

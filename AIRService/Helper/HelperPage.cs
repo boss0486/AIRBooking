@@ -505,6 +505,19 @@ namespace Helper.Page
             return strText.First().ToString().ToUpper() + String.Join("", strText.Skip(1));
         }
 
+
+        public static string LastText(string strText, char ect)
+        {
+            if (strText.Contains(ect))
+            {
+                string[] strName = strText.Split(ect);
+                return strName[strName.Length - 1];
+            }
+            return string.Empty;
+        }
+
+
+
     }
     //###CLASS###################################################################################################################################################################################
     public class Default

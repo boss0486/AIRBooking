@@ -524,7 +524,7 @@ var UserController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -1103,7 +1103,7 @@ function LoadDepartmentPart() {
                         return;
                     }
                 }
-                //Notifization.Error(MessageText.NOTSERVICES);
+                //Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

@@ -14,54 +14,6 @@ var AirOrderController = {
         $('#btnSearch').off('click').on('click', function () {
             AirOrderController.DataList(1);
         });
-        $('#btnExport').off('click').on('click', function () {
-            //   
-            var ddlItinerary = $('#ddlItinerary').val();
-            var ddlAgentID = $('#ddlAgentID').val();
-            var ddlCustomerType = $('#ddlCustomerType').val();
-            var ddlCompanyID = $('#ddlCompanyID').val();
-            var ddlTimeExpress = $('#ddlTimeExpress').val();
-            var txtStartDate = $('#txtStartDate').val();
-            var txtEndDate = $('#txtEndDate').val();
-            //
-            if (ddlCustomerType == "") {
-                ddlCustomerType = 0;
-            }
-            var model = {
-                Query: $('#txtQuery').val(),
-                Page: 1,
-                TimeExpress: parseInt(ddlTimeExpress),
-                StartDate: txtStartDate,
-                EndDate: txtEndDate,
-                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
-                ItineraryType: parseInt(ddlItinerary),
-                AgentID: ddlAgentID,
-                CustomerType: ddlCustomerType,
-                CompanyID: ddlCompanyID
-            };
-            //
-            AjaxFrom.POST({
-                url: '/Management/AirOrder/Action/OrderExport',
-                data: model,
-                success: function (result) {
-                    if (result !== null) {
-                        if (result.status === 200) {
-                            //
-                            HelperModel.Download(result.path);
-                        }
-                        else {
-                            Notifization.Error(result.message);
-                            return;
-                        }
-                    }
-                    //Message.Error(MessageText.NOTSERVICES);
-                    return;
-                },
-                error: function (result) {
-                    console.log('::' + MessageText.NotService);
-                }
-            });
-        });
     },
     DataList: function (page) {
         //   
@@ -111,7 +63,10 @@ var AirOrderController = {
                             if (id.length > 0)
                                 id = id.trim();
                             //
-                            var ticketNo = item.TicketNo;
+                            var ticketNo = item.TicketNumber;
+                            if (ticketNo == null) {
+                                ticketNo = "";
+                            }
                             var fullName = item.FullName;
                             var pnr = item.PNR;
                             var issueDate = item.IssueDateText;
@@ -154,7 +109,10 @@ var AirOrderController = {
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(agentPrice)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(providerFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                  <td class='text-right bg-success'>${LibCurrencies.FormatToCurrency(agentFee)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(totalAmount)} ${_unit}</td>  
+                                 <td class='tbcol-left tbcol-button'>
+                                     <button type="button" class="btn btn-danger btn-sm btn-voidTicket" data-id="${id}" data-ticketNo = '${ticketNo}' data-pnr="${pnr}">Hủy vé</button>
+                                 </td>  
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
                         });
@@ -170,13 +128,43 @@ var AirOrderController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
+    },
+    VoidTiket: function (id) {
+        var model = {
+            ID: id
+        };
+        AjaxFrom.POST({
+            url: URLC + '/VoidTicket',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        Notifization.Success(response.message);
+                        AirBookController.DataList(pageIndex);
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    ConfirmVoidTiket: function (id) {
+        Confirm.ConfirmYN(id, AirOrderController.VoidTiket, Confirm.Text_VoidTicket);
     }
 };
 //
@@ -226,9 +214,9 @@ $(document).on('change', '#ddlAgentID', function () {
 
 });
 //*******************************************************
-$(document).on("click", ".btn-export", function () {
+$(document).on("click", ".btn-voidTicket", function () {
     var id = $(this).data("id");
-    console.log(":::" + id);
+    AirOrderController.ConfirmVoidTiket(id);
 })
 //*******************************************************
 function BookOrderStatus(_status) {

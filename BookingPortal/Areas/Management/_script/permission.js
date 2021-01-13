@@ -60,11 +60,11 @@ var _PermissionController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -87,11 +87,11 @@ var _PermissionController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -185,7 +185,7 @@ var _PermissionController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -234,7 +234,7 @@ var _PermissionController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

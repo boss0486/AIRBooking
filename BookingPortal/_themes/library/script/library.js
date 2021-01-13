@@ -358,8 +358,9 @@ class Cookies {
 class Confirm {
     static Text_Delete = 1;
     static Text_ExportTicket = 2;
-    static Text_VoidTicket = 3;
+    static Text_VoidBook = 3;
     static Text_payment_spendinglimit = 4;
+    static Text_VoidTicket = 5;
 
     static ConfirmYN(param, funcY, title_enum = 0) {
         var _content = "...";
@@ -370,12 +371,15 @@ class Confirm {
             _content = "Thực hiện xuất vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
         //
         if (title_enum == 3)
-            _content = "Thực hiện hủy vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
+            _content = "Thực hiện hủy đặt chỗ. Bạn có chắc chắn muốn thực hiện hành động này không?"
         // 
 
         if (title_enum == 4)
             _content = "Thực hiện thanh toán hạn mức. Bạn có chắc chắn muốn thực hiện hành động này không?"
         // 
+        if (title_enum == 5)
+            _content = "Thực hiện hủy vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
+        //
         $.confirm({
             title: 'Xác nhận!',
             content: _content,

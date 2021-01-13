@@ -94,7 +94,7 @@ namespace WebCore.Services
             //    whereCondition += " AND o.AgentID = @AgentID";
             //}
             // query 
-            string sqlQuery = @"SELECT bp.ID, bp.BookOrderID, bp.TicketNo, bp.FullName, bp.Gender, 
+            string sqlQuery = @"SELECT bp.ID, bp.BookOrderID, bp.TicketNumber, bp.FullName, bp.Gender, 
             c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
             a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
 			o.ProviderCode, o.AirlineID, o.ItineraryType, o.PNR, o.Amount, o.IssueDate, o.ExportDate, o.Unit,
@@ -105,7 +105,7 @@ namespace WebCore.Services
             LEFT JOIN App_BookAgent as a ON a.BookOrderID = bp.BookOrderID
             LEFT JOIN App_BookCustomer as c ON c.BookOrderID = bp.BookOrderID
 			LEFT JOIN App_BookOrder as o ON o.ID = bp.BookOrderID
-            WHERE (bp.TicketNo LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%' OR bp.FullName LIKE N'%'+ @Query +'%') " + whereCondition + "  AND o.OrderStatus = @OrderStatus ORDER BY o.IssueDate, bp.TicketNo, bp.FullName  ASC";
+            WHERE (bp.TicketNumber LIKE N'%'+ @Query +'%' OR o.PNR LIKE N'%'+ @Query +'%' OR bp.FullName LIKE N'%'+ @Query +'%') " + whereCondition + "  AND o.OrderStatus = @OrderStatus ORDER BY o.IssueDate, bp.TicketNumber, bp.FullName  ASC";
             bookOrderResult = _connection.Query<BookOrderResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Exported, ItineraryType = model.ItineraryType, AgentID = agentId, CompanyID = compId }).ToList();
             return bookOrderResult;
         }
@@ -482,7 +482,7 @@ namespace WebCore.Services
                         }
                         workSheet.Cells[recordIndex, 01].Value = cnt;
                         workSheet.Cells[recordIndex, 02].Value = item.ExportDateText;
-                        workSheet.Cells[recordIndex, 03].Value = item.TicketNo;
+                        workSheet.Cells[recordIndex, 03].Value = item.TicketNumber;
                         workSheet.Cells[recordIndex, 04].Value = item.FullName.ToUpper();
                         workSheet.Cells[recordIndex, 05].Value = item.ProviderCode;
                         workSheet.Cells[recordIndex, 06].Value = item.AgentCode;

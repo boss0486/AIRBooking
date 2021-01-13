@@ -217,6 +217,10 @@ namespace WebCore.Entities
     {
         public string PNR { get; set; }
     }
+    public class TicketNumberModel
+    {
+        public string TicketNumber { get; set; }
+    }
     public class ExportTitket
     {
         public string PNR { get; set; }

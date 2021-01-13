@@ -354,7 +354,7 @@ var AppUserController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -678,7 +678,7 @@ var AppUserController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

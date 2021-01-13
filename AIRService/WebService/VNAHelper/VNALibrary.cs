@@ -334,7 +334,7 @@ namespace AIRService.WS.Helper
             {
                 Indent = true
             };
-            var urlFile = HttpContext.Current.Server.MapPath(@"~/Team/" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + fileName);
+            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}");
             XmlWriter writer = XmlWriter.Create(urlFile, settings);
             soapEnvelopeXml.Save(writer);
         }

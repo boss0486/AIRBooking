@@ -18,6 +18,8 @@ namespace WebCore.Entities
         public BookPassenger()
         {
             ID = Guid.NewGuid().ToString();
+            IsVoided = false;
+            VoidUserdID = string.Empty;
         }
         [Key]
         [IgnoreUpdate]
@@ -26,7 +28,7 @@ namespace WebCore.Entities
         public string PassengerType { get; set; }
         public string TicketNumber { get; set; }
         public string PNR { get; set; }
-        public string FullName { get; set; } 
+        public string FullName { get; set; }
         public int Gender { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -34,6 +36,9 @@ namespace WebCore.Entities
         public string PassengerName { get; set; }
         public string ElementID { get; set; }
         public string NameNumber { get; set; }
+        public bool IsVoided { get; set; }
+        public string VoidUserdID { get; set; }
+        public DateTime VoidDateTime { get; set; }
     }
     // model
     public class BookPassengerCreateModel
@@ -48,7 +53,7 @@ namespace WebCore.Entities
         public int Gender { get; set; }
         public string Phone { get; set; }
     }
- 
+
     public class BookPassengerIDModel
     {
         public string ID { get; set; }

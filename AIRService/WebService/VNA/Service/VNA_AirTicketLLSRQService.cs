@@ -85,7 +85,7 @@ namespace AIRService.WS.Service
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
-                    Helper.XMLHelper.WriteXml("AirTicketRQ-test-xuat-ve.xml", soapEnvelopeXml);
+                    //Helper.XMLHelper.WriteXml("AirTicketRQ-test-xuat-ve.xml", soapEnvelopeXml);
                 }
             }
             return "";

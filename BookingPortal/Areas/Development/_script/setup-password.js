@@ -134,7 +134,7 @@ var accountController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
@@ -166,11 +166,11 @@ var accountController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     }

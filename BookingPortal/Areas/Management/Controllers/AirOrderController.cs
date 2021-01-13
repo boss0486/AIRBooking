@@ -161,5 +161,20 @@ namespace WebApplication.Management.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Action/VoidTicket")]
+        public ActionResult VoidTicket(BookBookPassengerIDModel model)
+        {
+            try
+            {
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.VoidTicket(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
     }
 }

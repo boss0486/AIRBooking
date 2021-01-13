@@ -114,11 +114,11 @@ var AgentSpendingLimitController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -243,11 +243,11 @@ var AgentSpendingLimitController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },

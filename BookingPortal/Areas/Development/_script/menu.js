@@ -181,7 +181,7 @@ var MenuItemController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -403,7 +403,7 @@ var MenuItemController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -556,7 +556,7 @@ var MenuItemController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

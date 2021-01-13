@@ -27,6 +27,8 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public  double Amount { get; set; }
         public string Unit { get; set; }
+        public string TicketNumber { get; set; }
+        public string FullText { get; set; }
     }
     // model
     public class BookPriceCreateModel

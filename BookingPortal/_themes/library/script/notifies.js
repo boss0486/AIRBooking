@@ -25,6 +25,7 @@ class NotifizationResult {
 }
 
 class MessageText {
+    static Invalid = "Dữ liệu không hợp lệ";
     static NotFound = "Không tìm thấy dữ liệu";
     static NotService = "Xin vui lòng truy cập sau !";
     static Datamissing = "Tồn tại dữ liệu không hợp lệ";

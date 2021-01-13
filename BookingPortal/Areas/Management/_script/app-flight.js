@@ -260,11 +260,11 @@ var FlightController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -294,7 +294,7 @@ var FlightController = {
             data: model,
             success: function (response) {
                 if (response === null || response.status === undefined) {
-                    Notifization.Error(MessageText.NOTSERVICES);
+                    Notifization.Error(MessageText.NotService);
                     return;
                 }
                 if (response.status === 200) {
@@ -306,7 +306,7 @@ var FlightController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
 
@@ -339,7 +339,7 @@ var FlightController = {
             data: model,
             success: function (response) {
                 if (response === null || response.status === undefined) {
-                    Notifization.Error(MessageText.NOTSERVICES);
+                    Notifization.Error(MessageText.NotService);
                     return;
                 }
                 if (response.status === 200) {
@@ -350,7 +350,7 @@ var FlightController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -363,7 +363,7 @@ var FlightController = {
             data: model,
             success: function (response) {
                 if (response === null || response.status === undefined) {
-                    Notifization.Error(MessageText.NOTSERVICES);
+                    Notifization.Error(MessageText.NotService);
                     return;
                 }
                 if (response.status === 200) {
@@ -375,7 +375,7 @@ var FlightController = {
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },

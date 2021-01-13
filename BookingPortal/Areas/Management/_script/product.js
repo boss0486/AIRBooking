@@ -361,11 +361,11 @@ var productController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
 
@@ -447,11 +447,11 @@ var productController = {
                         return;
                     }
                 }
-                Message.Error(MessageText.NOTSERVICES);
+                Message.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -532,11 +532,11 @@ var productController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -559,11 +559,11 @@ var productController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (response) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
@@ -573,7 +573,7 @@ var productController = {
     Detail: function () {
         var id = $('#txtID').val();
         if (id.length <= 0) {
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         }
         var model = {
@@ -610,11 +610,11 @@ var productController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     }

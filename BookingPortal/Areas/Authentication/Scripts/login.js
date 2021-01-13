@@ -113,7 +113,7 @@ var loginController = {
                 }
             },
             error: function (response) {
-                //Notifization.Error(MessageText.NOTSERVICES);
+                //Notifization.Error(MessageText.NotService);
                 console.log('::' + MessageText.NotService);
             }
         });

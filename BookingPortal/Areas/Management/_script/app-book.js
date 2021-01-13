@@ -58,7 +58,7 @@ var AirBookController = {
                             return;
                         }
                     }
-                    //Message.Error(MessageText.NOTSERVICES);
+                    //Message.Error(MessageText.NotService);
                     return;
                 },
                 error: function (result) {
@@ -163,7 +163,7 @@ var AirBookController = {
                                  <td class='tbcol-left tbcol-button'>
                                      <button type="button" class="btn btn-primary btn-sm btn-export" data-id="${id}" data-pnr="${pnr}">Xuất</button>
                                      <button type="button" class="btn btn-warning btn-sm btn-email" data-id="${id}" data-pnr="${pnr}">Gửi ${mailStatus}</button>
-                                     <button type="button" class="btn btn-danger btn-sm btn-cancel" data-id="${id}" data-pnr="${pnr}">Hủy</button>
+                                     <button type="button" class="btn btn-danger btn-sm btn-book-void" data-id="${id}" data-pnr="${pnr}">Hủy</button>
                                  </td>                                  
                                  <td class="tbcol-action">${action}</td>
                             </tr>`;
@@ -180,15 +180,45 @@ var AirBookController = {
                         return;
                     }
                 }
-                Notifization.Error(MessageText.NOTSERVICES);
+                Notifization.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
-                console.log('::' + MessageText.NOTSERVICES);
+                console.log('::' + MessageText.NotService);
             }
         });
     },
-    ExportTiket: function (id) {   
+    BookVoid: function (id) {   
+        var model = {
+            ID: id
+        };
+        AjaxFrom.POST({
+            url: URLC + '/BookVoid',
+            data: model,
+            success: function (response) {
+                if (response !== null) {
+                    if (response.status === 200) {
+                        Notifization.Success(response.message);
+                        AirBookController.DataList(pageIndex);
+                        return;
+                    }
+                    else {
+                        Notifization.Error(response.message);
+                        return;
+                    }
+                }
+                Notifization.Error(MessageText.NotService);
+                return;
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+    },
+    ConfirmExport: function (id) {
+        Confirm.ConfirmYN(id, AirBookController.ExportTiket, Confirm.Text_ExportTicket);
+    }, 
+    ExportTiket: function (id) {
         var model = {
             ID: id
         };
@@ -215,40 +245,8 @@ var AirBookController = {
             }
         });
     },
-    ConfirmExport: function (id) {
-        Confirm.ConfirmYN(id, AirBookController.ExportTiket, Confirm.Text_ExportTicket);
-    },
-    VoidTiket: function (id) {
-        Notifization.Success(response.message);
-        return;
-        var model = {
-            Id: id
-        };
-        AjaxFrom.POST({
-            url: URLC + '/AbcDelete',
-            data: model,
-            success: function (response) {
-                if (response !== null) {
-                    if (response.status === 200) {
-                        Notifization.Success(response.message);
-                        AirBookController.DataList(pageIndex);
-                        return;
-                    }
-                    else {
-                        Notifization.Error(response.message);
-                        return;
-                    }
-                }
-                Notifization.Error(MessageText.NotService);
-                return;
-            },
-            error: function (response) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
-    },
-    ConfirmVoid: function (id) {
-        Confirm.ConfirmYN(id, AirBookController.VoidTiket, Confirm.Text_VoidTicket);
+    ConfirmVoidBook: function (id) {
+        Confirm.ConfirmYN(id, AirBookController.BookVoid, Confirm.Text_VoidBook);
     }
 };
 //
@@ -1148,6 +1146,11 @@ $(document).on("click", ".btn-export", function () {
     AirBookController.ConfirmExport(id);
 
 })
+$(document).on("click", ".btn-book-void", function () {
+    var id = $(this).data("id");
+    AirBookController.ConfirmVoidBook(id);
+
+})
 // list *******************************************************
 
 $(document).on('change', '#ddlAgentID', function () {
@@ -1338,11 +1341,11 @@ $(document).on("click", ".btn-farebasic", function () {
                     return;
                 }
             }
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         },
         error: function (result) {
-            console.log('::' + MessageText.NOTSERVICES);
+            console.log('::' + MessageText.NotService);
         }
     });
 })
@@ -1393,11 +1396,11 @@ $(document).on("click", ".btn-farebasic", function () {
 //                    return;
 //                }
 //            }
-//            Notifization.Error(MessageText.NOTSERVICES);
+//            Notifization.Error(MessageText.NotService);
 //            return;
 //        },
 //        error: function (result) {
-//            console.log('::' + MessageText.NOTSERVICES);
+//            console.log('::' + MessageText.NotService);
 //        }
 //    });
 //})
@@ -1446,11 +1449,11 @@ $(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-agtprice'
                     return;
                 }
             }
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         },
         error: function (result) {
-            console.log('::' + MessageText.NOTSERVICES);
+            console.log('::' + MessageText.NotService);
         }
     });
 })
@@ -1498,11 +1501,11 @@ $(document).on("blur", "table#TblBooking tbody#TblData input[name='inp-tktfee']"
                     return;
                 }
             }
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         },
         error: function (result) {
-            console.log('::' + MessageText.NOTSERVICES);
+            console.log('::' + MessageText.NotService);
         }
     });
 })
@@ -1527,11 +1530,11 @@ $(document).on("click", ".btn-email", function () {
                     return;
                 }
             }
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         },
         error: function (result) {
-            console.log('::' + MessageText.NOTSERVICES);
+            console.log('::' + MessageText.NotService);
         }
     });
 })

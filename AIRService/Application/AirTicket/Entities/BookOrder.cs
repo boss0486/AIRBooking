@@ -58,12 +58,17 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
+    public class BookBookPassengerIDModel
+    {
+        public string ID { get; set; }
+    }
+     
 
     public partial class BookOrderResult //: WEBModelResult
     {
         public string ID { get; set; }
         public string BookOrderID { get; set; }
-        public string TicketNo { get; set; }
+        public string TicketNumber { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
         public int ItineraryType { get; set; }

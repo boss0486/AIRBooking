@@ -62,7 +62,7 @@ var layoutController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

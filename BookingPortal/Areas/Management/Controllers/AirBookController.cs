@@ -303,6 +303,22 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
+         
+        [HttpPost]
+        [Route("Action/BookVoid")]
+        public ActionResult BookVoid(PNRModel model)
+        {
+            try
+            {
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.BookVoid(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
 
         [HttpPost]
         [Route("Action/TicketInfo")]
@@ -319,24 +335,7 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
-
-        [HttpPost]
-        [Route("Action/TicketCancel")]
-        public ActionResult TicketCancel(PNRModel model)
-        {
-            try
-            {
-                var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.VoidTicket(model);
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST(":::" + ex);
-                //return Notifization.NotService;
-            }
-        }
-
-
+         
         [HttpPost]
         [Route("Action/TicketCondition")]
         public ActionResult TicketCondition(TicketConditionModel model)

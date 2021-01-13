@@ -42,7 +42,7 @@ var VNAReportController = {
                             return;
                         }
                     }
-                    //Message.Error(MessageText.NOTSERVICES);
+                    //Message.Error(MessageText.NotService);
                     return;
                 },
                 error: function (result) {
@@ -80,7 +80,7 @@ var VNAReportController = {
                             return;
                         }
                     }
-                    //Message.Error(MessageText.NOTSERVICES);
+                    //Message.Error(MessageText.NotService);
                     return;
                 },
                 error: function (result) {
@@ -158,7 +158,7 @@ var VNAReportController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {
@@ -243,7 +243,7 @@ var VNAReportController = {
                         return;
                     }
                 }
-                //Message.Error(MessageText.NOTSERVICES);
+                //Message.Error(MessageText.NotService);
                 return;
             },
             error: function (result) {

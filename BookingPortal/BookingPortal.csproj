@@ -292,7 +292,6 @@
     <Content Include="WS\Xml\DetailsRQ.xml" />
     <Content Include="WS\Xml\Common.xml" />
     <Content Include="WS\Xml\dongnt.xml" />
-    <Content Include="WS\Xml\Report-get-employee-number.xml" />
     <Content Include="WS\Xml\PassengerDetails.xml" />
     <Content Include="WS\Xml\PaymentRQ.xml" />
     <Content Include="WS\Xml\SabreCommandLLSRQ.xml" />
