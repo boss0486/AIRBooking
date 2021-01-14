@@ -9,9 +9,9 @@ namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
     [Table("App_WalletUserSpendingHistory")]
-    public partial class WalletUserSpendingHistory : WEBModel
+    public partial class UserSpendingHistory : WEBModel
     {
-        public WalletUserSpendingHistory()
+        public UserSpendingHistory()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -37,7 +37,6 @@ namespace WebCore.Entities
         public double Amount { get; set; }
         public double NewBalance { get; set; }
         public int TransactionType { get; set; }
-        public int TransactionOriginal { get; set; }
         public int Status { get; set; }
 
     }
@@ -60,7 +59,6 @@ namespace WebCore.Entities
         public string UserID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
-        public int TransactionOriginal { get; set; }
         public int Status { get; set; }
     }
 }

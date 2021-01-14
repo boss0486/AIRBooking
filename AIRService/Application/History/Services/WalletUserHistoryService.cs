@@ -21,11 +21,11 @@ using System.Data;
 
 namespace WebCore.Services
 {
-    public interface IWalletUserHistoryService : IEntityService<WalletUserSpendingHistory> { }
-    public class WalletUserHistoryService : EntityService<WalletUserSpendingHistory>, IWalletUserHistoryService
+    public interface IUserSpendingHistoryService : IEntityService<UserSpendingHistory> { }
+    public class UserSpendingHistoryService : EntityService<UserSpendingHistory>, IUserSpendingHistoryService
     {
-        public WalletUserHistoryService() : base() { }
-        public WalletUserHistoryService(System.Data.IDbConnection db) : base(db) { }
+        public UserSpendingHistoryService() : base() { }
+        public UserSpendingHistoryService(System.Data.IDbConnection db) : base(db) { }
         //##############################################################################################################################################################################################################################################################
         public ActionResult DataList(SearchModel model)
         {
@@ -59,8 +59,8 @@ namespace WebCore.Services
             }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_WalletUserHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
-            var dtList = _connection.Query<WalletUserSpendingHistory>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
+            string sqlQuery = @"SELECT * FROM App_UserSpendingHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
+            var dtList = _connection.Query<UserSpendingHistory>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -101,12 +101,12 @@ namespace WebCore.Services
             if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
-            string title = "TK thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string title = "Hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
             string summary = "";
-            WalletUserHistoryService balanceUserHistoryService = new WalletUserHistoryService(dbConnection);
-            balanceUserHistoryService.Create<string>(new WalletUserSpendingHistory()
+            UserSpendingHistoryService balanceUserHistoryService = new UserSpendingHistoryService(dbConnection);
+            balanceUserHistoryService.Create<string>(new UserSpendingHistory()
             {
-                UserID =  userId,
+                UserID = userId,
                 ClientID = clientId,
                 Title = title,
                 Summary = summary,

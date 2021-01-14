@@ -38,7 +38,7 @@ namespace WebCore.Entities
         public string NameNumber { get; set; }
         public bool IsVoided { get; set; }
         public string VoidUserdID { get; set; }
-        public DateTime VoidDateTime { get; set; }
+        public DateTime ?VoidDateTime { get; set; }
     }
     // model
     public class BookPassengerCreateModel

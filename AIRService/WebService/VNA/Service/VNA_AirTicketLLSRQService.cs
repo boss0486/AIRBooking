@@ -1,4 +1,4 @@
-﻿using AIRService.WS.Helper;
+﻿using AIRService.WS.VNAHelper;
 using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Xml;
 
 namespace AIRService.WS.Service
 {
-    class VNAWSAirTicketLLSRQService
+    public class VNAWSAirTicketLLSRQService
     {
         public string VNA_AirTicketLLSRQ(AirTicketLLSRQModel model)
         {
@@ -84,8 +84,8 @@ namespace AIRService.WS.Service
                 {
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
-                    soapEnvelopeXml.LoadXml(soapResult);
-                    //Helper.XMLHelper.WriteXml("AirTicketRQ-test-xuat-ve.xml", soapEnvelopeXml);
+                    soapEnvelopeXml.LoadXml(soapResult);  
+
                 }
             }
             return "";

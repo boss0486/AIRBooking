@@ -319,7 +319,7 @@ namespace Helper.File
         public static string AttachmentExls(string _fileName, ExcelPackage excel, string outFolder = "~/Files/Export/")
         {
             string fileFolderPath = HttpContext.Current.Server.MapPath(outFolder);
-            string fileName = _fileName + ".xlsx";
+            string fileName = $"Bao-cao-{Helper.TimeData.TimeHelper.UtcDateTime:yyyy-MM-dd-HH-mm-ss}-{_fileName}.xlsx";
             string pathFile = fileFolderPath + fileName;
             if (System.IO.File.Exists(pathFile))
             {

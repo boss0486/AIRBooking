@@ -1,4 +1,4 @@
-﻿using AIRService.WS.Helper;
+﻿using AIRService.WS.VNAHelper;
 using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;
@@ -286,9 +286,9 @@ namespace AIRService.WS.Service
             foreach (var item in model.Passengers)
             {
                 string fullName = item.FullName;
-                string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(fullName);
-                string surName = AIRService.WS.Helper.VNALibrary.GetSurName(fullName);
-                string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(fullName);
+                string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(fullName);
+                string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(fullName);
+                string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(fullName);
                 //
                 if (!string.IsNullOrWhiteSpace(givenName))
                     givenName = givenName.ToUpper();
@@ -328,7 +328,7 @@ namespace AIRService.WS.Service
                 //if (item.PassengerType.ToUpper() != "INF")
                 //{
                 personName += "          <PersonName NameNumber=\"" + nameNumber + "\" Infant=\"" + isInf + "\" PassengerType=\"" + item.PassengerType.ToUpper() + "\">";
-                personName += "            <GivenName>" + middleName + " " + givenName + " " + AIRService.WS.Helper.VNALibrary.TitleGenerator(item.PassengerType, AIRService.WS.Helper.VNALibrary.ConvertGender(item.Gender)) + "</GivenName>";
+                personName += "            <GivenName>" + middleName + " " + givenName + " " + AIRService.WS.VNAHelper.VNALibrary.TitleGenerator(item.PassengerType, AIRService.WS.VNAHelper.VNALibrary.ConvertGender(item.Gender)) + "</GivenName>";
                 personName += "            <Surname>" + surName + "</Surname>";
                 personName += "          </PersonName>";
                 //}
@@ -348,9 +348,9 @@ namespace AIRService.WS.Service
                     foreach (var item2 in model.Passengers)
                     {
                         string fullName = item2.FullName;
-                        string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(fullName);
-                        string surName = AIRService.WS.Helper.VNALibrary.GetSurName(fullName);
-                        string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(fullName);
+                        string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(fullName);
+                        string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(fullName);
+                        string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(fullName);
                         //
                         if (!string.IsNullOrWhiteSpace(givenName))
                             givenName = givenName.ToUpper();
@@ -376,7 +376,7 @@ namespace AIRService.WS.Service
                             infIndex++;
                             nameNumber = infIndex + ".1";
                             var name = surName.ToUpper() + @"/ " + middleName + " " + givenName +
-                            " " + AIRService.WS.Helper.VNALibrary.TitleGenerator(item2.PassengerType, AIRService.WS.Helper.VNALibrary.ConvertGender(item2.Gender)) + @"/" + item2.DateOfBirth.ToString("ddMMMyy").ToUpper();
+                            " " + AIRService.WS.VNAHelper.VNALibrary.TitleGenerator(item2.PassengerType, AIRService.WS.VNAHelper.VNALibrary.ConvertGender(item2.Gender)) + @"/" + item2.DateOfBirth.ToString("ddMMMyy").ToUpper();
                             SpecialReqDetails += "            <Service SegmentNumber=\"" + segmentNumber + "\" SSR_Code=\"INFT\">";
                             SpecialReqDetails += "              <PersonName NameNumber=\"" + nameNumber + "\" />";
                             SpecialReqDetails += "              <Text>" + name + "</Text>";
@@ -486,9 +486,9 @@ namespace AIRService.WS.Service
             foreach (var item in model.Passengers)
             {
                 string fullName = item.FullName;
-                string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(fullName);
-                string surName = AIRService.WS.Helper.VNALibrary.GetSurName(fullName);
-                string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(fullName);
+                string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(fullName);
+                string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(fullName);
+                string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(fullName);
                 //
                 if (!string.IsNullOrWhiteSpace(givenName))
                     givenName = givenName.ToUpper();
@@ -517,7 +517,7 @@ namespace AIRService.WS.Service
                 var nameNumber = index + ".1";
                 pricequote += " <Link hostedCarrier=\"true\" nameNumber=\"" + nameNumber + "\" record=\"" + record + "\" />";
                 personName += "          <PersonName NameNumber=\"" + nameNumber + "\" Infant=\"" + isInf + "\" PassengerType=\"" + item.PassengerType.ToUpper() + "\">";
-                personName += "            <GivenName>" + middleName + " " + givenName + " " + AIRService.WS.Helper.VNALibrary.TitleGenerator(item.PassengerType, AIRService.WS.Helper.VNALibrary.ConvertGender(item.Gender)) + "</GivenName>";
+                personName += "            <GivenName>" + middleName + " " + givenName + " " + AIRService.WS.VNAHelper.VNALibrary.TitleGenerator(item.PassengerType, AIRService.WS.VNAHelper.VNALibrary.ConvertGender(item.Gender)) + "</GivenName>";
                 personName += "            <Surname>" + surName + "</Surname>";
                 personName += "          </PersonName>";
             }
@@ -536,9 +536,9 @@ namespace AIRService.WS.Service
                     foreach (var item2 in model.Passengers)
                     {
                         string fullName = item2.FullName;
-                        string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(fullName);
-                        string surName = AIRService.WS.Helper.VNALibrary.GetSurName(fullName);
-                        string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(fullName);
+                        string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(fullName);
+                        string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(fullName);
+                        string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(fullName);
                         //
                         if (!string.IsNullOrWhiteSpace(givenName))
                             givenName = givenName.ToUpper();
@@ -564,7 +564,7 @@ namespace AIRService.WS.Service
                             infIndex++;
                             nameNumber = infIndex + ".1";
                             var name = surName.ToUpper() + @"/ " + middleName + " " + givenName +
-                            " " + AIRService.WS.Helper.VNALibrary.TitleGenerator(item2.PassengerType, AIRService.WS.Helper.VNALibrary.ConvertGender(item2.Gender)) + @"/" + item2.DateOfBirth.ToString("ddMMMyy").ToUpper();
+                            " " + AIRService.WS.VNAHelper.VNALibrary.TitleGenerator(item2.PassengerType, AIRService.WS.VNAHelper.VNALibrary.ConvertGender(item2.Gender)) + @"/" + item2.DateOfBirth.ToString("ddMMMyy").ToUpper();
                             SpecialReqDetails += "            <Service SegmentNumber=\"" + segmentNumber + "\" SSR_Code=\"INFT\">";
                             SpecialReqDetails += "              <PersonName NameNumber=\"" + nameNumber + "\" />";
                             SpecialReqDetails += "              <Text>" + name + "</Text>";
@@ -631,14 +631,14 @@ namespace AIRService.WS.Service
                 {
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
-                    soapEnvelopeXml.LoadXml(soapResult);
-                    //Helper.XMLHelper.WriteXml(Helper.XMLHelper.RandomString(10) + "-pnr-rs.xml", soapEnvelopeXml);
-
+                    soapEnvelopeXml.LoadXml(soapResult);                  
+                    //VNAHelper.XMLHelper.WriteXml("pnr-rs.xml", soapEnvelopeXml);
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
                     XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = new XMLObject.AirTicketRq.PassengerDetailsRS();
                     if (xmlnode != null)
                         passengerDetailsRS = XMLHelper.Deserialize<XMLObject.AirTicketRq.PassengerDetailsRS>(xmlnode.InnerXml);
                     //
+                    Helper.SystemLogg.WriteLog($"Đã đặt chỗ:" + passengerDetailsRS.ItineraryRef.ID);
                     return passengerDetailsRS;
                 }
             }

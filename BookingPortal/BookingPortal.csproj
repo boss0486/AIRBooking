@@ -138,6 +138,7 @@
     <Compile Include="Areas\Development\Controllers\MenuItemController.cs" />
     <Compile Include="Areas\Development\Controllers\UserController.cs" />
     <Compile Include="Areas\Development\DevelopmentAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Controllers\AirportBookConfigController.cs" />
     <Compile Include="Areas\Management\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Management\Controllers\AirOrderController.cs" />
     <Compile Include="Areas\Management\Controllers\AirlineController.cs" />
@@ -214,6 +215,7 @@
     <Content Include="Areas\Management\_script\product-warranty.js" />
     <Content Include="Areas\Management\_script\product.js" />
     <Content Include="Areas\Management\_script\supplier.js" />
+    <Content Include="Areas\Management\_script\airport-book-config.js" />
     <Content Include="Areas\Management\_script\trans-deposit.js" />
     <Content Include="Areas\Management\_script\trans-history.js" />
     <Content Include="Areas\Management\_script\trans-spending.js" />
@@ -279,7 +281,9 @@
     <Content Include="Global.asax" />
     <Content Include="HtmlPage1.html" />
     <Content Include="HtmlPage2.html" />
+    <Content Include="Logged\2021\1\Log-14.txt" />
     <Content Include="Team\00000000-0000-0000-0000-000000000000.gif" />
+    <Content Include="Team\2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml" />
     <Content Include="WS\Xml\FareBasis.xml" />
     <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />
     <Content Include="Library\Script\model-form.js" />
@@ -1251,6 +1255,9 @@
     <Content Include="Areas\Management\Views\Company\DataList.cshtml" />
     <Content Include="Areas\Management\Views\Company\Details.cshtml" />
     <Content Include="Areas\Management\Views\Company\Update.cshtml" />
+    <Content Include="Areas\Management\Views\AirportBookConfig\DataList.cshtml" />
+    <Content Include="Areas\Management\Views\AirportBookConfig\Details.cshtml" />
+    <Content Include="Areas\Management\Views\AirportBookConfig\Setting.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

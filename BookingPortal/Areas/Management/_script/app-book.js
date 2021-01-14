@@ -45,7 +45,7 @@ var AirBookController = {
             };
             //
             AjaxFrom.POST({
-                url: '/Management/AirOrder/Action/BookingExport',
+                url: `/Management/AirOrder/Action/BookExport`,
                 data: model,
                 success: function (result) {
                     if (result !== null) {
@@ -65,9 +65,7 @@ var AirBookController = {
                     console.log('::' + MessageText.NotService);
                 }
             });
-        });
-
-
+        }); 
     },
     DataList: function (page) {
         //   
@@ -176,7 +174,6 @@ var AirBookController = {
                     }
                     else {
                         //Notifization.Error(result.message);
-                        console.log('::' + result.message);
                         return;
                     }
                 }
@@ -188,12 +185,12 @@ var AirBookController = {
             }
         });
     },
-    BookVoid: function (id) {   
+    VoidBook: function (id) {   
         var model = {
             ID: id
         };
         AjaxFrom.POST({
-            url: URLC + '/BookVoid',
+            url: URLC + '/VoidBook',
             data: model,
             success: function (response) {
                 if (response !== null) {
@@ -246,7 +243,7 @@ var AirBookController = {
         });
     },
     ConfirmVoidBook: function (id) {
-        Confirm.ConfirmYN(id, AirBookController.BookVoid, Confirm.Text_VoidBook);
+        Confirm.ConfirmYN(id, AirBookController.VoidBook, Confirm.Text_VoidBook);
     }
 };
 //
@@ -255,7 +252,7 @@ AirBookController.init();
 //*******************************************************
 function BookingOrderLoad() {
     var cookiData = Cookies.GetCookie("FlightOrder");
-    console.log("" + JSON.stringify(cookiData));
+    //
     if (cookiData !== undefined && cookiData !== "") {
         var order = JSON.parse(cookiData);
         if (order !== null) {
@@ -311,7 +308,6 @@ function BookingOrderLoad() {
                 if (arrParam.length > 0) {
                     $.each(arrParam, function (index, item) {
                         if (item.includes(",")) {
-                            console.log("2::" + item);
                             var passengerType = '';
                             var quantity = 0;
                             var amount = 0;
@@ -1100,7 +1096,8 @@ $(document).on('click', '#btnBooking', function () {
                 }
                 if (response.status == 200) {
                     Notifization.Success(response.message);
-                    //location.href = response.data;
+                    location.href = response.data;
+                    Cookies.DelCookie("FlightOrder"); 
                     return;
                 }
                 Notifization.Error(response.message);
@@ -1144,7 +1141,6 @@ $(document).on('click', '#btnRelease', function () {
 $(document).on("click", ".btn-export", function () {
     var id = $(this).data("id");
     AirBookController.ConfirmExport(id);
-
 })
 $(document).on("click", ".btn-book-void", function () {
     var id = $(this).data("id");
@@ -1268,15 +1264,14 @@ $(document).on("click", ".btn-passenger", function () {
                 }
                 else {
                     Notifization.Error(result.message);
-                    console.log('::' + result.message);
                     return;
                 }
             }
-            Notifization.Error(MessageText.NOTSERVICES);
+            Notifization.Error(MessageText.NotService);
             return;
         },
         error: function (result) {
-            console.log('::' + MessageText.NOTSERVICES);
+            console.log('::' + MessageText.NotService);
         }
     });
 })
@@ -1336,8 +1331,7 @@ $(document).on("click", ".btn-farebasic", function () {
                     return;
                 }
                 else {
-                    Notifization.Error(result.message);
-                    console.log('::' + result.message);
+                    Notifization.Error(result.message);;
                     return;
                 }
             }
@@ -1392,7 +1386,6 @@ $(document).on("click", ".btn-farebasic", function () {
 //                }
 //                else {
 //                    Notifization.Error(result.message);
-//                    console.log('::' + result.message);
 //                    return;
 //                }
 //            }

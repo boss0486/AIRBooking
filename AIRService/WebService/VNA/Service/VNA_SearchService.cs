@@ -24,7 +24,7 @@ using AIRService.WebService.VNA.Authen;
 using System.Web.Helpers;
 using System.Web.UI.WebControls;
 using System.Xml;
-using AIRService.WS.Helper;
+using AIRService.WS.VNAHelper;
 using Helper.TimeData;
 using Helper.Language;
 using Itenso.TimePeriod;
@@ -910,429 +910,429 @@ namespace AIRService.Service
         /// <returns></returns>
         public ActionResult TicketOrder(Request_BookModel model)
         {
-            try
+
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            //
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            //
+            string timeZoneLocal = model.TimeZoneLocal;
+            // ticketing & contact  ************************************************************************************************
+            BookTicketingRq ticketingInfo = model.TicketingInfo;
+            BookContactRqModel Contacts = model.Contacts;
+            BookCompanyContactModel bookCompany = new BookCompanyContactModel();
+            if (ticketingInfo == null || Contacts == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string ticketingId = Helper.Current.UserLogin.IdentifierID;
+            if (!Helper.Current.UserLogin.IsClientInApplication())
+                ticketingId = ticketingInfo.TiketingID;
+            //
+            if (string.IsNullOrWhiteSpace(ticketingId))
+                return Notifization.Invalid("Nhân viên không hợp lệ");
+            //
+            UserInfoService userInfoService = new UserInfoService();
+            UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId).FirstOrDefault();
+            if (userInfo == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string ticketingName = userInfo.FullName;
+            string ticketingPhone = userInfo.Phone;
+            string ticketingEmail = userInfo.Email;
+            //
+            string agentId = AirAgentService.GetAgentIDByUserID(ticketingId);
+            ClientLoginService clientLoginService = new ClientLoginService();
+            AirAgentService airAgentService = new AirAgentService();
+            AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+            string agentCode = airAgent.CodeID;
+            string agentName = airAgent.Title;
+            //
+            string agentProviderId = airAgent.ID;
+            if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
+                agentProviderId = airAgent.ParentID;
+            //
+            int passengerGroup = model.PassengerGroup;
+            // call service get PNR code 
+            string strEmail = string.Empty;
+            string strPhone = string.Empty;
+            // 
+            if (model.Contacts == null)
+                return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
+            //
+            if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
             {
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                //
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                // create session 
-                if (tokenModel == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // create session 
-                string _token = tokenModel.Token;
-                string _conversationId = tokenModel.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
-                //
-                string timeZoneLocal = model.TimeZoneLocal;
-                // ticketing & contact  ************************************************************************************************
-                BookTicketingRq ticketingInfo = model.TicketingInfo;
-                BookContactRqModel Contacts = model.Contacts;
-                BookCompanyContactModel bookCompany = new BookCompanyContactModel();
-                if (ticketingInfo == null || Contacts == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                string ticketingId = Helper.Current.UserLogin.IdentifierID;
-                if (!Helper.Current.UserLogin.IsClientInApplication())
-                    ticketingId = ticketingInfo.TiketingID;
-                //
-                if (string.IsNullOrWhiteSpace(ticketingId))
-                    return Notifization.Invalid("Nhân viên không hợp lệ");
-                //
-                UserInfoService userInfoService = new UserInfoService();
-                UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId).FirstOrDefault();
-                if (userInfo == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                string ticketingName = userInfo.FullName;
-                string ticketingPhone = userInfo.Phone;
-                string ticketingEmail = userInfo.Email;
-                //
-                string agentId = AirAgentService.GetAgentIDByUserID(ticketingId);
-                ClientLoginService clientLoginService = new ClientLoginService();
-                AirAgentService airAgentService = new AirAgentService();
-                AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
-                string agentCode = airAgent.CodeID;
-                string agentName = airAgent.Title;
-                //
-                string agentProviderId = airAgent.ID;
-                if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
-                    agentProviderId = airAgent.ParentID;
-                //
-                int passengerGroup = model.PassengerGroup;
-                // call service get PNR code 
-                string strEmail = string.Empty;
-                string strPhone = string.Empty;
-                // 
-                if (model.Contacts == null)
+                BookCompanyRqContact bookCompanyContact = Contacts.BookCompanyContact;
+                if (bookCompanyContact == null)
                     return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
                 //
-                if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
+                string companyId = bookCompanyContact.CompanyID;
+                if (string.IsNullOrWhiteSpace(companyId))
+                    return Notifization.Invalid("Vui lòng chọn công ty");
+                //
+                AirAgentService customerService = new AirAgentService();
+                AirAgent customerComp = customerService.GetAlls(m => m.ID == companyId).FirstOrDefault();
+                if (customerComp == null)
+                    return Notifization.Invalid("Thông tin công ty không tồn tại");
+                // 
+                strEmail = customerComp.ContactEmail;
+                strPhone = customerComp.ContactPhone;
+                //
+                bookCompany.CompanyID = customerComp.ID;
+                bookCompany.CompanyCode = customerComp.CodeID;
+                bookCompany.Email = strEmail;
+                bookCompany.Phone = strPhone;
+                bookCompany.Name = customerComp.ContactName;
+            }
+            else if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Kle)
+            {
+                BookKhachLeRqContact bookKhachLeContact = Contacts.BookKhachLeContact;
+                string name = bookKhachLeContact.Name;
+                string contactPhone = bookKhachLeContact.Phone;
+                string contactEmail = bookKhachLeContact.Email;
+                if (string.IsNullOrWhiteSpace(name))
+                    return Notifization.Invalid("Không được để trống tên liên hệ");
+                //
+                if (string.IsNullOrWhiteSpace(contactPhone))
+                    return Notifization.Invalid("Không được để trống số đ.thoại");
+                //
+                if (!Validate.TestPhone(contactPhone))
+                    return Notifization.Invalid("Số đ.thoại không hợp lệ");
+                //
+                if (!string.IsNullOrWhiteSpace(contactEmail))
                 {
-                    BookCompanyRqContact bookCompanyContact = Contacts.BookCompanyContact;
-                    if (bookCompanyContact == null)
-                        return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
-                    //
-                    string companyId = bookCompanyContact.CompanyID;
-                    if (string.IsNullOrWhiteSpace(companyId))
-                        return Notifization.Invalid("Vui lòng chọn công ty");
-                    //
-                    AirAgentService customerService = new AirAgentService();
-                    AirAgent customerComp = customerService.GetAlls(m => m.ID == companyId).FirstOrDefault();
-                    if (customerComp == null)
-                        return Notifization.Invalid("Thông tin công ty không tồn tại");
-                    // 
-                    strEmail = customerComp.ContactEmail;
-                    strPhone = customerComp.ContactPhone;
-                    //
-                    bookCompany.CompanyID = customerComp.ID;
-                    bookCompany.CompanyCode = customerComp.CodeID;
-                    bookCompany.Email = strEmail;
-                    bookCompany.Phone = strPhone;
-                    bookCompany.Name = customerComp.ContactName;
+                    if (!Validate.TestEmail(contactEmail))
+                        return Notifization.Invalid("Địa chỉ e-mail không hợp lệ");
+                    else
+                        strEmail = contactEmail;
                 }
-                else if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Kle)
+                //
+                strPhone = contactPhone;
+            }
+            //
+            foreach (var item in model.Passengers)
+            {
+                if (!Helper.Page.Validate.TestTextNoneUnicode(item.FullName))
+                    return Notifization.Invalid("Tên khách hàng '" + item.FullName + "' không hợp lệ");
+                //
+            }
+            //
+            BookEmailConfig bookEmailConfig = new BookEmailConfig();
+            if (string.IsNullOrWhiteSpace(strEmail))
+                strEmail = bookEmailConfig.Email;
+            //
+            if (string.IsNullOrWhiteSpace(strPhone))
+                strPhone = bookEmailConfig.Phone;
+            //
+            using (var sessionService = new VNA_SessionService(tokenModel))
+            {
+                if (string.IsNullOrWhiteSpace(_token))
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                using (var vnaTransaction = new VNA_EndTransaction(tokenModel))
                 {
-                    BookKhachLeRqContact bookKhachLeContact = Contacts.BookKhachLeContact;
-                    string name = bookKhachLeContact.Name;
-                    string contactPhone = bookKhachLeContact.Phone;
-                    string contactEmail = bookKhachLeContact.Email;
-                    if (string.IsNullOrWhiteSpace(name))
-                        return Notifization.Invalid("Không được để trống tên liên hệ");
-                    //
-                    if (string.IsNullOrWhiteSpace(contactPhone))
-                        return Notifization.Invalid("Không được để trống số đ.thoại");
-                    //
-                    if (!Validate.TestPhone(contactPhone))
-                        return Notifization.Invalid("Số đ.thoại không hợp lệ");
-                    //
-                    if (!string.IsNullOrWhiteSpace(contactEmail))
+                    var airBookModel = new AirBookModel
                     {
-                        if (!Validate.TestEmail(contactEmail))
-                            return Notifization.Invalid("Địa chỉ e-mail không hợp lệ");
-                        else
-                            strEmail = contactEmail;
-                    }
-                    //
-                    strPhone = contactPhone;
-                }
-                //
-                foreach (var item in model.Passengers)
-                {
-                    if (!Helper.Page.Validate.TestTextNoneUnicode(item.FullName))
-                        return Notifization.Invalid("Tên khách hàng '" + item.FullName + "' không hợp lệ");
-                    //
-                }
-                //
-                BookEmailConfig bookEmailConfig = new BookEmailConfig();
-                if (string.IsNullOrWhiteSpace(strEmail))
-                    strEmail = bookEmailConfig.Email;
-                //
-                if (string.IsNullOrWhiteSpace(strPhone))
-                    strPhone = bookEmailConfig.Phone;
-                //
-                using (var sessionService = new VNA_SessionService(tokenModel))
-                {
-                    if (string.IsNullOrWhiteSpace(_token))
+                        ConversationID = _conversationId,
+                        Token = _token
+                    };
+                    //seach data in web service
+
+                    // #1. flight information - ***********************************************************************************************************************************
+                    VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
+                    List<BookSegmentModel> lstSegments = model.Flights;
+                    if (lstSegments == null || lstSegments.Count == 0)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
-                    using (var vnaTransaction = new VNA_EndTransaction(tokenModel))
+                    AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                     {
-                        var airBookModel = new AirBookModel
+                        Segments = lstSegments,
+                        ConversationID = _conversationId,
+                        Token = _token
+                    });
+                    // 
+                    if (ota_AirBookRS.ApplicationResults.Success == null)
+                        return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                    //
+                    var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
+                    if (_originDestinationOption.Count == 0)
+                        return Notifization.NotFound(MessageText.NotFound);
+                    // #2. Get price - ***************************************************************************************************************************************************
+                    airBookModel.Segments = model.Flights;
+                    var airPriceModel = new AirPriceModel
+                    {
+                        ConversationID = _conversationId,
+                        Token = _token,
+                        lFlight = model.Flights
+                    };
+                    //
+                    foreach (var item in model.Passengers)
+                    {
+                        if (item.PassengerType.ToUpper() == "ADT")
                         {
-                            ConversationID = _conversationId,
-                            Token = _token
-                        };
-                        //seach data in web service
+                            airPriceModel.ADT++;
+                            continue;
+                        }
+                        if (item.PassengerType.ToUpper() == "CNN")
+                        {
+                            airPriceModel.CNN++;
+                            continue;
+                        }
+                        if (item.PassengerType.ToUpper() == "INF")
+                        {
+                            airPriceModel.INF++;
+                            continue;
+                        }
+                    }
+                    VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
+                    var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
 
-                        // #1. flight information - ***********************************************************************************************************************************
-                        VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
-                        List<BookSegmentModel> lstSegments = model.Flights;
-                        if (lstSegments == null || lstSegments.Count == 0)
-                            return Notifization.Invalid(MessageText.Invalid);
-                        //
-                        AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                    // #3. Get PNA code - **************************************************************************************************************************************************
+                    List<FareTax> fareTaxs = new List<FareTax>();
+                    List<FareFlight> fareFlights = new List<FareFlight>();
+                    foreach (var item in airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo)
+                    {
+                        string passengerType = item.PassengerTypeQuantity.Code;
+                        int bkIndex = 0;
+                        foreach (var fareBreakdown in item.PTC_FareBreakdown)
                         {
-                            Segments = lstSegments,
-                            ConversationID = _conversationId,
-                            Token = _token
-                        });
+                            //
+                            int flightType = (int)VNAEnum.FlightDirection.None;
+                            if (bkIndex == 0)
+                                flightType = (int)VNAEnum.FlightDirection.FlightGo;
+                            if (bkIndex == 1)
+                                flightType = (int)VNAEnum.FlightDirection.FlightReturn;
+                            //
+                            fareFlights.Add(new FareFlight
+                            {
+                                FlightType = flightType,
+                                PassengerType = passengerType,
+                                Code = fareBreakdown.FareBasis.Code,
+                                Amount = Convert.ToDouble(fareBreakdown.FareBasis.FareAmount)
+                            });
+                            bkIndex++;
+                        }
+                        // add tax
+                        foreach (var tax in item.ItinTotalFare.Taxes.Tax)
+                        {
+                            fareTaxs.Add(new FareTax
+                            {
+                                FlightType = 0,
+                                PassengerType = passengerType,
+                                Text = tax.TaxName,
+                                TaxCode = tax.TaxCode,
+                                Amount = double.Parse(tax.Amount)
+                            });
+                        }
+                    }
+                    //
+                    model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
+                    // create model passenger details model
+                    List<PassengerDetailsRQ> passengerDetailsRQ = new List<PassengerDetailsRQ>();
+                    List<BookTicketPassenger> request_Passengers = model.Passengers;
+                    foreach (var item in request_Passengers)
+                    {
                         // 
-                        if (ota_AirBookRS.ApplicationResults.Success == null)
-                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
-                        //
-                        var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
-                        if (_originDestinationOption.Count == 0)
-                            return Notifization.NotFound(MessageText.NotFound);
-                        // #2. Get price - ***************************************************************************************************************************************************
-                        airBookModel.Segments = model.Flights;
-                        var airPriceModel = new AirPriceModel
+                        string fullName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName);
+                        passengerDetailsRQ.Add(new PassengerDetailsRQ
                         {
-                            ConversationID = _conversationId,
-                            Token = _token,
-                            lFlight = model.Flights
-                        };
-                        //
-                        foreach (var item in model.Passengers)
-                        {
-                            if (item.PassengerType.ToUpper() == "ADT")
-                            {
-                                airPriceModel.ADT++;
-                                continue;
-                            }
-                            if (item.PassengerType.ToUpper() == "CNN")
-                            {
-                                airPriceModel.CNN++;
-                                continue;
-                            }
-                            if (item.PassengerType.ToUpper() == "INF")
-                            {
-                                airPriceModel.INF++;
-                                continue;
-                            }
-                        }
-                        VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
-                        var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
-
-                        // #3. Get PNA code - **************************************************************************************************************************************************
-                        var result = new BookVeResult
-                        {
-                            Passengers = new List<PassengerFare>()
-                        };
-                        List<FareTax> fareTaxs = new List<FareTax>();
-                        List<FareFlight> fareFlights = new List<FareFlight>();
-                        foreach (var item in airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo)
-                        {
-                            string passengerType = item.PassengerTypeQuantity.Code;
-                            int bkIndex = 0;
-                            foreach (var fareBreakdown in item.PTC_FareBreakdown)
-                            {
-                                //
-                                int flightType = (int)VNAEnum.FlightDirection.None;
-                                if (bkIndex == 0)
-                                    flightType = (int)VNAEnum.FlightDirection.FlightGo;
-                                if (bkIndex == 1)
-                                    flightType = (int)VNAEnum.FlightDirection.FlightReturn;
-                                //
-                                fareFlights.Add(new FareFlight
-                                {
-                                    FlightType = flightType,
-                                    PassengerType = passengerType,
-                                    Code = fareBreakdown.FareBasis.Code,
-                                    Amount = Convert.ToDouble(fareBreakdown.FareBasis.FareAmount)
-                                });
-                                bkIndex++;
-                            }
-                            // add tax
-                            foreach (var tax in item.ItinTotalFare.Taxes.Tax)
-                            {
-                                fareTaxs.Add(new FareTax
-                                {
-                                    FlightType = 0,
-                                    PassengerType = passengerType,
-                                    Text = tax.TaxName,
-                                    TaxCode = tax.TaxCode,
-                                    Amount = double.Parse(tax.Amount)
-                                });
-                            }
-                        }
-                        //
-                        result.FareTaxs = fareTaxs;
-                        result.FareFlights = fareFlights;
-                        result.FareTotal = double.Parse(airPriceData.PriceQuote.PricedItinerary.TotalAmount);
-                        model.Passengers = model.Passengers.OrderBy(m => m.PassengerType).ToList();
-                        // create model passenger details model
-                        List<PassengerDetailsRQ> passengerDetailsRQ = new List<PassengerDetailsRQ>();
-                        List<BookTicketPassenger> request_Passengers = model.Passengers;
-                        foreach (var item in request_Passengers)
-                        {
-                            // 
-                            string fullName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName);
-                            passengerDetailsRQ.Add(new PassengerDetailsRQ
-                            {
-                                PassengerType = item.PassengerType,
-                                FullName = fullName,
-                                DateOfBirth = item.DateOfBirth,
-                                Gender = item.Gender
-                            });
-                        }
-                        // ######################################################################################
-
-                        //call service  passenger details in ws.service
-                        VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
-                        XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = vNAWSPassengerDetailsRQService.PassengerDetail(new DetailsRQ
-                        {
-                            Email = bookEmailConfig.Email,
-                            Phone = bookEmailConfig.Phone,
-                            ConversationID = _conversationId,
-                            Token = _token,
-                            Passengers = passengerDetailsRQ,
-                            AirBook = ota_AirBookRS
+                            PassengerType = item.PassengerType,
+                            FullName = fullName,
+                            DateOfBirth = item.DateOfBirth,
+                            Gender = item.Gender
                         });
-                        //End transaction 
-                        if (passengerDetailsRS == null)
-                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
-                        //
-                        string pnrCode = passengerDetailsRS.ItineraryRef.ID;
-                        vnaTransaction.EndTransaction();
-                        //
-                        if (string.IsNullOrWhiteSpace(pnrCode))
-                            return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
-                        //set PNR code
-                        result.PNR = pnrCode;
-                        // save order | input data ***************************************************************************************************
-                        OrderTicketService orderTicketService = new OrderTicketService();
-                        List<RequestOrderFlightModel> requestOrderFlightModels = new List<RequestOrderFlightModel>();
-                        List<RequestOrderPriceModel> requestOrderPriceModels = new List<RequestOrderPriceModel>();
-                        List<RequestOrderTaxModel> requestOrderTaxModels = new List<RequestOrderTaxModel>();
-                        foreach (var item in model.Flights)
-                        {
-                            requestOrderFlightModels.Add(new RequestOrderFlightModel
-                            {
-                                ADT = airPriceModel.ADT,
-                                CNN = airPriceModel.CNN,
-                                INF = airPriceModel.INF,
-                                NumberInParty = item.NumberInParty,
-                                OriginLocation = item.OriginLocation,
-                                DestinationLocation = item.DestinationLocation,
-                                DepartureDateTime = item.DepartureDateTime,
-                                ArrivalDateTime = item.ArrivalDateTime,
-                                ResBookDesigCode = item.ResBookDesigCode,
-                                FlightNumber = item.FlightNumber,
-                                AirEquipType = item.AirEquipType,
-                            });
-                        }
-                        foreach (var item in fareFlights)
-                        {
-                            requestOrderPriceModels.Add(new RequestOrderPriceModel
-                            {
-                                FlightType = item.FlightType,
-                                PassengerType = item.PassengerType,
-                                Amount = item.Amount,
-                                Unit = "VND",
-                            });
-                        }
-                        //
-                        foreach (var item in fareTaxs)
-                        {
-                            requestOrderTaxModels.Add(new RequestOrderTaxModel
-                            {
-                                PassengerType = item.PassengerType,
-                                Title = item.Text,
-                                TaxCode = item.TaxCode,
-                                Amount = item.Amount,
-                                Unit = "VND",
-                            });
-                        }
-                        // save book information | output data ***************************************************************************************************
+                    }
+                    // ######################################################################################
 
-                        //List<XMLObject.AirTicketRq.PersonName> personNames = passengerDetailsRS.TravelItineraryReadRS.TravelItinerary.CustomerInfo.PersonName;
+                    //call service  passenger details in ws.service
+                    VNA_PassengerDetailsRQService vNAWSPassengerDetailsRQService = new VNA_PassengerDetailsRQService();
+
+                    XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = vNAWSPassengerDetailsRQService.PassengerDetail(new DetailsRQ
+                    {
+                        Email = bookEmailConfig.Email,
+                        Phone = bookEmailConfig.Phone,
+                        ConversationID = _conversationId,
+                        Token = _token,
+                        Passengers = passengerDetailsRQ,
+                        AirBook = ota_AirBookRS
+                    });
+
+                    //XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = new XMLObject.AirTicketRq.PassengerDetailsRS();
+                    //XmlDocument soapEnvelopeXml = new XmlDocument();
+                    //var path = HttpContext.Current.Server.MapPath(@"~/Team/2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml");
+                    //soapEnvelopeXml.Load(path);
+                    //XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                    //if (xmlnode != null)
+                    //    passengerDetailsRS = XMLHelper.Deserialize<XMLObject.AirTicketRq.PassengerDetailsRS>(xmlnode.InnerXml);
+                    ////  
+                    if (passengerDetailsRS == null)
+                        return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                    //
+                    string pnrCode = passengerDetailsRS.ItineraryRef.ID;
+                    //End transaction 
+                    vnaTransaction.EndTransaction();
+                    //
+                    if (string.IsNullOrWhiteSpace(pnrCode))
+                        return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                    //set PNR code
+
+                    // save order | input data ***************************************************************************************************
+                    OrderTicketService orderTicketService = new OrderTicketService();
+                    List<RequestOrderFlightModel> requestOrderFlightModels = new List<RequestOrderFlightModel>();
+                    List<RequestOrderPriceModel> requestOrderPriceModels = new List<RequestOrderPriceModel>();
+                    List<RequestOrderTaxModel> requestOrderTaxModels = new List<RequestOrderTaxModel>();
+                    foreach (var item in model.Flights)
+                    {
+                        requestOrderFlightModels.Add(new RequestOrderFlightModel
+                        {
+                            ADT = airPriceModel.ADT,
+                            CNN = airPriceModel.CNN,
+                            INF = airPriceModel.INF,
+                            NumberInParty = item.NumberInParty,
+                            OriginLocation = item.OriginLocation,
+                            DestinationLocation = item.DestinationLocation,
+                            DepartureDateTime = item.DepartureDateTime,
+                            ArrivalDateTime = item.ArrivalDateTime,
+                            ResBookDesigCode = item.ResBookDesigCode,
+                            FlightNumber = item.FlightNumber,
+                            AirEquipType = item.AirEquipType,
+                        });
+                    }
+                    foreach (var item in fareFlights)
+                    {
+                        requestOrderPriceModels.Add(new RequestOrderPriceModel
+                        {
+                            FlightType = item.FlightType,
+                            PassengerType = item.PassengerType,
+                            Amount = item.Amount,
+                            Unit = "VND",
+                        });
+                    }
+                    //
+                    foreach (var item in fareTaxs)
+                    {
+                        requestOrderTaxModels.Add(new RequestOrderTaxModel
+                        {
+                            PassengerType = item.PassengerType,
+                            Title = item.Text,
+                            TaxCode = item.TaxCode,
+                            Amount = item.Amount,
+                            Unit = "VND",
+                        });
+                    }
+                    // save book information | output data ***************************************************************************************************
+
+                    //List<XMLObject.AirTicketRq.PersonName> personNames = passengerDetailsRS.TravelItineraryReadRS.TravelItinerary.CustomerInfo.PersonName;
+                    // 
+                    BookTicketService bookTicketService = new BookTicketService();
+                    List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
+
+                    var index = 0;
+                    var record = 0;
+                    var isHaveCNNOrINF = false;
+                    foreach (var item in model.Passengers)
+                    {
+                        index++;
+                        string passengerName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName).ToUpper();
+                        string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(item.FullName);
+                        string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(item.FullName);
+                        string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(item.FullName);
+                        //
+                        if (!string.IsNullOrWhiteSpace(givenName))
+                            givenName = givenName.ToUpper();
+                        if (!string.IsNullOrWhiteSpace(middleName))
+                            middleName = middleName.ToUpper();
+                        if (!string.IsNullOrWhiteSpace(surName))
+                            surName = surName.ToUpper();
+
+                        //var isInf = "false";
+                        //if (item.PassengerType.ToUpper() == "ADT")
+                        //{
+                        //    record = 1;
+                        //}
+                        //if (item.PassengerType.ToUpper() == "CNN")
+                        //{
+                        //    //isHaveCNNOrINF = true;
+                        //    record = 2;
+                        //}
+                        //if (item.PassengerType.ToUpper() == "INF")
+                        //{
+                        //    isInf = "true";
+                        //    //isHaveCNNOrINF = true;
+                        //    record = 3;
+                        //} 
+                        //
+                        string strIndex = "";
+                        if (index < 10)
+                            strIndex += "0" + index;
+                        //
+                        var nameNumber = $"{strIndex}" + ".01";
+                        char mdd;
+                        if (!string.IsNullOrWhiteSpace(middleName))
+                            mdd = middleName[0];
+                        else
+                            mdd = givenName[0];
                         // 
-                        BookTicketService bookTicketService = new BookTicketService();
-                        List<BookTicketPassenger> bookTicketPassengers = new List<BookTicketPassenger>();
-
-                        var index = 0;
-                        var record = 0;
-                        var isHaveCNNOrINF = false;
-                        foreach (var item in model.Passengers)
+                        bookTicketPassengers.Add(new BookTicketPassenger
                         {
-                            index++;
-                            string passengerName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName).ToUpper();
-                            string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
-                            string surName = AIRService.WS.Helper.VNALibrary.GetSurName(item.FullName);
-                            string middleName = AIRService.WS.Helper.VNALibrary.GetMiddleName(item.FullName);
-                            //
-                            if (!string.IsNullOrWhiteSpace(givenName))
-                                givenName = givenName.ToUpper();
-                            if (!string.IsNullOrWhiteSpace(middleName))
-                                middleName = middleName.ToUpper();
-                            if (!string.IsNullOrWhiteSpace(surName))
-                                surName = surName.ToUpper();
-
-                            //var isInf = "false";
-                            //if (item.PassengerType.ToUpper() == "ADT")
-                            //{
-                            //    record = 1;
-                            //}
-                            //if (item.PassengerType.ToUpper() == "CNN")
-                            //{
-                            //    //isHaveCNNOrINF = true;
-                            //    record = 2;
-                            //}
-                            //if (item.PassengerType.ToUpper() == "INF")
-                            //{
-                            //    isInf = "true";
-                            //    //isHaveCNNOrINF = true;
-                            //    record = 3;
-                            //} 
-                            //
-                            string strIndex = "";
-                            if (index < 10)
-                                strIndex += "0" + index;
-                            //
-                            var nameNumber = $"{strIndex}" + ".01";
-                            char mdd;
-                            if (!string.IsNullOrWhiteSpace(middleName))
-                                mdd = middleName[0];
-                            else
-                                mdd = givenName[0];
-                            // 
-                            bookTicketPassengers.Add(new BookTicketPassenger
-                            {
-                                DateOfBirth = item.DateOfBirth,
-                                FullName = item.FullName,
-                                Gender = item.Gender,
-                                PassengerType = item.PassengerType,
-                                PassengerName = $"{surName}/{mdd}",
-                                ElementID = "",
-                                NameNumber = nameNumber
-                            });
-
-                        }
-                        // call save booking 
-                        double airAgentFee = 0; //  
-                        var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
-                        {
-                            PNR = result.PNR,
-                            PassengerGroup = model.PassengerGroup,
-                            Summary = model.Summary,
-                            ItineraryType = model.ItineraryType,
-                            OrderDate = Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx),
-                            Flights = model.Flights,
-                            Passengers = bookTicketPassengers,
-                            FareTaxs = result.FareTaxs,
-                            FareFlights = fareFlights,
-                            AgentInfo = new BookAgentInfo
-                            {
-                                AgentID = agentId,
-                                AgentName = agentName,
-                                AgentCode = agentCode,
-                                AgentFee = airAgentFee,
-                                TiketingID = ticketingId,
-                                TiketingName = ticketingName,
-                                TiketingPhone = ticketingPhone,
-                                TiketingEmail = ticketingEmail,
-                                ProviderID = agentProviderId
-                            },
-                            Contacts = new BookOrderContact
-                            {
-                                BookKhachLeContact = model.Contacts.BookKhachLeContact,
-                                BookCompanyContact = bookCompany
-                            }
+                            DateOfBirth = item.DateOfBirth,
+                            FullName = item.FullName,
+                            Gender = item.Gender,
+                            PassengerType = item.PassengerType,
+                            PassengerName = $"{surName}/{mdd}",
+                            ElementID = "",
+                            NameNumber = nameNumber
                         });
-                        result.TicketID = bookTicketId;
-                        //
-                        return Notifization.Data("Đặt chỗ thành công", result); // "/backend/flightbook/details/" + bookIdFist
-                    } // end using tran session
-                } // end using session
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
-            }
+
+                    }
+                    // call save booking 
+                    double airAgentFee = 0; //  
+                    var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
+                    {
+                        PNR = pnrCode,
+                        PassengerGroup = model.PassengerGroup,
+                        Summary = model.Summary,
+                        ItineraryType = model.ItineraryType,
+                        OrderDate = Convert.ToDateTime(TimeHelper.GetUtcDateTimeTx),
+                        Flights = model.Flights,
+                        Passengers = bookTicketPassengers,
+                        FareTaxs = fareTaxs,
+                        FareFlights = fareFlights,
+                        AgentInfo = new BookAgentInfo
+                        {
+                            AgentID = agentId,
+                            AgentName = agentName,
+                            AgentCode = agentCode,
+                            AgentFee = airAgentFee,
+                            TiketingID = ticketingId,
+                            TiketingName = ticketingName,
+                            TiketingPhone = ticketingPhone,
+                            TiketingEmail = ticketingEmail,
+                            ProviderID = agentProviderId
+                        },
+                        Contacts = new BookOrderContact
+                        {
+                            BookKhachLeContact = model.Contacts.BookKhachLeContact,
+                            BookCompanyContact = bookCompany
+                        }
+                    });
+
+                    Helper.Security.Cookies.RemoveCookis("FlightSearch");
+                    Helper.Security.Cookies.RemoveCookis("FlightOrder");
+                    //
+                    return Notifization.Success($"Đặt chỗ thành công", $"/management/airbook/details/{bookTicketId}");
+                } // end using tran session
+            } // end using session
+
         }
 
         // check xuat ve
@@ -1525,8 +1525,8 @@ namespace AIRService.Service
                 };
                 foreach (var item in exTitketPassengerFareModels)
                 {
-                    string givenName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
-                    string surName = AIRService.WS.Helper.VNALibrary.GetGivenName(item.FullName);
+                    string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(item.FullName);
+                    string surName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(item.FullName);
                     var paymentOrderDetail = new PaymentOrderDetail
                     {
                         PsgrType = item.PassengerType,
@@ -1576,6 +1576,7 @@ namespace AIRService.Service
                     ExpireDate = $"{Helper.TimeData.TimeHelper.UtcDateTime.Year}-12",
                     ListPricingInPNR = exTitketPassengerFareModels
                 });
+
                 VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                 vNATransaction.EndTransaction(tokenModel);
                 //
@@ -1585,7 +1586,6 @@ namespace AIRService.Service
                     Token = tokenModel.Token,
                     PNR = pnr
                 });
-
                 //step 01
                 //XMLObject.ReservationRq.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo;
                 //if (ticketingInfo != null)
@@ -1696,7 +1696,7 @@ namespace AIRService.Service
                 return Notifization.TEST("OK" + ex);
             }
         }
-        public ActionResult BookVoid(PNRModel model)
+        public ActionResult VoidBook(PNRModel model)
         {
             try
             {
@@ -1757,108 +1757,106 @@ namespace AIRService.Service
         }
         public ActionResult VoidTicket(BookBookPassengerIDModel model)
         {
-            try
+
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.Invalid(MessageText.Invalid);
+            //  
+            string bookPassengerId = model.ID;
+            if (string.IsNullOrWhiteSpace(bookPassengerId))
+                return Notifization.Invalid(MessageText.Invalid);
+
+            BookPriceService bookPriceService = new BookPriceService();
+            BookTaxService bookTaxService = new BookTaxService();
+            BookPassengerService bookPassengerService = new BookPassengerService();
+            BookOrderService bookOrderService = new BookOrderService();
+            BookTicketService bookTicketService = new BookTicketService();
+            BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == bookPassengerId).FirstOrDefault();
+            if (bookPassenger == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string ticketNo = bookPassenger.TicketNumber;
+            if (string.IsNullOrWhiteSpace(ticketNo))
+                return Notifization.Invalid("Số vé không hợp lệ");
+            //
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == bookPassenger.BookOrderID).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //DepartureDateTime 
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID).FirstOrDefault();
+            if (bookTicket == null)
+                return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
+            //DepartureDateTime
+            DateTime departureDateTime = bookTicket.DepartureDateTime;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid + "1");
-                //
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                // create session 
-                if (tokenModel == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // create session 
-                string _token = tokenModel.Token;
-                string _conversationId = tokenModel.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.Invalid(MessageText.Invalid);
-                //  
-                string bookPassengerId = model.ID;
-                if (string.IsNullOrWhiteSpace(bookPassengerId))
-                    return Notifization.Invalid(MessageText.Invalid);
-
-                BookPriceService bookPriceService = new BookPriceService();
-                BookTaxService bookTaxService = new BookTaxService();
-                BookPassengerService bookPassengerService = new BookPassengerService();
-                BookOrderService bookOrderService = new BookOrderService();
-                BookTicketService bookTicketService = new BookTicketService();
-                BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == bookPassengerId).FirstOrDefault();
-                if (bookPassenger == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //
-                string ticketNo = bookPassenger.TicketNumber;
-                if (string.IsNullOrWhiteSpace(ticketNo))
-                    return Notifization.Invalid("Số vé không hợp lệ");
-                //
-                BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == bookPassenger.BookOrderID).FirstOrDefault();
-                if (bookOrder == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                //DepartureDateTime 
-                BookTicket  bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID).FirstOrDefault();
-                if (bookTicket == null)
-                    return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
-                //DepartureDateTime
-                DateTime departureDateTime = bookTicket.DepartureDateTime;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                using (var sessionService = new VNA_SessionService(tokenModel))
+                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                VNA_VoidTicketLLSRQService vNA_VoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(new DesignatePrinterLLSModel
                 {
-                    VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    VNA_VoidTicketLLSRQService vNA_VoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(new DesignatePrinterLLSModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token
-                    });
-                    if (printer.ApplicationResults.Error != null)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    //
-                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    // 
-                    XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token,
-                        PNR = bookOrder.PNR
-                    });
-                    XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                    if (alreadyTicketed == null)
-                        return Notifization.Invalid("Lỗi chưa xuất vé");
-                    //
-                    XMLObject.VoidTicketRq.VoidTicketRS voidTicketRS = vNA_VoidTicketLLSRQService.VoidTicketLLSRQ(tokenModel, ticketNo);
-                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    vNATransaction.EndTransaction(tokenModel);
-                    //
-                    if (voidTicketRS.ApplicationResults.Error != null)
-                        return Notifization.Invalid($"Lỗi hủy số vé: {ticketNo}");
-                    // update trang thai ve
-                    bookPassenger.IsVoided = true;
-                    bookPassenger.VoidDateTime = Helper.TimeData.TimeHelper.UtcDateTime;
-                    bookPassenger.VoidUserdID = Helper.Current.UserLogin.IdentifierID;
-                    bookPassengerService.Update(bookPassenger);
-                    // tra lai tien cho ticketing
-                    //string passengerType = bookPassenger.PassengerType;
-                    //double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
-                    //double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
-                    return Notifization.Success($"Đã hủy số vé: {ticketNo}");
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                });
+                if (printer.ApplicationResults.Error != null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                // 
+                XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = bookOrder.PNR
+                });
+                XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                if (alreadyTicketed == null)
+                    return Notifization.Invalid("Lỗi chưa xuất vé");
+                //
+                XMLObject.VoidTicketRq.VoidTicketRS voidTicketRS = vNA_VoidTicketLLSRQService.VoidTicketLLSRQ(tokenModel, ticketNo);
+                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                vNATransaction.EndTransaction(tokenModel);
+                //
+                if (voidTicketRS.ApplicationResults.Error != null)
+                    return Notifization.Invalid($"Lỗi hủy số vé: {ticketNo}");
+                //  
+                // update trang thai ve
+                bookPassenger.IsVoided = true;
+                bookPassenger.VoidDateTime = Helper.TimeData.TimeHelper.UtcDateTime;
+                bookPassenger.VoidUserdID = Helper.Current.UserLogin.IdentifierID;
+                bookPassengerService.Update(bookPassenger);
+                // tra lai tien cho ticketing
+                UserSpendingHistory walletUserSpendingHistory = new UserSpendingHistory();
+
+
+                //string passengerType = bookPassenger.PassengerType;
+                //double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                //double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                return Notifization.Success($"Đã hủy số vé: {ticketNo}");
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using AIRService.Entities;
-using AIRService.WS.Helper;
+using AIRService.WS.VNAHelper;
 using System;
 using System.IO;
 using System.Net;

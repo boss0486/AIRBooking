@@ -1,4 +1,4 @@
-﻿using AIRService.WS.Helper;
+﻿using AIRService.WS.VNAHelper;
 using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;

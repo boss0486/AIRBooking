@@ -133,7 +133,7 @@ namespace WebApplication.Management.Controllers
         }
          
         [HttpPost]
-        [Route("Action/BookingExport")]
+        [Route("Action/BookExport")]
         public ActionResult BookingExport(BookOrderSearch model)
         {
             try
@@ -172,6 +172,7 @@ namespace WebApplication.Management.Controllers
             }
             catch (Exception ex)
             {
+                Helper.SystemLogg.WriteLog("VoidTicket: " + ex);
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }

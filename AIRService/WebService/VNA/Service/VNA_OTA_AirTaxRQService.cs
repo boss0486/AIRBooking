@@ -1,6 +1,6 @@
 ﻿using AIRService.Models;
 using AIRService.WebService.VNA.Authen;
-using AIRService.WS.Helper;
+using AIRService.WS.VNAHelper;
 using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;

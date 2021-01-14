@@ -137,6 +137,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\AirportBookConfig\Entities\AirportBookConfig.cs" />
+    <Compile Include="Application\AirportBookConfig\Enum\AirportBookConfigEnum.cs" />
+    <Compile Include="Application\AirportBookConfig\Services\AirportBookConfigService.cs" />
     <Compile Include="Application\AirCompany\Entities\Company.cs" />
     <Compile Include="Application\AirCompany\Services\CompanyService.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimitPayment.cs" />
@@ -392,7 +395,7 @@
     <Compile Include="Application\History\Entities\WalletDepositHistory.cs" />
     <Compile Include="Application\History\Entities\TransactionHistory.cs" />
     <Compile Include="Application\History\Entities\WalletSpendingHistory.cs" />
-    <Compile Include="Application\History\Entities\WalletUserSpendingHistory.cs" />
+    <Compile Include="Application\History\Entities\UserSpendingHistory.cs" />
     <Compile Include="Application\History\Enum\WalletHistoryEnum.cs" />
     <Compile Include="Application\History\Services\WalletDepositHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletSpendingHistoryService.cs" />
@@ -446,6 +449,7 @@
     <Compile Include="Application\Wallet\Services\WalletAgentService.cs" />
     <Compile Include="Application\Wallet\Services\WalletService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Loged\SystemLog.cs" />
     <Compile Include="WebService\Mbay\Authen\GDS_WSAuthencation.cs" />
     <Compile Include="WebService\VNAHelper\VNAFlight.cs" />
     <Compile Include="WebService\VNAHelper\VNALibrary.cs" />

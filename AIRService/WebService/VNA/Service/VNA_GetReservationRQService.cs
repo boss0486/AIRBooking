@@ -1,4 +1,4 @@
-﻿using AIRService.WS.Helper;
+﻿using AIRService.WS.VNAHelper;
 using ApiPortalBooking.Models;
 using System;
 using System.Collections.Generic;
@@ -55,7 +55,7 @@ namespace AIRService.WS.Service
                 {
                     string soapResult = rd.ReadToEnd();
                     soapEnvelopeXml = new XmlDocument();
-                    soapEnvelopeXml.LoadXml(soapResult);
+                    soapEnvelopeXml.LoadXml(soapResult); 
                     //Helper.XMLHelper.WriteXml("getreservationrq-test-xuat-ve.xml", soapEnvelopeXml);
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
                     XMLObject.ReservationRq.GetReservationRS reservationRS = new XMLObject.ReservationRq.GetReservationRS();

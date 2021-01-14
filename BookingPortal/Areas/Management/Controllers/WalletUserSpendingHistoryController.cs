@@ -29,10 +29,11 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                using (var service = new WalletUserHistoryService())
-                {
-                    return service.DataList(model);
-                }
+                return Notifization.NotService;
+                //using (var service = new WalletUserHistoryService())
+                //{
+                //    return service.DataList(model);
+                //}
             }
             catch (Exception ex)
             {

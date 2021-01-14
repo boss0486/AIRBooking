@@ -283,6 +283,7 @@ namespace WebApplication.Management.Controllers
             }
             catch (Exception ex)
             {
+                Helper.SystemLogg.WriteLog("Booking: " + ex);
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
@@ -299,22 +300,24 @@ namespace WebApplication.Management.Controllers
             }
             catch (Exception ex)
             {
+                Helper.SystemLogg.WriteLog("ExTicket: " + ex);
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }
         }
          
         [HttpPost]
-        [Route("Action/BookVoid")]
-        public ActionResult BookVoid(PNRModel model)
+        [Route("Action/VoidBook")]
+        public ActionResult VoidBook(PNRModel model)
         {
             try
             {
                 var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.BookVoid(model);
+                return vnaSearchService.VoidBook(model);
             }
             catch (Exception ex)
             {
+                Helper.SystemLogg.WriteLog("BookVoid: " + ex);
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }

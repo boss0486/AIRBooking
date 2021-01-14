@@ -1,5 +1,5 @@
 ﻿using AIRService.Entities;
-using AIRService.WS.Helper;
+using AIRService.WS.VNAHelper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

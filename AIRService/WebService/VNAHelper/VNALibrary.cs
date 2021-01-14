@@ -12,7 +12,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace AIRService.WS.Helper
+namespace AIRService.WS.VNAHelper
 {
     public static class VNALibrary
     {
@@ -334,7 +334,7 @@ namespace AIRService.WS.Helper
             {
                 Indent = true
             };
-            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}");
+            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/Log-{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}");
             XmlWriter writer = XmlWriter.Create(urlFile, settings);
             soapEnvelopeXml.Save(writer);
         }

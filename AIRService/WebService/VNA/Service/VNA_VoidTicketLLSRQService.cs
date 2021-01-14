@@ -1,6 +1,6 @@
 ﻿using AIRService.Entities;
 using AIRService.Models;
-using AIRService.WS.Helper;
+using AIRService.WS.VNAHelper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using WebCore.Entities;
 
 namespace AIRService.WS.Service
 {
-    class VNA_VoidTicketLLSRQService
+   public class VNA_VoidTicketLLSRQService
     {
         public XMLObject.VoidTicketRq.VoidTicketRS VoidTicketLLSRQ(TokenModel model, string eticket)
         { 
@@ -50,6 +50,7 @@ namespace AIRService.WS.Service
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
                     // 
+                     
                     XMLObject.VoidTicketRq.VoidTicketRS voidTicketRS = new XMLObject.VoidTicketRq.VoidTicketRS();
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
                     if (xmlnode != null)

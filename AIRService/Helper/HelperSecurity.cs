@@ -342,5 +342,11 @@ namespace Helper.Security
             //
             return new LanguageCodeOption();
         }
+
+        public static void RemoveCookis(string name)
+        {
+            if (HttpContext.Current.Response.Cookies[name] != null)
+                HttpContext.Current.Response.Cookies[name].Expires = DateTime.Now.AddDays(-1);
+        }
     }
 }

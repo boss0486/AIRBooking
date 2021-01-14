@@ -14,6 +14,54 @@ var AirOrderController = {
         $('#btnSearch').off('click').on('click', function () {
             AirOrderController.DataList(1);
         });
+        $('#btnExport').off('click').on('click', function () {
+            //   
+            var ddlItinerary = $('#ddlItinerary').val();
+            var ddlAgentID = $('#ddlAgentID').val();
+            var ddlCustomerType = $('#ddlCustomerType').val();
+            var ddlCompanyID = $('#ddlCompanyID').val();
+            var ddlTimeExpress = $('#ddlTimeExpress').val();
+            var txtStartDate = $('#txtStartDate').val();
+            var txtEndDate = $('#txtEndDate').val();
+            //
+            if (ddlCustomerType == "") {
+                ddlCustomerType = 0;
+            }
+            var model = {
+                Query: $('#txtQuery').val(),
+                Page: 1,
+                TimeExpress: parseInt(ddlTimeExpress),
+                StartDate: txtStartDate,
+                EndDate: txtEndDate,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal(),
+                ItineraryType: parseInt(ddlItinerary),
+                AgentID: ddlAgentID,
+                CustomerType: ddlCustomerType,
+                CompanyID: ddlCompanyID
+            };
+            //
+            AjaxFrom.POST({
+                url: `${URLC}/OrderExport`,
+                data: model,
+                success: function (result) {
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            //
+                            HelperModel.Download(result.path);
+                        }
+                        else {
+                            Notifization.Error(result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NotService);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
     },
     DataList: function (page) {
         //   
@@ -136,6 +184,7 @@ var AirOrderController = {
             }
         });
     },
+
     VoidTiket: function (id) {
         var model = {
             ID: id
