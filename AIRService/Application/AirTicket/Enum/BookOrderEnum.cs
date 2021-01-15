@@ -19,6 +19,13 @@
             None = 0,
             Inland = 1,
             National = 2,
-        } 
+        }
+
+        public enum BookFlightType
+        {
+            None = 0,
+            FlightGo = 1,
+            FlightReturn = 2
+        }
     }
 }

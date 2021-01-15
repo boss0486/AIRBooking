@@ -22,6 +22,7 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string AirportID { get; set; }
+        public string IATACode { get; set; }
         public int VoidBookTime { get; set; }
         public int VoidTicketTime { get; set; }
         public double AxFee { get; set; }

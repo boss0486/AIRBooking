@@ -308,7 +308,7 @@ namespace WebApplication.Management.Controllers
          
         [HttpPost]
         [Route("Action/VoidBook")]
-        public ActionResult VoidBook(PNRModel model)
+        public ActionResult VoidBook(BookOrderIDModel model)
         {
             try
             {

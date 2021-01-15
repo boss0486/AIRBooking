@@ -61,6 +61,7 @@ namespace WebCore.Entities
     public class BookBookPassengerIDModel
     {
         public string ID { get; set; }
+        public int TicketType { get; set; }
     }
      
 

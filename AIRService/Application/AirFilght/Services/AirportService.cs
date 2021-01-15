@@ -124,6 +124,7 @@ namespace WebCore.Services
                     VoidBookTime = voidBookTime,
                     VoidTicketTime = voidTicketTime
                 });
+                return Notifization.Success(MessageText.UpdateSuccess);
             }
             // update
             airportConfig.AxFee = axfee;
@@ -156,7 +157,8 @@ namespace WebCore.Services
             flight = flightService.GetAlls(m => m.IATACode.ToLower() == model.IATACode.ToLower()).FirstOrDefault();
             if (flight != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
-            // 
+            //
+            
             flightService.Create<string>(new Entities.Airport()
             {
                 NationalID = nationalId,
