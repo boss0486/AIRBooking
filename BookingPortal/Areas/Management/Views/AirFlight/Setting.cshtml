@@ -1,0 +1,98 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.ENM;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@model WebCore.Entities.AirportSetting
+
+@{
+
+    string id = string.Empty;
+    string title = string.Empty;
+    string iataCode = string.Empty;
+    int voidBookTime = 0;
+    int voidTicketTime = 0;
+    double axFee = 0;
+
+
+    if (Model != null)
+    {
+        id = Model.ID;
+        title = Model.Title;
+        iataCode = Model.IATACode;
+        axFee = Model.AxFee;
+        voidBookTime = Model.VoidBookTime;
+        voidTicketTime = Model.VoidTicketTime; 
+    }
+}
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group ">
+            <label class="form-label">Sân bay: @title.ToUpper()</label>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Mã IATA</label>
+                    <div id="txtIataCode" type="text" class="form-control disabled">@iataCode</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Phí sân bay(Ax)</label>
+                    <input id="txtAxFee" name="txtAxFee" maxlength="8" type="text" class="form-control" value="@axFee" data-currency="true" />
+                    <span id="lblAxFee" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <div class="form-line">
+                        <label class="form-label">T.Gian hủy đặt chỗ</label>
+                        <input id="txtVoidBookTime" name="txtVoidTicketTime" maxlength="2" type="text" class="form-control" value="@voidBookTime" />
+                    </div>
+                    <span id="lblVoidBookTime" class="message msg-box"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <div class="form-line">
+                        <label class="form-label">T.Gian hủy vé</label>
+                        <input id="txtVoidTicketTime" name="txtVoidTicketTime" maxlength="2" type="text" class="form-control" value="@voidTicketTime" />
+                    </div>
+                    <span id="lblVoidTicketTime" class="message msg-box"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group  text-right ">
+            <button id="btnReset" class="btn btn-danger" type="reset">@Helper.Language.Resource.Label.BtnReset</button>
+            <button id="btnSetting" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnUpdate</button>
+        </div>
+        @{
+            if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
+            {
+                <div class="form-group text-right att-data-list">
+                    <a href="@Helper.Page.Navigate.PathDataList()">
+                        @Helper.Language.Resource.Label.DataList <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+<input id="txtID" type="hidden" value="@id" />
+
+@section scripts{
+    <script src="~/Areas/Management/_script/app-flight.js"></script>
+}
+
+

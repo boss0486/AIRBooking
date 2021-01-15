@@ -25,9 +25,19 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult Setting(string id)
+        {
+            AirportSetting airportSetting = new AirportSetting();
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                AirportService airportService = new AirportService();
+                airportSetting = airportService.GetAirportConfigModel(id);
+            }
+            return View(airportSetting);
+        }
         public ActionResult Update(string id)
         {
-            AirportResult airAirport = new AirportResult();
+            Airport airAirport = new Airport();
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AirportService airportService = new AirportService();
@@ -42,10 +52,16 @@ namespace WebApplication.Management.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 AirportService airportService = new AirportService();
-                airAirport = airportService.GetAirAportModel(id);
+                airAirport = airportService.ViewAirAportModel(id);
             }
             return View(airAirport);
         }
+
+        public ActionResult ExSetting()
+        {
+            return View();
+        }
+
         //##########################################################################################################################################################################################################################################################
 
 
@@ -112,6 +128,37 @@ namespace WebApplication.Management.Controllers
             {
                 return Notifization.TEST("::" + ex);
             }
+        }
+
+        [HttpPost]
+        [Route("Action/Setting")]
+        public ActionResult Setting(AirportSetting model)
+        {
+            try
+            {
+                using (var service = new AirportService())
+                    return service.Setting(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
+        }
+        [HttpPost]
+        [Route("Action/ExSetting")]
+        public ActionResult ExSetting(SearchModel model)
+        {
+            try
+            {
+                using (var service = new AirportConfigService())
+                    return service.ExSetting(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+
         }
     }
 }

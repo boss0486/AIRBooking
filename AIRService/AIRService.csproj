@@ -137,9 +137,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\AirportBookConfig\Entities\AirportBookConfig.cs" />
-    <Compile Include="Application\AirportBookConfig\Enum\AirportBookConfigEnum.cs" />
-    <Compile Include="Application\AirportBookConfig\Services\AirportBookConfigService.cs" />
+    <Compile Include="Application\AirportConfig\Entities\AirportBookConfig.cs" />
+    <Compile Include="Application\AirportConfig\Enum\AirportConfigEnum.cs" />
+    <Compile Include="Application\AirportConfig\Services\AirportBookConfigService.cs" />
     <Compile Include="Application\AirCompany\Entities\Company.cs" />
     <Compile Include="Application\AirCompany\Services\CompanyService.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimitPayment.cs" />

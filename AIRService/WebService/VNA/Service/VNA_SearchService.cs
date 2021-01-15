@@ -83,9 +83,18 @@ namespace AIRService.Service
                     return Notifization.Invalid(MessageText.NotService);
                 // seach data in web service
                 // tax Ax:
+                AirportConfigService airportConfigService = new AirportConfigService();
                 AirportService airportService = new AirportService();
-                double axFeeGo = airportService.GetAlls(m => m.IATACode == _originLocation).FirstOrDefault().AxFee;
-                double axFeeReturn = airportService.GetAlls(m => m.IATACode == _destinationLocation).FirstOrDefault().AxFee;
+                Airport airportGo = airportService.GetAlls(m => m.IATACode == _originLocation).FirstOrDefault();
+                if (airportGo == null)
+                    return Notifization.Invalid("Lỗi không tìm thấy sân bay");
+                //
+                Airport airportReturn = airportService.GetAlls(m => m.IATACode == _destinationLocation).FirstOrDefault();
+                if (airportReturn == null)
+                    return Notifization.Invalid("Lỗi không tìm thấy sân bay");
+                //
+                double axFeeGo = airportConfigService.GetAlls(m => m.AirportID == airportGo.ID).FirstOrDefault().AxFee;
+                double axFeeReturn = airportConfigService.GetAlls(m => m.AirportID == airportReturn.ID).FirstOrDefault().AxFee;
                 //
                 VNA_AirAvailLLSRQService airAvailLLSRQService = new VNA_AirAvailLLSRQService();
                 VNAFareLLSRQService vnaFareLLSRQService = new VNAFareLLSRQService();
@@ -290,11 +299,12 @@ namespace AIRService.Service
                 }
                 //////////// Flight >> return
                 //////////// ****************************************************************************************************************************
-                // reset data
+                // reset data 
                 lstFlightSegment = new List<FlightSegment>();
                 _originLocation = model.DestinationLocation;
                 _destinationLocation = model.OriginLocation;
                 _departureDateTime = model.ReturnDateTime;
+
                 List<XMLObject.AirAvailLLSRQ.OriginDestinationOption> originDestinationOptionListReturn = new List<XMLObject.AirAvailLLSRQ.OriginDestinationOption>();
                 XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResultReturn = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
                 {

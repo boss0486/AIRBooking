@@ -4,24 +4,20 @@
 
 @using WebCore.Services;
 @using WebCore.Model.Services;
-@using WebCore.Model.Services;
 
-@Html.Partial("~/Areas/Management/Views/_ViewSearchPatial.cshtml", null)
+@Html.Partial("~/Areas/Management/Views/_ViewSearchConfigPatial.cshtml", null)
 @* control ******************************************************************************************************@
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
+                <th class="tbcol-date">ITA</th>
                 <th class="tbcol-title">Sân bay</th>
                 <th class="tbcol-none">T.Gian hủy đặt chỗ</th>
-                <th class="tbcol-none">T.Gian vé</th>
-                <th class="tbcol-none">Mô tả</th>
-                <th class="tbcol-active">T.Thái</th>
+                <th class="tbcol-none">T.Gian hủy vé</th>
+                <th class="tbcol-none">Phí sân bay(ax)</th>
                 <th class="tbcol-date">Ngày tạo</th>
-                <th class="tbcol-action">
-                    ACT
-                </th>
             </tr>
         </thead>
         <tbody id="TblData"></tbody>
@@ -29,10 +25,10 @@
 </div>
 <div id="Pagination"></div>
 @section scripts{
-    <script src="~/Areas/Management/_script/airport-book-config.js"></script>
+    <script src="~/Areas/Management/_script/airport-config.js"></script>
     <script type="text/javascript">
         $(function () {
-            AirportBookConfigController.DataList(1);
+            AirportConfigController.ExSetting(1);
         });
     </script>
 }

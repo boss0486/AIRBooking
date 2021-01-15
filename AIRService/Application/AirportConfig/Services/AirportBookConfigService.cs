@@ -15,13 +15,13 @@ using WebCore.Model.Entities;
 
 namespace WebCore.Services
 {
-    public interface IAirportBookConfigService : IEntityService<Entities.AirportBookConfig> { }
-    public class AirportBookConfigService : EntityService<Entities.AirportBookConfig>, IAirportBookConfigService
+    public interface IAirportConfigService : IEntityService<Entities.AirportConfig> { }
+    public class AirportConfigService : EntityService<Entities.AirportConfig>, IAirportConfigService
     {
-        public AirportBookConfigService() : base() { }
-        public AirportBookConfigService(System.Data.IDbConnection db) : base(db) { }
+        public AirportConfigService() : base() { }
+        public AirportConfigService(System.Data.IDbConnection db) : base(db) { } 
         //##############################################################################################################################################################################################################################################################
-        public ActionResult DataList(SearchModel model)
+        public ActionResult ExSetting(SearchModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -43,7 +43,7 @@ namespace WebCore.Services
                 Page = model.Page,
                 AreaID = model.AreaID,
                 TimeZoneLocal = model.TimeZoneLocal
-            }, ectColumn: "ap.");
+            }, ectColumn: "apf.");
             if (searchResult != null)
             {
                 if (searchResult.Status == 1)
@@ -52,12 +52,13 @@ namespace WebCore.Services
                     return Notifization.Invalid(searchResult.Message);
             }
             //
-            string sqlQuery = $@"SELECT ap.ID, ap.AreaInlandID, ap.Title, ap.IATACode, ap.AxFee, apf.VoidBookTime, apf.VoidTicketTime FROM App_Airport as ap
-            LEFT JOIN App_AirportBookConfig apf ON apf.AirportID = ap.ID 
+            string sqlQuery = $@"SELECT ap.ID, ap.AreaInlandID, ap.Title, ap.IATACode, apf.AxFee, apf.VoidBookTime, apf.VoidTicketTime, ISNULL(apf.Enabled,0), apf.CreatedDate FROM App_Airport as ap
+            LEFT JOIN App_AirportConfig apf ON apf.AirportID = ap.ID 
             WHERE (dbo.Uni2NONE(ap.Title) LIKE N'%'+ @Query +'%' OR ap.IATACode LIKE N'%'+ @Query +'%') {whereCondition} ORDER BY ap.Title ASC";
-            var dtList = _connection.Query<AirportBookConfigResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
+            var dtList = _connection.Query<AirportConfigResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
+
             if (dtList.Count == 0)
-                return Notifization.NotFound(MessageText.NotFound);
+                return Notifization.NotFound(MessageText.NotFound + sqlQuery);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
             if (result.Count == 0 && page > 1)
             {
@@ -77,7 +78,7 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
-        public ActionResult AirportBookConfig_Setting(AirportBookConfig_SettingModel model)
+        public ActionResult AirportConfig_Setting(AirportConfig_SettingModel model)
         {
             if (model == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -87,14 +88,14 @@ namespace WebCore.Services
             if (string.IsNullOrWhiteSpace(airportId) || string.IsNullOrWhiteSpace(val))
                 return Notifization.Invalid(MessageText.Invalid);
             //
-            AirportBookConfigService airportBookConfigService = new AirportBookConfigService(_connection);
+            AirportConfigService airportConfigService = new AirportConfigService(_connection);
             // axFee 
-            AirportBookConfig airportBookConfig = airportBookConfigService.GetAlls(m => m.AirportID == airportId).FirstOrDefault();
-            if (model.TypeID == (int)AirportBookConfigEnum.AirportBookConfig_SettingType.AxFee)
+            AirportConfig airportConfig = airportConfigService.GetAlls(m => m.AirportID == airportId).FirstOrDefault();
+            if (model.TypeID == (int)AirportConfigEnum.AirportConfig_SettingType.AxFee)
             {
-                if (airportBookConfig == null)
+                if (airportConfig == null)
                 {
-                    airportBookConfigService.Create<string>(new AirportBookConfig
+                    airportConfigService.Create<string>(new AirportConfig
                     {
                         AirportID = airportId,
                         AxFee = Convert.ToDouble(val),
@@ -102,16 +103,16 @@ namespace WebCore.Services
                         VoidTicketTime = 0
                     });
                 }
-                airportBookConfig.AxFee = Convert.ToDouble(val);
-                airportBookConfigService.Update(airportBookConfig);
+                airportConfig.AxFee = Convert.ToDouble(val);
+                airportConfigService.Update(airportConfig);
                 return Notifization.Success(MessageText.UpdateSuccess);
             }
             //VoidBookTime
-            if (model.TypeID == (int)AirportBookConfigEnum.AirportBookConfig_SettingType.VoidBookTime)
+            if (model.TypeID == (int)AirportConfigEnum.AirportConfig_SettingType.VoidBookTime)
             {
-                if (airportBookConfig == null)
+                if (airportConfig == null)
                 {
-                    airportBookConfigService.Create<string>(new AirportBookConfig
+                    airportConfigService.Create<string>(new AirportConfig
                     {
                         AirportID = airportId,
                         AxFee = 0,
@@ -120,16 +121,16 @@ namespace WebCore.Services
                     });
                 }
 
-                airportBookConfig.VoidBookTime = Convert.ToInt32(val);
-                airportBookConfigService.Update(airportBookConfig);
+                airportConfig.VoidBookTime = Convert.ToInt32(val);
+                airportConfigService.Update(airportConfig);
                 return Notifization.Success(MessageText.UpdateSuccess);
             }
             //VoidTicketTime
-            if (model.TypeID == (int)AirportBookConfigEnum.AirportBookConfig_SettingType.VoidTicketTime)
+            if (model.TypeID == (int)AirportConfigEnum.AirportConfig_SettingType.VoidTicketTime)
             {
-                if (airportBookConfig == null)
+                if (airportConfig == null)
                 {
-                    airportBookConfigService.Create<string>(new AirportBookConfig
+                    airportConfigService.Create<string>(new AirportConfig
                     {
                         AirportID = airportId,
                         AxFee = 0,
@@ -137,34 +138,34 @@ namespace WebCore.Services
                         VoidTicketTime = Convert.ToInt32(val)
                     });
                 }
-                airportBookConfig.VoidTicketTime = Convert.ToInt32(val);
-                airportBookConfigService.Update(airportBookConfig);
+                airportConfig.VoidTicketTime = Convert.ToInt32(val);
+                airportConfigService.Update(airportConfig);
                 return Notifization.Success(MessageText.UpdateSuccess);
             }
             return Notifization.Invalid(MessageText.Invalid);
         }
 
         //##############################################################################################################################################################################################################################################################
-        public AirportBookConfig GetAirportBookConfig(string id)
+        public AirportConfig GetAirportConfig(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_AirportBookConfig WHERE ID = @ID";
-            AirportBookConfig airAirFeeAgent = _connection.Query<AirportBookConfig>(sqlQuery, new { AgentID = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_AirportConfig WHERE ID = @ID";
+            AirportConfig airAirFeeAgent = _connection.Query<AirportConfig>(sqlQuery, new { AgentID = id }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
                 return null;
             //
             return airAirFeeAgent;
         }
-        public AirportBookConfigResult ViewAirportBookConfig(string id)
+        public AirportConfigResult ViewAirportConfig(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
-            string sqlQuery = @"SELECT TOP (1) * FROM App_AirportBookConfig WHERE ID = @ID";
-            AirportBookConfigResult airAirFeeAgent = _connection.Query<AirportBookConfigResult>(sqlQuery, new { ID = id }).FirstOrDefault();
+            string sqlQuery = @"SELECT TOP (1) * FROM App_AirportConfig WHERE ID = @ID";
+            AirportConfigResult airAirFeeAgent = _connection.Query<AirportConfigResult>(sqlQuery, new { ID = id }).FirstOrDefault();
             //
             if (airAirFeeAgent == null)
                 return null;

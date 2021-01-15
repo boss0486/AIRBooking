@@ -25,9 +25,8 @@ namespace WebCore.Entities
         public string AreaInlandID { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
-        public string Summary { get; set; } 
+        public string Summary { get; set; }
         public string IATACode { get; set; }
-        public double AxFee { get; set; }
     }
 
     public class AirportIDModel
@@ -43,7 +42,6 @@ namespace WebCore.Entities
         public string Alias { get; set; }
         public string Summary { get; set; }
         public string IATACode { get; set; }
-        public double AxFee { get; set; }
         public int Enabled { get; set; }
     }
 
@@ -54,23 +52,22 @@ namespace WebCore.Entities
     public class AirportResult : WEBModelResult
     {
         public string ID { get; set; }
-        public string NationalID { get; set; } 
-        public string AreaInlandID { get; set; }
+        public string AreaNational { get; set; }
+        public string National { get; set; }
+        public string AreaInland { get; set; }
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Summary { get; set; }
-
-        [NotMapped]
-        public string AreaName
-        {
-            get
-            {
-                return AreaInlandService.GetAreaName(AreaInlandID); ;
-            }
-        }
         public string IATACode { get; set; }
+    }
+    public class AirportSetting
+    {
+        public string ID { get; set; }
+        public string Title { get; set; }
+        public string IATACode { get; set; }
+        public int VoidBookTime { get; set; }
+        public int VoidTicketTime { get; set; }
         public double AxFee { get; set; }
-
     }
     public class AirportOption
     {
@@ -83,11 +80,11 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
         public string Departure { get; set; }
-        public string Destination { get; set; } 
+        public string Destination { get; set; }
     }
 
     public class AirportSearch : SearchModel
     {
         public string ProviceID { get; set; }
-    } 
+    }
 }

@@ -11,10 +11,10 @@ using WebCore.Services;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Dapper.Table("App_AirportBookConfig")]
-    public class AirportBookConfig : WEBModel
+    [Dapper.Table("App_AirportConfig")]
+    public class AirportConfig : WEBModel
     {
-        public AirportBookConfig()
+        public AirportConfig()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -27,19 +27,19 @@ namespace WebCore.Entities
         public double AxFee { get; set; }
     }
 
-    public class AirportBookConfigIDModel
+    public class AirportConfigIDModel
     {
         public string ID { get; set; }
     }
 
-    public class AirportBookConfig_SettingModel
+    public class AirportConfig_SettingModel
     {
         public string AirportID { get; set; }
         public int TypeID { get; set; }
         public string Value { get; set; }
     }
 
-    public class AirportBookConfigResult
+    public class AirportConfigResult : WEBModelResult
     {
         public string ID { get; set; }
         public string Title { get; set; }
@@ -49,4 +49,5 @@ namespace WebCore.Entities
         public int VoidTicketTime { get; set; }
         public double AxFee { get; set; }
     }
+     
 }

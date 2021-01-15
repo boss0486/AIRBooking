@@ -10,7 +10,7 @@
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
 
-@model WebCore.Entities.AirportResult
+@model WebCore.Entities.Airport
 
 @{
 
@@ -20,19 +20,18 @@
     string title = string.Empty;
     string summary = string.Empty;
     string iataCode = string.Empty;
-    string axFee = "";
     string categoryId = string.Empty;
     string enabled = string.Empty;
 
     if (Model != null)
     {
         id = Model.ID;
-        nationalId = Model.NationalID;
-        areaInland = Model.AreaInlandID;
         title = Model.Title;
         summary = Model.Summary;
         iataCode = Model.IATACode;
-        axFee = Helper.Page.Library.FormatCurrency(Model.AxFee, false);
+        nationalId = Model.NationalID;
+        areaInland = Model.AreaInlandID;
+        //axFee = Helper.Page.Library.FormatCurrency(Model.AxFee, false);
         if (Model.Enabled == (int)ModelEnum.Enabled.ENABLED)
         {
             enabled = "checked";
@@ -78,13 +77,6 @@
                         <input id="txtIataCode" name="txtIataCode" maxlength="5" type="text" class="form-control" value="@iataCode" />
                     </div>
                     <span id="lblIataCode" class="message msg-box"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="form-label">Phí sân bay(Ax)</label>
-                    <input id="txtAxFee" name="txtAxFee" maxlength="7" type="text" class="form-control" value="@axFee" data-currency="true" />
-                    <span id="lblAxFee" class="message msg-box"></span>
                 </div>
             </div>
         </div>

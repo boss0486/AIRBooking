@@ -25,7 +25,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -181,7 +181,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -217,7 +217,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -253,7 +253,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -289,7 +289,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -325,7 +325,19 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
+      },
+      {
+        "KeyID": "Setting",
+        "Method": "Setting",
+        "APIRouter": "Action/Setting",
+        "Title": "T.Lập"
+      },
+      {
+        "KeyID": "ExSetting",
+        "Method": "ExSetting",
+        "APIRouter": "Action/ExSetting",
+        "Title": "T.Lập (ex)"
       },
       {
         "KeyID": "Update",
@@ -361,7 +373,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -397,7 +409,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -433,7 +445,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -469,7 +481,7 @@
         "KeyID": "Setting",
         "Method": "Setting",
         "APIRouter": "Action/Setting",
-        "Title": "Thiết lập"
+        "Title": "T.Lập"
       },
       {
         "KeyID": "Payment",
@@ -499,7 +511,7 @@
         "KeyID": "Setting",
         "Method": "Setting",
         "APIRouter": "Action/Setting",
-        "Title": "Thiết lập"
+        "Title": "T.Lập"
       },
       {
         "KeyID": "Details",
@@ -547,7 +559,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -577,7 +589,7 @@
         "KeyID": "Setting",
         "Method": "Setting",
         "APIRouter": "Action/Setting",
-        "Title": "Thiết lập"
+        "Title": "T.Lập"
       }
     ]
   },
@@ -595,7 +607,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -631,7 +643,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",
@@ -661,7 +673,7 @@
         "KeyID": "Update",
         "Method": "Update",
         "APIRouter": "",
-        "Title": "Thiết lập"
+        "Title": "T.Lập"
       },
       {
         "KeyID": "Details",
@@ -709,7 +721,7 @@
         "KeyID": "Setting",
         "Method": "Setting",
         "APIRouter": "Action/Setting",
-        "Title": "Thiết lập"
+        "Title": "T.Lập"
       },
       {
         "KeyID": "Details",
@@ -739,7 +751,7 @@
         "KeyID": "Create",
         "Method": "Create",
         "APIRouter": "Action/Create",
-        "Title": "Tạo"
+        "Title": "T.Mới"
       },
       {
         "KeyID": "Update",

@@ -37,56 +37,56 @@ namespace WebCore.Model.Services
                 {
                     string strDate = TimeFormat.FormatToServerDate(today);
                     string dtime = Convert.ToDateTime(strDate).ToString("yyyy-MM-dd");
-                    whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) = cast('{dtime}' as Date)";
                 }
                 // Yesterday
                 if (timeExpress == 2)
                 {
                     DateTime dtime = today.AddDays(-1);
-                    whereCondition = " AND cast(" + columName + " as Date) = cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) = cast('{dtime}' as Date)";
                 }
                 // ThreeDayAgo
                 if (timeExpress == 3)
                 {
                     DateTime dtime = today.AddDays(-3);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
                 // SevenDayAgo
                 if (timeExpress == 4)
                 {
                     DateTime dtime = today.AddDays(-7);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
                 // OneMonthAgo
                 if (timeExpress == 5)
                 {
                     DateTime dtime = today.AddMonths(-1);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
 
                 // ThreeMonthAgo
                 if (timeExpress == 6)
                 {
                     DateTime dtime = today.AddMonths(-3);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
                 // SixMonthAgo
                 if (timeExpress == 7)
                 {
                     DateTime dtime = today.AddMonths(-6);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
                 // OneYearAgo
                 if (timeExpress == 8)
                 {
                     DateTime dtime = today.AddYears(-1);
-                    whereCondition = " AND cast(" + columName + " as Date) >= cast('" + dtime + "' as Date)";
+                    whereCondition = $" AND cast({columName} as Date) >= cast('{dtime}' as Date)";
                 }
 
                 if (status == (int)ModelEnum.Enabled.ENABLED)
-                    whereCondition += $" AND {ectColumn}Enabled = 1 ";
+                    whereCondition += $" AND ISNULL({ectColumn}Enabled,0) = 1 ";
                 else if (status == (int)ModelEnum.Enabled.DISABLE)
-                    whereCondition += $" AND {ectColumn}Enabled = 0 ";
+                    whereCondition += $" AND ISNULL({ectColumn}Enabled,0) = 0 ";
 
 
                 return new SearchResult()
@@ -100,7 +100,7 @@ namespace WebCore.Model.Services
                 if (!string.IsNullOrWhiteSpace(strTimeStart))
                 {
                     DateTime dateTimeStart = Helper.TimeData.TimeFormat.FormatToServerDate(strTimeStart);
-                    whereCondition += " AND cast(" + columName + " as Date) >= cast('" + dateTimeStart + "' as Date)";
+                    whereCondition += $" AND cast({columName} as Date) >= cast('{dateTimeStart}' as Date)";
                 }
                 //
                 if (!string.IsNullOrWhiteSpace(strTimeEnd))
@@ -116,13 +116,13 @@ namespace WebCore.Model.Services
                             Message = "Thời gian kết thúc không hợp lệ"
                         };
                     //
-                    whereCondition += " AND cast(" + columName + " as Date) <= cast('" + dateTimeEnd + "' as Date)";
+                    whereCondition += $" AND cast({columName} as Date) <= cast('{dateTimeEnd}' as Date)";
                 }
                 //
                 if (status == (int)ModelEnum.Enabled.ENABLED)
-                    whereCondition += $" AND {ectColumn}Enabled = 1 ";
+                    whereCondition += $" AND ISNULL({ectColumn}Enabled,0) = 1 ";
                 else if (status == (int)ModelEnum.Enabled.DISABLE)
-                    whereCondition += $" AND {ectColumn}Enabled = 0 ";
+                    whereCondition += $" AND ISNULL({ectColumn}Enabled,0) = 0 ";
                 //
                 return new SearchResult()
                 {
@@ -191,8 +191,8 @@ namespace WebCore.Model.Services
             try
             {
                 var productStatusModels = new List<StatusModel>{
-                    new StatusModel(1, "Hiển thị"),
-                    new StatusModel(0, "Ẩn")
+                    new StatusModel(1, "Kích hoạt"),
+                    new StatusModel(0, "Chưa kích hoạt")
                 };
                 string result = string.Empty;
                 foreach (var item in productStatusModels)

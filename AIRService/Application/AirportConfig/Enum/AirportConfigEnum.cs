@@ -1,8 +1,8 @@
 ﻿namespace WebCore.ENM
 {
-    public class AirportBookConfigEnum
+    public class AirportConfigEnum
     {
-        public enum AirportBookConfig_SettingType
+        public enum AirportConfig_SettingType
         {
             None = 0,
             AxFee = 1,

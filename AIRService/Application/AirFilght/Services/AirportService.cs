@@ -51,13 +51,19 @@ namespace WebCore.Services
                 else
                     return Notifization.Invalid(searchResult.Message);
             }
-            //
-            string areaId = model.AreaID;
-            if (!string.IsNullOrWhiteSpace(areaId) && areaId != "-")
-                whereCondition += " AND AreaID = @AreaID ";
-            // query
-            string sqlQuery = @"SELECT * FROM App_Airport WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%'" + whereCondition + " ORDER BY [Title] ASC";
-            var dtList = _connection.Query<AirportResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), AreaID = areaId }).ToList();
+            //  
+            string sqlQuery = $@"
+            SELECT ap.*, anl.Title as 'AreaNational', al.Title as 'National',ai.Title as 'AreaInland' FROM App_Airport as ap 
+            LEFT JOIN App_AreaInland as ai ON ai.ID = ap.AreaInlandID
+            LEFT JOIN App_National al ON al.ID =  ai.NationalID 
+            LEFT JOIN App_AreaNational anl ON anl.ID = al.AreaNationalID
+            WHERE (dbo.Uni2NONE(ap.IATACode) LIKE N'%'+ @Query +'%' 
+            OR dbo.Uni2NONE(ap.Title) LIKE N'%'+ @Query +'%' 
+            OR dbo.Uni2NONE(anl.Title) LIKE N'%'+ @Query +'%' 
+            OR dbo.Uni2NONE(al.Title) LIKE N'%'+ @Query +'%' 
+            OR dbo.Uni2NONE(ai.Title) LIKE N'%'+ @Query +'%')
+            {whereCondition}  ORDER BY ap.Title ASC";
+            var dtList = _connection.Query<AirportResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
@@ -79,7 +85,54 @@ namespace WebCore.Services
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
         }
 
-        //##############################################################################################################################################################################################################################################################
+        public ActionResult Setting(AirportSetting model)
+        {
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string id = model.ID;
+            int voidBookTime = model.VoidBookTime;
+            int voidTicketTime = model.VoidTicketTime;
+            double axfee = model.AxFee;
+            //
+            if (string.IsNullOrWhiteSpace(id))
+                return Notifization.Invalid(MessageText.Invalid);
+            //  
+            id = id.ToLower();
+            AirportConfigService airportConfigService = new AirportConfigService(_connection);
+            AirportService flightService = new AirportService(_connection);
+            Airport flight = flightService.GetAlls(m => m.ID == id).FirstOrDefault();
+            if (flight == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            if (axfee < 0)
+                return Notifization.Invalid("Phí sân bay không hợp lệ");
+            //
+            if (voidBookTime < 0)
+                return Notifization.Invalid("T.gian hủy đặt chỗ không hợp lệ");
+            //
+            if (voidTicketTime < 0)
+                return Notifization.Invalid("T.gian hủy đặt vé không hợp lệ");
+            //
+            AirportConfig airportConfig = airportConfigService.GetAlls(m => m.AirportID == id).FirstOrDefault();
+            if (airportConfig == null)
+            {
+                airportConfigService.Create<string>(new AirportConfig
+                {
+                    AirportID = id,
+                    AxFee = axfee,
+                    VoidBookTime = voidBookTime,
+                    VoidTicketTime = voidTicketTime
+                });
+            }
+            // update
+            airportConfig.AxFee = axfee;
+            airportConfig.VoidBookTime = voidTicketTime;
+            airportConfig.VoidTicketTime = voidTicketTime;
+            airportConfigService.Update(airportConfig);
+            //
+            return Notifization.Success(MessageText.UpdateSuccess);
+        }
         public ActionResult Create(AirportCreateModel model)
         {
             if (model == null)
@@ -87,7 +140,6 @@ namespace WebCore.Services
             //
             string nationalId = model.NationalID;
             string areaInlandId = model.AreaInlandID;
-            double axfee = model.AxFee;
             string title = model.Title;
             //
             AirportService flightService = new AirportService(_connection);
@@ -104,10 +156,7 @@ namespace WebCore.Services
             flight = flightService.GetAlls(m => m.IATACode.ToLower() == model.IATACode.ToLower()).FirstOrDefault();
             if (flight != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
-            //
-            if (axfee < 0)
-                return Notifization.Invalid("Phí sân bay không hợp lệ");
-            //
+            // 
             flightService.Create<string>(new Entities.Airport()
             {
                 NationalID = nationalId,
@@ -116,12 +165,10 @@ namespace WebCore.Services
                 Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
                 Summary = model.Summary,
                 IATACode = model.IATACode.ToUpper(),
-                AxFee = axfee,
                 Enabled = model.Enabled
             });
             return Notifization.Success(MessageText.CreateSuccess);
         }
-        //##############################################################################################################################################################################################################################################################
         public ActionResult Update(AirportUpdateModel model)
         {
             if (model == null)
@@ -130,7 +177,6 @@ namespace WebCore.Services
             string id = model.ID;
             string nationalId = model.NationalID;
             string areaInlandId = model.AreaInlandID;
-            double axfee = model.AxFee;
             string title = model.Title;
             //
             if (string.IsNullOrWhiteSpace(id))
@@ -158,29 +204,54 @@ namespace WebCore.Services
             flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.IATACode) && m.IATACode.ToLower() == model.IATACode.ToLower() && flight.ID != id).FirstOrDefault();
             if (flightValid != null)
                 return Notifization.Invalid("Mã IATA đã được sử dụng");
-            //
-            if (axfee < 0)
-                return Notifization.Invalid("Phí sân bay không hợp lệ");
-            //
+            // 
             flight.AreaInlandID = model.AreaInlandID;
             flight.NationalID = model.NationalID;
             flight.Title = title;
             flight.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
             flight.Summary = model.Summary;
             flight.IATACode = model.IATACode.ToUpper();
-            flight.AxFee = axfee;
             flight.Enabled = model.Enabled;
             flightService.Update(flight);
             //
             return Notifization.Success(MessageText.UpdateSuccess);
         }
-        public AirportResult GetAirAportModel(string id)
+        public Airport GetAirAportModel(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            string sqlQuery = @"SELECT TOP (1) * FROM App_Airport WHERE ID = @Query";
+            Airport airAirport = _connection.Query<Airport>(sqlQuery, new { Query = id }).FirstOrDefault();
+            //
+            if (airAirport == null)
+                return null;
+            //
+            return airAirport;
+        }
+        public AirportResult ViewAirAportModel(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return null;
             //
             string sqlQuery = @"SELECT TOP (1) * FROM App_Airport WHERE ID = @Query";
             AirportResult airAirport = _connection.Query<AirportResult>(sqlQuery, new { Query = id }).FirstOrDefault();
+            //
+            if (airAirport == null)
+                return null;
+            //
+            return airAirport;
+        }
+
+        public AirportSetting GetAirportConfigModel(string id)
+        {
+
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            string sqlQuery = @"SELECT ap.ID, ap.Title,ap.IATACode, apf.AxFee, apf.VoidBookTime, apf.VoidTicketTime FROM App_Airport as ap
+            LEFT JOIN App_AirportConfig as apf on apf.AirportID = ap.ID WHERE ap.ID = @Query";
+            AirportSetting airAirport = _connection.Query<AirportSetting>(sqlQuery, new { Query = id }).FirstOrDefault();
             //
             if (airAirport == null)
                 return null;
