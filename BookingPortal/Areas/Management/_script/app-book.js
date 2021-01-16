@@ -65,7 +65,37 @@ var AirBookController = {
                     console.log('::' + MessageText.NotService);
                 }
             });
-        }); 
+        });
+        //
+        $('#btnSync').off('click').on('click', function () {
+            //   
+            var txtPnr = $('#txtPnr').val();
+            var model = {
+                PnrCode: txtPnr
+            };
+            //
+            AjaxFrom.POST({
+                url: `/Management/AirOrder/Action/PnrSync`,
+                data: model,
+                success: function (result) {
+                    if (result !== null) {
+                        if (result.status === 200) {
+                            Notifization.Error(result.message);
+                            AirBookController.DataList(1);
+                        }
+                        else {
+                            Notifization.Error(result.message);
+                            return;
+                        }
+                    }
+                    //Message.Error(MessageText.NotService);
+                    return;
+                },
+                error: function (result) {
+                    console.log('::' + MessageText.NotService);
+                }
+            });
+        });
     },
     DataList: function (page) {
         //   
@@ -185,7 +215,7 @@ var AirBookController = {
             }
         });
     },
-    VoidBook: function (id) {   
+    VoidBook: function (id) {
         var model = {
             ID: id
         };
@@ -214,7 +244,7 @@ var AirBookController = {
     },
     ConfirmExport: function (id) {
         Confirm.ConfirmYN(id, AirBookController.ExportTiket, Confirm.Text_ExportTicket);
-    }, 
+    },
     ExportTiket: function (id) {
         var model = {
             ID: id
@@ -1097,7 +1127,7 @@ $(document).on('click', '#btnBooking', function () {
                 if (response.status == 200) {
                     Notifization.Success(response.message);
                     location.href = response.data;
-                    Cookies.DelCookie("FlightOrder"); 
+                    Cookies.DelCookie("FlightOrder");
                     return;
                 }
                 Notifization.Error(response.message);

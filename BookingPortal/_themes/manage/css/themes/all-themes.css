@@ -87,11 +87,29 @@
     .theme-blue .sidebar .menu .list a span i {
         color: #2196F3;
     }
-/*theme-item*************************************************************************************************************************************************/
-.jconfirm .jconfirm-box .jconfirm-buttons button {
-    border-radius: 2px;
-    font-size: unset;
-}
+
+    .theme-blue .input-group .input-group-addon, .theme-blue .input-group .form-control, .theme-blue .input-group .-icons {
+        border-color: #ABDED4;
+    }
+
+    .theme-blue .input-group .input-group-addon {
+        background-color: #d6ebe7; 
+    }
+
+    .theme-blue [data-toggle="dropdown"] {
+        border-color: #ABDED4;
+    }
+    .theme-blue .btn-default:active, .theme-blue .btn-default.active, .theme-blue .open > .dropdown-toggle.btn-default {
+        color: #333;
+        background-color: #FFF;
+        background-image: none;
+        border-color: #ABDED4;
+    }
+    /*theme-item*************************************************************************************************************************************************/
+    .jconfirm .jconfirm-box .jconfirm-buttons button {
+        border-radius: 2px;
+        font-size: unset;
+    }
 
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button {
     font-size: unset;

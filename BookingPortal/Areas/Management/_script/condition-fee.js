@@ -293,13 +293,13 @@ $(document).on("change", "#ddlFlightLocation05", function () {
                         var data = response.data;
                         if (data != null) {
 
-                            var resBookDesigCode = data.ResBookDesigCode; 
- 
+                            var resBookDesigCode = data.ResBookDesigCode;
+
                             $('#txtTimePlaceHolder05').val(data.TimePlaceHolder);
                             $('#txtTimeBookHolder05').val(data.TimeBookHolder);
                             var arrResBookDesigCode = [];
                             if (resBookDesigCode != null && resBookDesigCode.includes(",")) {
-                                var arrResBookDesigCode = resBookDesigCode.split(","); 
+                                var arrResBookDesigCode = resBookDesigCode.split(",");
                             }
                             $('input[name="cbxResBookDesig"]:checkbox').each(function (index, item) {
                                 if (arrResBookDesigCode.includes($(item).val()) == true) {
@@ -315,7 +315,7 @@ $(document).on("change", "#ddlFlightLocation05", function () {
                                 $('#applieState05').html(`<i class="far fa-hand-point-right"></i> <label class="col-pink">Không áp dụng</label>`);
 
                             }
-                            
+
                         }
                         return;
                     }
@@ -371,6 +371,9 @@ $(document).on("keyup", "#txtTimeBookHolder05", function () {
 });
 //###################################################################################################################################################
 $(document).on("change", "#ddlFlightLocationView05", function () {
+
+    console.log("::111");
+
     var ddlFlightLocationId = $(this).val();
     if (ddlFlightLocationId === "") {
         $('#lblFlightLocation05').html('Vui lòng chọn chặng bay');
@@ -388,22 +391,22 @@ $(document).on("change", "#ddlFlightLocationView05", function () {
                 if (response !== null) {
                     if (response.status === 200) {
                         //
+
                         var data = response.data;
                         if (data != null) {
 
                             var resBookDesigCode = data.ResBookDesigCode;
-
                             $('#txtTimePlaceHolderView05').html(data.TimePlaceHolder);
                             $('#txtTimeBookHolderView05').html(data.TimeBookHolder);
                             var arrResBookDesigCode = [];
                             if (resBookDesigCode != null && resBookDesigCode.includes(",")) {
-                                var arrResBookDesigCode = resBookDesigCode.split(",");
-                            }
-                            $('label[name="cbxResBookDesig"]').each(function (index, item) {
-                                if (arrResBookDesigCode.includes($(item).data("id")) == true) {
-                                    $(item).html(`<i class="fas fa-check-circle"></i>`);
+                                arrResBookDesigCode = resBookDesigCode.split(",");
+                            } 
+                            $('input[name="cbxResBookDesig"]').each(function (index, item) { 
+                                if (arrResBookDesigCode.includes($(item).val()) == true) {
+                                    $(item).attr("checked", "checked");
                                 } else {
-                                    $(item).html(`<i class="far fa-times-circle"></i>`);
+                                    $(item).removeAttr("checked");
                                 }
                             });
                             if (data.IsApplied) {

@@ -324,8 +324,6 @@ form p {
     }
 
     [type="checkbox"].filled-in:disabled:checked + label:after {
-        background-color: #BDBDBD;
-        border-color: #BDBDBD;
         cursor: not-allowed;
     }
 

@@ -144,16 +144,17 @@
             </p>
             <div class="row">
                 @{
-                    List<AIRService.WS.Entities.VNAResbookDesigCode> vNAResbookDesigCodes = AIRService.WS.Helper.VNALibrary.ListVNAResbookDesigCode();
-                    if (vNAResbookDesigCodes != null)
+                    AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
+                    List<AirResBookDesigOption> airResBookDesigs = airResBookDesigService.DataOption();
+                    if (airResBookDesigs != null)
                     {
-                        foreach (var item in vNAResbookDesigCodes)
+                        foreach (var item in airResBookDesigs)
                         {
-                            string idText = "cbxResbookDesig" + item.Title;
+                            string idText = "cbxResbookDesig" + item.CodeID;
                             <div class="col-md-2 col-sm-3 col-xs-6">
                                 <div class="form-group">
-                                    <input id="@idText" name="cbxResBookDesig" type="checkbox" class="filled-in" value="@item.Title" data-id="@item.ID" />
-                                    <label for="@idText">: @item.Title</label>
+                                    <input id="@idText" name="cbxResBookDesig" type="checkbox" class="filled-in" value="@item.CodeID" data-id="@item.ID" />
+                                    <label for="@idText">: @item.CodeID</label>
                                 </div>
                             </div>
 

@@ -34,7 +34,7 @@ namespace ApiPortalBooking.Models
 
     public class FlightSegment_ResBookDesigCode
     {
-        public int ResBookDesigCodeID { get; set; }
+        //public string ResBookDesigCodeID { get; set; }
         public string ResBookDesigCode { get; set; }
         public List<FareItem> FareItem { get; set; }
         public  string SellingFare { get; set; }

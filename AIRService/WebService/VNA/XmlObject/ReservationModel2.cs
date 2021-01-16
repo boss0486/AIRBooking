@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
 
-namespace XMLObject.ReservationRq
+namespace XMLObject.ReservationRq2
 {
 
     [XmlRoot(ElementName = "FlightsRange", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -19,8 +19,6 @@ namespace XMLObject.ReservationRq
     [XmlRoot(ElementName = "BookingDetails", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
     public class BookingDetails
     {
-        [XmlElement(ElementName = "Header", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Header { get; set; }
         [XmlElement(ElementName = "RecordLocator", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string RecordLocator { get; set; }
         [XmlElement(ElementName = "CreationTimestamp", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -90,38 +88,6 @@ namespace XMLObject.ReservationRq
         public string InhibitCode { get; set; }
     }
 
-    [XmlRoot(ElementName = "GenericSpecialRequest", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class GenericSpecialRequest
-    {
-        [XmlElement(ElementName = "Code", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Code { get; set; }
-        [XmlElement(ElementName = "FreeText", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string FreeText { get; set; }
-        [XmlElement(ElementName = "ActionCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ActionCode { get; set; }
-        [XmlElement(ElementName = "NumberInParty", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string NumberInParty { get; set; }
-        [XmlElement(ElementName = "AirlineCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string AirlineCode { get; set; }
-        [XmlElement(ElementName = "TicketNumber", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string TicketNumber { get; set; }
-        [XmlElement(ElementName = "FullText", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string FullText { get; set; }
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlAttribute(AttributeName = "msgType")]
-        public string MsgType { get; set; }
-    }
-
-    [XmlRoot(ElementName = "SpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class SpecialRequests
-    {
-        [XmlElement(ElementName = "GenericSpecialRequest", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<GenericSpecialRequest> GenericSpecialRequest { get; set; }
-    }
-
     [XmlRoot(ElementName = "Passenger", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
     public class Passenger
     {
@@ -129,8 +95,6 @@ namespace XMLObject.ReservationRq
         public string LastName { get; set; }
         [XmlElement(ElementName = "FirstName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string FirstName { get; set; }
-        [XmlElement(ElementName = "SpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public SpecialRequests SpecialRequests { get; set; }
         [XmlElement(ElementName = "Seats", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string Seats { get; set; }
         [XmlAttribute(AttributeName = "id")]
@@ -143,49 +107,6 @@ namespace XMLObject.ReservationRq
         public string NameAssocId { get; set; }
         [XmlAttribute(AttributeName = "elementId")]
         public string ElementId { get; set; }
-        [XmlElement(ElementName = "FrequentFlyer", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public FrequentFlyer FrequentFlyer { get; set; }
-        [XmlElement(ElementName = "Profiles", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public Profiles Profiles { get; set; }
-    }
-
-    [XmlRoot(ElementName = "FrequentFlyer", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class FrequentFlyer
-    {
-        [XmlElement(ElementName = "SupplierCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string SupplierCode { get; set; }
-        [XmlElement(ElementName = "Number", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Number { get; set; }
-        [XmlElement(ElementName = "TierLevelNumber", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string TierLevelNumber { get; set; }
-        [XmlElement(ElementName = "ShortText", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ShortText { get; set; }
-        [XmlElement(ElementName = "ReceivingCarrierCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ReceivingCarrierCode { get; set; }
-        [XmlElement(ElementName = "StatusCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string StatusCode { get; set; }
-        [XmlAttribute(AttributeName = "RPH")]
-        public string RPH { get; set; }
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-    }
-
-    [XmlRoot(ElementName = "Profile", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class Profile
-    {
-        [XmlElement(ElementName = "ProfileID", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ProfileID { get; set; }
-        [XmlElement(ElementName = "ProfileType", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ProfileType { get; set; }
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-    }
-
-    [XmlRoot(ElementName = "Profiles", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class Profiles
-    {
-        [XmlElement(ElementName = "Profile", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public Profile Profile { get; set; }
     }
 
     [XmlRoot(ElementName = "Passengers", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -220,13 +141,6 @@ namespace XMLObject.ReservationRq
     {
         [XmlAttribute(AttributeName = "Code")]
         public string Code { get; set; }
-    }
-
-    [XmlRoot(ElementName = "SegmentSpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class SegmentSpecialRequests
-    {
-        [XmlElement(ElementName = "GenericSpecialRequest", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<GenericSpecialRequest> GenericSpecialRequest { get; set; }
     }
 
     [XmlRoot(ElementName = "Pos", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -268,14 +182,14 @@ namespace XMLObject.ReservationRq
         public string DepartureAirport { get; set; }
         [XmlElement(ElementName = "DepartureAirportCodeContext", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string DepartureAirportCodeContext { get; set; }
-        [XmlElement(ElementName = "DepartureTerminalName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string DepartureTerminalName { get; set; }
-        [XmlElement(ElementName = "DepartureTerminalCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string DepartureTerminalCode { get; set; }
         [XmlElement(ElementName = "ArrivalAirport", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string ArrivalAirport { get; set; }
         [XmlElement(ElementName = "ArrivalAirportCodeContext", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string ArrivalAirportCodeContext { get; set; }
+        [XmlElement(ElementName = "ArrivalTerminalName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public string ArrivalTerminalName { get; set; }
+        [XmlElement(ElementName = "ArrivalTerminalCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public string ArrivalTerminalCode { get; set; }
         [XmlElement(ElementName = "OperatingAirlineCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string OperatingAirlineCode { get; set; }
         [XmlElement(ElementName = "OperatingAirlineShortName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -313,7 +227,7 @@ namespace XMLObject.ReservationRq
         [XmlElement(ElementName = "NumberInParty", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string NumberInParty { get; set; }
         [XmlElement(ElementName = "SegmentSpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public SegmentSpecialRequests SegmentSpecialRequests { get; set; }
+        public string SegmentSpecialRequests { get; set; }
         [XmlElement(ElementName = "inboundConnection", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public string InboundConnection { get; set; }
         [XmlElement(ElementName = "outboundConnection", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -360,12 +274,6 @@ namespace XMLObject.ReservationRq
         public string ResBookDesigCode { get; set; }
         [XmlAttribute(AttributeName = "Code")]
         public string Code { get; set; }
-        [XmlElement(ElementName = "ArrivalTerminalName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ArrivalTerminalName { get; set; }
-        [XmlElement(ElementName = "ArrivalTerminalCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string ArrivalTerminalCode { get; set; }
-        [XmlElement(ElementName = "DisclosureCarrier", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public DisclosureCarrier2 DisclosureCarrier2 { get; set; }
     }
 
     [XmlRoot(ElementName = "ProductName", Namespace = "http://services.sabre.com/res/or/v1_14")]
@@ -406,12 +314,12 @@ namespace XMLObject.ReservationRq
     {
         [XmlElement(ElementName = "DepartureAirport", Namespace = "http://services.sabre.com/res/or/v1_14")]
         public string DepartureAirport { get; set; }
-        [XmlElement(ElementName = "DepartureTerminalName", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string DepartureTerminalName { get; set; }
-        [XmlElement(ElementName = "DepartureTerminalCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string DepartureTerminalCode { get; set; }
         [XmlElement(ElementName = "ArrivalAirport", Namespace = "http://services.sabre.com/res/or/v1_14")]
         public string ArrivalAirport { get; set; }
+        [XmlElement(ElementName = "ArrivalTerminalName", Namespace = "http://services.sabre.com/res/or/v1_14")]
+        public string ArrivalTerminalName { get; set; }
+        [XmlElement(ElementName = "ArrivalTerminalCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
+        public string ArrivalTerminalCode { get; set; }
         [XmlElement(ElementName = "EquipmentType", Namespace = "http://services.sabre.com/res/or/v1_14")]
         public string EquipmentType { get; set; }
         [XmlElement(ElementName = "MarketingAirlineCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
@@ -460,12 +368,6 @@ namespace XMLObject.ReservationRq
         public string Sequence { get; set; }
         [XmlAttribute(AttributeName = "segmentAssociationId")]
         public string SegmentAssociationId { get; set; }
-        [XmlElement(ElementName = "ArrivalTerminalName", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ArrivalTerminalName { get; set; }
-        [XmlElement(ElementName = "ArrivalTerminalCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ArrivalTerminalCode { get; set; }
-        [XmlElement(ElementName = "OperatingAirlineCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string OperatingAirlineCode { get; set; }
     }
 
     [XmlRoot(ElementName = "ProductDetails", Namespace = "http://services.sabre.com/res/or/v1_14")]
@@ -501,73 +403,20 @@ namespace XMLObject.ReservationRq
         public string Id { get; set; }
     }
 
-    [XmlRoot(ElementName = "DisclosureCarrier", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class DisclosureCarrier2
-    {
-        [XmlElement(ElementName = "Banner", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Banner { get; set; }
-        [XmlAttribute(AttributeName = "Code")]
-        public string Code { get; set; }
-        [XmlAttribute(AttributeName = "DOT")]
-        public string DOT { get; set; }
-    }
-
     [XmlRoot(ElementName = "Segments", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
     public class Segments
     {
         [XmlElement(ElementName = "Poc", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public Poc Poc { get; set; }
         [XmlElement(ElementName = "Segment", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<Segment> Segment { get; set; }
+        public Segment Segment { get; set; }
     }
 
-    [XmlRoot(ElementName = "AlreadyTicketed", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class AlreadyTicketed
+    [XmlRoot(ElementName = "TicketingTimeLimit", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+    public class TicketingTimeLimit
     {
-        [XmlElement(ElementName = "Code", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Code { get; set; }
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-        [XmlAttribute(AttributeName = "index")]
-        public string Index { get; set; }
-        [XmlAttribute(AttributeName = "elementId")]
-        public string ElementId { get; set; }
-    }
-
-    [XmlRoot(ElementName = "ETicketNumber", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class ETicketNumber
-    {
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-        [XmlAttribute(AttributeName = "index")]
-        public string Index { get; set; }
-        [XmlAttribute(AttributeName = "elementId")]
-        public string ElementId { get; set; }
-        [XmlText]
-        public string Text { get; set; }
-    }
-
-    [XmlRoot(ElementName = "TicketDetails", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class TicketDetails
-    {
-        [XmlElement(ElementName = "OriginalTicketDetails", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string OriginalTicketDetails { get; set; }
-        [XmlElement(ElementName = "TransactionIndicator", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string TransactionIndicator { get; set; }
-        [XmlElement(ElementName = "TicketNumber", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string TicketNumber { get; set; }
-        [XmlElement(ElementName = "PassengerName", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string PassengerName { get; set; }
-        [XmlElement(ElementName = "AgencyLocation", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string AgencyLocation { get; set; }
-        [XmlElement(ElementName = "DutyCode", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string DutyCode { get; set; }
-        [XmlElement(ElementName = "AgentSine", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string AgentSine { get; set; }
-        [XmlElement(ElementName = "Timestamp", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Timestamp { get; set; }
-        [XmlElement(ElementName = "PaymentType", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string PaymentType { get; set; }
+        [XmlElement(ElementName = "Time", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public string Time { get; set; }
         [XmlAttribute(AttributeName = "id")]
         public string Id { get; set; }
         [XmlAttribute(AttributeName = "index")]
@@ -579,12 +428,8 @@ namespace XMLObject.ReservationRq
     [XmlRoot(ElementName = "TicketingInfo", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
     public class TicketingInfo
     {
-        [XmlElement(ElementName = "AlreadyTicketed", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public AlreadyTicketed AlreadyTicketed { get; set; }
-        [XmlElement(ElementName = "ETicketNumber", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<ETicketNumber> ETicketNumber { get; set; }
-        [XmlElement(ElementName = "TicketDetails", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<TicketDetails> TicketDetails { get; set; }
+        [XmlElement(ElementName = "TicketingTimeLimit", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public TicketingTimeLimit TicketingTimeLimit { get; set; }
     }
 
     [XmlRoot(ElementName = "PassengerReservation", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -629,40 +474,22 @@ namespace XMLObject.ReservationRq
         public PhoneNumber PhoneNumber { get; set; }
     }
 
-    [XmlRoot(ElementName = "RemarkLine", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class RemarkLine
+    [XmlRoot(ElementName = "EmailAddress", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+    public class EmailAddress
     {
-        [XmlElement(ElementName = "Text", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string Text { get; set; }
-    }
-
-    [XmlRoot(ElementName = "RemarkLines", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class RemarkLines
-    {
-        [XmlElement(ElementName = "RemarkLine", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public RemarkLine RemarkLine { get; set; }
-    }
-
-    [XmlRoot(ElementName = "Remark", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class Remark
-    {
-        [XmlElement(ElementName = "RemarkLines", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public RemarkLines RemarkLines { get; set; }
-        [XmlAttribute(AttributeName = "index")]
-        public string Index { get; set; }
+        [XmlElement(ElementName = "Address", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public string Address { get; set; }
+        [XmlElement(ElementName = "Comment", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public string Comment { get; set; }
         [XmlAttribute(AttributeName = "id")]
         public string Id { get; set; }
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlAttribute(AttributeName = "elementId")]
-        public string ElementId { get; set; }
     }
 
-    [XmlRoot(ElementName = "Remarks", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-    public class Remarks
+    [XmlRoot(ElementName = "EmailAddresses", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+    public class EmailAddresses
     {
-        [XmlElement(ElementName = "Remark", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public List<Remark> Remark { get; set; }
+        [XmlElement(ElementName = "EmailAddress", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
+        public EmailAddress EmailAddress { get; set; }
     }
 
     [XmlRoot(ElementName = "GenericSpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -695,12 +522,6 @@ namespace XMLObject.ReservationRq
         public string ServiceType { get; set; }
         [XmlAttribute(AttributeName = "ssrType")]
         public string SsrType { get; set; }
-        [XmlAttribute(AttributeName = "actionCode")]
-        public string ActionCode { get; set; }
-        [XmlAttribute(AttributeName = "airlineCode")]
-        public string AirlineCode { get; set; }
-        [XmlAttribute(AttributeName = "serviceCount")]
-        public string ServiceCount { get; set; }
     }
 
     [XmlRoot(ElementName = "OpenReservationElement", Namespace = "http://services.sabre.com/res/or/v1_14")]
@@ -714,96 +535,17 @@ namespace XMLObject.ReservationRq
         public string Type { get; set; }
         [XmlAttribute(AttributeName = "elementId")]
         public string ElementId { get; set; }
-        [XmlElement(ElementName = "SegmentAssociation", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public SegmentAssociation SegmentAssociation { get; set; }
-        [XmlElement(ElementName = "NameAssociation", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public NameAssociation NameAssociation { get; set; }
-        [XmlElement(ElementName = "Profile", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public Profile2 Profile2 { get; set; }
-        [XmlElement(ElementName = "Loyalty", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public Loyalty Loyalty { get; set; }
+        [XmlElement(ElementName = "Email", Namespace = "http://services.sabre.com/res/or/v1_14")]
+        public Email Email { get; set; }
     }
 
-    [XmlRoot(ElementName = "AirSegment", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class AirSegment
+    [XmlRoot(ElementName = "Email", Namespace = "http://services.sabre.com/res/or/v1_14")]
+    public class Email
     {
-        [XmlElement(ElementName = "CarrierCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string CarrierCode { get; set; }
-        [XmlElement(ElementName = "FlightNumber", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string FlightNumber { get; set; }
-        [XmlElement(ElementName = "DepartureDate", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string DepartureDate { get; set; }
-        [XmlElement(ElementName = "BoardPoint", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string BoardPoint { get; set; }
-        [XmlElement(ElementName = "OffPoint", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string OffPoint { get; set; }
-        [XmlElement(ElementName = "ClassOfService", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ClassOfService { get; set; }
-    }
-
-    [XmlRoot(ElementName = "SegmentAssociation", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class SegmentAssociation
-    {
-        [XmlElement(ElementName = "AirSegment", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public AirSegment AirSegment { get; set; }
-        [XmlAttribute(AttributeName = "Id")]
-        public string Id { get; set; }
-        [XmlAttribute(AttributeName = "SegmentAssociationId")]
-        public string SegmentAssociationId { get; set; }
-    }
-
-    [XmlRoot(ElementName = "NameAssociation", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class NameAssociation
-    {
-        [XmlElement(ElementName = "LastName", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string LastName { get; set; }
-        [XmlElement(ElementName = "FirstName", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string FirstName { get; set; }
-        [XmlElement(ElementName = "ReferenceId", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ReferenceId { get; set; }
-        [XmlElement(ElementName = "NameRefNumber", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string NameRefNumber { get; set; }
-        [XmlElement(ElementName = "Id", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string Id { get; set; }
-    }
-
-    [XmlRoot(ElementName = "Profile", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class Profile2
-    {
-        [XmlElement(ElementName = "ID", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ID { get; set; }
-        [XmlElement(ElementName = "Type", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string Type { get; set; }
-        [XmlElement(ElementName = "ShortType", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ShortType { get; set; }
-    }
-
-    [XmlRoot(ElementName = "FrequentFlyer", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class FrequentFlyer2
-    {
-        [XmlElement(ElementName = "ActionCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ActionCode { get; set; }
-        [XmlElement(ElementName = "PreviousActionCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string PreviousActionCode { get; set; }
-        [XmlElement(ElementName = "Vendor", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string Vendor { get; set; }
-        [XmlElement(ElementName = "ReceivingCarrierCode", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string ReceivingCarrierCode { get; set; }
-        [XmlElement(ElementName = "VitType", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string VitType { get; set; }
-        [XmlElement(ElementName = "FrequentFlyerNumber", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string FrequentFlyerNumber { get; set; }
-        [XmlElement(ElementName = "Banner", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string Banner { get; set; }
-        [XmlElement(ElementName = "Tag", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public string Tag { get; set; }
-    }
-
-    [XmlRoot(ElementName = "Loyalty", Namespace = "http://services.sabre.com/res/or/v1_14")]
-    public class Loyalty
-    {
-        [XmlElement(ElementName = "FrequentFlyer", Namespace = "http://services.sabre.com/res/or/v1_14")]
-        public FrequentFlyer2 FrequentFlyer2 { get; set; }
+        [XmlElement(ElementName = "Address", Namespace = "http://services.sabre.com/res/or/v1_14")]
+        public string Address { get; set; }
+        [XmlAttribute(AttributeName = "comment")]
+        public string Comment { get; set; }
     }
 
     [XmlRoot(ElementName = "OpenReservationElements", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
@@ -826,10 +568,8 @@ namespace XMLObject.ReservationRq
         public ReceivedFrom ReceivedFrom { get; set; }
         [XmlElement(ElementName = "PhoneNumbers", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public PhoneNumbers PhoneNumbers { get; set; }
-        [XmlElement(ElementName = "Remarks", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public Remarks Remarks { get; set; }
         [XmlElement(ElementName = "EmailAddresses", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
-        public string EmailAddresses { get; set; }
+        public EmailAddresses EmailAddresses { get; set; }
         [XmlElement(ElementName = "GenericSpecialRequests", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]
         public GenericSpecialRequests GenericSpecialRequests { get; set; }
         [XmlElement(ElementName = "OpenReservationElements", Namespace = "http://webservices.sabre.com/pnrbuilder/v1_19")]

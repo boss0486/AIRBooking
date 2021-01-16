@@ -54,10 +54,6 @@ namespace WebCore.Entities
         public string Phone { get; set; }
     }
 
-    public class BookPassengerIDModel
-    {
-        public string ID { get; set; }
-    }
     public partial class BookPassengerResult
     {
         public string ID { get; set; }

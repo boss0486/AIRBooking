@@ -53,7 +53,7 @@ namespace WebCore.Services
                     IsApplied = true,
                     Enabled = 1
                 });
-                return Notifization.Success(MessageText.CreateSuccess);
+                return Notifization.Success(MessageText.UpdateSuccess);
             }
             // update
             airTicketCondition05.Title = flightId;

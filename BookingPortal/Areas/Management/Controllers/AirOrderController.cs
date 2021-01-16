@@ -163,7 +163,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/VoidTicket")]
-        public ActionResult VoidTicket(BookBookPassengerIDModel model)
+        public ActionResult VoidTicket(BookPassengerIDModel model)
         {
             try
             {
@@ -173,6 +173,23 @@ namespace WebApplication.Management.Controllers
             catch (Exception ex)
             {
                 Helper.SystemLogg.WriteLog("VoidTicket: " + ex);
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
+        
+        
+        [HttpPost]
+        [Route("Action/PnrSync")]
+        public ActionResult PnrSync(PNRModel model)
+        {
+            try
+            {
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.PnrSync(model);
+            }
+            catch (Exception ex)
+            {
                 return Notifization.TEST(":::" + ex);
                 //return Notifization.NotService;
             }

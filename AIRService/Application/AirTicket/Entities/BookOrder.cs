@@ -58,7 +58,7 @@ namespace WebCore.Entities
     {
         public string ID { get; set; }
     }
-    public class BookBookPassengerIDModel
+    public class BookPassengerIDModel
     {
         public string ID { get; set; }
         public int TicketType { get; set; }
