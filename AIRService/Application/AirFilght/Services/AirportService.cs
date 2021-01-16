@@ -2,6 +2,7 @@
 using AL.NetFrame.Services;
 using Dapper;
 using Helper;
+using Helper.Page;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -91,7 +92,6 @@ namespace WebCore.Services
                 return Notifization.Invalid(MessageText.Invalid);
             //
             string id = model.ID;
-            int voidBookTime = model.VoidBookTime;
             int voidTicketTime = model.VoidTicketTime;
             double axfee = model.AxFee;
             //
@@ -107,10 +107,7 @@ namespace WebCore.Services
             //
             if (axfee < 0)
                 return Notifization.Invalid("Phí sân bay không hợp lệ");
-            //
-            if (voidBookTime < 0)
-                return Notifization.Invalid("T.gian hủy đặt chỗ không hợp lệ");
-            //
+            // 
             if (voidTicketTime < 0)
                 return Notifization.Invalid("T.gian hủy đặt vé không hợp lệ");
             //
@@ -121,7 +118,6 @@ namespace WebCore.Services
                 {
                     AirportID = id,
                     AxFee = axfee,
-                    VoidBookTime = voidBookTime,
                     VoidTicketTime = voidTicketTime
                 });
                 return Notifization.Success(MessageText.UpdateSuccess);
@@ -142,32 +138,61 @@ namespace WebCore.Services
             string nationalId = model.NationalID;
             string areaInlandId = model.AreaInlandID;
             string title = model.Title;
+            string summary = model.Summary;
+            string iataCode = model.IATACode;
+            int enabled = model.Enabled;
+
             //
-            AirportService flightService = new AirportService(_connection);
+            AirportService airportService = new AirportService(_connection);
             if (string.IsNullOrWhiteSpace(areaInlandId))
                 return Notifization.Invalid("Vui lòng chọn vùng/miền");
+            //  
+            if (string.IsNullOrWhiteSpace(title))
+                return Notifization.Invalid("Không được để trống tiêu đề");
             //
+            title = title.Trim();
+            if (!Validate.TestText(title))
+                return Notifization.Invalid("Tiêu đề không hợp lệ");
+            if (title.Length < 2 || title.Length > 80)
+                return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+            //
+            if (string.IsNullOrWhiteSpace(iataCode))
+                return Notifization.Invalid("Không được để trống mã sân bay");
+            iataCode = iataCode.ToUpper().Trim();
+            if (!Validate.TestRoll(iataCode))
+                return Notifization.Invalid("Mã sân bay không hợp lệ");
+            if (iataCode.Length != 3)
+                return Notifization.Invalid("Mã sân bay giới hạn 3 ký tự");
+            // summary valid               
+            if (!string.IsNullOrWhiteSpace(summary))
+            {
+                summary = summary.Trim();
+                if (!Validate.TestText(summary))
+                    return Notifization.Invalid("Mô tả không hợp lệ");
+                if (summary.Length < 1 || summary.Length > 120)
+                    return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+            }
+            //  
             nationalId = nationalId.ToLower();
             areaInlandId = areaInlandId.ToLower();
             // 
-            var flight = flightService.GetAlls(m => m.Title.ToLower() == model.Title.ToLower()).FirstOrDefault();
-            if (flight != null)
-                return Notifization.Invalid("Tên chuyến bay đã được sử dụng");
+            Airport airportTitle = airportService.GetAlls(m => m.Title.ToLower() == title.ToLower()).FirstOrDefault();
+            if (airportTitle != null)
+                return Notifization.Invalid("Tên sân bay đã được sử dụng");
             //
-            flight = flightService.GetAlls(m => m.IATACode.ToLower() == model.IATACode.ToLower()).FirstOrDefault();
-            if (flight != null)
-                return Notifization.Invalid("Mã IATA đã được sử dụng");
-            //
-            
-            flightService.Create<string>(new Entities.Airport()
+            Airport airportCode = airportService.GetAlls(m => m.IATACode.ToLower() == model.IATACode.ToLower()).FirstOrDefault();
+            if (airportCode != null)
+                return Notifization.Invalid("Mã sân bay đã được sử dụng");
+            // 
+            airportService.Create<string>(new Entities.Airport()
             {
+                Title = title,
+                Alias = Helper.Page.Library.FormatToUni2NONE(title),
+                Summary = summary,
+                IATACode = iataCode,
                 NationalID = nationalId,
                 AreaInlandID = areaInlandId,
-                Title = model.Title,
-                Alias = Helper.Page.Library.FormatToUni2NONE(model.Title),
-                Summary = model.Summary,
-                IATACode = model.IATACode.ToUpper(),
-                Enabled = model.Enabled
+                Enabled = enabled
             });
             return Notifization.Success(MessageText.CreateSuccess);
         }
@@ -180,41 +205,65 @@ namespace WebCore.Services
             string nationalId = model.NationalID;
             string areaInlandId = model.AreaInlandID;
             string title = model.Title;
+            string summary = model.Summary;
+            string iataCode = model.IATACode;
+            int enabled = model.Enabled;
+
             //
-            if (string.IsNullOrWhiteSpace(id))
-                return Notifization.NotFound(MessageText.NotFound);
-            //
-            if (string.IsNullOrWhiteSpace(nationalId))
-                return Notifization.Invalid("Vui lòng chọn quốc gia");
-            //
-            //
-            if (string.IsNullOrWhiteSpace(nationalId))
+            AirportService airportService = new AirportService(_connection);
+            if (string.IsNullOrWhiteSpace(areaInlandId))
                 return Notifization.Invalid("Vui lòng chọn vùng/miền");
+            //  
+            if (string.IsNullOrWhiteSpace(title))
+                return Notifization.Invalid("Không được để trống tiêu đề");
             //
+            title = title.Trim();
+            if (!Validate.TestText(title))
+                return Notifization.Invalid("Tiêu đề không hợp lệ");
+            if (title.Length < 2 || title.Length > 80)
+                return Notifization.Invalid("Tiêu đề giới hạn 2-80 ký tự");
+            //
+            if (string.IsNullOrWhiteSpace(iataCode))
+                return Notifization.Invalid("Không được để trống mã sân bay");
+            iataCode = iataCode.ToUpper().Trim();
+            if (!Validate.TestRoll(iataCode))
+                return Notifization.Invalid("Mã sân bay không hợp lệ");
+            if (iataCode.Length != 3)
+                return Notifization.Invalid("Mã sân bay giới hạn 3 ký tự");
+            // summary valid               
+            if (!string.IsNullOrWhiteSpace(summary))
+            {
+                summary = summary.Trim();
+                if (!Validate.TestText(summary))
+                    return Notifization.Invalid("Mô tả không hợp lệ");
+                if (summary.Length < 1 || summary.Length > 120)
+                    return Notifization.Invalid("Mô tả giới hạn từ 1-> 120 ký tự");
+            }
+            //  
             id = id.ToLower();
             nationalId = nationalId.ToLower();
             areaInlandId = areaInlandId.ToLower();
-            AirportService flightService = new AirportService(_connection);
-            var flight = flightService.GetAlls(m => m.ID == id).FirstOrDefault();
-            if (flight == null)
+
+            Airport airport = airportService.GetAlls(m => m.ID == id).FirstOrDefault();
+            if (airport == null)
                 return Notifization.NotFound(MessageText.NotFound);
             //
-            var flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && flight.ID != id).FirstOrDefault();
-            if (flightValid != null)
-                return Notifization.Invalid("Tên chuyến bay đã được sử dụng");
+            Airport AirportTitle = airportService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id).FirstOrDefault();
+            if (AirportTitle != null)
+                return Notifization.Invalid("Tên sân bay đã được sử dụng");
             //
-            flightValid = flightService.GetAlls(m => !string.IsNullOrWhiteSpace(m.IATACode) && m.IATACode.ToLower() == model.IATACode.ToLower() && flight.ID != id).FirstOrDefault();
-            if (flightValid != null)
-                return Notifization.Invalid("Mã IATA đã được sử dụng");
+            Airport airportCode = airportService.GetAlls(m => !string.IsNullOrWhiteSpace(m.IATACode) && m.IATACode.ToUpper() == iataCode && m.ID != id).FirstOrDefault();
+            if (airportCode != null)
+                return Notifization.Invalid("Mã sân bay đã được sử dụng");
             // 
-            flight.AreaInlandID = model.AreaInlandID;
-            flight.NationalID = model.NationalID;
-            flight.Title = title;
-            flight.Alias = Helper.Page.Library.FormatToUni2NONE(model.Title);
-            flight.Summary = model.Summary;
-            flight.IATACode = model.IATACode.ToUpper();
-            flight.Enabled = model.Enabled;
-            flightService.Update(flight);
+            airport.AreaInlandID = areaInlandId;
+            airport.NationalID = nationalId;
+            airport.Title = title;
+            airport.Alias = Helper.Page.Library.FormatToUni2NONE(title);
+            airport.Summary = summary;
+            airport.IATACode = iataCode;
+            airport.Enabled = enabled;
+            airportService.Update(airport);
             //
             return Notifization.Success(MessageText.UpdateSuccess);
         }

@@ -64,32 +64,18 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Họ tên: <span>@fullName</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Số ĐT: <span>@phone</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> E-Mail: <span>@email</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày sinh: <span>@birthday</span></label>
-                </div>
-                <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> Địa chỉ: <span>@address</span></label>
-                </div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Họ tên: </span>@fullName</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Số ĐT: </span>@phone</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>E-Mail: </span>@email</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Ngày sinh: </span>@birthday</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Địa chỉ: </span>@address</div>
             </div>
         </div>
         <div class="top-pic m-t-30">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>T.tin đăng nhập:</label>
         </div>
-        <div class="form-group ">
-            <label class="form-label account-name"><i class="fas fa-check-circle"></i> Tài khoản: <span class="account-id">@loginId </span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Mã ID: <span>@userId</span></label>
-        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i><span>Tài khoản: </span><span class="account-id">@loginId </span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Mã ID: </span>@userId  </div>
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Nhóm quyền:</label>
         </div> 
@@ -104,31 +90,23 @@
                     strIndex = "0" + cnt;
                 }
                 <div class="form-group ">
-                    <label class="form-label" sty><i class="fas fa-check-circle"></i> @strIndex: <span>@item</span></label>
+                    <i class="fas fa-check-circle"></i> @strIndex: <span>@item</span>
                 </div>
             }
         }
         else
         {
-            <div class="form-group ">
-                <label class="form-label" sty><i class="fas fa-check-circle"></i> 01: <span class="red-text">Chưa thiết lập</span></label>
+            <div class="form-group">
+                <i class="fas fa-check-circle"></i> 01: <span class="red-text">Chưa thiết lập</span>
             </div>
         }
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Tình trạng: <span>@blockState</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Trạng thái: <span>@enabled</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Ngày tạo: <span>@createdDate</span></label>
-        </div>
-        <div class="form-group ">
-            <label class="form-label" sty><i class="fas fa-check-circle"></i> Người tạo: <span>@createdBy</span></label>
-        </div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Tình trạng: </span>@blockState</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Trạng thái: </span>@enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Ngày tạo: </span>@createdDate</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Người tạo: </span>@createdBy</div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
             {

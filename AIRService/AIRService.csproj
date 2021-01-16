@@ -137,6 +137,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\AirResBookDesig\Entities\AirResBookDesig.cs" />
+    <Compile Include="Application\AirResBookDesig\Services\AirResBookDesigService.cs" />
     <Compile Include="Application\AirportConfig\Entities\AirportBookConfig.cs" />
     <Compile Include="Application\AirportConfig\Enum\AirportConfigEnum.cs" />
     <Compile Include="Application\AirportConfig\Services\AirportBookConfigService.cs" />
@@ -1830,6 +1832,7 @@
     <Folder Include="Application\AirAgentFee\Enum\" />
     <Folder Include="Application\AirCompany\Enum\" />
     <Folder Include="Application\AirOrder\Enum\" />
+    <Folder Include="Application\AirResBookDesig\Enum\" />
     <Folder Include="Application\AirTicketCondition\Enum\" />
     <Folder Include="Application\ApiReport\Enum\" />
     <Folder Include="Application\ReportSaleSummary\Enum\" />

@@ -51,15 +51,15 @@
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Tiêu đề: @title</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Mô tả: @summary</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Cấp quản lý: @Level</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Tiêu đề: </span>@title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Mô tả: </span>@summary</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Cấp quản lý: </span>@Level</div>
         <div class="form-group"><i class="fas fa-hand-point-right"></i> Lưu ý: Cấp độ tăng dần theo chiều giảm dần của giá trị cấp độ.</div>
         <div class="top-pic">
             <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Trạng thái: @enabled</div>
-        <div class="form-group"><i class="fas fa-check-circle"></i> Ngày tạo hồ sơ: @createdDate</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Trạng thái: </span> @enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Ngày tạo: </span> @createdDate</div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
             {

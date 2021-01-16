@@ -73,32 +73,32 @@
 <div class="row details">
     <div class="col-md-8">
         <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Thông tin hồ sơ:</label>
+            <i class="fas fa-file-invoice"></i> <label>Thông tin hồ sơ:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Loại khách hàng:</label>&nbsp;<span>@customerType</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Mã khách hàng:</label>&nbsp;<b style="color:#F00;">@customerCode</b></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Tên khách hàng:</label>&nbsp;<span>@title</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Mô tả:</label>&nbsp;<span>@summary</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đ.thoại:</label>&nbsp;<span>@phone</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Địa chỉ:</label>&nbsp;<span> @address</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Loại khách hàng: </span> @customerType</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Mã khách hàng: </span><b style="color:#F00;">@customerCode</b></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Tên khách hàng: </span> @title</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Mô tả: </span> @summary</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Đ.thoại: </span> @phone</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Địa chỉ: </span> @address</div>
 
         <div class="top-pic special">
-            <i class="fas fa-server"></i>&nbsp;<label>Dịch vụ:</label>
+            <i class="fas fa-server"></i> <label>Dịch vụ:</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đặt cọc:</label>&nbsp;<b class="text-dark">@Helper.Page.Library.FormatCurrency(depositAmount) đ</b></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Thời hạn TT(ngày):</label>&nbsp;<span>@termPayment</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Đặt cọc: </span><b class="text-dark">@Helper.Page.Library.FormatCurrency(depositAmount) đ</b></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Thời hạn TT(ngày):</span>@termPayment</div>
         <div class="top-pic special">
-            <label><i class="fas fa-address-book"></i>&nbsp;<span>Thông tin liên hệ:</span></label>
+            <label><i class="fas fa-address-book"></i> <span>Thông tin liên hệ:</span></label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Người liên hệ:</label>&nbsp;<span>@contactName</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">E-mail:</label>&nbsp;<span>@contactEmail</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Đ.thoại:</label>&nbsp;<span>@contactPhone</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Người liên hệ:</span>@contactName</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>E-mail: </span>@contactEmail</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Đ.thoại: </span>@contactPhone</div>
 
         <div class="top-pic">
-            <i class="fas fa-file-invoice"></i>&nbsp;<label>Hoạt động</label>
+            <i class="fas fa-file-invoice"></i> <label>Hoạt động</label>
         </div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Trạng thái:</label>&nbsp;<span>@enabled</span></div>
-        <div class="form-group"><i class="fas fa-check-circle"></i>&nbsp;<label class="form-label">Ngày tạo:</label>&nbsp;<span>@createdDate</span></div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Trạng thái: </span>@enabled</div>
+        <div class="form-group"><i class="fas fa-check-circle"></i> <span>Ngày tạo: </span>@createdDate</div>
         @{
             if (PermissionService.CheckActionInMenuItem(Helper.Page.MetaSEO.ControllerText, WebCore.Entities.RoleActionKey.DataList))
             {

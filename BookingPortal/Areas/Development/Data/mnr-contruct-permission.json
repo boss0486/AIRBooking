@@ -360,6 +360,42 @@
     ]
   },
   {
+    "KeyID": "AirResBookDesig",
+    "Title": "Hạng đặt chỗ",
+    "Action": [
+      {
+        "KeyID": "DataList",
+        "Method": "DataList",
+        "APIRouter": "Action/DataList",
+        "Title": "D.sách"
+      },
+      {
+        "KeyID": "Create",
+        "Method": "Create",
+        "APIRouter": "Action/Create",
+        "Title": "T.Mới"
+      },
+      {
+        "KeyID": "Update",
+        "Method": "Update",
+        "APIRouter": "Action/Update",
+        "Title": "Sửa"
+      },
+      {
+        "KeyID": "Delete",
+        "Method": "",
+        "APIRouter": "Action/Delete",
+        "Title": "Xóa"
+      },
+      {
+        "KeyID": "Details",
+        "Method": "Details",
+        "APIRouter": "Action/Details",
+        "Title": "C.tiết"
+      }
+    ]
+  },
+  {
     "KeyID": "Bank",
     "Title": "Ngân hàng",
     "Action": [

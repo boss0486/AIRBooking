@@ -12,24 +12,23 @@
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-none">Khu vực quốc tế</th>
-                <th class="tbcol-none">Quốc gia</th>
-                <th class="tbcol-none">Khu vực nội địa</th>
-                <th class="tbcol-date">IATA code</th>
-                <th class="tbcol-none">Tiêu đề</th>
+                <th class="tbcol-title">Tiêu đề</th>
+                <th class="tbcol-date">Mã đặt chỗ</th>
+                <th class="tbcol-date">T.Gian hủy đặt chỗ</th>
+                <th class="tbcol-none">Mô tả</th>
                 <th class="tbcol-active">T.Thái</th>
                 <th class="tbcol-action">ACT</th>
             </tr>
-        </thead>        
+        </thead>
         <tbody id="TblData"></tbody>
     </table>
 </div>
 <div id="Pagination"></div>
 @section scripts{
-    <script src="~/Areas/Management/_script/app-flight.js"></script>
+    <script src="~/Areas/Management/_script/app-airres-book-desig.js"></script>
     <script type="text/javascript">
         $(function () {
-            FlightController.DataList(1);
+            AirResBookDesigController.DataList(1);
         })
     </script>
 }

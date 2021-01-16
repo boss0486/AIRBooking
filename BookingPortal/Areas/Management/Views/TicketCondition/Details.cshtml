@@ -27,12 +27,12 @@
             planeNoTo04 = airTicketConditionFee04.PlaneNoTo;
             if (airTicketConditionFee04.TimeStart != null)
             {
-                eventStart04 = TimeFormat.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), LanguagePage.GetLanguageCode);
+                eventStart04 = TimeFormat.FormatToViewDate(Convert.ToDateTime(airTicketConditionFee04.TimeStart), LanguagePage.GetLanguageCode);
 
             }
             if (airTicketConditionFee04.TimeEnd != null)
             {
-                eventEnd04 = TimeFormat.FormatToDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), LanguagePage.GetLanguageCode);
+                eventEnd04 = TimeFormat.FormatToViewDate(Convert.ToDateTime(airTicketConditionFee04.TimeEnd), LanguagePage.GetLanguageCode);
             }
             isApplied04 = airTicketConditionFee04.IsApplied;
             conditionId04 = airTicketConditionFee04.ConditionID;
@@ -43,8 +43,8 @@
                 <div class="top-pic mgb-10">
                     <label><i class="fas fa-cog" aria-hidden="true"></i>No. 04: LIGHT APPLICATION</label>
                 </div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Số hiệu: @planeNoFrom04 -> @planeNoTo04</div>
-                <div class="form-group"><i class="fas fa-check-circle"></i> Thời gian: @eventStart04 -> @eventEnd04</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Số hiệu: </span> @planeNoFrom04 -> @planeNoTo04</div>
+                <div class="form-group"><i class="fas fa-check-circle"></i> <span>Thời gian: </span> @eventStart04 -> @eventEnd04</div>
                 <div class="form-group">
                     <i class="far fa-hand-point-right"></i> Trạng thái:
                     @if (isApplied04)
