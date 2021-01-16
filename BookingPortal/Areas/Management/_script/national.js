@@ -377,7 +377,7 @@ var NationalController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, NationalController.Delete, null, null);
+        Confirm.Delete(id, NationalController.Delete, null, null);
     }
 };
 

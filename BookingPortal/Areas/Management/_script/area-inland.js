@@ -335,7 +335,7 @@ var AreaInlandController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, AreaInlandController.Delete, null, null);
+        Confirm.Delete(id, AreaInlandController.Delete, null, null);
     }
 };
 

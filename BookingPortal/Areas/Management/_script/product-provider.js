@@ -272,7 +272,7 @@ var productProviderController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, productProviderController.Delete, null, null);
+        Confirm.Delete(id, productProviderController.Delete, null, null);
     }
 };
 

@@ -668,7 +668,7 @@ var UserController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, UserController.Delete, null, null);
+        Confirm.Delete(id, UserController.Delete, null, null);
     },
     Delete: function (id) {
         var fData = {

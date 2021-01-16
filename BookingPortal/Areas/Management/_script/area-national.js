@@ -273,7 +273,7 @@ var AreaNationalController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, AreaNationalController.Delete, null, null);
+        Confirm.Delete(id, AreaNationalController.Delete, null, null);
     }
 };
 

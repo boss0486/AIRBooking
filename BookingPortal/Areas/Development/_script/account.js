@@ -473,7 +473,7 @@ var DevAccountController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, DevAccountController.Delete, null, null);
+        Confirm.Delete(id, DevAccountController.Delete, null, null);
     },
     Delete: function (id) {
         var model = {

@@ -272,7 +272,7 @@ var ProductWarrantyController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, ProductWarrantyController.Delete, null, null);
+        Confirm.Delete(id, ProductWarrantyController.Delete, null, null);
     }
 };
 

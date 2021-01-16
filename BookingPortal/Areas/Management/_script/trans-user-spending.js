@@ -301,7 +301,7 @@ var UserSpendingController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, UserSpendingController.Delete, null, null);
+        Confirm.Delete(id, UserSpendingController.Delete, null, null);
     },
     GetAgentHasSending(agentId, _echanged = false) {
         var option = `<option value="">-Lựa chọn-</option>`;

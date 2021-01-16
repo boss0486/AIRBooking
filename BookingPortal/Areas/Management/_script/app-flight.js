@@ -417,7 +417,7 @@ var FlightController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, FlightController.Delete, null, null);
+        Confirm.Delete(id, FlightController.Delete, null, null);
     }
 };
 //

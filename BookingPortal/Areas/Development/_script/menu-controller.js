@@ -325,7 +325,7 @@ var MenuController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, MenuController.Delete, null, null);
+        Confirm.Delete(id, MenuController.Delete, null, null);
 
     }
 };

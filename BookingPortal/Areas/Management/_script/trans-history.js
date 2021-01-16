@@ -573,7 +573,7 @@ var TransactionHistoryController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, TransactionHistoryController.Delete, null, null);
+        Confirm.Delete(id, TransactionHistoryController.Delete, null, null);
 
     }
 };

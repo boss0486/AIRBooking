@@ -394,7 +394,7 @@ var AirResBookDesigController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, AirResBookDesigController.Delete, null, null);
+        Confirm.Delete(id, AirResBookDesigController.Delete, null, null);
     }
 };
 //

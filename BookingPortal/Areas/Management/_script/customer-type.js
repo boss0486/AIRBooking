@@ -323,7 +323,7 @@ var CustomerTypeController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, CustomerTypeController.Delete, null, null);
+        Confirm.Delete(id, CustomerTypeController.Delete, null, null);
 
     }
 };

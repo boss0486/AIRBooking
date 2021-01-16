@@ -462,7 +462,7 @@ var AccountController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, AccountController.Delete, null, null);
+        Confirm.Delete(id, AccountController.Delete, null, null);
     },
     Delete: function (id) {
         var model = {

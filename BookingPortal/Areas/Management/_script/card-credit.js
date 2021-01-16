@@ -323,7 +323,7 @@ var CardCreditController = {
         });
     },
     ConfirmDelete: function (id) {
-        Confirm.DeleteYN(id, CardCreditController.Delete, null, null);
+        Confirm.Delete(id, CardCreditController.Delete, null, null);
 
     }
 };
