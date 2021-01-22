@@ -100,6 +100,8 @@
                     <th>Họ và Tên</th>
                     <th>Giới tính</th>
                     <th>Ngày sinh</th>
+                    <th>Số vé</th>
+                    <th class="tbcol-status">T.Thái hủy</th>
                 </tr>
             </thead>
             <tbody>
@@ -127,9 +129,11 @@
                                 {
                                     <td style="vertical-align:middle;" @(i == 0 ? _rowspan : "")>- @list[i].PassengerType</td>
                                 }
-                                <td>@list[i].FullName</td>
+                                <td>@list[i].PassengerName @list[i].FullName.ToUpper()</td>
                                 <td>@gender</td>
                                 <td>@birthDay</td>
+                                <td>@list[i].TicketNumber</td>
+                                <td class="text-center">@list[i].IsVoided</td>
                             </tr>
                         }
                     }
@@ -158,6 +162,10 @@
                         {
                             <th class="text-center" style="width:160px;">@item</th>
                         }
+                    }
+                    else
+                    {
+                        <th colspan="@passengerTypeList.Count()">Dữ liệu</th>
                     }
                     <th class="text-right">Tổng</th>
                 </tr>
@@ -221,16 +229,18 @@
                         }
                         else
                         {
-                            <td colspan="@passengerTypeList.Count()"></td>
+                            <td colspan="@passengerTypeList.Count()" class="text-right bg-success"></td>
                         }
                     }
                     <td class="text-right bg-success">@Helper.Page.Library.FormatCurrency(priceTotalAll) đ</td>
                 </tr>
                 @{
+                    double taxTotalAll = 0;
                     if (bookTaxes.Count > 0)
                     {
                         List<string> taxCodes = bookTaxes.GroupBy(m => new { m.TaxCode }).Select(m => m.Key.TaxCode).ToList();
                         int cntTax = 0;
+
                         foreach (var itemTax in taxCodes)
                         {
                             <tr>
@@ -256,30 +266,33 @@
                                 <td></td>
                             </tr>
                             cntTax++;
+
+
                         }
+                        <tr>
+                            <td class="bg-success">Tổng/LHK</td>
+                            @{
+
+                                if (passengerTypeList.Count > 0)
+                                {
+                                    foreach (var item in passengerTypeList)
+                                    {
+                                        double totalLkh = bookTaxes.Where(m => m.PassengerType == item).Sum(m => m.Amount);
+                                        taxTotalAll += totalLkh;
+                                        <td class="text-right bg-success">@Helper.Page.Library.FormatCurrency(totalLkh) 1đ</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>1</td>
+                                }
+                            }
+                            <td colspan="2" class="text-right bg-success">@Helper.Page.Library.FormatCurrency(taxTotalAll) 111đ</td>
+                        </tr>
                     }
 
                 }
-                <tr>
-                    <td class="bg-success">Tổng/LHK</td>
-                    @{
-                        double taxTotalAll = 0;
-                        if (passengerTypeList.Count > 0)
-                        {
-                            foreach (var item in passengerTypeList)
-                            {
-                                double totalLkh = bookTaxes.Where(m => m.PassengerType == item).Sum(m => m.Amount);
-                                taxTotalAll += totalLkh;
-                                <td class="text-right bg-success">@Helper.Page.Library.FormatCurrency(totalLkh) đ</td>
-                            }
-                        }
-                        else
-                        {
-                            <td colspan="@passengerTypeList.Count()"></td>
-                        }
-                    }
-                    <td class="text-right bg-success">@Helper.Page.Library.FormatCurrency(taxTotalAll) đ</td>
-                </tr>
+
                 @{
 
                     if (bookAgent != null)
@@ -301,7 +314,14 @@
                 </tr>
                 <tr>
                     <td>Tổng</td>
-                    <td class="text-right bg-danger" colspan="@Convert.ToInt32(passengerTypeList.Count() + 2)">@Helper.Page.Library.FormatCurrency(priceTotalAll + taxTotalAll + providerFee + agentFee) đ</td>
+                    @{
+                        int ctong = passengerTypeList.Count();
+                        if (ctong == 0)
+                        {
+                            ctong = 1;
+                        }
+                    }
+                    <td class="text-right bg-danger" colspan="@Convert.ToInt32(passengerTypeList.Count() + ctong + 2)">@Helper.Page.Library.FormatCurrency(priceTotalAll + taxTotalAll + providerFee + agentFee) đ</td>
                 </tr>
             </tbody>
         </table>

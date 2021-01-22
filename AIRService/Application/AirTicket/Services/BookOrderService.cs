@@ -615,6 +615,43 @@ namespace WebCore.Services
             //
             return data;
         }
+        public ViewBookOrder ViewTicketByID(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return null;
+            //
+            BookPassengerService bookPassengerService = new BookPassengerService(_connection);
+            BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == id).FirstOrDefault();
+            string orderId = bookPassenger.BookOrderID; 
+            // 
+            string sqlQuery = @"SELECT TOP (1) * FROM App_BookOrder WHERE ID = @ID";
+            ViewBookOrder data = _connection.Query<ViewBookOrder>(sqlQuery, new { ID = orderId }).FirstOrDefault();
+            if (data == null)
+                return null; 
+            BookAgentService bookAgentService = new BookAgentService(_connection);
+            BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+            data.BookAgent = bookAgent;
+            //
+            BookTicketService bookTicketService = new BookTicketService(_connection);
+            List<BookTicket> bookTickets = bookTicketService.GetAlls(m => m.BookOrderID == orderId).ToList();
+            data.BookTickets = bookTickets;
+            // 
+            data.BookPassengers = bookPassengerService.GetAlls(m => m.BookOrderID == orderId).ToList();
+            //
+            BookPriceService bookPriceService = new BookPriceService(_connection);
+            data.BookPrices = bookPriceService.GetAlls(m => m.BookOrderID == orderId).ToList();
+            //
+            BookTaxService bookTaxService = new BookTaxService(_connection);
+            data.BookTaxs = bookTaxService.GetAlls(m => m.BookOrderID == orderId).ToList();
+            //
+            BookCustomerService bookContactService = new BookCustomerService(_connection);
+            data.BookCustomers = bookContactService.GetAlls(m => m.BookOrderID == orderId).ToList();
+            //
+
+            return data;
+
+        }
+
         public static string ViewOrderContactType(int state)
         {
             string result = string.Empty;

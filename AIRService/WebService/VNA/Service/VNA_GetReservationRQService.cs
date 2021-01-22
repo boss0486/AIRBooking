@@ -32,15 +32,6 @@ namespace AIRService.WS.Service
             var stringXML = "";
             stringXML += " <ns7:GetReservationRQ xmlns:ns7=\"http://webservices.sabre.com/pnrbuilder/v1_19\" Version=\"1.19.0\">";
             stringXML += "    <ns7:Locator>" + model.PNR + "</ns7:Locator>";
-            //stringXML += "    <ns7:RequestType>Stateful</ns7:RequestType>";
-            //stringXML += "    <ns7:ReturnOptions  ShowTicketStatus=\"true\" PriceQuoteServiceVersion=\"3.2.0\">";
-            //stringXML += "       <ns7:SubjectAreas>";
-            //stringXML += "           <ns7:SubjectArea>PRICE_QUOTE</ns7:SubjectArea>";
-            //stringXML += "       </ns7:SubjectAreas>";
-            //stringXML += "       <ns7:ViewName>Simple</ns7:ViewName>";
-            //stringXML += "       <ns7:ResponseFormat>STL</ns7:ResponseFormat>";
-            //stringXML += "    </ns7:ReturnOptions>";
-
             stringXML += " </ns7:GetReservationRQ>";
             child.InnerXml = stringXML;
             soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);

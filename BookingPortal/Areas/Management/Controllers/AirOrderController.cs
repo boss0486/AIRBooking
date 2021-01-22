@@ -31,7 +31,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             BookOrderService bookOrderService = new BookOrderService();
-            ViewBookOrder model = bookOrderService.ViewBookOrderByID(id);
+            ViewBookOrder model = bookOrderService.ViewTicketByID(id);
             if (model != null)
                 return View(model);
             //
