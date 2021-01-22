@@ -285,6 +285,7 @@
     <Content Include="Logged\2021\1\Log-14.txt" />
     <Content Include="Team\00000000-0000-0000-0000-000000000000.gif" />
     <Content Include="Team\2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml" />
+    <Content Include="Team\test-ve-da-xuat.xml" />
     <Content Include="WS\Xml\FareBasis.xml" />
     <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />
     <Content Include="Library\Script\model-form.js" />

@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>GetReservationRQ</eb:Service>
+      <eb:Action>GetReservationRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>852739356125350602</eb:MessageId>
+        <eb:Timestamp>2021-01-22T09:53:32</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESA!ICESMSLB\/RES.LB!1611309211432!3275!269!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <stl19:GetReservationRS xmlns:stl19="http://webservices.sabre.com/pnrbuilder/v1_19" xmlns:ns6="http://services.sabre.com/res/orr/v0" xmlns:or114="http://services.sabre.com/res/or/v1_14" xmlns:raw="http://tds.sabre.com/itinerary" xmlns:ns4="http://webservices.sabre.com/pnrconn/ReaccSearch" Version="1.19.0">
+      <stl19:Reservation numberInParty="1" numberOfInfants="0" NumberInSegment="1" isDirectConnectPlatformBooking="true">
+        <stl19:BookingDetails>
+          <stl19:RecordLocator>DHMICJ</stl19:RecordLocator>
+          <stl19:CreationTimestamp>2021-01-22T00:54:00</stl19:CreationTimestamp>
+          <stl19:SystemCreationTimestamp>2021-01-22T00:54:00</stl19:SystemCreationTimestamp>
+          <stl19:CreationAgentID>A44</stl19:CreationAgentID>
+          <stl19:UpdateTimestamp>2021-01-22T03:50:23</stl19:UpdateTimestamp>
+          <stl19:PNRSequence>11</stl19:PNRSequence>
+          <stl19:DivideSplitDetails />
+          <stl19:EstimatedPurgeTimestamp>2021-02-02T00:00:00</stl19:EstimatedPurgeTimestamp>
+          <stl19:UpdateToken>-17732af5dafbaf76c3b7b1b25beb00447c76d4c2cd5d3e91</stl19:UpdateToken>
+        </stl19:BookingDetails>
+        <stl19:POS AirExtras="false" InhibitCode="U">
+          <stl19:Source BookingSource="A0A0" AgentSine="A44" PseudoCityCode="LZJ" ISOCountry="VN" AgentDutyCode="4" AirlineVendorID="VN" HomePseudoCityCode="LZJ" PrimeHostID="VN">
+            <stl19:OAC>
+              <stl19:PartitionId>VN</stl19:PartitionId>
+              <stl19:AccountingCityCode>LZJ</stl19:AccountingCityCode>
+              <stl19:AccountingCode>GS</stl19:AccountingCode>
+              <stl19:AccountingOfficeStationCode>3795968</stl19:AccountingOfficeStationCode>
+            </stl19:OAC>
+          </stl19:Source>
+        </stl19:POS>
+        <stl19:PassengerReservation>
+          <stl19:Passengers>
+            <stl19:Passenger id="5" nameType="S" nameId="01.01" nameAssocId="1" elementId="pnr-5.1">
+              <stl19:LastName>NGUYEN</stl19:LastName>
+              <stl19:FirstName>VAN TUAN MR</stl19:FirstName>
+              <stl19:EmailAddress id="7">
+                <stl19:Address>VIETNT.ITT@GMAIL.COM</stl19:Address>
+                <stl19:Comment />
+              </stl19:EmailAddress>
+              <stl19:Profiles>
+                <stl19:Profile id="13">
+                  <stl19:ProfileID>8047035252</stl19:ProfileID>
+                  <stl19:ProfileType>TVL</stl19:ProfileType>
+                </stl19:Profile>
+              </stl19:Profiles>
+              <stl19:Seats />
+            </stl19:Passenger>
+          </stl19:Passengers>
+          <stl19:Segments />
+          <stl19:TicketingInfo>
+            <stl19:AlreadyTicketed id="21" index="1" elementId="pnr-21">
+              <stl19:Code>T-22JAN-LZJ4A44</stl19:Code>
+            </stl19:AlreadyTicketed>
+            <stl19:ETicketNumber id="20" index="2" elementId="pnr-20">TE 7382406322338 NGUYE/V LZJ4A44 1359/22JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="24" elementId="pnr-24">TV 7382406322338 *VOID*  LZJ4A44 1545/22JAN</stl19:ETicketNumber>
+            <stl19:TicketDetails id="20" index="2" elementId="pnr-20">
+              <stl19:OriginalTicketDetails>TE 7382406322338 NGUYE/V LZJ4A44 1359/22JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406322338</stl19:TicketNumber>
+              <stl19:PassengerName>NGUYE/V</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>A44</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-22T13:59:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="24" elementId="pnr-24">
+              <stl19:OriginalTicketDetails>TV 7382406322338 *VOID*  LZJ4A44 1545/22JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406322338</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>A44</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-22T15:45:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+          </stl19:TicketingInfo>
+          <stl19:ItineraryPricing />
+        </stl19:PassengerReservation>
+        <stl19:ReceivedFrom>
+          <stl19:Name>GOINGO</stl19:Name>
+        </stl19:ReceivedFrom>
+        <stl19:PhoneNumbers>
+          <stl19:PhoneNumber id="8" index="1" elementId="pnr-8">
+            <stl19:CityCode>LZJ</stl19:CityCode>
+            <stl19:Number>0983498218-H-1.1</stl19:Number>
+          </stl19:PhoneNumber>
+        </stl19:PhoneNumbers>
+        <stl19:Remarks>
+          <stl19:Remark index="1" id="15" type="REG" elementId="pnr-15">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>XXAUTH/706568   *Z/BT9681</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+          <stl19:Remark index="2" id="23" type="HS" elementId="pnr-23">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>CHK POSSIBLE DUP WITH UVNREH OR WL BE XCLD</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+        </stl19:Remarks>
+        <stl19:EmailAddresses />
+        <stl19:GenericSpecialRequests id="11" type="A" msgType="S">
+          <stl19:Code>OTHS</stl19:Code>
+          <stl19:FreeText>/ADV TKT BY 25JAN21 1354HANVN OR WL BE CXLD</stl19:FreeText>
+          <stl19:FullText>OTHS  /ADV TKT BY 25JAN21 1354HANVN OR WL BE CXLD</stl19:FullText>
+        </stl19:GenericSpecialRequests>
+        <stl19:OpenReservationElements>
+          <or114:OpenReservationElement id="11" type="SRVC" elementId="pnr-11">
+            <or114:ServiceRequest code="OTHS" serviceType="SSR" ssrType="AFX">
+              <or114:FreeText>/ADV TKT BY 25JAN21 1354HANVN OR WL BE CXLD</or114:FreeText>
+              <or114:FullText>OTHS  /ADV TKT BY 25JAN21 1354HANVN OR WL BE CXLD </or114:FullText>
+            </or114:ServiceRequest>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="13" type="PROFILE" elementId="pnr-or-13">
+            <or114:Profile>
+              <or114:ID>8047035252</or114:ID>
+              <or114:Type>TRAVELER</or114:Type>
+              <or114:ShortType>TVL</or114:ShortType>
+            </or114:Profile>
+            <or114:NameAssociation>
+              <or114:LastName>NGUYEN</or114:LastName>
+              <or114:FirstName>VAN TUAN MR</or114:FirstName>
+              <or114:ReferenceId>1</or114:ReferenceId>
+              <or114:Id>1</or114:Id>
+              <or114:NameRefNumber>01.01</or114:NameRefNumber>
+            </or114:NameAssociation>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="7" type="PSG_DETAILS_MAIL" elementId="pnr-7">
+            <or114:Email comment="">
+              <or114:Address>VIETNT.ITT@GMAIL.COM</or114:Address>
+            </or114:Email>
+            <or114:NameAssociation>
+              <or114:LastName>NGUYEN</or114:LastName>
+              <or114:FirstName>VAN TUAN MR</or114:FirstName>
+              <or114:ReferenceId>1</or114:ReferenceId>
+              <or114:NameRefNumber>01.01</or114:NameRefNumber>
+            </or114:NameAssociation>
+          </or114:OpenReservationElement>
+        </stl19:OpenReservationElements>
+      </stl19:Reservation>
+    </stl19:GetReservationRS>
+  </soap-env:Body>
+</soap-env:Envelope>

@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>GetReservationRQ</eb:Service>
+      <eb:Action>GetReservationRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>983029352104450213</eb:MessageId>
+        <eb:Timestamp>2021-01-22T09:46:50</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESE!ICESMSLB\/RES.LB!1611308808870!3837!289!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <stl19:GetReservationRS xmlns:stl19="http://webservices.sabre.com/pnrbuilder/v1_19" xmlns:ns6="http://services.sabre.com/res/orr/v0" xmlns:or114="http://services.sabre.com/res/or/v1_14" xmlns:raw="http://tds.sabre.com/itinerary" xmlns:ns4="http://webservices.sabre.com/pnrconn/ReaccSearch" Version="1.19.0">
+      <stl19:Reservation numberInParty="9" numberOfInfants="0" NumberInSegment="9" isDirectConnectPlatformBooking="true">
+        <stl19:BookingDetails>
+          <stl19:RecordLocator>DBJZGW</stl19:RecordLocator>
+          <stl19:CreationTimestamp>2021-01-21T21:45:00</stl19:CreationTimestamp>
+          <stl19:SystemCreationTimestamp>2021-01-21T21:45:00</stl19:SystemCreationTimestamp>
+          <stl19:CreationAgentID>AJL</stl19:CreationAgentID>
+          <stl19:UpdateTimestamp>2021-01-22T03:45:35</stl19:UpdateTimestamp>
+          <stl19:PNRSequence>5</stl19:PNRSequence>
+          <stl19:DivideSplitDetails />
+          <stl19:EstimatedPurgeTimestamp>2021-03-01T00:00:00</stl19:EstimatedPurgeTimestamp>
+          <stl19:UpdateToken>-14399bad99d44fa878ea92e45871d66606dbcc55b02f92e4</stl19:UpdateToken>
+        </stl19:BookingDetails>
+        <stl19:POS AirExtras="false" InhibitCode="U">
+          <stl19:Source BookingSource="A0A0" AgentSine="AJL" PseudoCityCode="LZJ" ISOCountry="VN" AgentDutyCode="4" AirlineVendorID="VN" HomePseudoCityCode="LZJ" PrimeHostID="VN">
+            <stl19:OAC>
+              <stl19:PartitionId>VN</stl19:PartitionId>
+              <stl19:AccountingCityCode>LZJ</stl19:AccountingCityCode>
+              <stl19:AccountingCode>GS</stl19:AccountingCode>
+              <stl19:AccountingOfficeStationCode>3795968</stl19:AccountingOfficeStationCode>
+            </stl19:OAC>
+          </stl19:Source>
+        </stl19:POS>
+        <stl19:PassengerReservation>
+          <stl19:Passengers>
+            <stl19:Passenger id="4" nameType="S" nameId="01.01" nameAssocId="1" elementId="pnr-4.1">
+              <stl19:LastName>NGUYEN</stl19:LastName>
+              <stl19:FirstName>VAN HUNG</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="5" nameType="S" nameId="02.01" nameAssocId="2" elementId="pnr-5.2">
+              <stl19:LastName>HOANG</stl19:LastName>
+              <stl19:FirstName>THI UYEN</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="6" nameType="S" nameId="03.01" nameAssocId="3" elementId="pnr-6.3">
+              <stl19:LastName>NGHIEM</stl19:LastName>
+              <stl19:FirstName>XUAN HIEU</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="7" nameType="S" nameId="04.01" nameAssocId="4" elementId="pnr-7.4">
+              <stl19:LastName>NGHIEM</stl19:LastName>
+              <stl19:FirstName>XUAN HOI</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="8" nameType="S" nameId="05.01" nameAssocId="5" elementId="pnr-8.5">
+              <stl19:LastName>KHUC</stl19:LastName>
+              <stl19:FirstName>THI MAI HUONG</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="9" nameType="S" nameId="06.01" nameAssocId="6" elementId="pnr-9.6">
+              <stl19:LastName>NGHIEM</stl19:LastName>
+              <stl19:FirstName>THI THANH</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="10" nameType="S" nameId="07.01" nameAssocId="7" elementId="pnr-10.7">
+              <stl19:LastName>NGUYEN</stl19:LastName>
+              <stl19:FirstName>HONG QUANG</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="11" nameType="S" nameId="08.01" nameAssocId="8" elementId="pnr-11.8">
+              <stl19:LastName>NGHIEM</stl19:LastName>
+              <stl19:FirstName>DINH CHIEN</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="12" nameType="S" nameId="09.01" nameAssocId="9" elementId="pnr-12.9">
+              <stl19:LastName>HA</stl19:LastName>
+              <stl19:FirstName>THI NGUYET</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+          </stl19:Passengers>
+          <stl19:Segments />
+          <stl19:TicketingInfo>
+            <stl19:TicketingTimeLimit id="14" index="1" elementId="pnr-14">
+              <stl19:Time>TL30</stl19:Time>
+            </stl19:TicketingTimeLimit>
+          </stl19:TicketingInfo>
+          <stl19:ItineraryPricing />
+        </stl19:PassengerReservation>
+        <stl19:ReceivedFrom>
+          <stl19:Name>DA</stl19:Name>
+        </stl19:ReceivedFrom>
+        <stl19:PhoneNumbers>
+          <stl19:PhoneNumber id="15" index="1" elementId="pnr-15">
+            <stl19:CityCode>LZJ</stl19:CityCode>
+            <stl19:Number>0979030102 MR ANH</stl19:Number>
+          </stl19:PhoneNumber>
+        </stl19:PhoneNumbers>
+        <stl19:Remarks>
+          <stl19:Remark index="1" id="17" type="HS" elementId="pnr-17">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>CHECK BLACKLIST NAME</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+          <stl19:Remark index="2" id="21" type="HS" elementId="pnr-21">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>CHECK VIP INFORMATION</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+          <stl19:Remark index="3" id="23" type="HS" elementId="pnr-23">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>VN SEGS CNLD DUE TIME LIMIT NOT MET</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+        </stl19:Remarks>
+        <stl19:EmailAddresses>
+          <stl19:EmailAddress id="16">
+            <stl19:Address>TICKET@GOINGO.VN</stl19:Address>
+            <stl19:Comment />
+          </stl19:EmailAddress>
+        </stl19:EmailAddresses>
+        <stl19:GenericSpecialRequests id="19" type="A" msgType="S">
+          <stl19:Code>OTHS</stl19:Code>
+          <stl19:FreeText>/ADV TKT BY 22JAN21 1645HANVN OR WL BE CXLD</stl19:FreeText>
+          <stl19:FullText>OTHS  /ADV TKT BY 22JAN21 1645HANVN OR WL BE CXLD</stl19:FullText>
+        </stl19:GenericSpecialRequests>
+        <stl19:OpenReservationElements>
+          <or114:OpenReservationElement id="19" type="SRVC" elementId="pnr-19">
+            <or114:ServiceRequest code="OTHS" serviceType="SSR" ssrType="AFX">
+              <or114:FreeText>/ADV TKT BY 22JAN21 1645HANVN OR WL BE CXLD</or114:FreeText>
+              <or114:FullText>OTHS  /ADV TKT BY 22JAN21 1645HANVN OR WL BE CXLD </or114:FullText>
+            </or114:ServiceRequest>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="16" type="PSG_DETAILS_MAIL" elementId="pnr-16">
+            <or114:Email comment="">
+              <or114:Address>TICKET@GOINGO.VN</or114:Address>
+            </or114:Email>
+          </or114:OpenReservationElement>
+        </stl19:OpenReservationElements>
+      </stl19:Reservation>
+    </stl19:GetReservationRS>
+  </soap-env:Body>
+</soap-env:Envelope>

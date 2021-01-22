@@ -1709,21 +1709,18 @@ namespace AIRService.Service
                     return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
                 // check time void book 
                 AirportConfigService airportConfigService = new AirportConfigService();
-                AirportService airportService = new AirportService();
-                int voidTicketTime = 0;
-                AirportConfig airportConfig = airportConfigService.GetAlls(m => m.IATACode == bookTicket.OriginLocation).FirstOrDefault();
-                if (airportConfig != null)
-                    voidTicketTime = airportConfig.VoidTicketTime;
+                AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
+                int voidBookTime = 0;
+
+                AirResBookDesig airResBookDesig = airResBookDesigService.GetAlls(m => m.CodeID == bookTicket.ResBookDesigCode).FirstOrDefault();
+                if (airResBookDesig == null)
+                    return Notifization.Invalid("Lỗi thời gian hủy hành trình");
                 //
+                voidBookTime = airResBookDesig.VoidBookTime;
                 //DepartureDateTime  
                 DateTime dateTime = Helper.TimeData.TimeHelper.UtcDateTime;
                 DateTime departureDateTime = bookTicket.DepartureDateTime;
-
-
                 DateTime IssueDate = bookOrder.IssueDate;
-
-
-
                 // in day
                 // P: A : 6
                 // E T R N : 12
@@ -1731,15 +1728,21 @@ namespace AIRService.Service
                 // S M : 72
                 // I 24
 
-                if (dateTime.Year == departureDateTime.Year && dateTime.Month == departureDateTime.Month && dateTime.Day == departureDateTime.Day)
-                {
-                    if (departureDateTime.Minute - dateTime.Minute < 0)
-                    { }
-                }
+                //if (dateTime.Year == departureDateTime.Year && dateTime.Month == departureDateTime.Month && dateTime.Day == departureDateTime.Day)
+                //{
+                //    if (departureDateTime.Minute - dateTime.Minute < 0)
+                //    { }
+                //} 
 
 
-                if (departureDateTime.Minute - dateTime.Minute < voidTicketTime * 60)
-                    return Notifization.Invalid($"T.gian hủy chỗ quá giới hạn: {voidTicketTime} giờ");
+                DateTime datetime = Helper.TimeData.TimeHelper.UtcDateTime;
+                if (datetime > departureDateTime)
+                    return Notifization.Invalid($"T.gian khởi hành không hợp lệ"); 
+                //
+                TimeSpan difference = departureDateTime - datetime;
+                int leftBookTime = Convert.ToInt32(difference.TotalHours);
+                if (leftBookTime < voidBookTime)
+                    return Notifization.Invalid($"T.gian hủy chỗ quá giới hạn: {voidBookTime} giờ");
                 // 
                 using (var sessionService = new VNA_SessionService(tokenModel))
                 {
@@ -1947,6 +1950,21 @@ namespace AIRService.Service
         }
         public ActionResult PnrSync(PNRModel model)
         {
+            //XmlDocument soapEnvelopeXml = new XmlDocument();
+            //var path = HttpContext.Current.Server.MapPath(@"~/Team/test-ve-da-xuat.xml");
+            //soapEnvelopeXml.Load(path);
+            //XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+            //XMLObject.ReservationRq2.GetReservationRS reservationRS = new XMLObject.ReservationRq2.GetReservationRS();
+            //if (xmlnode != null)
+            //    reservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq2.GetReservationRS>(xmlnode.InnerXml);
+            //// 
+
+            //return Notifization.Invalid("Cannot create session");
+
+
+
+
+
             string pnr = model.PNR;
             if (string.IsNullOrWhiteSpace(pnr))
                 return Notifization.Invalid(MessageText.Invalid + "1");
