@@ -214,6 +214,14 @@ namespace AIRService.WS.VNAHelper
                 return (T)serializer.Deserialize(reader);
             }
         }
+        public static T Deserialize3<T>(string input) where T : class
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            using (var reader = new StreamReader(input))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
+        }
 
         public static T ConvertNode<T>(XmlNode node, string xmlRootElement) where T : class
         {

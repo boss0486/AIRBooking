@@ -84,15 +84,14 @@ namespace WebCore.Services
         }
 
 
-        public TransactionHistoryMessageModel WalletUserSpendingHistoryCreate(WalletUserSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        public static TransactionHistoryMessageModel WalletUserSpendingHistory(WalletUserSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
         {
             if (model == null)
                 return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
-            string clientId = model.ClientID;
+            string clientId = model.AgentID;
             string userId = model.UserID;
             double amount = model.Amount;
-            double balance = model.NewBalance;
             int transType = model.TransactionType;
             //
             string transState = "x";
@@ -101,13 +100,17 @@ namespace WebCore.Services
             if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
             //
-            string title = "Hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ. Số dư: " + Helper.Page.Library.FormatCurrency(balance) + " đ.";
+            string title = "Hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ";
             string summary = "";
-            UserSpendingHistoryService balanceUserHistoryService = new UserSpendingHistoryService(dbConnection);
-            balanceUserHistoryService.Create<string>(new UserSpendingHistory()
+            if (dbConnection == null) 
+                dbConnection = DbConnect.Connection.CMS;
+            //
+            UserSpendingHistoryService userSpendingHistoryService = new UserSpendingHistoryService(dbConnection);
+
+            userSpendingHistoryService.Create<string>(new UserSpendingHistory()
             {
                 UserID = userId,
-                ClientID = clientId,
+                AgentID = clientId,
                 Title = title,
                 Summary = summary,
                 Amount = amount,

@@ -18,7 +18,7 @@ namespace WebCore.Entities
         [Key]
         [IgnoreUpdate]
         public string ID { get; set; }
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         public string UserID { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
@@ -30,24 +30,11 @@ namespace WebCore.Entities
     // model
     public class WalletUserSpendingHistoryCreateModel
     {
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         public string UserID { get; set; }
         public double Amount { get; set; }
-        public double NewBalance { get; set; }
         public int TransactionType { get; set; }
-        public int Status { get; set; }
-
-    }
-    public class WalletUserSpendingHistoryUpdateModel : WalletUserSpendingHistoryCreateModel
-    {
-        public string ID { get; set; }
-    }
-    public class WalletUserHistoryIDModel
-    {
-        public string ID { get; set; }
-    }
+    } 
     //
     public partial class WalletUserSpendingHistoryResult : WEBModelResult
     {
@@ -55,7 +42,7 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Alias { get; set; }
-        public string ClientID { get; set; }
+        public string AgentID { get; set; }
         public string UserID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }

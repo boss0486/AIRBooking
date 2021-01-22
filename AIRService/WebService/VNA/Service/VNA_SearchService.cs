@@ -1426,9 +1426,7 @@ namespace AIRService.Service
                 int termPayment = airAgent.TermPayment;
                 if (termPayment <= 0)
                     return Notifization.Invalid("Hạn mức không hợp lệ");
-                // 
-
-
+                //  
                 //#1: check kỳ hạn thanh toan han muc 
                 if (paymentDayTotal > termPayment)
                     return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
@@ -1496,31 +1494,14 @@ namespace AIRService.Service
                 return Notifization.Invalid("Thông tin hành khách không hợp lệ");
             //   
             VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-            XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+            XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
             {
                 ConversationID = tokenModel.ConversationID,
                 Token = tokenModel.Token,
                 PNR = pnr
             });
-            //
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-            //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-
-
-            object alreadyTicketed = new object();
-
-
+            // 
+            XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
             if (alreadyTicketed != null)
                 return Notifization.Invalid("Vé đã xuất, vui lòng kiểm tra lại");
             //
@@ -1607,7 +1588,7 @@ namespace AIRService.Service
                 VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                 vNATransaction.EndTransaction(tokenModel);
                 //
-                XMLObject.ReservationRq.GetReservationRS reservationRSCheck = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                XMLObject.ReservationRq2.GetReservationRS reservationRSCheck = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token,
@@ -1633,41 +1614,59 @@ namespace AIRService.Service
                 //    }
                 //}
                 // step 02
-                List<XMLObject.ReservationRq.Passenger> passengers = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
-                if (passengers.Count() > 0)
+
+                alreadyTicketed = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                if (reservationRSCheck != null)
                 {
-                    foreach (var item in bookPassengers)
+                    List<XMLObject.ReservationRq2.Passenger> passengers = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
+                    if (passengers.Count() > 0)
                     {
-                        XMLObject.ReservationRq.Passenger passenger = passengers.Where(m => m.NameId == item.NameNumber).FirstOrDefault();
-                        string ticketNumber = string.Empty; 
-                        //
-                        List<XMLObject.ReservationRq.GenericSpecialRequest> genericSpecialRequests = passenger.SpecialRequests.GenericSpecialRequest;
-                        if (genericSpecialRequests.Count() > 0)
-                            ticketNumber = genericSpecialRequests[0].TicketNumber;
-                        //
-                        BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.ID == item.ID).FirstOrDefault();
-                        bookPassenger.TicketNumber = ticketNumber;
-                        bookPassengerService.Update(bookPassenger);
-                        // 
-                        List<BookPrice> bookPrices = bookPriceService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.PassengerType == item.PassengerType).ToList();
-                        if (bookPrices.Count() > 0)
+                        foreach (var item in bookPassengers)
                         {
-                            int index = 1;
-                            foreach (var itemPrice in bookPrices)
+                            XMLObject.ReservationRq2.Passenger passenger = passengers.Where(m => m.NameId == item.NameNumber).FirstOrDefault();
+                            string ticketNumber = string.Empty;
+                            //
+                            List<XMLObject.ReservationRq2.GenericSpecialRequest> genericSpecialRequests = passenger.SpecialRequests.GenericSpecialRequest;
+                            if (genericSpecialRequests.Count() > 0)
+                                ticketNumber = genericSpecialRequests[0].TicketNumber;
+                            //
+                            BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.ID == item.ID).FirstOrDefault();
+                            bookPassenger.TicketNumber = ticketNumber;
+                            bookPassengerService.Update(bookPassenger);
+                            // 
+                            List<BookPrice> bookPrices = bookPriceService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.PassengerType == item.PassengerType).ToList();
+                            if (bookPrices.Count() > 0)
                             {
-                                //BookPrice bookPrice = bookPrices.Where(m => m.FlightType == index).FirstOrDefault();
-                                //bookPrice.TicketNumber = Helper.Page.Library.LastText(genericSpecialRequests[index - 1].FullText, '/');
-                                //bookPrice.FullText = genericSpecialRequests[index - 1].FullText;
-                                //bookPriceService.Update(bookPrice);
-                                //index++;
+                                int index = 1;
+                                foreach (var itemPrice in bookPrices)
+                                {
+                                    BookPrice bookPrice = bookPrices.Where(m => m.FlightType == index).FirstOrDefault();
+                                    bookPrice.TicketNumber = Helper.Page.Library.LastText(genericSpecialRequests[index - 1].FullText, '/');
+                                    bookPrice.FullText = genericSpecialRequests[index - 1].FullText;
+                                    bookPriceService.Update(bookPrice);
+                                    index++;
+                                }
                             }
                         }
                     }
+                    // save
+                    bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
+                    bookOrder.ExportDate = DateTime.Now;
+                    bookOrderService.Update(bookOrder);
+                    //
+                    BookAgentService bookAgentService = new BookAgentService();
+                    BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookOrder.ID).FirstOrDefault();
+                    if (bookAgent != null)
+                    {
+                        UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                        {
+                            AgentID = bookAgent.AgentID,
+                            UserID = bookAgent.TicketingID,
+                            Amount = fareTotal,
+                            TransactionType = (int)TransactionEnum.TransactionType.OUT
+                        });
+                    }
                 }
-                // save
-                bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
-                bookOrder.ExportDate = DateTime.Now;
-                bookOrderService.Update(bookOrder);
                 //
                 return Notifization.Success("Thành công. Đã xuất vé");
             }
@@ -1756,20 +1755,15 @@ namespace AIRService.Service
                         return Notifization.Invalid(MessageText.Invalid);
                     // 
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                    XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                     {
                         ConversationID = tokenModel.ConversationID,
                         Token = tokenModel.Token,
                         PNR = pnr
                     });
-
-
-                    //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                    //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = new XMLObject.ReservationRq.AlreadyTicketed();
-
-
-
-                    //if (alreadyTicketed == null)
+                    //
+                    XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                    if (alreadyTicketed == null)
                         return Notifization.Invalid("Lệnh đặt chỗ không tồn tại");
                     //
                     VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
@@ -1810,6 +1804,7 @@ namespace AIRService.Service
             BookPassengerService bookPassengerService = new BookPassengerService();
             BookOrderService bookOrderService = new BookOrderService();
             BookTicketService bookTicketService = new BookTicketService();
+            BookAgentService bookAgentService = new BookAgentService();
             BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == bookPassengerId).FirstOrDefault();
             if (bookPassenger == null)
                 return Notifization.Invalid(MessageText.Invalid);
@@ -1822,6 +1817,7 @@ namespace AIRService.Service
             if (bookOrder == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //DepartureDateTime 
+
             BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
             if (bookTicket == null)
                 return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
@@ -1860,7 +1856,7 @@ namespace AIRService.Service
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                     return Notifization.Invalid(MessageText.Invalid);
                 // 
-                XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token,
@@ -1868,11 +1864,8 @@ namespace AIRService.Service
                 });
 
 
-                //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                //XMLObject.ReservationRq.AlreadyTicketed alreadyTicketed =  new XMLObject.ReservationRq.AlreadyTicketed();
-                 
-
-                //if (alreadyTicketed == null)
+                XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                if (alreadyTicketed == null)
                     return Notifization.Invalid("Lỗi chưa xuất vé");
                 //
                 XMLObject.VoidTicketRq.VoidTicketRS voidTicketRS = vNA_VoidTicketLLSRQService.VoidTicketLLSRQ(tokenModel, ticketNo);
@@ -1889,11 +1882,18 @@ namespace AIRService.Service
                 bookPassengerService.Update(bookPassenger);
                 // tra lai tien cho ticketing
                 UserSpendingHistory walletUserSpendingHistory = new UserSpendingHistory();
+                string passengerType = bookPassenger.PassengerType;
+                double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.PassengerType == passengerType).Sum(m => m.Amount);
+                double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.PassengerType == passengerType).Sum(m => m.Amount);
+                BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID).FirstOrDefault();
+                UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                {
+                    UserID = bookAgent.TicketingID,
+                    Amount = totalTax + totalPrice,
+                    AgentID = bookAgent.ID,
+                    TransactionType = (int)TransactionEnum.TransactionType.IN
+                });
 
-
-                //string passengerType = bookPassenger.PassengerType;
-                //double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
-                //double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
                 return Notifization.Success($"Đã hủy số vé: {ticketNo}");
             }
         }
@@ -1934,7 +1934,7 @@ namespace AIRService.Service
                         PNR = pnr
                     };
                     VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    XMLObject.ReservationRq.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                    XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
                     VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                     vNATransaction.EndTransaction(tokenModel);
                     return Notifization.Data("OK", reservationRS);
@@ -1974,7 +1974,7 @@ namespace AIRService.Service
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                     return Notifization.Invalid(MessageText.Invalid);
                 // 
-                var dataPnr = vNAWSGetReservationRQService.GetReservation2(new GetReservationModel
+                var dataPnr = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token,
