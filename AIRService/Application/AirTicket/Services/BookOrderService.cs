@@ -622,12 +622,15 @@ namespace WebCore.Services
             //
             BookPassengerService bookPassengerService = new BookPassengerService(_connection);
             BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == id).FirstOrDefault();
-            string orderId = bookPassenger.BookOrderID; 
+            if (bookPassenger == null)
+                return null;
+            //
+            string orderId = bookPassenger.BookOrderID;
             // 
             string sqlQuery = @"SELECT TOP (1) * FROM App_BookOrder WHERE ID = @ID";
             ViewBookOrder data = _connection.Query<ViewBookOrder>(sqlQuery, new { ID = orderId }).FirstOrDefault();
             if (data == null)
-                return null; 
+                return null;
             BookAgentService bookAgentService = new BookAgentService(_connection);
             BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
             data.BookAgent = bookAgent;
