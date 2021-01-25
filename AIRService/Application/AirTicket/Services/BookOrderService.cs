@@ -192,6 +192,75 @@ namespace WebCore.Services
             return bookOrderResult;
         }
 
+        public List<BookingItineraryResult> BookingItineraryData(BookOrderSearch model)
+        {
+            List<BookingItineraryResult> bookOrderResult = new List<BookingItineraryResult>();
+            if (model == null)
+                return bookOrderResult;
+            //
+            int page = model.Page;
+            string query = model.Query;
+            if (string.IsNullOrWhiteSpace(query))
+                query = "";
+            //
+            string whereCondition = string.Empty;
+            SearchResult searchResult = WebCore.Model.Services.ModelService.SearchDefault(new SearchModel
+            {
+                Query = model.Query,
+                TimeExpress = model.TimeExpress,
+                Status = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Page = model.Page,
+                AreaID = model.AreaID,
+                TimeZoneLocal = model.TimeZoneLocal
+            }, dateColumn: "IssueDate", "o.");
+            if (searchResult != null)
+            {
+                if (searchResult.Status == 1)
+                    whereCondition = searchResult.Message;
+                else
+                    return bookOrderResult;
+            }
+            // 
+            if (model.ItineraryType != (int)WebCore.ENM.BookOrderEnum.BookItineraryType.None)
+                whereCondition += " AND o.ItineraryType = @ItineraryType";
+            // 
+            string compId = model.CompanyID;
+            int customerType = model.CustomerType;
+            //
+            if (customerType != (int)CustomerEnum.CustomerType.NONE)
+            {
+                whereCondition += " AND c.CustomerType = " + customerType + " ";
+                //
+                if (customerType == (int)CustomerEnum.CustomerType.COMP)
+                {
+                    if (!string.IsNullOrWhiteSpace(compId))
+                        whereCondition += " AND c.CompanyID = @CompanyID";
+                }
+            } 
+            // limit data
+            if (Helper.Current.UserLogin.IsClientInApplication())
+            {
+                string userId = Helper.Current.UserLogin.IdentifierID;
+                string agentId = AirAgentService.GetAgentIDByUserID(userId);
+                whereCondition += $" AND o.AgentID = '{agentId}'";
+            }
+
+
+            // query
+            string sqlQuery = $@"SELECT o.*,
+            c.CustomerType, c.Name as 'ContactName', c.CompanyID, c.CompanyCode,
+            a.AgentCode,a.TicketingID, a.TicketingName, a.AgentFee , a.ProviderFee, a.AgentPrice,
+            t.OriginLocation, t.DestinationLocation 
+            FROM App_BookOrder as o 
+            LEFT JOIN App_BookCustomer as c ON c.BookOrderID = o.ID
+            LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID
+            LEFT JOIN App_BookTicket as t ON t.BookOrderID = o.ID AND t.TicketType = 1 
+            WHERE (o.PNR LIKE N'%'+ @Query +'%') {whereCondition} AND o.OrderStatus = 1 ORDER BY o.IssueDate ASC";
+            return _connection.Query<BookingItineraryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query), OrderStatus = (int)BookOrderStatus.Booking, ItineraryType = model.ItineraryType, CompanyID = compId }).ToList();
+        }
+
         public ActionResult OrederList(BookOrderSearch model)
         {
             List<BookOrderResult> dtList = OrderData(model);
@@ -220,6 +289,33 @@ namespace WebCore.Services
         public ActionResult BookingList(BookOrderSearch model)
         {
             List<BookingResult> dtList = BookingData(model);
+            int page = model.Page;
+            if (dtList.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            var result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            if (result.Count == 0 && page > 1)
+            {
+                page -= 1;
+                result = dtList.ToPagedList(page, Helper.Pagination.Paging.PAGESIZE).ToList();
+            }
+            if (result.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            // Pagination
+            Helper.Pagination.PagingModel pagingModel = new Helper.Pagination.PagingModel
+            {
+                PageSize = Helper.Pagination.Paging.PAGESIZE,
+                Total = dtList.Count,
+                Page = page
+            };
+            // reusult
+            return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
+        }
+
+        //
+        public ActionResult ItineraryList(BookOrderSearch model)
+        {
+            List<BookingItineraryResult> dtList = BookingItineraryData(model);
             int page = model.Page;
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);

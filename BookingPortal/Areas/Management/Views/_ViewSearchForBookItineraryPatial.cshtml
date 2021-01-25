@@ -1,0 +1,49 @@
+﻿@using WebCore.Entities;
+@using WebCore.Services;
+@using WebCore.ENM;
+@using WebCore.Model.Enum;
+@using WebCore.Model.Services
+
+@using Helper.Language;
+@using Helper.TimeData;
+@{
+    ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
+}
+
+@*search control ******************************************************************************************************@
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlItinerary" name="ddlItinerary" class="form-control show-tick" data-live-search="true">
+                <option value="0">-Loại hành trình-</option>
+                @Html.Raw(BookOrderService.DropdownListOrderItinerary(-1))
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group ">
+            <select id="ddlTimeExpress" name="ddlTimeExpress" class="form-control show-tick" data-live-search="true">
+                <option value="0">-Giới hạn-</option>
+                @Html.Raw(ModelService.DropdownListSearchExpress(-1))
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="input-daterange input-group" id="datepicker">
+                <input type="text" class="form-control" id="txtStartDate" placeholder="dd-mm-yyyy" />
+                <span class="input-group-addon"><i class="far fa-arrow-alt-circle-right"></i></span>
+                <input type="text" class="form-control" id="txtEndDate" placeholder="dd-mm-yyyy" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" data-keyenter="#btnSearch">
+        <div class="input-group form-group">
+            <input type="text" class="form-control" id="txtQuery" placeholder="Nhập từ khóa..." />
+            <span id="btnSearch" class="input-group-addon" data-page="@Helper.Page.MetaSEO.ActionText"><i class="fa fa-search -icons"></i></span>
+        </div>
+    </div>
+</div>
+
+@*search control ******************************************************************************************************@
+

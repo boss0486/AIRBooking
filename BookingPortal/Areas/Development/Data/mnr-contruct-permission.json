@@ -73,7 +73,7 @@
         "KeyID": "Search",
         "Method": "Search",
         "APIRouter": "Action/Search",
-        "Title": "Tìm kiếm"
+        "Title": "Đặt vé"
       },
       {
         "KeyID": "Booking",
@@ -122,6 +122,12 @@
         "Method": "DataList",
         "APIRouter": "Action/DataList",
         "Title": "D.sách"
+      },
+      {
+        "KeyID": "Itinerary",
+        "Method": "Itinerary",
+        "APIRouter": "Action/Itinerary",
+        "Title": "Hành trình"
       },
       {
         "KeyID": "Details",

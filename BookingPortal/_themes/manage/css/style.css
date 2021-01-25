@@ -9664,7 +9664,7 @@ html.ie11 .bs-searchbox .form-control {
 
         .main-content .att-data-list::before {
             content: "";
-            border-bottom: dotted 1px #a5b7b9;
+            /*border-bottom: dotted 1px #a5b7b9;*/
             top: 11px;
             right: 90px;
             left: 0px;

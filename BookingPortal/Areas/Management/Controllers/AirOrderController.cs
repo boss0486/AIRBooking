@@ -28,6 +28,10 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult Itinerary()
+        {
+            return View();
+        }
         public ActionResult Details(string id)
         {
             BookOrderService bookOrderService = new BookOrderService();
@@ -46,6 +50,21 @@ namespace WebApplication.Management.Controllers
             {
                 using (var service = new BookOrderService())
                     return service.OrederList(model);
+            }
+            catch (Exception ex)
+            {
+                return Notifization.TEST("::" + ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("Action/Itinerary")]
+        public ActionResult Itinerary(BookOrderSearch model)
+        {
+            try
+            {
+                using (var service = new BookOrderService())
+                    return service.ItineraryList(model);
             }
             catch (Exception ex)
             {
@@ -131,7 +150,7 @@ namespace WebApplication.Management.Controllers
                 return Notifization.TEST("::" + ex);
             }
         }
-         
+
         [HttpPost]
         [Route("Action/BookExport")]
         public ActionResult BookingExport(BookOrderSearch model)
@@ -177,8 +196,25 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
-        
-        
+
+        [HttpPost]
+        [Route("Action/VoidItinerary")]
+        public ActionResult VoidItinerary(BookOrderIDModel model)
+        {
+            try
+            {
+                var vnaSearchService = new VNA_SearchService();
+                return vnaSearchService.VoidItinerary(model);
+            }
+            catch (Exception ex)
+            {
+                Helper.SystemLogg.WriteLog("VoidTicket: " + ex);
+                return Notifization.TEST(":::" + ex);
+                //return Notifization.NotService;
+            }
+        }
+
+
         [HttpPost]
         [Route("Action/PnrSync")]
         public ActionResult PnrSync(PNRModel model)

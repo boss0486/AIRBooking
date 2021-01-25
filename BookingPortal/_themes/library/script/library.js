@@ -361,6 +361,7 @@ class Confirm {
     static Text_VoidBook = 3;
     static Text_payment_spendinglimit = 4;
     static Text_VoidTicket = 5;
+    static Text_VoidItinerary = 6;
 
     static ConfirmYN(param, funcY, title_enum = 0) {
         var _content = "...";
@@ -379,6 +380,9 @@ class Confirm {
         // 
         if (title_enum == 5)
             _content = "Thực hiện hủy vé. Bạn có chắc chắn muốn thực hiện hành động này không?"
+        //
+        if (title_enum == 6)
+            _content = "Thực hiện hủy hành trình. Bạn có chắc chắn muốn thực hiện hành động này không?"
         //
         $.confirm({
             title: 'Xác nhận!',

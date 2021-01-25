@@ -138,7 +138,7 @@ var AirOrderController = {
                             //   
                             var _unit = 'đ';
                             //  role
-                            var action = HelperModel.RolePermission(result.role, "FlightController", id);
+                            var action = HelperModel.RolePermission(result.role, "AirBook", id);
                             //
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
                             rowData += `

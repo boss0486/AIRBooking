@@ -1679,107 +1679,98 @@ namespace AIRService.Service
 
         public ActionResult VoidBook(BookOrderIDModel model)
         {
-            try
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.Invalid(MessageText.Invalid);
+            // 
+            string orderId = model.ID;
+            BookOrderService bookOrderService = new BookOrderService();
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            string pnr = bookOrder.PNR;
+            if (string.IsNullOrWhiteSpace(pnr))
+                return Notifization.Invalid("Mã PNR không hợp lệ");
+            // 
+            BookTicketService bookTicketService = new BookTicketService();
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            if (bookTicket == null)
+                return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
+            // check time void book 
+            AirportConfigService airportConfigService = new AirportConfigService();
+            AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
+            int voidBookTime = 0;
+
+            AirResBookDesig airResBookDesig = airResBookDesigService.GetAlls(m => m.CodeID == bookTicket.ResBookDesigCode).FirstOrDefault();
+            if (airResBookDesig == null)
+                return Notifization.Invalid("Lỗi thời gian hủy hành trình");
+            //
+            voidBookTime = airResBookDesig.VoidBookTime;
+            //DepartureDateTime  
+            DateTime dateTime = Helper.TimeData.TimeHelper.UtcDateTime;
+            DateTime departureDateTime = bookTicket.DepartureDateTime;
+            DateTime IssueDate = bookOrder.IssueDate;
+            // in day
+            // P: A : 6
+            // E T R N : 12
+            // Q L K H : 24
+            // S M : 72
+            // I 24
+
+            //if (dateTime.Year == departureDateTime.Year && dateTime.Month == departureDateTime.Month && dateTime.Day == departureDateTime.Day)
+            //{
+            //    if (departureDateTime.Minute - dateTime.Minute < 0)
+            //    { }
+            //} 
+
+
+            DateTime datetime = Helper.TimeData.TimeHelper.UtcDateTime;
+            if (datetime > departureDateTime)
+                return Notifization.Invalid($"T.gian khởi hành không hợp lệ");
+            //
+            TimeSpan difference = departureDateTime - datetime;
+            int leftBookTime = Convert.ToInt32(difference.TotalHours);
+            if (leftBookTime < voidBookTime)
+                return Notifization.Invalid($"T.gian hủy chỗ quá giới hạn: {voidBookTime} giờ");
+            // 
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid + "1");
-                //
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                // create session 
-                if (tokenModel == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                // create session 
-                string _token = tokenModel.Token;
-                string _conversationId = tokenModel.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.Invalid(MessageText.Invalid);
-                // 
-                string orderId = model.ID;
-                BookOrderService bookOrderService = new BookOrderService();
-                BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
-                if (bookOrder == null)
-                    return Notifization.Invalid(MessageText.Invalid);
-                string pnr = bookOrder.PNR;
-                if (string.IsNullOrWhiteSpace(pnr))
-                    return Notifization.Invalid("Mã PNR không hợp lệ");
-                // 
-                BookTicketService bookTicketService = new BookTicketService();
-                BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
-                if (bookTicket == null)
-                    return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
-                // check time void book 
-                AirportConfigService airportConfigService = new AirportConfigService();
-                AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
-                int voidBookTime = 0;
-
-                AirResBookDesig airResBookDesig = airResBookDesigService.GetAlls(m => m.CodeID == bookTicket.ResBookDesigCode).FirstOrDefault();
-                if (airResBookDesig == null)
-                    return Notifization.Invalid("Lỗi thời gian hủy hành trình");
-                //
-                voidBookTime = airResBookDesig.VoidBookTime;
-                //DepartureDateTime  
-                DateTime dateTime = Helper.TimeData.TimeHelper.UtcDateTime;
-                DateTime departureDateTime = bookTicket.DepartureDateTime;
-                DateTime IssueDate = bookOrder.IssueDate;
-                // in day
-                // P: A : 6
-                // E T R N : 12
-                // Q L K H : 24
-                // S M : 72
-                // I 24
-
-                //if (dateTime.Year == departureDateTime.Year && dateTime.Month == departureDateTime.Month && dateTime.Day == departureDateTime.Day)
-                //{
-                //    if (departureDateTime.Minute - dateTime.Minute < 0)
-                //    { }
-                //} 
-
-
-                DateTime datetime = Helper.TimeData.TimeHelper.UtcDateTime;
-                if (datetime > departureDateTime)
-                    return Notifization.Invalid($"T.gian khởi hành không hợp lệ"); 
-                //
-                TimeSpan difference = departureDateTime - datetime;
-                int leftBookTime = Convert.ToInt32(difference.TotalHours);
-                if (leftBookTime < voidBookTime)
-                    return Notifization.Invalid($"T.gian hủy chỗ quá giới hạn: {voidBookTime} giờ");
-                // 
-                using (var sessionService = new VNA_SessionService(tokenModel))
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
                 {
-                    var voidTicketModel = new VNA_VoidTicketModel();
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token
-                    };
-                    VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                    var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                    if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                        return Notifization.Invalid(MessageText.Invalid);
-                    // 
-                    VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token,
-                        PNR = pnr
-                    });
-                    //
-                    XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                    if (alreadyTicketed == null)
-                        return Notifization.Invalid("Lệnh đặt chỗ không tồn tại");
-                    //
-                    VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
-                    var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
-                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    var end = vNATransaction.EndTransaction(tokenModel);
-                    voidTicketModel.JsonResultOTA_Cancel = end;
-                    return Notifization.Data("OK", voidTicketModel);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                };
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                // 
+                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr
+                });
+                //
+                XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                if (alreadyTicketed == null)
+                    return Notifization.Invalid("Lệnh đặt chỗ không tồn tại");
+                //
+                VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
+                var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
+                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                var end = vNATransaction.EndTransaction(tokenModel);
+                return Notifization.Success("Đã hủy");
             }
         }
         public ActionResult VoidTicket(BookPassengerIDModel model)
@@ -1811,17 +1802,19 @@ namespace AIRService.Service
             BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == bookPassengerId).FirstOrDefault();
             if (bookPassenger == null)
                 return Notifization.Invalid(MessageText.Invalid);
-            //
+            // 
+            string orderId = bookPassenger.BookOrderID;
+
             string ticketNo = bookPassenger.TicketNumber;
             if (string.IsNullOrWhiteSpace(ticketNo))
                 return Notifization.Invalid("Số vé không hợp lệ");
             //
-            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == bookPassenger.BookOrderID).FirstOrDefault();
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
             if (bookOrder == null)
                 return Notifization.Invalid(MessageText.Invalid);
             //DepartureDateTime 
 
-            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
             if (bookTicket == null)
                 return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
             // 
@@ -1879,92 +1872,222 @@ namespace AIRService.Service
                     return Notifization.Invalid($"Lỗi hủy số vé: {ticketNo}");
                 //  
                 // update trang thai ve
-                bookPassenger.IsVoided = true;
-                bookPassenger.VoidDateTime = Helper.TimeData.TimeHelper.UtcDateTime;
-                bookPassenger.VoidUserdID = Helper.Current.UserLogin.IdentifierID;
-                bookPassengerService.Update(bookPassenger);
-                // tra lai tien cho ticketing
-                UserSpendingHistory walletUserSpendingHistory = new UserSpendingHistory();
-                string passengerType = bookPassenger.PassengerType;
-                double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.PassengerType == passengerType).Sum(m => m.Amount);
-                double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID && m.PassengerType == passengerType).Sum(m => m.Amount);
-                BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookPassenger.BookOrderID).FirstOrDefault();
-                UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                if (!bookPassenger.IsVoided)
                 {
-                    UserID = bookAgent.TicketingID,
-                    Amount = totalTax + totalPrice,
-                    AgentID = bookAgent.ID,
-                    TransactionType = (int)TransactionEnum.TransactionType.IN
-                });
+                    bookPassenger.IsVoided = true;
+                    bookPassenger.VoidDateTime = Helper.TimeData.TimeHelper.UtcDateTime;
+                    bookPassenger.VoidUserdID = Helper.Current.UserLogin.IdentifierID;
+                    bookPassengerService.Update(bookPassenger);
+                    // tra lai tien cho ticketing
+                    UserSpendingHistory walletUserSpendingHistory = new UserSpendingHistory();
+                    string passengerType = bookPassenger.PassengerType;
+                    double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                    double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                    BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+                    UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                    {
+                        UserID = bookAgent.TicketingID,
+                        Amount = totalTax + totalPrice,
+                        AgentID = bookAgent.ID,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN
+                    });
+                }
 
                 return Notifization.Success($"Đã hủy số vé: {ticketNo}");
+            }
+        }
+        public ActionResult VoidItinerary(BookOrderIDModel model)
+        {
+
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.Invalid(MessageText.Invalid);
+            //  
+            string orderId = model.ID;
+            if (string.IsNullOrWhiteSpace(orderId))
+                return Notifization.Invalid(MessageText.Invalid);
+
+            BookPriceService bookPriceService = new BookPriceService();
+            BookTaxService bookTaxService = new BookTaxService();
+            BookPassengerService bookPassengerService = new BookPassengerService();
+            BookOrderService bookOrderService = new BookOrderService();
+            BookTicketService bookTicketService = new BookTicketService();
+            BookAgentService bookAgentService = new BookAgentService();
+
+            BookOrder bookOrder = bookOrderService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookOrder == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string pnr = bookOrder.PNR;
+            //DepartureDateTime 
+
+            BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == orderId).FirstOrDefault();
+            if (bookPassenger == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            string ticketNo = bookPassenger.TicketNumber;
+            if (string.IsNullOrWhiteSpace(ticketNo))
+                return Notifization.Invalid("Số vé không hợp lệ");
+            // 
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            if (bookTicket == null)
+                return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
+            // 
+            DateTime departureDateTime = bookTicket.DepartureDateTime;
+
+            // check time void ticket 
+            AirportConfigService airportConfigService = new AirportConfigService();
+            AirportService airportService = new AirportService();
+            int voidTicketTime = 0;
+            Airport airportGo = airportService.GetAlls(m => m.IATACode == bookTicket.OriginLocation).FirstOrDefault();
+            if (airportGo == null)
+                return Notifization.Invalid("Lỗi không tìm thấy sân bay");
+            // 
+            AirportConfig airportConfig = airportConfigService.GetAlls(m => m.IATACode == bookTicket.OriginLocation).FirstOrDefault();
+            if (airportConfig != null)
+                voidTicketTime = airportConfig.VoidTicketTime;
+            //
+            DateTime datetime = Helper.TimeData.TimeHelper.UtcDateTime;
+            if (datetime > departureDateTime)
+                return Notifization.Invalid($"T.gian khởi hành không hợp lệ");
+            //
+            TimeSpan difference = departureDateTime - datetime;
+            int leftBookTime = Convert.ToInt32(difference.TotalHours);
+            int voidBookTime = 0;
+            AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
+            AirResBookDesig airResBookDesig = airResBookDesigService.GetAlls(m => m.CodeID == bookTicket.ResBookDesigCode).FirstOrDefault();
+            if (airResBookDesig == null)
+                return Notifization.Invalid("Lỗi thời gian hủy hành trình");
+            //
+            voidBookTime = airResBookDesig.VoidBookTime;
+            if (leftBookTime < voidBookTime)
+                return Notifization.Invalid($"T.gian hủy chỗ quá giới hạn: {voidBookTime} giờ");
+            // 
+            using (var sessionService = new VNA_SessionService(tokenModel))
+            {
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                };
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                // 
+                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr
+                });
+                //
+                XMLObject.ReservationRq2.TicketingTimeLimit ticketingTimeLimit = reservationRS.Reservation.PassengerReservation.TicketingInfo.TicketingTimeLimit;
+                if (ticketingTimeLimit == null)
+                    return Notifization.Invalid("Lệnh đặt chỗ không tồn tại");
+                // 
+                VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
+                var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
+                //
+                DateTime dateTime = Helper.TimeData.TimeHelper.UtcDateTime;
+                if (departureDateTime.Minute - dateTime.Minute < voidTicketTime * 60)
+                    return Notifization.Invalid($"T.gian hủy vé quá giới hạn: {voidTicketTime} giờ");
+                //  
+                if (printer.ApplicationResults.Error != null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                // 
+                XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                if (alreadyTicketed == null)
+                    return Notifization.Invalid("Lỗi chưa xuất vé");
+                //
+                VNA_VoidTicketLLSRQService vNA_VoidTicketLLSRQService = new VNA_VoidTicketLLSRQService();
+                XMLObject.VoidTicketRq.VoidTicketRS voidTicketRS = vNA_VoidTicketLLSRQService.VoidTicketLLSRQ(tokenModel, ticketNo);
+                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                vNATransaction.EndTransaction(tokenModel);
+                //
+                if (voidTicketRS.ApplicationResults.Error != null)
+                    return Notifization.Invalid($"Lỗi hủy số vé: {ticketNo}");
+                //  
+                // update trang thai ve 
+                if (!bookPassenger.IsVoided)
+                {
+                    bookPassenger.IsVoided = true;
+                    bookPassenger.VoidDateTime = Helper.TimeData.TimeHelper.UtcDateTime;
+                    bookPassenger.VoidUserdID = Helper.Current.UserLogin.IdentifierID;
+                    bookPassengerService.Update(bookPassenger);
+                    // tra lai tien cho ticketing
+                    UserSpendingHistory walletUserSpendingHistory = new UserSpendingHistory();
+                    string passengerType = bookPassenger.PassengerType;
+                    double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                    double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
+                    BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
+                    UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                    {
+                        UserID = bookAgent.TicketingID,
+                        Amount = totalTax + totalPrice,
+                        AgentID = bookAgent.ID,
+                        TransactionType = (int)TransactionEnum.TransactionType.IN
+                    });
+                }
+                return Notifization.Success($"Đã hủy");
             }
         }
 
         public ActionResult TicketInfo(PNRModel model)
         {
-            try
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid + "1");
+            //
+            TokenModel tokenModel = VNA_AuthencationService.GetSession();
+            // create session 
+            if (tokenModel == null)
+                return Notifization.Invalid("Cannot create session");
+            // create session 
+            string _token = tokenModel.Token;
+            string _conversationId = tokenModel.ConversationID;
+            if (string.IsNullOrWhiteSpace(_token))
+                return Notifization.NotService;
+            // 
+            string pnr = model.PNR;
+            if (string.IsNullOrWhiteSpace(pnr))
+                return Notifization.Invalid("PNR code in valid");
+            //
+            using (var sessionService = new VNA_SessionService(tokenModel))
             {
-                if (model == null)
-                    return Notifization.Invalid(MessageText.Invalid + "1");
-                //
-                TokenModel tokenModel = VNA_AuthencationService.GetSession();
-                // create session 
-                if (tokenModel == null)
-                    return Notifization.Invalid("Cannot create session");
-                // create session 
-                string _token = tokenModel.Token;
-                string _conversationId = tokenModel.ConversationID;
-                if (string.IsNullOrWhiteSpace(_token))
-                    return Notifization.NotService;
-                // 
-                string pnr = model.PNR;
-                if (string.IsNullOrWhiteSpace(pnr))
-                    return Notifization.Invalid("PNR code in valid");
-                //
-                using (var sessionService = new VNA_SessionService(tokenModel))
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
                 {
-                    DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token
-                    };
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                };
 
-                    var getReservationModel = new GetReservationModel
-                    {
-                        ConversationID = tokenModel.ConversationID,
-                        Token = tokenModel.Token,
-                        PNR = pnr
-                    };
-                    VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                    XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                    VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                    vNATransaction.EndTransaction(tokenModel);
-                    return Notifization.Data("OK", reservationRS);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Notifization.TEST("OK" + ex);
+                var getReservationModel = new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr
+                };
+                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                vNATransaction.EndTransaction(tokenModel);
+                return Notifization.Data("OK", reservationRS);
             }
         }
         public ActionResult PnrSync(PNRModel model)
         {
-            //XmlDocument soapEnvelopeXml = new XmlDocument();
-            //var path = HttpContext.Current.Server.MapPath(@"~/Team/test-ve-da-xuat.xml");
-            //soapEnvelopeXml.Load(path);
-            //XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
-            //XMLObject.ReservationRq2.GetReservationRS reservationRS = new XMLObject.ReservationRq2.GetReservationRS();
-            //if (xmlnode != null)
-            //    reservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq2.GetReservationRS>(xmlnode.InnerXml);
-            //// 
-
-            //return Notifization.Invalid("Cannot create session");
-
-
-
-
-
             string pnr = model.PNR;
             if (string.IsNullOrWhiteSpace(pnr))
                 return Notifization.Invalid(MessageText.Invalid + "1");
@@ -1975,7 +2098,6 @@ namespace AIRService.Service
                 return Notifization.Invalid("Cannot create session");
             // create session 
             string _token = tokenModel.Token;
-            string _conversationId = tokenModel.ConversationID;
             if (string.IsNullOrWhiteSpace(_token))
                 return Notifization.NotService;
             // 

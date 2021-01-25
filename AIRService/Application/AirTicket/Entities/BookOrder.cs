@@ -145,6 +145,40 @@ namespace WebCore.Entities
 
     }
 
+    public partial class BookingItineraryResult //: WEBModelResult
+    {
+        public string ID { get; set; }
+        public string PNR { get; set; }
+        public string CodeID { get; set; }
+        public string AirlineID { get; set; }
+        //public string Title { get; set; }
+        //public string Summary { get; set; }
+        //public string Alias { get; set; }
+        //public string TicketingID { get; set; }
+        public string TicketingName { get; set; }
+        public string AgentCode { get; set; }
+        public string OriginLocation { get; set; }
+        public string DestinationLocation { get; set; }
+        //public double AgentFee { get; set; }
+        //public double ProviderFee { get; set; }
+        //public double AgentPrice { get; set; }
+        //public double Amount { get; set; }
+        //public double FareBasic { get; set; }
+        //public double FareTax { get; set; }
+        //public int CustomerType { get; set; }
+        //public string ContactName { get; set; }
+        //public string CompanyCode { get; set; }
+        //public string CompanyID { get; set; }
+        //public int Status { get; set; }
+        public DateTime IssueDate { get; set; }
+        private int ItineraryType { get; set; }
+        public int MailStatus { get; set; }
+        public int OrderStatus { get; set; } 
+        public string IssueDateText => TimeFormat.FormatToViewDate(IssueDate, Helper.Language.LanguagePage.GetLanguageCode); 
+        [NotMapped]
+        public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
+    }
+
     public class BookOrderOption
     {
         public string ID { get; set; }
