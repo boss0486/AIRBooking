@@ -196,7 +196,7 @@ var AirOrderController = {
                 if (response !== null) {
                     if (response.status === 200) {
                         Notifization.Success(response.message);
-                        AirBookController.DataList(pageIndex);
+                        AirOrderController.DataList(pageIndex);
                         return;
                     }
                     else {

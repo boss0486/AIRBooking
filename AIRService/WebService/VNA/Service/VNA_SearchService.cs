@@ -1616,7 +1616,7 @@ namespace AIRService.Service
                 // step 02
 
                 alreadyTicketed = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                if (reservationRSCheck != null)
+                if (alreadyTicketed != null)
                 {
                     List<XMLObject.ReservationRq2.Passenger> passengers = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
                     if (passengers.Count() > 0)
