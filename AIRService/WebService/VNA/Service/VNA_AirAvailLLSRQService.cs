@@ -16,78 +16,9 @@ namespace AIRService.WS.Service
 {
     public class VNA_AirAvailLLSRQService
     {
-        public AIRService.WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirAvailLLSRQ(AirAvailLLSRQModel model)
+
+        public XMLObject.AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirAvailLLSRQ(AirAvailLLSRQModel model)
         {
-            WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQ oTA_AirAvailRQ = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQ();
-            WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailPortTypeClient client = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailPortTypeClient();
-            // header info
-            WebService.VNA_OTA_AirAvailLLSRQ.MessageHeader messageHeader = new WebService.VNA_OTA_AirAvailLLSRQ.MessageHeader
-            {
-                MessageData = new WebService.VNA_OTA_AirAvailLLSRQ.MessageData()
-            };
-            messageHeader.MessageData.Timestamp = DateTime.Now.ToString("s").Replace("-", "").Replace(":", "") + "Z";
-            messageHeader.ConversationId = model.ConversationID;
-            messageHeader.Service = new WebService.VNA_OTA_AirAvailLLSRQ.Service();
-            messageHeader.Action = "OTA_AirAvailLLSRQ";
-            messageHeader.From = new WebService.VNA_OTA_AirAvailLLSRQ.From
-            {
-                PartyId = new WebService.VNA_OTA_AirAvailLLSRQ.PartyId[1]
-            };
-            var partyID = new WebService.VNA_OTA_AirAvailLLSRQ.PartyId
-            {
-                Value = "WebServiceClient"
-            };
-            messageHeader.From.PartyId[0] = partyID;
-
-            messageHeader.To = new WebService.VNA_OTA_AirAvailLLSRQ.To
-            {
-                PartyId = new WebService.VNA_OTA_AirAvailLLSRQ.PartyId[1]
-            };
-            partyID = new WebService.VNA_OTA_AirAvailLLSRQ.PartyId
-            {
-                Value = "WebServiceSupplier"
-            };
-            messageHeader.To.PartyId[0] = partyID;
-
-            //  header info
-            WebService.VNA_OTA_AirAvailLLSRQ.Security1 security = new WebService.VNA_OTA_AirAvailLLSRQ.Security1
-            {
-                BinarySecurityToken = model.Token
-            };
-
-            //
-            oTA_AirAvailRQ.OptionalQualifiers = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOptionalQualifiers
-            {
-                AdditionalAvailability = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOptionalQualifiersAdditionalAvailability
-                {
-                    Ind = true
-                }
-            };
-            oTA_AirAvailRQ.OriginDestinationInformation = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOriginDestinationInformation
-            {
-                FlightSegment = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOriginDestinationInformationFlightSegment()
-            };
-            oTA_AirAvailRQ.OriginDestinationInformation.FlightSegment.DepartureDateTime = model.DepartureDateTime.ToString("MM-dd");
-
-            oTA_AirAvailRQ.OriginDestinationInformation.FlightSegment.OriginLocation = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOriginDestinationInformationFlightSegmentOriginLocation
-            {
-                LocationCode = model.OriginLocation
-            };
-
-            oTA_AirAvailRQ.OriginDestinationInformation.FlightSegment.DestinationLocation = new WebService.VNA_OTA_AirAvailLLSRQ.OTA_AirAvailRQOriginDestinationInformationFlightSegmentDestinationLocation
-            {
-                LocationCode = model.DestinationLocation
-            };
-            var data = client.OTA_AirAvailRQ(ref messageHeader, ref security, oTA_AirAvailRQ);
-            return data;
-        }
-
-        public XMLObject.AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirAvailLLSRQ2(AirAvailLLSRQModel model)
-        {
-            #region xml 
-            //ReservationModel result;
-            //try
-            //{
 
             HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
             XmlDocument soapEnvelopeXml = new XmlDocument();
@@ -109,10 +40,9 @@ namespace AIRService.WS.Service
             stringXML += "            <ns:DestinationLocation LocationCode='" + model.DestinationLocation + "' />";
             stringXML += "            <ns:OriginLocation LocationCode='" + model.OriginLocation + "' />";
             stringXML += "        </ns:FlightSegment>";
-            stringXML += "    </ns:OriginDestinationInformation>";
+            stringXML += "  </ns:OriginDestinationInformation>";
             stringXML += "</ns:OTA_AirAvailRQ>";
-
-
+            //
             child.InnerXml = stringXML;
             soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
             using (Stream stream = request.GetRequestStream())
@@ -135,18 +65,10 @@ namespace AIRService.WS.Service
                     return ota_AirAvailRS;
                 }
             }
-
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ex;
-            //}
-            #endregion
         }
 
 
-        public XMLObject.AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirAvailLLSRQ3(AirAvailLLSRQModel model)
+        public XMLObject.AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirAvailLLSRQLoop(AirAvailLLSRQModel model)
         {
             #region xml
             //ReservationModel result;
@@ -166,21 +88,77 @@ namespace AIRService.WS.Service
 
             stringXML += "<ns:OTA_AirAvailRQ ReturnHostCommand='true' Version='2.4.0'  xmlns:ns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
             stringXML += "	<ns:OptionalQualifiers>";
-            //stringXML += "      <ns:FlightQualifiers Charters='true' DirectOnly='true' ExcludeCodeshares='true' OnlineOnly='true' Scan='true'>";
-            //stringXML += "          <ns:AlliancePartner>";
-            //stringXML += "              <ns:Group>*A</ns:Group>";
-            //stringXML += "          </ns:AlliancePartner>";
-            //stringXML += "          <ns:Cabin Exclude='true'>";
-            //stringXML += "              <ns:Designator>YB</ns:Designator>";
-            //stringXML += "          </ns:Cabin>";
-            //stringXML += "          <ns:VendorPrefs DirectAccess='false' Exclude='true'>";
-            //stringXML += "              <ns:Airline Code='VN' />";
-            //stringXML += "              <ns:Airline Code='VN' />";
-            //stringXML += "          </ns:VendorPrefs>";
-            //stringXML += "      </ns:FlightQualifiers>";
             stringXML += "		<ns:AdditionalAvailability Ind='true' />";
             stringXML += "	</ns:OptionalQualifiers>";
             stringXML += "</ns:OTA_AirAvailRQ>";
+            //
+            child.InnerXml = stringXML;
+            soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);
+            using (Stream stream = request.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                {
+                    string soapResult = rd.ReadToEnd();
+                    soapEnvelopeXml = new XmlDocument();
+                    soapEnvelopeXml.LoadXml(soapResult);
+                    //
+                    XMLObject.AirAvailLLSRQ.OTA_AirAvailRS ota_AirAvailRS = new XMLObject.AirAvailLLSRQ.OTA_AirAvailRS();
+                    XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                    if (xmlnode != null)
+                        ota_AirAvailRS = XMLHelper.Deserialize<XMLObject.AirAvailLLSRQ.OTA_AirAvailRS>(xmlnode.InnerXml);
+                    //
+                    return ota_AirAvailRS;
+                }
+            }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    throw ex;
+            //}
+            #endregion
+        }
+        public XMLObject.AirAvailLLSRQ.OTA_AirAvailRS FUNC_OTA_AirBookLLSRQ(AirAvailLLSRQModel model)
+        {
+            #region xml
+            //ReservationModel result;
+            //try
+            //{
+            HttpWebRequest request = XMLHelper.CreateWebRequest(XMLHelper.URL_WS);
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            var path = HttpContext.Current.Server.MapPath(@"~/WS/Xml/Common.xml");
+            soapEnvelopeXml.Load(path);
+            soapEnvelopeXml.GetElementsByTagName("eb:Timestamp")[0].InnerText = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+            soapEnvelopeXml.GetElementsByTagName("eb:Service")[0].InnerText = "OTA_AirBookLLSRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:Action")[0].InnerText = "OTA_AirBookLLSRQ";
+            soapEnvelopeXml.GetElementsByTagName("eb:BinarySecurityToken")[0].InnerText = model.Token;
+            soapEnvelopeXml.GetElementsByTagName("eb:ConversationId")[0].InnerText = model.ConversationID;
+            XmlDocumentFragment child = soapEnvelopeXml.CreateDocumentFragment();
+            var stringXML = ""; 
+            stringXML += $"<OTA_AirBookRQ Version='2.2.0' xmlns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
+            stringXML += $"    <OriginDestinationInformation>";
+            stringXML += $"        <FlightSegment DepartureDateTime='2019-12-21T12:25' ArrivalDateTime='2019-12-21T13:25' FlightNumber='1717' NumberInParty='2' ResBookDesigCode='Y' Status='NN'>";
+            stringXML += $"            <DestinationLocation LocationCode='{model.DestinationLocation}' />";
+            stringXML += $"            <Equipment AirEquipType='757' />";
+            stringXML += $"            <MarketingAirline Code='AA' FlightNumber='1717' />";
+            stringXML += $"            <OperatingAirline Code='AA' />";
+            stringXML += $"            <OriginLocation LocationCode='{model.OriginLocation}' />";
+            stringXML += $"        </FlightSegment>";
+            stringXML += $"        <FlightSegment DepartureDateTime='2019-12-24T11:10' ArrivalDateTime='2019-12-24T15:50' FlightNumber='1174' NumberInParty='2' ResBookDesigCode='Y' Status='NN'>";
+            stringXML += $"            <DestinationLocation LocationCode='{model.OriginLocation}' />";
+            stringXML += $"            <Equipment AirEquipType='757' />";
+            stringXML += $"            <MarketingAirline Code='AA' FlightNumber='1174' />";
+            stringXML += $"            <OperatingAirline Code='AA' />";
+            stringXML += $"            <OriginLocation LocationCode='{model.DestinationLocation}' />";
+            stringXML += $"        </FlightSegment>";
+            stringXML += $"    </OriginDestinationInformation>";
+            stringXML += $"</OTA_AirBookRQ>";
+
+
             //
             child.InnerXml = stringXML;
             soapEnvelopeXml.GetElementsByTagName("soapenv:Body")[0].AppendChild(child);

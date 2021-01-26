@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>GetReservationRQ</eb:Service>
+      <eb:Action>GetReservationRQ</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>885785347593790603</eb:MessageId>
+        <eb:Timestamp>2021-01-26T09:39:19</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESH!ICESMSLB\/RES.LB!1611653950381!295!261!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <stl19:GetReservationRS xmlns:stl19="http://webservices.sabre.com/pnrbuilder/v1_19" xmlns:ns6="http://services.sabre.com/res/orr/v0" xmlns:or114="http://services.sabre.com/res/or/v1_14" xmlns:raw="http://tds.sabre.com/itinerary" xmlns:ns4="http://webservices.sabre.com/pnrconn/ReaccSearch" Version="1.19.0">
+      <stl19:Reservation numberInParty="8" numberOfInfants="2" NumberInSegment="6" isDirectConnectPlatformBooking="true">
+        <stl19:BookingDetails>
+          <stl19:RecordLocator>ZLKMCJ</stl19:RecordLocator>
+          <stl19:CreationTimestamp>2021-01-26T01:14:00</stl19:CreationTimestamp>
+          <stl19:SystemCreationTimestamp>2021-01-26T01:14:00</stl19:SystemCreationTimestamp>
+          <stl19:CreationAgentID>AJL</stl19:CreationAgentID>
+          <stl19:UpdateTimestamp>2021-01-26T02:39:29</stl19:UpdateTimestamp>
+          <stl19:PNRSequence>8</stl19:PNRSequence>
+          <stl19:DivideSplitDetails />
+          <stl19:EstimatedPurgeTimestamp>2021-03-20T00:00:00</stl19:EstimatedPurgeTimestamp>
+          <stl19:UpdateToken>1d18996770a3c3e842cb467db9ffac6820312e5bacf81f32</stl19:UpdateToken>
+        </stl19:BookingDetails>
+        <stl19:POS AirExtras="false" InhibitCode="U">
+          <stl19:Source BookingSource="A0A0" AgentSine="AJL" PseudoCityCode="LZJ" ISOCountry="VN" AgentDutyCode="4" AirlineVendorID="VN" HomePseudoCityCode="LZJ" PrimeHostID="VN">
+            <stl19:OAC>
+              <stl19:PartitionId>VN</stl19:PartitionId>
+              <stl19:AccountingCityCode>LZJ</stl19:AccountingCityCode>
+              <stl19:AccountingCode>GS</stl19:AccountingCode>
+              <stl19:AccountingOfficeStationCode>3795968</stl19:AccountingOfficeStationCode>
+            </stl19:OAC>
+          </stl19:Source>
+        </stl19:POS>
+        <stl19:PassengerReservation>
+          <stl19:Passengers>
+            <stl19:Passenger id="3" nameType="S" nameId="01.01" nameAssocId="1" elementId="pnr-3.1">
+              <stl19:LastName>TO</stl19:LastName>
+              <stl19:FirstName>DUC ANH</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="4" nameType="S" nameId="02.01" nameAssocId="2" elementId="pnr-4.2">
+              <stl19:LastName>TO</stl19:LastName>
+              <stl19:FirstName>NHAT ANH</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="5" nameType="S" nameId="03.01" nameAssocId="3" elementId="pnr-5.3">
+              <stl19:LastName>DO</stl19:LastName>
+              <stl19:FirstName>QUYNH NGAN</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="6" nameType="S" nameId="04.01" nameAssocId="4" elementId="pnr-6.4">
+              <stl19:LastName>BUI</stl19:LastName>
+              <stl19:FirstName>THI QUYEN MISS</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="7" nameType="S" nameId="05.01" nameAssocId="5" elementId="pnr-7.5">
+              <stl19:LastName>HA</stl19:LastName>
+              <stl19:FirstName>THI NGA MISS</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="8" nameType="S" nameId="06.01" nameAssocId="6" elementId="pnr-8.6">
+              <stl19:LastName>PHUNG</stl19:LastName>
+              <stl19:FirstName>QUOC VIET MSTR</stl19:FirstName>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="12" nameType="I" nameId="07.01" nameAssocId="7" elementId="pnr-12.7">
+              <stl19:LastName>TO</stl19:LastName>
+              <stl19:FirstName>QUYNH VY MISS</stl19:FirstName>
+              <stl19:SpecialRequests>
+                <stl19:GenericSpecialRequest id="13" type="A" msgType="O">
+                  <stl19:FreeText>INF</stl19:FreeText>
+                  <stl19:AirlineCode>VN</stl19:AirlineCode>
+                  <stl19:FullText>VN INF</stl19:FullText>
+                </stl19:GenericSpecialRequest>
+              </stl19:SpecialRequests>
+              <stl19:Seats />
+            </stl19:Passenger>
+            <stl19:Passenger id="15" nameType="I" nameId="08.01" nameAssocId="8" elementId="pnr-15.8">
+              <stl19:LastName>TO</stl19:LastName>
+              <stl19:FirstName>GIA BAO MSTR</stl19:FirstName>
+              <stl19:SpecialRequests>
+                <stl19:GenericSpecialRequest id="16" type="A" msgType="O">
+                  <stl19:FreeText>INF</stl19:FreeText>
+                  <stl19:AirlineCode>VN</stl19:AirlineCode>
+                  <stl19:FullText>VN INF</stl19:FullText>
+                </stl19:GenericSpecialRequest>
+              </stl19:SpecialRequests>
+              <stl19:Seats />
+            </stl19:Passenger>
+          </stl19:Passengers>
+          <stl19:Segments />
+          <stl19:TicketingInfo>
+            <stl19:AlreadyTicketed id="48" index="1" elementId="pnr-48">
+              <stl19:Code>T-26JAN-LZJ4AMH</stl19:Code>
+            </stl19:AlreadyTicketed>
+            <stl19:ETicketNumber id="40" index="2" elementId="pnr-40">TE 7382406512866 TO/D LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="41" index="3" elementId="pnr-41">TE 7382406512867 TO/N LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="42" index="4" elementId="pnr-42">TE 7382406512868 DO/Q LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="43" index="5" elementId="pnr-43">TE 7382406512869 BUI/T LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="44" index="6" elementId="pnr-44">TE 7382406512870 HA/T LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="45" index="7" elementId="pnr-45">TE 7382406512871 PHUNG/Q LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="46" index="8" elementId="pnr-46">TE 7382406512872 TO/Q LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="47" index="9" elementId="pnr-47">TE 7382406512873 TO/G LZJ4AMH 1531/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="50" elementId="pnr-50">TV 7382406512866 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="51" elementId="pnr-51">TV 7382406512867 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="52" elementId="pnr-52">TV 7382406512868 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="53" elementId="pnr-53">TV 7382406512869 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="54" elementId="pnr-54">TV 7382406512870 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="55" elementId="pnr-55">TV 7382406512871 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="56" elementId="pnr-56">TV 7382406512872 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:ETicketNumber id="57" elementId="pnr-57">TV 7382406512873 *VOID*  LZJ4AMH 1536/26JAN</stl19:ETicketNumber>
+            <stl19:TicketDetails id="40" index="2" elementId="pnr-40">
+              <stl19:OriginalTicketDetails>TE 7382406512866 TO/D LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512866</stl19:TicketNumber>
+              <stl19:PassengerName>TO/D</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="41" index="3" elementId="pnr-41">
+              <stl19:OriginalTicketDetails>TE 7382406512867 TO/N LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512867</stl19:TicketNumber>
+              <stl19:PassengerName>TO/N</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="42" index="4" elementId="pnr-42">
+              <stl19:OriginalTicketDetails>TE 7382406512868 DO/Q LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512868</stl19:TicketNumber>
+              <stl19:PassengerName>DO/Q</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="43" index="5" elementId="pnr-43">
+              <stl19:OriginalTicketDetails>TE 7382406512869 BUI/T LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512869</stl19:TicketNumber>
+              <stl19:PassengerName>BUI/T</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="44" index="6" elementId="pnr-44">
+              <stl19:OriginalTicketDetails>TE 7382406512870 HA/T LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512870</stl19:TicketNumber>
+              <stl19:PassengerName>HA/T</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="45" index="7" elementId="pnr-45">
+              <stl19:OriginalTicketDetails>TE 7382406512871 PHUNG/Q LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512871</stl19:TicketNumber>
+              <stl19:PassengerName>PHUNG/Q</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="46" index="8" elementId="pnr-46">
+              <stl19:OriginalTicketDetails>TE 7382406512872 TO/Q LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512872</stl19:TicketNumber>
+              <stl19:PassengerName>TO/Q</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="47" index="9" elementId="pnr-47">
+              <stl19:OriginalTicketDetails>TE 7382406512873 TO/G LZJ4AMH 1531/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TE</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512873</stl19:TicketNumber>
+              <stl19:PassengerName>TO/G</stl19:PassengerName>
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:31:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="50" elementId="pnr-50">
+              <stl19:OriginalTicketDetails>TV 7382406512866 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512866</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="51" elementId="pnr-51">
+              <stl19:OriginalTicketDetails>TV 7382406512867 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512867</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="52" elementId="pnr-52">
+              <stl19:OriginalTicketDetails>TV 7382406512868 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512868</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="53" elementId="pnr-53">
+              <stl19:OriginalTicketDetails>TV 7382406512869 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512869</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="54" elementId="pnr-54">
+              <stl19:OriginalTicketDetails>TV 7382406512870 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512870</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="55" elementId="pnr-55">
+              <stl19:OriginalTicketDetails>TV 7382406512871 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512871</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="56" elementId="pnr-56">
+              <stl19:OriginalTicketDetails>TV 7382406512872 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512872</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+            <stl19:TicketDetails id="57" elementId="pnr-57">
+              <stl19:OriginalTicketDetails>TV 7382406512873 *VOID*  LZJ4AMH 1536/26JAN</stl19:OriginalTicketDetails>
+              <stl19:TransactionIndicator>TV</stl19:TransactionIndicator>
+              <stl19:TicketNumber>7382406512873</stl19:TicketNumber>
+              <stl19:PassengerName />
+              <stl19:AgencyLocation>LZJ</stl19:AgencyLocation>
+              <stl19:DutyCode>4</stl19:DutyCode>
+              <stl19:AgentSine>AMH</stl19:AgentSine>
+              <stl19:Timestamp>2021-01-26T15:36:00</stl19:Timestamp>
+              <stl19:PaymentType />
+            </stl19:TicketDetails>
+          </stl19:TicketingInfo>
+          <stl19:ItineraryPricing />
+        </stl19:PassengerReservation>
+        <stl19:ReceivedFrom>
+          <stl19:Name>DA</stl19:Name>
+        </stl19:ReceivedFrom>
+        <stl19:PhoneNumbers>
+          <stl19:PhoneNumber id="19" index="1" elementId="pnr-19">
+            <stl19:CityCode>LZJ</stl19:CityCode>
+            <stl19:Number>0979030102 MR ANH</stl19:Number>
+          </stl19:PhoneNumber>
+        </stl19:PhoneNumbers>
+        <stl19:Remarks>
+          <stl19:Remark index="1" id="23" type="REG" elementId="pnr-23">
+            <stl19:RemarkLines>
+              <stl19:RemarkLine>
+                <stl19:Text>XXAUTH/865216   *Z/BT9681</stl19:Text>
+              </stl19:RemarkLine>
+            </stl19:RemarkLines>
+          </stl19:Remark>
+        </stl19:Remarks>
+        <stl19:EmailAddresses>
+          <stl19:EmailAddress id="20">
+            <stl19:Address>TICKET@GOINGO.VN</stl19:Address>
+            <stl19:Comment />
+          </stl19:EmailAddress>
+        </stl19:EmailAddresses>
+        <stl19:GenericSpecialRequests id="58" type="A" msgType="S">
+          <stl19:Code>OTHS</stl19:Code>
+          <stl19:FreeText>/ADV TKT BY 31JAN21 1414HANVN OR WL BE CXLD</stl19:FreeText>
+          <stl19:FullText>OTHS  /ADV TKT BY 31JAN21 1414HANVN OR WL BE CXLD</stl19:FullText>
+        </stl19:GenericSpecialRequests>
+        <stl19:OpenReservationElements>
+          <or114:OpenReservationElement id="13" type="SRVC" elementId="pnr-13">
+            <or114:ServiceRequest airlineCode="VN" serviceType="OSI" ssrType="AFX">
+              <or114:FreeText>INF</or114:FreeText>
+              <or114:FullText>VN INF</or114:FullText>
+            </or114:ServiceRequest>
+            <or114:NameAssociation>
+              <or114:LastName>TO</or114:LastName>
+              <or114:FirstName>QUYNH VY MISS</or114:FirstName>
+              <or114:ReferenceId>7</or114:ReferenceId>
+              <or114:NameRefNumber>07.01</or114:NameRefNumber>
+            </or114:NameAssociation>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="16" type="SRVC" elementId="pnr-16">
+            <or114:ServiceRequest airlineCode="VN" serviceType="OSI" ssrType="AFX">
+              <or114:FreeText>INF</or114:FreeText>
+              <or114:FullText>VN INF</or114:FullText>
+            </or114:ServiceRequest>
+            <or114:NameAssociation>
+              <or114:LastName>TO</or114:LastName>
+              <or114:FirstName>GIA BAO MSTR</or114:FirstName>
+              <or114:ReferenceId>8</or114:ReferenceId>
+              <or114:NameRefNumber>08.01</or114:NameRefNumber>
+            </or114:NameAssociation>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="58" type="SRVC" elementId="pnr-58">
+            <or114:ServiceRequest code="OTHS" serviceType="SSR" ssrType="AFX">
+              <or114:FreeText>/ADV TKT BY 31JAN21 1414HANVN OR WL BE CXLD</or114:FreeText>
+              <or114:FullText>OTHS  /ADV TKT BY 31JAN21 1414HANVN OR WL BE CXLD </or114:FullText>
+            </or114:ServiceRequest>
+          </or114:OpenReservationElement>
+          <or114:OpenReservationElement id="20" type="PSG_DETAILS_MAIL" elementId="pnr-20">
+            <or114:Email comment="">
+              <or114:Address>TICKET@GOINGO.VN</or114:Address>
+            </or114:Email>
+          </or114:OpenReservationElement>
+        </stl19:OpenReservationElements>
+      </stl19:Reservation>
+    </stl19:GetReservationRS>
+  </soap-env:Body>
+</soap-env:Envelope>

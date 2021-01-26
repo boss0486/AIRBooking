@@ -43,7 +43,6 @@ namespace WebCore.Entities
     // model
     public class BookTicketCreateModel
     {
-        public string CategoryID { get; set; }
         public string PNR { get; set; }
         public string Summary { get; set; }
         public int ADT { get; set; }
@@ -123,7 +122,7 @@ namespace WebCore.Entities
         public string PassengerType { get; set; }
         public string FullName { get; set; }
         public int Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime ?DateOfBirth { get; set; }
         public string PassengerName { get; set; }
         public string ElementID { get; set; }
         public string NameNumber { get; set; }
@@ -237,7 +236,7 @@ namespace WebCore.Entities
     }
 
     // 
-    public class Request_BookModel
+    public class BookOrderSaveModel
     {
         public string Summary { get; set; }
         public int ItineraryType { get; set; }

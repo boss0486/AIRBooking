@@ -116,7 +116,7 @@ namespace AIRService.Service
                 string _flightGo = model.OriginLocation;
                 string _flightTo = model.DestinationLocation;
                 //
-                XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResultGo = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
+                XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResultGo = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
                 {
                     Token = _token,
                     ConversationID = _conversationId,
@@ -129,7 +129,7 @@ namespace AIRService.Service
                 {
                     originDestinationOptionListGo.AddRange(airAvailResultGo.OriginDestinationOptions.OriginDestinationOption);
                     // loop next 1
-                    var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -141,7 +141,7 @@ namespace AIRService.Service
                         originDestinationOptionListGo.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption);
                     //
                     // loop next 2 
-                    var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -153,7 +153,7 @@ namespace AIRService.Service
                         originDestinationOptionListGo.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption);
                     //
                     // loop next 3 
-                    var airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -306,7 +306,7 @@ namespace AIRService.Service
                 _departureDateTime = model.ReturnDateTime;
 
                 List<XMLObject.AirAvailLLSRQ.OriginDestinationOption> originDestinationOptionListReturn = new List<XMLObject.AirAvailLLSRQ.OriginDestinationOption>();
-                XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResultReturn = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ2(new AirAvailLLSRQModel
+                XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResultReturn = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ(new AirAvailLLSRQModel
                 {
                     Token = _token,
                     ConversationID = _conversationId,
@@ -319,7 +319,7 @@ namespace AIRService.Service
                 {
                     originDestinationOptionListReturn.AddRange(airAvailResultReturn.OriginDestinationOptions.OriginDestinationOption);
                     // loop next 1
-                    var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -331,7 +331,7 @@ namespace AIRService.Service
                         originDestinationOptionListReturn.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption);
                     //
                     // loop next 2 
-                    var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -343,7 +343,7 @@ namespace AIRService.Service
                         originDestinationOptionListReturn.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption);
                     //
                     // loop next 3 
-                    var airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQ3(new AirAvailLLSRQModel
+                    var airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
                         Token = _token,
                         ConversationID = _conversationId,
@@ -918,7 +918,7 @@ namespace AIRService.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public ActionResult TicketOrder(Request_BookModel model)
+        public ActionResult BookOrderSave(BookOrderSaveModel model)
         {
 
             string userId = Helper.Current.UserLogin.IdentifierID;
@@ -1302,7 +1302,6 @@ namespace AIRService.Service
                             ElementID = "",
                             NameNumber = nameNumber
                         });
-
                     }
                     // call save booking 
                     double airAgentFee = 0; //  
@@ -2104,23 +2103,142 @@ namespace AIRService.Service
             using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                {
-                    ConversationID = tokenModel.ConversationID,
-                    Token = tokenModel.Token
-                };
-                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                    return Notifization.Invalid(MessageText.Invalid);
+                //VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                //DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                //{
+                //    ConversationID = tokenModel.ConversationID,
+                //    Token = tokenModel.Token
+                //};
+                //var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                //if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                //    return Notifization.Invalid(MessageText.Invalid);
                 // 
-                var dataPnr = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                //XMLObject.ReservationRq2.GetReservationRS getReservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                //{
+                //    ConversationID = tokenModel.ConversationID,
+                //    Token = tokenModel.Token,
+                //    PNR = pnr
+                //});
+                XMLObject.ReservationRq2.GetReservationRS getReservationRS = new XMLObject.ReservationRq2.GetReservationRS();
+                XmlDocument soapEnvelopeXml = new XmlDocument();
+                var path = HttpContext.Current.Server.MapPath(@"~/Team/Log-2021-01-26-14-22-00-XOTA1N3Vchua-xuat-ve.xml");
+                soapEnvelopeXml.Load(path);
+                XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                if (xmlnode != null)
+                    getReservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq2.GetReservationRS>(xmlnode.InnerXml);
+                //  
+                //
+                if (getReservationRS == null)
+                    return Notifization.NotFound(MessageText.NotFound);
+                // thong tin chang bay
+
+                BookOrderSaveModel bookOrderSaveModel = new BookOrderSaveModel();
+
+                XMLObject.ReservationRq2.Segments segments = getReservationRS.Reservation.PassengerReservation.Segments;
+                XMLObject.ReservationRq2.Passengers passengers = getReservationRS.Reservation.PassengerReservation.Passengers;
+                if (segments == null || passengers == null)
+                    return Notifization.Invalid(MessageText.Invalid + "2");
+                //
+                List<XMLObject.ReservationRq2.Segment> segmentsList = segments.Segment;
+                List<XMLObject.ReservationRq2.Passenger> passengersList = passengers.Passenger;
+
+                if (segmentsList.Count() == 0 || passengersList.Count() == 0)
+                    return Notifization.Invalid("Mã pnr: đã hủy");
+                // 
+                List<BookTicketPassenger> bookTicketPassenger = new List<BookTicketPassenger>();
+                List<string> freeTexts = new List<string>();
+                string test = "";
+                foreach (var item in passengersList)
                 {
-                    ConversationID = tokenModel.ConversationID,
-                    Token = tokenModel.Token,
-                    PNR = pnr
-                });
-                return Notifization.Data("OK", dataPnr);
+                    string passengerType = "ADT";
+                    int gender = 0;
+                    //
+                    
+
+                    if (!string.IsNullOrWhiteSpace(item.WithInfant))
+                    {
+                       
+                        test += ":" + item.SpecialRequests.GenericSpecialRequest.Count();
+                        if (item.SpecialRequests.GenericSpecialRequest.Count() != 0)
+                        {
+                            string freeText = item.SpecialRequests.GenericSpecialRequest[0].FreeText;
+                            freeTexts.Add(freeText); 
+                        }
+                    }
+                    //
+                    if (item.FirstName.Contains("MSTR"))
+                    {
+                        passengerType = "CNN";
+                        gender = 1;
+
+                    }
+                    else if (item.FirstName.Contains("MISS"))
+                    {
+                        passengerType = "CNN";
+                        gender = 2;
+                    }
+                    //
+                    bookTicketPassenger.Add(new BookTicketPassenger
+                    {
+                        PassengerType = passengerType,
+                        FullName = $"{item.LastName} {item.FirstName}",
+                        Gender = gender,
+                        DateOfBirth = null,
+                        PassengerName = $"{item.LastName} {item.FirstName}",
+                        ElementID = item.ElementId,
+                        NameNumber = item.NameId,
+                    });
+                }
+                // update birth day
+                foreach (var item in bookTicketPassenger)
+                {
+                    string freeText = freeTexts.Where(m => m.Replace("/", " ").Contains(item.FullName)).FirstOrDefault();
+                    if (string.IsNullOrWhiteSpace(freeText))
+                        continue;
+                    //
+                    string strDate = freeText.Split('/').LastOrDefault();
+                    if (string.IsNullOrWhiteSpace(strDate))
+                        continue;
+                    // 
+                    item.DateOfBirth = Convert.ToDateTime(strDate);
+                    item.PassengerType = "INF";
+
+                }
+
+                bookOrderSaveModel.Passengers = bookTicketPassenger;
+
+                List<string> lstSegmentText = new List<string>();
+                List<BookSegmentModel> bookSegmentModels = new List<BookSegmentModel>();
+                foreach (var item in segmentsList)
+                {
+                    int ticketType = (int)BookOrderEnum.BookFlightType.FlightGo;
+                    string numberInParty = item.Air.NumberInParty;
+                    string originLocation = item.Air.DepartureAirport;
+                    string destinationLocation = item.Air.ArrivalAirport;
+                    string departureDateTime = item.Air.DepartureDateTime;
+                    string arrivalDateTime = item.Air.ArrivalDateTime;
+                    string resBookDesigCode = item.Air.ResBookDesigCode;
+                    string flightNumber = item.Air.FlightNumber;
+                    string airEquipType = item.Air.EquipmentType;
+                    lstSegmentText.Add(originLocation + destinationLocation);
+                    string _segmentText = destinationLocation + originLocation;
+                    if (lstSegmentText.Contains(_segmentText))
+                        ticketType = (int)BookOrderEnum.BookFlightType.FlightReturn;
+                    //
+                    bookSegmentModels.Add(new BookSegmentModel
+                    {
+                        DepartureDateTime = Convert.ToDateTime(departureDateTime),
+                        ArrivalDateTime = Convert.ToDateTime(arrivalDateTime),
+                        FlightNumber = Convert.ToInt32(flightNumber),
+                        NumberInParty = Convert.ToInt32(numberInParty),
+                        ResBookDesigCode = resBookDesigCode,
+                        AirEquipType = Convert.ToInt32(airEquipType),
+                        DestinationLocation = destinationLocation,
+                        OriginLocation = originLocation
+                    });
+                }
+                bookOrderSaveModel.Flights = bookSegmentModels;
+                return Notifization.Data("OK" + test, bookOrderSaveModel);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace ApiPortalBooking.Models
     public class PassengerDetailsRQ
     {
         public string PassengerType { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime ?DateOfBirth { get; set; }
         public string FullName { get; set; }
         /// <summary>
         /// F, Or M

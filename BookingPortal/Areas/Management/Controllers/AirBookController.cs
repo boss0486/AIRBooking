@@ -274,12 +274,12 @@ namespace WebApplication.Management.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Action/Booking")]
-        public ActionResult TicketOrder(Request_BookModel model)
+        public ActionResult TicketOrder(BookOrderSaveModel model)
         {
             try
             {
                 var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.TicketOrder(model);
+                return vnaSearchService.BookOrderSave(model);
             }
             catch (Exception ex)
             {

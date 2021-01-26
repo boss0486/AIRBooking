@@ -483,6 +483,7 @@
     <Compile Include="WebService\VNA\Entities\VNA_ReportModel.cs" />
     <Compile Include="WebService\VNA\XmlObject\AirTicketRqModel.cs" />
     <Compile Include="WebService\VNA\XmlObject\Class1.cs" />
+    <Compile Include="WebService\VNA\XmlObject\ReservationModel2.cs" />
     <Compile Include="WebService\VNA\XmlObject\ReservationModel.cs" />
     <Compile Include="WebService\VNA\XmlObject\VoidTicketModel.cs" />
     <Compile Include="WebService\VNA\Entities\RevResult.cs" />
