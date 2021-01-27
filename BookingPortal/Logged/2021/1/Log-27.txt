@@ -1,0 +1,2 @@
+[2021-01-27 16:48:49] {"ADT":1,"CNN":1,"INF":1,"Segments":[{"DepartureDateTime":"2021-02-08T00:10:00","ArrivalDateTime":"2021-02-08T02:30:00","FlightNumber":7228,"NumberInParty":2,"ResBookDesigCode":"K","AirEquipType":321,"DestinationLocation":"HAN","OriginLocation":"SGN"}],"Status":null,"Token":"Shared/IDL:IceSess\\/SessMgr:1\\.0.IDL/Common/!ICESMS\\/RESD!ICESMSLB\\/RES.LB!1611740936875!2623!273!1","ConversationID":"fOV1LWT3EJIUnGC0Yh1","LNIATA":null}
+[2021-01-27 16:48:54] Đã đặt chỗ:HKHDCS

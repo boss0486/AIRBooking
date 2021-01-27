@@ -62,6 +62,66 @@ var AirOrderController = {
                 }
             });
         });
+        $('#btnSync').off('click').on('click', function () {
+            //
+            var flag = true;
+            var ddlEmployee = $('#ddlEmployee').val();
+            var ddlCompany = $("#ddlCompany").val();
+            var txtPnr = $("#txtPnr").val();
+            var customerType = $(document).find('input[name="cbxCustomerType"]:checkbox:checked').val();
+            //
+            $("#lblPnr").html("");
+            if (txtPnr == "") {
+                $("#lblPnr").html("Không được để trống mã pnr");
+                flag = false;
+            }
+            //
+            $("#lblEmployee").html("");
+            if (ddlEmployee == "") {
+                $("#lblEmployee").html("Vui lòng chọn nhân viên");
+                flag = false;
+            }
+            //
+            $("#lblCompany").html("");
+            if (parseInt(customerType) == CustomerTypeEnum.Company) {
+                if (ddlCompany == "") {
+                    $("#lblCompany").html("Vui lòng chọn công ty");
+                    flag = false;
+                }
+            }
+            // 
+            var model = {
+                PNR: txtPnr,
+                TicketingID: ddlEmployee,
+                CustomerType: customerType,
+                CompanyID: ddlCompany
+            };
+            //
+            if (flag) {
+                AjaxFrom.POST({
+                    url: `${URLC}/DataSync`,
+                    data: model,
+                    success: function (response) {
+                        if (response !== null) {
+                            if (response.status === 200) {
+                                Notifization.Success(response.message);
+                                return;
+                            }
+                            else {
+                                Notifization.Error(response.message);
+                                return;
+                            }
+                        }
+                        Notifization.Error(MessageText.NotService);
+                        return;
+                    },
+                    error: function (result) {
+                        console.log('::' + MessageText.NotService);
+                    }
+                });
+            }
+        });
+
     },
     DataList: function (page) {
         //   

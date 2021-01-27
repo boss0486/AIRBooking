@@ -167,12 +167,12 @@ namespace WebCore.Services
                     }
                     CardCreditService cardCreditService = new CardCreditService(_connection);
                     string id = model.ID.ToLower();
-                    var cardCredit = cardCreditService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    CardCredit cardCredit = cardCreditService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (cardCredit == null)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    cardCredit = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
-                    if (cardCredit != null)
+                    CardCredit cardCreditTitle = cardCreditService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (cardCreditTitle != null)
                         return Notifization.Invalid("Tên thẻ tín dụng đã được sử dụng");
                     // update user information
                     cardCredit.Title = title;
@@ -237,26 +237,7 @@ namespace WebCore.Services
                 }
             }
         }
-        //##############################################################################################################################################################################################################################################################
-        public ActionResult Detail(string Id)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(Id))
-                    return Notifization.NotFound(MessageText.Invalid);
-                string langID = Helper.Current.UserLogin.LanguageID;
-                string sqlQuery = @"SELECT * FROM App_CardCredit WHERE ID = @ID";
-                var item = _connection.Query<CardCreditResult>(sqlQuery, new { ID = Id }).FirstOrDefault();
-                if (item == null)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Data(MessageText.Success, data: item);
-            }
-            catch
-            {
-                return Notifization.NotService;
-            }
-        }
+
         //##############################################################################################################################################################################################################################################################
         public static string DropdownList(string id)
         {

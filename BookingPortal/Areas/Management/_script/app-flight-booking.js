@@ -437,6 +437,7 @@ $(document).on('click', '#btnNextToInf', function () {
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
     var htmlError = "";
     var ddlFlightType = parseInt($('#ddlFlightType').val());
+
     var _mgtop = $(window).height() / 4;
     //    
     if (ddlFlightType == 2 && ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) && ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)) {
@@ -454,8 +455,8 @@ $(document).on('click', '#btnNextToInf', function () {
                 scrollTop: $("#TblFlightGo").offset().top - _mgtop
             }, 3000);
         }, 1000);
-    } else if (ddlFlightType == 2 && $(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0) {
-        htmlError = "Vui lòng chọn chuyến bay về";
+    } else if (ddlFlightType == 2 && ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)) {
+        htmlError = "Vui lòng chọn chuyến bay về 11" + ddlFlightType;
         setTimeout(function () {
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#TblFlightReturn").offset().top - _mgtop

@@ -112,26 +112,6 @@ namespace WebApplication.Management.Controllers
             {
                 return Notifization.NotService;
             }
-        }
-
-        [HttpPost]
-        [Route("Action/Details")]
-        public ActionResult Details(CardCreditIDModel model)
-        {
-            try
-            {
-                using (var service = new CardCreditService())
-                {
-                    if (model == null)
-                        return Notifization.Invalid();
-                    return service.Detail(model.ID);
-                }
-            }
-            catch (Exception)
-            {
-                return Notifization.NotService;
-            }
-        }
-
+        } 
     }
 }

@@ -88,18 +88,18 @@
         color: #2196F3;
     }
 
-    .theme-blue .input-group .input-group-addon, .theme-blue .input-group .form-control, .theme-blue .input-group .-icons {
+    .theme-blue [data-head="true"] .input-group .input-group-addon, .theme-blue [data-head="true"] .input-group .form-control, .theme-blue [data-head="true"] .input-group .-icons {
         border-color: #ABDED4;
     }
 
-    .theme-blue .input-group .input-group-addon {
-        background-color: #d6ebe7; 
+    .theme-blue [data-head="true"] .input-group .input-group-addon {
+        background-color: #d6ebe7;
     }
 
-    .theme-blue [data-toggle="dropdown"] {
+    .theme-blue [data-head="true"] [data-toggle="dropdown"] {
         border-color: #ABDED4;
     }
-    .theme-blue .btn-default:active, .theme-blue .btn-default.active, .theme-blue .open > .dropdown-toggle.btn-default {
+    .theme-blue [data-head="true"] .btn-default:active, .theme-blue [data-head="true"] .btn-default.active, .theme-blue [data-head="true"] .open > .dropdown-toggle.btn-default {
         color: #333;
         background-color: #FFF;
         background-image: none;

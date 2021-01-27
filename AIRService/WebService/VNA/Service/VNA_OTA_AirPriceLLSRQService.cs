@@ -88,7 +88,7 @@ namespace AIRService.WS.Service
                 oTA_AirPriceRQ.PriceRequestInformation.OptionalQualifiers.PricingQualifiers.PassengerType = listCustomer.ToArray();
                 var lSegment = new List<WebService.VNA_OTA_AirPriceLLSRQ.OTA_AirPriceRQFlightSegment>();
                 var rph = 0;
-                foreach (var item in model.lFlight)
+                foreach (var item in model.Segments)
                 {
                     rph++;
                     var Segment = new WebService.VNA_OTA_AirPriceLLSRQ.OTA_AirPriceRQFlightSegment

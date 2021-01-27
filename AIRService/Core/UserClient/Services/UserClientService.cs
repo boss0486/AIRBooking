@@ -598,24 +598,26 @@ namespace WebCore.Services
             }
         }
 
-        public List<EmployeeModel> GetEmployeeByAgentLogin()
+        public List<EmployeeModel> GetTiketing()
         {
-            string agentId = string.Empty;
             string whereCondition = string.Empty;
-            if (Helper.Current.UserLogin.IsAdminAgentLogged())
-            {
-                agentId = AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID);
-                whereCondition = " AND client.AgentID = @AgentID";
-            }
+            if (Helper.Current.UserLogin.IsAdminInApplication)
+                whereCondition = string.Empty;
+            else if (Helper.Current.UserLogin.IsAdminAgentLogged())
+                whereCondition = $" AND client.AgentID = '{AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID)}'";
+            else if (Helper.Current.UserLogin.IsAgentLogged())
+                whereCondition = $" AND client.UserID = '{Helper.Current.UserLogin.IdentifierID}'";
+            else
+                return new List<EmployeeModel>();
             //
-            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID, (select top 1 Amount from App_TiketingSpendingLimit where UserID = ur.UserID) as Spending  
+            string sqlQuery = $@"SELECT uf.UserID, uf.FullName, ur.RoleID  
                                 FROM UserInfo as uf
                                 INNER JOIN App_ClientLogin as client On client.UserID = uf.UserID
                                 LEFT JOIN UserRole as ur ON client.UserID =  ur.UserID
                                 INNER JOIN [Role] as r On r.ID = ur.RoleID
                                 where r.IsAllowSpend = 1 {whereCondition} ORDER BY uf.FullName";
             //
-            List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery, new { AgentID = agentId }).ToList();
+            List<EmployeeModel> data = _connection.Query<EmployeeModel>(sqlQuery).ToList();
             if (data.Count == 0)
                 return new List<EmployeeModel>();
             //
@@ -637,13 +639,13 @@ namespace WebCore.Services
             return data;
         }
         //##############################################################################################################################################################################################################################################################
-        public static string DropdownListEmployee(string id)
+        public static string DropdownListTiketing(string id)
         {
             string result = string.Empty;
             using (var service = new AirAgentService())
             {
                 UserClientService userClientService = new UserClientService();
-                List<EmployeeModel> dtList = userClientService.GetEmployeeByAgentLogin();
+                List<EmployeeModel> dtList = userClientService.GetTiketing();
                 if (dtList.Count > 0)
                 {
                     foreach (var item in dtList)

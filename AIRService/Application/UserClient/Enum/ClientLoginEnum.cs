@@ -15,10 +15,10 @@
         //    Supplier = 2,
         //}
 
-        public enum PassengerGroup
+        public enum CustomerType
         {
-            Comp = 1,
-            Kle = 2,
+            Company = 1,
+            Haunt = 2,
         }
     }
 }

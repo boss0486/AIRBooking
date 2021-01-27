@@ -236,11 +236,11 @@ namespace WebCore.Services
                     }, transaction: _transaction);
                     // contact
                     BookOrderContact contact = model.Contacts;
-                    int passengerGroup = model.PassengerGroup;
+                    int passengerGroup = model.CustomerType;
                     //
-                    if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Comp)
+                    if (passengerGroup == (int)ClientLoginEnum.CustomerType.Company)
                     {
-                        BookCompanyContactModel bookCompanyContact = contact.BookCompanyContact;
+                        CompanyContact bookCompanyContact = contact.CompanyContact;
                         bookContactService.Create<string>(new BookCustomer
                         {
                             BookOrderID = bookOrderId,
@@ -249,12 +249,12 @@ namespace WebCore.Services
                             Name = bookCompanyContact.Name,
                             Email = bookCompanyContact.Email,
                             Phone = bookCompanyContact.Phone,
-                            CustomerType = (int)ClientLoginEnum.PassengerGroup.Comp
+                            CustomerType = (int)ClientLoginEnum.CustomerType.Company
                         }, transaction: _transaction);
                     }
-                    if (passengerGroup == (int)ClientLoginEnum.PassengerGroup.Kle)
+                    if (passengerGroup == (int)ClientLoginEnum.CustomerType.Haunt)
                     {
-                        BookKhachLeRqContact bookKhachLe = contact.BookKhachLeContact;
+                        HauntContact bookKhachLe = contact.HauntContact;
                         bookContactService.Create<string>(new BookCustomer
                         {
                             BookOrderID = bookOrderId,
@@ -263,13 +263,13 @@ namespace WebCore.Services
                             Name = bookKhachLe.Name,
                             Email = bookKhachLe.Email,
                             Phone = bookKhachLe.Phone,
-                            CustomerType = (int)ClientLoginEnum.PassengerGroup.Kle
+                            CustomerType = (int)ClientLoginEnum.CustomerType.Haunt
                         }, transaction: _transaction);
                     }
                     //
                     _transaction.Commit();
                     _connection.Close();
-                    return bookTickId;
+                    return bookOrderId;
                 }
                 catch (Exception ex)
                 {

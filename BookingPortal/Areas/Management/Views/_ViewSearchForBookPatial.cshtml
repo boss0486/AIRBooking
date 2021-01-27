@@ -11,13 +11,7 @@
 }
 
 @*search control ******************************************************************************************************@
-<div class="row">
-    <div class="col-md-2">
-        <div class="input-group form-group">
-            <input type="text" class="form-control" id="txtPnr" placeholder="PNR" maxlength="10" />
-            <span id="btnSync" class="input-group-addon"><i class="fas fa-sync-alt -icons"></i></span>
-        </div>
-    </div>
+<div class="row" data-head="true"> 
     <div class="col-md-2">
         <div class="form-group ">
             <button id="btnExport" class="btn btn-green w-100"><i class="fas fa-download"></i> Exls</button>
@@ -48,7 +42,7 @@
     </div>
 </div>
 
-<div class="row" data-keyenter="#btnSearch" data-datesearch="true">
+<div class="row" data-keyenter="#btnSearch" data-datesearch="true" data-head="true">
     <div class="col-md-2">
         <div class="form-group ">
             <select id="ddlItinerary" name="ddlItinerary" class="form-control show-tick" data-live-search="true">

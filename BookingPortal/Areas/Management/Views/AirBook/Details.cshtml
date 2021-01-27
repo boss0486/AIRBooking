@@ -120,7 +120,12 @@
                             cnt++;
 
                             string gender = WebCore.Services.BookTicketService.ConvertToGenderName(list[i].Gender);
-                            string birthDay = Helper.TimeData.TimeFormat.FormatToViewDate(list[i].DateOfBirth, Helper.Language.LanguagePage.GetLanguageCode);
+
+                            string birthDay = string.Empty;
+                            if (list[i].DateOfBirth!= null)
+                            {
+                                birthDay = Helper.TimeData.TimeFormat.FormatToViewDate(Convert.ToDateTime(list[i].DateOfBirth), Helper.Language.LanguagePage.GetLanguageCode);
+                            }
                             <tr>
                                 <td class="text-right">@cnt &nbsp;</td>
                                 @if (i == 0)

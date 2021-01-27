@@ -191,6 +191,7 @@
     <Content Include="Areas\Development\_script\setup-password.js" />
     <Content Include="Areas\Development\_script\user.js" />
     <Content Include="Areas\Management\_script\account.js" />
+    <Content Include="Areas\Management\_script\airport-book-config.js" />
     <Content Include="Areas\Management\_script\app-agent-spending-limit.js" />
     <Content Include="Areas\Management\_script\app-airres-book-desig.js" />
     <Content Include="Areas\Management\_script\app-book-itinerary.js" />
@@ -1276,6 +1277,7 @@
     <Content Include="Areas\Management\Views\AirResBookDesig\Update.cshtml" />
     <Content Include="Areas\Management\Views\AirOrder\Itinerary.cshtml" />
     <Content Include="Areas\Management\Views\_ViewSearchForBookItineraryPatial.cshtml" />
+    <Content Include="Areas\Management\Views\AirOrder\DataSync.cshtml" />
     <None Include="packages.config" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="_themes\authenzition\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

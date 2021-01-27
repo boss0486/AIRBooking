@@ -72,7 +72,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Trẻ em:</label>
-                                    <select id="ddlChd" name="ddlChd" class="form-control show-tick" data-live-search="true">
+                                    <select id="ddlChd" name="ddlChd" class="form-control show-tick">
                                         <option value="0">00</option>
                                         @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.CNN.ToString()))
                                     </select>
@@ -99,7 +99,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Em bé:</label>
-                                    <select id="ddlInf" name="ddlInf" class="form-control show-tick" data-live-search="true">
+                                    <select id="ddlInf" name="ddlInf" class="form-control show-tick">
                                         <option value="0">00</option>
                                         @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.INF.ToString()))
                                     </select>
@@ -109,9 +109,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Loại vé:</label>
-                                    <select id="ddlFlightType" name="ddlFlightType" class="form-control show-tick" data-live-search="true">
+                                    <select id="ddlFlightType" name="ddlFlightType" class="form-control show-tick">
                                         <option value="1">Một chiều</option>
-                                        <option value="2" selected>Khứ hồi</option>
+                                        <option value="2">Khứ hồi</option>
                                     </select>
                                     <span id="lblTitle" class="message msg-box"></span>
                                 </div>

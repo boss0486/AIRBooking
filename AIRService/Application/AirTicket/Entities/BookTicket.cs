@@ -80,7 +80,7 @@ namespace WebCore.Entities
     {
         public string PNR { get; set; }
         public string Summary { get; set; }
-        public int PassengerGroup { get; set; }
+        public int CustomerType { get; set; }
         public int ItineraryType { get; set; }
         public DateTime OrderDate { get; set; }
         public BookAgentInfo AgentInfo { get; set; }
@@ -106,10 +106,10 @@ namespace WebCore.Entities
     }
     public class BookOrderContact
     {
-        public BookKhachLeRqContact BookKhachLeContact { get; set; }
-        public BookCompanyContactModel BookCompanyContact { get; set; }
+        public HauntContact HauntContact { get; set; }
+        public CompanyContact CompanyContact { get; set; }
     }
-    public class BookCompanyContactModel
+    public class CompanyContact
     {
         public string CompanyID { get; set; }
         public string CompanyCode { get; set; }
@@ -131,7 +131,6 @@ namespace WebCore.Entities
 
     public class BookTicketingRq
     {
-        public string ProviderID { get; set; }
         public string TiketingID { get; set; }
     }
 
@@ -139,10 +138,10 @@ namespace WebCore.Entities
 
     public class BookContactRqModel
     {
-        public BookKhachLeRqContact BookKhachLeContact { get; set; }
+        public HauntContact HauntContact { get; set; }
         public BookCompanyRqContact BookCompanyContact { get; set; }
     }
-    public class BookKhachLeRqContact
+    public class HauntContact
     {
         public string Name { get; set; }
         public string Email { get; set; }
@@ -216,6 +215,14 @@ namespace WebCore.Entities
     {
         public string PNR { get; set; }
     }
+    public class SyncModel
+    {
+        public string PNR { get; set; }
+        public string TicketingID { get; set; }
+        public int CustomerType { get; set; }
+        public string CompanyID { get; set; }
+
+    }
     public class TicketNumberModel
     {
         public string TicketNumber { get; set; }
@@ -240,10 +247,10 @@ namespace WebCore.Entities
     {
         public string Summary { get; set; }
         public int ItineraryType { get; set; }
-        public int PassengerGroup { get; set; }
+        public int CustomerType { get; set; }
         public BookTicketingRq TicketingInfo { get; set; }
         public List<BookTicketPassenger> Passengers { get; set; }
-        public List<BookSegmentModel> Flights { get; set; }
+        public List<BookSegmentModel> Segments { get; set; }
         public BookContactRqModel Contacts { get; set; }
         public string TimeZoneLocal { get; set; }
     }

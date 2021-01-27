@@ -32,6 +32,10 @@ namespace WebApplication.Management.Controllers
         {
             return View();
         }
+        public ActionResult DataSync()
+        {
+            return View();
+        }
         public ActionResult Details(string id)
         {
             BookOrderService bookOrderService = new BookOrderService();
@@ -216,8 +220,8 @@ namespace WebApplication.Management.Controllers
 
 
         [HttpPost]
-        [Route("Action/PnrSync")]
-        public ActionResult PnrSync(PNRModel model)
+        [Route("Action/DataSync")]
+        public ActionResult DataSync(SyncModel model)
         {
             try
             {

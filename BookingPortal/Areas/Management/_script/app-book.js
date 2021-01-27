@@ -688,7 +688,7 @@ $(document).on('change', '#ddlEmployee', function () {
     var ddlEmployee = $(this).val();
     $("#lblEmployee").html("");
     var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
-    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.KhachLe) {
+    if (parseInt(rdoPassengerGroup) == CustomerTypeEnum.Haunt) {
         if (ddlEmployee == "") {
             $("#lblEmployee").html("Vui lòng chọn nhân viên");
         }
@@ -744,7 +744,7 @@ $(document).on("change", "input[name='rdoPassengerGroup']", function () {
     var option = `<option value="">-Lựa chọn-</option>`;
     $('#ddlCompany').html(option);
     $('#ddlCompany').selectpicker('refresh');
-    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
+    if (parseInt(rdoPassengerGroup) == CustomerTypeEnum.Company) {
         //
         $("#txtName").val("");
         $("#txtPhone").val("");
@@ -794,7 +794,7 @@ $(document).on('change', '#ddlCompany', function () {
     var ddlCompany = $(this).val();
     $("#lblCompany").html("");
     var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
-    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
+    if (parseInt(rdoPassengerGroup) == CustomerTypeEnum.Company) {
         if (ddlCompany == "") {
             $("#lblCompany").html("Vui lòng chọn công ty");
         }
@@ -907,7 +907,7 @@ $(document).on('click', '#btnBooking', function () {
 
     // FOR CONTACT ************************************************************************************************
     // valid name of passengers   
-    var rdoPassengerGroup = $("input[name='rdoPassengerGroup']:checked").val();
+    var customerType = $("input[name='rdoPassengerGroup']:checked").val();
     var ddlProvider = $("#ddlProvider").val();
     var ddlEmployee = $("#ddlEmployee").val();
     var ddlCompany = $("#ddlCompany").val();
@@ -930,7 +930,7 @@ $(document).on('click', '#btnBooking', function () {
         flg = false;
     }
 
-    if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.KhachLe) {
+    if (parseInt(customerType) == CustomerTypeEnum.Haunt) {
 
         //
         $("#lblName").html("");
@@ -959,7 +959,7 @@ $(document).on('click', '#btnBooking', function () {
             flg = false;
         }
     }
-    else if (parseInt(rdoPassengerGroup) == PassengerGroupEnum.Company) {
+    else if (parseInt(customerType) == CustomerTypeEnum.Company) {
         if (ddlCompany == "") {
             $("#lblCompany").html("Vui lòng chọn công ty");
             flg = false;
@@ -1088,7 +1088,7 @@ $(document).on('click', '#btnBooking', function () {
         TiketingID: ddlEmployee
     };
     //
-    var khachLe = {
+    var haunt = {
         Name: name,
         Email: email,
         Phone: phone
@@ -1100,18 +1100,18 @@ $(document).on('click', '#btnBooking', function () {
 
 
     var lContact = {
-        BookKhachLeContact: khachLe,
-        BookCompanyContact: company,
+        HauntContact: haunt,
+        CompanyContact: company,
     };
     //
     var bookModel = {
         ItineraryType: ddlItineraryType,
         AirlineType: ddlAirlineType,
-        PassengerGroup: rdoPassengerGroup,
+        CustomerType: customerType,
         TicketingInfo: ticketingInfo,
         Contacts: lContact,
         Passengers: lPassenger,
-        Flights: lFlight,
+        Segments: lFlight,
         Summary: txtMessage
     };
     // call api

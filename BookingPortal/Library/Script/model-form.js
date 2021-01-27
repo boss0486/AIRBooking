@@ -207,8 +207,9 @@ class RoleEnum {
     static IsSupplierLogged = 6;
 }
 
-class PassengerGroupEnum {
+class CustomerTypeEnum
+{
     static Company = 1;
-    static KhachLe = 2;
+    static Haunt = 2;
 }
 

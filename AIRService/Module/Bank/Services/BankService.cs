@@ -115,7 +115,7 @@ namespace WebCore.Services
                     }
                     //
                     BankService bankService = new BankService(_connection);
-                    var bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
+                    Bank bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower(), transaction: _transaction).FirstOrDefault();
                     if (bank != null)
                         return Notifization.Invalid("Tên ngân hàng đã được sử dụng");
                     //
@@ -170,12 +170,12 @@ namespace WebCore.Services
                     }
                     BankService bankService = new BankService(_connection);
                     string id = model.ID.ToLower();
-                    var bank = bankService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
+                    Bank bank = bankService.GetAlls(m => m.ID == id, transaction: _transaction).FirstOrDefault();
                     if (bank == null)
                         return Notifization.NotFound(MessageText.NotFound);
                     //
-                    bank = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
-                    if (bank != null)
+                    Bank  bankTitle = bankService.GetAlls(m => !string.IsNullOrWhiteSpace(m.Title) && m.Title.ToLower() == title.ToLower() && m.ID != id, transaction: _transaction).FirstOrDefault();
+                    if (bankTitle != null)
                         return Notifization.Invalid("Tiêu đề đã được sử dụng");
                     // update user information
                     bank.Title = title;

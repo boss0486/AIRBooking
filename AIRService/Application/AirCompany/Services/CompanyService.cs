@@ -588,7 +588,15 @@ namespace WebCore.Services
         public List<CompanyOption> DataOption()
         {
             // limit data 
-            string sqlQuery = @"SELECT ID, Title, CodeID FROM App_Company WHERE Enabled = 1 ORDER BY Title ASC";
+            string whereCondition = string.Empty;
+            if (Helper.Current.UserLogin.IsAdminInApplication)
+                whereCondition = string.Empty;
+            else if (Helper.Current.UserLogin.IsAdminAgentLogged() || Helper.Current.UserLogin.IsAgentLogged())
+                whereCondition = $" AND AgentID = '{AirAgentService.GetAgentIDByUserID(Helper.Current.UserLogin.IdentifierID)}'"; 
+            else
+                return new List<CompanyOption>();
+            // **********************************************************************************************************************************
+            string sqlQuery = $@"SELECT ID, Title, CodeID FROM App_Company WHERE Enabled = 1 {whereCondition} ORDER BY Title ASC";
             return _connection.Query<CompanyOption>(sqlQuery).ToList();
         }
 
