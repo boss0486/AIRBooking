@@ -1104,7 +1104,7 @@ namespace AIRService.Service
                             continue;
                         }
                     }
-                    Helper.SystemLogg.WriteLog("::" +  JsonConvert.SerializeObject(airPriceModel));
+                    Helper.SystemLogg.WriteLog("::" + JsonConvert.SerializeObject(airPriceModel));
 
                     VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
                     var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
@@ -2067,18 +2067,91 @@ namespace AIRService.Service
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token
                 };
-
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
                 var getReservationModel = new GetReservationModel
                 {
                     ConversationID = tokenModel.ConversationID,
                     Token = tokenModel.Token,
                     PNR = pnr
                 };
-                VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
-                VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
-                vNATransaction.EndTransaction(tokenModel);
-                return Notifization.Data("OK", reservationRS);
+                List<BookSegmentModel> bookSegmentModels = new List<BookSegmentModel>
+                    {
+                        new BookSegmentModel
+                        {
+                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                            FlightNumber = 7228,
+                            NumberInParty = 2,
+                            ResBookDesigCode = "K",
+                            AirEquipType = 321,
+                            DestinationLocation = "HAN",
+                            OriginLocation = "SGN"
+                        }
+                    };
+                VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
+                List<BookSegmentModel> lstSegments = bookSegmentModels;
+                if (lstSegments == null || lstSegments.Count == 0)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                {
+                    Segments = lstSegments,
+                    ConversationID = _conversationId,
+                    Token = _token
+                });
+                // 
+                if (ota_AirBookRS.ApplicationResults.Success == null)
+                    return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                //
+                var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
+                if (_originDestinationOption.Count == 0)
+                    return Notifization.NotFound(MessageText.NotFound);
+                //
+                AirPriceModel airPriceModel = new AirPriceModel
+                {
+                    ADT = 1,
+                    CNN = 1,
+                    INF = 1,
+                    ConversationID = _conversationId,
+                    Token = _token,
+                    Segments = new List<BookSegmentModel>
+                    {
+                        new BookSegmentModel
+                        {
+                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                            FlightNumber = 7228,
+                            NumberInParty = 2,
+                            ResBookDesigCode = "K",
+                            AirEquipType = 321,
+                            DestinationLocation = "HAN",
+                            OriginLocation = "SGN"
+                        }
+                    }
+
+                };
+
+
+                VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
+                var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
+                return Notifization.Data("OK", airPriceData);
+
+
+
+
+
+
+
+
+                //VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
+                //XMLObject.ReservationRq2.GetReservationRS reservationRS = vNAWSGetReservationRQService.GetReservation(getReservationModel);
+                //VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
+                //vNATransaction.EndTransaction(tokenModel);
+                //return Notifization.Data("OK", reservationRS);
             }
         }
         public ActionResult PnrSync(SyncModel model)
@@ -2164,16 +2237,16 @@ namespace AIRService.Service
             using (var sessionService = new VNA_SessionService(tokenModel))
             {
                 VNA_WSGetReservationRQService vNAWSGetReservationRQService = new VNA_WSGetReservationRQService();
-                //VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
-                //DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
-                //{
-                //    ConversationID = tokenModel.ConversationID,
-                //    Token = tokenModel.Token
-                //};
-                //var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
-                //if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
-                //    return Notifization.Invalid(MessageText.Invalid);
-                // 
+                VNA_DesignatePrinterLLSRQService wSDesignatePrinterLLSRQService = new VNA_DesignatePrinterLLSRQService();
+                DesignatePrinterLLSModel designatePrinter = new DesignatePrinterLLSModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token
+                };
+                var printer = wSDesignatePrinterLLSRQService.DesignatePrinterLLS(designatePrinter);
+                if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
                 //XMLObject.ReservationRq2.GetReservationRS getReservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
                 //{
                 //    ConversationID = tokenModel.ConversationID,
@@ -2298,35 +2371,89 @@ namespace AIRService.Service
                         OriginLocation = originLocation
                     });
                 }
+                List<BookSegmentModel> bookSegmentModels2 = new List<BookSegmentModel>
+                    {
+                        new BookSegmentModel
+                        {
+                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                            FlightNumber = 7228,
+                            NumberInParty = 2,
+                            ResBookDesigCode = "K",
+                            AirEquipType = 321,
+                            DestinationLocation = "HAN",
+                            OriginLocation = "SGN"
+                        }
+                    };
                 bookOrderSaveModel.Segments = bookSegmentModels;
                 // call save booking 
                 double airAgentFee = 0; //  
-                var airPriceModel = new AirPriceModel
+                //var airPriceModel = new AirPriceModel
+                //{
+                //    ConversationID = _conversationId,
+                //    Token = _token,
+                //    Segments = bookSegmentModels2
+                //};
+                ////
+                //foreach (var item in bookTicketPassenger)
+                //{
+                //    if (item.PassengerType.ToUpper() == "ADT")
+                //    {
+                //        airPriceModel.ADT++;
+                //        continue;
+                //    }
+                //    if (item.PassengerType.ToUpper() == "CNN")
+                //    {
+                //        airPriceModel.CNN++;
+                //        continue;
+                //    }
+                //    if (item.PassengerType.ToUpper() == "INF")
+                //    {
+                //        airPriceModel.INF++;
+                //        continue;
+                //    }
+                //}
+                //
+                VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
+                if (bookSegmentModels == null || bookSegmentModels.Count == 0)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                 {
+                    Segments = bookSegmentModels2,
+                    ConversationID = _conversationId,
+                    Token = _token
+                });
+                // 
+                if (ota_AirBookRS.ApplicationResults.Success == null)
+                    return Notifization.Invalid(MessageText.Invalid);
+                //
+                var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
+                if (_originDestinationOption.Count == 0)
+                    return Notifization.NotFound(MessageText.NotFound);
+                // 
+                AirPriceModel airPriceModel = new AirPriceModel
+                {
+                    ADT = 1,
+                    CNN = 1,
+                    INF = 1,
                     ConversationID = _conversationId,
                     Token = _token,
-                    Segments = bookSegmentModels
+                    Segments = new List<BookSegmentModel>
+                    {
+                        new BookSegmentModel
+                        {
+                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                            FlightNumber = 7228,
+                            NumberInParty = 2,
+                            ResBookDesigCode = "K",
+                            AirEquipType = 321,
+                            DestinationLocation = "HAN",
+                            OriginLocation = "SGN"
+                        }
+                    }
                 };
-                //
-                foreach (var item in bookTicketPassenger)
-                {
-                    if (item.PassengerType.ToUpper() == "ADT")
-                    {
-                        airPriceModel.ADT++;
-                        continue;
-                    }
-                    if (item.PassengerType.ToUpper() == "CNN")
-                    {
-                        airPriceModel.CNN++;
-                        continue;
-                    }
-                    if (item.PassengerType.ToUpper() == "INF")
-                    {
-                        airPriceModel.INF++;
-                        continue;
-                    }
-                }
-                
 
 
                 VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();

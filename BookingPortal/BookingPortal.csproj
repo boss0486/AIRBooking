@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort>44334</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -285,6 +286,7 @@
     <Content Include="HtmlPage1.html" />
     <Content Include="HtmlPage2.html" />
     <Content Include="Logged\2021\1\Log-14.txt" />
+    <Content Include="Logged\2021\1\Log-27.txt" />
     <Content Include="Team\00000000-0000-0000-0000-000000000000.gif" />
     <Content Include="Team\2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml" />
     <Content Include="Team\Log-2021-01-26-14-22-00-XOTA1N3Vchua-xuat-ve.xml" />

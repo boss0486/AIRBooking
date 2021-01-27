@@ -1126,7 +1126,7 @@ $(document).on('click', '#btnBooking', function () {
                 }
                 if (response.status == 200) {
                     Notifization.Success(response.message);
-                    location.href = response.data;
+                    //location.href = response.data;
                     Cookies.DelCookie("FlightOrder");
                     return;
                 }
