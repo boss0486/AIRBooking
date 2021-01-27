@@ -2082,8 +2082,8 @@ namespace AIRService.Service
                     {
                         new BookSegmentModel
                         {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                            DepartureDateTime = Convert.ToDateTime("2021-02-08T00:10:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-08T02:30:00"),
                             FlightNumber = 7228,
                             NumberInParty = 2,
                             ResBookDesigCode = "K",
@@ -2346,7 +2346,7 @@ namespace AIRService.Service
                 foreach (var item in segmentsList)
                 {
                     int ticketType = (int)BookOrderEnum.BookFlightType.FlightGo;
-                    string numberInParty = getReservationRS.Reservation.NumberInParty;
+                    string numberInParty =  item.Air.NumberInParty;
                     string originLocation = item.Air.DepartureAirport;
                     string destinationLocation = item.Air.ArrivalAirport;
                     string departureDateTime = item.Air.DepartureDateTime;
@@ -2371,48 +2371,35 @@ namespace AIRService.Service
                         OriginLocation = originLocation
                     });
                 }
-                List<BookSegmentModel> bookSegmentModels2 = new List<BookSegmentModel>
-                    {
-                        new BookSegmentModel
-                        {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
-                            FlightNumber = 7228,
-                            NumberInParty = 2,
-                            ResBookDesigCode = "K",
-                            AirEquipType = 321,
-                            DestinationLocation = "HAN",
-                            OriginLocation = "SGN"
-                        }
-                    };
+                 
                 bookOrderSaveModel.Segments = bookSegmentModels;
                 // call save booking 
                 double airAgentFee = 0; //  
-                //var airPriceModel = new AirPriceModel
-                //{
-                //    ConversationID = _conversationId,
-                //    Token = _token,
-                //    Segments = bookSegmentModels2
-                //};
-                ////
-                //foreach (var item in bookTicketPassenger)
-                //{
-                //    if (item.PassengerType.ToUpper() == "ADT")
-                //    {
-                //        airPriceModel.ADT++;
-                //        continue;
-                //    }
-                //    if (item.PassengerType.ToUpper() == "CNN")
-                //    {
-                //        airPriceModel.CNN++;
-                //        continue;
-                //    }
-                //    if (item.PassengerType.ToUpper() == "INF")
-                //    {
-                //        airPriceModel.INF++;
-                //        continue;
-                //    }
-                //}
+                var airPriceModel = new AirPriceModel
+                {
+                    ConversationID = _conversationId,
+                    Token = _token,
+                    Segments = bookSegmentModels
+                };
+                //
+                foreach (var item in bookTicketPassenger)
+                {
+                    if (item.PassengerType.ToUpper() == "ADT")
+                    {
+                        airPriceModel.ADT++;
+                        continue;
+                    }
+                    if (item.PassengerType.ToUpper() == "CNN")
+                    {
+                        airPriceModel.CNN++;
+                        continue;
+                    }
+                    if (item.PassengerType.ToUpper() == "INF")
+                    {
+                        airPriceModel.INF++;
+                        continue;
+                    }
+                }
                 //
                 VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
                 if (bookSegmentModels == null || bookSegmentModels.Count == 0)
@@ -2420,7 +2407,7 @@ namespace AIRService.Service
                 //
                 AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                 {
-                    Segments = bookSegmentModels2,
+                    Segments = bookSegmentModels,
                     ConversationID = _conversationId,
                     Token = _token
                 });
@@ -2432,30 +2419,6 @@ namespace AIRService.Service
                 if (_originDestinationOption.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
                 // 
-                AirPriceModel airPriceModel = new AirPriceModel
-                {
-                    ADT = 1,
-                    CNN = 1,
-                    INF = 1,
-                    ConversationID = _conversationId,
-                    Token = _token,
-                    Segments = new List<BookSegmentModel>
-                    {
-                        new BookSegmentModel
-                        {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
-                            FlightNumber = 7228,
-                            NumberInParty = 2,
-                            ResBookDesigCode = "K",
-                            AirEquipType = 321,
-                            DestinationLocation = "HAN",
-                            OriginLocation = "SGN"
-                        }
-                    }
-                };
-
-
                 VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
                 var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
                 List<FareTax> fareTaxs = new List<FareTax>();
