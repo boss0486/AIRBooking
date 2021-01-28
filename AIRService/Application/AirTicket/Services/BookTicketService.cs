@@ -73,7 +73,7 @@ namespace WebCore.Services
 
 
 
-        public string BookTicket(BookTicketOrder model)
+        public string BookSave(BookTicketOrder model)
         {
             _connection.Open();
             using (var _transaction = _connection.BeginTransaction())
@@ -120,7 +120,7 @@ namespace WebCore.Services
                         ProviderCode = providerCode,
                         IssueDate = model.OrderDate,
                         ExportDate = null,
-                        OrderStatus = (int)ENM.BookOrderEnum.BookOrderStatus.Booking,
+                        OrderStatus = model.OrderStatus,
                         Enabled = (int)Model.Enum.ModelEnum.Enabled.ENABLED
                     }, transaction: _transaction);
 
@@ -163,7 +163,9 @@ namespace WebCore.Services
                                     PassengerType = price.PassengerType,
                                     Title = "Fare Price",
                                     Amount = price.Amount,
-                                    Unit = "VND"
+                                    Unit = "VND",
+                                    FullText = "",
+                                    TicketNumber ="",
                                 }, transaction: _transaction);
                             }
                         }
@@ -177,14 +179,17 @@ namespace WebCore.Services
                             var passengerId = bookPassengerService.Create<string>(new BookPassenger
                             {
                                 BookOrderID = bookOrderId,
-                                PassengerType = passenger.PassengerType, 
+                                PassengerType = passenger.PassengerType,
                                 FullName = passenger.FullName,
                                 Gender = passenger.Gender,
                                 DateOfBirth = passenger.DateOfBirth,
                                 PassengerName = passenger.PassengerName,
                                 ElementID = passenger.ElementID,
-                                NameNumber =  passenger.NameNumber
-                            }, transaction: _transaction); 
+                                NameNumber = passenger.NameNumber,
+                                TicketNumber = passenger.TicketNumber,
+                                FullText = passenger.FullText, 
+                                VoidUserdID = string.Empty
+                            }, transaction: _transaction) ; 
                         }
                     }
                     // tax 

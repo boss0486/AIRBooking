@@ -1104,8 +1104,7 @@ namespace AIRService.Service
                             continue;
                         }
                     }
-                    Helper.SystemLogg.WriteLog("::" + JsonConvert.SerializeObject(airPriceModel));
-
+                    //
                     VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
                     var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
 
@@ -1301,7 +1300,7 @@ namespace AIRService.Service
                     }
                     // call save booking 
                     double airAgentFee = 0; //  
-                    var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
+                    string bookTicketId = bookTicketService.BookSave(new BookTicketOrder
                     {
                         PNR = pnrCode,
                         CustomerType = model.CustomerType,
@@ -1312,6 +1311,7 @@ namespace AIRService.Service
                         Passengers = bookTicketPassengers,
                         FareTaxs = fareTaxs,
                         FareFlights = fareFlights,
+                        OrderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking,
                         AgentInfo = new BookAgentInfo
                         {
                             AgentID = agentId,
@@ -2160,7 +2160,12 @@ namespace AIRService.Service
             string ticketingId = Helper.Current.UserLogin.IdentifierID;
             if (string.IsNullOrWhiteSpace(pnr))
                 return Notifization.Invalid(MessageText.Invalid + "1");
-            //
+            // 
+            BookOrderService bookOrderService = new BookOrderService();
+            BookOrder bookOrder = bookOrderService.GetAlls(m => !string.IsNullOrWhiteSpace(m.PNR) && m.PNR.ToLower() == pnr.ToLower()).FirstOrDefault();
+            if (bookOrder != null)
+                return Notifization.Invalid(MessageText.Duplicate);
+            // 
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
@@ -2171,17 +2176,6 @@ namespace AIRService.Service
                 return Notifization.NotService;
             //
             string _conversationId = tokenModel.ConversationID;
-
-
-
-            //  
-            //BookTicketingRq ticketingInfo = model.TicketingInfo;
-            //BookContactRqModel Contacts = model.Contacts;
-            //BookCompanyContactModel bookCompany = new BookCompanyContactModel();
-            //if (ticketingInfo == null || Contacts == null)
-            //    return Notifization.Invalid(MessageText.Invalid);
-            ////
-
             if (!Helper.Current.UserLogin.IsClientInApplication())
                 ticketingId = model.TicketingID;
             //
@@ -2192,7 +2186,6 @@ namespace AIRService.Service
             UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId).FirstOrDefault();
             if (userInfo == null)
                 return Notifization.Invalid(MessageText.Invalid);
-            //
             //
             string agentId = AirAgentService.GetAgentIDByUserID(ticketingId);
             AirAgentService airAgentService = new AirAgentService();
@@ -2247,20 +2240,20 @@ namespace AIRService.Service
                 if (printer.ApplicationResults.status != AIRService.WebService.VNA_DesignatePrinterLLSRQ.CompletionCodes.Complete)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-                //XMLObject.ReservationRq2.GetReservationRS getReservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
-                //{
-                //    ConversationID = tokenModel.ConversationID,
-                //    Token = tokenModel.Token,
-                //    PNR = pnr
-                //});
-                XMLObject.ReservationRq2.GetReservationRS getReservationRS = new XMLObject.ReservationRq2.GetReservationRS();
-                XmlDocument soapEnvelopeXml = new XmlDocument();
-                var path = HttpContext.Current.Server.MapPath(@"~/Team/Log-2021-01-26-14-22-00-XOTA1N3Vchua-xuat-ve.xml");
-                soapEnvelopeXml.Load(path);
-                XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
-                if (xmlnode != null)
-                    getReservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq2.GetReservationRS>(xmlnode.InnerXml);
-                //  
+                XMLObject.ReservationRq2.GetReservationRS getReservationRS = vNAWSGetReservationRQService.GetReservation(new GetReservationModel
+                {
+                    ConversationID = tokenModel.ConversationID,
+                    Token = tokenModel.Token,
+                    PNR = pnr
+                });
+                //XMLObject.ReservationRq2.GetReservationRS getReservationRS = new XMLObject.ReservationRq2.GetReservationRS();
+                //XmlDocument soapEnvelopeXml = new XmlDocument();
+                //var path = HttpContext.Current.Server.MapPath(@"~/Team/Log-2021-01-26-15-34-05-SD77UU30chua-xuat-ve.xml");
+                //soapEnvelopeXml.Load(path);
+                //XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                //if (xmlnode != null)
+                //    getReservationRS = XMLHelper.Deserialize<XMLObject.ReservationRq2.GetReservationRS>(xmlnode.InnerXml);
+                ////  
                 //
                 if (getReservationRS == null)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -2275,24 +2268,36 @@ namespace AIRService.Service
                 //
                 List<XMLObject.ReservationRq2.Segment> segmentsList = segments.Segment;
                 List<XMLObject.ReservationRq2.Passenger> passengersList = passengers.Passenger;
-
+                //  
                 if (segmentsList.Count() == 0 || passengersList.Count() == 0)
                     return Notifization.Invalid("Mã pnr: đã hủy");
                 // 
+                XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = getReservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
+                XMLObject.ReservationRq2.TicketingTimeLimit ticketingTimeLimit = getReservationRS.Reservation.PassengerReservation.TicketingInfo.TicketingTimeLimit;
+                List<XMLObject.ReservationRq2.Passenger> reservationPassengers = new List<XMLObject.ReservationRq2.Passenger>();
+                int orderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.None;
+                if (alreadyTicketed != null)
+                {
+                    orderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Exported;
+                    reservationPassengers = getReservationRS.Reservation.PassengerReservation.Passengers.Passenger;
+                }
+                else if (ticketingTimeLimit != null)
+                {
+                    orderStatus = (int)WebCore.ENM.BookOrderEnum.BookOrderStatus.Booking;
+                    reservationPassengers = getReservationRS.Reservation.PassengerReservation.Passengers.Passenger;
+                }
+                //
                 List<BookTicketPassenger> bookTicketPassenger = new List<BookTicketPassenger>();
                 List<string> freeTexts = new List<string>();
                 string test = "";
                 foreach (var item in passengersList)
                 {
+                    test += $":{item.LastName}/{item.FirstName[0]}";
                     string passengerType = "ADT";
                     int gender = 0;
                     //
-
-
                     if (!string.IsNullOrWhiteSpace(item.WithInfant))
                     {
-
-                        test += ":" + item.SpecialRequests.GenericSpecialRequest.Count();
                         if (item.SpecialRequests.GenericSpecialRequest.Count() != 0)
                         {
                             string freeText = item.SpecialRequests.GenericSpecialRequest[0].FreeText;
@@ -2312,6 +2317,28 @@ namespace AIRService.Service
                         gender = 2;
                     }
                     //
+                    string ticketNumber = string.Empty;
+                    string fullText = string.Empty;
+                    if (reservationPassengers.Count() > 0)
+                    {
+                        XMLObject.ReservationRq2.TicketingInfo ticketingInfo = getReservationRS.Reservation.PassengerReservation.TicketingInfo;
+                        if (ticketingInfo != null)
+                        {
+                            List<XMLObject.ReservationRq2.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
+                            if (ticketDetails.Count() > 0)
+                            {
+
+                                string nameMap = $"{item.LastName}/{item.FirstName[0]}";
+                                XMLObject.ReservationRq2.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == nameMap).FirstOrDefault();
+                                if (ticket != null)
+                                {
+                                    ticketNumber = ticket.TicketNumber;
+                                    fullText = ticket.OriginalTicketDetails;
+                                }
+                            }
+                        }
+                    }
+                    //
                     bookTicketPassenger.Add(new BookTicketPassenger
                     {
                         PassengerType = passengerType,
@@ -2321,7 +2348,10 @@ namespace AIRService.Service
                         PassengerName = $"{item.LastName} {item.FirstName}",
                         ElementID = item.ElementId,
                         NameNumber = item.NameId,
+                        FullText = fullText,
+                        TicketNumber = ticketNumber
                     });
+
                 }
                 // update birth day
                 foreach (var item in bookTicketPassenger)
@@ -2336,7 +2366,6 @@ namespace AIRService.Service
                     // 
                     item.DateOfBirth = Convert.ToDateTime(strDate);
                     item.PassengerType = "INF";
-
                 }
 
                 bookOrderSaveModel.Passengers = bookTicketPassenger;
@@ -2345,8 +2374,7 @@ namespace AIRService.Service
                 List<BookSegmentModel> bookSegmentModels = new List<BookSegmentModel>();
                 foreach (var item in segmentsList)
                 {
-                    int ticketType = (int)BookOrderEnum.BookFlightType.FlightGo;
-                    string numberInParty =  item.Air.NumberInParty;
+                    string numberInParty = item.Air.NumberInParty;
                     string originLocation = item.Air.DepartureAirport;
                     string destinationLocation = item.Air.ArrivalAirport;
                     string departureDateTime = item.Air.DepartureDateTime;
@@ -2356,9 +2384,6 @@ namespace AIRService.Service
                     string airEquipType = item.Air.EquipmentType;
                     lstSegmentText.Add(originLocation + destinationLocation);
                     string _segmentText = destinationLocation + originLocation;
-                    if (lstSegmentText.Contains(_segmentText))
-                        ticketType = (int)BookOrderEnum.BookFlightType.FlightReturn;
-                    //
                     bookSegmentModels.Add(new BookSegmentModel
                     {
                         DepartureDateTime = Convert.ToDateTime(departureDateTime),
@@ -2368,10 +2393,10 @@ namespace AIRService.Service
                         ResBookDesigCode = resBookDesigCode,
                         AirEquipType = Convert.ToInt32(airEquipType),
                         DestinationLocation = destinationLocation,
-                        OriginLocation = originLocation
+                        OriginLocation = originLocation,
                     });
                 }
-                 
+
                 bookOrderSaveModel.Segments = bookSegmentModels;
                 // call save booking 
                 double airAgentFee = 0; //  
@@ -2381,7 +2406,7 @@ namespace AIRService.Service
                     Token = _token,
                     Segments = bookSegmentModels
                 };
-                //
+                // 
                 foreach (var item in bookTicketPassenger)
                 {
                     if (item.PassengerType.ToUpper() == "ADT")
@@ -2423,8 +2448,7 @@ namespace AIRService.Service
                 var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
                 List<FareTax> fareTaxs = new List<FareTax>();
                 List<FareFlight> fareFlights = new List<FareFlight>();
-
-                return Notifization.Data("OK", airPriceData);
+                //
                 foreach (var item in airPriceData.PriceQuote.PricedItinerary.AirItineraryPricingInfo)
                 {
                     string passengerType = item.PassengerTypeQuantity.Code;
@@ -2470,11 +2494,11 @@ namespace AIRService.Service
                         itineraryType = (int)BookOrderEnum.BookItineraryType.Inland;
                     else
                         itineraryType = (int)BookOrderEnum.BookItineraryType.National;
-
+                    //
                 }
                 // 
                 BookTicketService bookTicketService = new BookTicketService();
-                var bookTicketId = bookTicketService.BookTicket(new BookTicketOrder
+                string bookTicketId = bookTicketService.BookSave(new BookTicketOrder
                 {
                     PNR = pnr,
                     CustomerType = model.CustomerType,
@@ -2485,6 +2509,7 @@ namespace AIRService.Service
                     Passengers = bookTicketPassenger,
                     FareTaxs = fareTaxs,
                     FareFlights = fareFlights,
+                    OrderStatus = orderStatus,
                     AgentInfo = new BookAgentInfo
                     {
                         AgentID = agentId,
@@ -2509,7 +2534,7 @@ namespace AIRService.Service
                     }
                 });
 
-                return Notifization.Data("OK", bookTicketId);
+                return Notifization.Success(MessageText.AsyncSuccess);
 
             }
         }

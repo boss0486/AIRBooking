@@ -89,6 +89,7 @@ namespace WebCore.Entities
         public List<BookTicketPassenger> Passengers { get; set; }
         public List<FareTax> FareTaxs { get; set; }
         public List<FareFlight> FareFlights { get; set; }
+        public int OrderStatus { get; set; }
 
     }
     public class BookAgentInfo
@@ -126,6 +127,8 @@ namespace WebCore.Entities
         public string PassengerName { get; set; }
         public string ElementID { get; set; }
         public string NameNumber { get; set; }
+        public string TicketNumber { get; set; }
+        public string FullText { get; set; }
     }
 
 

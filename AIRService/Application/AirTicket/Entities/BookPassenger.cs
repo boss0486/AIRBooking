@@ -26,7 +26,6 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string BookOrderID { get; set; }
         public string PassengerType { get; set; }
-        public string TicketNumber { get; set; }
         public string PNR { get; set; }
         public string FullName { get; set; }
         public int Gender { get; set; }
@@ -38,6 +37,8 @@ namespace WebCore.Entities
         public string NameNumber { get; set; }
         public bool IsVoided { get; set; }
         public string VoidUserdID { get; set; }
+        public string TicketNumber { get; set; }
+        public string FullText { get; set; }
         public DateTime ?VoidDateTime { get; set; }
     }
     // model

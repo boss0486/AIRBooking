@@ -5,6 +5,7 @@
         public enum BookOrderStatus
         {
             Booking = -1,
+            None = 0,
             Exported = 1,
             Cancel = 2
         }
