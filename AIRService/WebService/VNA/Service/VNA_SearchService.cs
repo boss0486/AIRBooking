@@ -1385,7 +1385,6 @@ namespace AIRService.Service
             //           - hết hạn mức: Thông báo hạn mức ko đủ
 
             DateTime today = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));// Convert.ToDateTime(TimeHelper.UtcDateTime.ToString("yyyy-MM-dd"));
-
             //kiem tra da thanh toan han muc cua thang truoc hay chua
             string userLog = Helper.Current.UserLogin.IdentifierID;
             AirAgentService airAgentService = new AirAgentService();
@@ -1425,9 +1424,8 @@ namespace AIRService.Service
                 //#1: check kỳ hạn thanh toan han muc 
                 if (paymentDayTotal > termPayment)
                     return Notifization.Invalid("Hạn mức tháng:" + Helper.TimeData.TimeFormat.FormatToViewYearMonth(firstDayOfMonth, LanguagePage.GetLanguageCode) + " chưa thanh toán");
-
+                //
                 // lấy tổng đã tiêu tu tháng trước den nay (< 45 ngay)
-
                 string sqlQuery = $@" SELECT (
                 ISNULL((select sum (Amount) from App_BookPrice where BookOrderID = o.ID),0) +
                 ISNULL((select sum (Amount) from App_BookTax where BookOrderID = o.ID),0) +
@@ -1589,61 +1587,61 @@ namespace AIRService.Service
                     Token = tokenModel.Token,
                     PNR = pnr
                 });
-                //step 01
-                //XMLObject.ReservationRq.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo;
-                //if (ticketingInfo != null)
-                //{
-                //    List<XMLObject.ReservationRq.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
-                //    if (ticketDetails.Count() > 0)
-                //    {
-                //        foreach (var item in passengers)
-                //        {
-                //            XMLObject.ReservationRq.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == item.PassengerName.ToUpper()).FirstOrDefault();
-                //            if (ticket != null)
-                //            {
-                //                BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
-                //                bookPassenger.TicketNumber = ticket.TicketNumber;
-                //                bookPassengerService.Update(bookPassenger);
-                //            }
-                //        }
-                //    }
-                //}
-                // step 02
-
+                //
                 alreadyTicketed = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
                 if (alreadyTicketed != null)
                 {
-                    List<XMLObject.ReservationRq2.Passenger> passengers = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
-                    if (passengers.Count() > 0)
+                    //step 01
+                    XMLObject.ReservationRq2.TicketingInfo ticketingInfo = reservationRSCheck.Reservation.PassengerReservation.TicketingInfo;
+                    if (ticketingInfo != null)
                     {
-                        foreach (var item in bookPassengers)
+                        List<XMLObject.ReservationRq2.TicketDetails> ticketDetails = ticketingInfo.TicketDetails;
+                        if (ticketDetails.Count() > 0)
                         {
-                            XMLObject.ReservationRq2.Passenger passenger = passengers.Where(m => m.NameId == item.NameNumber).FirstOrDefault();
-                            string ticketNumber = string.Empty;
-                            //
-                            List<XMLObject.ReservationRq2.GenericSpecialRequest> genericSpecialRequests = passenger.SpecialRequests.GenericSpecialRequest;
-                            if (genericSpecialRequests.Count() > 0)
-                                ticketNumber = genericSpecialRequests[0].TicketNumber;
-                            //
-                            BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.ID == item.ID).FirstOrDefault();
-                            bookPassenger.TicketNumber = ticketNumber;
-                            bookPassengerService.Update(bookPassenger);
-                            // 
-                            List<BookPrice> bookPrices = bookPriceService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.PassengerType == item.PassengerType).ToList();
-                            if (bookPrices.Count() > 0)
+                            foreach (var item in bookPassengers)
                             {
-                                int index = 1;
-                                foreach (var itemPrice in bookPrices)
+                                XMLObject.ReservationRq2.TicketDetails ticket = ticketDetails.Where(m => m.PassengerName == item.PassengerName.ToUpper()).FirstOrDefault();
+                                if (ticket != null)
                                 {
-                                    BookPrice bookPrice = bookPrices.Where(m => m.FlightType == index).FirstOrDefault();
-                                    bookPrice.TicketNumber = Helper.Page.Library.LastText(genericSpecialRequests[index - 1].FullText, '/');
-                                    bookPrice.FullText = genericSpecialRequests[index - 1].FullText;
-                                    bookPriceService.Update(bookPrice);
-                                    index++;
+                                    BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.ID == item.ID).FirstOrDefault();
+                                    bookPassenger.TicketNumber = ticket.TicketNumber;
+                                    bookPassengerService.Update(bookPassenger);
                                 }
                             }
                         }
                     }
+                    // step 02
+                    //List<XMLObject.ReservationRq2.Passenger> passengers = reservationRSCheck.Reservation.PassengerReservation.Passengers.Passenger;
+                    //if (passengers.Count() > 0)
+                    //{
+                    //    foreach (var item in bookPassengers)
+                    //    {
+                    //        XMLObject.ReservationRq2.Passenger passenger = passengers.Where(m => m.NameId == item.NameNumber).FirstOrDefault();
+                    //        string ticketNumber = string.Empty;
+                    //        //
+                    //        List<XMLObject.ReservationRq2.GenericSpecialRequest> genericSpecialRequests = passenger.SpecialRequests.GenericSpecialRequest;
+                    //        if (genericSpecialRequests.Count() > 0)
+                    //            ticketNumber = genericSpecialRequests[0].TicketNumber;
+                    //        //
+                    //        BookPassenger bookPassenger = bookPassengerService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.ID == item.ID).FirstOrDefault();
+                    //        bookPassenger.TicketNumber = ticketNumber;
+                    //        bookPassengerService.Update(bookPassenger);
+                    //        // 
+                    //        List<BookPrice> bookPrices = bookPriceService.GetAlls(m => m.BookOrderID == bookOrder.ID && m.PassengerType == item.PassengerType).ToList();
+                    //        if (bookPrices.Count() > 0)
+                    //        {
+                    //            int index = 1;
+                    //            foreach (var itemPrice in bookPrices)
+                    //            {
+                    //                BookPrice bookPrice = bookPrices.Where(m => m.FlightType == index).FirstOrDefault();
+                    //                bookPrice.TicketNumber = Helper.Page.Library.LastText(genericSpecialRequests[index - 1].FullText, '/');
+                    //                bookPrice.FullText = genericSpecialRequests[index - 1].FullText;
+                    //                bookPriceService.Update(bookPrice);
+                    //                index++;
+                    //            }
+                    //        }
+                    //    }
+                    //}
                     // save
                     bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Exported;
                     bookOrder.ExportDate = DateTime.Now;
@@ -2080,16 +2078,28 @@ namespace AIRService.Service
                 };
                 List<BookSegmentModel> bookSegmentModels = new List<BookSegmentModel>
                     {
+                        //new BookSegmentModel
+                        //{
+                        //    DepartureDateTime = Convert.ToDateTime("2021-02-03 09:25:00"),
+                        //    ArrivalDateTime =   Convert.ToDateTime("2021-02-03 11:50:00"),
+                        //    FlightNumber = 7262,
+                        //    NumberInParty = 2,
+                        //    ResBookDesigCode = "N",
+                        //    AirEquipType = 787,
+                        //    DestinationLocation = "HAN",
+                        //    OriginLocation = "SGN"
+                        //}
+                        //,
                         new BookSegmentModel
                         {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-08T00:10:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-08T02:30:00"),
-                            FlightNumber = 7228,
+                            DepartureDateTime = Convert.ToDateTime("2021-02-22T13:45:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-02-22T16:00:00"),
+                            FlightNumber = 7265,
                             NumberInParty = 2,
-                            ResBookDesigCode = "K",
-                            AirEquipType = 321,
-                            DestinationLocation = "HAN",
-                            OriginLocation = "SGN"
+                            ResBookDesigCode = "Q",
+                            AirEquipType = 787,
+                            DestinationLocation = "SGN",
+                            OriginLocation = "HAN"
                         }
                     };
                 VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
@@ -2097,20 +2107,20 @@ namespace AIRService.Service
                 if (lstSegments == null || lstSegments.Count == 0)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-                AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
-                {
-                    Segments = lstSegments,
-                    ConversationID = _conversationId,
-                    Token = _token
-                });
-                // 
-                if (ota_AirBookRS.ApplicationResults.Success == null)
-                    return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
-                //
-                var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
-                if (_originDestinationOption.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
+                //AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                //{
+                //    Segments = lstSegments,
+                //    ConversationID = _conversationId,
+                //    Token = _token
+                //});
+                //// 
+                //if (ota_AirBookRS.ApplicationResults.Success == null)
+                //    return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
+                ////
+                //var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
+                //if (_originDestinationOption.Count == 0)
+                //    return Notifization.NotFound(MessageText.NotFound);
+                ////
                 AirPriceModel airPriceModel = new AirPriceModel
                 {
                     ADT = 1,

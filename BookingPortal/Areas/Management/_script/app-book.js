@@ -991,12 +991,15 @@ $(document).on('click', '#btnBooking', function () {
                 var gender = $(item1).find("select[name='ddlGender']").val();
                 var birthDay = $(item1).find("input[name='txtBirthDay']").val();
                 //
+                if (birthDay != null || birthDay != undefined) {
+                    birthDay = LibDateTime.FormatDateForAPI(birthDay);
+                }
                 lPassenger.push({
                     PassengerType: type,
                     FullName: fullName,
                     Gender: gender,
                     Phone: phone,
-                    DateOfBirth: LibDateTime.FormatDateForAPI(birthDay)
+                    DateOfBirth: birthDay
                 });
             });
         }

@@ -85,7 +85,7 @@ var flightBookingController = {
         if (parseInt(ddlFlightType) == 2) {
             isRoundTrip = "True";
         }
-       
+
         // set information in title
         $('.flight-go .flight-name').html(ddlOriginLocation + " - " + ddlDestinationLocation);
         $('.flight-go .flight-date').html(departureDateTime);
@@ -385,20 +385,18 @@ $(document).on('click', '#TblFlightGo td.td-action', function () {
     $("#TblFlightGo td.td-action").removeClass('active');
     $(this).addClass('active');
     // scroll to  div
-    var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
-    var _mgtop = $(window).height() / 4;
-    if ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0) {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#TblFlightReturn").offset().top - _mgtop
-        }, 2000);
+    var ddlFlightType = $("#ddlFlightType").val();
+    if (parseInt(ddlFlightType) == 1) {
+        HelperPage.GoToByScroll("btnNextToInf");
     }
-    else {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#btnNextToInf").offset().top - _mgtop
-        }, 2000);
+    else if (parseInt(ddlFlightType) == 2) { 
+        if ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)
+            HelperPage.GoToByScroll("TblFlightReturn");
+        else
+            HelperPage.GoToByScroll("btnNextToInf");
     }
-    // remove message erors
+    //// remove message erors
     if ($(flightReturnInfo) !== undefined && $(flightReturnInfo).length > 0) {
         $('#InforCustomerError').html('').removeClass("on");
     }
@@ -411,19 +409,17 @@ $(document).on('click', '#TblFlightReturn td.td-action', function () {
     $(this).addClass('active');
     // scroll to  div
     var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
-    var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
-    var _mgtop = $(window).height() / 4;
-    if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#TblFlightGo").offset().top - _mgtop
-        }, 2000);
+    var ddlFlightType = $("#ddlFlightType").val();
+    if (parseInt(ddlFlightType) == 1) {
+        HelperPage.GoToByScroll("btnNextToInf");
     }
-    else {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#btnNextToInf").offset().top - _mgtop
-        }, 2000);
+    else if (parseInt(ddlFlightType) == 2) {
+        if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0)
+            HelperPage.GoToByScroll("TblFlightGo");
+        else
+            HelperPage.GoToByScroll("btnNextToInf");
     }
-    // remove message erors
+    //
     if ($(flightGoInfo) !== undefined && $(flightGoInfo).length > 0) {
         $('#InforCustomerError').html('').removeClass("on");
     }

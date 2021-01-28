@@ -443,3 +443,11 @@ class Confirm {
     }
 }
 
+class HelperPage {
+    static GoToByScroll(id) {
+        $('html,body').animate({
+            scrollTop: $("#" + id).offset().top
+        }, 2000);
+        console.log("ok::" + id);
+    }
+}

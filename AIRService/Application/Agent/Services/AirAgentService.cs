@@ -697,33 +697,7 @@ namespace WebCore.Services
                 return Notifization.NotFound(MessageText.NotFound);
             //
             return Notifization.Option(MessageText.Success, clientOptions);
-        }
-
-
-        public List<ClientOption> GetCompanyByLogin()
-        {
-            string userId = Helper.Current.UserLogin.IdentifierID;
-            List<ClientOption> clientOptions = new List<ClientOption>();
-            string sqlQuery;
-            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-            {
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 ORDER BY c.CodeID";
-                //
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { }).ToList();
-            }
-            else if (Helper.Current.UserLogin.IsAgentLogged())
-            {
-                string clientId = GetAgentIDByUserID(userId);
-                sqlQuery = @"SELECT c.ID,c.CodeID, c.Title FROM App_AirAgent as c WHERE c.Enabled = 1 AND ParentID = @ClientID ORDER BY c.CodeID";
-                clientOptions = _connection.Query<ClientOption>(sqlQuery, new { ClientID = clientId }).ToList();
-            }
-            //
-            if (clientOptions.Count == 0)
-                return new List<ClientOption>();
-            //
-            return clientOptions;
-        }
-
+        } 
 
         public List<AirAgent_DDLSpendingOption> GetAgentHasSpendingData()
         {

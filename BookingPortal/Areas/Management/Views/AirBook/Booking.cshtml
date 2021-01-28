@@ -108,34 +108,40 @@
                                 <label style="font-size:18px">@item.PassengerName</label>
                             </div>
                         </div>
-                        @for (int i = 0; item.Quantity > 0 && i < item.Quantity; i++)
-                        {
-                            <div class="row" data-PassengerInf="@item.PassengerType">
-                                <div class="col-md-3">
-                                    <div class="form-group ">
-                                        <label class="form-label">Họ và tên (@Html.Raw(i + 1)):</label>
-                                        <input name="txtFullName" maxlength="50" type="text" class="form-control" value="Nguyen Van A" />
-                                        <span name="lblFullName" class="message msg-box"></span>
+                        @{
+
+                            for (int i = 0; item.Quantity > 0 && i < item.Quantity; i++)
+                            {
+                                <div class="row" data-PassengerInf="@item.PassengerType">
+                                    <div class="col-md-3">
+                                        <div class="form-group ">
+                                            <label class="form-label">Họ và tên (@Html.Raw(i + 1)):</label>
+                                            <input name="txtFullName" maxlength="50" type="text" class="form-control" value="" />
+                                            <span name="lblFullName" class="message msg-box"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        <label class="form-label">Giới tính:</label>
-                                        <select name="ddlGender" class="form-control show-tick" data-live-search="true">
-                                            <option value="1">Nam</option>
-                                            <option value="2">Nữ</option>
-                                        </select>
-                                        <span id="lblReturnDateTime" class="message msg-box"></span>
+                                    <div class="col-md-2">
+                                        <div class="form-group ">
+                                            <label class="form-label">Giới tính:</label>
+                                            <select name="ddlGender" class="form-control show-tick" data-live-search="true">
+                                                <option value="1">Nam</option>
+                                                <option value="2">Nữ</option>
+                                            </select>
+                                            <span id="lblReturnDateTime" class="message msg-box"></span>
+                                        </div>
                                     </div>
+                                    @if (item.PassengerType == "INF")
+                                    {
+                                        <div class="col-md-3">
+                                            <div class="form-group ">
+                                                <label class="form-label">Ng.Sinh:</label>
+                                                <input name="txtBirthDay" data-name="txtBirthDay" data-date="true" maxlength="10" type="text" class="form-control" placeholder="dd-mm-yyyy" />
+                                                <span name="lblBirthDay" class="message msg-box"></span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group ">
-                                        <label class="form-label">Ng.Sinh:</label>
-                                        <input name="txtBirthDay" data-name="txtBirthDay" data-date="true" maxlength="10" type="text" class="form-control" placeholder="dd-mm-yyyy" />
-                                        <span name="lblBirthDay" class="message msg-box"></span>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>
@@ -237,21 +243,21 @@
                     <div class="col-md-7">
                         <div class="form-group ">
                             <label class="form-label">Tên khách hàng:</label>
-                            <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="Hanh Khach 01" />
+                            <input id="txtName" name="txtName" maxlength="15" type="text" class="form-control" value="" />
                             <span id="lblName" class="message msg-box"></span>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group ">
                             <label class="form-label">Số đ.thoại:</label>
-                            <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="0983498300" />
+                            <input id="txtPhone" name="txtPhone" maxlength="15" type="text" class="form-control" value="" />
                             <span id="lblPhone" class="message msg-box"></span>
                         </div>
                     </div>
                 </div>
                 <div class="form-group ">
                     <label class="form-label">Địa chỉ email:</label>
-                    <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="hanhkhach01@gmail.com" />
+                    <input id="txtEmail" name="txtEmail" maxlength="255" type="text" class="form-control" value="" />
                     <span id="lblEmail" class="message msg-box"></span>
                 </div>
             </div>

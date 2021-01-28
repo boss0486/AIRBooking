@@ -61,8 +61,7 @@ $(function () {
     }).on('changeDate', function (index, item) {
         $('.datepicker').hide();
         $(this).keyup();
-        $(this).change();
-        $(this).blur();
+        $(this).change(); 
     });
 
 

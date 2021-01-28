@@ -130,6 +130,12 @@
         "Title": "Hành trình"
       },
       {
+        "KeyID": "DataSync",
+        "Method": "DataSync",
+        "APIRouter": "Action/DataSync",
+        "Title": "Đ.bộ"
+      },
+      {
         "KeyID": "Details",
         "Method": "Details",
         "APIRouter": "Action/Details",

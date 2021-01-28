@@ -133,11 +133,10 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/GetCompany")]
-        public ActionResult GetCompanyByLogin()
+        public ActionResult GetCompany()
         {
-            AirAgentService customerService = new AirAgentService();
-            List<ClientOption> dtList = customerService.GetCompanyByLogin();
-            return Notifization.Data("", dtList);
+            CompanyService companyService = new CompanyService(); 
+            return Notifization.Data("", companyService.DataOption());
         }
 
         [HttpPost]
