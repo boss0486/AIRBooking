@@ -6237,9 +6237,10 @@ table, .table {
         position: relative;
     }
 
-    .form-group button, .form-group .btn, .btn-group {
+    .btn-group1 button {
         margin-bottom: 15px;
-    }
+    } 
+     
 
 .input-group {
     width: 100%;

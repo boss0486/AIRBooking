@@ -71,8 +71,9 @@ var flightBookingController = {
         if ($('input[name="cbxHasTax"]').is(":checked"))
             isHasTax = true;
         //
+        var ddlRouting = $('#ddlRouting').val();
         var ddlItineraryType = $('#ddlItineraryType').val();
-        var ddlAirlineType = $('#ddlAirlineType').val();
+        var ddlAirline = $('#ddlAirlineType').val();
         var ddlOriginLocation = $('#ddlOriginLocation').val();
         var ddlDestinationLocation = $('#ddlDestinationLocation').val();
         var departureDateTime = $("#DepartureDateTime").val();
@@ -108,7 +109,8 @@ var flightBookingController = {
             IsRoundTrip: isRoundTrip,
             IsHasTax: isHasTax,
             ItineraryType: ddlItineraryType,
-            AirlineType: ddlAirlineType,
+            Routing: parseInt(ddlRouting),
+            AirlineID: ddlAirline,
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         };
         AjaxFrom.POST({
@@ -390,7 +392,7 @@ $(document).on('click', '#TblFlightGo td.td-action', function () {
     if (parseInt(ddlFlightType) == 1) {
         HelperPage.GoToByScroll("btnNextToInf");
     }
-    else if (parseInt(ddlFlightType) == 2) { 
+    else if (parseInt(ddlFlightType) == 2) {
         if ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)
             HelperPage.GoToByScroll("TblFlightReturn");
         else

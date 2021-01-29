@@ -1,4 +1,5 @@
 ﻿using AIRService.WS.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -290,9 +291,15 @@ namespace AIRService.WS.VNAHelper
             {
                 Indent = true
             };
-            var urlFile = HttpContext.Current.Server.MapPath(@"~/Team/" + fileName);
+            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/Log-{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}.xml");
             XmlWriter writer = XmlWriter.Create(urlFile, settings);
             soapEnvelopeXml.Save(writer);
+        }
+        public static void WriteJson(string fileName, object obj)
+        {
+            string json = JsonConvert.SerializeObject(obj);
+            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/Log-{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}.json");
+            System.IO.File.WriteAllText(urlFile, json);
         }
 
         public static void WriteXml(string fileName, XmlDocument soapEnvelopeXml)
@@ -302,7 +309,7 @@ namespace AIRService.WS.VNAHelper
             {
                 Indent = true
             };
-            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/Log-{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}");
+            var urlFile = HttpContext.Current.Server.MapPath($@"~/Team/Log-{ DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-") + RandomString(8) + fileName}.xml");
             XmlWriter writer = XmlWriter.Create(urlFile, settings);
             soapEnvelopeXml.Save(writer);
         }

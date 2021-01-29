@@ -16,6 +16,16 @@ namespace ApiPortalBooking.Models
         public string CurrencyCode { get; set; }
         public Double AxFee { get; set; }
     }
+    public class FareLLSModel2 : TokenModel
+    {
+        public List<string> PassengerType { get; set; }
+        public string OriginLocation { get; set; }
+        public DateTime DepartureDateTime { get; set; }
+        public string DestinationLocation { get; set; }
+        public string AirlineCode { get; set; }
+        public string CurrencyCode { get; set; }
+        public Double AxFee { get; set; }
+    }
     public class FareItem
     {
         public int RPH { get; set; }

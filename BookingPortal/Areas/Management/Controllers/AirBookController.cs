@@ -25,7 +25,7 @@ namespace WebApplication.Management.Controllers
     {
         public ActionResult Search()
         {
-            Request_FlightSearchModel model = new Request_FlightSearchModel
+            SegmentSearchModel model = new SegmentSearchModel
             {
                 OriginLocation = " ",
                 DestinationLocation = " ",
@@ -43,7 +43,7 @@ namespace WebApplication.Management.Controllers
                 if (flightSearch != null)
                 {
                     var dataSearch = flightSearch.Value;
-                    model = JsonConvert.DeserializeObject<Request_FlightSearchModel>(dataSearch);
+                    model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
                 }
             }
             catch
@@ -61,7 +61,7 @@ namespace WebApplication.Management.Controllers
                 //do something
                 HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
                 var dataSearch = flightSearch.Value;
-                var model = JsonConvert.DeserializeObject<Request_FlightSearchModel>(dataSearch);
+                var model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
                 if (model != null)
                 {
                     if (model.ADT > 0)
@@ -153,10 +153,10 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/Test")]
-        public ActionResult Test()
+        public ActionResult Test(FareLLSModel model)
         {
             VNA_SearchService searchService = new VNA_SearchService();
-            return searchService.Test01();
+            return searchService.Test01(model);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace WebApplication.Management.Controllers
         /// 
         [HttpPost]
         [Route("Action/Search")]
-        public ActionResult Search(Request_FlightSearchModel model)
+        public ActionResult Search(SegmentSearchModel model)
         {
             try
             {
@@ -193,12 +193,12 @@ namespace WebApplication.Management.Controllers
                     _returnDateTime = _returnDateTimeTemp;
                 }
                 //
-                HttpContext.Response.Cookies.Add(new HttpCookie("FlightSearch", new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new Request_FlightSearchModel
+                HttpContext.Response.Cookies.Add(new HttpCookie("FlightSearch", new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new SegmentSearchModel
                 {
                     OriginLocation = _originLocation,
                     DestinationLocation = _destinationLocation,
-                    DepartureDateTime = Convert.ToDateTime(_departureDateTime).ToString("dd-MM-yyyy"),
-                    ReturnDateTime = Convert.ToDateTime(_returnDateTime).ToString("dd-MM-yyyy"),
+                    DepartureDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_departureDateTime, Helper.Language.LanguagePage.GetLanguageCode),
+                    ReturnDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_returnDateTime, Helper.Language.LanguagePage.GetLanguageCode),
                     ADT = model.ADT,
                     CNN = model.CNN,
                     INF = model.INF,
@@ -207,7 +207,7 @@ namespace WebApplication.Management.Controllers
                 })));
                 //
                 var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.FlightSearch(new FlightSearchModel
+                return vnaSearchService.BookSearch(new FlightSearchModel
                 {
                     OriginLocation = _originLocation,
                     DestinationLocation = _destinationLocation,

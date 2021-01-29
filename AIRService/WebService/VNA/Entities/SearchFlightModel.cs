@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ApiPortalBooking.Models
 {
-    public class Request_FlightSearchModel
+    public class SegmentSearchModel
     {
         public string OriginLocation { get; set; }
         public string DestinationLocation { get; set; }
@@ -18,6 +18,8 @@ namespace ApiPortalBooking.Models
         public bool IsRoundTrip { get; set; }
         public bool IsHasTax { get; set; }
         public int ItineraryType { get; set; }
+        public int AirlineID { get; set; }
+        public int Routing { get; set; }
     }
     public class FlightSearchModel
     {
@@ -31,6 +33,8 @@ namespace ApiPortalBooking.Models
         public bool IsRoundTrip { get; set; }
         public bool IsHasTax { get; set; }
         public int ItineraryType { get; set; }
+        public int AirlineID { get; set; }
+        public int Routing { get; set; }
     }
 
     public class FlightFareModel
@@ -57,9 +61,9 @@ namespace ApiPortalBooking.Models
         public int AirEquipType { get; set; }
         public string ResBookDesigCode { get; set; }
         public int FlightNumber { get; set; }
-        public Resquet_WsTax_BaseFareModel BaseFare { get; set; } 
+        public Resquet_WsTax_BaseFareModel BaseFare { get; set; }
     }
-  
+
     public class TaxFeeModel
     {
         public int RPH { get; set; }

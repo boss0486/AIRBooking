@@ -11,7 +11,7 @@ namespace AIRService.WS.Entities
     {
         public string ResBookDesigCode { get; set; }
         public FareLLSModel FareLLS { get; set; }
-        public List<WebService.VNA_FareLLSRQ.FareRSFareBasis> FareRSFareBasis { get; set; }
+        public List<XMLObject.FareLLSRQ.FareBasis> FareRSFareBasis { get; set; }
     }
 
 

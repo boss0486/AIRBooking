@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Header>
+    <eb:MessageHeader xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" eb:version="1.0" soap-env:mustUnderstand="1">
+      <eb:From>
+        <eb:PartyId eb:type="?">VIETNAM-AIRLINES</eb:PartyId>
+      </eb:From>
+      <eb:To>
+        <eb:PartyId eb:type="URI" />
+      </eb:To>
+      <eb:CPAId>VN</eb:CPAId>
+      <eb:ConversationId>fOV1LWT3EJIUnGC0Yh1</eb:ConversationId>
+      <eb:Service>OTA_AirAvailLLSRQ</eb:Service>
+      <eb:Action>OTA_AirAvailLLSRS</eb:Action>
+      <eb:MessageData>
+        <eb:MessageId>500991186769240701</eb:MessageId>
+        <eb:Timestamp>2021-01-29T05:11:17</eb:Timestamp>
+        <eb:RefToMessageId>mid:20001209-133003-2333@clientofsabre.com</eb:RefToMessageId>
+      </eb:MessageData>
+    </eb:MessageHeader>
+    <wsse:Security xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext">
+      <wsse:BinarySecurityToken valueType="String" EncodingType="wsse:Base64Binary">Shared/IDL:IceSess\/SessMgr:1\.0.IDL/Common/!ICESMS\/RESE!ICESMSLB\/RES.LB!1611896980656!3966!265!1</wsse:BinarySecurityToken>
+    </wsse:Security>
+  </soap-env:Header>
+  <soap-env:Body>
+    <OTA_AirAvailRS xmlns="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stl="http://services.sabre.com/STL/v01" Version="2.4.0">
+      <stl:ApplicationResults status="Complete">
+        <stl:Success timeStamp="2021-01-28T23:11:17-06:00">
+          <stl:SystemSpecificResults>
+            <stl:HostCommand LNIATA="222222">1*</stl:HostCommand>
+          </stl:SystemSpecificResults>
+        </stl:Success>
+      </stl:ApplicationResults>
+      <OriginDestinationOptions OriginTimeZone="Z7" TimeZoneDifference="0">
+        <OriginDestinationOption RPH="1">
+          <FlightSegment ArrivalDateTime="03-10T20:40" DOT_Ind="Y" DepartureDateTime="03-10T19:35" FlightNumber="6520" RPH="1" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" />
+            <MarketingAirline Code="VN" FlightNumber="6520" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-11T00:10" ConnectionInd="Y" DOT_Ind="N" DepartureDateTime="03-10T22:00" FlightNumber="7294" RPH="2" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="2" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="5" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="Z" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="20" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="21" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="22" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="23" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="false" Sat="true" Sun="false" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <Equipment AirEquipType="350" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="80" TotalTravelTime="275" />
+            <MarketingAirline Code="VN" FlightNumber="7294" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="2">
+          <FlightSegment ArrivalDateTime="03-10T11:45" DOT_Ind="N" DepartureDateTime="03-10T10:40" FlightNumber="1822" RPH="3" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" />
+            <BookingClassAvail AggregatedContent="false" Availability="3" RPH="2" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="5" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="5" RPH="20" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" />
+            <MarketingAirline Code="VN" FlightNumber="1822" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-10T16:10" ConnectionInd="Y" DOT_Ind="N" DepartureDateTime="03-10T14:00" FlightNumber="214" RPH="4" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" />
+            <BookingClassAvail AggregatedContent="false" Availability="5" RPH="2" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="5" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="Z" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="20" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="21" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="22" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="23" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="24" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <Equipment AirEquipType="359" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="135" TotalTravelTime="330" />
+            <MarketingAirline Code="VN" FlightNumber="214" />
+            <Meal MealCode="S" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="3">
+          <FlightSegment ArrivalDateTime="03-10T11:55" DOT_Ind="Y" DepartureDateTime="03-10T10:50" FlightNumber="6562" RPH="5" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="false" Mon="false" Sat="false" Sun="false" Thur="false" Tue="false" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" />
+            <MarketingAirline Code="VN" FlightNumber="6562" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-10T16:25" ConnectionInd="Y" DOT_Ind="Y" DepartureDateTime="03-10T14:15" FlightNumber="6014" RPH="6" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="false" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="140" TotalTravelTime="335" />
+            <MarketingAirline Code="VN" FlightNumber="6014" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="4">
+          <FlightSegment ArrivalDateTime="03-10T20:30" DOT_Ind="N" DepartureDateTime="03-10T19:25" FlightNumber="1830" RPH="7" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" />
+            <BookingClassAvail AggregatedContent="false" Availability="3" RPH="2" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="5" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="6" RPH="20" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <Equipment AirEquipType="321" />
+            <FlightDetails Canceled="false" Charter="false" />
+            <MarketingAirline Code="VN" FlightNumber="1830" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-11T00:10" ConnectionInd="Y" DOT_Ind="N" DepartureDateTime="03-10T22:00" FlightNumber="7294" RPH="8" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" />
+            <BookingClassAvail AggregatedContent="false" Availability="4" RPH="2" ResBookDesigCode="C" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" />
+            <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="5" ResBookDesigCode="O" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="W" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="Z" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="U" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="20" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="21" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="22" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="23" ResBookDesigCode="X" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="24" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="false" Sat="true" Sun="false" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <Equipment AirEquipType="350" />
+            <FlightDetails Canceled="false" Charter="false" GroundTime="90" TotalTravelTime="285" />
+            <MarketingAirline Code="VN" FlightNumber="7294" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="5">
+          <FlightSegment ArrivalDateTime="03-10T11:50" DOT_Ind="Y" DepartureDateTime="03-10T10:45" FlightNumber="6510" RPH="9" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="false" Sun="true" Thur="false" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" />
+            <MarketingAirline Code="VN" FlightNumber="6510" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-10T16:25" ConnectionInd="Y" DOT_Ind="Y" DepartureDateTime="03-10T14:15" FlightNumber="6014" RPH="10" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="false" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="145" TotalTravelTime="340" />
+            <MarketingAirline Code="VN" FlightNumber="6014" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+        <OriginDestinationOption RPH="6">
+          <FlightSegment ArrivalDateTime="03-10T20:40" DOT_Ind="Y" DepartureDateTime="03-10T19:35" FlightNumber="6520" RPH="11" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="SGN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" />
+            <MarketingAirline Code="VN" FlightNumber="6520" />
+            <OriginLocation LocationCode="PQC" />
+          </FlightSegment>
+          <FlightSegment ArrivalDateTime="03-11T00:25" ConnectionInd="Y" DOT_Ind="Y" DepartureDateTime="03-10T22:15" FlightNumber="6022" RPH="12" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="Y" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="2" ResBookDesigCode="B" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="3" ResBookDesigCode="M" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="4" ResBookDesigCode="S" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="5" ResBookDesigCode="H" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="K" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="L" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="Q" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="N" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="R" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="T" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="E" />
+            <BookingClassAvail AggregatedContent="false" Availability="2" RPH="13" ResBookDesigCode="A" />
+            <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="P" />
+            <BookingClassAvail AggregatedContent="false" Availability="0" RPH="15" ResBookDesigCode="V" />
+            <DaysOfOperation>
+              <OperationSchedule>
+                <OperationTimes>
+                  <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+                </OperationTimes>
+              </OperationSchedule>
+            </DaysOfOperation>
+            <DestinationLocation LocationCode="HAN" />
+            <DisclosureAirline Code="BL" CompanyShortName="PACIFIC AIRLINES">
+              <Text>OPERATED BY PACIFIC AIRLINES</Text>
+            </DisclosureAirline>
+            <Equipment AirEquipType="320" />
+            <FlightDetails Canceled="false" Charter="false" CodeshareBlockDisplay="*" GroundTime="95" TotalTravelTime="290" />
+            <MarketingAirline Code="VN" FlightNumber="6022" />
+            <Meal MealCode="N" />
+            <OriginLocation LocationCode="SGN" />
+          </FlightSegment>
+        </OriginDestinationOption>
+      </OriginDestinationOptions>
+    </OTA_AirAvailRS>
+  </soap-env:Body>
+</soap-env:Envelope>

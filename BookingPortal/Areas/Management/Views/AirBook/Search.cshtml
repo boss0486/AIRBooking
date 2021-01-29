@@ -1,6 +1,6 @@
 ﻿@using WebCore.Services;
 @using WebCore.Model.Services
-@model ApiPortalBooking.Models.Request_FlightSearchModel
+@model ApiPortalBooking.Models.SegmentSearchModel
 
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
@@ -13,6 +13,13 @@
     <a id="btnSearchTab" class="nav-link active" data-toggle="tab" href="#searchTab">Tìm kiếm</a> | <a id="btnDataTab" class="nav-link" data-toggle="tab" href="#dataTab">Danh sách</a>
 </div>
 <div class="row">
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <h4>Tìm kiếm chuyến bay</h4>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="form-group">
             <input id="cbxHasTax" name="cbxHasTax" type="checkbox" class="filled-in" checked />
@@ -23,26 +30,41 @@
 <div class="tab-content flight">
     <div id="searchTab" class="tab-pane active">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Loại hình:</label>
-                            <select id="ddlItineraryType" name="ddlItineraryType" class="form-control show-tick" data-live-search="true">
+                            <label class="form-label">Loại hành trình:</label>
+                            <select id="ddlItinerary" name="ddlItinerary" class="form-control show-tick" data-live-search="true">
                                 @Html.Raw(AirItineraryService.DropdownList(1))
                             </select>
-                            <span id="lblItineraryType" class="message msg-box"></span>
+                            <span id="lblItinerary" class="message msg-box"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Định tuyến:</label>
+                            <select id="ddlRouting" name="ddlRouting" class="form-control show-tick" data-live-search="true">
+                                <option value="1">Bay thẳng</option>
+                                <option value="2">Nối chuyến</option>
+                            </select>
+                            <span id="lblRouting" class="message msg-box"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Hãng hàng không:</label>
                             <select id="ddlAirlineType" name="ddlAirlineType" class="form-control show-tick" data-live-search="true">
-                                <option value="VNA" selected>Việt nam Airline</option>
+                                <option value="VN">VN: VN Airline</option>
+                                <option value="VJ">VJ: Vietjet</option>
+                                <option value="JT">JT: Jetstar </option>
                             </select>
                             <span id="lblAirlineType" class="message msg-box"></span>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <hr />
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -119,21 +141,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group text-right">
-                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
-                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button> 
+                <div class="form-group">
+                    <hr />
                 </div>
-                 <div class="form-group">
-                     <hr />
+                <div class="form-group text-right btn-group1">
+                    <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
+                    <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
                 </div>
 
-                <div class="form-group">
-                    <div class="form-label m-b-10">Lưu ý:</div>
+                <div class=" col-md-12 form-group" style="border:dashed 1px #ff6a00">
+                    <div class="form-label m-b-10 p-t-20">Lưu ý:</div>
                     <p>
                         <i class="fas fa-check-circle"></i> ADT: > 12 tuổi | CHD: 2 tuổi - 12 tuổi | INF: < 2 tuổi
                     </p>
                     <p>
-                        <i class="fas fa-check-circle"></i> Sô người lớn giới hạn [1-7] người
+                        <i class="fas fa-check-circle"></i> Số người lớn giới hạn [1-7] người
                     </p>
                     <p>
                         <i class="fas fa-check-circle"></i> Mỗi người lớn chỉ được đính kèm một trẻ em
@@ -223,7 +245,7 @@
 
 @section scripts{
 
-    <script src="~/Areas/Management/_script/app-flight-booking.js"></script>
+    <script src="~/Areas/Management/_script/app-search.js"></script>
     <script type="text/javascript">
         Cookies.DelCookie("FlightOrder");
         $(function () {

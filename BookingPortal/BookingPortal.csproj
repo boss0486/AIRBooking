@@ -203,7 +203,7 @@
     <Content Include="Areas\Management\_script\national.js" />
     <Content Include="Areas\Management\_script\area-inland.js" />
     <Content Include="Areas\Management\_script\condition-fee.js" />
-    <Content Include="Areas\Management\_script\app-flight-booking.js" />
+    <Content Include="Areas\Management\_script\app-search.js" />
     <Content Include="Areas\Management\_script\app-flight.js" />
     <Content Include="Areas\Management\_script\app-user.js" />
     <Content Include="Areas\Management\_script\bank.js" />
@@ -286,10 +286,10 @@
     <Content Include="HtmlPage2.html" />
     <Content Include="Logged\2021\1\Log-14.txt" />
     <Content Include="Logged\2021\1\Log-27.txt" />
-    <Content Include="Team\00000000-0000-0000-0000-000000000000.gif" />
-    <Content Include="Team\2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml" />
-    <Content Include="Team\Log-2021-01-26-14-22-00-XOTA1N3Vchua-xuat-ve.xml" />
-    <Content Include="Team\Log-2021-01-26-15-34-05-SD77UU30chua-xuat-ve.xml" />
+    <Content Include="Team\Log-2021-01-29-12-01-18-5CIEZKUL-search-price-0001.xml" />
+    <Content Include="Team\Log-2021-01-29-12-11-02-XMNEDXVOHAN-PQC-segment.xml" />
+    <Content Include="Team\Log-2021-01-29-12-11-11-KRS6W9ORHAN-PQC-segment.xml" />
+    <Content Include="Team\Log-2021-01-29-12-11-19-EP0LTIYD-search-price-0001.xml" />
     <Content Include="Team\test-ve-da-xuat.xml" />
     <Content Include="WS\Xml\FareBasis.xml" />
     <Content Include="_themes\library\plugins\bootstrap-datepicker\js\bootstrap-datepicker.language.js" />

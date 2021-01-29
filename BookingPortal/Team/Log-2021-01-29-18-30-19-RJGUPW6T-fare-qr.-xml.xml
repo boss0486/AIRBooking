@@ -1,0 +1,661 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FareRS xmlns="http://webservices.sabre.com/sabreXML/2011/10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stl="http://services.sabre.com/STL/v01" Version="2.9.0">
+  <stl:ApplicationResults status="Complete">
+    <stl:Success timeStamp="2021-01-29T05:30:30-06:00" />
+  </stl:ApplicationResults>
+  <FareBasis Code="TPXVNFP" CurrencyCode="VND" RPH="1">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="445000" />
+      <Fare Amount="890000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>2</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="445000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="TPXVNFP" CurrencyCode="VND" RPH="2">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="445000" />
+      <Fare Amount="890000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>2</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="445000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="RPXVNFP" CurrencyCode="VND" RPH="3">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="708000" />
+      <Fare Amount="1416000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="708000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="RPXVNFP" CurrencyCode="VND" RPH="4">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="708000" />
+      <Fare Amount="1416000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="708000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="NPXVNF" CurrencyCode="VND" RPH="5">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1071000" />
+      <Fare Amount="2142000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1071000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="NPXVNF" CurrencyCode="VND" RPH="6">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1071000" />
+      <Fare Amount="2142000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1071000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="QPXVNF" CurrencyCode="VND" RPH="7">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1344000" />
+      <Fare Amount="2688000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1344000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="QPXVNF" CurrencyCode="VND" RPH="8">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1344000" />
+      <Fare Amount="2688000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1344000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="LPXVNF" CurrencyCode="VND" RPH="9">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1617000" />
+      <Fare Amount="3234000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1617000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="LPXVNF" CurrencyCode="VND" RPH="10">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1617000" />
+      <Fare Amount="3234000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1617000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="KPXVNF" CurrencyCode="VND" RPH="11">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1890000" />
+      <Fare Amount="3780000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1890000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="KPXVNF" CurrencyCode="VND" RPH="12">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1890000" />
+      <Fare Amount="3780000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1890000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="HPXVNF" CurrencyCode="VND" RPH="13">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="1" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2162000" />
+      <Fare Amount="4324000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2162000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="HPXVNF" CurrencyCode="VND" RPH="14">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="2" YY="false">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2162000" />
+      <Fare Amount="4324000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2162000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="SVNF" CurrencyCode="VND" RPH="15">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="S" RoutingNumber="2" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2435000" />
+      <Fare Amount="4870000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2435000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="SVNF" CurrencyCode="VND" RPH="16">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="S" RoutingNumber="1" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2435000" />
+      <Fare Amount="4870000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2435000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="MVNF" CurrencyCode="VND" RPH="17">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="M" RoutingNumber="1" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2799000" />
+      <Fare Amount="5598000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2799000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="MVNF" CurrencyCode="VND" RPH="18">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="M" RoutingNumber="2" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2799000" />
+      <Fare Amount="5598000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2799000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="DVNF" CurrencyCode="VND" RPH="19">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="D" RoutingNumber="2" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="BC" BrandName="BUSINESS CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="5526000" />
+      <Fare Amount="11052000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="5526000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="DVNF" CurrencyCode="VND" RPH="20">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="D" RoutingNumber="1" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="BC" BrandName="BUSINESS CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="5617000" />
+      <Fare Amount="11234000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="5617000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="CVNF" CurrencyCode="VND" RPH="21">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="C" RoutingNumber="2" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="BF" BrandName="BUSINESS FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="5799000" />
+      <Fare Amount="11598000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="5799000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <FareBasis Code="CVNF" CurrencyCode="VND" RPH="22">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="C" RoutingNumber="1" YY="false">
+      <Airline Code="VN" />
+      <Brand BrandCode="BF" BrandName="BUSINESS FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="6162000" />
+      <Fare Amount="12324000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="6162000" CurrencyCode="VND" />
+    <Category22 Ind="false" />
+    <PassengerType Code="ADT" />
+  </FareBasis>
+  <HeaderInformation>
+    <AdditionalVendorInfo>
+      <OtherAirlinesInMarket Code="QH" />
+    </AdditionalVendorInfo>
+    <CurrencyCode>VND</CurrencyCode>
+    <OriginDestinationOption>
+      <FlightSegment DepartureDateTime="2021-02-24">
+        <DestinationLocation LocationCode="VCS" />
+        <MarketingAirline Code="VN" />
+        <OriginLocation LocationCode="HAN" />
+      </FlightSegment>
+    </OriginDestinationOption>
+    <Text>THE FOLLOWING CARRIERS ALSO PUBLISH FARES HAN-VCS:</Text>
+    <Text>//SEE FQHELP FOR INFORMATION ABOUT THE NEW FARE DISPLAYS//</Text>
+    <Text>ALL FEES/TAXES/SVC CHARGES INCLUDED WHEN ITINERARY PRICED</Text>
+    <Text>SURCHARGE FOR PAPER TICKET MAY BE ADDED WHEN ITIN PRICED</Text>
+  </HeaderInformation>
+  <Routing GlobalInd="EH" Number="0001">
+    <Text>1. HAN-SGN-VCS</Text>
+    <Text>TRAVEL MUST BE VIA SGN</Text>
+  </Routing>
+  <Routing GlobalInd="EH" Number="0002">
+    <Text>1. HAN-VCA-VCS</Text>
+    <Text>TRAVEL MUST BE VIA VCA</Text>
+  </Routing>
+</FareRS>

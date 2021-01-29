@@ -1,0 +1,1487 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFareRSFareBasis xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FareRSFareBasis Code="APXVNF9" CurrencyCode="VND" RPH="1">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="A" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/6H</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EL" BrandName="ECONOMY LITE" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="209000" />
+      <Fare Amount="418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="209000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="AAPVNFP" CurrencyCode="VND" RPH="2">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="A" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EL" BrandName="ECONOMY LITE" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-06-30</ExpirationDate>
+      <Fare Amount="209000" />
+      <Fare Amount="418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>2</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+      <TicketDate>2021-06-30</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="209000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="PPXVNF9" CurrencyCode="VND" RPH="3">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="P" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/6H</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EL" BrandName="ECONOMY LITE" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-03-31</ExpirationDate>
+      <Fare Amount="309000" />
+      <Fare Amount="618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+      <TicketDate>2021-03-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="APXVNF" CurrencyCode="VND" RPH="4">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="A" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/6H</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EL" BrandName="ECONOMY LITE" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-12-31</ExpirationDate>
+      <Fare Amount="309000" />
+      <Fare Amount="618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+      <TicketDate>2021-12-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="PPXVNF" CurrencyCode="VND" RPH="5">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="P" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/6H</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EL" BrandName="ECONOMY LITE" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <ExpirationDate>2021-12-31</ExpirationDate>
+      <Fare Amount="409000" />
+      <Fare Amount="818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+      <TicketDate>2021-12-31</TicketDate>
+    </AdditionalInformation>
+    <BaseFare Amount="409000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="EAPVNF9" CurrencyCode="VND" RPH="6">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="E" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="409000" />
+      <Fare Amount="818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="409000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="EAPVNF" CurrencyCode="VND" RPH="7">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="E" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="509000" />
+      <Fare Amount="1018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="509000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="EPXVNF9" CurrencyCode="VND" RPH="8">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="E" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="509000" />
+      <Fare Amount="1018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="509000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="EPXVNF" CurrencyCode="VND" RPH="9">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="E" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="609000" />
+      <Fare Amount="1218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="609000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="TAP1VNF" CurrencyCode="VND" RPH="10">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="709000" />
+      <Fare Amount="1418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="709000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="TAPVNF9" CurrencyCode="VND" RPH="11">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="709000" />
+      <Fare Amount="1418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="709000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="TAPVNF" CurrencyCode="VND" RPH="12">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="809000" />
+      <Fare Amount="1618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="809000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="TPXVNF9" CurrencyCode="VND" RPH="13">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="809000" />
+      <Fare Amount="1618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="809000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="TPXVNF" CurrencyCode="VND" RPH="14">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="T" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="909000" />
+      <Fare Amount="1818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="909000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="RAP1VNF" CurrencyCode="VND" RPH="15">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1009000" />
+      <Fare Amount="2018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1009000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="RAPVNF9" CurrencyCode="VND" RPH="16">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1009000" />
+      <Fare Amount="2018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1009000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="RAPVNF" CurrencyCode="VND" RPH="17">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1109000" />
+      <Fare Amount="2218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1109000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="RPXVNF9" CurrencyCode="VND" RPH="18">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1109000" />
+      <Fare Amount="2218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1109000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="RPXVNF" CurrencyCode="VND" RPH="19">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="R" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1209000" />
+      <Fare Amount="2418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1209000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="NAP1VNF" CurrencyCode="VND" RPH="20">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1309000" />
+      <Fare Amount="2618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="NAPVNF" CurrencyCode="VND" RPH="21">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1409000" />
+      <Fare Amount="2818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1409000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="NPXVNF9" CurrencyCode="VND" RPH="22">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1409000" />
+      <Fare Amount="2818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1409000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="NPXVNF" CurrencyCode="VND" RPH="23">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="N" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1509000" />
+      <Fare Amount="3018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1509000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="QAP1VNF" CurrencyCode="VND" RPH="24">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1609000" />
+      <Fare Amount="3218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1609000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="QAPVNF" CurrencyCode="VND" RPH="25">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1709000" />
+      <Fare Amount="3418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1709000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="QPXVNF9" CurrencyCode="VND" RPH="26">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1709000" />
+      <Fare Amount="3418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1709000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="QPXVNF" CurrencyCode="VND" RPH="27">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="Q" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1809000" />
+      <Fare Amount="3618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1809000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="LAP1VNF" CurrencyCode="VND" RPH="28">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="1909000" />
+      <Fare Amount="3818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="1909000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="LAPVNF" CurrencyCode="VND" RPH="29">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2009000" />
+      <Fare Amount="4018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2009000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="LPXVNF9" CurrencyCode="VND" RPH="30">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2009000" />
+      <Fare Amount="4018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2009000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="LPXVNF" CurrencyCode="VND" RPH="31">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="L" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EC" BrandName="ECONOMY CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2109000" />
+      <Fare Amount="4218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2109000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="KAP1VNF" CurrencyCode="VND" RPH="38">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2209000" />
+      <Fare Amount="4418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2209000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="KAPVNF" CurrencyCode="VND" RPH="39">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2309000" />
+      <Fare Amount="4618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="KPXVNF9" CurrencyCode="VND" RPH="40">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2309000" />
+      <Fare Amount="4618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="KPXVNF" CurrencyCode="VND" RPH="41">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="K" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2409000" />
+      <Fare Amount="4818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2409000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="HAP1VNF" CurrencyCode="VND" RPH="42">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2509000" />
+      <Fare Amount="5018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2509000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="HAPVNF" CurrencyCode="VND" RPH="43">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2609000" />
+      <Fare Amount="5218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2609000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="HPXVNF9" CurrencyCode="VND" RPH="44">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2609000" />
+      <Fare Amount="5218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2609000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="HPXVNF" CurrencyCode="VND" RPH="45">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="H" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/1</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2709000" />
+      <Fare Amount="5418000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2709000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="SAPVNF" CurrencyCode="VND" RPH="46">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="S" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <AdvancePurchase>-/.</AdvancePurchase>
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2909000" />
+      <Fare Amount="5818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2909000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="SVNF9" CurrencyCode="VND" RPH="47">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="S" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="2909000" />
+      <Fare Amount="5818000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="2909000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="SVNF" CurrencyCode="VND" RPH="48">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="S" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="3009000" />
+      <Fare Amount="6018000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="3009000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="MVNF" CurrencyCode="VND" RPH="49">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="M" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="3379000" />
+      <Fare Amount="6758000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="3379000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="MVNF9" CurrencyCode="VND" RPH="50">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="M" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="EF" BrandName="ECONOMY FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>E</Cabin>
+      <CabinName>ECONOMY CABIN</CabinName>
+      <Fare Amount="3379000" />
+      <Fare Amount="6758000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>4</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="3379000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="IVNF" CurrencyCode="VND" RPH="54">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="I" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="BC" BrandName="BUSINESS CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="4109000" />
+      <Fare Amount="8218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="4109000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="DVNF" CurrencyCode="VND" RPH="55">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="D" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="BC" BrandName="BUSINESS CLASSIC" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="4309000" />
+      <Fare Amount="8618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="4309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="CVNF" CurrencyCode="VND" RPH="57">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="C" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="BF" BrandName="BUSINESS FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="4609000" />
+      <Fare Amount="9218000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="4609000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+  <FareRSFareBasis Code="JVNF" CurrencyCode="VND" RPH="58">
+    <AdditionalInformation Acknowledgement="false" Constructed="false" FareType="N" FareVendor="A" Net="false" Private="true" PrivateInd="¤" ResBookDesigCode="J" RoutingNumber="3000" YY="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <Airline Code="VN" />
+      <Brand BrandCode="BF" BrandName="BUSINESS FLEX" ProgramCode="DOM" ProgramID="90817" ProgramName="VIETNAM DOMESTIC 08DEC20" SystemCode="M" />
+      <Cabin>B</Cabin>
+      <CabinName>BUSINESS CABIN</CabinName>
+      <Fare Amount="5309000" />
+      <Fare Amount="10618000" />
+      <OneWayRoundTrip Ind="X" />
+      <Rule>
+        <Category>50</Category>
+        <Category>5</Category>
+        <Category>8</Category>
+        <Category>9</Category>
+        <Category>10</Category>
+        <Category>11</Category>
+        <Category>14</Category>
+        <Category>15</Category>
+        <Category>16</Category>
+        <Category>17</Category>
+        <Category>18</Category>
+        <Category>19</Category>
+        <Category>31</Category>
+        <Category>33</Category>
+      </Rule>
+    </AdditionalInformation>
+    <BaseFare Amount="5309000" CurrencyCode="VND" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Category22 Ind="false" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <PassengerType Code="ADT" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FareRSFareBasis>
+</ArrayOfFareRSFareBasis>
