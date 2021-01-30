@@ -127,7 +127,7 @@ namespace AIRService.Service
                 if (airAvailResultGo.ApplicationResults.Status == "Complete")
                 { 
                     airAvailResultGo.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).ToList();
-                    flightSegmentsGo.AddRange(airAvailResultGo.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                    flightSegmentsGo.AddRange(airAvailResultGo.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     // loop next 1
                     var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
@@ -138,7 +138,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult1.ApplicationResults.Status == "Complete")
-                        flightSegmentsGo.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsGo.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                     // loop next 2 
                     var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
@@ -150,7 +150,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult2.ApplicationResults.Status == "Complete")
-                        flightSegmentsGo.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsGo.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                     // loop next 3 
                     XMLObject.AirAvailLLSRQ.OTA_AirAvailRS airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
@@ -162,7 +162,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult3.ApplicationResults.Status == "Complete")
-                        flightSegmentsGo.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsGo.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                 }
                 XMLHelper.WriteXml("search-ko-bay-thang11", XMLHelper.GetXMLFromObject(flightSegmentsGo));
@@ -310,7 +310,7 @@ namespace AIRService.Service
                 //
                 if (airAvailResultReturn.ApplicationResults.Status == "Complete")
                 {
-                    flightSegmentsReturn.AddRange(airAvailResultReturn.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                    flightSegmentsReturn.AddRange(airAvailResultReturn.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     // loop next 1
                     var airAvailResult1 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
                     {
@@ -321,7 +321,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult1.ApplicationResults.Status == "Complete")
-                        flightSegmentsReturn.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsReturn.AddRange(airAvailResult1.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                     // loop next 2 
                     var airAvailResult2 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
@@ -333,7 +333,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult2.ApplicationResults.Status == "Complete")
-                        flightSegmentsReturn.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsReturn.AddRange(airAvailResult2.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                     // loop next 3 
                     var airAvailResult3 = airAvailLLSRQService.FUNC_OTA_AirAvailLLSRQLoop(new AirAvailLLSRQModel
@@ -345,7 +345,7 @@ namespace AIRService.Service
                         OriginLocation = _originLocation
                     });
                     if (airAvailResult3.ApplicationResults.Status == "Complete")
-                        flightSegmentsReturn.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).Where(m => m.MarketingAirline.Code == "VN"));
+                        flightSegmentsReturn.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     //
                 }
 
