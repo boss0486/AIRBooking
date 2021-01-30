@@ -10031,6 +10031,7 @@ button, .btn {
     border-radius: 0;
     height: 32px;
     outline: 0 !important;
+    line-height: 1.29857143;
 }
 
     .button:active, .btn:active, .button.active, .btn.active {

@@ -64,6 +64,71 @@ var flightBookingController = {
             else
                 Notifization.Error(MessageText.Datamissing);
         });
+        $('#btnItineraryAdd').off('click').on('click', function () {
+            var flg = true;
+            // Flight go
+            var ddlDestinationLocation = $('#ddlDestinationLocation').val();
+            var ddlOriginLocation = $('#ddlOriginLocation').val();
+            var departureDateTime = $("#DepartureDateTime").val();
+            var returnDateTime = $('#ReturnDateTime').val();
+            //
+            if (ddlOriginLocation == "-" || ddlOriginLocation == '') {
+                $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
+                flg = false;
+            }
+            else if (ddlOriginLocation == ddlDestinationLocation) {
+                $('#lblOriginLocation').html('Nơi đi và nơi đến không được trùng nhau');
+                flg = false;
+            }
+            else {
+                $('#lblOriginLocation').html('');
+            }
+            // Flight to
+            if (ddlDestinationLocation == "-" || ddlDestinationLocation == '') {
+                $('#lblDestinationLocation').html('Vui lòng chọn nơi đến');
+                flg = false;
+            }
+            else if (ddlOriginLocation == ddlDestinationLocation) {
+                $('#lblDestinationLocation').html('Nơi đi và nơi đến không được trùng nhau');
+                flg = false;
+            }
+            else {
+                $('#lblDestinationLocation').html('');
+            }
+            //
+            $('#lblDepartureDateTime').html('');
+            if (departureDateTime == "") {
+                $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
+            }
+            //  
+            $('#lblReturnDateTime').html('');
+            var ddlFlightType = $('#ddlFlightType').val();
+            if (parseInt(ddlFlightType) == 2) {
+                if (returnDateTime == "") {
+                    $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
+                    flg = false;
+                }
+            }
+            // submit form
+            if (flg) {
+                $("#lblItinerary").html($("#ddlItinerary option:selected").html());
+                $("#lblTicket").html($("#lblTicket option:selected").html());
+                $("#lblItineraryType").html($("#ddlAirlineType option:selected").html());
+                //
+                var index = $("#itineraryList p").length();
+                if (parseInt(index) == 1)
+                    index += `0${index}`;
+                //
+                var item = `<p class="form-label">#${index}. ${ddlOriginLocation}-${ddlDestinationLocation}: ${departureDateTime} ${returnDateTime} <span><i class="fas fa-times"></i></span></p>`
+                $("#itineraryList").append(item);
+                //
+                $("#lblAdt").html($("#ddlAdt option:selected").html());
+                $("#lblCnn").html($("#ddlChd option:selected").html());
+                $("#lblInf").html($("#ddlInf option:selected").html());
+            }
+            else
+                Notifization.Error(MessageText.Datamissing);
+        });
     },
     Search: function () {
         //
@@ -376,7 +441,7 @@ var flightBookingController = {
                 console.log('::' + MessageText.NotService);
             }
         });
-    }
+    },
 };
 //
 flightBookingController.init();
