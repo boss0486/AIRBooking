@@ -42,8 +42,49 @@ namespace AIRService.Service
         }
 
         // search  
-        public ActionResult BookSearch(FlightSearchModel model)
+        public ActionResult BookSearch(SegmentSearchModel model)
         {
+
+            if (model == null)
+                return Notifization.Invalid(MessageText.Invalid);
+            //
+            bool isHasTax = model.IsHasTax;
+            int itineraryType = model.ItineraryType;
+            List<SegmentModel> segmentModels = model.Segments;
+            if (segmentModels.Count == 0)
+                return Notifization.Invalid("Dữ liệu hành trình không hợp lệ");
+            //
+            foreach (var item in segmentModels)
+            {
+                string _destinationLocation = item.DestinationLocation;
+                string _originLocation = item.OriginLocation;
+                string _dateOfFlight = item.DateOfFlight;  
+                if (string.IsNullOrWhiteSpace(_dateOfFlight) || !Helper.Page.Validate.TestDate_MMDDYYYY(_dateOfFlight))
+                    return Notifization.Invalid($"#{_originLocation}-{_destinationLocation} + T.gian bay không hợp lệ");
+                //
+
+
+
+            }
+
+           
+           
+
+            
+            //
+            //HttpContext.Response.Cookies.Add(new HttpCookie("FlightSearch", new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new SegmentSearchModel
+            //{
+            //    OriginLocation = _originLocation,
+            //    DestinationLocation = _destinationLocation,
+            //    DepartureDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_departureDateTime, Helper.Language.LanguagePage.GetLanguageCode),
+            //    ReturnDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_returnDateTime, Helper.Language.LanguagePage.GetLanguageCode),
+            //    ADT = model.ADT,
+            //    CNN = model.CNN,
+            //    INF = model.INF,
+            //    IsRoundTrip = model.IsRoundTrip
+
+            //})));
+            //
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
@@ -122,10 +163,10 @@ namespace AIRService.Service
                     DestinationLocation = _destinationLocation,
                     OriginLocation = _originLocation
                 });
-               
+
                 //
                 if (airAvailResultGo.ApplicationResults.Status == "Complete")
-                { 
+                {
                     airAvailResultGo.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment).ToList();
                     flightSegmentsGo.AddRange(airAvailResultGo.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                     // loop next 1
@@ -208,7 +249,7 @@ namespace AIRService.Service
                     string flightLocation = _originLocation + "-" + _destinationLocation;
                     AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls(m => m.IsApplied && m.FlightLocationID == flightLocation).FirstOrDefault();
                     int _year = _departureDateTime.Year;
-                    
+
                     foreach (var _lstFlightSegment in flightSegmentsGo)
                     {
                         int flightNumber = Convert.ToInt32(_lstFlightSegment.FlightNumber);

@@ -167,8 +167,13 @@ class FData {
         $(element).find("input[type=text]:not([data-notreload]) ,input[type=password]:not([data-notreload]),textarea,input[type=file]:not([data-notreload])").val('');
 
         $(element).find("input[type=checkbox]:not([data-notreload])").prop('checked', false);
-        //$('select').selectpicker('refresh');
-        //$('select').prop('selectedIndex', 0);  
+  
+        $("select:not([data-notreload])").each(function (index,item) {
+            $(item)[0].selectedIndex = 0;
+            $(item).selectpicker("refresh");
+        });
+       
+
         //
         if (tinymce !== undefined) {
 

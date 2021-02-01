@@ -135,7 +135,7 @@ namespace WebApplication.Management.Controllers
         [Route("Action/GetCompany")]
         public ActionResult GetCompany()
         {
-            CompanyService companyService = new CompanyService(); 
+            CompanyService companyService = new CompanyService();
             return Notifization.Data("", companyService.DataOption());
         }
 
@@ -171,55 +171,8 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                //
-                bool _isRoundTrip = model.IsRoundTrip;
-                string _destinationLocation = model.DestinationLocation;
-                string _originLocation = model.OriginLocation;
-                string _departureDateTime = model.DepartureDateTime;
-                //
-                string _returnDateTimeTemp = model.ReturnDateTime;
-                bool isHasTax = model.IsHasTax;
-                int itineraryType = model.ItineraryType;
-
-                if (string.IsNullOrWhiteSpace(_departureDateTime) || !Helper.Page.Validate.TestDate_MMDDYYYY(_departureDateTime))
-                    return Notifization.Invalid("Departure date invalid, format: MM/dd/yyyy" + _departureDateTime);
-                //
-                string _returnDateTime = DateTime.Now.Date.AddDays(-1).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-                if (model.IsRoundTrip)
-                {
-                    if (string.IsNullOrWhiteSpace(_returnDateTimeTemp) || !Helper.Page.Validate.TestDate_MMDDYYYY(_returnDateTimeTemp.ToString()))
-                        return Notifization.Invalid("Return date invalid, format: MM/dd/yyyy");
-                    //
-                    _returnDateTime = _returnDateTimeTemp;
-                }
-                //
-                HttpContext.Response.Cookies.Add(new HttpCookie("FlightSearch", new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new SegmentSearchModel
-                {
-                    OriginLocation = _originLocation,
-                    DestinationLocation = _destinationLocation,
-                    DepartureDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_departureDateTime, Helper.Language.LanguagePage.GetLanguageCode),
-                    ReturnDateTime = Helper.TimeData.TimeFormat.FormatToViewDate(_returnDateTime, Helper.Language.LanguagePage.GetLanguageCode),
-                    ADT = model.ADT,
-                    CNN = model.CNN,
-                    INF = model.INF,
-                    IsRoundTrip = model.IsRoundTrip
-
-                })));
-                //
                 var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.BookSearch(new FlightSearchModel
-                {
-                    OriginLocation = _originLocation,
-                    DestinationLocation = _destinationLocation,
-                    DepartureDateTime = Convert.ToDateTime(_departureDateTime),
-                    ReturnDateTime = Convert.ToDateTime(_returnDateTime),
-                    ADT = model.ADT,
-                    CNN = model.CNN,
-                    INF = model.INF,
-                    IsRoundTrip = model.IsRoundTrip,
-                    IsHasTax = isHasTax,
-                    ItineraryType = itineraryType
-                });
+                return vnaSearchService.BookSearch(model);
             }
             catch (Exception ex)
             {
@@ -304,7 +257,7 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
-         
+
         [HttpPost]
         [Route("Action/VoidBook")]
         public ActionResult VoidBook(BookOrderIDModel model)
@@ -337,7 +290,7 @@ namespace WebApplication.Management.Controllers
                 //return Notifization.NotService;
             }
         }
-         
+
         [HttpPost]
         [Route("Action/TicketCondition")]
         public ActionResult TicketCondition(TicketConditionModel model)

@@ -6,11 +6,12 @@ var layoutController = {
         layoutController.registerEvent();
     },
     registerEvent: function () {
+
     },
     LeftMenu: function (_groupId, _activeId, currPath) {
         // model
         var model = {
-            
+
         };
         AjaxFrom.POST({
             url: URLC + '/MenuItem-Manage',
@@ -58,7 +59,7 @@ var layoutController = {
                             }
                             rowData += '</li>';
                         });
-                        $('ul#LeftMenu').html(rowData); 
+                        $('ul#LeftMenu').html(rowData);
                         return;
                     }
                 }
@@ -118,3 +119,53 @@ var layoutController = {
     }
 };
 layoutController.init();
+// 
+
+$(function () { 
+    var ss = 1;
+    setInterval(function () {
+        ss += 1;
+        timeLaber(ss);
+    },1000);
+});
+function timeLaber(second) { 
+    var dtime = $('.label-time .timedata').data("time");
+    var arrTime = dtime.split("-"); 
+    var d = new Date(arrTime[0], arrTime[1], arrTime[2], arrTime[3], arrTime[4], second, 0); 
+    var s = d.getSeconds();
+    var m = d.getMinutes();
+    var h = d.getHours();
+    $('.label-time .timedata').html(`${arrTime[2]}/${arrTime[1]}/${arrTime[0]} ` + ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2)); 
+}
+
+
+function timeCountdown() {
+
+
+    // Set the date we're counting down to
+    var countDownDate = new Date("Jan 5, 2022 15:37:25").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+        // If the count down is over, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+}

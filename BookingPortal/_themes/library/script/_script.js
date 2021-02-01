@@ -45,7 +45,5 @@ function IsImageFile(file) {
     else
         return false;
 }
-$('#btnReset').click(function () {
-    location.reload();
-});
+
 

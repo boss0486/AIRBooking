@@ -8,19 +8,24 @@ namespace ApiPortalBooking.Models
 {
     public class SegmentSearchModel
     {
+        public int Routing { get; set; }
+        public List<SegmentModel> Segments { get; set; }
+        public bool IsHasTax { get; set; }
+        public int ItineraryType { get; set; }
+        public string AirlineID { get; set; }
+        public string TimeZoneLocal { get; set; }
+    }
+    public class SegmentModel
+    {
         public string OriginLocation { get; set; }
         public string DestinationLocation { get; set; }
-        public string DepartureDateTime { get; set; }
-        public string ReturnDateTime { get; set; }
+        public string DateOfFlight { get; set; }
         public int ADT { get; set; }
         public int CNN { get; set; }
         public int INF { get; set; }
-        public bool IsRoundTrip { get; set; }
-        public bool IsHasTax { get; set; }
-        public int ItineraryType { get; set; }
-        public int AirlineID { get; set; }
-        public int Routing { get; set; }
-    }
+
+    } 
+
     public class FlightSearchModel
     {
         public string OriginLocation { get; set; }

@@ -10012,6 +10012,18 @@ color: inherit;*/
     padding-left: 10px;
 }
 
+.main-content .label-time {
+    width: 180px;
+    position: absolute;
+    right: 10px;
+    bottom: 32px;
+    color: #ffffff;
+    background: #cddc39;
+    padding: 2px 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 /*select*/
 
 .bootstrap-select .dropdown-toggle:focus {

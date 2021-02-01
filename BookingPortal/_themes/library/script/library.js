@@ -42,7 +42,7 @@ class LibDateTime {
         date = date.slice(-2);
         return date = date + "/" + month + "/" + t.getFullYear();
     }
-
+    //
     static Get_ClientDate(_lg, ext) {
         if (ext === undefined)
             ext = "/";
@@ -57,7 +57,6 @@ class LibDateTime {
             _month = "0" + _month;
         return day + ext + _month + ext + t.getFullYear();
     }
-
     // input datetime: '/Date(1569079409997)/
     static ConvertUnixTimestampToDate(strDate, seperate, languaId) {
         if (strDate !== null && strDate.length > 0) {
@@ -75,7 +74,6 @@ class LibDateTime {
         }
     }
     // get time from rexgex
-
     static GetTime(str, ext) {
         var matches = str.match(/([0-9]?[0-9]?:[0-9]?[0-9]):[0-9]?[0-9]/i);
         if (ext !== undefined) {
@@ -87,7 +85,7 @@ class LibDateTime {
         }
         return time;
     }
-
+    //
     static GetDate(str, ext) {
         var d1 = Date.parse(str);
         if (ext === undefined) {
@@ -111,6 +109,7 @@ class LibDateTime {
         else
             return d1.toString('dd-mm-yyyy');
     }
+    //
     static FormatDateForAPI(date, ext) {
         if (ext === undefined)
             ext = "/";
@@ -126,6 +125,7 @@ class LibDateTime {
         }
         return [initial[1], initial[0], initial[2]].join('/');
     }
+    //
     static FormatToServerDate(_date) {
         if (_date == '') {
             return "";
@@ -133,9 +133,6 @@ class LibDateTime {
         var res = _date.split("-");
         return res[2] + "-" + res[1] + "-" + res[0];
     }
-
-    //
-
     //
     static GetTimeZoneByLocal2(callback) {
         // timezone local
@@ -191,7 +188,7 @@ class LibDateTime {
         //return JSON.stringify(a);
 
     }
-
+    //
     static GetTimeZoneByLocal() {
         // timezone local
         var utcLocal = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -255,7 +252,7 @@ class LibCurrencies {
         while ((i -= 3) > 0) { r = ' ' + s.substr(i, 3) + r; }
         return s.substr(0, i + 3) + r + (d ? '.' + Math.round(d * Math.pow(10, dp || 2)) : '');
     }
-
+    //
     static ConvertToCurrency(_val) {
         //
         if (_val != undefined && _val != '')
@@ -352,7 +349,7 @@ class Cookies {
         return $.cookie(_name);
     }
     static DelCookie(_name) {
-        $.removeCookie(_name);
+        $.cookie(_name, null, { path: '/' });
     }
 }
 class Confirm {
@@ -448,6 +445,5 @@ class HelperPage {
         $('html,body').animate({
             scrollTop: $("#" + id).offset().top
         }, 2000);
-        console.log("ok::" + id);
     }
 }

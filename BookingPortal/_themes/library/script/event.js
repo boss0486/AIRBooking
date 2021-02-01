@@ -137,6 +137,9 @@ function goBack() {
     window.history.back();
 }
 
+$('#btnReset').click(function () {
+    FData.ResetForm();
+});
 
 
 

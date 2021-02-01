@@ -14,53 +14,44 @@ var flightBookingController = {
         $('#btnSearch').off('click').on('click', function () {
             var flg = true;
             // Flight go
-            var ddlDestinationLocation = $('#ddlDestinationLocation').val();
-            var ddlOriginLocation = $('#ddlOriginLocation').val();
+            var _adt = $("#infAdt").data("val");
+            var _cnn = $("#infCnn").data("val");
+            var _inf = $("#infInf").data("val");
             //
-            if (ddlOriginLocation == "-" || ddlOriginLocation == '') {
-                $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
+            var _itinerary = $("#infItinerary").data("val");
+            var _airline = $("#infAirline").data("val");
+            var segmentList = $("#segmentList .segment-item");
+            if (segmentList.length == 0) {
+                Notifization.Error("Dữ liệu hành trình không hợp lệ");
                 flg = false;
             }
-            else if (ddlOriginLocation == ddlDestinationLocation) {
-                $('#lblOriginLocation').html('Nơi đi và nơi đến không được trùng nhau');
-                flg = false;
-            }
-            else {
-                $('#lblOriginLocation').html('');
-            }
-            // Flight to
-            if (ddlDestinationLocation == "-" || ddlDestinationLocation == '') {
-                $('#lblDestinationLocation').html('Vui lòng chọn nơi đến');
-                flg = false;
-            }
-            else if (ddlOriginLocation == ddlDestinationLocation) {
-                $('#lblDestinationLocation').html('Nơi đi và nơi đến không được trùng nhau');
-                flg = false;
-            }
-            else {
-                $('#lblDestinationLocation').html('');
-            }
-            //
-            $('#lblDepartureDateTime').html('');
-            var dateGo = $("#DepartureDateTime").val();
-            if (dateGo == "") {
-                $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
-            }
-            //  
-            $('#lblReturnDateTime').html('');
-            var ddlFlightType = $('#ddlFlightType').val();
-            if (parseInt(ddlFlightType) == 2) {
-                var returnDateTime = $('#ReturnDateTime').val();
-
-                if (returnDateTime == "") {
-                    $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
-                    flg = false;
-                }
-            }
-            // submit form
-            if (flg) {
-                flightBookingController.Search();
-            }
+            var segments = [];
+            $("#segmentList .segment-item").each(function (index, item) {
+                var _origin = $(item).find(".location").data("origin");
+                var _destination = $(item).find(".location").data("destination");
+                var dtime = $(item).find(".date").data("dtime");
+                segments.push({
+                    OriginLocation: _origin,
+                    DestinationLocation: _destination,
+                    DateOfFlight: dtime,
+                    ADT: parseInt(_adt),
+                    CNN: parseInt(_cnn),
+                    INF: parseInt(_inf)
+                });
+            });
+            var isHasTax = false;
+            if ($('input[name="cbxHasTax"]').is(":checked"))
+                isHasTax = true;
+            var model = {
+                Segments: segments,
+                IsHasTax: isHasTax,
+                ItineraryType: _itinerary,
+                AirlineID: _airline,
+                TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+            };
+            // call api
+            if (flg)
+                flightBookingController.Search(model);
             else
                 Notifization.Error(MessageText.Datamissing);
         });
@@ -109,75 +100,62 @@ var flightBookingController = {
                     flg = false;
                 }
             }
+            //
+            var adt = parseInt($("#ddlAdt").val());
+            var inf = parseInt($("#ddlInf").val());
+            var cnn = parseInt($("#ddlCnn").val());
+            if (inf > adt) {
+                Notifization.Error("Số lượng em bé không hợp lệ");
+                flg = false;
+            }
             // submit form
             if (flg) {
-                $("#lblItinerary").html($("#ddlItinerary option:selected").html());
-                $("#lblTicket").html($("#lblTicket option:selected").html());
-                $("#lblItineraryType").html($("#ddlAirlineType option:selected").html());
+                // 
+                $("#infAdt").data("val", adt).html($("#ddlAdt option:selected").html());
+                $("#infCnn").data("val", cnn).html($("#ddlCnn option:selected").html());
+                $("#infInf").data("val", inf).html($("#ddlInf option:selected").html());
+                $("#infItinerary").html($("#ddlItinerary option:selected").html());
+                $("#infAirline").html($("#ddlAirline option:selected").html());
+                // 
+                var segmentItem = $("#segmentList .segment-item");
+                var segmentState = true;
+                if (segmentItem.length > 2) {
+                    Notifization.Error("Chặng bay giới hạn 1-3 chặng");
+                    flg = false;
+                    segmentState = false;
+                }
                 //
-                var index = $("#itineraryList p").length();
-                if (parseInt(index) == 1)
-                    index += `0${index}`;
-                //
-                var item = `<p class="form-label">#${index}. ${ddlOriginLocation}-${ddlDestinationLocation}: ${departureDateTime} ${returnDateTime} <span><i class="fas fa-times"></i></span></p>`
-                $("#itineraryList").append(item);
-                //
-                $("#lblAdt").html($("#ddlAdt option:selected").html());
-                $("#lblCnn").html($("#ddlChd option:selected").html());
-                $("#lblInf").html($("#ddlInf option:selected").html());
+                var _index = parseInt(segmentItem.length) + 1;
+                if (parseInt(_index) < 10)
+                    _index = `0${_index}`;
+                //  
+                $(segmentItem).each(function (index, item) {
+                    var _origin = $(item).find(".location").data("origin");
+                    var _destination = $(item).find(".location").data("destination");
+                    var dtime = $(item).find(".date").data("dtime");
+
+                    if (`${_origin}${_destination}` == `${ddlOriginLocation}${ddlDestinationLocation}` && (dtime == departureDateTime || dtime == returnDateTime)) {
+                        Notifization.Error("Chặng bay đã tồn tại");
+                        flg = false;
+                        segmentState = false;
+                        return false;
+                    }
+                });
+                if (segmentState) {
+                    $("#segmentList").append(`<p class="form-label segment-item"><span class='btnSegDelete'>&nbsp;<i class="fas fa-times"></i>&nbsp;</span> ${_index}.<label class='location' data-origin ='${ddlOriginLocation}' data-destination ='${ddlDestinationLocation}'>${ddlOriginLocation}-${ddlDestinationLocation}</label>: <span class='date' data-dtime='${departureDateTime}'>${departureDateTime}</span></p>`);
+                    if (parseInt(ddlFlightType) == 2) {
+                        _index = parseInt(_index) + 1;
+                        if (parseInt(_index) < 10)
+                            _index = `0${_index}`;
+                        $("#segmentList").append(`<p class="form-label segment-item"><span class='btnSegDelete'>&nbsp;<i class="fas fa-times"></i>&nbsp;</span> ${_index}.<label class='location' data-origin ='${ddlOriginLocation}' data-destination ='${ddlDestinationLocation}'>${ddlDestinationLocation}-${ddlOriginLocation}</label>: <span class='date' data-dtime='${returnDateTime}'>${returnDateTime}</span></p>`);
+                    }
+                }
             }
             else
                 Notifization.Error(MessageText.Datamissing);
         });
     },
-    Search: function () {
-        //
-        var isHasTax = false;
-        if ($('input[name="cbxHasTax"]').is(":checked"))
-            isHasTax = true;
-        //
-        var ddlRouting = $('#ddlRouting').val();
-        var ddlItineraryType = $('#ddlItineraryType').val();
-        var ddlAirline = $('#ddlAirlineType').val();
-        var ddlOriginLocation = $('#ddlOriginLocation').val();
-        var ddlDestinationLocation = $('#ddlDestinationLocation').val();
-        var departureDateTime = $("#DepartureDateTime").val();
-        var returnDateTime = $("#ReturnDateTime").val();
-        var ddlFlightType = $('#ddlFlightType').val();
-        var adt = parseInt($("#ddlAdt").val());
-        var cnn = parseInt($("#ddlChd").val());
-        var inf = parseInt($("#ddlInf").val());
-        var isRoundTrip = "False";
-        if (parseInt(ddlFlightType) == 2) {
-            isRoundTrip = "True";
-        }
-
-        // set information in title
-        $('.flight-go .flight-name').html(ddlOriginLocation + " - " + ddlDestinationLocation);
-        $('.flight-go .flight-date').html(departureDateTime);
-        $('.flight-go .flight-adt-total').html(adt);
-        //
-        $('.flight-to .flight-name').html(ddlDestinationLocation + " - " + ddlOriginLocation);
-        $('.flight-to .flight-date').html(returnDateTime);
-        $('.flight-to .flight-adt-total').html(adt);
-        // go
-        departureDateTime = LibDateTime.FormatDateForAPI(departureDateTime);
-        returnDateTime = LibDateTime.FormatDateForAPI(returnDateTime);
-        var modelGo = {
-            OriginLocation: ddlOriginLocation,
-            DestinationLocation: ddlDestinationLocation,
-            DepartureDateTime: departureDateTime,
-            ReturnDateTime: returnDateTime,
-            ADT: adt,
-            CNN: cnn,
-            INF: inf,
-            IsRoundTrip: isRoundTrip,
-            IsHasTax: isHasTax,
-            ItineraryType: ddlItineraryType,
-            Routing: parseInt(ddlRouting),
-            AirlineID: ddlAirline,
-            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
-        };
+    Search: function (model) {
         AjaxFrom.POST({
             url: URLC + '/search',
             data: modelGo,
@@ -445,6 +423,11 @@ var flightBookingController = {
 };
 //
 flightBookingController.init();
+$(document).on("click", ".btnSegDelete", function () {
+    var item = $(this).closest("p");
+    $(item).remove();
+});
+
 //Validate
 //###################################################################################################################################################
 
@@ -573,11 +556,11 @@ function BookingOrder() {
     var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
     var htmlError = "";
     var ddlItineraryType = parseInt($('#ddlItineraryType').val());
-    var ddlAirlineType = $('#ddlAirlineType').val();
+    var ddlAirline = $('#ddlAirline').val();
     var ddlFlightType = parseInt($('#ddlFlightType').val());
     //
     var adt = parseInt($("#ddlAdt").val());
-    var cnn = parseInt($("#ddlChd").val());
+    var cnn = parseInt($("#ddlCnn").val());
     var inf = parseInt($("#ddlInf").val());
     var lFlight = [];
     //
@@ -641,7 +624,7 @@ function BookingOrder() {
         Flight: lFlight,
         FlightType: ddlFlightType,
         ItineraryType: ddlItineraryType,
-        AirlineType: ddlAirlineType,
+        AirlineID: ddlAirline,
         TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
     };
     // create session
@@ -649,21 +632,29 @@ function BookingOrder() {
 }
 // 
 //###################################################################################################################################################
-$(document).on('blur', '#DepartureDateTime', function () {
+$(document).on('change', '#DepartureDateTime', function () {
     var dateGo = $(this).val();
     $('#lblDepartureDateTime').html('');
     if (dateGo == "") {
         $('#lblDepartureDateTime').html('Vui lòng nhập ngày đi');
     }
+    else if (!ValidData.ValidDate(dateGo, "vn")) {
+        $('#lblDepartureDateTime').html('Ngày đi không hợp lệ');
+
+    }
 });
 //
-$(document).on('blur', '#ReturnDateTime', function () {
+$(document).on('change', '#ReturnDateTime', function () {
     var dateReturn = $(this).val();
     $('#lblReturnDateTime').html('');
     var ddlFlightType = $('#ddlFlightType').val();
     if (parseInt(ddlFlightType) == 2) {
         if (dateReturn == "") {
             $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
+        }
+        else if (!ValidData.ValidDate(dateReturn, "vn")) {
+            $('#lblReturnDateTime').html('Ngày về không hợp lệ');
+
         }
     }
 });
@@ -697,12 +688,17 @@ $(document).on("change", "#ddlDestinationLocation", function () {
 $(document).on("change", "#ddlFlightType", function () {
     $('#lblReturnDateTime').html('');
     var txtCtl = $(this).val();
+
     if (parseInt(txtCtl) == 2) {
         // Flight to
-        var DepartureDateTime = $('#DepartureDateTime').val();
-        if (DepartureDateTime == "") {
+        var departureDateTime = $('#DepartureDateTime').val();
+        if (departureDateTime == "") {
             $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
         }
+    }
+    else {
+        $('#lblReturnDateTime').html('');
+        $('#ReturnDateTime').val('');
     }
 });
 // chage tax checkbox
@@ -731,6 +727,17 @@ $(document).on('change', '#cbxHasTax', function () {
         //
         $(fare).html(LibCurrencies.FormatToCurrency(fareAmount) + ".0" + unit);
     });
+});
+
+$(document).on('click', '#btnSearchReset', function () {
+    $("#infAdt").data("val", 0).html("00");
+    $("#infCnn").data("val", 0).html("00");
+    $("#infInf").data("val", 0).html("00");
+    $("#infItinerary").html("......");
+    $("#infAirline").html("......");
+    $("#segmentList").html('');
+    FData.ResetForm();
+    Cookies.DelCookie("FlightSearch");
 });
 
 

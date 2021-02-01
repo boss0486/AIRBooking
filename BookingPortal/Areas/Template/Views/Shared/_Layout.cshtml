@@ -322,8 +322,8 @@
             </div>
         </div>
         <div class="container-fluid form-group">
-            <span style="position: absolute;right: 10px;bottom: 15px;color: #2196F3;">
-                GMT: @Helper.Language.LanguagePage.GetLanguageCode @TimeHelper.GetUtcDateTimeTx
+            <span class="label-time">
+                GMT: @Helper.Language.LanguagePage.GetLanguageCode <span class="timedata" data-time='@Helper.TimeData.TimeHelper.UtcDateTime.ToString("yyyy-MM-dd-HH-mm-ss")'></span>
             </span>
             <hr />
         </div>

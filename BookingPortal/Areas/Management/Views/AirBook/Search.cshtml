@@ -8,12 +8,28 @@
 @section styles{
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
 }
+@{
+    string originLocation = string.Empty;
+    string destinationLocation = string.Empty;
+    string departureDateTime = string.Empty;
+    string returnDateTime = string.Empty;
+    int adt = 1;
+    int cnn = 0;
+    int inf = 0;
 
-<div class="form-group text-right">
-    <a id="btnSearchTab" class="nav-link active" data-toggle="tab" href="#searchTab">Tìm kiếm</a> | <a id="btnDataTab" class="nav-link" data-toggle="tab" href="#dataTab">Danh sách</a>
-</div>
+    if (Model != null)
+    {
+        originLocation = Model.OriginLocation;
+        destinationLocation = Model.DestinationLocation;
+        departureDateTime = Model.DepartureDateTime;
+        returnDateTime = Model.ReturnDateTime;
+        adt = Model.ADT;
+        cnn = Model.CNN;
+        inf = Model.INF;
+    }
+
+}
 <div class="row">
-
     <div class="col-md-8">
         <div class="form-group">
             <h4>Tìm kiếm chuyến bay</h4>
@@ -22,7 +38,7 @@
 
     <div class="container-fluid">
         <div class="form-group">
-            <input id="cbxHasTax" name="cbxHasTax" type="checkbox" class="filled-in" checked />
+            <input id="cbxHasTax" name="cbxHasTax" type="checkbox" class="filled-in" checked data-notreload="true" />
             <label for="cbxHasTax" tabindex="1">Bao gồm thuế</label>
         </div>
     </div>
@@ -44,10 +60,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Hãng hàng không:</label>
-                            <select id="ddlAirlineType" name="ddlAirlineType" class="form-control show-tick" data-live-search="true">
-                                <option value="VN">VN: VN Airline</option>
-                                <option value="VJ">VJ: Vietjet</option>
-                                <option value="JT">JT: Jetstar </option>
+                            <select id="ddlAirline" name="ddlAirline" class="form-control show-tick" data-live-search="true">
+                                <option value="VN">VN Airline</option>
+                                <option value="VJ">Vietjet</option>
+                                <option value="JT">Jetstar </option>
                             </select>
                             <span id="lblAirlineType" class="message msg-box"></span>
                         </div>
@@ -59,13 +75,13 @@
                             <label class="form-label">Nơi đi:</label>
                             <select id="ddlOriginLocation" name="ddlOriginLocation" class="form-control show-tick" data-live-search="true">
                                 <option value="-">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(WebCore.Services.AirportService.DropdownList(Model.OriginLocation))
+                                @Html.Raw(WebCore.Services.AirportService.DropdownList(originLocation))
                             </select>
                             <span id="lblOriginLocation" class="message msg-box"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Ngày đi:</label>
-                            <input id="DepartureDateTime" name="DepartureDateTime" maxlength="10" type="text" class="form-control" value="@Model.DepartureDateTime" />
+                            <input id="DepartureDateTime" name="DepartureDateTime" maxlength="10" type="text" class="form-control" value="@departureDateTime" />
                             <span id="lblDepartureDateTime" class="message msg-box"></span>
                         </div>
                         <div class="row">
@@ -73,19 +89,19 @@
                                 <div class="form-group">
                                     <label class="form-label">Người lớn:</label>
                                     <select id="ddlAdt" name="ddlAdt" class="form-control show-tick" data-live-search="true">
-                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.ADT.ToString()))
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(adt.ToString()))
                                     </select>
-                                    <span id="lblAdt" class="message msg-box"></span>
+                                    <span id="7" class="message msg-box"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Trẻ em:</label>
-                                    <select id="ddlChd" name="ddlChd" class="form-control show-tick">
+                                    <select id="ddlCnn" name="ddlcnn" class="form-control show-tick">
                                         <option value="0">00</option>
-                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.CNN.ToString()))
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(cnn.ToString()))
                                     </select>
-                                    <span id="lblChd" class="message msg-box"></span>
+                                    <span id="lblCnn" class="message msg-box"></span>
                                 </div>
                             </div>
                         </div>
@@ -95,13 +111,13 @@
                             <label class="form-label">Nơi đến:</label>
                             <select id="ddlDestinationLocation" name="ddlDestinationLocation" class="form-control show-tick" data-live-search="true">
                                 <option value="-">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(WebCore.Services.AirportService.DropdownList(Model.DestinationLocation))
+                                @Html.Raw(WebCore.Services.AirportService.DropdownList(destinationLocation))
                             </select>
                             <span id="lblDestinationLocation" class="message msg-box"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Ngày về:</label>
-                            <input id="ReturnDateTime" name="ReturnDateTime" maxlength="10" type="text" class="form-control" value="@Model.ReturnDateTime" />
+                            <input id="ReturnDateTime" name="ReturnDateTime" maxlength="10" type="text" class="form-control" value="@returnDateTime" />
                             <span id="lblReturnDateTime" class="message msg-box"></span>
                         </div>
                         <div class="row">
@@ -110,7 +126,7 @@
                                     <label class="form-label">Em bé:</label>
                                     <select id="ddlInf" name="ddlInf" class="form-control show-tick">
                                         <option value="0">00</option>
-                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(Model.INF.ToString()))
+                                        @Html.Raw(WebCore.Services.AirportService.DropdownListForNumber(inf.ToString()))
                                     </select>
                                     <span id="lblTitle" class="message msg-box"></span>
                                 </div>
@@ -118,7 +134,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Loại vé:</label>
-                                    <select id="ddlFlightType" name="ddlFlightType" class="form-control show-tick">
+                                    <select id="ddlFlightType" name="ddlFlightType" class="form-control show-tick" data-notreload="true">
                                         <option value="1">Một chiều</option>
                                         <option value="2" selected="selected">Khứ hồi</option>
                                     </select>
@@ -129,7 +145,7 @@
                     </div>
                     <div class="col-md-12"><hr /></div>
                 </div>
-                <div class="btn-group1"> 
+                <div class="btn-group1">
                     <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
                     <button id="btnItineraryAdd" class="btn btn-success" type="button">Thêm hành trình</button>
                 </div>
@@ -149,26 +165,21 @@
             <div class="col-md-5">
                 <label class="form-label">LỘ TRÌNH BAY:</label>
                 <div class="col-md-12" style="border:dashed 1px #009688">
-                    <div class="form-group p-t-30" style="height:488.4px;">
-                        <div id="itineraryInfo" class="form-group">
-                            <label class="form-label"><i class="fas fa-info-circle"></i> Thông tin:</label>
-                            <p class="form-label">Chuyến bay: <span id="lblItinerary" data-val=""></span></p>
-                            <p class="form-label">Loại vé: <span id="lblTicket" data-val=""></span></p>
-                            <p class="form-label">Hãng hàng không: <span id="lblAirline" data-val=""></span></p>
-                        </div>
-                        <div id="itineraryList" class="form-group" style="padding-bottom:0; height: 200px">
-                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Hành trình bay:</label>
-                            <p class="form-label">#01: HAN-SGN: 02-10-1993 03-11-1993 <span><i class="fas fa-times"></i></span></p>
-                            <p class="form-label">#02: HAN-SGN: 02-10-1993 03-11-1993 <span><i class="fas fa-times"></i></span></p>
-                            <p class="form-label">#03: HAN-SGN: 02-10-1993 03-11-1993 <span><i class="fas fa-times"></i></span></p>
-                            <p class="form-label">#04: HAN-SGN: 02-10-1993 03-11-1993 <span><i class="fas fa-times"></i></span></p>
-                            <p class="form-label">#05: HAN-SGN: 02-10-1993 03-11-1993 <span><i class="fas fa-times"></i></span></p>
+                    <div class="form-group p-t-30 itinerary-info" style="height:488.4px;">
+                        <div class="form-group supplier">
+                            <label class="form-label"><i class="fas fa-info-circle"></i> Dịch vụ:</label>
                             <hr />
+                            <p class="form-label">Chuyến bay: <span id="infItinerary" data-val="">......</span> ,Hãng: <span id="infAirline" data-val="">......</span></p>
+                        </div>
+                        <div class="form-group" style="padding-bottom:0;">
+                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Hành trình bay:</label>
+                            <hr />
+                            <div id="segmentList"></div>
                         </div>
                         <div class="form-group" style="padding-bottom:0">
                             <label class="form-label"><i class="fas fa-user"></i> Hành khách: 3</label>
-                            <p class="form-label">Người lớn: <span id="lblAdt" data-val="0">00</span>, Trẻ em: <span id="lblCnn" data-val="0">00</span>, Em bé: <span id="lblInf" data-val="0">00</span></p>
                             <hr />
+                            <p class="form-label">Người lớn: <span id="infAdt" data-val="0">00</span>, Trẻ em: <span id="infCnn" data-val="0">00</span>, Em bé: <span id="infInf" data-val="0">00</span></p>
                         </div>
                     </div>
                     <div class="row">
@@ -179,7 +190,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group text-right btn-group1" style="padding-bottom:0px;">
-                                <button id="btnReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
+                                <button id="btnSearchReset" class="btn btn-danger" type="button">@Helper.Language.Resource.Label.BtnReset</button>
                                 <button id="btnSearch" class="btn btn-primary" type="button">@Helper.Language.Resource.Label.BtnSearch</button>
                             </div>
                         </div>
@@ -192,7 +203,7 @@
     <div id="dataTab" class="tab-pane fade">
         <div class="row">
             <div class="container-fluid mgt-40 mgb-15 flight-wcontent flight-wcontent-go ">
-                <h5 class="flight-title-top flight-go">Chuyến Đi: <b class="flight-name"></b> <span class="flight-date"></span> Người lớn: <span class="flight-adt-total"></span></h5>
+                <div class="flight-title-top flight-go">Chuyến Đi: <b class="flight-name"></b> <span class="flight-date"></span> Người lớn: <span class="flight-adt-total"></span></div>
                 <div class="table-responsive">
                     <table id="TblFlightGo" class="table  table-bordered">
                         <thead>
@@ -248,14 +259,13 @@
                     </table>
                 </div>
                 <div id="PaginationReturm"></div>
-
             </div>
         </div>
         <div class="form-group">
             <div class="container-fluid mgb-15" id="InforCustomerError"></div>
         </div>
         <div class="form-group text-right">
-            <a href="/Management/AirBook/Search" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
+            <a id="btnSearchTab" data-toggle="tab" href="#searchTab" class="btn btn-success -w-100"><i class="fa fa-recycle" aria-hidden="true"></i> Tìm kiếm</a>
             <button id="btnNextToInf" class="btn btn-primary" type="button"><i class="fas fa-arrow-circle-right"></i> Tiếp tục</button>
         </div>
         <div class="form-group">
@@ -274,24 +284,13 @@
     <script type="text/javascript">
         Cookies.DelCookie("FlightOrder");
         $(function () {
-            //var d = new Date();
-            //d.setDate(d.getDate() - 0);
-            //var today = d;
-            //var dd = String(today.getDate()).padStart(2, '0');
-            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            //var yyyy = today.getFullYear();
-            //today = dd + "-" + mm + "-" + yyyy;
-
-
             $("#DepartureDateTime").datepicker({
                 format: 'dd-mm-yyyy',
                 startDate: $(this).val(),
                 todayHighlight: true,
                 language: "vi"
-
             }).on('changeDate', function (index, item) {
-                $('.datepicker').hide();
-                $(this).blur();
+                //
             });
             $("#ReturnDateTime").datepicker({
                 format: 'dd-mm-yyyy',
@@ -299,8 +298,7 @@
                 todayHighlight: true,
                 language: "vi"
             }).on('changeDate', function (index, item) {
-                $("#ReturnDateTime").datepicker("refresh");
-                $(this).blur();
+                //$("#ReturnDateTime").datepicker("refresh");
             });
         });
     </script>

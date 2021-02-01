@@ -1,6 +1,49 @@
 ﻿
+/*search*/
+.itinerary-info {
+    height: 488.4px;
+}
+
+    .itinerary-info #segmentList {
+        padding-bottom: 0px;
+        height: 130px;
+        overflow: auto;
+        margin-bottom: 15px;
+    }
+
+    .itinerary-info p {
+        width: 65px;
+        white-space: nowrap;
+        margin-bottom: 5px;
+    }
+
+    .itinerary-info .location {
+        width: 65px;
+        padding-bottom:0px;
+        margin-bottom:0;
+    }    
+    .itinerary-info p, .itinerary-info .location {
+        color: #05c9e2;
+        font-weight: 400;
+    }
+
+    .itinerary-info .form-group hr {
+        margin-top: 0px;
+        border-top: dotted 1px #ccc;
+    }
+
+    .itinerary-info span {
+        color: #ff9800;
+    }
+
+    .itinerary-info .btnSegDelete {
+        cursor: pointer;
+    }
+
+
+
 .flight {
-} 
+}
 
     .flight table tr th, .flight table tr td {
         vertical-align: middle;
@@ -26,14 +69,11 @@
         }
 
 
-    .flight .flight-wcontent-go, .flight .flight-wcontent-return {
-        display: none;
+
+
+    .flight .flight-wcontent-go.active, .flight .flight-wcontent-return.active {
+        display: block;
     }
-
-
-        .flight .flight-wcontent-go.active, .flight .flight-wcontent-return.active {
-            display: block;
-        }
 
 
 
@@ -48,15 +88,16 @@
         font-weight: 400;
     }
 
-    .flight table .td-flightNo span {
-        font-weight: 400;
-        font-size: 13.5px;
-        color: #ff6a00;
-    }
+        .flight table .td-flightNo span {
+            font-weight: 400;
+            font-size: 13.5px;
+            color: #ff6a00;
+        }
 
     .flight table .td-itinerary {
         width: 90px;
     }
+
     .flight table .td-time {
         width: 120px;
     }
@@ -98,7 +139,7 @@
         transform: rotate(180deg);
     }
 
-    
+
 
     .flight #InfCustomer .-warning {
         color: #fff;
@@ -168,7 +209,7 @@
             width: 120px;
         }
 
- 
+
 /**/
 .book-in table {
 }
@@ -237,7 +278,7 @@
         font-size: 17px;
     }
 
- 
+
 
 
 
@@ -245,6 +286,6 @@
     font-size: 16px;
 }
 
-.book-in .total-itinerary label.total-itinerary-price {
-    color: #F00;
-}
+    .book-in .total-itinerary label.total-itinerary-price {
+        color: #F00;
+    }
