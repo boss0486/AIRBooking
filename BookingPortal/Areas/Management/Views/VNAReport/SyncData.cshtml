@@ -126,7 +126,6 @@
             var _row = $('table tbody#TblData tr[data-state="0"]').first();
             $(_row).find("td.rp-status").removeClass("bg-danger").addClass("bg-success").html(`<i class="fas fa-spinner"></i> Đang xử lý`);
             var dtDate = $(_row).data("dreport");
-            console.log("::" + dtDate);
             if (dtDate == null || dtDate == "") {
                 Notifization.Error("Đã hoàn thành");
                 return;
