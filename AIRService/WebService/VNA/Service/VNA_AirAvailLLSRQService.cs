@@ -87,8 +87,8 @@ namespace AIRService.WS.Service
             var stringXML = "";
             stringXML += "<ns:OTA_AirAvailRQ ReturnHostCommand='true' Version='2.4.0'  xmlns:ns='http://webservices.sabre.com/sabreXML/2011/10' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>";
             stringXML += "	<ns:OptionalQualifiers>";
-            //stringXML += "		<ns:AdditionalAvailability Ind='true' />";
-            stringXML += "      <ns:FlightQualifiers DirectOnly=\"true\"><ns:VendorPrefs><ns:Airline Code=\"VN\"/></ns:VendorPrefs></ns:FlightQualifiers>";
+            stringXML += "		<ns:AdditionalAvailability Ind='true' />";
+            //stringXML += "      <ns:FlightQualifiers DirectOnly=\"true\"><ns:VendorPrefs><ns:Airline Code=\"VN\"/></ns:VendorPrefs></ns:FlightQualifiers>";
             stringXML += "	</ns:OptionalQualifiers>";
             stringXML += "</ns:OTA_AirAvailRQ>"; 
             child.InnerXml = stringXML;

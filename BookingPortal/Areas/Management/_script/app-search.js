@@ -1,7 +1,7 @@
 ﻿var pageIndex = 1;
 var URLC = "/Management/AirBook/Action";
 var URLA = "/Management/AirBook";
-var arrFile = [];
+var arrSearch = null;
 //
 var flightBookingController = {
     init: function () {
@@ -33,7 +33,7 @@ var flightBookingController = {
                 segments.push({
                     OriginLocation: _origin,
                     DestinationLocation: _destination,
-                    DateOfFlight: dtime,
+                    DepartureDateTime: dtime,
                     ADT: parseInt(_adt),
                     CNN: parseInt(_cnn),
                     INF: parseInt(_inf)
@@ -62,6 +62,7 @@ var flightBookingController = {
             var ddlOriginLocation = $('#ddlOriginLocation').val();
             var departureDateTime = $("#DepartureDateTime").val();
             var returnDateTime = $('#ReturnDateTime').val();
+            var segmentCount = 1;
             //
             if (ddlOriginLocation == "-" || ddlOriginLocation == '') {
                 $('#lblOriginLocation').html('Vui lòng chọn nơi đi');
@@ -99,6 +100,8 @@ var flightBookingController = {
                     $('#lblReturnDateTime').html('Vui lòng nhập ngày về');
                     flg = false;
                 }
+                //
+                segmentCount = 2;
             }
             //
             var adt = parseInt($("#ddlAdt").val());
@@ -119,8 +122,8 @@ var flightBookingController = {
                 // 
                 var segmentItem = $("#segmentList .segment-item");
                 var segmentState = true;
-                if (segmentItem.length > 2) {
-                    Notifization.Error("Chặng bay giới hạn 1-3 chặng");
+                if (segmentItem.length + segmentCount > 6) {
+                    Notifization.Error("Chặng bay giới hạn 1-6 chặng");
                     flg = false;
                     segmentState = false;
                 }
@@ -133,6 +136,7 @@ var flightBookingController = {
                     var _origin = $(item).find(".location").data("origin");
                     var _destination = $(item).find(".location").data("destination");
                     var dtime = $(item).find(".date").data("dtime");
+                    console.log(`::${ddlOriginLocation}${ddlDestinationLocation}-${dtime}`);
 
                     if (`${_origin}${_destination}` == `${ddlOriginLocation}${ddlDestinationLocation}` && (dtime == departureDateTime || dtime == returnDateTime)) {
                         Notifization.Error("Chặng bay đã tồn tại");
@@ -147,7 +151,7 @@ var flightBookingController = {
                         _index = parseInt(_index) + 1;
                         if (parseInt(_index) < 10)
                             _index = `0${_index}`;
-                        $("#segmentList").append(`<p class="form-label segment-item"><span class='btnSegDelete'>&nbsp;<i class="fas fa-times"></i>&nbsp;</span> ${_index}.<label class='location' data-origin ='${ddlOriginLocation}' data-destination ='${ddlDestinationLocation}'>${ddlDestinationLocation}-${ddlOriginLocation}</label>: <span class='date' data-dtime='${returnDateTime}'>${returnDateTime}</span></p>`);
+                        $("#segmentList").append(`<p class="form-label segment-item"><span class='btnSegDelete'>&nbsp;<i class="fas fa-times"></i>&nbsp;</span> ${_index}.<label class='location' data-origin ='${ddlDestinationLocation}' data-destination ='${ddlOriginLocation}'>${ddlDestinationLocation}-${ddlOriginLocation}</label>: <span class='date' data-dtime='${returnDateTime}'>${returnDateTime}</span></p>`);
                     }
                 }
             }
@@ -156,9 +160,13 @@ var flightBookingController = {
         });
     },
     Search: function (model) {
+        var adt = model.ADT;
+        var cnn = model.CNN;
+        var inf = model.INF;
+        var isHasTax = model.IsHasTax;
         AjaxFrom.POST({
             url: URLC + '/search',
-            data: modelGo,
+            data: model,
             success: function (response) {
                 if (response == null || response.status == undefined) {
                     Notifization.Error(MessageText.NotService);
@@ -166,7 +174,6 @@ var flightBookingController = {
                 }
                 if (response.status == 200) {
                     $('tbody#TblGoData').html('');
-                    $('tbody#TblReturnData').html('');
                     $('#PaginationGo').html('');
                     //FlightList
                     var currentPage = 1;
@@ -178,189 +185,195 @@ var flightBookingController = {
                     ////    pageIndex = pagination.Page;
                     ////}
                     var htmlGo = '';
-                    var htmlReturn = '';
                     var cntGo = false;
-                    var cntReturn = false;
                     var intGo = 1;
-                    var intRt = 1;
-                    $.each(response.data, function (index, item) {
-                        index = index + 1;
-                        //var id = item.ID;
-                        //if (id.length > 0)
-                        //    id = id.trim();
-                        //
-                        //var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
-                        var airEquipType = item.AirEquipType;
-                        var flightRph = item.RPH;
-                        var unit = 'đ';
-                        var flightNo = item.FlightNo;
-                        var numberInParty = item.NumberInParty;
-                        var flightType = item.FlightType;
-                        var originLocation = item.OriginLocation;
-                        var destinationLocation = item.DestinationLocation;
-                        var departureDateTime = item.DepartureDateTime;
-                        var arrivalDateTime = item.ArrivalDateTime;
-                        var departureTime = LibDateTime.GetTime(departureDateTime);
-                        var arrivalTime = LibDateTime.GetTime(arrivalDateTime);
-                        var fareDetails = item.FareDetails;
-                        var special_Price = 0;
-                        var special_pesBookDesigCode = "";
-                        var special_rph = "";
-                        var special_code = "";
-                        var arrFare = [];
-                        //
-                        if (fareDetails !== undefined && fareDetails.length > 0) {
-                            $.each(fareDetails, function (indexFare, itemFare) {
-                                var adtRph = 0;
-                                var adtCode = "";
-                                var adtAmount = 0;
-                                var adtAmountTotal = 0;
-                                var cnnRph = 0;
-                                var cnnCode = " ";
-                                var cnnAmount = 0;
-                                var cnnAmountTotal = 0;
-                                var infRph = 0;
-                                var infCode = " ";
-                                var infAmount = 0;
-                                var infAmountTotal = 0;
-                                var fareItem = itemFare.FareItem;
-                                // get fare
-                                if (fareItem !== null && fareItem.length > 0) {
-                                    $.each(fareItem, function (indexFareItem, itemFareItem) {
 
-                                        if (itemFareItem.PassengerType == "ADT") {
-                                            if (adtAmount == 0) {
-                                                adtAmount = itemFareItem.FareAmount;
-                                                adtAmountTotal = itemFareItem.FareTotal;
-                                                adtRph = itemFareItem.RPH;
-                                                adtCode = itemFareItem.Code;
-                                            }
-                                            //
-                                            if (adtAmount > itemFareItem.FareAmount) {
-                                                adtAmount = itemFareItem.FareAmount;
-                                                adtAmountTotal = itemFareItem.FareTotal;
-                                                adtRph = itemFareItem.RPH;
-                                                adtCode = itemFareItem.Code;
-                                            }
+                    var rsSegment = response.data;
+                    if (rsSegment == undefined || rsSegment == null)
+                        return;
+                    //
+                    $.each(rsSegment, function (idx, segment) {
+                        var originLocation = segment.OriginLocation;
+                        var destinationLocation = segment.DestinationLocation;
+                        //
+                        if (segment.Details != undefined && segment.Details != null) {
+
+                            $.each(segment.Details, function (index, item) {
+                                index = index + 1;
+                                //var id = item.ID;
+                                //if (id.length > 0)
+                                //    id = id.trim();
+                                //
+                                //var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
+                                var airEquipType = item.AirEquipType;
+                                var flightRph = item.RPH;
+                                var unit = 'đ';
+                                var flightNo = item.FlightNo;
+                                var numberInParty = item.NumberInParty;
+                                var flightType = item.FlightType;
+                                var departureDateTime = item.DepartureDateTime;
+                                var arrivalDateTime = item.ArrivalDateTime;
+                                var departureTime = LibDateTime.GetTime(departureDateTime);
+                                var arrivalTime = LibDateTime.GetTime(arrivalDateTime);
+                                var fareDetails = item.FareDetails;
+                                var special_Price = 0;
+                                var special_pesBookDesigCode = "";
+                                var special_rph = "";
+                                var special_code = "";
+                                var arrFare = [];
+                                //
+                                if (fareDetails !== undefined && fareDetails.length > 0) {
+                                    $.each(fareDetails, function (indexFare, itemFare) {
+                                        var adtRph = 0;
+                                        var adtCode = "";
+                                        var adtAmount = 0;
+                                        var adtAmountTotal = 0;
+                                        var cnnRph = 0;
+                                        var cnnCode = " ";
+                                        var cnnAmount = 0;
+                                        var cnnAmountTotal = 0;
+                                        var infRph = 0;
+                                        var infCode = " ";
+                                        var infAmount = 0;
+                                        var infAmountTotal = 0;
+                                        var fareItem = itemFare.FareItem;
+                                        // get fare
+                                        if (fareItem !== null && fareItem.length > 0) {
+                                            $.each(fareItem, function (indexFareItem, itemFareItem) {
+
+                                                if (itemFareItem.PassengerType == "ADT") {
+                                                    if (adtAmount == 0) {
+                                                        adtAmount = itemFareItem.FareAmount;
+                                                        adtAmountTotal = itemFareItem.FareTotal;
+                                                        adtRph = itemFareItem.RPH;
+                                                        adtCode = itemFareItem.Code;
+                                                    }
+                                                    //
+                                                    if (adtAmount > itemFareItem.FareAmount) {
+                                                        adtAmount = itemFareItem.FareAmount;
+                                                        adtAmountTotal = itemFareItem.FareTotal;
+                                                        adtRph = itemFareItem.RPH;
+                                                        adtCode = itemFareItem.Code;
+                                                    }
+                                                }
+                                                if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "CNN") {
+                                                    if (cnnAmount == 0) {
+                                                        cnnAmount = itemFareItem.FareAmount;
+                                                        cnnAmountTotal = itemFareItem.FareTotal;
+                                                        cnnRph = itemFareItem.RPH;
+                                                        cnnCode = itemFareItem.Code;
+                                                    }
+                                                    //
+                                                    if (cnnAmount > itemFareItem.FareAmount) {
+                                                        cnnAmount = itemFareItem.FareAmount;
+                                                        cnnAmountTotal = itemFareItem.FareTotal;
+                                                        cnnRph = itemFareItem.RPH;
+                                                        cnnCode = itemFareItem.Code;
+                                                    }
+                                                }
+                                                if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "INF") {
+                                                    if (infAmount == 0) {
+                                                        infAmount = itemFareItem.FareAmount;
+                                                        infAmountTotal = itemFareItem.FareTotal;
+                                                        infRph = itemFareItem.RPH;
+                                                        infCode = itemFareItem.Code;
+                                                    }
+                                                    //
+                                                    if (infAmount > itemFareItem.FareAmount) {
+                                                        infAmount = itemFareItem.FareAmount;
+                                                        infAmountTotal = itemFareItem.FareTotal;
+                                                        infRph = itemFareItem.RPH;
+                                                        infCode = itemFareItem.Code;
+                                                    }
+                                                }
+                                            });
+
                                         }
-                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "CNN") {
-                                            if (cnnAmount == 0) {
-                                                cnnAmount = itemFareItem.FareAmount;
-                                                cnnAmountTotal = itemFareItem.FareTotal;
-                                                cnnRph = itemFareItem.RPH;
-                                                cnnCode = itemFareItem.Code;
-                                            }
-                                            //
-                                            if (cnnAmount > itemFareItem.FareAmount) {
-                                                cnnAmount = itemFareItem.FareAmount;
-                                                cnnAmountTotal = itemFareItem.FareTotal;
-                                                cnnRph = itemFareItem.RPH;
-                                                cnnCode = itemFareItem.Code;
-                                            }
+                                        //
+                                        // get min fare
+                                        var strActive = '';
+                                        if (indexFare == 0) {
+                                            special_rph = adtRph;
+                                            special_code = adtCode;
+                                            special_Price = adtAmount;
+                                            special_pesBookDesigCode = itemFare.ResBookDesigCode;
+                                            strActive = special_pesBookDesigCode;
                                         }
-                                        if (itemFareItem.PassengerType != undefined && itemFareItem.PassengerType == "INF") {
-                                            if (infAmount == 0) {
-                                                infAmount = itemFareItem.FareAmount;
-                                                infAmountTotal = itemFareItem.FareTotal;
-                                                infRph = itemFareItem.RPH;
-                                                infCode = itemFareItem.Code;
-                                            }
-                                            //
-                                            if (infAmount > itemFareItem.FareAmount) {
-                                                infAmount = itemFareItem.FareAmount;
-                                                infAmountTotal = itemFareItem.FareTotal;
-                                                infRph = itemFareItem.RPH;
-                                                infCode = itemFareItem.Code;
-                                            }
+                                        if (special_Price > adtAmount) {
+                                            special_rph = adtRph;
+                                            special_code = adtCode;
+                                            special_Price = adtAmount;
+                                            special_pesBookDesigCode = itemFare.ResBookDesigCode;
+                                            strActive = special_pesBookDesigCode;
                                         }
+                                        // active hightlight
+                                        var strRph = "";
+                                        var strCode = "";
+                                        var strAmount = "";
+                                        var strParam = "";
+                                        if (adt > 0) {
+                                            strParam += `ADT:${adtRph},${adtAmount},${adtCode}`;
+                                            strRph += `${adtRph}`;
+                                            strCode += `${adtCode}`;
+                                            strAmount += `${adtAmount}`;
+                                        }
+                                        //
+                                        if (cnn > 0) {
+                                            strParam += `##CNN:${cnnRph},${cnnAmount},${cnnCode}`;
+                                            strRph += `,${cnnRph}`;
+                                            strCode += `,${cnnCode}`;
+                                            strAmount += `,${cnnAmount}`;
+                                        }
+                                        //
+                                        if (inf > 0) {
+                                            strParam += `##INF:${infRph},${infAmount},${infCode}`;
+                                            strRph += `,${infRph}`;
+                                            strCode += `,${infCode}`;
+                                            strAmount += `,${infAmount}`;
+                                        }
+                                        arrFare.push({
+                                            RPH: strRph,
+                                            Code: strCode,
+                                            Fare: strAmount,
+                                            AdtAmount: adtAmount,
+                                            AdtAmountTotal: adtAmountTotal,
+                                            ResBookDesigCode: itemFare.ResBookDesigCode,
+                                            Params: strParam
+                                        });
+                                        //
                                     });
-
                                 }
                                 //
-                                // get min fare
-                                var strActive = '';
-                                if (indexFare == 0) {
-                                    special_rph = adtRph;
-                                    special_code = adtCode;
-                                    special_Price = adtAmount;
-                                    special_pesBookDesigCode = itemFare.ResBookDesigCode;
-                                    strActive = special_pesBookDesigCode;
+                                var _active = "";
+                                var special = ``;
+                                // 
+                                var priceDetails = "";
+                                if (arrFare.length > 0) {
+                                    $.each(arrFare, function (index, item) {
+                                        var strPrice = "";
+                                        var rbsc = item.ResBookDesigCode;
+                                        var active = "";
+                                        var salePrice = item.AdtAmountTotal;
+                                        if (!isHasTax)
+                                            salePrice = item.AdtAmount;
+                                        //
+                                        if (rbsc == special_pesBookDesigCode) {
+                                            //
+                                            special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' >${LibCurrencies.FormatToCurrency(salePrice)}.0 ${unit}</span></label>`
+                                            active = "on";
+                                        }
+                                        //
+                                        priceDetails += `<label class='fare-item'  data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' data-AdtAmount='${item.AdtAmount}'><span class='${active} resbook'>${rbsc}</span></label>`;
+                                    });
                                 }
-                                if (special_Price > adtAmount) {
-                                    special_rph = adtRph;
-                                    special_code = adtCode;
-                                    special_Price = adtAmount;
-                                    special_pesBookDesigCode = itemFare.ResBookDesigCode;
-                                    strActive = special_pesBookDesigCode;
-                                }
-                                // active hightlight
-                                var strRph = ``;
-                                var strCode = ``;
-                                var strAmount = ``;
-                                var strParam = '';
-                                if (adt > 0) {
-                                    strParam += `ADT:${adtRph},${adtAmount},${adtCode}`;
-                                    strRph += `${adtRph}`;
-                                    strCode += `${adtCode}`;
-                                    strAmount += `${adtAmount}`;
-                                }
-                                //
-                                if (cnn > 0) {
-                                    strParam += `##CNN:${cnnRph},${cnnAmount},${cnnCode}`;
-                                    strRph += `,${cnnRph}`;
-                                    strCode += `,${cnnCode}`;
-                                    strAmount += `,${cnnAmount}`;
-                                }
-                                //
-                                if (inf > 0) {
-                                    strParam += `##INF:${infRph},${infAmount},${infCode}`;
-                                    strRph += `,${infRph}`;
-                                    strCode += `,${infCode}`;
-                                    strAmount += `,${infAmount}`;
-                                }
-                                arrFare.push({
-                                    RPH: strRph,
-                                    Code: strCode,
-                                    Fare: strAmount,
-                                    AdtAmount: adtAmount,
-                                    AdtAmountTotal: adtAmountTotal,
-                                    ResBookDesigCode: itemFare.ResBookDesigCode,
-                                    Params: strParam
-                                });
-                                //
-                            });
-                        }
-                        //
-                        var _active = "";
-                        var special = ``;
-                        // 
-                        var priceDetails = "";
-                        if (arrFare.length > 0) {
-                            $.each(arrFare, function (index, item) {
-                                var strPrice = "";
-                                var rbsc = item.ResBookDesigCode;
-                                var active = "";
-                                var salePrice = item.AdtAmountTotal;
-                                if (!isHasTax)
-                                    salePrice = item.AdtAmount;
-                                //
-                                if (rbsc == special_pesBookDesigCode) {
-                                    //
-                                    special = `<label class='lbl-special-item' data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}'><span class='resbook'>${item.ResBookDesigCode}:</span><span class='fare' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' >${LibCurrencies.FormatToCurrency(salePrice)}.0 ${unit}</span></label>`
-                                    active = "on";
-                                }
-                                //
-                                priceDetails += `<label class='fare-item'  data-Param='${item.Params}' data-FlightNo='${flightNo}' data-AirEquipType='${airEquipType}' data-FlightRph='${flightRph}' data-ResBookDesigCode='${item.ResBookDesigCode}' data-fareBasic='${item.AdtAmount}' data-fareTotal='${item.AdtAmountTotal}' data-AdtAmount='${item.AdtAmount}'><span class='${active} resbook'>${rbsc}</span></label>`;
-                            });
-                        }
-                        if (parseInt(flightType) == 1) {
-                            var strCnt = intGo;
-                            if (intGo < 10) {
-                                strCnt = "0" + intGo;
-                            }
-                            if (cntGo == true)
-                                _active = "active";
-                            htmlGo = `
+                                if (parseInt(flightType) == 1) {
+                                    var strCnt = intGo;
+                                    if (intGo < 10) {
+                                        strCnt = "0" + intGo;
+                                    }
+                                    if (cntGo == true)
+                                        _active = "active";
+                                    htmlGo = `
                             <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
                                 <td class='td-firm'>${strCnt}. <i class="fa fa-plane" aria-hidden="true"></i> </td>
                                 <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
@@ -369,41 +382,17 @@ var flightBookingController = {
                                 <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
                                 <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
                             </tr>`;
-                            cntGo = false;
-                            intGo++;
-                            $('tbody#TblGoData').append(htmlGo);
-                        }
-                        //
-                        if (parseInt(ddlFlightType) == 2 && parseInt(flightType) == 2) {
-                            var strCnt = intRt;
-                            if (intRt < 10) {
-                                strCnt = "0" + intRt;
-                            }
-                            //
-                            if (cntReturn == true)
-                                _active = "active";
-                            //
-                            htmlReturn = `
-                            <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
-                                <td class='td-firm'>${strCnt}. <i class="fa fa-plane" aria-hidden="true"></i></td>
-                                <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
-                                <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
-                                <td class='td-time'>${departureTime} - ${arrivalTime}</td>
-                                <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
-                                <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
-                            </tr>`;
-                            cntReturn = false;
-                            intRt++;
-                            $('tbody#TblReturnData').append(htmlReturn);
+                                    cntGo = false;
+                                    intGo++;
+                                    $('tbody#TblGoData').append(htmlGo);
+                                }
+                            });
                         }
                     });
+
+
                     // display
                     $('.flight-wcontent-go').addClass('active');
-                    //
-                    if (parseInt(ddlFlightType) == 2) {
-                        $('.flight-wcontent-return').addClass('active');
-                    }
-                    //
                     $('#btnDataTab').click();
                     //Loading.HideLoading();
                     //$('#TblFlightGo').DataTable();

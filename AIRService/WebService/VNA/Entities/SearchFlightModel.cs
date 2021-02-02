@@ -19,7 +19,7 @@ namespace ApiPortalBooking.Models
     {
         public string OriginLocation { get; set; }
         public string DestinationLocation { get; set; }
-        public string DateOfFlight { get; set; }
+        public string DepartureDateTime { get; set; }
         public int ADT { get; set; }
         public int CNN { get; set; }
         public int INF { get; set; }
@@ -91,26 +91,7 @@ namespace ApiPortalBooking.Models
         public string FareBaseCode { get; set; }
     }
 
-    //public class Resquet_WsTax_PassengerTypeModel : TokenModel
-    //{
-
-    //    public string RPH { get; set; }
-    //    public string OriginLocation { get; set; }
-    //    public string DestinationLocation { get; set; }
-    //    public DateTime DepartureDateTime { get; set; }
-    //    public DateTime? ReturnDateTime { get; set; }
-    //    public DateTime ArrivalDateTime { get; set; }
-    //    public string AirEquipType { get; set; }
-    //    public string PassengerType { get; set; }
-    //    public string ResBookDesigCode { get; set; }
-    //    public short FlightNumber { get; set; }
-    //    public Double TotalTravelTime { get; set; }
-
-    //    public string FareBasisCode { get; set; }
-
-    //    public Resquet_WsTax_BaseFareModel BaseFare { get; set; }
-    //}
-
+     
     public class Resquet_WsTax_BaseFareModel
     {
         public int RPH { get; set; }

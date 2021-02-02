@@ -25,32 +25,32 @@ namespace WebApplication.Management.Controllers
     {
         public ActionResult Search()
         {
-            SegmentSearchModel model = new SegmentSearchModel
-            {
-                OriginLocation = " ",
-                DestinationLocation = " ",
-                DepartureDateTime = "",
-                ReturnDateTime = "",
-                ADT = 1,
-                CNN = 0,
-                INF = 0,
-                IsRoundTrip = true
-            };
-            try
-            {
-                //do something
-                HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
-                if (flightSearch != null)
-                {
-                    var dataSearch = flightSearch.Value;
-                    model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
-                }
-            }
-            catch
-            {
-                //
-            }
-            return View(model);
+            ////SegmentSearchModel model = new SegmentSearchModel
+            ////{
+            ////    OriginLocation = " ",
+            ////    DestinationLocation = " ",
+            ////    DepartureDateTime = "",
+            ////    ReturnDateTime = "",
+            ////    ADT = 1,
+            ////    CNN = 0,
+            ////    INF = 0,
+            ////    IsRoundTrip = true
+            ////};
+            ////try
+            ////{
+            ////    //do something
+            ////    HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
+            ////    if (flightSearch != null)
+            ////    {
+            ////        var dataSearch = flightSearch.Value;
+            ////        model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
+            ////    }
+            ////}
+            ////catch
+            ////{
+            ////    //
+            ////}
+            return View();
         }
 
         public ActionResult Booking()
@@ -62,36 +62,36 @@ namespace WebApplication.Management.Controllers
                 HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
                 var dataSearch = flightSearch.Value;
                 var model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
-                if (model != null)
-                {
-                    if (model.ADT > 0)
-                    {
-                        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                        {
-                            PassengerType = "ADT",
-                            PassengerName = "Người lớn",
-                            Quantity = model.ADT
-                        });
-                    }
-                    if (model.CNN > 0)
-                    {
-                        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                        {
-                            PassengerType = "CNN",
-                            PassengerName = "Trẻ em",
-                            Quantity = model.CNN
-                        });
-                    }
-                    if (model.INF > 0)
-                    {
-                        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                        {
-                            PassengerType = "INF",
-                            PassengerName = "Em bé",
-                            Quantity = model.INF
-                        });
-                    }
-                }
+                //if (model != null)
+                //{
+                //    if (model.ADT > 0)
+                //    {
+                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
+                //        {
+                //            PassengerType = "ADT",
+                //            PassengerName = "Người lớn",
+                //            Quantity = model.ADT
+                //        });
+                //    }
+                //    if (model.CNN > 0)
+                //    {
+                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
+                //        {
+                //            PassengerType = "CNN",
+                //            PassengerName = "Trẻ em",
+                //            Quantity = model.CNN
+                //        });
+                //    }
+                //    if (model.INF > 0)
+                //    {
+                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
+                //        {
+                //            PassengerType = "INF",
+                //            PassengerName = "Em bé",
+                //            Quantity = model.INF
+                //        });
+                //    }
+                //}
             }
             catch
             {

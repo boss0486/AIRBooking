@@ -30,6 +30,8 @@ namespace ApiPortalBooking.Models
         public int NumberInParty { get; set; }
         public List<FlightSegment_ResBookDesigCode> FareDetails { get; set; }
         public string RPH { get; set; }
+        public string SegmentText => OriginLocation + DestinationLocation;
+
     }
 
     public class FlightSegment_ResBookDesigCode
@@ -37,25 +39,29 @@ namespace ApiPortalBooking.Models
         //public string ResBookDesigCodeID { get; set; }
         public string ResBookDesigCode { get; set; }
         public List<FareItem> FareItem { get; set; }
-        public  string SellingFare { get; set; }
+        public string SellingFare { get; set; }
     }
 
-
-
-    public class Response_FlightSearch
+    public class RsSegment
+    {
+        public List<RsDetails> Details { get; set; }
+        public string DestinationLocation { get; set; }
+        public string DepartureDateTime { get; set; }
+        public string OriginLocation { get; set; }
+        public int ADT { get; set; }
+        private string SegmentText => OriginLocation + DestinationLocation;
+    }
+    public class RsDetails
     {
         public string AirEquipType { get; set; }
         public string ArrivalDateTime { get; set; }
         public string DepartureDateTime { get; set; }
-        public string DestinationLocation { get; set; }
         public int FlightNo { get; set; }
         public int FlightType { get; set; }
         public int NumberInParty { get; set; }
-        public string OriginLocation { get; set; }
         public string RPH { get; set; }
         public List<FlightSegment_ResBookDesigCode> FareDetails { get; set; }
     }
-
 
 
     public class FareDetailsModel1
@@ -86,5 +92,5 @@ namespace ApiPortalBooking.Models
         public AirTicketCondition04 AirTicketCondition04 { get; set; }
         public AirTicketCondition05 AirTicketCondition05 { get; set; }
     }
-    
+
 }
