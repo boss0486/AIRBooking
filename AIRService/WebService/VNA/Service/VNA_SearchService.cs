@@ -48,7 +48,7 @@ namespace AIRService.Service
                 return Notifization.Invalid(MessageText.Invalid);
             //
             bool isHasTax = model.IsHasTax;
-            int itineraryType = model.ItineraryType;  
+            int itineraryType = model.ItineraryType;
             TokenModel tokenModel = VNA_AuthencationService.GetSession();
             // create session 
             if (tokenModel == null)
@@ -210,7 +210,6 @@ namespace AIRService.Service
                 }
 
                 // end for
-                List<RsSegment> rsSegments = new List<RsSegment>();
                 //List<FlightSegment> lstFlightSegment1 = lstFlightSegment.Where(m => m.OriginLocation == item.OriginLocation && m.DestinationLocation == item.DestinationLocation).ToList();
                 List<RsDetails> rsDetails = new List<RsDetails>();
                 var lstFlightSegmentGroupByTime = lstFlightSegment.GroupBy(m => new { m.SegmentText, m.DepartureDateTime, m.ArrivalDateTime }).Select(m => new { m.Key.SegmentText, m.Key.ArrivalDateTime, m.Key.DepartureDateTime }).ToList();
@@ -235,19 +234,20 @@ namespace AIRService.Service
                     }
                 }
                 //
-                rsSegments.Add(new RsSegment
+
+                RsSegment rsSegment = new RsSegment
                 {
                     DepartureDateTime = model.DepartureDateTime,
                     DestinationLocation = model.DestinationLocation,
                     OriginLocation = model.OriginLocation,
                     ADT = model.ADT,
                     Details = rsDetails.OrderBy(m => m.DepartureDateTime).ToList()
-                });
+                };
                 //
-                if (rsSegments.Count() == 0)
+                if (rsSegment == null)
                     return Notifization.NotFound(MessageText.NotFound + 1);
                 //
-                return Notifization.Data("OK -> IsRoundTrip: false ", rsSegments);
+                return Notifization.Data("OK -> IsRoundTrip: false ", rsSegment);
             }
         }
         // Get list ResBookDesigCode is valid

@@ -44,12 +44,11 @@ namespace ApiPortalBooking.Models
 
     public class RsSegment
     {
-        public List<RsDetails> Details { get; set; }
         public string DestinationLocation { get; set; }
         public string DepartureDateTime { get; set; }
         public string OriginLocation { get; set; }
         public int ADT { get; set; }
-        private string SegmentText => OriginLocation + DestinationLocation;
+        public List<RsDetails> Details { get; set; }
     }
     public class RsDetails
     {

@@ -12,6 +12,7 @@ var flightBookingController = {
             // $('[data-dateDefault="true"]').val(LibDateTime.Get_ClientDate(lg = 'en'));
         });
         $('#btnSearch').off('click').on('click', function () {
+            $("#InforCustomerError").html("").removeClass("on").addClass("off");
             var flg = true;
             var segmentList = $("#segmentList .segment-item");
             if (segmentList.length == 0) {
@@ -25,7 +26,8 @@ var flightBookingController = {
                     Notifization.Error("Không tìm thấy dữ liệu");
                     return;
                 }
-                Search();
+                flightBookingController.Search(1);
+                $("table#TblSegment tr.trdefault").remove();
                 $("#btnDataTab").click();
             }
             else
@@ -133,71 +135,62 @@ var flightBookingController = {
                 Notifization.Error(MessageText.Datamissing);
         });
     },
-
-};
-//
-flightBookingController.init();
-$(document).on("click", ".btnSegDelete", function () {
-    var item = $(this).closest("p");
-    $(item).remove();
-});
-
-function Search() { 
-    if ($('#segmentList .segment-item.actived').length == 0) 
-        return;
-    //
-    var _row = $('#segmentList .segment-item.actived').first();
-    $(_row).removeClass("actived");
-    var adt = $("#infAdt").data("val");
-    var cnn = $("#infCnn").data("val");
-    var inf = $("#infInf").data("val");
-    var _origin = $(_row).find(".location").data("origin");
-    var _destination = $(_row).find(".location").data("destination");
-    var dtime = $(_row).find(".date").data("dtime");
-    var _itinerary = $("#infItinerary").data("val");
-    var _airline = $("#infAirline").data("val");
-    var model = {
-        OriginLocation: _origin,
-        DestinationLocation: _destination,
-        DepartureDateTime: dtime,
-        ADT: parseInt(adt),
-        CNN: parseInt(cnn),
-        INF: parseInt(inf),
+    Search: function (segIndex) {
+        if (segIndex == 1)
+            $("#tblSegmentData").html("");
         //
-        IsHasTax: isHasTax,
-        ItineraryType: _itinerary,
-        AirlineID: _airline,
-        TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
-    };
-    //
-    var isHasTax = model.IsHasTax;
-    AjaxFrom.POST({
-        url: URLC + '/search',
-        data: model,
-        success: function (response) {
-            if (response.status == 200) {
-                $('#PaginationGo').html('');
-                //FlightList
-                var currentPage = 1;
-                ////var pagination = response.paging;
-                ////if (pagination !== null) {
-                ////    totalPage = pagination.TotalPage;
-                ////    currentPage = pagination.Page;
-                ////    pageSize = pagination.PageSize;
-                ////    pageIndex = pagination.Page;
-                ////}
-                var htmlGo =  `<tr><td colspan="6">...</td> </tr>`;
-                var cntGo = false;
-                var intGo = 1;
-
-                var rsSegment = response.data;
-                if (rsSegment != undefined || rsSegment != null) {
-                    $.each(rsSegment, function (idx, segment) {
+        if ($('#segmentList .segment-item.actived').length == 0)
+            return;
+        //
+        var _row = $('#segmentList .segment-item.actived').first();
+        $(_row).removeClass("actived");
+        var adt = $("#infAdt").data("val");
+        var cnn = $("#infCnn").data("val");
+        var inf = $("#infInf").data("val");
+        var _origin = $(_row).find(".location").data("origin");
+        var _destination = $(_row).find(".location").data("destination");
+        var dtime = $(_row).find(".date").data("dtime");
+        var _itinerary = $("#infItinerary").data("val");
+        var _airline = $("#infAirline").data("val");
+        var model = {
+            OriginLocation: _origin,
+            DestinationLocation: _destination,
+            DepartureDateTime: dtime,
+            ADT: parseInt(adt),
+            CNN: parseInt(cnn),
+            INF: parseInt(inf),
+            //
+            IsHasTax: isHasTax,
+            ItineraryType: _itinerary,
+            AirlineID: _airline,
+            TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+        };
+        //
+        var isHasTax = model.IsHasTax;
+        AjaxFrom.POST({
+            url: URLC + '/search',
+            data: model,
+            success: function (response) {
+                if (response.status == 200) {
+                    $('#Pagination').html('');
+                    //FlightList
+                    var currentPage = 1;
+                    ////var pagination = response.paging;
+                    ////if (pagination !== null) {
+                    ////    totalPage = pagination.TotalPage;
+                    ////    currentPage = pagination.Page;
+                    ////    pageSize = pagination.PageSize;
+                    ////    pageIndex = pagination.Page;
+                    ////}
+                    var segCnt = 1;
+                    var segment = response.data;
+                    if (segment != undefined || segment != null) {
                         var originLocation = segment.OriginLocation;
                         var destinationLocation = segment.DestinationLocation;
+                        var dateOfFlight = segment.DepartureDateTime;
                         //
+                        $("tbody#tblSegmentData").append(`<tr data-segment="${segIndex}" class="segIndex-${segIndex}"><td colspan="6"><i class="fa fa-plane" aria-hidden="true"></i> Chặng bay: ${originLocation}-${destinationLocation}, ngày khởi hành: ${dateOfFlight} </td></tr>`);
                         if (segment.Details != undefined && segment.Details != null) {
-
                             $.each(segment.Details, function (index, item) {
                                 index = index + 1;
                                 //var id = item.ID;
@@ -367,139 +360,154 @@ function Search() {
                                     });
                                 }
                                 if (parseInt(flightType) == 1) {
-                                    var strCnt = intGo;
-                                    if (intGo < 10) {
-                                        strCnt = "0" + intGo;
-                                    }
-                                    if (cntGo == true)
-                                        _active = "active";
-                                    htmlGo = `
-                        <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
-                            <td class='td-firm'>${strCnt}. <i class="fa fa-plane" aria-hidden="true"></i> </td>
-                            <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
-                            <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
-                            <td class='td-time'>${departureTime} - ${arrivalTime}</td>
-                            <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
-                            <td class='td-action ${_active}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
-                        </tr>`;
-                                    cntGo = false;
-                                    intGo++;
-                                    $('tbody#TblGoData').append(htmlGo);
+                                    var strCnt = segCnt;
+                                    if (segCnt < 10)
+                                        strCnt = "0" + segCnt;
+                                    //
+                                    $('tbody#tblSegmentData').append(`
+                                        <tr data-FlightNumber='${flightNo}' data-AirEquipType=${airEquipType} data-NumberInParty='${numberInParty}' data-OriginLocation='${originLocation}' data-DestinationLocation='${destinationLocation}' data-DateOfFlight='${dateOfFlight}' data-DepartureDateTime= '${departureDateTime}' data-ArrivalDateTime= '${arrivalDateTime}'>
+                                            <td class='td-firm text-right'>${strCnt}.</td>
+                                            <td class='td-flightNo'><label data-AirEquipType='${airEquipType}'>VN.<span>${airEquipType}</span>-<span data-flightNo='${flightNo}'>${flightNo} </label></td>
+                                            <td class='td-itinerary'>${originLocation}-${destinationLocation}</td>
+                                            <td class='td-time'>${departureTime} - ${arrivalTime}</td>
+                                            <td class='td-price'><label class='lbl-special'>${special}</label><label class='lbl-list'>${priceDetails} </label></td>
+                                            <td class='td-action actsegment-${segIndex} ${_active}' data-segIndex='${segIndex}'><i class="fa fa-check-circle" aria-hidden="true"></i></td>
+                                        </tr>`);
+                                    segCnt++;
                                 }
                             });
                         }
-                    });
-                }
+                        segIndex++;
+                    }
 
-                // display
-                $('.flight-wcontent-go').addClass('active');
-                //Loading.HideLoading();
-                //$('#TblFlightGo').DataTable();
-                //if (parseInt(totalPage) > 1) {
-                //    Paging.Pagination("#Pagination", totalPage, currentPage, flightBookingController.DataList);
-                //} 
-                $(_row).removeClass("actived");
-                Search();
-                return;
+                    // display
+                    $('.flight-wcontent-go').addClass('active');
+                    //Loading.HideLoading();
+                    //$('#TblSegment').DataTable();
+                    //if (parseInt(totalPage) > 1) {
+                    //    Paging.Pagination("#Pagination", totalPage, currentPage, flightBookingController.DataList);
+                    //} 
+                    $(_row).removeClass("actived");
+                    flightBookingController.Search(segIndex);
+                    return;
+                }
+                else if (response.status == 503) {
+                    Notifization.Error(response.message);
+                    return;
+                }
+                else {
+                    $(_row).removeClass("actived");
+                    flightBookingController.Search(segIndex);
+                }
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
             }
-            else {
-                $(_row).removeClass("actived");
-                Search();
+        });
+    },
+    BookingOrder: function () {
+        // delete data
+        Cookies.DelCookie("FlightOrder");
+        // update new
+        var orderList = [];
+        $("table#TblSegment td.td-action.active").each(function (index, item) {
+            var ddlItineraryType = parseInt($('#ddlItineraryType').val());
+            var ddlAirline = $('#ddlAirline').val();
+            //
+            var adt = parseInt($("#infAdt").data("val"));
+            var cnn = parseInt($("#infCnn").data("val"));
+            var inf = parseInt($("#infInf").data("val"));
+            //
+            var segment = $(item).closest("tr");
+            if ($(segment) !== undefined && $(segment).length > 0) {
+                var flightNumber = $(segment).data("flightnumber");
+                var airequiptype = $(segment).data("airequiptype");
+                var numberInParty = $(segment).data("numberinparty");
+                var dateOfFlight = $(segment).data("dateofflight");
+                var ddlOriginLocation = $(segment).data("originlocation");
+                var ddlDestinationLocation = $(segment).data("destinationlocation");
+                var arrivalDateTime = $(segment).data("arrivaldatetime");
+                var departureDateTime = $(segment).data("departuredatetime");
+                //
+                var resBookDesigCode = $(segment).find('td.td-price .lbl-special .lbl-special-item').data("resbookdesigcode");
+                var flightrph = $(segment).find('td.td-price .lbl-special .lbl-special-item').data("flightrph");
+                var param = $(segment).find('td.td-price .lbl-special .lbl-special-item').data("param");
+                orderList.push({
+                    ADT: adt,
+                    CNN: cnn,
+                    INF: inf,
+                    RPH: flightrph,
+                    NumberInParty: numberInParty,
+                    OriginLocation: ddlOriginLocation,
+                    DestinationLocation: ddlDestinationLocation,
+                    DepartureDateTime: departureDateTime,
+                    ArrivalDateTime: arrivalDateTime,
+                    AirEquipType: airequiptype,
+                    ResBookDesigCode: resBookDesigCode,
+                    FlightNumber: flightNumber,
+                    FareBase: param,
+                    ItineraryType: ddlItineraryType,
+                    AirlineID: ddlAirline,
+                    TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+                });
             }
-        },
-        error: function (response) {
-            console.log('::' + MessageText.NotService);
-        }
-    });
-}
+            //
+        });
+        // create session
+        Cookies.SetCookie("FlightOrder", JSON.stringify(orderList));
+    },
+    ShopingCart: function () {
+        $("#tblCartData").html("");
+        $('table#TblSegment td.td-action.active').each(function (index, item) {
+            var rowData = $(item).closest("tr").html();
+            if (rowData != undefined || rowData != null) {
+                $("#tblCartData").append(`<tr>${rowData}</tr>`);
+            }
+        });
+    },
+};
+//
+flightBookingController.init();
+$(document).on("click", ".btnSegDelete", function () {
+    var item = $(this).closest("p");
+    $(item).remove();
+});
+
+
 //Validate
 //###################################################################################################################################################
-
-$(document).on('click', '#TblFlightGo td.td-action', function () {
-    $("#TblFlightGo td.td-action").removeClass('active');
-    $(this).addClass('active');
-    // scroll to  div
-    var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
-    var ddlFlightType = $("#ddlFlightType").val();
-    if (parseInt(ddlFlightType) == 1) {
-        HelperPage.GoToByScroll("btnNextToInf");
+$(document).on('click', '#TblSegment td.td-action', function () {
+    var segIndex = parseInt($(this).data("segindex"));
+    if ($(this).hasClass("active")) {
+        $(this).removeClass("active");
+    } else {
+        $(`#TblSegment td.td-action.actsegment-${segIndex}`).removeClass('active');
+        $(this).addClass('active');
     }
-    else if (parseInt(ddlFlightType) == 2) {
-        if ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)
-            HelperPage.GoToByScroll("TblFlightReturn");
-        else
-            HelperPage.GoToByScroll("btnNextToInf");
-    }
-    //// remove message erors
-    if ($(flightReturnInfo) !== undefined && $(flightReturnInfo).length > 0) {
-        $('#InforCustomerError').html('').removeClass("on");
-    }
-    // update order
-    BookingOrder();
-});
-//
-$(document).on('click', '#TblFlightReturn td.td-action', function () {
-    $("#TblFlightReturn td.td-action").removeClass('active');
-    $(this).addClass('active');
-    // scroll to  div
-    var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
-    var ddlFlightType = $("#ddlFlightType").val();
-    if (parseInt(ddlFlightType) == 1) {
-        HelperPage.GoToByScroll("btnNextToInf");
-    }
-    else if (parseInt(ddlFlightType) == 2) {
-        if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0)
-            HelperPage.GoToByScroll("TblFlightGo");
-        else
-            HelperPage.GoToByScroll("btnNextToInf");
-    }
+    if ($(`#TblSegment tr[data-segment]`).hasClass(`segIndex-${segIndex + 1}`))
+        HelperPage.ScrollToElement(`.segIndex-${segIndex + 1}`);
+    else
+        HelperPage.ScrollToElement(`#btnNextToInf`);
+    // ******************************************************
+    flightBookingController.BookingOrder();
     //
-    if ($(flightGoInfo) !== undefined && $(flightGoInfo).length > 0) {
-        $('#InforCustomerError').html('').removeClass("on");
-    }
-    // update order
-    BookingOrder();
+    flightBookingController.ShopingCart();
 });
 //
 $(document).on('click', '#btnNextToInf', function () {
-    $('#InforCustomerError').html('').removeClass("on");
-    var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
-    var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
+    $("#InforCustomerError").html("").removeClass("on");
+    $("#btnCart").click();
+    var flightGoInfo = $("table#TblSegment").find('td.td-action.active');
     var htmlError = "";
-    var ddlFlightType = parseInt($('#ddlFlightType').val());
-
-    var _mgtop = $(window).height() / 4;
-    //    
-    if (ddlFlightType == 2 && ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) && ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)) {
-        htmlError = "Vui lòng chọn chuyến bay đi và chuyến bay về";
-        setTimeout(function () {
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $("#TblFlightGo").offset().top - _mgtop
-            }, 3000);
-        }, 1000);
-    }
-    else if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
-        htmlError = "Vui lòng chọn chuyến bay đi";
-        setTimeout(function () {
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $("#TblFlightGo").offset().top - _mgtop
-            }, 3000);
-        }, 1000);
-    } else if (ddlFlightType == 2 && ($(flightReturnInfo) == undefined || $(flightReturnInfo).length == 0)) {
-        htmlError = "Vui lòng chọn chuyến bay về 11" + ddlFlightType;
-        setTimeout(function () {
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $("#TblFlightReturn").offset().top - _mgtop
-            }, 3000);
-        }, 1000);
-    }
-    if (htmlError !== "") {
-        $('#InforCustomerError').html(htmlError).addClass("on");
+    if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
+        htmlError = "Vui lòng chọn chặng bay"
+        $("#InforCustomerError").html(htmlError).addClass("on");
         Notifization.Error(htmlError);
         return;
     }
+
     // update order
-    BookingOrder();
+    flightBookingController.BookingOrder();
     // rediect
     Notifization.Success("Tiến hành đặt vé, xin chờ...");
     Loading.ShowLoading();
@@ -532,88 +540,7 @@ $(document).on('click', '.lbl-list label.fare-item', function () {
     $(tr).find("label.lbl-special").html(_html);
 });
 // 
-function BookingOrder() {
-    // delete data
-    Cookies.DelCookie("FlightOrder");
-    // update new
-    var flightGoInfo = $('table#TblFlightGo').find('td.td-action.active');
-    var flightReturnInfo = $('table#TblFlightReturn').find('td.td-action.active');
-    var htmlError = "";
-    var ddlItineraryType = parseInt($('#ddlItineraryType').val());
-    var ddlAirline = $('#ddlAirline').val();
-    var ddlFlightType = parseInt($('#ddlFlightType').val());
-    //
-    var adt = parseInt($("#ddlAdt").val());
-    var cnn = parseInt($("#ddlCnn").val());
-    var inf = parseInt($("#ddlInf").val());
-    var lFlight = [];
-    //
 
-    var ddlOriginLocation = $('#ddlOriginLocation').val();
-    var ddlDestinationLocation = $('#ddlDestinationLocation').val();
-    var trGo = $(flightGoInfo).closest('tr');
-    if ($(trGo) !== undefined && $(trGo).length > 0) {
-        var flightNumber = $(trGo).data("flightnumber");
-        var airequiptype = $(trGo).data("airequiptype");
-        var arrivalDateTime = $(trGo).data("arrivaldatetime");
-        var departureDateTime = $(trGo).data("departuredatetime");
-        var numberInParty = $(trGo).data("numberinparty");
-        //
-        var resBookDesigCode = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("resbookdesigcode");
-        var flightrph = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("flightrph");
-        var param = $(trGo).find('td.td-price .lbl-special .lbl-special-item').data("param");
-        var currency = "VND";
-        lFlight.push({
-            "RPH": flightrph,
-            "NumberInParty": numberInParty,
-            "OriginLocation": ddlOriginLocation,
-            "DestinationLocation": ddlDestinationLocation,
-            "DepartureDateTime": departureDateTime,
-            "ArrivalDateTime": arrivalDateTime,
-            "AirEquipType": airequiptype,
-            "ResBookDesigCode": resBookDesigCode,
-            "FlightNumber": flightNumber,
-            "FareBase": param
-        });
-    }
-    //
-    var trReturn = $(flightReturnInfo).closest('tr');
-    if (ddlFlightType == 2 && $(trReturn) !== undefined && $(trReturn).length > 0) {
-        //
-        flightNumber = $(trReturn).data("flightnumber");
-        airequiptype = $(trReturn).data("airequiptype");
-        arrivalDateTime = $(trReturn).data("arrivaldatetime");
-        departureDateTime = $(trReturn).data("departuredatetime");
-        numberInParty = $(trReturn).data("numberinparty");
-        resBookDesigCode = $(trReturn).find('td.td-price .lbl-special .lbl-special-item').data("resbookdesigcode");
-        flightrph = $(trReturn).find('td.td-price .lbl-special .lbl-special-item').data("flightrph");
-        var param = $(trReturn).find('td.td-price .lbl-special .lbl-special-item').data("param");
-        lFlight.push({
-            "RPH": flightrph,
-            "NumberInParty": numberInParty,
-            "OriginLocation": ddlDestinationLocation,
-            "DestinationLocation": ddlOriginLocation,
-            "DepartureDateTime": departureDateTime,
-            "ArrivalDateTime": arrivalDateTime,
-            "AirEquipType": airequiptype,
-            "ResBookDesigCode": resBookDesigCode,
-            "FlightNumber": flightNumber,
-            "FareBase": param
-        });
-    }
-    var orderInfo = {
-        ADT: adt,
-        CNN: cnn,
-        INF: inf,
-        Flight: lFlight,
-        FlightType: ddlFlightType,
-        ItineraryType: ddlItineraryType,
-        AirlineID: ddlAirline,
-        TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
-    };
-    // create session
-    Cookies.SetCookie("FlightOrder", JSON.stringify(orderInfo));
-}
 // 
 //###################################################################################################################################################
 $(document).on('change', '#DepartureDateTime', function () {
@@ -691,7 +618,7 @@ $(document).on('change', '#cbxHasTax', function () {
     var fareAmount = 0;
     var cbxHasTax = $('input[name="cbxHasTax"]').is(":checked");
 
-    var dataGo = $('#TblFlightGo').find('.lbl-special-item');
+    var dataGo = $('#TblSegment').find('.lbl-special-item');
     $.each(dataGo, function (index, item) {
         var fare = $(item).find('.fare');
         if (cbxHasTax)
@@ -712,7 +639,7 @@ $(document).on('change', '#cbxHasTax', function () {
         $(fare).html(LibCurrencies.FormatToCurrency(fareAmount) + ".0" + unit);
     });
 });
-
+//
 $(document).on('click', '#btnSearchReset', function () {
     $("#infAdt").data("val", 0).html("00");
     $("#infCnn").data("val", 0).html("00");
@@ -722,6 +649,10 @@ $(document).on('click', '#btnSearchReset', function () {
     $("#segmentList").html('');
     FData.ResetForm();
     Cookies.DelCookie("FlightSearch");
+});
+
+$(document).on('click', '#btnCart', function () {
+
 });
 
 

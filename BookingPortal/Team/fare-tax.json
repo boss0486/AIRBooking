@@ -1,0 +1,138 @@
+[
+  {
+    "RPH": 4,
+    "OriginLocation": "HAN",
+    "DestinationLocation": "SGN",
+    "DepartureDateTime": "02/26/2021 06:40:00",
+    "ArrivalDateTime": "02/26/2021 08:55:00",
+    "AirEquipType": 320,
+    "FareBase": [
+      {
+        "RPH": 4,
+        "PassengerType": "ADT",
+        "Quantity": null,
+        "Amount": 209000,
+        "FareBaseCode": "PAPVNF96"
+      },
+      {
+        "RPH": 11,
+        "PassengerType": "CNN",
+        "Quantity": null,
+        "Amount": 189000,
+        "FareBaseCode": "PAPVNF96/CH10"
+      },
+      {
+        "RPH": 18,
+        "PassengerType": "INF",
+        "Quantity": null,
+        "Amount": 21000,
+        "FareBaseCode": "PAPVNF96/IN90"
+      }
+    ],
+    "ResBookDesigCode": "P",
+    "FlightNumber": 6003,
+    "CurrencyCode": "VND"
+  },
+  {
+    "RPH": 8,
+    "OriginLocation": "SGN",
+    "DestinationLocation": "HAN",
+    "DepartureDateTime": "02/28/2021 09:30:00",
+    "ArrivalDateTime": "02/28/2021 11:40:00",
+    "AirEquipType": 321,
+    "FareBase": [
+      {
+        "RPH": 6,
+        "PassengerType": "ADT",
+        "Quantity": null,
+        "Amount": 209000,
+        "FareBaseCode": "PAPVNF96"
+      },
+      {
+        "RPH": 15,
+        "PassengerType": "CNN",
+        "Quantity": null,
+        "Amount": 189000,
+        "FareBaseCode": "PAPVNF96/CH10"
+      },
+      {
+        "RPH": 24,
+        "PassengerType": "INF",
+        "Quantity": null,
+        "Amount": 21000,
+        "FareBaseCode": "PAPVNF96/IN90"
+      }
+    ],
+    "ResBookDesigCode": "P",
+    "FlightNumber": 7246,
+    "CurrencyCode": "VND"
+  },
+  {
+    "RPH": 9,
+    "OriginLocation": "HAN",
+    "DestinationLocation": "DAD",
+    "DepartureDateTime": "03/05/2021 18:55:00",
+    "ArrivalDateTime": "03/05/2021 20:20:00",
+    "AirEquipType": 321,
+    "FareBase": [
+      {
+        "RPH": 17,
+        "PassengerType": "ADT",
+        "Quantity": null,
+        "Amount": 309000,
+        "FareBaseCode": "EPXVNF"
+      },
+      {
+        "RPH": 0,
+        "PassengerType": "CNN",
+        "Quantity": null,
+        "Amount": 0,
+        "FareBaseCode": " "
+      },
+      {
+        "RPH": 0,
+        "PassengerType": "INF",
+        "Quantity": null,
+        "Amount": 0,
+        "FareBaseCode": " "
+      }
+    ],
+    "ResBookDesigCode": "E",
+    "FlightNumber": 7167,
+    "CurrencyCode": "VND"
+  },
+  {
+    "RPH": 9,
+    "OriginLocation": "DAD",
+    "DestinationLocation": "HAN",
+    "DepartureDateTime": "03/07/2021 20:25:00",
+    "ArrivalDateTime": "03/07/2021 21:45:00",
+    "AirEquipType": 787,
+    "FareBase": [
+      {
+        "RPH": 17,
+        "PassengerType": "ADT",
+        "Quantity": null,
+        "Amount": 309000,
+        "FareBaseCode": "EPXVNF"
+      },
+      {
+        "RPH": 0,
+        "PassengerType": "CNN",
+        "Quantity": null,
+        "Amount": 0,
+        "FareBaseCode": " "
+      },
+      {
+        "RPH": 0,
+        "PassengerType": "INF",
+        "Quantity": null,
+        "Amount": 0,
+        "FareBaseCode": " "
+      }
+    ],
+    "ResBookDesigCode": "E",
+    "FlightNumber": 184,
+    "CurrencyCode": "VND"
+  }
+]

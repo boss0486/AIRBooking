@@ -115,7 +115,7 @@ namespace AIRService.WS.Service
                 return null;
             // ok
             List<WebService.VNA_FareLLSRQ.FareRSFareBasis> fareRSFareBases = data.FareBasis.Where(m => m.CurrencyCode == model.CurrencyCode).ToList();
-            XMLHelper.WriteXml("-search-price-0001.xml", XMLHelper.GetXMLFromObject(fareRSFareBases));
+            //XMLHelper.WriteXml("-search-price-0001.xml", XMLHelper.GetXMLFromObject(fareRSFareBases));
             return fareRSFareBases;
             #endregion
 
@@ -228,7 +228,7 @@ namespace AIRService.WS.Service
                     soapEnvelopeXml = new XmlDocument();
                     soapEnvelopeXml.LoadXml(soapResult);
                     XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
-                    XMLHelper.WriteXml("-fare-qr.-xml", xmlnode.InnerXml);
+                    //XMLHelper.WriteXml("-fare-qr.-xml", xmlnode.InnerXml);
                     XMLObject.FareLLSRQ.FareRS fareRS = new XMLObject.FareLLSRQ.FareRS();
                     if (xmlnode != null)
                         fareRS = XMLHelper.Deserialize<XMLObject.FareLLSRQ.FareRS>(xmlnode.InnerXml);

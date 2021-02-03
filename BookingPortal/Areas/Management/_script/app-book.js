@@ -282,36 +282,30 @@ AirBookController.init();
 //*******************************************************
 function BookingOrderLoad() {
     var cookiData = Cookies.GetCookie("FlightOrder");
-    //
     if (cookiData !== undefined && cookiData !== "") {
-        var order = JSON.parse(cookiData);
-        if (order !== null) {
-            var totalItineraryPrice = 0;
-            var lFlight = [];
-            // go data
-            var _adt = parseInt(order.ADT);
-            var _cnn = parseInt(order.CNN);
-            var _inf = parseInt(order.INF);
-            var _type = parseInt(order.FlightType);
-            // 
-            var orderGo = order.Flight[0];
-            var _rphFlight = orderGo.RPH;
-            var _arrivalDateTime = orderGo.ArrivalDateTime;
-            var _departureDateTime = orderGo.DepartureDateTime;
-            var _flightNumber = orderGo.FlightNumber;
-            var _numberInParty = orderGo.NumberInParty;
-            var _resBookDesigCode = orderGo.ResBookDesigCode;
-            var _airEquipType = orderGo.AirEquipType;
-            var _destinationLocation = orderGo.DestinationLocation;
-            var _originLocation = orderGo.OriginLocation;
-            let _fareBaseGo = orderGo.FareBase;
-            var _fareBaseCode = orderGo.FareBasisCode;
+        var orderList = JSON.parse(cookiData);
+        if (orderList == undefined || orderList == null)
+            return
+        //
+        var feeTaxModel = [];
+        var labelTbl = [];
+        $.each(orderList, function (oIndex, oItem) {
+            // go data 
+            var _adt = parseInt(oItem.ADT);
+            var _cnn = parseInt(oItem.CNN);
+            var _inf = parseInt(oItem.INF);
+            //
+            var _rphFlight = oItem.RPH;
+            var _arrivalDateTime = oItem.ArrivalDateTime;
+            var _departureDateTime = oItem.DepartureDateTime;
+            var _flightNumber = oItem.FlightNumber;
+            var _resBookDesigCode = oItem.ResBookDesigCode;
+            var _airEquipType = oItem.AirEquipType;
+            var _destinationLocation = oItem.DestinationLocation;
+            var _originLocation = oItem.OriginLocation;
+            let _fareBase = oItem.FareBase;
             departureDateTime = LibDateTime.FormatDateForAPI(_departureDateTime);
-            //returnDateTime = LibDateTime.FormatDateForAPI(returnDateTime);
-            var departureTime = LibDateTime.GetTime(_departureDateTime);
-            var arrivalTime = LibDateTime.GetTime(_arrivalDateTime);
-            // show data
-            var labelTbl = [];
+            // show data 
             if (_adt > 0) {
                 labelTbl.push({
                     PassengerType: "ADT",
@@ -331,10 +325,9 @@ function BookingOrderLoad() {
                 });
             }
             //
-            var arrPassengerBaseGo = [];
-            var arrPassengerBaseReturn = [];
-            if (_fareBaseGo.includes("##")) {
-                var arrParam = _fareBaseGo.split("##");
+            var arrPassenger = [];
+            if (_fareBase.includes("##")) {
+                var arrParam = _fareBase.split("##");
                 if (arrParam.length > 0) {
                     $.each(arrParam, function (index, item) {
                         if (item.includes(",")) {
@@ -358,7 +351,7 @@ function BookingOrderLoad() {
                                 amount = parseFloat(passengerFareInfo[1]);
                                 code = passengerFareInfo[2];
                             }
-                            arrPassengerBaseGo.push({
+                            arrPassenger.push({
                                 RPH: rph,
                                 PassengerType: passengerType,
                                 Quantity: quantity,
@@ -370,7 +363,7 @@ function BookingOrderLoad() {
                 }
             }
             else {
-                var arrParam = _fareBaseGo;
+                var arrParam = _fareBase;
                 if (arrParam.length > 0 && arrParam.includes(",")) {
                     var passengerType = '';
                     var quantity = 0;
@@ -392,7 +385,7 @@ function BookingOrderLoad() {
                         amount = parseFloat(passengerFareInfo[1]);
                         code = passengerFareInfo[2];
                     }
-                    arrPassengerBaseGo.push({
+                    arrPassenger.push({
                         RPH: rph,
                         PassengerType: passengerType,
                         Quantity: quantity,
@@ -402,216 +395,59 @@ function BookingOrderLoad() {
                 }
             }
             //
-            var feeTaxModel = [];
-            var feeBaseGo = {
+            var feeBase = {
                 RPH: _rphFlight,
                 OriginLocation: _originLocation,
                 DestinationLocation: _destinationLocation,
                 DepartureDateTime: LibDateTime.FormatDateForAPI(_departureDateTime),
                 ArrivalDateTime: LibDateTime.FormatDateForAPI(_arrivalDateTime),
                 AirEquipType: _airEquipType,
-                FareBase: arrPassengerBaseGo,
+                FareBase: arrPassenger,
                 ResBookDesigCode: _resBookDesigCode,
                 FlightNumber: _flightNumber,
                 CurrencyCode: "VND"
             };
             // add array
-            feeTaxModel.push(feeBaseGo);
-            //
-            if (_type == 2) {
-                var orderReturn = order.Flight[1];
-                _rphFlight = orderReturn.RPH;
-                _arrivalDateTime = orderReturn.ArrivalDateTime;
-                _departureDateTime = orderReturn.DepartureDateTime;
-                _flightNumber = orderReturn.FlightNumber;
-                _numberInParty = orderReturn.NumberInParty;
-                _resBookDesigCode = orderReturn.ResBookDesigCode;
-                _airEquipType = orderReturn.AirEquipType;
-                _destinationLocation = orderReturn.OriginLocation;
-                _originLocation = orderReturn.DestinationLocation;
-                var _fareBaseReturn = orderReturn.FareBase;
-                _test = orderReturn.FareBase;
-                if (_fareBaseReturn.includes("##")) {
-                    var arrParam = _fareBaseReturn.split("##");
-                    if (arrParam.length > 0) {
-                        $.each(arrParam, function (index, item) {
-                            var passengerType = '';
-                            var quantity = 0;
-                            var amount = 0;
-                            var rph = 0;
-                            var code = 0;
-                            if (item.includes(":")) {
-                                var passengerType = item.split(":")[0].trim();
-                                var passengerFare = item.split(":")[1].trim();
-                                var passengerFareInfo = passengerFare.split(",");
-                                if (passengerType == "ADT")
-                                    quantity = _adt;
-                                if (passengerType == "CNN")
-                                    quantity = _cnn;
-                                if (passengerType == "INF")
-                                    quantity = _inf;
-                                //
-                                rph = parseFloat(passengerFareInfo[0]);
-                                amount = parseFloat(passengerFareInfo[1]);
-                                code = passengerFareInfo[2];
-                            }
-                            arrPassengerBaseReturn.push({
-                                RPH: rph,
-                                PassengerType: passengerType,
-                                Quantity: quantity,
-                                Amount: amount,
-                                FareBaseCode: code
-                            });
-                        });
-                    }
+            feeTaxModel.push(feeBase);
+        });
+        //******************************************************************************************************************
+        if (feeTaxModel.length == 0) {
+            Notifization.Error("Dữ liệu không hợp lệ");
+            return;
+        }
+        //
+        AjaxFrom.POST({
+            url: URLC + '/GetFeeBasic',
+            data: { models: feeTaxModel },
+            success: function (response) {
+                if (response == null || response.status == undefined) {
+                    Notifization.Error(MessageText.NotService);
+                    return;
                 }
-                else {
-                    var arrParam = _fareBaseReturn;
-                    if (arrParam.length > 0 && arrParam.includes(",")) {
-                        var passengerType = '';
-                        var quantity = 0;
-                        var amount = 0;
-                        var rph = 0;
-                        var code = 0;
-                        if (arrParam.includes(":")) {
-                            var passengerType = arrParam.split(":")[0];
-                            var passengerFare = arrParam.split(":")[1];
-                            var passengerFareInfo = passengerFare.split(",");
-                            if (passengerType == "ADT")
-                                quantity = _adt;
-                            if (passengerType == "CNN")
-                                quantity = _cnn;
-                            if (passengerType == "INF")
-                                quantity = _inf;
-                            //
-                            rph = parseFloat(passengerFareInfo[0]);
-                            amount = parseFloat(passengerFareInfo[1]);
-                            code = passengerFareInfo[2];
-                        }
-                        arrPassengerBaseReturn.push({
-                            RPH: rph,
-                            PassengerType: passengerType,
-                            Quantity: quantity,
-                            Amount: amount,
-                            FareBaseCode: code
-                        });
-                    }
-                }
-                //
-                var feeBaseReturn = {
-                    RPH: _rphFlight,
-                    OriginLocation: _destinationLocation,
-                    DestinationLocation: _originLocation,
-                    DepartureDateTime: LibDateTime.FormatDateForAPI(_departureDateTime),
-                    ArrivalDateTime: LibDateTime.FormatDateForAPI(_arrivalDateTime),
-                    AirEquipType: _airEquipType,
-                    FareBase: arrPassengerBaseReturn,
-                    ResBookDesigCode: _resBookDesigCode,
-                    FlightNumber: _flightNumber,
-                    CurrencyCode: "VND"
-                };
-                feeTaxModel.push(feeBaseReturn);
-            }
-            //******************************************************************************************************************
-            AjaxFrom.POST({
-                url: URLC + '/GetFeeBasic',
-                data: { models: feeTaxModel },
-                success: function (response) {
-                    if (response == null || response.status == undefined) {
-                        Notifization.Error(MessageText.NotService);
-                        return;
-                    }
-                    if (response.status == 200) {
-                        var _rowPrice = "";
-                        $("#TblGoPriceInfo").html(`<tr><td>Đang cập nhật...</td></tr>`);
-                        var fareAmount = _fareBaseGo.Amount;
-                        var _fareAllTotal = 0;
-                        // flight 
-                        var _fareFlight = 0;
-                        $("#TblFlight tbody").html('');
-                        $.each(feeTaxModel, function (index, item) {
-                            var mdRph = parseInt(item.RPH);
-                            var mdAirEquipType = parseInt(item.AirEquipType);
-                            var mdFlightNumber = parseInt(item.FlightNumber);
-                            var mdArrivalDateTime = item.ArrivalDateTime;
-                            var mdDepartureDateTime = item.DepartureDateTime;
-                            var mdNumberInParty = item.NumberInParty;
-                            var mdResBookDesigCode = item.ResBookDesigCode;
-                            var mdDestinationLocation = item.DestinationLocation;
-                            var mdOriginLocation = item.OriginLocation;
-                            var mdFareBaseCode = item.FareBasisCode;
-                            var mdFareBase = item.FareBase;
-                            var mdDepartureDate = LibDateTime.GetDate(mdDepartureDateTime);
-                            var mdArrivalDate = LibDateTime.GetDate(mdArrivalDateTime)
-                            var mdDepartureTime = LibDateTime.GetTime(mdDepartureDateTime);
-                            var mdArrivalTime = LibDateTime.GetTime(mdArrivalDateTime);
-                            // tax for flight   
-                            var fareRound = 0;
-                            var _taxRow = '<tr><td>Đang cập nhật..1.</td></tr>';
-                            if (response.data.length > 0) {
-                                _taxRow = '';
-                                $.each(response.data, function (indexFlight, itemFilght) {
-                                    if (parseInt(itemFilght.RPH) == mdRph && itemFilght.AirEquipType == mdAirEquipType && itemFilght.FlightNumber == mdFlightNumber) {
-                                        var flightTaxInfos = itemFilght.FlightTaxInfos;
-                                        if (flightTaxInfos != null) {
-                                            $.each(flightTaxInfos, function (indexTax, itemTax) {
-                                                //
-                                                var _quantities = 0;
-                                                var passengerType = itemTax.PassengerType.Code;
-                                                var taxOfType = itemTax.Total;
-                                                var feeTax = 0;
-                                                var flightAmount = 0;
-                                                $.each(mdFareBase, function (indexFareBase, itemFareBase) {
-                                                    if (itemFareBase.PassengerType == passengerType) {
-                                                        flightAmount = itemFareBase.Amount;
-                                                        return;
-                                                    }
-                                                });
-                                                if (passengerType == "ADT") {
-                                                    _quantities = _adt;
-                                                }
-                                                //
-                                                if (passengerType == "CNN")
-                                                    _quantities = _cnn;
-                                                //
-                                                if (passengerType == "INF") {
-                                                    _quantities = _inf;
-                                                }
-                                                //
-                                                var flightTotal = 0;
-                                                var fareOfType = 0;
-                                                if (parseFloat(taxOfType) > 0 && parseFloat(_quantities) > 0) {
-                                                    fareOfType = flightAmount + taxOfType;
-
-                                                    flightTotal = fareOfType * parseFloat(_quantities);
-                                                    fareRound += flightTotal;
-                                                }
-                                                var taxes = itemTax.Taxes;
-                                                if (taxes.length > 0) {
-                                                    _taxRow += `
-                                                        <tr>
-                                                            <td style='width: 25px;'>${passengerType}</td>
-                                                            <td style='width: 25px;' class='text-center'>:</td>
-                                                            <td style='width: 25px;' class="text-right">${_quantities}</td>
-                                                            <td style='width: 25px;' class='text-center'>x</td>
-                                                            <td style='width: 100px;' class="text-right" data-tax='${taxOfType}'>${LibCurrencies.FormatToCurrency(fareOfType)}</td>
-                                                            <td style='width: 25px;' class='text-center'>=</td>
-                                                            <td style=' 'class="text-right">${LibCurrencies.FormatToCurrency(flightTotal)} đ</td>
-                                                        </tr>`;
-                                                };
-                                                //
-                                            });
-                                        }
-                                        //
-                                    }
-                                });
-                                // total fee 
-                                _fareFlight += fareRound;
-                            }
-                            else {
-                                _taxRow = '<tr><td>Lỗi cập nhật giá...</td></tr>';
-                            }
-                            var _flightRow = `<tr id="TblRow" ${index + 1}>
+                if (response.status == 200) {
+                    var _rowPrice = "";
+                    $("#TblGoPriceInfo").html(`<tr><td>Đang cập nhật...</td></tr>`);
+                    // flight 
+                    var _fareFlight = 0;
+                    $("#TblFlight tbody").html('');
+                    _taxRow = "";
+                    $.each(response.data, function (index, item) {
+                        var mdRph = parseInt(item.RPH);
+                        var mdAirEquipType = "";
+                        var mdFlightNumber = "";
+                        var mdArrivalDateTime = "";
+                        var mdDepartureDateTime = "";
+                        var mdNumberInParty = "";
+                        var mdResBookDesigCode = item.ResBookDesigCode;
+                        var mdDestinationLocation = "";
+                        var mdOriginLocation = "";
+                        var mdFareBaseCode = item.FareBasisCode;
+                        var mdFareBase = "";
+                        var mdDepartureDate = "";
+                        var mdArrivalDate = "";
+                        var mdDepartureTime = "";
+                        var mdArrivalTime = "";
+                        var _flightRow = `<tr id="TblRow" ${index + 1}>
                                 <td>
                                     <label class="lblTrademark">VNA-${mdAirEquipType}</label>
                                 </td>
@@ -631,24 +467,137 @@ function BookingOrderLoad() {
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"> ${_taxRow}</table>
                                 </td>
                                 <td class="td-faretotal text-right">
-                                    <label class="depart-price">${LibCurrencies.FormatToCurrency(fareRound)} đ</label>
+                                    <label class="depart-price">  đ</label>
                                 </td>
                             </tr>`;
-                            // add row to table
-                            $("#TblFlight > tbody").append(_flightRow);
-                        });
-                        var _flightRow = `<tr>
-                                <td colspan="7" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price" style='color:#F00;'>${LibCurrencies.FormatToCurrency(_fareFlight)} đ</label></td>
-                            </tr>`
                         // add row to table
                         $("#TblFlight > tbody").append(_flightRow);
-                    }
-                },
-                error: function (response) {
-                    console.log('::' + MessageText.NotService);
+                    });
+                    //$.each(orderList, function (index, item) {
+                    //    var mdRph = parseInt(item.RPH);
+                    //    var mdAirEquipType = parseInt(item.AirEquipType);
+                    //    var mdFlightNumber = parseInt(item.FlightNumber);
+                    //    var mdArrivalDateTime = item.ArrivalDateTime;
+                    //    var mdDepartureDateTime = item.DepartureDateTime;
+                    //    var mdNumberInParty = item.NumberInParty;
+                    //    var mdResBookDesigCode = item.ResBookDesigCode;
+                    //    var mdDestinationLocation = item.DestinationLocation;
+                    //    var mdOriginLocation = item.OriginLocation;
+                    //    var mdFareBaseCode = item.FareBasisCode;
+                    //    var mdFareBase = item.FareBase;
+                    //    var mdDepartureDate = LibDateTime.GetDate(mdDepartureDateTime);
+                    //    var mdArrivalDate = LibDateTime.GetDate(mdArrivalDateTime)
+                    //    var mdDepartureTime = LibDateTime.GetTime(mdDepartureDateTime);
+                    //    var mdArrivalTime = LibDateTime.GetTime(mdArrivalDateTime);
+                    //    // tax for flight   
+                    //    var fareRound = 0;
+                    //    var _taxRow = '<tr><td>Đang cập nhật..1.</td></tr>';
+                    //    if (response.data.length > 0) {
+                    //        _taxRow = '';
+
+
+
+
+                    //        //$.each(response.data, function (indexFlight, itemFilght) {
+
+                    //        //    if (parseInt(itemFilght.RPH) == mdRph && itemFilght.AirEquipType == mdAirEquipType && itemFilght.FlightNumber == mdFlightNumber) {
+                    //        //        var flightTaxInfos = itemFilght.FlightTaxInfos;
+                    //        //        if (flightTaxInfos != null) {
+                    //        //            $.each(flightTaxInfos, function (indexTax, itemTax) {
+                    //        //                //
+                    //        //                var _quantities = 0;
+                    //        //                var passengerType = itemTax.PassengerType.Code;
+                    //        //                var taxOfType = itemTax.Total;
+                    //        //                var feeTax = 0;
+                    //        //                var flightAmount = 0;
+                    //        //                $.each(mdFareBase, function (indexFareBase, itemFareBase) {
+                    //        //                    if (itemFareBase.PassengerType == passengerType) {
+                    //        //                        flightAmount = itemFareBase.Amount;
+                    //        //                        return;
+                    //        //                    }
+                    //        //                });
+                    //        //                //if (passengerType == "ADT") {
+                    //        //                //    _quantities = _adt;
+                    //        //                //}
+                    //        //                ////
+                    //        //                //if (passengerType == "CNN")
+                    //        //                //    _quantities = _cnn;
+                    //        //                ////
+                    //        //                //if (passengerType == "INF") {
+                    //        //                //    _quantities = _inf;
+                    //        //                //}
+                    //        //                //
+                    //        //                var flightTotal = 0;
+                    //        //                var fareOfType = 0;
+                    //        //                if (parseFloat(taxOfType) > 0 && parseFloat(_quantities) > 0) {
+                    //        //                    fareOfType = flightAmount + taxOfType;
+                    //        //                    flightTotal = fareOfType * parseFloat(_quantities);
+                    //        //                    fareRound += flightTotal;
+                    //        //                }
+                    //        //                var taxes = itemTax.Taxes;
+                    //        //                if (taxes.length > 0) {
+                    //        //                    _taxRow += `
+                    //        //                            <tr>
+                    //        //                                <td style='width: 25px;'>${passengerType}</td>
+                    //        //                                <td style='width: 25px;' class='text-center'>:</td>
+                    //        //                                <td style='width: 25px;' class="text-right">${_quantities}</td>
+                    //        //                                <td style='width: 25px;' class='text-center'>x</td>
+                    //        //                                <td style='width: 100px;' class="text-right" data-tax='${taxOfType}'>${LibCurrencies.FormatToCurrency(fareOfType)}</td>
+                    //        //                                <td style='width: 25px;' class='text-center'>=</td>
+                    //        //                                <td style=' 'class="text-right">${LibCurrencies.FormatToCurrency(flightTotal)} đ</td>
+                    //        //                            </tr>`;
+                    //        //                };
+                    //        //                //
+                    //        //            });
+                    //        //        }
+                    //        //        //
+                    //        //    }
+                    //        //});
+                    //        // total fee 
+                    //        _fareFlight += fareRound;
+                    //    }
+                    //    else {
+                    //        _taxRow = '<tr><td>Lỗi cập nhật giá...</td></tr>';
+                    //    }
+                    //    var _flightRow = `<tr id="TblRow" ${index + 1}>
+                    //            <td>
+                    //                <label class="lblTrademark">VNA-${mdAirEquipType}</label>
+                    //            </td>
+                    //            <td>
+                    //                 <label class="lblFlightNo"><i class="fa fa-plane" aria-hidden="true"></i> VN ${mdFlightNumber}</label>
+                    //            </td>
+                    //            <td>
+                    //                <label class="lblItinerary"><label class="lblItinerary-location">${mdOriginLocation} - ${mdDestinationLocation}</label>, <span class="lblItinerary-date">${mdDepartureDate}</span></label>
+                    //            </td>
+                    //            <td>
+                    //                <span class="lblItineraryTime">${mdDepartureTime} - ${mdArrivalTime}</span>
+                    //            </td>
+                    //            <td class="text-center">
+                    //                <label class="lblResbookdesigcode">${mdResBookDesigCode}</label>
+                    //            </td>
+                    //            <td class="td-inf-price">
+                    //                <table width="100%" border="0" cellpadding="0" cellspacing="0"> ${_taxRow}</table>
+                    //            </td>
+                    //            <td class="td-faretotal text-right">
+                    //                <label class="depart-price">${LibCurrencies.FormatToCurrency(fareRound)} đ</label>
+                    //            </td>
+                    //        </tr>`;
+                    //    // add row to table
+                    //    $("#TblFlight > tbody").append(_flightRow);
+                    //});
+                    var _flightRow = `<tr>
+                                <td colspan="7" class="total-itinerary text-right"><label>Tổng:&nbsp; </label> <label class="text-right total-itinerary-price" style='color:#F00;'>${LibCurrencies.FormatToCurrency(_fareFlight)} đ</label></td>
+                            </tr>`
+                    // add row to table
+                    $("#TblFlight > tbody").append(_flightRow);
                 }
-            });
-        }
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
+
+
     }
 }
 // valid ddlProvider
@@ -733,7 +682,6 @@ $(document).on('keyup', '#txtEmail', function () {
 });
 
 //COMP **********************************************************************************************************************************
-// 
 $(document).on("change", "input[name='rdoPassengerGroup']", function () {
     $("#lblCompany").html("");
     $("#lblName").html("");

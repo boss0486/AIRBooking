@@ -441,9 +441,9 @@ class Confirm {
 }
 
 class HelperPage {
-    static GoToByScroll(id) {
+    static ScrollToElement(elm) {
         $('html,body').animate({
-            scrollTop: $("#" + id).offset().top
-        }, 2000);
+            scrollTop: $(elm).offset().top
+        }, 3000);
     }
 }
