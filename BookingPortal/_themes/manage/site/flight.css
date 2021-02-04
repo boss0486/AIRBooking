@@ -215,7 +215,6 @@
 }
 
     .book-in table.table-bordered tr td, .book-in table.table-bordered tr th {
-        border-color: #c7e2e0;
         background: #D9F1EC;
     }
 
@@ -234,7 +233,8 @@
     }
 
         .book-in table .td-inf-price th, .book-in table .td-inf-price td {
-            padding: 5px 5px;
+            padding: 0px 5px;
+            height:unset;
         }
 
         .book-in table .td-inf-price table tr td:nth-child(1) {

@@ -495,136 +495,138 @@ namespace AIRService.Service
         }
         /// ****************************************************************************************************************************************
 
-        public List<FlightTax> GetTax(TokenModel tokenModel, List<TaxFeeModel> models)
-        {
-            List<FlightTax> flightTaxes = new List<FlightTax>();
-            if (models == null)
-                return flightTaxes;
-            // 
-            VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
-            using (var sessionService = new VNA_SessionService(tokenModel))
-            {
-                foreach (var flight in models)
-                {
-                    if (flight.FareBase.Count > 0)
-                    {
-                        //variable
-                        int _rph = flight.RPH;
-                        string originLocation = flight.OriginLocation;
-                        string destinationLocation = flight.DestinationLocation;
-                        DateTime departureDateTime = flight.DepartureDateTime;
-                        DateTime arrivalDateTime = flight.ArrivalDateTime;
-                        int airEquipType = flight.AirEquipType;
-                        string resBookDesigCode = flight.ResBookDesigCode;
-                        string currency = flight.CurrencyCode;
-                        int flightNumber = flight.FlightNumber;
+        //public List<FlightTax> GetTax(TokenModel tokenModel, List<TaxFeeModel> models)
+        //{
+        //    List<FlightTax> flightTaxes = new List<FlightTax>();
+        //    if (models == null)
+        //        return flightTaxes;
+        //    // 
+        //    VNA_OTA_AirTaxRQService vNAOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
+        //    using (var sessionService = new VNA_SessionService(tokenModel))
+        //    {
+        //        foreach (var flight in models)
+        //        {
+        //            if (flight.FareBase.Count > 0)
+        //            {
+        //                //variable
+        //                int _rph = flight.RPH;
+        //                string originLocation = flight.OriginLocation;
+        //                string destinationLocation = flight.DestinationLocation;
+        //                DateTime departureDateTime = flight.DepartureDateTime;
+        //                DateTime arrivalDateTime = flight.ArrivalDateTime;
+        //                int airEquipType = flight.AirEquipType;
+        //                string resBookDesigCode = flight.ResBookDesigCode;
+        //                string currency = flight.CurrencyCode;
+        //                int flightNumber = flight.FlightNumber;
 
-                        if (string.IsNullOrWhiteSpace(resBookDesigCode))
-                            return flightTaxes;
+        //                if (string.IsNullOrWhiteSpace(resBookDesigCode))
+        //                    return flightTaxes;
 
-                        resBookDesigCode = resBookDesigCode.Trim();
-                        //
-                        List<FlightTaxInfo> flightTaxInfos = new List<FlightTaxInfo>();
-                        foreach (var item in flight.FareBase)
-                        {
+        //                resBookDesigCode = resBookDesigCode.Trim();
+        //                //
+        //                List<FlightTaxInfo> flightTaxInfos = new List<FlightTaxInfo>();
+        //                foreach (var item in flight.FareBase)
+        //                {
 
-                            float _amount = item.Amount;
-                            AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(tokenModel, new Resquet_WsTaxModel
-                            {
-                                RPH = _rph,
-                                OriginLocation = originLocation,
-                                DestinationLocation = destinationLocation,
-                                DepartureDateTime = departureDateTime,
-                                ResBookDesigCode = resBookDesigCode,
-                                ArrivalDateTime = arrivalDateTime,
-                                AirEquipType = airEquipType,
-                                FlightNumber = flightNumber,
-                                BaseFare = new Resquet_WsTax_BaseFareModel
-                                {
-                                    RPH = item.RPH,
-                                    PassengerType = item.PassengerType,
-                                    Amount = _amount,
-                                    CurrencyCode = currency
-                                }
-                            });
+        //                    float _amount = item.Amount;
+        //                    AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vNAOTA_AirTaxRQService.AirTax(tokenModel, new Resquet_WsTaxModel
+        //                    {
+        //                        RPH = _rph,
+        //                        OriginLocation = originLocation,
+        //                        DestinationLocation = destinationLocation,
+        //                        DepartureDateTime = departureDateTime,
+        //                        ResBookDesigCode = resBookDesigCode,
+        //                        ArrivalDateTime = arrivalDateTime,
+        //                        AirEquipType = airEquipType,
+        //                        FlightNumber = flightNumber,
+        //                        BaseFare = new Resquet_WsTax_BaseFareModel
+        //                        {
+        //                            RPH = item.RPH,
+        //                            PassengerType = item.PassengerType,
+        //                            Amount = _amount,
+        //                            CurrencyCode = currency
+        //                        }
+        //                    });
 
-                            if (airTaxRS.Items.Count() > 0 && airTaxRS.Items[1] != null)
-                            {
-                                string jsonData = JsonConvert.SerializeObject(airTaxRS.Items[1]);
-                                FeeDetailsModel feeDetailsModel = JsonConvert.DeserializeObject<FeeDetailsModel>(jsonData);
-                                flightTaxInfos.Add(new FlightTaxInfo
-                                {
-                                    RPHSpecified = feeDetailsModel.ItineraryInfo[0].RPHSpecified,
-                                    PassengerType = feeDetailsModel.ItineraryInfo[0].PTC_FareBreakdown.PassengerType,
-                                    Total = feeDetailsModel.ItineraryInfo[0].TaxInfo.Total,
-                                    Taxes = feeDetailsModel.ItineraryInfo[0].TaxInfo.Taxes
-                                });
-                            }
-                        }
-                        //
-                        flightTaxes.Add(new FlightTax
-                        {
-                            RPH = _rph,
-                            FlightNumber = flightNumber,
-                            AirEquipType = airEquipType,
-                            ResBookDesigCode = resBookDesigCode,
-                            FlightTaxInfos = flightTaxInfos
-                        });
+        //                    if (airTaxRS.Items.Count() > 0 && airTaxRS.Items[1] != null)
+        //                    {
+        //                        string jsonData = JsonConvert.SerializeObject(airTaxRS.Items[1]);
+        //                        FeeDetailsModel feeDetailsModel = JsonConvert.DeserializeObject<FeeDetailsModel>(jsonData);
+        //                        flightTaxInfos.Add(new FlightTaxInfo
+        //                        {
+        //                            RPHSpecified = feeDetailsModel.ItineraryInfo[0].RPHSpecified,
+        //                            PassengerType = feeDetailsModel.ItineraryInfo[0].PTC_FareBreakdown.PassengerType,
+        //                            Total = feeDetailsModel.ItineraryInfo[0].TaxInfo.Total,
+        //                            Taxes = feeDetailsModel.ItineraryInfo[0].TaxInfo.Taxes
+        //                        });
+        //                    }
+        //                }
+        //                //
+        //                flightTaxes.Add(new FlightTax
+        //                {
+        //                    RPH = _rph,
+        //                    FlightNumber = flightNumber,
+        //                    AirEquipType = airEquipType,
+        //                    ResBookDesigCode = resBookDesigCode,
+        //                    FlightTaxInfos = flightTaxInfos
+        //                });
 
-                    }
-                }
-                //
-                return flightTaxes;
+        //            }
+        //        }
+        //        //
+        //        return flightTaxes;
 
 
-            }
-        }
+        //    }
+        //}
 
-        public ActionResult FlightFeeBasic(List<TaxFeeModel> models)
+        public ActionResult FlightFeeBasic(List<Resquest_SegmentTaxModel> models)
         {
             if (models == null)
                 return Notifization.Invalid(MessageText.Invalid + "1");
             //
-            TokenModel tokenModel = VNA_AuthencationService.GetSession();
-            // create session 
-            if (tokenModel == null)
-                return Notifization.Invalid("Cannot create session");
-            // create session 
-            string _token = tokenModel.Token;
-            string _conversationId = tokenModel.ConversationID;
-            if (string.IsNullOrWhiteSpace(_token))
-                return Notifization.NotService;
-            // 
-            VNA_OTA_AirTaxRQService vnaOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
-            using (var sessionService = new VNA_SessionService(tokenModel))
-            {
-                List<FlightTax> flightTaxFees = new List<FlightTax>();
-                foreach (var flight in models)
-                {
-                    if (flight.FareBase == null)
-                        continue;
-                    //
-                    if (flight.FareBase.Count() > 0)
-                    {
-                        //variable
-                        int _rph = flight.RPH;
-                        string originLocation = flight.OriginLocation;
-                        string destinationLocation = flight.DestinationLocation;
-                        DateTime departureDateTime = flight.DepartureDateTime;
-                        DateTime arrivalDateTime = flight.ArrivalDateTime;
-                        int airEquipType = flight.AirEquipType;
-                        string resBookDesigCode = flight.ResBookDesigCode;
-                        string currency = flight.CurrencyCode;
-                        int flightNumber = flight.FlightNumber;
-                        if (string.IsNullOrWhiteSpace(resBookDesigCode))
-                            return Notifization.Invalid(MessageText.Invalid);
-                        //
-                        resBookDesigCode = resBookDesigCode.Trim();
-                        List<FlightTaxInfo> flightTaxInfos = new List<FlightTaxInfo>();
 
-                        foreach (var item in flight.FareBase)
+            VNA_OTA_AirTaxRQService vnaOTA_AirTaxRQService = new VNA_OTA_AirTaxRQService();
+
+            List<FlightTaxRs> flightTaxFees = new List<FlightTaxRs>();
+            foreach (var model in models)
+            {
+                if (model.FareBase == null)
+                    continue;
+                //
+                if (model.FareBase.Count() > 0)
+                {
+                    //variable
+                    int _rph = model.RPH;
+                    string originLocation = model.OriginLocation;
+                    string destinationLocation = model.DestinationLocation;
+                    DateTime departureDateTime = Helper.TimeData.TimeFormat.FormatToServerDate(model.DepartureDateTime);
+                    DateTime arrivalDateTime = Helper.TimeData.TimeFormat.FormatToServerDate(model.ArrivalDateTime) ;
+                    int airEquipType = model.AirEquipType;
+                    string resBookDesigCode = model.ResBookDesigCode;
+                    string currency = model.CurrencyCode;
+                    int flightNumber = model.FlightNumber;
+                    if (string.IsNullOrWhiteSpace(resBookDesigCode))
+                        return Notifization.Invalid(MessageText.Invalid);
+                    //
+                    resBookDesigCode = resBookDesigCode.Trim();
+                    List<FlightTaxInfo> flightTaxInfos = new List<FlightTaxInfo>();
+
+                    foreach (var item in model.FareBase)
+                    {
+                        float _amount = item.Amount;
+                        TokenModel tokenModel = VNA_AuthencationService.GetSession();
+                        // create session 
+                        if (tokenModel == null)
+                            continue;
+                        // create session 
+                        string _token = tokenModel.Token;
+                        string _conversationId = tokenModel.ConversationID;
+                        if (string.IsNullOrWhiteSpace(_token))
+                            continue;
+                        // 
+                        using (var sessionService = new VNA_SessionService(tokenModel))
                         {
-                            float _amount = item.Amount;
                             AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS airTaxRS = vnaOTA_AirTaxRQService.AirTax(tokenModel, new Resquet_WsTaxModel
                             {
                                 RPH = _rph,
@@ -643,6 +645,7 @@ namespace AIRService.Service
                                     CurrencyCode = currency
                                 }
                             });
+                            //vnaTransaction.EndTransaction(tokenModel);
                             //
                             if (airTaxRS.Items.Count() > 0 && airTaxRS.Items[1] != null)
                             {
@@ -653,28 +656,37 @@ namespace AIRService.Service
                                     RPHSpecified = feeDetailsModel.ItineraryInfo[0].RPHSpecified,
                                     PassengerType = feeDetailsModel.ItineraryInfo[0].PTC_FareBreakdown.PassengerType,
                                     Total = feeDetailsModel.ItineraryInfo[0].TaxInfo.Total,
-                                    Taxes = feeDetailsModel.ItineraryInfo[0].TaxInfo.Taxes
+                                    Taxes = feeDetailsModel.ItineraryInfo[0].TaxInfo.Taxes,
+                                    Quantity = item.Quantity
                                 });
                             }
+
                         }
-                        //
-                        flightTaxFees.Add(new FlightTax
-                        {
-                            RPH = _rph,
-                            FlightNumber = flightNumber,
-                            AirEquipType = airEquipType,
-                            ResBookDesigCode = resBookDesigCode,
-                            FlightTaxInfos = flightTaxInfos
-                        });
 
                     }
+
+                    // 
+                    flightTaxFees.Add(new FlightTaxRs
+                    {
+                        RPH = _rph,
+                        AirEquipType = airEquipType,
+                        FlightNumber = flightNumber,
+                        ResBookDesigCode = resBookDesigCode,
+                        ArrivalDateTime = TimeFormat.FormatToViewDateTime(arrivalDateTime, LanguagePage.GetLanguageCode),
+                        DepartureDateTime = TimeFormat.FormatToViewDateTime(departureDateTime, LanguagePage.GetLanguageCode),
+                        DestinationLocation = destinationLocation,
+                        OriginLocation = originLocation, 
+                        FlightTaxInfos = flightTaxInfos
+                    });
+
                 }
-                //
-                if (flightTaxFees.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
-                //
-                return Notifization.Data("OK", flightTaxFees);
             }
+            //
+            if (flightTaxFees.Count == 0)
+                return Notifization.NotFound(MessageText.NotFound);
+            //
+            return Notifization.Data("OK", flightTaxFees);
+
         }
         /// BOOK TICKET ****************************************************************************************************************************************
         /// <summary>

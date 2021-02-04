@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = Helper.Page.MetaSEO.MetaTitle;
 }
-@model List<ApiPortalBooking.Models.FlightPassengerTypeInfo>
+@model List<ApiPortalBooking.Models.BookingPassengers>
 @section styles{
     <link href="~/_themes/manage/site/flight.css" rel="stylesheet" />
 }
@@ -23,11 +23,11 @@
             <table id="TblFlight" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Hãng</th>
+                        <th class="tbcol-id">#</th>
                         <th>Số hiệu</th>
                         <th>Hành trình</th>
-                        <th>Lịch trình</th>
-                        <th>Hạng</th>
+                        <th>Khởi hành</th>
+                        <th class="text-center">Hạng</th>
                         <th>Bảng Giá thành phần bao gồm thuế/ hành khách </th>
                         <th>Tổng Giá</th>
                     </tr>
@@ -96,8 +96,7 @@
         <div class="top-pic special">
             <label><i class="fas fa-info-circle" aria-hidden="true"></i>&nbsp;<span>Thông tin hành khách:</span></label>
         </div>
-
-        @if (Model != null && Model.Count > 0)
+        @if (Model != null)
         {
             foreach (var item in Model)
             {
@@ -147,9 +146,6 @@
                 </div>
             }
         }
-        @{
-            string agentId = string.Empty;
-        }
         <div class="top-pic special">
             <label><span><i class="fas fa-user-circle" aria-hidden="true"></i>&nbsp;Nhân viên đặt vé:</span></label>
         </div>
@@ -180,11 +176,13 @@
                 {
                     <div class="row">
                         <div class="col-md-7">
-                            <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
-                                <option value="">-@Helper.Language.Resource.Label.Option-</option>
-                                @Html.Raw(AirAgentService.DropdownListProvider(""))
-                            </select>
-                            <span id="lblProvider" class="message msg-box"></span>
+                            <div class="form-group">
+                                <select id="ddlProvider" name="ddlProvider" class="form-control show-tick" data-live-search="true">
+                                    <option value="">-@Helper.Language.Resource.Label.Option-</option>
+                                    @Html.Raw(AirAgentService.DropdownListProvider(""))
+                                </select>
+                                <span id="lblProvider" class="message msg-box"></span>
+                            </div>
                         </div>
 
                         <div class="col-md-5">

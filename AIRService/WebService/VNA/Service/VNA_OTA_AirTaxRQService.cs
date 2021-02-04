@@ -18,6 +18,9 @@ namespace AIRService.Service
     {
         public AIRService.WebService.VNA_OTA_AirTaxRQ.AirTaxRS AirTax(TokenModel token, Resquet_WsTaxModel model)
         {
+
+
+
             WebService.VNA_OTA_AirTaxRQ.MessageHeader messageHeader = new WebService.VNA_OTA_AirTaxRQ.MessageHeader
             {
                 MessageData = new WebService.VNA_OTA_AirTaxRQ.MessageData()

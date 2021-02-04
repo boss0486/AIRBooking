@@ -299,25 +299,36 @@ namespace Helper.TimeData
 
             }
         }
-        public static DateTime FormatToServerDate(string dtime)
+        public static DateTime FormatToServerDate(string dtime, string languageCode = null)
         {
             if (!string.IsNullOrWhiteSpace(dtime))
             {
-                if (LanguagePage.GetLanguageCode == Helper.Language.LanguageCode.Vietnamese.ID)
+                if (languageCode == null)
+                    languageCode = Helper.Language.LanguagePage.GetLanguageCode;
+                //
+                dtime = dtime.Trim();
+                string[] arrDtime = dtime.Split(' ');
+                if (arrDtime.Length == 0)
+                    return DateTime.Now;
+                //
+                string arrDate = arrDtime[0];
+                string arrTime = string.Empty;
+                if (arrDtime.Length > 1)
+                    arrTime = arrDtime[1];
+                // date
+                if (languageCode == Helper.Language.LanguageCode.Vietnamese.ID)
                 {
-                    dtime = dtime.Trim();
-                    if (dtime.Contains('-'))
+                    if (arrDate.Contains('-'))
                     {
-                        string[] arrtime = dtime.Split('-');
-                        string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                        return Convert.ToDateTime(date);
+                        string[] arrtime = arrDate.Split('-');
+                        string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                        return Convert.ToDateTime(dateTime);
                     }
-                    if (dtime.Contains('/'))
+                    if (arrDate.Contains('/'))
                     {
-                        dtime = dtime.Replace("/", "-");
-                        string[] arrtime = dtime.Split('-');
-                        string date = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0];
-                        return Convert.ToDateTime(date);
+                        string[] arrtime = arrDate.Split('/');
+                        string dateTime = arrtime[2] + "-" + arrtime[1] + "-" + arrtime[0] + " " + arrTime;
+                        return Convert.ToDateTime(dateTime);
                     }
                 }
                 else
@@ -326,7 +337,6 @@ namespace Helper.TimeData
                 }
 
             }
-            // 19-05-2019
             return DateTime.Now;
         }
         public static string FormatToUTCDateTime(DateTime dtime, string ext = "-")

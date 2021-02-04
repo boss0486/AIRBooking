@@ -55,49 +55,51 @@ namespace WebApplication.Management.Controllers
 
         public ActionResult Booking()
         {
-            List<FlightPassengerTypeInfo> flightPassengerTypeInfos = new List<FlightPassengerTypeInfo>();
+            List<BookingPassengers> bookingPassengers = new List<BookingPassengers>();
             try
             {
-                //do something
-                HttpCookie flightSearch = HttpContext.Request.Cookies["FlightSearch"];
-                var dataSearch = flightSearch.Value;
-                var model = JsonConvert.DeserializeObject<SegmentSearchModel>(dataSearch);
-                //if (model != null)
-                //{
-                //    if (model.ADT > 0)
-                //    {
-                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                //        {
-                //            PassengerType = "ADT",
-                //            PassengerName = "Người lớn",
-                //            Quantity = model.ADT
-                //        });
-                //    }
-                //    if (model.CNN > 0)
-                //    {
-                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                //        {
-                //            PassengerType = "CNN",
-                //            PassengerName = "Trẻ em",
-                //            Quantity = model.CNN
-                //        });
-                //    }
-                //    if (model.INF > 0)
-                //    {
-                //        flightPassengerTypeInfos.Add(new FlightPassengerTypeInfo
-                //        {
-                //            PassengerType = "INF",
-                //            PassengerName = "Em bé",
-                //            Quantity = model.INF
-                //        });
-                //    }
-                //}
+                BookOrderTemp model = null;
+                HttpCookie order = HttpContext.Request.Cookies["FlightOrder"];
+                ViewData["Greeting"] = order.Value;
+                if (order != null && !string.IsNullOrWhiteSpace(order.Value))
+                    model = JsonConvert.DeserializeObject<BookOrderTemp>(order.Value);
+                //  
+
+                if (model != null)
+                { 
+                    if (model.ADT > 0)
+                    {
+                        bookingPassengers.Add(new BookingPassengers
+                        {
+                            PassengerType = "ADT",
+                            PassengerName = "Người lớn",
+                            Quantity = model.ADT
+                        });
+                    }
+                    if (model.CNN > 0)
+                    {
+                        bookingPassengers.Add(new BookingPassengers
+                        {
+                            PassengerType = "CNN",
+                            PassengerName = "Trẻ em",
+                            Quantity = model.CNN
+                        });
+                    }
+                    if (model.INF > 0)
+                    {
+                        bookingPassengers.Add(new BookingPassengers
+                        {
+                            PassengerType = "INF",
+                            PassengerName = "Em bé",
+                            Quantity = model.INF
+                        });
+                    }
+                }
             }
             catch
             {
-                //
             }
-            return View(flightPassengerTypeInfos);
+            return View(bookingPassengers);
         }
         public ActionResult DataList()
         {
@@ -137,6 +139,29 @@ namespace WebApplication.Management.Controllers
         {
             CompanyService companyService = new CompanyService();
             return Notifization.Data("", companyService.DataOption());
+        }
+        //
+        [HttpPost]
+        [Route("Action/OrderTemp")]
+        public ActionResult OrderTemp(BookOrderTemp model)
+        {
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("FlightOrder");
+            if (cookie != null)
+            {
+                cookie.Value = JsonConvert.SerializeObject(model);
+                cookie.Expires = DateTime.Now.AddDays(1);
+                HttpContext.Response.Cookies.Add(cookie);
+            }
+            else
+            {
+                cookie = new HttpCookie("FlightOrder")
+                {
+                    Value = JsonConvert.SerializeObject(model),
+                    Expires = DateTime.Now.AddDays(1)
+                };
+                HttpContext.Response.Cookies.Add(cookie);
+            }
+            return Notifization.Data("OK", model);
         }
 
         [HttpPost]
@@ -205,7 +230,7 @@ namespace WebApplication.Management.Controllers
 
         [HttpPost]
         [Route("Action/GetFeeBasic")]
-        public ActionResult GetFeeBasic(List<TaxFeeModel> models)
+        public ActionResult GetFeeBasic(List<Resquest_SegmentTaxModel> models)
         {
             try
             {

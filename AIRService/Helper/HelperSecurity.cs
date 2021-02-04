@@ -18,6 +18,7 @@ using System.Windows.Media;
 using Helper.Language;
 using ZXing;
 using System.Windows;
+using ApiPortalBooking.Models;
 
 namespace Helper.Security
 {
@@ -318,7 +319,7 @@ namespace Helper.Security
                 cookie.Expires = DateTime.Now.AddDays(10);
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
-        }
+        } 
         public static LanguageCodeOption GetCookiForLanguage()
         {
             HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Language");

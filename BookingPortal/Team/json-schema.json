@@ -1,74 +1,33 @@
-[
-  {
-    "ADT": 1,
-    "CNN": 1,
-    "INF": 1,
-    "RPH": 4,
-    "NumberInParty": 2,
-    "OriginLocation": "HAN",
-    "DestinationLocation": "SGN",
-    "DepartureDateTime": "26/02/2021 06:40:00",
-    "ArrivalDateTime": "26/02/2021 08:55:00",
-    "AirEquipType": 320,
-    "ResBookDesigCode": "P",
-    "FlightNumber": 6003,
-    "FareBase": "ADT:4,209000,PAPVNF96##CNN:11,189000,PAPVNF96/CH10##INF:18,21000,PAPVNF96/IN90",
-    "ItineraryType": null,
-    "AirlineID": "VN",
-    "TimeZoneLocal": "Asia/Bangkok"
-  },
-  {
-    "ADT": 1,
-    "CNN": 1,
-    "INF": 1,
-    "RPH": 8,
-    "NumberInParty": 2,
-    "OriginLocation": "SGN",
-    "DestinationLocation": "HAN",
-    "DepartureDateTime": "28/02/2021 09:30:00",
-    "ArrivalDateTime": "28/02/2021 11:40:00",
-    "AirEquipType": 321,
-    "ResBookDesigCode": "P",
-    "FlightNumber": 7246,
-    "FareBase": "ADT:6,209000,PAPVNF96##CNN:15,189000,PAPVNF96/CH10##INF:24,21000,PAPVNF96/IN90",
-    "ItineraryType": null,
-    "AirlineID": "VN",
-    "TimeZoneLocal": "Asia/Bangkok"
-  },
-  {
-    "ADT": 1,
-    "CNN": 1,
-    "INF": 1,
-    "RPH": 9,
-    "NumberInParty": 2,
-    "OriginLocation": "HAN",
-    "DestinationLocation": "DAD",
-    "DepartureDateTime": "05/03/2021 18:55:00",
-    "ArrivalDateTime": "05/03/2021 20:20:00",
-    "AirEquipType": 321,
-    "ResBookDesigCode": "E",
-    "FlightNumber": 7167,
-    "FareBase": "ADT:17,309000,EPXVNF##CNN:0,0, ##INF:0,0, ",
-    "ItineraryType": null,
-    "AirlineID": "VN",
-    "TimeZoneLocal": "Asia/Bangkok"
-  },
-  {
-    "ADT": 1,
-    "CNN": 1,
-    "INF": 1,
-    "RPH": 9,
-    "NumberInParty": 2,
-    "OriginLocation": "DAD",
-    "DestinationLocation": "HAN",
-    "DepartureDateTime": "07/03/2021 20:25:00",
-    "ArrivalDateTime": "07/03/2021 21:45:00",
-    "AirEquipType": 787,
-    "ResBookDesigCode": "E",
-    "FlightNumber": 184,
-    "FareBase": "ADT:17,309000,EPXVNF##CNN:0,0, ##INF:0,0, ",
-    "ItineraryType": null,
-    "AirlineID": "VN",
-    "TimeZoneLocal": "Asia/Bangkok"
-  }
-]
+{
+  "ADT": 1,
+  "CNN": 0,
+  "INF": 0,
+  "ItineraryType": 0,
+  "AirlineID": 0,
+  "Segments": [
+    {
+      "RPH": 3,
+      "NumberInParty": 1,
+      "OriginLocation": "HAN",
+      "DestinationLocation": "SGN",
+      "DepartureDateTime": "20/04/2021 16:30:00",
+      "ArrivalDateTime": "20/04/2021 18:45:00",
+      "AirEquipType": 359,
+      "ResBookDesigCode": "L",
+      "FlightNumber": 257,
+      "FareBase": "ADT:33,1909000,LAPVNF"
+    },
+    {
+      "RPH": 8,
+      "NumberInParty": 1,
+      "OriginLocation": "SGN",
+      "DestinationLocation": "HAN",
+      "DepartureDateTime": "23/04/2021 10:00:00",
+      "ArrivalDateTime": "23/04/2021 12:10:00",
+      "AirEquipType": 359,
+      "ResBookDesigCode": "L",
+      "FlightNumber": 210,
+      "FareBase": "ADT:33,1909000,LAPVNF"
+    }
+  ]
+}
