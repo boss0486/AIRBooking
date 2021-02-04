@@ -324,7 +324,7 @@ function BookingOrderLoad() {
             var _airEquipType = oItem.AirEquipType;
             var _destinationLocation = oItem.DestinationLocation;
             var _originLocation = oItem.OriginLocation;
-            let _fareBase = oItem.FareBase; 
+            let _fareBase = oItem.FareBase;
             //
             var arrPassenger = [];
             if (_fareBase.includes("##")) {
@@ -404,7 +404,7 @@ function BookingOrderLoad() {
                 ArrivalDateTime: _arrivalDateTime,
                 AirEquipType: _airEquipType,
                 FareBase: arrPassenger,
-                ResBookDesigCode: _resBookDesigCode, 
+                ResBookDesigCode: _resBookDesigCode,
                 FlightNumber: _flightNumber,
                 CurrencyCode: "VND"
             };
@@ -858,36 +858,6 @@ $(document).on('click', '#btnBooking', function () {
     // get flight data
     var cookiData = Cookies.GetCookie("FlightOrder");
 
-    console.log("ok" + JSON.stringify(cookiData));
-    return; 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     if (cookiData == undefined || cookiData == "") {
         Notifization.Error("Dữ liệu không hợp lệ");
         return;
@@ -900,32 +870,27 @@ $(document).on('click', '#btnBooking', function () {
     var lFlight = [];
     var ddlAirlineType = order.AirlineType;
     var ddlItineraryType = order.ItineraryType;
-    // 
-
-
-
-
-
-    var orderGo = order.Flight[0];
-    var _arrivalDateTime = orderGo.ArrivalDateTime;
-    var _departureDateTime = orderGo.DepartureDateTime;
-    var _flightNumber = orderGo.FlightNumber;
-    var _numberInParty = orderGo.NumberInParty;
-    var _resBookDesigCode = orderGo.ResBookDesigCode;
-    var _airEquipType = orderGo.AirEquipType;
-    var _destinationLocation = orderGo.DestinationLocation;
-    var _originLocation = orderGo.OriginLocation;
-    // 
-    // add data for go
-    lFlight.push({
-        DepartureDateTime: _departureDateTime,
-        ArrivalDateTime: _arrivalDateTime,
-        FlightNumber: _flightNumber,
-        NumberInParty: _numberInParty,
-        ResBookDesigCode: _resBookDesigCode,
-        AirEquipType: _airEquipType,
-        DestinationLocation: _destinationLocation,
-        OriginLocation: _originLocation
+    //   
+    $.each(order, function (index, item) { 
+        var _arrivalDateTime = item.ArrivalDateTime;
+        var _departureDateTime = item.DepartureDateTime;
+        var _flightNumber = item.FlightNumber;
+        var _numberInParty = item.NumberInParty;
+        var _resBookDesigCode = item.ResBookDesigCode;
+        var _airEquipType = item.AirEquipType;
+        var _destinationLocation = item.DestinationLocation;
+        var _originLocation = item.OriginLocation;
+        // 
+        lFlight.push({
+            DepartureDateTime: _departureDateTime,
+            ArrivalDateTime: _arrivalDateTime,
+            FlightNumber: _flightNumber,
+            NumberInParty: _numberInParty,
+            ResBookDesigCode: _resBookDesigCode,
+            AirEquipType: _airEquipType,
+            DestinationLocation: _destinationLocation,
+            OriginLocation: _originLocation
+        });
     });
     //
     if (ddlProvider == undefined)
@@ -966,6 +931,8 @@ $(document).on('click', '#btnBooking', function () {
         Segments: lFlight,
         Summary: txtMessage
     };
+    console.log("ok" + JSON.stringify(bookModel));
+    return; 
     // call api
     if (flg) {
         AjaxFrom.POST({
