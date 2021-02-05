@@ -256,7 +256,7 @@ namespace WebApplication.Management.Controllers
             try
             {
                 var vnaSearchService = new VNA_SearchService();
-                return vnaSearchService.BookOrderSave(model);
+                return vnaSearchService.Booking(model);
             }
             catch (Exception ex)
             {

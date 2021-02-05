@@ -1,0 +1,36 @@
+[2021-02-05 09:19:00] Booking: System.ServiceModel.FaultException: ERR.SWS.CLIENT.VALIDATION_FAILED
+
+Server stack trace: 
+   at System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortType.OTA_AirBookRQ(OTA_AirBookRQRequest request)
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortTypeClient.AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortType.OTA_AirBookRQ(OTA_AirBookRQRequest request) in E:\STARCOM\PROJECT\AIRBooking\AIRService\Connected Services\WebService.VNA_OTA_AirBookLLSRQ\Reference.cs:line 4818
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortTypeClient.OTA_AirBookRQ(MessageHeader& MessageHeader, Security1& Security, OTA_AirBookRQ OTA_AirBookRQ1) in E:\STARCOM\PROJECT\AIRBooking\AIRService\Connected Services\WebService.VNA_OTA_AirBookLLSRQ\Reference.cs:line 4826
+   at AIRService.WS.Service.VNA_OTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(AirBookModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_OTA_AirBookLLSRQSevice.cs:line 76
+   at AIRService.Service.VNA_SearchService.BookPlaceholder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_SearchService.cs:line 850
+   at WebApplication.Management.Controllers.AirBookController.TicketOrder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\BookingPortal\Areas\Management\Controllers\AirBookController.cs:line 259
+[2021-02-05 10:42:46] Booking: System.ServiceModel.FaultException: ERR.SWS.CLIENT.VALIDATION_FAILED
+
+Server stack trace: 
+   at System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortType.OTA_AirBookRQ(OTA_AirBookRQRequest request)
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortTypeClient.AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortType.OTA_AirBookRQ(OTA_AirBookRQRequest request) in E:\STARCOM\PROJECT\AIRBooking\AIRService\Connected Services\WebService.VNA_OTA_AirBookLLSRQ\Reference.cs:line 4818
+   at AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookPortTypeClient.OTA_AirBookRQ(MessageHeader& MessageHeader, Security1& Security, OTA_AirBookRQ OTA_AirBookRQ1) in E:\STARCOM\PROJECT\AIRBooking\AIRService\Connected Services\WebService.VNA_OTA_AirBookLLSRQ\Reference.cs:line 4826
+   at AIRService.WS.Service.VNA_OTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(AirBookModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_OTA_AirBookLLSRQSevice.cs:line 76
+   at AIRService.Service.VNA_SearchService.BookPlaceholder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_SearchService.cs:line 846
+   at WebApplication.Management.Controllers.AirBookController.TicketOrder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\BookingPortal\Areas\Management\Controllers\AirBookController.cs:line 259
+[2021-02-05 10:52:02] Đã đặt chỗ:ZWMJCG
+[2021-02-05 13:58:24] Đã đặt chỗ:MJUVLT

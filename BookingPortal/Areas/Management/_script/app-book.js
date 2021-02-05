@@ -450,13 +450,14 @@ function BookingOrderLoad() {
                             $.each(flightTaxInfos, function (idxTax, itemTax) {
                                 //
                                 var _quantities = itemTax.Quantity;
+                                var fareBasic = itemTax.FareBasic;
+                                //
                                 var passengerType = itemTax.PassengerType.Code;
                                 var taxOfType = itemTax.Total;
-                                var flightAmount = 0;
                                 var flightTotal = 0;
                                 var fareOfType = 0;
                                 if (parseFloat(taxOfType) > 0 && parseFloat(_quantities) > 0) {
-                                    fareOfType = flightAmount + taxOfType;
+                                    fareOfType = fareBasic + taxOfType;
                                     flightTotal = fareOfType * parseFloat(_quantities);
                                     fareRound += flightTotal;
                                 }
@@ -761,7 +762,6 @@ $(document).on('click', '#btnBooking', function () {
     var name = $("#txtName").val();
     // comp
     $("#lblCompany").html("");
-    // Khach le
     $("#lblName").html("");
     $("#txtPhone").html("");
     $("#lblEmail").html("");
@@ -868,10 +868,10 @@ $(document).on('click', '#btnBooking', function () {
         return;
     }
     var lFlight = [];
-    var ddlAirlineType = order.AirlineType;
+    var ddlAirline = order.AirlineID;
     var ddlItineraryType = order.ItineraryType;
-    //   
-    $.each(order, function (index, item) { 
+    //    
+    $.each(order.Segments, function (index, item) {
         var _arrivalDateTime = item.ArrivalDateTime;
         var _departureDateTime = item.DepartureDateTime;
         var _flightNumber = item.FlightNumber;
@@ -892,6 +892,10 @@ $(document).on('click', '#btnBooking', function () {
             OriginLocation: _originLocation
         });
     });
+    if (lFlight.length == 0) {
+        Notifization.Error("Dữ liệu chặng bay không hợp lệ");
+        return;
+    }
     //
     if (ddlProvider == undefined)
         ddlProvider = "";
@@ -923,7 +927,7 @@ $(document).on('click', '#btnBooking', function () {
     //
     var bookModel = {
         ItineraryType: ddlItineraryType,
-        AirlineType: ddlAirlineType,
+        AirlineID: ddlAirline,
         CustomerType: customerType,
         TicketingInfo: ticketingInfo,
         Contacts: lContact,
@@ -931,8 +935,7 @@ $(document).on('click', '#btnBooking', function () {
         Segments: lFlight,
         Summary: txtMessage
     };
-    console.log("ok" + JSON.stringify(bookModel));
-    return; 
+
     // call api
     if (flg) {
         AjaxFrom.POST({
@@ -945,7 +948,7 @@ $(document).on('click', '#btnBooking', function () {
                 }
                 if (response.status == 200) {
                     Notifization.Success(response.message);
-                    //location.href = response.data;
+                    location.href = response.data;
                     return;
                 }
                 Notifization.Error(response.message);

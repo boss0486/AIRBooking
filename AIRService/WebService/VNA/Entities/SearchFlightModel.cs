@@ -13,7 +13,7 @@ namespace ApiPortalBooking.Models
         public int INF { get; set; }
         public string OriginLocation { get; set; }
         public string DestinationLocation { get; set; }
-        public string DepartureDateTime { get; set; }
+        public DateTime DepartureDateTime { get; set; }
         public bool IsHasTax { get; set; }
         public int ItineraryType { get; set; }
         public string AirlineID { get; set; }
@@ -120,11 +120,11 @@ namespace ApiPortalBooking.Models
     public class FlightTaxInfo
     {
         public FarePassengerType PassengerType { get; set; }
+        public double FareBasic { get; set; }
         public int Quantity { get; set; }
         public Boolean RPHSpecified { get; set; }
         public Double Total { get; set; }
         public List<Taxes> Taxes { get; set; }
-        public List<InteralFee> IFee { get; set; }
     }
     public class InteralFee
     {

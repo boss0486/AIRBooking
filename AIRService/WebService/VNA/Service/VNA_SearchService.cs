@@ -73,16 +73,12 @@ namespace AIRService.Service
 
                 string _destinationLocation = model.DestinationLocation;
                 string _originLocation = model.OriginLocation;
-                string _strDepartureDateTime = model.DepartureDateTime;
+                DateTime _departureDateTime = model.DepartureDateTime;
                 int _adt = model.ADT; // Adults
                 int _cnn = model.CNN; // minors
                 int _inf = model.INF; // Infant
                 int _availabilityTotal = model.ADT + model.CNN;
                 string segmentText = $"{_originLocation}-{_destinationLocation}";
-                if (string.IsNullOrWhiteSpace(_strDepartureDateTime) || !Helper.Page.Validate.TestDate(_strDepartureDateTime))
-                    return Notifization.Invalid($"#{segmentText}: t.gian bay không hợp lệ");
-                //   
-                DateTime _departureDateTime = Helper.TimeData.TimeFormat.FormatToServerDate(_strDepartureDateTime);
                 if (_adt <= 0)
                     return Notifization.Invalid($"#{segmentText}: số lượng người lớn phải > 0");
                 //
@@ -237,7 +233,7 @@ namespace AIRService.Service
 
                 RsSegment rsSegment = new RsSegment
                 {
-                    DepartureDateTime = model.DepartureDateTime,
+                    DepartureDateTime = Helper.TimeData.TimeFormat.FormatToViewDateTime(model.DepartureDateTime, LanguagePage.GetLanguageCode),
                     DestinationLocation = model.DestinationLocation,
                     OriginLocation = model.OriginLocation,
                     ADT = model.ADT,
@@ -247,7 +243,7 @@ namespace AIRService.Service
                 if (rsSegment == null)
                     return Notifization.NotFound(MessageText.NotFound + 1);
                 //
-                return Notifization.Data("OK -> IsRoundTrip: false ", rsSegment);
+                return Notifization.Data("OK", rsSegment);
             }
         }
         // Get list ResBookDesigCode is valid
@@ -600,8 +596,8 @@ namespace AIRService.Service
                     int _rph = model.RPH;
                     string originLocation = model.OriginLocation;
                     string destinationLocation = model.DestinationLocation;
-                    DateTime departureDateTime = Helper.TimeData.TimeFormat.FormatToServerDate(model.DepartureDateTime);
-                    DateTime arrivalDateTime = Helper.TimeData.TimeFormat.FormatToServerDate(model.ArrivalDateTime) ;
+                    DateTime departureDateTime = Convert.ToDateTime(model.DepartureDateTime);
+                    DateTime arrivalDateTime = Convert.ToDateTime(model.ArrivalDateTime);
                     int airEquipType = model.AirEquipType;
                     string resBookDesigCode = model.ResBookDesigCode;
                     string currency = model.CurrencyCode;
@@ -614,7 +610,7 @@ namespace AIRService.Service
 
                     foreach (var item in model.FareBase)
                     {
-                        float _amount = item.Amount;
+                        double _amount = item.Amount;
                         TokenModel tokenModel = VNA_AuthencationService.GetSession();
                         // create session 
                         if (tokenModel == null)
@@ -657,10 +653,10 @@ namespace AIRService.Service
                                     PassengerType = feeDetailsModel.ItineraryInfo[0].PTC_FareBreakdown.PassengerType,
                                     Total = feeDetailsModel.ItineraryInfo[0].TaxInfo.Total,
                                     Taxes = feeDetailsModel.ItineraryInfo[0].TaxInfo.Taxes,
-                                    Quantity = item.Quantity
+                                    Quantity = item.Quantity,
+                                    FareBasic = _amount
                                 });
                             }
-
                         }
 
                     }
@@ -675,8 +671,9 @@ namespace AIRService.Service
                         ArrivalDateTime = TimeFormat.FormatToViewDateTime(arrivalDateTime, LanguagePage.GetLanguageCode),
                         DepartureDateTime = TimeFormat.FormatToViewDateTime(departureDateTime, LanguagePage.GetLanguageCode),
                         DestinationLocation = destinationLocation,
-                        OriginLocation = originLocation, 
-                        FlightTaxInfos = flightTaxInfos
+                        OriginLocation = originLocation,
+                        FlightTaxInfos = flightTaxInfos,
+
                     });
 
                 }
@@ -701,7 +698,7 @@ namespace AIRService.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public ActionResult BookOrderSave(BookOrderSaveModel model)
+        public ActionResult Booking(BookOrderSaveModel model)
         {
 
             string userId = Helper.Current.UserLogin.IdentifierID;
@@ -760,16 +757,16 @@ namespace AIRService.Service
             string strPhone = string.Empty;
             // 
             if (model.Contacts == null)
-                return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
+                return Notifization.Invalid("Thông tin liên hệ không hợp lệ 1");
             //
             int customerType = model.CustomerType;
             if (customerType == (int)ClientLoginEnum.CustomerType.Company)
             {
-                BookCompanyRqContact bookCompanyContact = Contacts.BookCompanyContact;
-                if (bookCompanyContact == null)
+                CompanyContactRq companyContact = Contacts.CompanyContact;
+                if (companyContact == null)
                     return Notifization.Invalid("Thông tin liên hệ không hợp lệ");
                 //
-                string companyId = bookCompanyContact.CompanyID;
+                string companyId = companyContact.CompanyID;
                 if (string.IsNullOrWhiteSpace(companyId))
                     return Notifization.Invalid("Vui lòng chọn công ty");
                 //
@@ -789,10 +786,10 @@ namespace AIRService.Service
             }
             else if (customerType == (int)ClientLoginEnum.CustomerType.Haunt)
             {
-                HauntContact bookKhachLeContact = Contacts.HauntContact;
-                string name = bookKhachLeContact.Name;
-                string contactPhone = bookKhachLeContact.Phone;
-                string contactEmail = bookKhachLeContact.Email;
+                HauntContact hauntContact = Contacts.HauntContact;
+                string name = hauntContact.Name;
+                string contactPhone = hauntContact.Phone;
+                string contactEmail = hauntContact.Email;
                 if (string.IsNullOrWhiteSpace(name))
                     return Notifization.Invalid("Không được để trống tên liên hệ");
                 //
@@ -1031,9 +1028,9 @@ namespace AIRService.Service
                     {
                         index++;
                         string passengerName = Helper.Page.Library.FormatStandardNameToUni2NONE(item.FullName).ToUpper();
-                        string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(item.FullName);
-                        string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(item.FullName);
-                        string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(item.FullName);
+                        string givenName = AIRService.WS.VNAHelper.VNALibrary.GetGivenName(passengerName);
+                        string surName = AIRService.WS.VNAHelper.VNALibrary.GetSurName(passengerName);
+                        string middleName = AIRService.WS.VNAHelper.VNALibrary.GetMiddleName(passengerName);
                         //
                         if (!string.IsNullOrWhiteSpace(givenName))
                             givenName = givenName.ToUpper();
@@ -1478,9 +1475,9 @@ namespace AIRService.Service
                 return Notifization.Invalid("Mã PNR không hợp lệ");
             // 
             BookTicketService bookTicketService = new BookTicketService();
-            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.DepartureDateTime).FirstOrDefault();
             if (bookTicket == null)
-                return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
+                return Notifization.Invalid("Lỗi thời gian khởi hành");
             // check time void book 
             AirportConfigService airportConfigService = new AirportConfigService();
             AirResBookDesigService airResBookDesigService = new AirResBookDesigService();
@@ -1495,20 +1492,7 @@ namespace AIRService.Service
             DateTime dateTime = Helper.TimeData.TimeHelper.UtcDateTime;
             DateTime departureDateTime = bookTicket.DepartureDateTime;
             DateTime IssueDate = bookOrder.IssueDate;
-            // in day
-            // P: A : 6
-            // E T R N : 12
-            // Q L K H : 24
-            // S M : 72
-            // I 24
-
-            //if (dateTime.Year == departureDateTime.Year && dateTime.Month == departureDateTime.Month && dateTime.Day == departureDateTime.Day)
-            //{
-            //    if (departureDateTime.Minute - dateTime.Minute < 0)
-            //    { }
-            //} 
-
-
+            // in day 
             DateTime datetime = Helper.TimeData.TimeHelper.UtcDateTime;
             if (datetime > departureDateTime)
                 return Notifization.Invalid($"T.gian khởi hành không hợp lệ");
@@ -1538,15 +1522,23 @@ namespace AIRService.Service
                     PNR = pnr
                 });
                 //
-                XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
-                if (alreadyTicketed == null)
+                XMLObject.ReservationRq2.TicketingTimeLimit ticketingTimeLimit = reservationRS.Reservation.PassengerReservation.TicketingInfo.TicketingTimeLimit;
+                if (ticketingTimeLimit == null)
                     return Notifization.Invalid("Lệnh đặt chỗ không tồn tại");
                 //
                 VNA_OTA_CancelLLSRQService vNAWSOTA_CancelLLSRQService = new VNA_OTA_CancelLLSRQService();
                 var data = vNAWSOTA_CancelLLSRQService.OTA_CancelLLS(tokenModel);
                 VNA_EndTransaction vNATransaction = new VNA_EndTransaction();
                 var end = vNATransaction.EndTransaction(tokenModel);
-                return Notifization.Success("Đã hủy");
+                if (data.ApplicationResults.Success != null)
+                {
+                    BookPassengerService bookPassengerService = new BookPassengerService();
+                    bookPassengerService.Execute("UPDATE App_BookPassenger SET IsVoided = 1 WHERE BookOrderID = @OrderID", new { OrderID = orderId });
+                    bookOrder.OrderStatus = (int)BookOrderEnum.BookOrderStatus.Cancel;
+                    bookOrderService.Update(bookOrder);
+                    return Notifization.Success("Đã hủy thành công");
+                }
+                return Notifization.Invalid("Lỗi dịch vụ");
             }
         }
         public ActionResult VoidTicket(BookPassengerIDModel model)
@@ -1590,7 +1582,7 @@ namespace AIRService.Service
                 return Notifization.Invalid(MessageText.Invalid);
             //DepartureDateTime 
 
-            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.DepartureDateTime).FirstOrDefault();
             if (bookTicket == null)
                 return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
             // 
@@ -1634,7 +1626,6 @@ namespace AIRService.Service
                     Token = tokenModel.Token,
                     PNR = bookOrder.PNR
                 });
-
 
                 XMLObject.ReservationRq2.AlreadyTicketed alreadyTicketed = reservationRS.Reservation.PassengerReservation.TicketingInfo.AlreadyTicketed;
                 if (alreadyTicketed == null)
@@ -1714,7 +1705,7 @@ namespace AIRService.Service
             if (string.IsNullOrWhiteSpace(ticketNo))
                 return Notifization.Invalid("Số vé không hợp lệ");
             // 
-            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId && m.TicketType == (int)BookOrderEnum.BookFlightType.FlightGo).FirstOrDefault();
+            BookTicket bookTicket = bookTicketService.GetAlls(m => m.BookOrderID == orderId).OrderBy(m => m.DepartureDateTime).FirstOrDefault();
             if (bookTicket == null)
                 return Notifization.Invalid("Lỗi kiểm tra thời gian khởi hành");
             // 

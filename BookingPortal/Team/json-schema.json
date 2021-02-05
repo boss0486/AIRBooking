@@ -1,33 +1,51 @@
-{
-  "ADT": 1,
-  "CNN": 0,
-  "INF": 0,
+﻿{
   "ItineraryType": 0,
-  "AirlineID": 0,
-  "Segments": [
+  "CustomerType": "1",
+  "TicketingInfo": {
+    "ProviderID": "848059ec-3e71-4d74-83cf-16d60bde7466",
+    "TiketingID": "6e296870-4a5b-4d84-a24e-af6dd382da12"
+  },
+  "Contacts": {
+    "HauntContact": {
+      "Name": ""
+    },
+    "CompanyContact": {
+      "CompanyID": "bf95e117-6052-41eb-969e-f2f4eb0bf6f2"
+    }
+  },
+  "Passengers": [
     {
-      "RPH": 3,
-      "NumberInParty": 1,
-      "OriginLocation": "HAN",
-      "DestinationLocation": "SGN",
-      "DepartureDateTime": "20/04/2021 16:30:00",
-      "ArrivalDateTime": "20/04/2021 18:45:00",
-      "AirEquipType": 359,
-      "ResBookDesigCode": "L",
-      "FlightNumber": 257,
-      "FareBase": "ADT:33,1909000,LAPVNF"
+      "PassengerType": "ADT",
+      "FullName": "Phùng Quốc Việt",
+      "Gender": "1"
     },
     {
-      "RPH": 8,
-      "NumberInParty": 1,
-      "OriginLocation": "SGN",
-      "DestinationLocation": "HAN",
-      "DepartureDateTime": "23/04/2021 10:00:00",
-      "ArrivalDateTime": "23/04/2021 12:10:00",
-      "AirEquipType": 359,
-      "ResBookDesigCode": "L",
-      "FlightNumber": 210,
-      "FareBase": "ADT:33,1909000,LAPVNF"
+      "PassengerType": "CNN",
+      "FullName": "Hoàng Long",
+      "Gender": "1"
     }
-  ]
+  ],
+  "Segments": [
+    {
+      "DepartureDateTime": "25/03/2021 07:55:00",
+      "ArrivalDateTime": "25/03/2021 10:10:00",
+      "FlightNumber": 6005,
+      "NumberInParty": 2,
+      "ResBookDesigCode": "A",
+      "AirEquipType": 320,
+      "DestinationLocation": "SGN",
+      "OriginLocation": "HAN"
+    },
+    {
+      "DepartureDateTime": "27/03/2021 15:00:00",
+      "ArrivalDateTime": "27/03/2021 17:10:00",
+      "FlightNumber": 266,
+      "NumberInParty": 2,
+      "ResBookDesigCode": "T",
+      "AirEquipType": 359,
+      "DestinationLocation": "HAN",
+      "OriginLocation": "SGN"
+    }
+  ],
+  "Summary": "okkk"
 }

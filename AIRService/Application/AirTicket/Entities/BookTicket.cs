@@ -142,7 +142,7 @@ namespace WebCore.Entities
     public class BookContactRqModel
     {
         public HauntContact HauntContact { get; set; }
-        public BookCompanyRqContact BookCompanyContact { get; set; }
+        public CompanyContactRq CompanyContact { get; set; }
     }
     public class HauntContact
     {
@@ -151,7 +151,7 @@ namespace WebCore.Entities
         public string Phone { get; set; }
     }
 
-    public class BookCompanyRqContact
+    public class CompanyContactRq
     {
         public string CompanyID { get; set; }
     }

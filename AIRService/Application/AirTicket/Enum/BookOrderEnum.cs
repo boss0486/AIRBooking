@@ -22,11 +22,11 @@
             National = 2,
         }
 
-        public enum BookFlightType
-        {
-            None = 0,
-            FlightGo = 1,
-            FlightReturn = 2
-        }
+        //public enum BookFlightType
+        //{
+        //    None = 0,
+        //    FlightGo = 1,
+        //    FlightReturn = 2
+        //}
     }
 }
