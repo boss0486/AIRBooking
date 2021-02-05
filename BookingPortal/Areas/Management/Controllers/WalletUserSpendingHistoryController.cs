@@ -29,15 +29,14 @@ namespace WebApplication.Management.Controllers
         {
             try
             {
-                return Notifization.NotService;
-                //using (var service = new WalletUserHistoryService())
-                //{
-                //    return service.DataList(model);
-                //}
+                using (var service = new UserSpendingHistoryService())
+                {
+                    return service.DataList(model);
+                }
             }
             catch (Exception ex)
             {
-                return Notifization.NotService;
+                return Notifization.TEST("::" + ex);
             }
         }
     }

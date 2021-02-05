@@ -48,16 +48,10 @@ namespace WebCore.Entities
     {
 
         public string ID { get; set; }
-        public string CustomerID { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Alias { get; set; }
-        public string SenderID { get; set; }
-        public string SendUserID { get; set; }
-        public string ReceivedID { get; set; }
-        public string ReceivedUserID { get; set; }
+        public string AgentID { get; set; }
+        public string TicketingID { get; set; }
+        public string FullName { get; set; }
         public double Amount { get; set; }
-        public bool Status { get; set; }
     }
     public class UserSpendingOption
     {

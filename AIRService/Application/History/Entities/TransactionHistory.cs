@@ -12,4 +12,9 @@ namespace WebCore.Entities
         public bool Status { get; set; }
         public string Message { get; set; }
     }
+    public class HistoryMessageModel
+    {
+        public bool Status { get; set; }
+        public string Message { get; set; }
+    }
 }

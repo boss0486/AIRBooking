@@ -13,9 +13,9 @@
         <thead>
             <tr>
                 <th class="tbcol-id">#&nbsp;</th>
-                <th class="tbcol-title">Tiêu đề</th>
+                <th class="tbcol-title">Nhân viên</th>
                 <th class="tbcol-active">Số tiền</th>
-                <th class="tbcol-date">Ngày tạo</th>
+                <th class="tbcol-date">Ngày cấp</th>
             </tr>
         </thead>
         <tbody id="TblData"></tbody>
@@ -26,37 +26,7 @@
     <script src="~/Areas/Management/_script/wallet-customer-spending-history.js"></script>
     <script type="text/javascript">
         $(function () {
-            //var d = new Date();
-            //d.setDate(d.getDate() - 3);
-            //var today = d;
-            //var dd = String(today.getDate()).padStart(2, '0');
-            //var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            //var yyyy = today.getFullYear();
-            //today = dd + "-" + mm + "-" + yyyy;
-
-            //$('#txtStartDate').val(today);
-            $('#txtStartDate').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: '01-07-2020',
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
-                /// $('#selectDate').datepicker('hide');
-            });
-            $('#txtEndDate').datepicker({
-                format: 'dd-mm-yyyy',
-                startDate: $('#txtStartDate').val(),
-                todayHighlight: true
-
-            }).on('changeDate', function (index, item) {
-                //$('#ddlTimeExpress').datepicker('hide');
-            });
-            //
-            $(document).on('change', '#ddlTimeExpress', function () {
-                $('#txtStartDate').val('');
-                $('#txtEndDate').val('');
-            });
-            WalletCustomerSpendingHistoryController.DataList(1);
+            UserSpendingHistoryController.DataList(1);
         });
     </script>
 }

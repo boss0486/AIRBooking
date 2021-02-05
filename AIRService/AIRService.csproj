@@ -144,6 +144,8 @@
     <Compile Include="Application\AirportConfig\Services\AirportBookConfigService.cs" />
     <Compile Include="Application\AirCompany\Entities\Company.cs" />
     <Compile Include="Application\AirCompany\Services\CompanyService.cs" />
+    <Compile Include="Application\History\Entities\UserWalletHistory.cs" />
+    <Compile Include="Application\History\Services\UserWalletHistoryService.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimitPayment.cs" />
     <Compile Include="Application\AirFilght\Entities\AirItinerary.cs" />
     <Compile Include="Application\AirFilght\Enum\ItineraryEnum.cs" />
@@ -402,7 +404,7 @@
     <Compile Include="Application\History\Services\WalletDepositHistoryService.cs" />
     <Compile Include="Application\History\Services\WalletSpendingHistoryService.cs" />
     <Compile Include="Application\History\Services\LoggerHistoryService.cs" />
-    <Compile Include="Application\History\Services\WalletUserHistoryService.cs" />
+    <Compile Include="Application\History\Services\UserSpendingHistoryService.cs" />
     <Compile Include="Module\Language\Entities\Language.cs" />
     <Compile Include="Module\Language\Services\LanguageService.cs" />
     <Compile Include="Application\ReportSaleSummary\Entities\ReportSaleSummary.cs" />

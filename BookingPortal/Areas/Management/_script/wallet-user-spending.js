@@ -47,17 +47,14 @@ var WalletUserSpendingHistoryController = {
                             var id = item.ID;
                             if (id.length > 0)
                                 id = id.trim();
-                            //  role
-                            var title = item.Title;
-                            var amount = item.Amount;
-                            title += ` thời gian: ${item.CreatedFullDate} `;      
+                            //  role   
                             var rowNum = parseInt(index) + (parseInt(currentPage) - 1) * parseInt(pageSize);
-
                             rowData += `
                             <tr>
                                  <td class="text-right">${rowNum}&nbsp;</td>
-                                 <td>${title}</td>                                    
-                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(amount)} đ</td>                                    
+                                 <td>${item.FullName}</td>                                    
+                                 <td>${item.Summary}</td>                                    
+                                 <td class='text-right'>${LibCurrencies.FormatToCurrency(item.Amount)} đ</td>                                    
                                  <td class="text-center">${item.CreatedDate}</td>
                             </tr>`;
                         });

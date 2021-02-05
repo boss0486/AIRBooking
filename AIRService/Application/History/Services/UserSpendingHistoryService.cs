@@ -59,8 +59,9 @@ namespace WebCore.Services
             }
             //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_UserSpendingHistory WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY[CreatedDate] DESC";
-            var dtList = _connection.Query<UserSpendingHistory>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
+            string sqlQuery = @"SELECT * FROM App_UserSpendingHistory 
+            WHERE dbo.Uni2NONE(FullName) LIKE N'%'+ @Query +'%' " + whereCondition + " ORDER BY [CreatedDate] DESC";
+            var dtList = _connection.Query<UserSpendingHistoryResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
                 return Notifization.NotFound(MessageText.NotFound);
             //
@@ -81,31 +82,35 @@ namespace WebCore.Services
             };
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
-        }
-
-
-        public static TransactionHistoryMessageModel WalletUserSpendingHistory(WalletUserSpendingHistoryCreateModel model, IDbConnection dbConnection = null, IDbTransaction dbTransaction = null)
+        } 
+        public static HistoryMessageModel LoggedUserSpendingHistory(UserSpendingHistoryCreateModel model, IDbConnection connection = null, IDbTransaction transaction = null)
         {
             if (model == null)
-                return new TransactionHistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
+                return new HistoryMessageModel { Status = false, Message = "Dữ liệu không hợp lệ" };
             //
             string clientId = model.AgentID;
             string userId = model.UserID;
             double amount = model.Amount;
             int transType = model.TransactionType;
+            
             //
-            string transState = "x";
+            string transState = "";
             if (transType == (int)TransactionEnum.TransactionType.IN)
                 transState = "+";
             if (transType == (int)TransactionEnum.TransactionType.OUT)
                 transState = "-";
+            if (transType == (int)TransactionEnum.TransactionType.NONE)
+                transState = ":";
             //
-            string title = "Hạn mức thay đổi. GD " + transState + " " + Helper.Page.Library.FormatCurrency(amount) + " đ";
-            string summary = "";
-            if (dbConnection == null) 
-                dbConnection = DbConnect.Connection.CMS;
+            string title = $"Hạn mức thay đổi. GD {transState} {Helper.Page.Library.FormatCurrency(amount)} đ";
+            string summary = model.Summary;
+            if (string.IsNullOrWhiteSpace(summary))
+                summary = "";
             //
-            UserSpendingHistoryService userSpendingHistoryService = new UserSpendingHistoryService(dbConnection);
+            if (connection == null) 
+                connection = DbConnect.Connection.CMS;
+            //
+            UserSpendingHistoryService userSpendingHistoryService = new UserSpendingHistoryService(connection);
 
             userSpendingHistoryService.Create<string>(new UserSpendingHistory()
             {
@@ -117,9 +122,9 @@ namespace WebCore.Services
                 TransactionType = transType,
                 Status = 1,
                 Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
-            }, transaction: dbTransaction);
+            }, transaction: transaction);
             //commit
-            return new TransactionHistoryMessageModel { Status = true, Message = "Ok" };
+            return new HistoryMessageModel { Status = true, Message = "Ok" };
         }
         //##############################################################################################################################################################################################################################################################
     }

@@ -4,8 +4,9 @@
     {
         public enum TransactionType
         {
+            NONE = 0,
             IN = 1,
-            OUT = 2
+            OUT = 2,
         }
         public enum TransactionOriginal
         {

@@ -310,9 +310,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-md-push-6">
-                    <div class="row">
-                        &nbsp;
-                    </div>
+                    <ul class="nav navbar-group">
+                        @{
+                            if (Helper.Current.UserLogin.IsAdminAgentLogged())
+                            {
+                                <li><a class="bg-teal">Hạn mức: @Helper.Page.Library.FormatCurrency(1) đ</a></li>
+                                <li><a class="bg-green">Số dư: @Helper.Page.Library.FormatCurrency(1) đ</a></li>
+                            }
+                            else if (Helper.Current.UserLogin.IsAgentLogged())
+                            {
+                                
+
+                                <li><a class="bg-teal">Hạn mức: @Helper.Page.Library.FormatCurrency(UserSpendingService.GetSpendingLimit(userId)) đ</a></li>
+                                <li><a class="bg-green">Số dư: @Helper.Page.Library.FormatCurrency(12) đ</a></li>
+                            }
+                        } 
+                    </ul>
                 </div>
                 <div class="col-md-6 col-md-pull-6">
                     <div class="block-header">

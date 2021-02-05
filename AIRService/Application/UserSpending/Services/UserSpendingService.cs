@@ -61,7 +61,8 @@ namespace WebCore.Services
             #endregion
             //
             string langID = Helper.Current.UserLogin.LanguageID;
-            string sqlQuery = @"SELECT * FROM App_UserSpending WHERE dbo.Uni2NONE(Title) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
+            string sqlQuery = @"SELECT s.*,u.FullName FROM App_UserSpending as s LEFT JOIN UserInfo  as u ON u.UserID = s.TicketingID
+            WHERE dbo.Uni2NONE(u.FullName) LIKE N'%'+ @Query +'%' ORDER BY [CreatedDate]";
             //
             var dtList = _connection.Query<UserSpendingResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
@@ -109,6 +110,7 @@ namespace WebCore.Services
                     UserLoginService userLoginService = new UserLoginService(_connection);
                     UserService userService = new UserService(_connection);
                     UserSpendingService userSpendingService = new UserSpendingService(_connection);
+                    UserInfoService userInfoService = new UserInfoService(_connection);
                     //
                     agentId = agentId.ToLower();
                     if (Helper.Current.UserLogin.IsAgentLogged())
@@ -138,6 +140,8 @@ namespace WebCore.Services
                     ClientLogin clientLogin1 = clientLoginService.GetAlls(m => m.UserID == ticketingId && m.AgentID == agentId, transaction: _transaction).FirstOrDefault();
                     if (clientLogin1 == null)
                         return Notifization.Invalid("Nhân viên không hợp lệ");
+                    //
+                    UserInfo userInfo = userInfoService.GetAlls(m => m.UserID == ticketingId, transaction: _transaction).FirstOrDefault();
                     // get spending of agent
                     AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService(_connection);
 
@@ -176,11 +180,31 @@ namespace WebCore.Services
                             Amount = amount,
                             Enabled = (int)WebCore.Model.Enum.ModelEnum.Enabled.ENABLED
                         }, transaction: _transaction);
+                        // History   
+                        UserSpendingHistoryService.LoggedUserSpendingHistory(new UserSpendingHistoryCreateModel
+                        {
+                            AgentID = agentId,
+                            Amount = amount,
+                            UserID = ticketingId,
+                            FullName = userInfo.FullName,
+                            Summary = summary,
+                            TransactionType = (int)TransactionEnum.TransactionType.NONE
+                        }, connection: _connection, transaction: _transaction);
                     }
                     else
                     {
                         userSpending.Amount = amount;
                         userSpendingService.Update(userSpending, transaction: _transaction);
+                        // History
+                        UserSpendingHistoryService.LoggedUserSpendingHistory(new UserSpendingHistoryCreateModel
+                        {
+                            AgentID = agentId,
+                            Amount = amount,
+                            UserID = ticketingId,
+                            FullName = userInfo.FullName,
+                            Summary = summary,
+                            TransactionType = (int)TransactionEnum.TransactionType.NONE
+                        }, connection: _connection, transaction: _transaction);
                     }
                     //commit
                     _transaction.Commit();
@@ -210,6 +234,8 @@ namespace WebCore.Services
                 return null;
             }
         }
+        //
+
         //########################################################################tttt######################################################################################################################################################################################
         public ActionResult Delete(string id)
         {
@@ -260,6 +286,20 @@ namespace WebCore.Services
             {
                 return Notifization.NotService;
             }
+        }
+        //##############################################################################################################################################################################################################################################################
+        public static Double GetSpendingLimit(string userId, IDbConnection connection = null, IDbTransaction transaction = null)
+        {
+            if (connection == null)
+                connection = DbConnect.Connection.CMS;
+            //
+            UserSpendingService userSettingService = new UserSpendingService(connection);
+            UserSpending userSpending = userSettingService.GetAlls(m => m.TicketingID == userId, transaction: transaction).FirstOrDefault();
+            if (userSpending == null)
+                return 0;
+            //
+            return userSpending.Amount;
+
         }
         //##############################################################################################################################################################################################################################################################
     }

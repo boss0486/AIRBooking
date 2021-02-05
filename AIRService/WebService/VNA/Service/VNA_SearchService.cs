@@ -1431,11 +1431,12 @@ namespace AIRService.Service
                     BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == bookOrder.ID).FirstOrDefault();
                     if (bookAgent != null)
                     {
-                        UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                        UserWalletHistoryService.LoggedUserWalletHistory(new UserWalletHistoryCreateModel
                         {
                             AgentID = bookAgent.AgentID,
                             UserID = bookAgent.TicketingID,
                             Amount = fareTotal,
+                            FullName = bookAgent.TicketingName,
                             TransactionType = (int)TransactionEnum.TransactionType.OUT
                         });
                     }
@@ -1651,11 +1652,13 @@ namespace AIRService.Service
                     double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
                     double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
                     BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
-                    UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                    //
+                    UserWalletHistoryService.LoggedUserWalletHistory(new UserWalletHistoryCreateModel
                     {
+                        AgentID = bookAgent.AgentID,
                         UserID = bookAgent.TicketingID,
                         Amount = totalTax + totalPrice,
-                        AgentID = bookAgent.ID,
+                        FullName = bookAgent.TicketingName,
                         TransactionType = (int)TransactionEnum.TransactionType.IN
                     });
                 }
@@ -1801,11 +1804,12 @@ namespace AIRService.Service
                     double totalPrice = bookPriceService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
                     double totalTax = bookTaxService.GetAlls(m => m.BookOrderID == orderId && m.PassengerType == passengerType).Sum(m => m.Amount);
                     BookAgent bookAgent = bookAgentService.GetAlls(m => m.BookOrderID == orderId).FirstOrDefault();
-                    UserSpendingHistoryService.WalletUserSpendingHistory(new WalletUserSpendingHistoryCreateModel
+                    UserWalletHistoryService.LoggedUserWalletHistory(new UserWalletHistoryCreateModel
                     {
+                        AgentID = bookAgent.AgentID,
                         UserID = bookAgent.TicketingID,
                         Amount = totalTax + totalPrice,
-                        AgentID = bookAgent.ID,
+                        FullName = bookAgent.TicketingName,
                         TransactionType = (int)TransactionEnum.TransactionType.IN
                     });
                 }
