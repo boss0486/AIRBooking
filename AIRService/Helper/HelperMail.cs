@@ -141,8 +141,11 @@ namespace Helper.Email
                 {
                     using (MailMessage msg = new MailMessage())
                     {
-                        System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
-                        msg.Attachments.Add(attachment);
+                        if (!string.IsNullOrWhiteSpace(attmPath))
+                        {
+                            System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attmPath);
+                            msg.Attachments.Add(attachment);
+                        }
                         //
                         msg.From = new MailAddress(mailModel.From, mailModel.Ident);
                         msg.To.Add(_to);

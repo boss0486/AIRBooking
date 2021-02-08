@@ -144,7 +144,9 @@
     <Compile Include="Application\AirportConfig\Services\AirportBookConfigService.cs" />
     <Compile Include="Application\AirCompany\Entities\Company.cs" />
     <Compile Include="Application\AirCompany\Services\CompanyService.cs" />
+    <Compile Include="Application\History\Entities\AgentWalletHistory.cs" />
     <Compile Include="Application\History\Entities\UserWalletHistory.cs" />
+    <Compile Include="Application\History\Services\AgentWalletHistoryService.cs" />
     <Compile Include="Application\History\Services\UserWalletHistoryService.cs" />
     <Compile Include="Application\SpendingLimit\Entities\AgentSpendingLimitPayment.cs" />
     <Compile Include="Application\AirFilght\Entities\AirItinerary.cs" />
@@ -449,8 +451,8 @@
     <Compile Include="Application\UserClient\Enum\ClientLoginEnum.cs" />
     <Compile Include="Application\UserClient\Services\ClientLoginService.cs" />
     <Compile Include="Application\Wallet\Entities\Wallet.cs" />
-    <Compile Include="Application\Wallet\Entities\WalletAgent.cs" />
-    <Compile Include="Application\Wallet\Services\WalletAgentService.cs" />
+    <Compile Include="Application\Wallet\Entities\AgentWallet.cs" />
+    <Compile Include="Application\Wallet\Services\AgentWalletService.cs" />
     <Compile Include="Application\Wallet\Services\WalletService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Loged\SystemLog.cs" />

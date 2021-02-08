@@ -61,13 +61,11 @@ namespace WebCore.Services
             }
             #endregion
             //
-            
-            //
             string langID = Helper.Current.UserLogin.LanguageID;
             string sqlQuery = @"
             SELECT a.ID, a.CodeID, a.Title, asl.Amount, asl.Enabled,  asl.CreatedBy, asl.CreatedDate FROM App_AirAgent as a   
             LEFT JOIN App_AgentSpendingLimit as asl ON asl.AgentID = a.ID 
-            WHERE a.ParentID IS NOT NULL AND a.TypeID ='agent' AND (dbo.Uni2NONE(a.Title) LIKE N'%'+ @Query +'%' OR a.CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY a.Title, a.CodeID";
+            WHERE a.ParentID IS NOT NULL AND (dbo.Uni2NONE(a.Title) LIKE N'%'+ @Query +'%' OR a.CodeID LIKE N'%'+ @Query +'%') " + whereCondition + " ORDER BY a.Title, a.CodeID";
             //
             var dtList = _connection.Query<AgentSpendingLimitResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
             if (dtList.Count == 0)
@@ -90,7 +88,7 @@ namespace WebCore.Services
             };
             //
             return Notifization.Data(MessageText.Success, data: result, role: RoleActionSettingService.RoleListForUser(), paging: pagingModel);
-        } 
+        }
         //##############################################################################################################################################################################################################################################################
         public ActionResult Setting(AgentSpendingLimitSettingModel model)
         {
@@ -102,15 +100,22 @@ namespace WebCore.Services
             int enabled = model.Enabled;
             //
             if (string.IsNullOrWhiteSpace(agentId))
-                return Notifization.Invalid("Đại lý không hợp lệ");
+                return Notifization.Invalid(MessageText.Invalid);
             //
             if (amount < 0)
                 return Notifization.Invalid("Hạn mức không hợp lệ");
             //
             agentId = agentId.ToLower().Trim();
+            AirAgentService airAgentService = new AirAgentService(_connection);
+            AirAgent airAgent = airAgentService.GetAlls(m => m.ID == agentId).FirstOrDefault();
+            if (airAgent == null)
+                return Notifization.Invalid("Đại lý không hợp lệ");
+            //
+            if (!string.IsNullOrWhiteSpace(airAgent.ParentID))
+                return Notifization.Invalid("Hạn mức không giới hạn");
+            //  
             AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService(_connection);
             AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId).FirstOrDefault();
-
             if (agentSpendingLimit == null)
             {
                 agentSpendingLimitService.Create<string>(new AgentSpendingLimit
@@ -126,7 +131,7 @@ namespace WebCore.Services
             agentSpendingLimit.Enabled = enabled;
             agentSpendingLimitService.Update(agentSpendingLimit);
             return Notifization.Success(MessageText.UpdateSuccess);
-        } 
+        }
         public AgentSpendingLimitResult ViewgentSpendingLimit(string agentId)
         {
             if (agentId == null)

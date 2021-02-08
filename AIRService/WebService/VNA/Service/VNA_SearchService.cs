@@ -1128,7 +1128,7 @@ namespace AIRService.Service
             //
             BookOrderService bookOrderService = new BookOrderService();
             BookTicketService bookTicketService = new BookTicketService();
-            WalletAgentService walletClientService = new WalletAgentService();
+            AgentWalletService walletClientService = new AgentWalletService();
             BookAgentService bookAgentService = new BookAgentService();
             BookTaxService bookTaxService = new BookTaxService();
             BookPriceService bookPriceService = new BookPriceService();

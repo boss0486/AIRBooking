@@ -172,52 +172,47 @@ namespace WebCore.Services
 
         public static bool CheckActionInMenuItem(string controllerText, string actionText)
         {
-            try
-            {
 
 
-                PermissionService permissionService = new PermissionService();
-                string userId = Helper.Current.UserLogin.IdentifierID;
-                if (string.IsNullOrWhiteSpace(userId))
-                    return false;
-                //
-                if (string.IsNullOrWhiteSpace(controllerText) || string.IsNullOrWhiteSpace(controllerText))
-                    return false;
-                //
-                string routeArea;
-                if (Helper.Current.UserLogin.IsCMSUser)
-                    routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
-                else
-                    routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
-                //
-                if (string.IsNullOrWhiteSpace(routeArea))
-                    return false;
-                //
-                actionText = Helper.Page.Library.FirstCharToUpper(actionText);
-                string controllerId = Helper.Security.Library.FakeGuidID(routeArea + controllerText);
-                string actionId = Helper.Security.Library.FakeGuidID(controllerId + actionText);
-                //
-                if (string.IsNullOrWhiteSpace(controllerId) || string.IsNullOrWhiteSpace(actionId))
-                    return false;
-                //
 
-                if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
-                    return true;
-                //
-                string sqlQuery = @" SELECT TOP 1 COUNT(c.ID) FROM RoleControllerSetting as c 
-	        INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID  
-	        WHERE RouteArea = @RouteArea AND c.RoleID IN (select  RoleID from UserRole where UserID = @UserId) 
-	        AND c.ControllerID = @ControllerID AND a.ActionID = @ActionID";
-                MenuItemLayout menuItemLayout = permissionService.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID, ControllerID = controllerId, ActionID = actionId }).FirstOrDefault();
-                if (menuItemLayout != null)
-                    return true;
-                //
+            PermissionService permissionService = new PermissionService();
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            if (string.IsNullOrWhiteSpace(userId))
                 return false;
-            }
-            catch (Exception)
-            {
+            //
+            if (string.IsNullOrWhiteSpace(controllerText) || string.IsNullOrWhiteSpace(controllerText))
                 return false;
-            }
+            //
+            string routeArea;
+            if (Helper.Current.UserLogin.IsCMSUser)
+                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.DEVELOPMENT);
+            else
+                routeArea = AreaApplicationService.GetRouteAreaID((int)AreaApplicationEnum.AreaType.MANAGEMENT);
+            //
+            if (string.IsNullOrWhiteSpace(routeArea))
+                return false;
+            //
+            actionText = Helper.Page.Library.FirstCharToUpper(actionText);
+            string controllerId = Helper.Security.Library.FakeGuidID(routeArea + controllerText);
+            string actionId = Helper.Security.Library.FakeGuidID(controllerId + actionText);
+            //
+            if (string.IsNullOrWhiteSpace(controllerId) || string.IsNullOrWhiteSpace(actionId))
+                return false;
+            //
+
+            if (Helper.Current.UserLogin.IsCMSUser || Helper.Current.UserLogin.IsAdminInApplication)
+                return true;
+            //
+            string sqlQuery = @" SELECT TOP 1 COUNT(c.ID) FROM RoleControllerSetting as c 
+	            INNER JOIN RoleActionSetting as a ON a.ControllerID = c.ControllerID AND a.RoleID = c.RoleID  
+	            WHERE c.RouteArea = @RouteArea AND c.RoleID IN (select  RoleID from UserRole where UserID = @UserId) 
+	            AND c.ControllerID = @ControllerID AND a.ActionID = @ActionID";
+            MenuItemLayout menuItemLayout = permissionService.Query<MenuItemLayout>(sqlQuery, new { RouteArea = routeArea, UserID = Helper.Current.UserLogin.IdentifierID, ControllerID = controllerId, ActionID = actionId }).FirstOrDefault();
+            if (menuItemLayout != null)
+                return true;
+            //
+            return false;
+
         }
 
         //##############################################################################################################################################################################################################################################################

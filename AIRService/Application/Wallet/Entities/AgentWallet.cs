@@ -8,10 +8,10 @@ using WebCore.Model.Entities;
 namespace WebCore.Entities
 {
     [ConnectionString(DbConnect.ConnectionString.CMS)]
-    [Table("App_WalletAgent")]
-    public partial class WalletAgent
+    [Table("App_AgentWallet")]
+    public partial class AgentWallet
     {
-        public WalletAgent()
+        public AgentWallet()
         {
             ID = Guid.NewGuid().ToString().ToLower();
         }
@@ -19,23 +19,15 @@ namespace WebCore.Entities
         [IgnoreUpdate]
         public string ID { get; set; }
         public string AgentID { get; set; }
-        public int AgentType { get; set; }
-        public double SpendingLimit { get; set; }
+        public double Balance { get; set; }
+        public bool Unlimited { get; set; }
     }
 
     // model
-    public class WalletAgentChangeModel
+    public class AgentWalletChangeModel
     {
         public string AgentID { get; set; }
         public double Amount { get; set; }
         public int TransactionType { get; set; }
-    }
-    public class WalletAgentUpdateModel : WalletAgentChangeModel
-    {
-        public string ID { get; set; }
-    }
-    public class WalletCustomerIDModel
-    {
-        public string ID { get; set; }
     }
 }

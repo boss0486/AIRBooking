@@ -301,6 +301,44 @@ namespace WebCore.Services
             return userSpending.Amount;
 
         }
+
+        public static double GetBalance(string userId, IDbConnection connection = null, IDbTransaction transaction = null)
+        {
+            if (connection == null)
+                connection = DbConnect.Connection.CMS;
+            //
+            UserClientService userClientService = new UserClientService(connection);
+            ClientLoginService clientLoginService = new ClientLoginService(connection);
+            AirAgentService airAgentService = new AirAgentService(connection);
+            ClientLogin clientLogin = clientLoginService.GetAlls(m => m.UserID == userId, transaction: transaction).FirstOrDefault();
+            if (clientLogin == null)
+                return 0;
+            // get spending limit
+            string agentId = clientLogin.AgentID;
+            AgentSpendingLimitService agentSpendingLimitService = new AgentSpendingLimitService(connection);
+            AgentSpendingLimit agentSpendingLimit = agentSpendingLimitService.GetAlls(m => m.AgentID == agentId, transaction).FirstOrDefault();
+            if (agentSpendingLimit == null)
+                return 0;
+            //
+            double spendingAmount = agentSpendingLimit.Amount;
+            //
+            DateTime today = Helper.TimeData.TimeHelper.UtcDateTime;
+            DateTime firstDayOfMonth = today.AddMonths(-1);
+            firstDayOfMonth = new DateTime(firstDayOfMonth.Year, firstDayOfMonth.Month, 01);
+            int paymentDayTotal = today.Subtract(firstDayOfMonth).Days;
+            string sqlQuery = $@" SELECT (
+                ISNULL((select sum (Amount) from App_BookPrice where BookOrderID = o.ID),0) +
+                ISNULL((select sum (Amount) from App_BookTax where BookOrderID = o.ID),0) +
+                ISNULL((select sum (AgentPrice + ProviderFee + AgentFee) from App_BookAgent where BookOrderID = o.ID),0) 
+                ) as 'Spent'              
+                FROM App_BookOrder AS o
+                INNER JOIN App_BookAgent AS a ON a.BookOrderID = o.ID 
+                WHERE a.AgentID = @AgentID AND a.TicketingID = @TicketingID 
+                AND cast(IssueDate as Date) >= cast('{firstDayOfMonth}' as Date) AND cast(IssueDate as Date) <= cast('{today}' as Date)";
+            double totalSpent = agentSpendingLimitService.Query<double>(sqlQuery, new { AgentID = agentId, TicketingID = userId }).FirstOrDefault();
+            // 
+            return spendingAmount - totalSpent;
+        }
         //##############################################################################################################################################################################################################################################################
     }
 }

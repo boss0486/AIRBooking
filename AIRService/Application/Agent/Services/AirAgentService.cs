@@ -291,7 +291,7 @@ namespace WebCore.Services
                     UserInfoService userInfoService = new UserInfoService(_connection);
                     UserSettingService userSettingService = new UserSettingService(_connection);
                     UserRoleService userRoleService = new UserRoleService(_connection);
-                    WalletAgentService balanceCustomerService = new WalletAgentService(_connection);
+                    AgentWalletService balanceCustomerService = new AgentWalletService(_connection);
                     LanguageService languageService = new LanguageService(_connection);
                     // *******  account login
                     string languageId = Helper.Page.Default.LanguageID;
@@ -622,7 +622,7 @@ namespace WebCore.Services
                     }
 
                     // client wallet **************************************************************************************************
-                    string sqlWallet = @"DELETE App_WalletAgent WHERE AgentID = @AgentID";
+                    string sqlWallet = @"DELETE App_AgentWallet WHERE AgentID = @AgentID";
                     _connection.Execute(sqlWallet, new { AgentID = customer.ID }, transaction: _transaction);
                     //
                     string sqlWalletDeposit = @"DELETE App_WalletDepositHistory WHERE AgentID = @AgentID";

@@ -266,7 +266,7 @@ namespace WebCore.Services
                     UserInfoService userInfoService = new UserInfoService(_connection);
                     UserSettingService userSettingService = new UserSettingService(_connection);
                     UserRoleService userRoleService = new UserRoleService(_connection);
-                    WalletAgentService balanceCompanyService = new WalletAgentService(_connection);
+                    AgentWalletService balanceCompanyService = new AgentWalletService(_connection);
                     LanguageService languageService = new LanguageService(_connection);
                     // *******  account login
                     string languageId = Helper.Page.Default.LanguageID;
