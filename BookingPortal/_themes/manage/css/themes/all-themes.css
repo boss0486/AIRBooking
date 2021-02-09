@@ -12,9 +12,14 @@
         background: #1870b5;
     }
 
-        .theme-blue .navbar-brand:hover {
-            color: #fff;
-        }
+    .theme-blue .navbar-header {
+        color: #fff;
+        background: #1870b5;
+    }
+
+    .theme-blue .navbar-brand:hover {
+        color: #fff;
+    }
 
     .theme-blue .nav > li > a {
         color: #fff;
@@ -99,17 +104,18 @@
     .theme-blue [data-head="true"] [data-toggle="dropdown"] {
         border-color: #ABDED4;
     }
+
     .theme-blue [data-head="true"] .btn-default:active, .theme-blue [data-head="true"] .btn-default.active, .theme-blue [data-head="true"] .open > .dropdown-toggle.btn-default {
         color: #333;
         background-color: #FFF;
         background-image: none;
         border-color: #ABDED4;
     }
-    /*theme-item*************************************************************************************************************************************************/
-    .jconfirm .jconfirm-box .jconfirm-buttons button {
-        border-radius: 2px;
-        font-size: unset;
-    }
+/*theme-item*************************************************************************************************************************************************/
+.jconfirm .jconfirm-box .jconfirm-buttons button {
+    border-radius: 2px;
+    font-size: unset;
+}
 
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button {
     font-size: unset;
