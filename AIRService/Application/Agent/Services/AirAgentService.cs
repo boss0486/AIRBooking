@@ -547,7 +547,7 @@ namespace WebCore.Services
             }
         }
 
-        public AirAgentResult ViewCustomerByID(string id)
+        public AirAgentResult ViewAgentByID(string id)
         {
             try
             {

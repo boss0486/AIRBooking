@@ -76,7 +76,7 @@ namespace WebApplication
                 "~/_themes/library/plugins/file-manage/file-manage.js",
                  "~/Library/Script/model-form.js"
             ));
-            
+
 
             bundles.Add(new ScriptBundle("~/manage/js").Include(
 
@@ -91,20 +91,19 @@ namespace WebApplication
             "~/_themes/manage/plugins/morrisjs/morris.js",
 
             //<!-- ChartJs -->
-            //<script src="~/_themes/backend/plugins/chartjs/Chart.bundle.js"></script>
-            "~/_themes/manage/plugins/chartjs/Chart.bundle.js",
-
-
+            //<script src="~/_themes/backend/plugins/chartjs/Chart.bundle.js"></script> 
             //<!-- Flot Charts Plugin Js -->
-            //<script src="~/_themes/backend/plugins/flot-charts/jquery.flot.js"></script>
-            //<script src="~/_themes/backend/plugins/flot-charts/jquery.flot.resize.js"></script>
-            //<script src="~/_themes/backend/plugins/flot-charts/jquery.flot.pie.js"></script>
-            //<script src="~/_themes/backend/plugins/flot-charts/jquery.flot.categories.js"></script>
-            //<script src="~/_themes/backend/plugins/flot-charts/jquery.flot.time.js"></script>
+             "~/_themes/library/plugins/flot-charts/jquery.flot.js",
+             "~/_themes/library/plugins/flot-charts/jquery.flot.resize.js",
+             "~/_themes/library/plugins/flot-charts/jquery.flot.pie.js",
+             "~/_themes/library/plugins/flot-charts/jquery.flot.categories.js",
+             "~/_themes/library/plugins/flot-charts/jquery.flot.time.js",
+             "~/_themes/library/plugins/charts/flot.js",
 
             //<!-- Sparkline Chart Plugin Js -->
             //<script src="~/_themes/backend/plugins/jquery-sparkline/jquery.sparkline.js"></script>
-            "~/_themes/manage/plugins/jquery-sparkline/jquery.sparkline.js",
+            "~/_themes/library/plugins/jquery-sparkline/jquery.sparkline.js",
+            "~/_themes/library/plugins/charts/sparkline.js",
 
             //<!-- Custom Js -->
             //<script src="~/_themes/backend/js/admin.js"></script>
@@ -115,7 +114,7 @@ namespace WebApplication
             "~/_themes/manage/js/pages/index.js"
             //<!-- Demo Js -->
             //<script src="~/_themes/backend/js/demo.js"></script>
-             //"~/_themes/manage/js/demo.js"
+            //"~/_themes/manage/js/demo.js"
             //<!--library-->
             //<script src="~/Areas/Backend/_script/layout.js"></script> 
             ));

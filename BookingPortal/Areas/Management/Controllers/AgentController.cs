@@ -42,7 +42,7 @@ namespace WebApplication.Management.Controllers
         public ActionResult Details(string id)
         {
             AirAgentService service = new AirAgentService();
-            AirAgentResult model = service.ViewCustomerByID(id);
+            AirAgentResult model = service.ViewAgentByID(id);
             if (model != null)
                 return View(model);
             //
