@@ -148,20 +148,18 @@ namespace WebApplication.Management.Controllers
             HttpCookie cookie = HttpContext.Request.Cookies.Get("FlightOrder");
             if (cookie != null)
             {
-                cookie.Value = JsonConvert.SerializeObject(model);
-                cookie.Expires = DateTime.Now.AddDays(1);
-                HttpContext.Response.Cookies.Add(cookie);
+                cookie.Value = JsonConvert.SerializeObject(model); 
             }
             else
             {
                 cookie = new HttpCookie("FlightOrder")
                 {
                     Value = JsonConvert.SerializeObject(model),
-                    Expires = DateTime.Now.AddDays(1)
                 };
-                HttpContext.Response.Cookies.Add(cookie);
             }
-            return Notifization.Data("OK", model);
+            cookie.Expires = DateTime.Now.AddDays(1);
+            HttpContext.Response.Cookies.Add(cookie);
+            return Notifization.Data("OK", cookie);
         }
 
         [HttpPost]

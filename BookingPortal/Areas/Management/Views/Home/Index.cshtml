@@ -30,14 +30,13 @@
             </div>
         }
     }
-    <div class="container-fluid">
-        <p>
-            Biểu đồ đặt vé (6th): <span id="mousespeed">Loading..</span>
-        </p>
-        <canvas id="line_chart" style="width:100%; height:150px;"></canvas>
-    </div>
 </div>
-@*<script src="~/_themes/library/plugins/charts/chartjs/Chart.min.js"></script>*@
+<div class="container-fluid">
+    <div class="form-group">
+        Biểu đồ đặt vé (6th): <span id="mousespeed">Loading..</span>
+    </div>
+    <canvas id="line_chart" style="width:100%; height:150px;"></canvas>
+</div> 
 @section scripts{
     <script>
         //$(function () {
@@ -45,10 +44,8 @@
         //    //new Chart(document.getElementById("bar_chart1").getContext("2d"), getChartJs('bar'));
         //    //new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
         //    //new Chart(document.getElementById("pie_chart1").getContext("2d"), getChartJs('pie'));
-        //    //var json_url = "/team/chart-line.json";
-
-        //});
-
+        //    //var json_url = "/team/chart-line.json"; 
+        //}); 
         $(function () {
             var ctx = $("#line_chart")[0].getContext('2d');
             // examine example_data.json for expected response data
@@ -67,7 +64,7 @@
                         pointBorderColor: 'rgba(0, 188, 212, 0)',
                         pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
                         pointBorderWidth: 1,
-                        borderWidth:1
+                        borderWidth: 1
                     }
                         //    ,
                         //{

@@ -122,7 +122,7 @@ namespace AIRService.Service
                 if (airAvailResult3.ApplicationResults.Status == "Complete")
                     flightSegments.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                 //
-                //XMLHelper.WriteXml("search-ko-bay-thang11", XMLHelper.GetXMLFromObject(flightSegmentsGo));
+                XMLHelper.WriteXml("search-bay", XMLHelper.GetXMLFromObject(flightSegments));
                 string test = string.Empty;
                 if (flightSegments.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -149,31 +149,32 @@ namespace AIRService.Service
                 //
                 XMLObject.FareLLSRQ.FareRS fareRS = vnaFareLLSRQService.FareLLS2(fareLLSModel);
                 if (fareRS == null)
-                    return Notifization.Invalid(MessageText.Invalid + "111111");
+                    return Notifization.Invalid(MessageText.Invalid);
                 // 
                 List<XMLObject.FareLLSRQ.FareBasis> fareBasis = fareRS.FareBasis;
                 if (fareBasis == null)
-                    return Notifization.Invalid(MessageText.Invalid + "111111");
+                    return Notifization.Invalid(MessageText.Invalid);
                 // get tax 
-                string flightLocation = _originLocation + "-" + _destinationLocation;
+                string flightLocation = $"{_originLocation}-{_destinationLocation}";
                 AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls(m => m.IsApplied && m.FlightLocationID == flightLocation).FirstOrDefault();
                 int _year = _departureDateTime.Year;
                 foreach (var segment in flightSegments)
                 {
                     int flightNumber = Convert.ToInt32(segment.FlightNumber);
+                    List<string> _lstResBookDesigCode = segment.BookingClassAvail.Where(m => Convert.ToInt32(m.Availability) >= _availabilityTotal).Select(m => m.ResBookDesigCode).ToList();
+                    if (_lstResBookDesigCode.Count() == 0)
+                        continue;
+                    // 
                     if (segment.DestinationLocation.LocationCode != _destinationLocation || segment.OriginLocation.LocationCode != _originLocation)
                     {
-                        test += $"Go:{segment.OriginLocation.LocationCode}-{segment.DestinationLocation.LocationCode}|";
+                        //test += $"Go:{segment.OriginLocation.LocationCode}-{segment.DestinationLocation.LocationCode}|";
                     }
                     else
                     {
-                        DateTime _datedepart = DateTime.Parse(_year + "-" + segment.DepartureDateTime + ":00");
+                        test += $"{flightNumber}::{ string.Join<string>(",", _lstResBookDesigCode)}";
+                        DateTime _datedepart = DateTime.Parse($"{_year}-{segment.DepartureDateTime}:00");
                         DateTime _arrivalDateTime = _datedepart;
                         // lay tat ca hang ghe dang ban (maketting) has Availability > 0 va >= tong so luong hanh khach (adt + cnn)
-                        List<string> _lstResBookDesigCode = segment.BookingClassAvail.Where(m => Convert.ToInt32(m.Availability) >= _availabilityTotal).Select(m => m.ResBookDesigCode).ToList();
-                        if (_lstResBookDesigCode.Count() == 0)
-                            continue;
-                        // 
                         List<FlightSegment_ResBookDesigCode> fareDetails = GetFlightFares(_lstResBookDesigCode, fareLLSModel, fareBasis, new FlightAirTicketCondition
                         {
                             OriginLocation = _originLocation,
@@ -243,22 +244,23 @@ namespace AIRService.Service
                 if (rsSegment == null)
                     return Notifization.NotFound(MessageText.NotFound + 1);
                 //
-                return Notifization.Data("OK", rsSegment);
+                return Notifization.Data("OK" + test, rsSegment);
             }
         }
         // Get list ResBookDesigCode is valid
         public List<FlightSegment_ResBookDesigCode> GetFlightFares(List<string> lstResBookDesigCode, FareLLSModel fareLLSModel, List<XMLObject.FareLLSRQ.FareBasis> fareRSFareBasis, FlightAirTicketCondition flightAirTicketCondition)
         {
+
             List<FlightSegment_ResBookDesigCode> result = new List<FlightSegment_ResBookDesigCode>();
             foreach (var rbdc in lstResBookDesigCode)
-            {
+            { 
                 List<FareItem> flightCostDetails = GetFareDetails(new VNAFareLLSRQModel
                 {
                     FareLLS = fareLLSModel,
                     FareRSFareBasis = fareRSFareBasis,
                     ResBookDesigCode = rbdc
                 }, flightAirTicketCondition);
-
+                //
                 if (flightCostDetails == null)
                     continue;
                 //

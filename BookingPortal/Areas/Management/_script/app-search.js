@@ -467,7 +467,7 @@ var flightBookingController = {
                     Loading.ShowLoading();
                     //
                     setTimeout(function () {
-                        location.href = "/management/airbook/booking";
+                        //location.href = "/management/airbook/booking";
                     }, 2000);
                 }
                 else if (response.status == 503) {
