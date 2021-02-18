@@ -1,0 +1,6 @@
+{
+  "labels": [ "January", "February", "March", "April", "May", "June", "July" ],
+  "data": {
+    "quantity": [ 100, 50, 80, 181, 256, 255, 30 ]
+  }
+}

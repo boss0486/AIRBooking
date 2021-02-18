@@ -83,28 +83,24 @@ namespace WebApplication
             //<!-- Jquery CountTo Plugin Js -->
             //<script src="~/_themes/backend/plugins/jquery-countto/jquery.countTo.js"></script>
             "~/_themes/manage/plugins/jquery-countto/jquery.countTo.js",
-
             //<!-- Morris Plugin Js -->
             //<script src="~/_themes/backend/plugins/raphael/raphael.min.js"></script>
             //<script src="~/_themes/backend/plugins/morrisjs/morris.js"></script>
             "~/_themes/manage/plugins/raphael/raphael.min.js",
             "~/_themes/manage/plugins/morrisjs/morris.js",
-
-            //<!-- ChartJs -->
-            //<script src="~/_themes/backend/plugins/chartjs/Chart.bundle.js"></script> 
-            //<!-- Flot Charts Plugin Js -->
-             "~/_themes/library/plugins/flot-charts/jquery.flot.js",
-             "~/_themes/library/plugins/flot-charts/jquery.flot.resize.js",
-             "~/_themes/library/plugins/flot-charts/jquery.flot.pie.js",
-             "~/_themes/library/plugins/flot-charts/jquery.flot.categories.js",
-             "~/_themes/library/plugins/flot-charts/jquery.flot.time.js",
-             "~/_themes/library/plugins/charts/flot.js",
-
-            //<!-- Sparkline Chart Plugin Js -->
-            //<script src="~/_themes/backend/plugins/jquery-sparkline/jquery.sparkline.js"></script>
-            "~/_themes/library/plugins/jquery-sparkline/jquery.sparkline.js",
-            "~/_themes/library/plugins/charts/sparkline.js",
-
+             //chart
+             "~/_themes/library/plugins/charts/chartjs/Chart.bundle.js",
+             "~/_themes/library/plugins/charts/chartjs.js",
+             //chart
+             //"~/_themes/library/plugins/charts/flot/jquery.flot.js",
+             //"~/_themes/library/plugins/charts/flot/jquery.flot.resize.js",
+             //"~/_themes/library/plugins/charts/flot/jquery.flot.pie.js",
+             //"~/_themes/library/plugins/charts/flot/jquery.flot.categories.js",
+             //"~/_themes/library/plugins/charts/flot/jquery.flot.time.js",
+             //"~/_themes/library/plugins/charts/flot.js",
+             //chart
+             //"~/_themes/library/plugins/charts/sparkline/jquery.sparkline.js",
+             //"~/_themes/library/plugins/charts/sparkline.js",
             //<!-- Custom Js -->
             //<script src="~/_themes/backend/js/admin.js"></script>
             //<script src="~/Areas/Template/_script/layout.js"></script>

@@ -11,41 +11,6 @@
 }
 
 @model WebCore.Entities.AirAgentResult
-<div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box bg-pink hover-expand-effect">
-            <div class="content">
-                <div class="text">Đại lý <i class="fas fa-chevron-circle-down"></i></div>
-                <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">125/125</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box bg-cyan hover-expand-effect">
-            <div class="content">
-                <div class="text">Tài khoản</div>
-                <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">257/125</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box bg-light-green hover-expand-effect">
-            <div class="content">
-                <div class="text">ĐẶT VÉ</div>
-                <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">243/125</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box bg-orange hover-expand-effect">
-            <div class="content">
-                <div class="text">XUẤT VÉ</div>
-                <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">1225/125</div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="col-md-8">
     @{
         if (Model != null)
@@ -65,13 +30,73 @@
             </div>
         }
     }
-    <div class="col-sm-6">
+    <div class="container-fluid">
         <p>
-            Biểu đồ đặt vé: <span id="mousespeed">Loading..</span>
+            Biểu đồ đặt vé (6th): <span id="mousespeed">Loading..</span>
         </p>
-
-        @*<div class="body align-center">
-                <div class="sparkline-pie">6,4,8</div>
-            </div>*@
+        <canvas id="line_chart" style="width:100%; height:150px;"></canvas>
     </div>
-</div> 
+</div>
+@*<script src="~/_themes/library/plugins/charts/chartjs/Chart.min.js"></script>*@
+@section scripts{
+    <script>
+        //$(function () {
+        //    new Chart($("#line_chart")[0].getContext('2d'), getChartJs('line'));
+        //    //new Chart(document.getElementById("bar_chart1").getContext("2d"), getChartJs('bar'));
+        //    //new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
+        //    //new Chart(document.getElementById("pie_chart1").getContext("2d"), getChartJs('pie'));
+        //    //var json_url = "/team/chart-line.json";
+
+        //});
+
+        $(function () {
+            var ctx = $("#line_chart")[0].getContext('2d');
+            // examine example_data.json for expected response data
+            var json_url = "/team/chart-line.json";
+
+            // draw empty chart
+            var bookingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: "Đặt vé",
+                        data: [],
+                        borderColor: 'rgba(0, 188, 212, 0.75)',
+                        backgroundColor: 'rgba(0, 188, 212, 0.3)',
+                        pointBorderColor: 'rgba(0, 188, 212, 0)',
+                        pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+                        pointBorderWidth: 1,
+                        borderWidth:1
+                    }
+                        //    ,
+                        //{
+                        //    label: "My Second dataset",
+                        //    data: [28, 48, 40, 19, 86, 27, 90],
+                        //    borderColor: 'rgba(233, 30, 99, 0.75)',
+                        //    backgroundColor: 'rgba(233, 30, 99, 0.3)',
+                        //    pointBorderColor: 'rgba(233, 30, 99, 0)',
+                        //    pointBackgroundColor: 'rgba(233, 30, 99, 0.9)',
+                        //    pointBorderWidth: 1
+                        //}
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    legend: false
+                }
+            });
+
+            ajax_chart(bookingChart, json_url);
+            // function to update our chart
+            function ajax_chart(chart, url, data) {
+                var data = data || {};
+                $.getJSON(url, data).done(function (response) {
+                    chart.data.labels = response.labels;
+                    chart.data.datasets[0].data = response.data.quantity; // or you can iterate for multiple datasets
+                    chart.update(); // finally update our chart
+                });
+            }
+        });
+    </script>
+}
