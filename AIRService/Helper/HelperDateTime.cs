@@ -73,24 +73,17 @@ namespace Helper.TimeData
     {
         public static string GetDateByTimeZone(string strUtc)
         {
-            try
-            {
-                string zoneId = GetTimeZoonName(strUtc);
-                if (string.IsNullOrWhiteSpace(zoneId))
-                    return string.Empty;
-                // 
-                var timezone = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
-                if (timezone == null)
-                    return string.Empty;
-                //
-                var dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
-                string date = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                return date;
-            }
-            catch (Exception ex)
-            {
-                return string.Empty;
-            }
+            string zoneId = GetTimeZoonName(strUtc);
+            if (string.IsNullOrWhiteSpace(zoneId))
+                return DateTime.Now.ToString();
+            // 
+            var timezone = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
+            if (timezone == null)
+                return DateTime.Now.ToString();
+            //
+            var dateTime = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
+            string date = dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            return date;
         }
         public static string GetDateTime
         {

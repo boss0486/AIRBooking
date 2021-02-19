@@ -285,16 +285,14 @@ function BookingOrderLoad() {
     if (cookiData !== undefined && cookiData !== "") {
         var order = JSON.parse(cookiData);
         if (order == undefined || order == null)
-            return
+            return;
         //
         var feeTaxModel = [];
         var labelTbl = [];
-
         var _adt = parseInt(order.ADT);
         var _cnn = parseInt(order.CNN);
         var _inf = parseInt(order.INF);
         var segments = order.Segments;
-
         // show data 
         if (_adt > 0) {
             labelTbl.push({

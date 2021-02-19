@@ -6,6 +6,7 @@ var arrSearch = null;
 var flightBookingController = {
     init: function () {
         flightBookingController.registerEvent();
+        Cookies.DelCookie("FlightOrder");
     },
     registerEvent: function () {
         $(document).ready(function () {
@@ -467,7 +468,7 @@ var flightBookingController = {
                     Loading.ShowLoading();
                     //
                     setTimeout(function () {
-                        //location.href = "/management/airbook/booking";
+                        location.href = "/management/airbook/booking";
                     }, 2000);
                 }
                 else if (response.status == 503) {
@@ -665,6 +666,7 @@ $(document).on('click', '#btnSearchReset', function () {
     $("#segmentList").html('');
     FData.ResetForm();
     Cookies.DelCookie("FlightSearch");
+    Cookies.DelCookie("FlightOrder");
 });
 
 $(document).on('click', '#btnSearchTab', function () {

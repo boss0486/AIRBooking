@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFlightSegment xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FlightSegment ArrivalDateTime="02-28T12:20" DOT_Ind="N" DepartureDateTime="02-28T10:05" FlightNumber="1200" RPH="1" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="3" RPH="2" ResBookDesigCode="C" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="5" ResBookDesigCode="O" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="19" ResBookDesigCode="A" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="6" RPH="20" ResBookDesigCode="X" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <DaysOfOperation xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <OperationSchedule>
+        <OperationTimes>
+          <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+        </OperationTimes>
+      </OperationSchedule>
+    </DaysOfOperation>
+    <DestinationLocation LocationCode="HAN" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Equipment AirEquipType="321" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="135" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <MarketingAirline Code="VN" FlightNumber="1200" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <OriginLocation LocationCode="VCA" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FlightSegment>
+  <FlightSegment ArrivalDateTime="02-28T13:50" DOT_Ind="N" DepartureDateTime="02-28T11:35" FlightNumber="7202" RPH="2" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="3" RPH="2" ResBookDesigCode="C" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="5" ResBookDesigCode="O" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="19" ResBookDesigCode="A" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="6" RPH="20" ResBookDesigCode="X" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <DaysOfOperation xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <OperationSchedule>
+        <OperationTimes>
+          <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+        </OperationTimes>
+      </OperationSchedule>
+    </DaysOfOperation>
+    <DestinationLocation LocationCode="HAN" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Equipment AirEquipType="321" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="135" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <MarketingAirline Code="VN" FlightNumber="7202" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <OriginLocation LocationCode="VCA" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FlightSegment>
+  <FlightSegment ArrivalDateTime="02-28T16:55" DOT_Ind="N" DepartureDateTime="02-28T14:40" FlightNumber="1202" RPH="3" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="4" RPH="2" ResBookDesigCode="C" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="2" RPH="3" ResBookDesigCode="D" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="4" ResBookDesigCode="I" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="2" RPH="5" ResBookDesigCode="O" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="4" RPH="19" ResBookDesigCode="A" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="20" ResBookDesigCode="X" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <DaysOfOperation xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <OperationSchedule>
+        <OperationTimes>
+          <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+        </OperationTimes>
+      </OperationSchedule>
+    </DaysOfOperation>
+    <DestinationLocation LocationCode="HAN" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Equipment AirEquipType="787" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="135" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <MarketingAirline Code="VN" FlightNumber="1202" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <OriginLocation LocationCode="VCA" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FlightSegment>
+  <FlightSegment ArrivalDateTime="02-28T23:15" DOT_Ind="N" DepartureDateTime="02-28T21:00" FlightNumber="1206" RPH="4" SmokingAllowed="false" StopQuantity="0" eTicket="true">
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="1" ResBookDesigCode="J" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="2" RPH="2" ResBookDesigCode="C" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="3" ResBookDesigCode="D" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="4" ResBookDesigCode="I" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="5" ResBookDesigCode="O" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="6" ResBookDesigCode="Y" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="7" ResBookDesigCode="B" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="8" ResBookDesigCode="M" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="9" ResBookDesigCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="10" ResBookDesigCode="H" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="11" ResBookDesigCode="K" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="12" ResBookDesigCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="13" ResBookDesigCode="Q" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="14" ResBookDesigCode="N" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="15" ResBookDesigCode="R" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="16" ResBookDesigCode="T" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="17" ResBookDesigCode="E" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="18" ResBookDesigCode="P" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="1" RPH="19" ResBookDesigCode="A" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="7" RPH="20" ResBookDesigCode="X" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <BookingClassAvail AggregatedContent="false" Availability="0" RPH="21" ResBookDesigCode="V" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <DaysOfOperation xmlns="http://webservices.sabre.com/sabreXML/2011/10">
+      <OperationSchedule>
+        <OperationTimes>
+          <OperationTime Fri="true" Mon="true" Sat="true" Sun="true" Thur="true" Tue="true" Weds="true" />
+        </OperationTimes>
+      </OperationSchedule>
+    </DaysOfOperation>
+    <DestinationLocation LocationCode="HAN" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Equipment AirEquipType="321" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <FlightDetails Canceled="false" Charter="false" GroundTime="0" TotalTravelTime="135" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <MarketingAirline Code="VN" FlightNumber="1206" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <OriginLocation LocationCode="VCA" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="L" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+    <Meal MealCode="S" xmlns="http://webservices.sabre.com/sabreXML/2011/10" />
+  </FlightSegment>
+</ArrayOfFlightSegment>

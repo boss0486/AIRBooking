@@ -191,7 +191,49 @@ namespace WebCore.Services
             // reusult
             return bookOrderResult;
         }
+        public ActionResult BookingChartData(BookChart model)
+        {
+            if (!Helper.Current.UserLogin.IsAgentLogged())
+                return Notifization.Invalid(MessageText.Invalid);
+            // 
+            string timeZoneLocal = model.TimeZoneLocal;
+            string clientTime = TimeFormat.GetDateByTimeZone(timeZoneLocal);
+            string userId = Helper.Current.UserLogin.IdentifierID;
+            string agentId = AirAgentService.GetAgentIDByUserID(userId);
+            string airlineId = model.AirlineID;
+            DateTime today = Convert.ToDateTime(clientTime); 
+            DateTime dtime = today.AddMonths(-6);
+            DateTime endTime = today.AddMonths(3);
 
+            // query
+            string sqlQuery = $@"SELECT o.*,
+            a.AgentCode 
+            FROM App_BookOrder as o 
+            LEFT JOIN App_BookAgent as a ON a.BookOrderID = o.ID 
+            WHERE a.AgentID = @AgentID AND CAST(o.IssueDate as Date) >= CAST('{dtime}' as Date) AND CAST(o.IssueDate as Date) <= CAST('{today}' as Date)";
+            List<BookOrder> bookOrders = _connection.Query<BookOrder>(sqlQuery, new { AgentID = agentId }).ToList();
+            if (bookOrders.Count() == 0)
+                return Notifization.Invalid(MessageText.Invalid);
+            //  
+            List<string> dateTimes = Enumerable.Range(0, 13).Select(a => dtime.AddMonths(a)).TakeWhile(a => a <= endTime).Select(a => String.Concat($"{a:yyyy-MM}")).ToList();
+            //
+            List<ChartLine> chartLines = new List<ChartLine>();
+            List<ChartData> chartDatas = new List<ChartData>();
+            List<int> vnaQty = new List<int>();
+            foreach (var itemDate in dateTimes)
+            {
+                vnaQty.Add(bookOrders.Where(m => m.AirlineID == "VNA" && String.Concat($"{m.IssueDate:yyyy-MM}") == itemDate).Count());
+            }
+            //
+            ChartLine chartLine = new ChartLine
+            {
+                Labels = dateTimes,
+                Datas = new List<ChartData> { new ChartData { Code = "VNA", Quantities = vnaQty } }
+            };
+            return Notifization.Data("OK", chartLine);
+        }
+
+        //##############################################################################################################################################################################################################################################################
         public List<BookingItineraryResult> BookingItineraryData(BookOrderSearch model)
         {
             List<BookingItineraryResult> bookOrderResult = new List<BookingItineraryResult>();
@@ -238,7 +280,7 @@ namespace WebCore.Services
                     if (!string.IsNullOrWhiteSpace(compId))
                         whereCondition += " AND c.CompanyID = @CompanyID";
                 }
-            } 
+            }
             // limit data
             if (Helper.Current.UserLogin.IsClientInApplication())
             {

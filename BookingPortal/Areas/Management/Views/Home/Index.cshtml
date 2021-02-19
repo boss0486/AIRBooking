@@ -16,7 +16,7 @@
         if (Model != null)
         {
             <div class="form-group">
-                <h4>Đại lý: @Model.Title</h4>
+                <h4 style="text-transform:uppercase">ĐẠI LÝ: @Model.Title</h4>
                 <hr />
             </div>
             <div class="form-group">
@@ -33,10 +33,12 @@
 </div>
 <div class="container-fluid">
     <div class="form-group">
-        Biểu đồ đặt vé (6th): <span id="mousespeed">Loading..</span>
+        <i class="fas fa-chart-line"></i> Biểu đồ đặt vé (6th):
     </div>
-    <canvas id="line_chart" style="width:100%; height:150px;"></canvas>
-</div> 
+    <div class="form-group" style="overflow:auto">
+        <canvas id="line_chart" style="width:100%; height:150px;"></canvas>
+    </div>
+</div>
 @section scripts{
     <script>
         //$(function () {
@@ -44,12 +46,12 @@
         //    //new Chart(document.getElementById("bar_chart1").getContext("2d"), getChartJs('bar'));
         //    //new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
         //    //new Chart(document.getElementById("pie_chart1").getContext("2d"), getChartJs('pie'));
-        //    //var json_url = "/team/chart-line.json"; 
-        //}); 
+        //    //var json_url = "/team/chart-line.json";
+        //});
         $(function () {
             var ctx = $("#line_chart")[0].getContext('2d');
             // examine example_data.json for expected response data
-            var json_url = "/team/chart-line.json";
+            //var json_url = "/team/chart-line.json";
 
             // draw empty chart
             var bookingChart = new Chart(ctx, {
@@ -79,20 +81,42 @@
                     ]
                 },
                 options: {
-                    responsive: true,
-                    legend: false
+                    responsive: true
                 }
             });
 
-            ajax_chart(bookingChart, json_url);
+            ajax_chart(bookingChart);
             // function to update our chart
             function ajax_chart(chart, url, data) {
                 var data = data || {};
-                $.getJSON(url, data).done(function (response) {
-                    chart.data.labels = response.labels;
-                    chart.data.datasets[0].data = response.data.quantity; // or you can iterate for multiple datasets
-                    chart.update(); // finally update our chart
+                var model = {
+                    TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
+                };
+                AjaxFrom.POST({
+                    url: '/Management/Home-Page/Action/BookingChart',
+                    data: model,
+                    success: function (response) {
+                        if (response != null && response.data != null) {
+                            if (response.status == 200) {
+                                var data = response.data;
+                                chart.data.labels = data.Labels;
+                                chart.data.datasets[0].data = data.Datas[0].Quantities; // or you can iterate for multiple datasets
+                                chart.update(); // finally update our chart
+                                return;
+                            }
+                        }
+                    },
+                    error: function (response) {
+                        console.log('::' + MessageText.NotService);
+                    }
                 });
+
+
+                //$.getJSON(url, data).done(function (response) {
+                //    chart.data.labels = response.labels;
+                //    chart.data.datasets[0].data = response.data.quantity; // or you can iterate for multiple datasets
+                //    chart.update(); // finally update our chart
+                //});
             }
         });
     </script>

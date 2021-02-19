@@ -63,7 +63,7 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public int TicketType { get; set; }
     }
-     
+
 
     public partial class BookOrderResult //: WEBModelResult
     {
@@ -173,8 +173,8 @@ namespace WebCore.Entities
         public DateTime IssueDate { get; set; }
         private int ItineraryType { get; set; }
         public int MailStatus { get; set; }
-        public int OrderStatus { get; set; } 
-        public string IssueDateText => TimeFormat.FormatToViewDate(IssueDate, Helper.Language.LanguagePage.GetLanguageCode); 
+        public int OrderStatus { get; set; }
+        public string IssueDateText => TimeFormat.FormatToViewDate(IssueDate, Helper.Language.LanguagePage.GetLanguageCode);
         [NotMapped]
         public string ItineraryText => BookOrderService.ViewOrderItineraryTypeText(ItineraryType);
     }
@@ -193,6 +193,12 @@ namespace WebCore.Entities
         public string AgentID { get; set; }
         public string CompanyID { get; set; }
         public int CustomerType { get; set; }
+    }
+    public class BookChart
+    {
+        public string AgentID { get; set; }
+        public string AirlineID { get; set; }
+        public string TimeZoneLocal { get; set; }
     }
     public class BookAgentID
     {
@@ -234,4 +240,16 @@ namespace WebCore.Entities
         public List<BookPrice> BookPrices { get; set; }
         public List<BookTax> BookTaxs { get; set; }
     }
+
+    public class ChartLine
+    {
+        public List<string> Labels { get; set; }
+        public List<ChartData> Datas { get; set; }
+    }
+     public class ChartData
+    {
+        public string Code { get; set; }
+        public List<int> Quantities { get; set; }
+    }
+
 }
