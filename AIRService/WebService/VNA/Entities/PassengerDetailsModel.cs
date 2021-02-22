@@ -12,7 +12,7 @@ namespace ApiPortalBooking.Models
     {
         public string Email { get; set; }
         public string Phone { get; set; }
-        public OTA_AirBookRS AirBook { get; set; }
+        public XMLObject.AirOTA_AirBookRS.OTA_AirBookRS AirBookRS { get; set; }
         public List<PassengerDetailsRQ> Passengers { get; set; }
     }
     public class PassengerDetailsRQ

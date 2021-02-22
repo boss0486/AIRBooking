@@ -334,7 +334,7 @@ class IFile {
 
 }
 // cookie
-class Cookies {
+class LibCookies {
     static SetCookie(_name, _val) {
         $.cookie(_name, _val, {
             expires: 10, // Expires in 10 days
@@ -345,7 +345,7 @@ class Cookies {
             // require a secure protocol (defaults to false).
         });
     }
-    static GetCookie(_name) {
+    static GetCookie(_name) { 
         return $.cookie(_name);
     }
     static DelCookie(_name) {

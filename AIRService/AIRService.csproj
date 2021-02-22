@@ -464,8 +464,11 @@
     <Compile Include="WebService\Mbay\Service\GDS_WSGds_SearchFlightService.cs" />
     <Compile Include="WebService\Mbay\Session\GDS_SessionService.cs" />
     <Compile Include="WebService\VNA\Authen\VNA_AuthencationService.cs" />
+    <Compile Include="WebService\VNA\XmlObject\OTA_AirBookRS.cs" />
+    <Compile Include="WebService\VNA\XmlObject\AirARUNK_LLSRQ.cs" />
     <Compile Include="WebService\VNA\Entities\AirFlightModel.cs" />
     <Compile Include="WebService\VNA\Entities\VNA_OTA_AirRulesLLSRQ.cs" />
+    <Compile Include="WebService\VNA\Service\VNA_AirARUNK_LLSRQService.cs" />
     <Compile Include="WebService\VNA\Service\VNA_OTA_AirRulesLLSRQService.cs" />
     <Compile Include="WebService\VNA\Session\SabreSessionManager.cs" />
     <Compile Include="WebService\VNA\Session\VNA_SessionService.cs" />

@@ -281,11 +281,12 @@ AirBookController.init();
 
 //*******************************************************
 function BookingOrderLoad() {
-    var cookiData = Cookies.GetCookie("FlightOrder");
+    var cookiData = LibCookies.GetCookie("FlightOrder"); 
     if (cookiData !== undefined && cookiData !== "") {
         var order = JSON.parse(cookiData);
-        if (order == undefined || order == null)
+        if (order == undefined || order == null) {
             return;
+        }
         //
         var feeTaxModel = [];
         var labelTbl = [];
@@ -854,7 +855,7 @@ $(document).on('click', '#btnBooking', function () {
         return;
     }
     // get flight data
-    var cookiData = Cookies.GetCookie("FlightOrder");
+    var cookiData = LibCookies.GetCookie("FlightOrder");
 
     if (cookiData == undefined || cookiData == "") {
         Notifization.Error("Dữ liệu không hợp lệ");

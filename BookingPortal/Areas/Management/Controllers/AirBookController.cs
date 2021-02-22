@@ -25,6 +25,8 @@ namespace WebApplication.Management.Controllers
     {
         public ActionResult Search()
         {
+            Helper.Security.Cookies.RemoveCookis("FlightSearch");
+            Helper.Security.Cookies.RemoveCookis("FlightOrder");
             ////SegmentSearchModel model = new SegmentSearchModel
             ////{
             ////    OriginLocation = " ",
@@ -66,7 +68,7 @@ namespace WebApplication.Management.Controllers
                 //  
 
                 if (model != null)
-                { 
+                {
                     if (model.ADT > 0)
                     {
                         bookingPassengers.Add(new BookingPassengers
@@ -148,15 +150,17 @@ namespace WebApplication.Management.Controllers
             HttpCookie cookie = HttpContext.Request.Cookies.Get("FlightOrder");
             if (cookie != null)
             {
-                cookie.Value = JsonConvert.SerializeObject(model); 
+                cookie.Value = JsonConvert.SerializeObject(model);
             }
             else
             {
                 cookie = new HttpCookie("FlightOrder")
                 {
                     Value = JsonConvert.SerializeObject(model),
+
                 };
             }
+
             cookie.Expires = DateTime.Now.AddDays(1);
             HttpContext.Response.Cookies.Add(cookie);
             return Notifization.Data("OK", cookie);

@@ -326,7 +326,7 @@ namespace AIRService.WS.Service
                 SpecialReqDetails += "        <SpecialServiceRQ>";
                 SpecialReqDetails += "          <SpecialServiceInfo>";
                 var segmentNumber = 0;
-                foreach (var item in model.AirBook.OriginDestinationOption)
+                foreach (var item in model.AirBookRS.OriginDestinationOption.FlightSegment)
                 {
                     segmentNumber++;
                     index = 0;

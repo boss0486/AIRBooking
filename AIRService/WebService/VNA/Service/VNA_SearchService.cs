@@ -122,7 +122,7 @@ namespace AIRService.Service
                 if (airAvailResult3.ApplicationResults.Status == "Complete")
                     flightSegments.AddRange(airAvailResult3.OriginDestinationOptions.OriginDestinationOption.Select(m => m.FlightSegment));
                 //
-                XMLHelper.WriteXml("search-bay", XMLHelper.GetXMLFromObject(flightSegments));
+                //XMLHelper.WriteXml("search-bay", XMLHelper.GetXMLFromObject(flightSegments));
                 string test = string.Empty;
                 if (flightSegments.Count == 0)
                     return Notifization.NotFound(MessageText.NotFound);
@@ -253,7 +253,7 @@ namespace AIRService.Service
 
             List<FlightSegment_ResBookDesigCode> result = new List<FlightSegment_ResBookDesigCode>();
             foreach (var rbdc in lstResBookDesigCode)
-            { 
+            {
                 List<FareItem> flightCostDetails = GetFareDetails(new VNAFareLLSRQModel
                 {
                     FareLLS = fareLLSModel,
@@ -841,24 +841,21 @@ namespace AIRService.Service
                     //seach data in web service
 
                     // #1. flight information - ***********************************************************************************************************************************
-                    VNA_OTA_AirBookLLSRQSevice vNAWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
+                    VNA_OTA_AirBookLLSRQSevice vnaWSOTA_AirBookLLSRQSevice = new VNA_OTA_AirBookLLSRQSevice();
                     List<BookSegmentModel> lstSegments = model.Segments;
                     if (lstSegments == null || lstSegments.Count == 0)
                         return Notifization.Invalid(MessageText.Invalid);
                     //
-                    AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                    XMLObject.AirOTA_AirBookRS.OTA_AirBookRS ota_AirBookRS = vnaWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                     {
                         Segments = lstSegments,
                         ConversationID = _conversationId,
                         Token = _token
                     });
-                    // 
+                    //  
                     if (ota_AirBookRS.ApplicationResults.Success == null)
                         return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
-                    //
-                    var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
-                    if (_originDestinationOption.Count == 0)
-                        return Notifization.NotFound(MessageText.NotFound);
+                    //  
                     // #2. Get price - ***************************************************************************************************************************************************
                     airBookModel.Segments = model.Segments;
                     var airPriceModel = new AirPriceModel
@@ -957,21 +954,51 @@ namespace AIRService.Service
                         ConversationID = _conversationId,
                         Token = _token,
                         Passengers = passengerDetailsRQ,
-                        AirBook = ota_AirBookRS
+                        AirBookRS = ota_AirBookRS
                     });
 
-                    //XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = new XMLObject.AirTicketRq.PassengerDetailsRS();
-                    //XmlDocument soapEnvelopeXml = new XmlDocument();
-                    //var path = HttpContext.Current.Server.MapPath(@"~/Team/2021-01-12-18-18-50-B9NIYQGK2J-pnr-rs.xml");
-                    //soapEnvelopeXml.Load(path);
-                    //XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
-                    //if (xmlnode != null)
-                    //    passengerDetailsRS = XMLHelper.Deserialize<XMLObject.AirTicketRq.PassengerDetailsRS>(xmlnode.InnerXml);
-                    ////  
+                    ////XMLObject.AirTicketRq.PassengerDetailsRS passengerDetailsRS = new XMLObject.AirTicketRq.PassengerDetailsRS();
+                    ////XmlDocument soapEnvelopeXml = new XmlDocument();
+                    ////var path = HttpContext.Current.Server.MapPath(@"~/Team/rs-pnr-.xml");
+                    ////soapEnvelopeXml.Load(path);
+                    ////XmlNode xmlnode = soapEnvelopeXml.GetElementsByTagName("soap-env:Body")[0];
+                    ////if (xmlnode != null)
+                    ////    passengerDetailsRS = XMLHelper.Deserialize<XMLObject.AirTicketRq.PassengerDetailsRS>(xmlnode.InnerXml);
+                    //////  
                     if (passengerDetailsRS == null)
                         return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
                     //
                     string pnrCode = passengerDetailsRS.ItineraryRef.ID;
+                    // ap dung service cho chuyen bay da hanh trinh
+                    List<BookSegmentModel> lstSegmentsARNK = lstSegments.OrderBy(m => m.DepartureDateTime).ToList();
+                    BookSegmentModel bookSegmentModel = lstSegmentsARNK[0];
+                    if (lstSegmentsARNK.Count > 1)
+                    {
+                        bool _stateARNK = false;
+                        for (int i = 0; i < lstSegmentsARNK.Count; i++)
+                        {
+                            if (i == 0 || i > lstSegmentsARNK.Count)
+                                continue;
+                            //#1 chieu
+                            //#2 khu hoi 
+                            if (lstSegmentsARNK.Count == 2 && lstSegmentsARNK[i].OriginLocation == bookSegmentModel.DestinationLocation  && lstSegmentsARNK[i].DestinationLocation == bookSegmentModel.OriginLocation)
+                                continue;
+                            //#3 da hanh trinh
+                            if (bookSegmentModel.DestinationLocation != lstSegmentsARNK[i].OriginLocation)
+                            {
+                                _stateARNK = true;
+                                break;
+                            }
+                            //
+                            bookSegmentModel = lstSegmentsARNK[i];
+                        }
+                        //
+                        if (_stateARNK)
+                        {
+                            VNA_AirARUNK_LLSRQService vna_AirARUNK_LLSRQService = new VNA_AirARUNK_LLSRQService();
+                            XMLObject.AirARUNKLLSRQ.ARUNK_RS aRUNK_RS = vna_AirARUNK_LLSRQService.FUNC_AirARUNK_LLSRQ(tokenModel);
+                        }
+                    }
                     //End transaction 
                     vnaTransaction.EndTransaction();
                     //
@@ -1872,12 +1899,12 @@ namespace AIRService.Service
                         //,
                         new BookSegmentModel
                         {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-22T13:45:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-22T16:00:00"),
-                            FlightNumber = 7265,
-                            NumberInParty = 2,
-                            ResBookDesigCode = "Q",
-                            AirEquipType = 787,
+                            DepartureDateTime = Convert.ToDateTime("2021-03-26 16:05:00"),
+                            ArrivalDateTime = Convert.ToDateTime("2021-03-26 18:20:00"),
+                            FlightNumber = 6043,
+                            NumberInParty = 1,
+                            ResBookDesigCode = "E",
+                            AirEquipType = 320,
                             DestinationLocation = "SGN",
                             OriginLocation = "HAN"
                         }
@@ -1893,6 +1920,14 @@ namespace AIRService.Service
                 //    ConversationID = _conversationId,
                 //    Token = _token
                 //});
+
+                XMLObject.AirOTA_AirBookRS.OTA_AirBookRS airBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                {
+                    Segments = lstSegments,
+                    ConversationID = _conversationId,
+                    Token = _token
+                });
+                return Notifization.Data("OK", airBookRS);
                 //// 
                 //if (ota_AirBookRS.ApplicationResults.Success == null)
                 //    return Notifization.Invalid("Lỗi dịch vụ đặt chỗ");
@@ -1901,34 +1936,34 @@ namespace AIRService.Service
                 //if (_originDestinationOption.Count == 0)
                 //    return Notifization.NotFound(MessageText.NotFound);
                 ////
-                AirPriceModel airPriceModel = new AirPriceModel
-                {
-                    ADT = 1,
-                    CNN = 1,
-                    INF = 1,
-                    ConversationID = _conversationId,
-                    Token = _token,
-                    Segments = new List<BookSegmentModel>
-                    {
-                        new BookSegmentModel
-                        {
-                            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
-                            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
-                            FlightNumber = 7228,
-                            NumberInParty = 2,
-                            ResBookDesigCode = "K",
-                            AirEquipType = 321,
-                            DestinationLocation = "HAN",
-                            OriginLocation = "SGN"
-                        }
-                    }
+                //AirPriceModel airPriceModel = new AirPriceModel
+                //{
+                //    ADT = 1,
+                //    CNN = 1,
+                //    INF = 1,
+                //    ConversationID = _conversationId,
+                //    Token = _token,
+                //    Segments = new List<BookSegmentModel>
+                //    {
+                //        new BookSegmentModel
+                //        {
+                //            DepartureDateTime = Convert.ToDateTime("2021-02-08 00:10:00"),
+                //            ArrivalDateTime = Convert.ToDateTime("2021-02-08 02:30:00"),
+                //            FlightNumber = 7228,
+                //            NumberInParty = 2,
+                //            ResBookDesigCode = "K",
+                //            AirEquipType = 321,
+                //            DestinationLocation = "HAN",
+                //            OriginLocation = "SGN"
+                //        }
+                //    }
 
-                };
+                //};
 
 
-                VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
-                var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
-                return Notifization.Data("OK", airPriceData);
+                //VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
+                //var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);
+                //return Notifization.Data("OK", airPriceData);
 
 
 
@@ -2220,19 +2255,15 @@ namespace AIRService.Service
                 if (bookSegmentModels == null || bookSegmentModels.Count == 0)
                     return Notifization.Invalid(MessageText.Invalid);
                 //
-                AIRService.WebService.VNA_OTA_AirBookLLSRQ.OTA_AirBookRS ota_AirBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
+                XMLObject.AirOTA_AirBookRS.OTA_AirBookRS airBookRS = vNAWSOTA_AirBookLLSRQSevice.FUNC_OTA_AirBookRS(new AirBookModel
                 {
                     Segments = bookSegmentModels,
                     ConversationID = _conversationId,
                     Token = _token
                 });
                 // 
-                if (ota_AirBookRS.ApplicationResults.Success == null)
+                if (airBookRS.ApplicationResults.Success == null)
                     return Notifization.Invalid(MessageText.Invalid);
-                //
-                var _originDestinationOption = ota_AirBookRS.OriginDestinationOption.ToList();
-                if (_originDestinationOption.Count == 0)
-                    return Notifization.NotFound(MessageText.NotFound);
                 // 
                 VNA_OTA_AirPriceLLSRQService vNAWSOTA_AirPriceLLSRQService = new VNA_OTA_AirPriceLLSRQService();
                 var airPriceData = vNAWSOTA_AirPriceLLSRQService.AirPrice(airPriceModel);

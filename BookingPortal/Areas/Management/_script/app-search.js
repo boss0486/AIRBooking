@@ -6,7 +6,6 @@ var arrSearch = null;
 var flightBookingController = {
     init: function () {
         flightBookingController.registerEvent();
-        Cookies.DelCookie("FlightOrder");
     },
     registerEvent: function () {
         $(document).ready(function () {
@@ -459,27 +458,24 @@ var flightBookingController = {
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         }
         //
-        AjaxFrom.POST({
-            url: URLC + '/OrderTemp',
-            data: model,
-            success: function (response) {
-                if (response.status == 200) {
-                    // rediect 
-                    Loading.ShowLoading();
-                    //
-                    setTimeout(function () {
-                        location.href = "/management/airbook/booking";
-                    }, 2000);
-                }
-                else if (response.status == 503) {
-                    Notifization.Error(response.message);
-                    return;
-                }
-            },
-            error: function (response) {
-                console.log('::' + MessageText.NotService);
-            }
-        });
+        LibCookies.SetCookie("FlightOrder", JSON.stringify(model));
+        //AjaxFrom.POST({
+        //    url: URLC + '/OrderTemp',
+        //    data: model,
+        //    success: function (response) {
+        //        if (response.status == 200) {
+        //            // rediect  
+        //            Notifization.Success("Xác nhận hành trình");
+        //        }
+        //        else if (response.status == 503) {
+        //            Notifization.Error(response.message);
+        //            return;
+        //        }
+        //    },
+        //    error: function (response) {
+        //        console.log('::' + MessageText.NotService);
+        //    }
+        //});
     },
     ShopingCart: function () {
         $("#tblCartData").html("");
@@ -528,10 +524,27 @@ $(document).on('click', '#btnNextToInf', function () {
         Notifization.Error(htmlError);
         return;
     }
-
     // update order
     flightBookingController.BookingOrder();
-    Notifization.Success("Tiến hành đặt vé, xin chờ...");
+});
+
+$(document).on('click', '#btnNextToBook', function () {
+    $("#InforCustomerError").html("").removeClass("on");
+    $("#btnCart").click();
+    var flightGoInfo = $("table#TblSegment").find('td.td-action.active');
+    var htmlError = "";
+    if ($(flightGoInfo) == undefined || $(flightGoInfo).length == 0) {
+        htmlError = "Vui lòng chọn chặng bay"
+        $("#InforCustomerError").html(htmlError).addClass("on");
+        Notifization.Error(htmlError);
+        return;
+    }
+    //
+    Loading.ShowLoading();
+    setTimeout(function () {
+        location.href = "/management/airbook/booking";
+    },1000);
+
 });
 //
 $(document).on('click', '.lbl-list label.fare-item', function () {
@@ -665,8 +678,6 @@ $(document).on('click', '#btnSearchReset', function () {
     $("#infAirline").html("......");
     $("#segmentList").html('');
     FData.ResetForm();
-    Cookies.DelCookie("FlightSearch");
-    Cookies.DelCookie("FlightOrder");
 });
 
 $(document).on('click', '#btnSearchTab', function () {

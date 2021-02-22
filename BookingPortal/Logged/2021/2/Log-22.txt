@@ -1,0 +1,17 @@
+[2021-02-22 13:22:05] Đã đặt chỗ:QLACTP
+[2021-02-22 13:31:32] Đã đặt chỗ:UWRQFK
+[2021-02-22 15:02:35] Booking: System.NullReferenceException: Object reference not set to an instance of an object.
+   at AIRService.Service.VNA_SearchService.Booking(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_SearchService.cs:line 992
+   at WebApplication.Management.Controllers.AirBookController.TicketOrder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\BookingPortal\Areas\Management\Controllers\AirBookController.cs:line 257
+[2021-02-22 15:05:33] Booking: System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at AIRService.WS.Service.VNA_AirARUNK_LLSRQService.FUNC_AirARUNK_LLSRQ(TokenModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_AirARUNK_LLSRQService.cs:line 41
+   at AIRService.Service.VNA_SearchService.Booking(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_SearchService.cs:line 990
+   at WebApplication.Management.Controllers.AirBookController.TicketOrder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\BookingPortal\Areas\Management\Controllers\AirBookController.cs:line 257
+[2021-02-22 15:07:49] Đã đặt chỗ:SCTIJE
+[2021-02-22 15:08:15] Booking: System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at AIRService.WS.Service.VNA_AirARUNK_LLSRQService.FUNC_AirARUNK_LLSRQ(TokenModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_AirARUNK_LLSRQService.cs:line 41
+   at AIRService.Service.VNA_SearchService.Booking(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\AIRService\WebService\VNA\Service\VNA_SearchService.cs:line 990
+   at WebApplication.Management.Controllers.AirBookController.TicketOrder(BookOrderSaveModel model) in E:\STARCOM\PROJECT\AIRBooking\BookingPortal\Areas\Management\Controllers\AirBookController.cs:line 257
+[2021-02-22 15:43:12] Đã đặt chỗ:SXLEGU
