@@ -23,7 +23,6 @@ namespace WebCore.Entities
         public string ID { get; set; }
         public string AirportID { get; set; }
         public string IATACode { get; set; }
-        public int VoidBookTime { get; set; }
         public int VoidTicketTime { get; set; }
         public double AxFee { get; set; }
     }
@@ -46,7 +45,6 @@ namespace WebCore.Entities
         public string Title { get; set; }
         public string IATACode { get; set; }
         public string AirportID { get; set; }
-        public int VoidBookTime { get; set; }
         public int VoidTicketTime { get; set; }
         public double AxFee { get; set; }
     }

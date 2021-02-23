@@ -52,7 +52,7 @@ namespace WebCore.Services
                     return Notifization.Invalid(searchResult.Message);
             }
             //
-            string sqlQuery = $@"SELECT ap.ID, ap.AreaInlandID, ap.Title, ap.IATACode, apf.AxFee, apf.VoidBookTime, apf.VoidTicketTime, ISNULL(apf.Enabled,0), apf.CreatedDate FROM App_Airport as ap
+            string sqlQuery = $@"SELECT ap.ID, ap.AreaInlandID, ap.Title, ap.IATACode, apf.AxFee, apf.VoidTicketTime, ISNULL(apf.Enabled,0), apf.CreatedDate FROM App_Airport as ap
             LEFT JOIN App_AirportConfig apf ON apf.AirportID = ap.ID 
             WHERE (dbo.Uni2NONE(ap.Title) LIKE N'%'+ @Query +'%' OR ap.IATACode LIKE N'%'+ @Query +'%') {whereCondition} ORDER BY ap.Title ASC";
             var dtList = _connection.Query<AirportConfigResult>(sqlQuery, new { Query = Helper.Page.Library.FormatNameToUni2NONE(query) }).ToList();
@@ -99,7 +99,6 @@ namespace WebCore.Services
                     {
                         AirportID = airportId,
                         AxFee = Convert.ToDouble(val),
-                        VoidBookTime = 0,
                         VoidTicketTime = 0
                     });
                 }
@@ -116,12 +115,9 @@ namespace WebCore.Services
                     {
                         AirportID = airportId,
                         AxFee = 0,
-                        VoidBookTime = Convert.ToInt32(val),
                         VoidTicketTime = 0
                     });
                 }
-
-                airportConfig.VoidBookTime = Convert.ToInt32(val);
                 airportConfigService.Update(airportConfig);
                 return Notifization.Success(MessageText.UpdateSuccess);
             }
@@ -134,7 +130,6 @@ namespace WebCore.Services
                     {
                         AirportID = airportId,
                         AxFee = 0,
-                        VoidBookTime = 0,
                         VoidTicketTime = Convert.ToInt32(val)
                     });
                 }

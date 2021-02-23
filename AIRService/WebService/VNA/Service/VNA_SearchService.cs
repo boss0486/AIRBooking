@@ -154,6 +154,9 @@ namespace AIRService.Service
                 List<XMLObject.FareLLSRQ.FareBasis> fareBasis = fareRS.FareBasis;
                 if (fareBasis == null)
                     return Notifization.Invalid(MessageText.Invalid);
+                //
+                fareBasis = fareBasis.Where(m => m.AdditionalInformation.PrivateInd != null).ToList();
+                //
                 // get tax 
                 string flightLocation = $"{_originLocation}-{_destinationLocation}";
                 AirTicketCondition05 airTicketCondition05 = airTicketCondition05Service.GetAlls(m => m.IsApplied && m.FlightLocationID == flightLocation).FirstOrDefault();
@@ -315,66 +318,72 @@ namespace AIRService.Service
                 }
             }
             //
-            List<XMLObject.FareLLSRQ.FareBasis> fareRSFareBases1 = fareRSFareBases.Where(m => m.Code.Last() == 'F').ToList();
+            List<XMLObject.FareLLSRQ.FareBasis> fareRSFareBases1 = fareRSFareBases.Where(m => m.Code.Split('/')[0].Last() == 'F').ToList();
             string test = "0";
 
-            if (conditionState04 || conditionState05)
+            // 23-02-2021:  bo qua dk 05
+            if (conditionState04)
             {
-                fareRSFareBases1 = fareRSFareBases.Where(m => m.Code.Last() != 'F').ToList();
+                fareRSFareBases1 = fareRSFareBases.Where(m => m.Code.Split('/')[0].Last() != 'F').ToList();
                 test = "1";
             }
-            //
+            // 
             foreach (var passengerType in lstPassengerType)
             {
+
+                
+
                 List<FlightCost> flightCosts = new List<FlightCost>();
                 List<double> lstFare = new List<double>();
                 double minAmount = 0;
                 int cnt = 0;
-                foreach (var fareRSFareBasis in fareRSFareBases1)
-                {
-                    if (passengerType == fareRSFareBasis.PassengerType.Code && fareRSFareBasis.AdditionalInformation.ResBookDesigCode == rbdc && fareRSFareBasis.AdditionalInformation.PrivateInd != null)
+
+                List<XMLObject.FareLLSRQ.FareBasis> fareBases = fareRSFareBases1.Where(m => m.PassengerType.Code == passengerType && m.AdditionalInformation.ResBookDesigCode == rbdc).ToList();
+                if (fareBases.Count == 0)
+                    continue;
+                //
+                foreach (var item in fareBases)
+                { 
+                    string strAmount = item.AdditionalInformation.Fare[0].Amount;
+                    if (!string.IsNullOrWhiteSpace(strAmount) && Convert.ToDouble(strAmount) > 0)
                     {
-                        string strAmount = fareRSFareBasis.AdditionalInformation.Fare[0].Amount;
-                        if (!string.IsNullOrWhiteSpace(strAmount) && Convert.ToDouble(strAmount) > 0)
+                        bool active = false;
+                        double _amount = Convert.ToDouble(strAmount);
+                        if (cnt == 0)
                         {
-                            bool active = false;
-                            double _amount = Convert.ToDouble(strAmount);
-                            if (cnt == 0)
-                            {
-                                minAmount = _amount;
-                                active = true;
-                            }
-                            //
-                            if (minAmount != 0 && minAmount > _amount)
-                            {
-                                minAmount = _amount;
-                                active = true;
-                            }
-                            //
-                            double _fareTotal = 0;
-                            if (passengerType == "ADT")
-                                _fareTotal = (_amount * 1.1) + 350000 + fareLLSModel.AxFee + 20000;
-                            //
-                            if (passengerType == "CNN")
-                                _fareTotal = (_amount * 0.9) * 1.1 + 350000 + (fareLLSModel.AxFee / 2) + (20000 / 2);
-                            //
-                            if (passengerType == "INF")
-                                _fareTotal = (_amount * 0.1) * 1.1;
-                            //
-                            fareDetailsModels.Add(new FareItem
-                            {
-                                RPH = Convert.ToInt32(fareRSFareBasis.RPH),
-                                PassengerType = passengerType,
-                                FareAmount = _amount,
-                                FareTotal = Helper.Page.Library.FormatNumberRoundUp(_fareTotal, 1000),
-                                Code = fareRSFareBasis.Code,
-                                IsActive = active,
-                                Test = test
-                            });
-                            cnt++;
+                            minAmount = _amount;
+                            active = true;
                         }
+                        //
+                        if (minAmount != 0 && minAmount > _amount)
+                        {
+                            minAmount = _amount;
+                            active = true;
+                        }
+                        //
+                        double _fareTotal = 0;
+                        if (passengerType == "ADT")
+                            _fareTotal = (_amount * 1.1) + 350000 + fareLLSModel.AxFee + 20000;
+                        //
+                        if (passengerType == "CNN")
+                            _fareTotal = (_amount * 0.9) * 1.1 + 350000 + (fareLLSModel.AxFee / 2) + (20000 / 2);
+                        //
+                        if (passengerType == "INF")
+                            _fareTotal = (_amount * 0.1) * 1.1;
+                        //
+                        fareDetailsModels.Add(new FareItem
+                        {
+                            RPH = Convert.ToInt32(item.RPH),
+                            PassengerType = passengerType,
+                            FareAmount = _amount,
+                            FareTotal = Helper.Page.Library.FormatNumberRoundUp(_fareTotal, 1000),
+                            Code = item.Code,
+                            IsActive = active,
+                            Test = ""
+                        });
+                        cnt++;
                     }
-                }
+                } 
             }
             //
             if (fareDetailsModels.Count == 0)
@@ -981,7 +990,7 @@ namespace AIRService.Service
                                 continue;
                             //#1 chieu
                             //#2 khu hoi 
-                            if (lstSegmentsARNK.Count == 2 && lstSegmentsARNK[i].OriginLocation == bookSegmentModel.DestinationLocation  && lstSegmentsARNK[i].DestinationLocation == bookSegmentModel.OriginLocation)
+                            if (lstSegmentsARNK.Count == 2 && lstSegmentsARNK[i].OriginLocation == bookSegmentModel.DestinationLocation && lstSegmentsARNK[i].DestinationLocation == bookSegmentModel.OriginLocation)
                                 continue;
                             //#3 da hanh trinh
                             if (bookSegmentModel.DestinationLocation != lstSegmentsARNK[i].OriginLocation)

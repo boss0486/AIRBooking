@@ -124,7 +124,6 @@ namespace WebCore.Services
             }
             // update
             airportConfig.AxFee = axfee;
-            airportConfig.VoidBookTime = voidTicketTime;
             airportConfig.VoidTicketTime = voidTicketTime;
             airportConfigService.Update(airportConfig);
             //

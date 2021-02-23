@@ -25,8 +25,13 @@ namespace WebApplication.Management.Controllers
     {
         public ActionResult Search()
         {
-            Helper.Security.Cookies.RemoveCookis("FlightSearch");
-            Helper.Security.Cookies.RemoveCookis("FlightOrder");
+            string abc = HttpContext.Request.QueryString["r"];
+            if (string.IsNullOrWhiteSpace(abc))
+            {
+                Helper.Security.Cookies.RemoveCookis("FlightSearch");
+                Helper.Security.Cookies.RemoveCookis("FlightOrder");
+            }
+          
             ////SegmentSearchModel model = new SegmentSearchModel
             ////{
             ////    OriginLocation = " ",
