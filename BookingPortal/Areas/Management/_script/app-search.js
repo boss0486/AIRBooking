@@ -458,24 +458,23 @@ var flightBookingController = {
             TimeZoneLocal: LibDateTime.GetTimeZoneByLocal()
         }
         //
-        LibCookies.SetCookie("FlightOrder", JSON.stringify(model));
-        //AjaxFrom.POST({
-        //    url: URLC + '/OrderTemp',
-        //    data: model,
-        //    success: function (response) {
-        //        if (response.status == 200) {
-        //            // rediect  
-        //            Notifization.Success("Xác nhận hành trình");
-        //        }
-        //        else if (response.status == 503) {
-        //            Notifization.Error(response.message);
-        //            return;
-        //        }
-        //    },
-        //    error: function (response) {
-        //        console.log('::' + MessageText.NotService);
-        //    }
-        //});
+        AjaxFrom.POST({
+            url: URLC + '/OrderTemp',
+            data: model,
+            success: function (response) {
+                if (response.status == 200) {
+                    // rediect  
+                    Notifization.Success("Xác nhận hành trình");
+                }
+                else if (response.status == 503) {
+                    Notifization.Error(response.message);
+                    return;
+                }
+            },
+            error: function (response) {
+                console.log('::' + MessageText.NotService);
+            }
+        });
     },
     ShopingCart: function () {
         $("#tblCartData").html("");

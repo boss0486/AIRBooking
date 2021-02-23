@@ -148,21 +148,19 @@ namespace WebApplication.Management.Controllers
         public ActionResult OrderTemp(BookOrderTemp model)
         {
             HttpCookie cookie = HttpContext.Request.Cookies.Get("FlightOrder");
+            string val = JsonConvert.SerializeObject(model);
             if (cookie != null)
             {
-                cookie.Value = JsonConvert.SerializeObject(model);
+                cookie.Value = val;
             }
             else
             {
-                cookie = new HttpCookie("FlightOrder")
-                {
-                    Value = JsonConvert.SerializeObject(model),
-
-                };
+                cookie = new HttpCookie("FlightOrder");
+                cookie.Value = val;
             }
-
-            cookie.Expires = DateTime.Now.AddDays(1);
+            cookie.Expires = Helper.TimeData.TimeHelper.UtcDateTime.AddDays(1);
             HttpContext.Response.Cookies.Add(cookie);
+
             return Notifization.Data("OK", cookie);
         }
 

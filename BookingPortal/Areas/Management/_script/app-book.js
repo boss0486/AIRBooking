@@ -280,8 +280,8 @@ var AirBookController = {
 AirBookController.init();
 
 //*******************************************************
-function BookingOrderLoad() {
-    var cookiData = LibCookies.GetCookie("FlightOrder"); 
+function BookingOrderLoad() { 
+    var cookiData = $.cookie("FlightOrder");
     if (cookiData !== undefined && cookiData !== "") {
         var order = JSON.parse(cookiData);
         if (order == undefined || order == null) {
